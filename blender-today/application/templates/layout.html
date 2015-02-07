@@ -49,6 +49,9 @@
 
         <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
           <ul class="nav navbar-nav navbar-right">
+            <li {% if title == 'submit': %} class="active"{% endif %}>
+              <a href="{{ url_for('posts.submit') }}">Submit</a>
+            </li>
             <li {% if title == 'about': %} class="active"{% endif %}>
               <a href="{{ url_for('about') }}">About</a>
             </li>

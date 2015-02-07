@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% block body %}
+	<h1>All posts</h1>
+    {% for post in posts %}
+        <div>
+        <a href="{{url_for('posts.view', uuid=post.uuid)}}">{{post.title}}</a>
+        </div>
+	{% endfor %}
+{% endblock %}
+

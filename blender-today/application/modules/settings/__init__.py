@@ -13,9 +13,9 @@ def profile():
     # Initialize the profile form, preloading existing data
     
     form = ProfileForm(
-        email = current_user.email,
-        first_name = current_user.first_name,
-        last_name = current_user.last_name
+        email=current_user.email,
+        first_name=current_user.first_name,
+        last_name=current_user.last_name
         )
     
     # If the form is submitted via POST and is succesfully validated

@@ -6,7 +6,7 @@ from application.modules.users.model import User
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String(6), nullable=False)
+    uuid = db.Column(db.String(6), nullable=False, unique=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=False)
     title = db.Column(db.String(255), nullable=False)
