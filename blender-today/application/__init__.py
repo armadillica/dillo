@@ -40,10 +40,13 @@ from modules.admin import backend
 from modules.pages import admin
 from modules.users import admin
 from modules.main import *
+from modules.posts import posts
+from modules.posts import admin
 from modules.settings import settings
 
 filemanager = Blueprint('filemanager', __name__, static_folder='static/files')
 app.register_blueprint(filemanager)
 app.register_blueprint(settings, url_prefix='/settings')
+app.register_blueprint(posts)
 
 from modules.users.model import user_datastore

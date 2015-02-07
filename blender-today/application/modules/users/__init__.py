@@ -32,7 +32,6 @@ def google_authorized():
             request.args['error_description']
         )
 
-    print resp
     session['google_token'] = (resp['access_token'], '')
     resp = google.get('userinfo')
     user = user_datastore.get_user(resp.data['email'])
