@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% from 'settings/_macros.html' import sidebar_navigation %}
+
+{% block body %}
+    <div class="row">
+        {{sidebar_navigation(title)}}
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <h3 class="panel-title">Change Password</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Security forms for changing password</p>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <h3 class="panel-title">Change Username</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Security forms for changing username</p>
+                </div>
+            </div>
+
+            <div class="panel panel-danger">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <h3 class="panel-title">Delete account</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Security form for deleting account</p>
+                </div>
+            </div>
+       </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,44 @@
+{% macro render_field_with_errors(field) %}
+    {{ field.label }} {{ field(**kwargs)|safe }}
+    {% if field.errors %}
+      <div class="error">
+      {% for error in field.errors %}
+        <span class="error_item danger">{{ error }} <i class="fa fa-warning"></i></span>
+      {% endfor %}
+      </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_field_with_errors_without_label(field) %}
+    {{ field(**kwargs)|safe }}
+    {% if field.errors %}
+      <div class="error">
+      {% for error in field.errors %}
+        <span class="error_item danger">{{ error }} <i class="fa fa-warning"></i></span>
+      {% endfor %}
+      </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_field(field) %}
+  <!-- <div class="form-group"> -->{{ field(**kwargs)|safe }}<!-- </div> -->
+{% endmacro %}
+
+{% macro render_login_field_with_errors(field) %}
+    {{ field(**kwargs)|safe }}
+    {% if field.errors %}
+      <div class="error">
+      {% for error in field.errors %}
+        <span class="error_item danger">{{ error }} <i class="fa fa-warning"></i></span>
+      {% endfor %}
+      </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_register_field_with_errors(field) %}
+    {{ field(**kwargs)|safe }}
+{% endmacro %}
+
+{% macro render_button(field) %}
+  {{ field(**kwargs)|safe }}
+{% endmacro %}
