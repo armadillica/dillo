@@ -58,7 +58,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{current_user.email}} <b class="caret"></b></a>
               <ul class="dropdown-menu right">
                 <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="{{url_for_security('logout')}}"><i class="fa fa-power-off"></i> Log out</a></li>
+                <li><a href="{{url_for('logout')}}"><i class="fa fa-power-off"></i> Log out</a></li>
               </ul>
             </li>
             {% else %}

@@ -1,6 +1,9 @@
-from flask import render_template, Blueprint
+from flask import render_template
+from flask import Blueprint
 
-from application import app, db
+from application import app
+from application import db
+
 from application.modules.pages.model import Page
 
 pages = Blueprint('pages', __name__)

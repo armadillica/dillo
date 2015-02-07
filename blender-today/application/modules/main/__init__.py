@@ -11,5 +11,5 @@ def about():
     return view('about')
 
 @app.route('/')
-def homepage():
+def index():
     return view('about')

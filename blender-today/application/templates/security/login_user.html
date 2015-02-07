@@ -12,7 +12,7 @@
     <div class="col-md-8 col-md-push-2">
       <div class="box">
         <i class="bf-blender backicon"></i>
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6">
             <form role="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form" class="offset-top-5">
               {{ login_user_form.hidden_tag() }}
               <fieldset>
@@ -54,6 +54,10 @@
             <hr/>
             <a href="{{url_for_security('register')}}">Don't have an account yet?</a>
         </div> <!-- col-md-6 -->
+        <div class="col-md-6">
+          <a href="{{url_for('google_login')}}" class="btn btn-default btn-lg btn-squishy width-75">Login with Google
+          </a>
+        </div>
       </div>
     </div>
   </div>
