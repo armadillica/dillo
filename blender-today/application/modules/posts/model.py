@@ -42,7 +42,7 @@ class Post(db.Model):
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
             picture = imgur_client.get_image(self.picture)
-            return picture.link.replace(self.picture, post.picture + size)
+            return picture.link.replace(self.picture, self.picture + size)
         else:
             return None
 
