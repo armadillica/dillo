@@ -8,7 +8,7 @@
 		<div class="row post-index-item">
 			<div class="col-md-1">
 				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-					<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if post.picture %}style="background: url(http://i.imgur.com/{{post.picture}}s.jpg) top left no-repeat"{% endif %}>
+					<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 						{% if post.post_type.url == 'link' %}
 							<i class="fa fa-link"></i>
 						{% elif post.post_type.url == 'text' %}

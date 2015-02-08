@@ -16,7 +16,7 @@
 	{% if post.picture %}
 	<div class="post-view-content-image">
 		<a href="http://imgur.com/{{post.picture}}" target="_blank">
-			<img src="{{picture}}"/>
+			<img src="{{post.thumbnail('h')}}"/>
 			<div class="post-view-content-image-link">view on imgur.com</div>
 		</a>
 	</div>
@@ -38,7 +38,7 @@
 		<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
 		<span class="separator"></span>
 		<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-			Permalink
+			permalink
 		</a>
 	</div>
 
