@@ -12,6 +12,9 @@ from application import db
 from application.modules.posts.model import Post
 from application.modules.posts.model import Category
 from application.modules.posts.forms import PostForm
+from application.helpers import encode_id
+from application.helpers import decode_id
+from application.helpers import slugify
 
 posts = Blueprint('posts', __name__)
 
@@ -23,9 +26,10 @@ def index():
         posts=posts)
 
 
-@posts.route('/<uuid>')
-def view(uuid):
-    post = Post.query.filter_by(uuid=uuid).one()
+@posts.route('/<category>/<uuid>')
+def view(category, uuid):
+    post_id = decode_id(uuid)
+    post = Post.query.get_or_404(post_id)
     return render_template('posts/view.html', 
         post=post)
 
@@ -38,15 +42,16 @@ def submit():
     
     if form.validate_on_submit():
         post = Post(
-            uuid='a',
             user_id=current_user.id,
             category_id=form.category_id.data,
             title=form.title.data,
-            slug='asd',
+            slug=slugify(form.title.data),
             content=form.content.data)
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('posts.view', uuid=post.uuid))
+        post.uuid = encode_id(post.id)
+        db.session.commit()
+        return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
 
     return render_template('posts/submit.html',
         form=form,

@@ -6,7 +6,7 @@ from application.modules.users.model import User
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String(6), nullable=False, unique=True)
+    uuid = db.Column(db.String(6), unique=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=False)
     title = db.Column(db.String(255), nullable=False)
@@ -29,7 +29,8 @@ class Category(db.Model):
     url = db.Column(db.String(128), nullable=False)
     order = db.Column(db.Integer)
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    parent = db.relationship('Category', remote_side=[id], backref=db.backref('children', order_by=order))
+    parent = db.relationship('Category', 
+        remote_side=[id], backref=db.backref('children', order_by=order))
 
     def __str__(self):
         return str(self.name)
