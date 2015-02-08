@@ -23,6 +23,12 @@ class Post(db.Model):
     def __str__(self):
         return str(self.title)
 
+    @property
+    def user_rating(self):
+        return UserPostRating.query\
+            .filter_by(post_id=self.id, user_id=self.user.id)\
+            .first()
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

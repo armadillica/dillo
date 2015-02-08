@@ -2,8 +2,13 @@
 {% block body %}
   <h1>{{post.title}}</h1>
   {{post.content|safe}}
-  <a href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">Rate up</a>
-  <a href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">Rate down</a>
+  {% if post.user_rating %}
+    You rated <b>{% if post.user_rating.is_positive %}Positive{% else %}Negative{% endif %}</b>
+  {% else %}
+    <a href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">Rate up</a>
+    <a href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">Rate down</a>
+  {% endif %}
+  
 
   {% if current_user.is_anonymous() %}
     <a href="{{url_for_security('login')}}" class="btn btn-default">Log in to comment</a>

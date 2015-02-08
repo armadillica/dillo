@@ -3,7 +3,7 @@
 	<h1>All posts</h1>
     {% for post in posts %}
         <div>
-        <a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">{{post.title}}</a>
+        <a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">{{post.title}}</a> Like: {{post.rating.positive}} No Like: {{post.rating.negative}}
         </div>
 	{% endfor %}
 {% endblock %}
