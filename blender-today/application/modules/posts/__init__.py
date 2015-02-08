@@ -1,3 +1,6 @@
+import os
+import json
+from werkzeug import secure_filename
 from flask import render_template
 from flask import Blueprint
 from flask import redirect
@@ -8,6 +11,7 @@ from flask.ext.security import current_user
 
 from application import app
 from application import db
+from application import imgur_client
 
 from application.modules.posts.model import Post
 from application.modules.posts.model import PostRating
@@ -38,9 +42,12 @@ def view(category, uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     form = CommentForm()
+    picture = imgur_client.get_image(post.picture)
+    picture = picture.link.replace(post.picture, post.picture + 'm')
     return render_template('posts/view.html',
         post=post,
-        form=form)
+        form=form,
+        picture=picture)
 
 
 @posts.route('/posts/submit', methods=['GET', 'POST'])
@@ -67,7 +74,16 @@ def submit():
             negative=0
             )
         db.session.add(post_rating)
+        #db.session.commit()
+        filename = secure_filename(form.picture.data.filename)
+        filepath = '/tmp/' + filename
+        form.picture.data.save(filepath)
+        image = imgur_client.upload_from_path(filepath, config=None, anon=True)
+        post.picture = image['id']
+        post.picture_deletehash = image['deletehash']
         db.session.commit()
+        os.remove(filepath)
+
         return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
 
     return render_template('posts/submit.html',

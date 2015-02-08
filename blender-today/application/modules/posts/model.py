@@ -16,6 +16,7 @@ class Post(db.Model):
     slug = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)
     picture = db.Column(db.String(80))
+    picture_deletehash = db.Column(db.String(80))
     creation_date = db.Column(db.DateTime(), default=datetime.datetime.now)
     edit_date = db.Column(db.DateTime())
 

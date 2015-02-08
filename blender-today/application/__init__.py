@@ -5,7 +5,7 @@ from flask import Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_oauthlib.client import OAuth
-
+from imgurpython import ImgurClient
 
 import config
 
@@ -34,7 +34,7 @@ google = oauth.remote_app(
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
 
-
+imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
 
 from modules.admin import backend
 from modules.pages import admin
