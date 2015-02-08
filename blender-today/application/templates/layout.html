@@ -44,7 +44,7 @@
             <span class="sr-only">Toggle navigation</span>
             <i class="fa fa-bars"></i>
           </button>
-          <a class="logo" href="{{url_for('about')}}"></a>
+          <a class="logo" href="{{url_for('index')}}">Blender Today</a>
         </div>
 
         <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
@@ -60,6 +60,13 @@
             <li class="dropdown absolute right">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{current_user.email}} <b class="caret"></b></a>
               <ul class="dropdown-menu right">
+
+                {% if current_user.has_role('admin') %}
+                <li class="text-danger">
+                  <a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i> Woosh!</a>
+                </li>
+                {% endif %}
+
                 <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i> Settings</a></li>
                 <li><a href="{{url_for('logout')}}"><i class="fa fa-power-off"></i> Log out</a></li>
               </ul>
@@ -102,8 +109,8 @@
       </div> <!-- /footer-container -->
     </footer>
     {% if config.USE_ASSETS_CDN %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     {% else %}
     <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
     <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
