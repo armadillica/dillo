@@ -2,6 +2,8 @@
 {% block body %}
   <h1>{{post.title}}</h1>
   {{post.content|safe}}
+  <a href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">Rate up</a>
+  <a href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">Rate down</a>
 
   {% if current_user.is_anonymous() %}
     <a href="{{url_for_security('login')}}" class="btn btn-default">Log in to comment</a>

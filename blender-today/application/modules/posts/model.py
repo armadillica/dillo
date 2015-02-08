@@ -18,6 +18,7 @@ class Post(db.Model):
 
     user = db.relationship('User', backref=db.backref('post'), uselist=False)
     category = db.relationship('Category', backref=db.backref('post'), uselist=False)
+    rating = db.relationship('PostRating', backref=db.backref('post'), uselist=False)
 
     def __str__(self):
         return str(self.title)
@@ -52,3 +53,30 @@ class Comment(db.Model):
 
     def __str__(self):
         return str(self.uuid)
+
+
+class CommentRating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer(), db.ForeignKey('comment.id'), nullable=False)
+    positive = db.Column(db.Integer)
+    negative = db.Column(db.Integer)
+    comment = db.relationship('Comment', backref=db.backref('comment_rating'))
+
+
+class UserCommentRating(db.Model):
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), primary_key=True)
+    comment_id = db.Column(db.Integer(), db.ForeignKey('comment.id'), primary_key=True)
+    is_positive = db.Column(db.Boolean())
+
+
+class PostRating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
+    positive = db.Column(db.Integer)
+    negative = db.Column(db.Integer)
+
+
+class UserPostRating(db.Model):
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), primary_key=True)
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), primary_key=True)
+    is_positive = db.Column(db.Boolean())
