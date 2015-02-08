@@ -51,7 +51,7 @@ def google_authorized():
         user = user_datastore.create_user(
             email=resp.data['email'],
             active=True,
-            first_name=resp.data['name'],
+            first_name=resp.data['given_name'],
             last_name=resp.data['family_name'],
             current_login_at=datetime.datetime.now(),
             current_login_ip=request.remote_addr,
