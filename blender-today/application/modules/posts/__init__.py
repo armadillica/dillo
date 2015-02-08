@@ -42,15 +42,10 @@ def view(category, uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     form = CommentForm()
-    if post.picture:
-        picture = imgur_client.get_image(post.picture)
-        picture = picture.link.replace(post.picture, post.picture + 'l')
-    else:
-        picture = None
     return render_template('posts/view.html',
         post=post,
         form=form,
-        picture=picture)
+        picture=post.thumbnail('m'))
 
 
 @posts.route('/posts/submit', methods=['GET', 'POST'])

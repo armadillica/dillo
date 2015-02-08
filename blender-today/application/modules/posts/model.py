@@ -1,6 +1,7 @@
 import datetime
 from application import app
 from application import db
+from application import imgur_client
 
 from application.modules.users.model import User
 from application.helpers import pretty_date
@@ -37,6 +38,13 @@ class Post(db.Model):
     @property
     def pretty_creation_date(self):
         return pretty_date(self.creation_date)
+
+    def thumbnail(self, size): #s, m, l, h
+        if self.picture:
+            picture = imgur_client.get_image(self.picture)
+            return picture.link.replace(self.picture, post.picture + size)
+        else:
+            return None
 
 
 class Category(db.Model):
