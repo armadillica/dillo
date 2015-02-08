@@ -56,9 +56,16 @@ class Comment(db.Model):
         remote_side=[id], backref=db.backref('children', order_by=creation_date))
     user = db.relationship('User', backref=db.backref('comments'))
     post = db.relationship('Post', backref=db.backref('comments'))
+    rating = db.relationship('CommentRating', backref=db.backref('comment'), uselist=False)
 
     def __str__(self):
         return str(self.uuid)
+
+    @property
+    def user_rating(self):
+        return UserCommentRating.query\
+            .filter_by(comment_id=self.id, user_id=self.user.id)\
+            .first()
 
 
 class CommentRating(db.Model):
@@ -66,7 +73,6 @@ class CommentRating(db.Model):
     comment_id = db.Column(db.Integer(), db.ForeignKey('comment.id'), nullable=False)
     positive = db.Column(db.Integer)
     negative = db.Column(db.Integer)
-    comment = db.relationship('Comment', backref=db.backref('comment_rating'))
 
 
 class UserCommentRating(db.Model):

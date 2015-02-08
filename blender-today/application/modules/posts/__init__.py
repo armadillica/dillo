@@ -14,6 +14,8 @@ from application.modules.posts.model import PostRating
 from application.modules.posts.model import UserPostRating
 from application.modules.posts.model import Category
 from application.modules.posts.model import Comment
+from application.modules.posts.model import CommentRating
+from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import PostForm
 from application.modules.posts.forms import CommentForm
 from application.helpers import encode_id
@@ -105,22 +107,3 @@ def rate(uuid, rating):
         db.session.commit()
 
     return str(user_post_rating.is_positive)
-
-
-@posts.route('/comments/<int:post_id>/submit', methods=['POST'])
-@login_required
-def comment(post_id):
-    form = CommentForm()
-    post = Post.query.get_or_404(post_id)
-    if form.validate_on_submit():
-        comment = Comment(
-            user_id=current_user.id,
-            post_id=post.id,
-            content=form.content.data)
-        db.session.add(comment)
-        db.session.commit()
-        comment.uuid = encode_id(comment.id)
-        db.session.commit()
-        return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
-
-    return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))

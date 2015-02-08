@@ -43,10 +43,12 @@ from modules.main import *
 from modules.posts import posts
 from modules.posts import admin
 from modules.settings import settings
+from modules.comments import comments
 
 filemanager = Blueprint('filemanager', __name__, static_folder='static/files')
 app.register_blueprint(filemanager)
 app.register_blueprint(settings, url_prefix='/settings')
 app.register_blueprint(posts)
+app.register_blueprint(comments, url_prefix='/comments')
 
 from modules.users.model import user_datastore

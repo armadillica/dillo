@@ -13,7 +13,7 @@
   {% if current_user.is_anonymous() %}
     <a href="{{url_for_security('login')}}" class="btn btn-default">Log in to comment</a>
   {% else %}
-  <form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('posts.comment', post_id=post.id)}}">
+  <form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
     {{ form.hidden_tag() }}
     <div class="form-group">
       {{ form.content(class='form-control', id='post_comment') }}
@@ -34,6 +34,12 @@
         <a href="#">
           <img class="media-object" src="{{comment.user.gravatar()}}" alt="...">
         </a>
+        {% if comment.user_rating %}
+          You rated <b>{% if comment.user_rating.is_positive %}Positive{% else %}Negative{% endif %}</b>
+        {% else %}
+          <a href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">Rate up</a>
+          <a href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">Rate down</a>
+        {% endif %}
       </div>
       <div class="media-body">
         {{comment.content|safe}}
