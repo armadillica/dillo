@@ -63,7 +63,14 @@ def rate(comment_id, rating):
                 comment.rating.positive -= 1
             db.session.commit()
         else:
-            return str(user_comment_rating.is_positive)
+            # Remove existing rate
+            if user_comment_rating.is_positive:
+                comment.rating.positive -= 1
+            else:
+                comment.rating.negative -= 1
+            db.session.delete(user_comment_rating)
+            db.session.commit()
+            return 'None'
     else:
         user_comment_rating = UserCommentRating(
             user_id=current_user.id,

@@ -109,7 +109,14 @@ def rate(uuid, rating):
                 post.rating.positive -= 1
             db.session.commit()
         else:
-            return str(user_post_rating.is_positive)
+            # Remove existing vote
+            if user_post_rating.is_positive:
+                post.rating.positive -= 1
+            else:
+                post.rating.negative -= 1
+            db.session.delete(user_post_rating)
+            db.session.commit()
+            return 'None'
     else:
         user_post_rating = UserPostRating(
             user_id=current_user.id,
