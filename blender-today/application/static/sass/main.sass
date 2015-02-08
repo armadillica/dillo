@@ -1,5 +1,4 @@
 @import reset
-@import url(//fonts.googleapis.com/css?family=Lato)
 
 $color_brand_main: #d91b5c
 $color_brand_secondary: #109df0
@@ -32,6 +31,7 @@ h1, h2, h3, h4, h5, h6
 	background-color: lighten($color_text, 60%)
 	vertical-align: middle
 
+/* post-index */
 .post-index-item
 	display: block
 	background-color: white
@@ -78,6 +78,91 @@ h1, h2, h3, h4, h5, h6
 	& i
 		top: 40%
 		@extend .vertical-align
+
+/* //post-index */
+/* post-view */
+.post-view
+	background-color: white
+	+border-radius(3px)
+	+box-shadow(2px, 2px, 0, black, 0.1)
+
+.post-view-title
+	font-family: $font_headings
+	font-size: 2.0em
+	padding: 15px 15px 10px 15px
+
+.post-view-content
+	font-size: 1.1em
+	padding: 5px 15px 10px 15px
+
+.post-view-details
+	display: block
+	padding: 3px 0 15px 15px
+	color: lighten($color_text, 10%)
+
+.post-view-rate
+	padding: 5px
+	color: lighten($color_text, 30%)
+	&:hover
+		text-decoration: none
+	&:hover.up, &.up.rated
+		color: $color_upvote
+	&:hover.down, &.down.rated
+		color: $color_downvote
+
+.post-view-comments
+	padding: 0
+	margin: 0
+
+.post-view-comments .title
+	font-family: $font_headings
+	padding: 15px
+	margin: 0
+
+.post-view-comments-item
+	display: block
+	width: 100%
+	background-color: white
+	padding: 15px 15px 25px 15px
+	margin: 0
+	border-top: thin solid lighten($color_text, 60%)
+	&:nth-child(even)
+		background-color: darken(white, 5%)
+	&.reply
+		padding-left: 80px
+		border-top: thin dashed lighten($color_text, 60%)
+
+.post-view-comments-item-content
+	padding: 0 0 15px 10px
+
+.post-view-comments-item-details
+	display: block
+	padding: 0 0 0 10px
+	color: lighten($color_text, 10%)
+
+.post-view-comments-item-rate
+	padding: 5px
+	color: lighten($color_text, 30%)
+	&:hover
+		text-decoration: none
+	&:hover.up, &.up.rated
+		color: $color_upvote
+	&:hover.down, &.down.rated
+		color: $color_downvote
+
+.post-view-comments-submit
+	display: block
+	width: 100%
+	padding: 15px 15px 25px 15px
+	margin: 0
+
+.post-view-comments-empty
+	font-size: 1.2em
+	padding: 0 0 0 15px
+	color: lighten($color_text, 40%)
+
+
+/* //post-view */
 
 /* CKEditor Overrides */
 

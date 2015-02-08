@@ -2,7 +2,7 @@
 {% block page_title %}{{post.title}}{% endblock %}
 
 {% block body %}
-<div class="col-md-9 post-view">
+<div class="col-md-9">
 
 	<ol class="breadcrumb">
 		<li><a href="{{url_for('index')}}">Home</a></li>
@@ -10,69 +10,112 @@
 		<li class="active">{{post.title}}</li>
 	</ol>
 
-	<div class="post-item">
-		<h1>{{post.title}}</h1>
-		{{post.content|safe}}
-	</div> <!-- post-item -->
+<div class="post-view">
+	<div class="post-view-title">{{post.title}}</div>
+	<div class="post-view-content">{{post.content|safe}}</div>
 
-	{% if post.user_rating %}
-		You rated <b>{% if post.user_rating.is_positive %}Positive{% else %}Negative{% endif %}</b>
-	{% else %}
-		<a href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">Rate up</a>
-		<a href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">Rate down</a>
-	{% endif %}
-	
+	<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+		<a class="post-view-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">
+			<i class="fa fa-arrow-up"></i>
+		</a>
+		<a class="post-view-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">
+			<i class="fa fa-arrow-down"></i>
+		</a>
+		<span class="separator"></span>
+		{{post.rating.positive - post.rating.negative}}
+		<span class="separator"></span>
+		{{post.post_type}}
+		<span class="separator"></span>
+		{{post.pretty_creation_date}}
+		<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
+	</div>
 
-	<div class="post-comments">
-	{% if current_user.is_anonymous() %}
-		<a href="{{url_for_security('login')}}" class="btn btn-default">Log in to comment</a>
-	{% else %}
-	<form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
-		{{ form.hidden_tag() }}
-		<div class="form-group">
-			{{ form.content(class='form-control', id='post_comment') }}
-			{% if form.content.errors %}
-				<ul class="error">
-						{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
-				</ul>
-			{% endif %}
-		</div>
-		<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
-				<i class="fa fa-check"></i> Submit Comment</button>
-	</form>
-	{% endif %}
+	<div class="post-view-comments">
+		<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
 
-	{% for comment in post.comments %}
-		<div class="media">
-			<div class="media-left">
-				<a href="#">
-					<img class="media-object" src="{{comment.user.gravatar()}}" alt="...">
-				</a>
-				{% if comment.user_rating %}
-					You rated <b>{% if comment.user_rating.is_positive %}Positive{% else %}Negative{% endif %}</b>
-				{% else %}
-					<a href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">Rate up</a>
-					<a href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">Rate down</a>
+		{% if post.comments %}
+			{% for comment in post.comments %}
+				<div class="post-view-comments-item">
+					<div class="row">
+						<div class="col-md-1">
+							<img class="img-circle" src="{{comment.user.gravatar()}}">
+						</div>
+						<div class="col-md-11">
+							<div class="post-view-comments-item-content">
+								{{comment.content|safe}}
+							</div>
+							<div class="post-view-comments-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+								<a class="post-view-comments-item-rate up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
+									<i class="fa fa-arrow-up"></i>
+								</a>
+								<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">
+									<i class="fa fa-arrow-down"></i>
+								</a>
+								<span class="separator"></span>
+								{{comment.rating.positive - comment.rating.negative}}
+								<span class="separator"></span>
+								{{comment.pretty_creation_date}}
+								<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
+							</div>
+						</div>
+					</div> <!-- row -->
+				</div> <!-- post-view-comments-item -->
+			{% endfor %}
+		{% else %}
+			<div class="post-view-comments-empty">
+				No comments yet. Be the first!
+			</div>
+		{% endif %}
+
+		<div class="post-view-comments-submit">
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-11">
+					{% if current_user.is_anonymous() %}
+						<h3><a href="{{url_for_security('login')}}">Login to comment</a></h3>
+					{% else %}
+						<h3>Leave a comment</h3>
+					{% endif %}
+				</div>
+
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-11">
+					{% if not current_user.is_anonymous() %}
+					<form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
+					{{ form.hidden_tag() }}
+					<div class="form-group">
+						{{ form.content(class='form-control', id='post_comment') }}
+						{% if form.content.errors %}
+							<ul class="error">
+									{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+
+					<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+						<i class="fa fa-check"></i> Submit Comment
+					</button>
+
+				</form>
 				{% endif %}
-			</div>
-			<div class="media-body">
-				{{comment.content|safe}}
+				</div>
 			</div>
 		</div>
-	{% endfor %}
 	</div> <!-- post-comments -->
 </div> <!-- post-view -->
 {% endblock %}
 
 {% block footer_scripts %}
-		<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
-		<script type="text/javascript">
+	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
+	<script type="text/javascript">
 
-		CKEDITOR.replace( 'post_comment', {
-				removePlugins: 'elementspath',
-				resize_enabled: false
-		});
+	CKEDITOR.replace( 'post_comment', {
+			removePlugins: 'elementspath',
+			resize_enabled: false
+	});
 
-		CKEDITOR.config.forcePasteAsPlainText = true;
-		</script>
+	CKEDITOR.config.forcePasteAsPlainText = true;
+	</script>
 {% endblock %}

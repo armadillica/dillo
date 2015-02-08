@@ -84,6 +84,9 @@ class Comment(db.Model):
             .filter_by(comment_id=self.id, user_id=self.user.id)\
             .first()
 
+    @property
+    def pretty_creation_date(self):
+        return pretty_date(self.creation_date)
 
 class CommentRating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
