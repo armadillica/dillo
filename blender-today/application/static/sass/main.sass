@@ -1,8 +1,14 @@
 @import reset
+@import helpers
 @import url(//fonts.googleapis.com/css?family=Lato)
 
 $color_brand_main: #d91b5c
 $color_brand_secondary: #109df0
+$color_background: #f0f0f0
+$color_text: #444
+
+$color_upvote: crimson
+$color_downvote: teal
 
 $font_body: Verdana, Arial, Helvetica, sans-serif
 $font_headings: 'Lato', 'Lucida Sans', 'Lucida Grande', sans-serif
@@ -11,6 +17,37 @@ $font_size: 14px
 body
 	font-family: $font_body
 	font-size: $font_size
+	color: $color_text
+	background-color: $color_background
 
 h1, h2, h3, h4, h5, h6
 	font-family: $font_headings
+
+.post-item
+	display: block
+	background-color: white
+	margin: 0 0 20px 0
+	padding: 0
+	+border-radius(3px)
+	+box-shadow(2px, 2px, 0, black, 0.1)
+
+.post-item-title
+	display: block
+	font-size: 1.6em
+	padding: 10px 0 3px 0
+
+.post-item-details
+	display: block
+	font-size: 0.9em
+	padding: 3px 0 10px 0
+	color: lighten($color_text, 10%)
+
+.post-item-rate
+	padding: 5px
+	color: lighten($color_text, 30%)
+	&:hover
+		text-decoration: none
+	&:hover.up
+		color: $color_upvote
+	&:hover.down
+		color: $color_downvote

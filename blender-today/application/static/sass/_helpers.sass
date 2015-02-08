@@ -1,0 +1,87 @@
+/* Mobile Stuff */
+$screen-xs: 480px !default
+$screen-xs-min: $screen-xs
+$screen-phone: $screen-xs-min
+$screen-sm: 768px !default
+$screen-sm-min: $screen-sm
+$screen-tablet: $screen-sm-min
+$screen-md: 992px !default
+$screen-md-min: $screen-md
+$screen-desktop: $screen-md-min
+$screen-lg: 1200px !default
+$screen-lg-min: $screen-lg
+$screen-lg-desktop: $screen-lg-min
+$screen-xs-max: $screen-sm-min - 1
+$screen-sm-max: $screen-md-min - 1
+$screen-md-max: $screen-lg-min - 1
+
+=media-xs
+	@media (max-width: #{$screen-tablet - 1px})
+		@content
+
+=media-sm
+	@media (min-width: #{$screen-tablet}) and (max-width: #{$screen-desktop - 1px})
+		@content
+
+=media-md
+	@media (min-width: #{$screen-desktop})
+		@content
+
+=media-lg
+	@media (min-width: #{$screen-lg-desktop})
+		@content
+
+=media-print
+	@media print
+		@content
+
+=box-shadow($x: 1px, $y: 1px, $blur: 3px, $color: $color_text, $alpha: 1)
+	-webkit-box-shadow: $x $y $blur rgba($color, $alpha) !important
+	-moz-box-shadow: $x $y $blur rgba($color, $alpha) !important
+	-ms-box-shadow: none
+	-o-box-shadow: none
+	box-shadow: $x $y $blur rgba($color, $alpha) !important
+
+=box-shadow-none
+	-webkit-box-shadow: none !important
+	-moz-box-shadow: none !important
+	-ms-box-shadow: none !important
+	-o-box-shadow: none !important
+	box-shadow: none !important
+
+=text-shadow($x: 1px, $y: 1px, $blur: 3px, $color: $color_text, $alpha: 1)
+	-webkit-text-shadow: $x $y $blur rgba($color, $alpha)
+	-moz-text-shadow: $x $y $blur rgba($color, $alpha)
+	-ms-text-shadow: none
+	-o-text-shadow: none
+	text-shadow: $x $y $blur rgba($color, $alpha)
+
+=text-shadow-none
+	-webkit-text-shadow: none !important
+	-moz-text-shadow: none !important
+	-ms-text-shadow: none !important
+	-o-text-shadow: none !important
+	text-shadow: none !important
+
+=transition($prop: all, $time: 0.1s, $ease: ease-in)
+	-webkit-transition: $prop $time $ease
+	-moz-transition: $prop $time $ease
+	-o-transition: $prop $time $ease
+	-ms-transition: $prop $time $ease
+	transition: $prop $time $ease
+
+=border-radius($radius: 3px)
+	-webkit-border-radius: $radius !important
+	-moz-border-radius: $radius !important
+	border-radius: $radius !important
+
+=user-select-none
+	-webkit-user-select: none !important
+	-moz-user-select: none !important
+	-ms-user-select: none !important
+	-o-user-select: none !important
+	user-select: none !important
+
+=pointer-events-none
+	-ms-pointer-events: none !important
+	pointer-events: none !important
