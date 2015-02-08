@@ -4,3 +4,8 @@
 *.sublime*
 
 config.py
+
+blender-today/application/static/css/main.css
+node_modules
+.sass-cache/
+*.css.map
