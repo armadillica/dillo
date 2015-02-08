@@ -44,7 +44,7 @@ def view(category, uuid):
     form = CommentForm()
     if post.picture:
         picture = imgur_client.get_image(post.picture)
-        picture = picture.link.replace(post.picture, post.picture + 'm')
+        picture = picture.link.replace(post.picture, post.picture + 'l')
     else:
         picture = None
     return render_template('posts/view.html',
