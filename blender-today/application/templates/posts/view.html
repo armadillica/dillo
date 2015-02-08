@@ -13,6 +13,13 @@
 <div class="post-view">
 	<div class="post-view-title">{{post.title}}</div>
 	<div class="post-view-content">{{post.content|safe}}</div>
+	{% if post.picture %}
+	<div class="post-view-content-image">{{picture}}
+		<a href="http://imgur.com/{{post.picture}}">
+			<img src="{{picture}}"/>
+		</a>
+	</div>
+	{% endif %}
 
 	<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
 		<a class="post-view-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">

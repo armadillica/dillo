@@ -19,6 +19,7 @@
 			</div>
 			<div class="col-md-11">
 				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+					{% if post.picture %}<i class="fa fa-picture-o"></i>{% endif %}
 					{{post.title}}
 				</a>
 				<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
