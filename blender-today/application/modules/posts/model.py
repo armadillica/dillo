@@ -20,9 +20,9 @@ class Post(db.Model):
     edit_date = db.Column(db.DateTime())
 
     user = db.relationship('User', backref=db.backref('post'), uselist=False)
-    category = db.relationship('Category', backref=db.backref('post'), uselist=False)
-    post_type = db.relationship('PostType', backref=db.backref('post'), uselist=False)
-    rating = db.relationship('PostRating', backref=db.backref('post'), uselist=False)
+    category = db.relationship('Category', uselist=False)
+    post_type = db.relationship('PostType', uselist=False)
+    rating = db.relationship('PostRating', cascade='all,delete', uselist=False)
 
     def __str__(self):
         return str(self.title)
@@ -72,8 +72,8 @@ class Comment(db.Model):
     parent = db.relationship('Comment', 
         remote_side=[id], backref=db.backref('children', order_by=creation_date))
     user = db.relationship('User', backref=db.backref('comments'))
-    post = db.relationship('Post', backref=db.backref('comments'))
-    rating = db.relationship('CommentRating', backref=db.backref('comment'), uselist=False)
+    post = db.relationship('Post', backref=db.backref('comments', cascade='all,delete'))
+    rating = db.relationship('CommentRating', cascade='all,delete', uselist=False)
 
     def __str__(self):
         return str(self.uuid)
