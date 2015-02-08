@@ -2,10 +2,10 @@ from application import app
 from application import db
 
 from application.modules.posts.model import Post
+from application.modules.posts.model import Category
 from application.modules.admin import *
 
 
-# -------- Views --------
 class PostView(CustomModelView):
     column_searchable_list = ('title',)
     column_list = ('title', 'uuid', 'creation_date')
@@ -14,4 +14,10 @@ class PostView(CustomModelView):
     edit_template = 'admin/contents/edit.html'
 
 
+class CategoryView(CustomModelView):
+    column_searchable_list = ('name',)
+    column_list = ('name', 'url')
+    form_excluded_columns = ('post',)
+
 backend.add_view(PostView(Post, db.session, name='Posts', url='posts'))
+backend.add_view(CategoryView(Category, db.session, name='Categories', url='categories'))
