@@ -23,6 +23,9 @@ body
 h1, h2, h3, h4, h5, h6
 	font-family: $font_headings
 
+p
+	margin-bottom: 20px // replaces '10px' by bootstrap
+
 .separator
 	display: inline-block
 	height: 15px
@@ -46,12 +49,12 @@ h1, h2, h3, h4, h5, h6
 	font-family: $font_headings
 	display: block
 	font-size: 1.6em
-	padding: 15px 0 3px 0
+	padding: 15px 0 3px 5px
 
 .post-index-item-details
 	display: block
 	font-size: 0.9em
-	padding: 3px 0 15px 0
+	padding: 3px 0 15px 5px
 	color: lighten($color_text, 10%)
 
 .post-index-item-rate
@@ -67,9 +70,9 @@ h1, h2, h3, h4, h5, h6
 .post-index-item-type
 	display: block
 	font-size: 1.8em
-	width: 50px
-	height: 50px
-	margin: 15px 0 0 5px
+	width: 60px
+	height: 60px
+	margin: 12px 0 0 0px
 	color: white
 	background-color: lighten($color_text, 50%)
 	text-align: center
@@ -81,22 +84,31 @@ h1, h2, h3, h4, h5, h6
 
 /* //post-index */
 /* post-view */
-.post-view
+.post-view, .post-submit
 	background-color: white
 	+border-radius(3px)
 	+box-shadow(2px, 2px, 0, black, 0.1)
 
 .post-view-title
 	font-family: $font_headings
-	font-size: 2.0em
+	font-size: 2.1em
 	padding: 15px 15px 10px 15px
+	line-height: 1.3em
 
 .post-view-content
 	font-size: 1.1em
-	padding: 5px 15px 10px 15px
+	padding: 10px 15px 10px 15px
 
 .post-view-content-image
 	padding: 5px 15px 10px 15px
+	&:hover .post-view-content-image-link
+		color: $color_brand_main
+		text-decoration: none !important
+
+.post-view-content-image-link
+	font-size: 0.9em
+	color: lighten($color_text, 20%)
+	text-decoration: none !important
 
 .post-view-details
 	display: block
@@ -168,8 +180,60 @@ h1, h2, h3, h4, h5, h6
 
 /* //post-view */
 
-/* CKEditor Overrides */
 
+/* Boostrap overrides */
+/* DROPDOWN MENUS */
+.dropdown-menu
+	border: 0
+	min-width: 130px
+	background: white
+	padding: 0
+	+border-radius(0px)
+	+box-shadow(2px, 2px, 0, black, .1)
+	+transition(border-color, ease, 0.1s)
+
+.dropdown-menu > li > a
+	padding: 6% 8% 6% 6%
+	padding-right: 45px
+	font-weight: normal
+	line-height: 1.42857143
+	color: $color_text
+	+transition(border-color, ease, 0.05s)
+
+.dropdown-menu > li > a:hover
+	background: transparent
+	color: lighten($color_brand_main, 10%)
+
+.dropdown-menu > .active > a
+	background: transparent
+	color: $color_brand_secondary
+
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus, .dropdown-menu > li > a:active
+	background: transparent
+	color: darken($color_brand_secondary, 10%)
+	cursor: default
+
+.dropdown-menu > li > a:focus, .dropdown-menu > li > a:active,
+.dropdown-menu > .active > a:focus, .dropdown-menu > li > a:active
+	background: transparent
+	color: $color_brand_main
+
+.dropdown-menu .divider
+	height: 1px
+	margin: 0
+	background: $color_background
+
+.dropdown-menu i
+	float: left
+	width: 22px
+	margin: 3px 0 0 2px
+
+.navbar-nav .open .dropdown-menu
+	border-bottom-left-radius: 3px !important
+	border-bottom-right-radius: 3px !important
+
+/* CKEditor Overrides */
 .cke_chrome
 	font-family: $font_body !important
 	font-weight: lighter

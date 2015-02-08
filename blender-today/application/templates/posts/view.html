@@ -14,18 +14,19 @@
 	<div class="post-view-title">{{post.title}}</div>
 	<div class="post-view-content">{{post.content|safe}}</div>
 	{% if post.picture %}
-	<div class="post-view-content-image">{{picture}}
-		<a href="http://imgur.com/{{post.picture}}">
+	<div class="post-view-content-image">
+		<a href="http://imgur.com/{{post.picture}}" target="_blank">
 			<img src="{{picture}}"/>
+			<div class="post-view-content-image-link">view on imgur.com</div>
 		</a>
 	</div>
 	{% endif %}
 
 	<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-		<a class="post-view-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">
+		<a class="post-view-rate up{% if post.user_rating and post.user_rating.is_positive %} rated disabled{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote">
 			<i class="fa fa-arrow-up"></i>
 		</a>
-		<a class="post-view-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">
+		<a class="post-view-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated disabled{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote">
 			<i class="fa fa-arrow-down"></i>
 		</a>
 		<span class="separator"></span>
@@ -35,6 +36,10 @@
 		<span class="separator"></span>
 		{{post.pretty_creation_date}}
 		<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
+		<span class="separator"></span>
+		<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+			Permalink
+		</a>
 	</div>
 
 	<div class="post-view-comments">
