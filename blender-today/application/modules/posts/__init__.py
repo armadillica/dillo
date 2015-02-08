@@ -11,7 +11,9 @@ from application import db
 
 from application.modules.posts.model import Post
 from application.modules.posts.model import Category
+from application.modules.posts.model import Comment
 from application.modules.posts.forms import PostForm
+from application.modules.posts.forms import CommentForm
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import slugify
@@ -30,8 +32,10 @@ def index():
 def view(category, uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
-    return render_template('posts/view.html', 
-        post=post)
+    form = CommentForm()
+    return render_template('posts/view.html',
+        post=post,
+        form=form)
 
 
 @posts.route('/posts/submit', methods=['GET', 'POST'])
@@ -56,3 +60,22 @@ def submit():
     return render_template('posts/submit.html',
         form=form,
         title='submit')
+
+
+@posts.route('/comments/<int:post_id>/submit', methods=['POST'])
+@login_required
+def comment(post_id):
+    form = CommentForm()
+    post = Post.query.get_or_404(post_id)
+    if form.validate_on_submit():
+        comment = Comment(
+            user_id=current_user.id,
+            post_id=post.id,
+            content=form.content.data)
+        db.session.add(comment)
+        db.session.commit()
+        comment.uuid = encode_id(comment.id)
+        db.session.commit()
+        return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
+
+    return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))

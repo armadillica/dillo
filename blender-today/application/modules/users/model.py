@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
 
 
-    def gravatar(self, size=120, consider_settings=True):
+    def gravatar(self, size=64, consider_settings=True):
         parameters = {'s':str(size), 'd':'mm'}
         return "https://www.gravatar.com/avatar/" + \
             hashlib.md5(self.email.lower()).hexdigest() + \

@@ -8,3 +8,6 @@ class PostForm(Form):
     category_id = SelectField('Group', coerce=int)
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
+
+class CommentForm(Form):
+    content = TextAreaField('Content', validators=[DataRequired()])

@@ -1,4 +1,9 @@
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from flask import request
+from flask import flash
+
 from flask.ext.security import login_required
 
 from application import app
@@ -12,4 +17,4 @@ def about():
 
 @app.route('/')
 def index():
-    return view('about')
+    return redirect(url_for('posts.index'))

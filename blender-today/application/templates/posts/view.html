@@ -1,6 +1,49 @@
 {% extends 'layout.html' %}
 {% block body %}
-	<h1>{{post.title}}</h1>
-	{{post.content|safe}}
+  <h1>{{post.title}}</h1>
+  {{post.content|safe}}
+
+  {% if current_user.is_anonymous() %}
+    <a href="{{url_for_security('login')}}" class="btn btn-default">Log in to comment</a>
+  {% else %}
+  <form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('posts.comment', post_id=post.id)}}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{ form.content(class='form-control', id='post_comment') }}
+      {% if form.content.errors %}
+        <ul class="error">
+            {% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    <button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+        <i class="fa fa-check"></i> Submit </button>
+  </form>
+  {% endif %}
+
+  {% for comment in post.comments %}
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <img class="media-object" src="{{comment.user.gravatar()}}" alt="...">
+        </a>
+      </div>
+      <div class="media-body">
+        {{comment.content|safe}}
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}
 
+{% block footer_scripts %}
+    <script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
+    <script type="text/javascript">
+
+    CKEDITOR.replace( 'post_comment', {
+        removePlugins: 'elementspath',
+        resize_enabled: false
+    });
+
+    CKEDITOR.config.forcePasteAsPlainText = true;
+    </script>
+{% endblock %}

@@ -34,3 +34,21 @@ class Category(db.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
+    uuid = db.Column(db.String(6), unique=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    creation_date = db.Column(db.DateTime(), default=datetime.datetime.now)
+    edit_date = db.Column(db.DateTime())
+    parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
+    parent = db.relationship('Comment', 
+        remote_side=[id], backref=db.backref('children', order_by=creation_date))
+    user = db.relationship('User', backref=db.backref('comments'))
+    post = db.relationship('Post', backref=db.backref('comments'))
+
+    def __str__(self):
+        return str(self.uuid)
