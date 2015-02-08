@@ -1,14 +1,20 @@
 {% extends 'layout.html' %}
+{% block page_title %}{{post.title}}{% endblock %}
+
 {% block body %}
-<div class="col-md-9">
+<div class="col-md-9 post-view">
+
 	<ol class="breadcrumb">
 		<li><a href="{{url_for('index')}}">Home</a></li>
 		<li><a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a></li>
 		<li class="active">{{post.title}}</li>
 	</ol>
 
-	<h1>{{post.title}}</h1>
-	{{post.content|safe}}
+	<div class="post-item">
+		<h1>{{post.title}}</h1>
+		{{post.content|safe}}
+	</div> <!-- post-item -->
+
 	{% if post.user_rating %}
 		You rated <b>{% if post.user_rating.is_positive %}Positive{% else %}Negative{% endif %}</b>
 	{% else %}
@@ -17,6 +23,7 @@
 	{% endif %}
 	
 
+	<div class="post-comments">
 	{% if current_user.is_anonymous() %}
 		<a href="{{url_for_security('login')}}" class="btn btn-default">Log in to comment</a>
 	{% else %}
@@ -31,7 +38,7 @@
 			{% endif %}
 		</div>
 		<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
-				<i class="fa fa-check"></i> Submit </button>
+				<i class="fa fa-check"></i> Submit Comment</button>
 	</form>
 	{% endif %}
 
@@ -53,7 +60,8 @@
 			</div>
 		</div>
 	{% endfor %}
-</div>
+	</div> <!-- post-comments -->
+</div> <!-- post-view -->
 {% endblock %}
 
 {% block footer_scripts %}

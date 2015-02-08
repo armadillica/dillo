@@ -1,30 +1,39 @@
 {% extends 'layout.html' %}
 {% block body %}
-<h1>All posts</h1>
+<h1>All posts <small>({{posts|length}})</small></h1>
 
 <div class="row post-index">
 	<div class="col-md-9">
 		{% for post in posts %}
-		<div class="row post-item">
+		<div class="row post-index-item">
 			<div class="col-md-1">
-				<div class="post-item-rating" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes">
-					{{post.rating.positive - post.rating.negative}}
+				<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes">
+					{% if post.post_type.url == 'link' %}
+						<i class="fa fa-link"></i>
+					{% elif post.post_type.url == 'text' %}
+						<i class="fa fa-file-text-o"></i>
+					{% endif %}
 				</div>
 			</div>
 			<div class="col-md-10">
-				<a class="post-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
 					{{post.title}}
 				</a>
-				<div class="post-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-					<a class="post-item-rate up" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">
+				<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+					<a class="post-index-item-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}">
 						<i class="fa fa-arrow-up"></i>
 					</a>
-					<a class="post-item-rate down" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">
+					<a class="post-index-item-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}">
 						<i class="fa fa-arrow-down"></i>
 					</a>
+					<span class="separator"></span>
+					{{post.rating.positive - post.rating.negative}}
+					<span class="separator"></span>
+					{{post.post_type}}
+					<span class="separator"></span>
 					{{post.comments|length}} comments
-					-
-					<i class="fa fa-clock-o"></i> {{post.pretty_creation_date}}
+					<span class="separator"></span>
+					{{post.pretty_creation_date}}
 					<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
 				</div>
 			</div>

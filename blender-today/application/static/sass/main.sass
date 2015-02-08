@@ -1,5 +1,4 @@
 @import reset
-@import helpers
 @import url(//fonts.googleapis.com/css?family=Lato)
 
 $color_brand_main: #d91b5c
@@ -14,6 +13,8 @@ $font_body: Verdana, Arial, Helvetica, sans-serif
 $font_headings: 'Lato', 'Lucida Sans', 'Lucida Grande', sans-serif
 $font_size: 14px
 
+@import helpers
+
 body
 	font-family: $font_body
 	font-size: $font_size
@@ -23,31 +24,108 @@ body
 h1, h2, h3, h4, h5, h6
 	font-family: $font_headings
 
-.post-item
+.separator
+	display: inline-block
+	height: 15px
+	width: 1px
+	margin: 0 5px
+	background-color: lighten($color_text, 60%)
+	vertical-align: middle
+
+.post-index-item
 	display: block
 	background-color: white
-	margin: 0 0 20px 0
+	margin: 0 0 10px 0
 	padding: 0
+	//padding: 10px 0
+	//border-bottom: thin solid lighten($color_text, 60%)
 	+border-radius(3px)
 	+box-shadow(2px, 2px, 0, black, 0.1)
 
-.post-item-title
+.post-index-item-title
+	font-family: $font_headings
 	display: block
 	font-size: 1.6em
-	padding: 10px 0 3px 0
+	padding: 15px 0 3px 0
 
-.post-item-details
+.post-index-item-details
 	display: block
 	font-size: 0.9em
-	padding: 3px 0 10px 0
+	padding: 3px 0 15px 0
 	color: lighten($color_text, 10%)
 
-.post-item-rate
+.post-index-item-rate
 	padding: 5px
 	color: lighten($color_text, 30%)
 	&:hover
 		text-decoration: none
-	&:hover.up
+	&:hover.up, &.up.rated
 		color: $color_upvote
-	&:hover.down
+	&:hover.down, &.down.rated
 		color: $color_downvote
+
+.post-index-item-type
+	display: block
+	font-size: 1.8em
+	width: 50px
+	height: 50px
+	margin: 15px 0 0 5px
+	color: white
+	background-color: lighten(desaturate($color_brand_secondary, 30%), 30%)
+	text-align: center
+	position: relative
+	+border-radius(50%)
+	& i
+		top: 40%
+		@extend .vertical-align
+
+/* CKEditor Overrides */
+
+.cke_chrome
+	font-family: $font_body !important
+	font-weight: lighter
+	color: darken($color_text, 10%) !important
+	border: thin solid lighten($color_text, 40%) !important
+	background-color: lighten($color_background, 3%) !important
+	resize: vertical
+	margin: 0 !important
+	+box-shadow(2px, 2px, 0, darken($color_background, 60%), .1)
+	+border-radius(3px)
+
+body.cke_editable.cke_editable_themed.cke_contents_ltr
+	font-size: 110% !important
+	margin-top: 0 !important
+	margin: 0 !important
+	font-family: $font_body !important
+	font-size: 1.2em
+
+span#cke_1_top
+	padding: 5px 5px 0 5px !important
+	border: none
+	background-image: none
+	background-color: transparent !important
+	+box-shadow-none
+
+span.cke_toolgroup
+	border: none
+	border-bottom: 2px solid transparent
+	background-image: none
+	background-color: white
+
+a.cke_button_off
+	border-bottom: 2px solid transparent !important
+	+box-shadow-none
+
+a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active,
+a.cke_button_disabled:hover, a.cke_button_disabled:focus, a.cke_button_disabled:active
+	background-image: none !important
+	background-color: transparent !important
+	color: white !important
+	border-bottom: 2px solid $color_brand_main !important
+
+a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:active
+	background-image: none !important
+	background-color: transparent !important
+	border-bottom: 2px solid $color_brand_secondary !important
+	color: white !important
+	+box-shadow-none
