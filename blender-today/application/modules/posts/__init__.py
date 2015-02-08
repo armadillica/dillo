@@ -42,8 +42,11 @@ def view(category, uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     form = CommentForm()
-    picture = imgur_client.get_image(post.picture)
-    picture = picture.link.replace(post.picture, post.picture + 'm')
+    if post.picture:
+        picture = imgur_client.get_image(post.picture)
+        picture = picture.link.replace(post.picture, post.picture + 'm')
+    else:
+        picture = None
     return render_template('posts/view.html',
         post=post,
         form=form,
@@ -74,15 +77,15 @@ def submit():
             negative=0
             )
         db.session.add(post_rating)
-        #db.session.commit()
-        filename = secure_filename(form.picture.data.filename)
-        filepath = '/tmp/' + filename
-        form.picture.data.save(filepath)
-        image = imgur_client.upload_from_path(filepath, config=None, anon=True)
-        post.picture = image['id']
-        post.picture_deletehash = image['deletehash']
+        if form.picture.data:
+            filename = secure_filename(form.picture.data.filename)
+            filepath = '/tmp/' + filename
+            form.picture.data.save(filepath)
+            image = imgur_client.upload_from_path(filepath, config=None, anon=True)
+            post.picture = image['id']
+            post.picture_deletehash = image['deletehash']
+            os.remove(filepath)
         db.session.commit()
-        os.remove(filepath)
 
         return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
 
