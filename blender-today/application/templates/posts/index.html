@@ -1,19 +1,21 @@
 {% extends 'layout.html' %}
 {% block body %}
-<h1>All posts <small>({{posts|length}})</small></h1>
+<h3>All posts <small>({{posts|length}})</small></h3>
 
 <div class="row post-index">
 	<div class="col-md-9">
 		{% for post in posts %}
 		<div class="row post-index-item">
 			<div class="col-md-1">
-				<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes">
-					{% if post.post_type.url == 'link' %}
-						<i class="fa fa-link"></i>
-					{% elif post.post_type.url == 'text' %}
-						<i class="fa fa-file-text-o"></i>
-					{% endif %}
-				</div>
+				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+					<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes">
+						{% if post.post_type.url == 'link' %}
+							<i class="fa fa-link"></i>
+						{% elif post.post_type.url == 'text' %}
+							<i class="fa fa-file-text-o"></i>
+						{% endif %}
+					</div>
+				</a>
 			</div>
 			<div class="col-md-11">
 				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
