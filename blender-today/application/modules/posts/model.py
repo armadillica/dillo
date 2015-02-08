@@ -3,6 +3,8 @@ from application import app
 from application import db
 
 from application.modules.users.model import User
+from application.helpers import pretty_date
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +31,9 @@ class Post(db.Model):
             .filter_by(post_id=self.id, user_id=self.user.id)\
             .first()
 
+    @property
+    def pretty_creation_date(self):
+        return pretty_date(self.creation_date)
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

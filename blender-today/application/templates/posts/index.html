@@ -1,9 +1,26 @@
 {% extends 'layout.html' %}
 {% block body %}
-	<h1>All posts</h1>
-    {% for post in posts %}
-        <div>
-        <a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">{{post.title}}</a> Like: {{post.rating.positive}} No Like: {{post.rating.negative}}
-        </div>
-	{% endfor %}
+<h1>All posts</h1>
+
+<div class="row post-index">
+	<div class="col-md-8">
+		{% for post in posts %}
+		<div class="row post-item">
+			<div class="col-md-1">
+				<div class="post-item-rating" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes">
+					{{post.rating.positive - post.rating.negative}}
+				</div>
+			</div>
+			<div class="col-md-10">
+				<a class="post-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+					{{post.title}}
+				</a>
+				<div class="post-item-meta" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+					Submitted {{post.pretty_creation_date}} by {{post.user.first_name}} {{post.user.last_name}}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
 {% endblock %}
