@@ -13,6 +13,7 @@ from application.modules.posts.model import Post
 from application.modules.posts.model import PostRating
 from application.modules.posts.model import UserPostRating
 from application.modules.posts.model import Category
+from application.modules.posts.model import PostType
 from application.modules.posts.model import Comment
 from application.modules.posts.model import CommentRating
 from application.modules.posts.model import UserCommentRating
@@ -47,11 +48,12 @@ def view(category, uuid):
 def submit():
     form = PostForm()
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
-    
+    form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     if form.validate_on_submit():
         post = Post(
             user_id=current_user.id,
             category_id=form.category_id.data,
+            post_type_id=form.post_type_id.data,
             title=form.title.data,
             slug=slugify(form.title.data),
             content=form.content.data)

@@ -2,6 +2,7 @@ from application import app
 from application import db
 
 from application.modules.posts.model import Post
+from application.modules.posts.model import PostType
 from application.modules.posts.model import Category
 from application.modules.posts.model import Comment
 from application.modules.admin import *
@@ -13,6 +14,12 @@ class PostView(CustomModelView):
     form_overrides = dict(content=CKTextAreaField)
     create_template = 'admin/contents/create.html'
     edit_template = 'admin/contents/edit.html'
+
+
+class PostTypeView(CustomModelView):
+    column_searchable_list = ('name',)
+    column_list = ('name', 'url')
+    form_excluded_columns = ('post',)
 
 
 class CategoryView(CustomModelView):
@@ -28,6 +35,8 @@ class CommentView(CustomModelView):
     create_template = 'admin/contents/create.html'
     edit_template = 'admin/contents/edit.html'
 
+
 backend.add_view(PostView(Post, db.session, name='Posts', url='posts'))
+backend.add_view(PostTypeView(PostType, db.session, name='PostType', url='post-types'))
 backend.add_view(CategoryView(Category, db.session, name='Categories', url='categories'))
 backend.add_view(CommentView(Comment, db.session, name='Comments', url='comments'))
