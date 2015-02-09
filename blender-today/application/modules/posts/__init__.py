@@ -42,6 +42,7 @@ def index():
 def view(category, uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
     return render_template('posts/view.html',
         post=post,

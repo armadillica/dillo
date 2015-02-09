@@ -6,6 +6,7 @@ from application import imgur_client
 from application.modules.users.model import User
 from application.helpers import pretty_date
 from application.helpers.sorting import hot
+from application.helpers.sorting import confidence
 
 
 class Post(db.Model):
@@ -101,6 +102,11 @@ class Comment(db.Model):
     @property
     def pretty_creation_date(self):
         return pretty_date(self.creation_date)
+
+    @property
+    def confidence(self):
+        return confidence(self.rating.positive, self.rating.negative)
+
 
 class CommentRating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
