@@ -13,6 +13,7 @@ from application import app
 from application import db
 from application import imgur_client
 
+from application.modules.posts.model import Category
 from application.modules.posts.model import Post
 from application.modules.posts.model import PostRating
 from application.modules.posts.model import UserPostRating
@@ -38,10 +39,25 @@ def index():
         posts=posts)
 
 
-@posts.route('/<category>/<uuid>')
-def view(category, uuid):
+@posts.route('/<category>')
+def index_category(category):
+    posts = Post.query.join(Category).filter(Category.name == category).all()
+    posts.sort(key=lambda p: p.hot, reverse=True)
+    return render_template('posts/index.html', 
+        posts=posts)
+
+
+@posts.route('/<category>/<uuid>/', defaults={'slug': None})
+@posts.route('/<category>/<uuid>/<slug>')
+def view(category, uuid, slug):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    # Aggressive redirect if the URL does not have a slug
+    if not slug:
+        return redirect(url_for('posts.view', 
+            category=category,
+            uuid=uuid,
+            slug=post.slug))
     post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
     return render_template('posts/view.html',
