@@ -36,7 +36,7 @@
 					<span class="separator"></span>
 					{{post.comments|length}} comments
 					<span class="separator"></span>
-					{{post.pretty_creation_date}}
+					<span title="{{post.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{post.pretty_creation_date}}</span>
 					<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
 					{% if post.picture %}
 					<span class="separator"></span>
