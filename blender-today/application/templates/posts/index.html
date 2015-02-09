@@ -6,7 +6,16 @@
 	<div class="col-md-9">
 		{% for post in posts %}
 		<div class="row post-index-item">
-			<div class="col-md-1 col-sm-1 col-xs-2">
+			<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="post-index-item-rate">
+					<a class="post-index-item-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
+						<span class="up"><i class="fa fa-angle-up"></i></span>
+					</a>
+					<span class="middle">{{post.rating.positive - post.rating.negative}}</span>
+					<a class="post-index-item-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
+						<span class="down"><i class="fa fa-angle-down"></i></span>
+					</a>
+				</div>
 				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
 					<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 						{% if post.post_type.url == 'link' %}
@@ -17,21 +26,14 @@
 					</div>
 				</a>
 			</div>
-			<div class="col-md-11 col-sm-11 col-xs-10">
-				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-					{% if post.picture %}<i class="fa fa-picture-o"></i> {% endif %}
+
+			<div class="col-md-10 col-sm-10 col-xs-10">
+
+				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}" title="{{post.title}}">
 					{{post.title}}
 				</a>
+
 				<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-					<a class="post-index-item-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
-						<i class="fa fa-arrow-up"></i>
-					</a>
-					<a class="post-index-item-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
-						<i class="fa fa-arrow-down"></i>
-					</a>
-					<span class="separator"></span>
-					{{post.rating.positive - post.rating.negative}}
-					<span class="separator"></span>
 					{{post.post_type}}
 					<span class="separator"></span>
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comments">
@@ -49,8 +51,11 @@
 
 					{% if post.picture %}
 					<span class="separator"></span>
-					<span class="post-index-item-picture-expand"><i class="fa fa-plus"></i></span>
-					<img class="post-index-item-picture" data-rel="{{post.thumbnail('l')}}"  src=""/>
+					<span class="post-index-item-picture-collapse"><i class="fa fa-minus"></i></span>
+					<span class="post-index-item-picture-expand"><i class="fa fa-picture-o"></i></span>
+					<img class="post-index-item-picture"
+							 title="Click and drag to resize"
+							 data-rel="{{post.thumbnail('l')}}" src=""/>
 					{% endif %}
 
 				</div>
@@ -63,10 +68,21 @@
 
 {% block footer_scripts %}
 <script type="text/javascript">
+
 	$('.post-index-item-picture-expand').click(function(){
-		$(this).next().attr('src', $(this).next().data('rel'));
-		$(this).next().css('display', 'block');
-		$(this).next().animate({'opacity': 1.0});
+		$(this).next($('.post-index-item-picture')).attr('src', $(this).next().data('rel'));
+		$(this).next($('.post-index-item-picture')).css('display', 'block');
+		$(this).next($('.post-index-item-picture')).animate({'opacity': 1.0});
+		$(this).fadeOut(function(){
+			$(this).prev().fadeIn();
+		});
+	});
+
+	$('.post-index-item-picture-collapse').click(function(){
+		$(this).next().next().fadeOut('fast');
+		$(this).fadeOut(function(){
+			$(this).next().fadeIn();
+		});
 	});
 
 	$('.post-index-item-picture').mousedown(function(e){

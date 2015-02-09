@@ -1,7 +1,7 @@
 @import reset
 
-$color_brand_main: #d91b5c
-$color_brand_secondary: #109df0
+$color_brand_main: #296bb6
+$color_brand_secondary: #dc2900
 $color_background: #f0f0f0
 $color_text: #444
 
@@ -26,6 +26,11 @@ h1, h2, h3, h4, h5, h6
 p
 	margin-bottom: 20px // replaces '10px' by bootstrap
 
+a
+	color: $color_brand_main
+	&:hover
+		color: $color_brand_secondary
+
 .separator
 	display: inline-block
 	height: 15px
@@ -48,26 +53,32 @@ p
 .post-index-item-title
 	font-family: $font_headings
 	display: block
-	font-size: 1.6em
-	padding: 15px 0 3px 5px
-	+media-xs
-		padding-left: 0
-	+media-md
-		padding-left: 15px
-	+media-lg
-		padding-left: 5px
+	font-size: 1.5em
+	padding: 15px 0 5px 0
+	@extend .text-overflow-ellipsis
+	// padding: 15px 0 5px 5px
+	// +media-xs
+	// 	padding-left: 0
+	// +media-md
+	// 	padding-left: 15px
+	// +media-lg
+	// 	padding-left: 5px
+
+	&:hover
+		text-decoration: none
 
 .post-index-item-details
 	display: block
 	font-size: 0.9em
 	color: lighten($color_text, 10%)
-	padding: 3px 0 15px 5px
-	+media-xs
-		padding-left: 0
-	+media-md
-		padding-left: 15px
-	+media-lg
-		padding-left: 5px
+	padding: 3px 0 15px 0
+	// padding: 3px 0 15px 5px
+	// +media-xs
+	// 	padding-left: 0
+	// +media-md
+	// 	padding-left: 15px
+	// +media-lg
+	// 	padding-left: 5px
 
 .post-index-item-picture
 	display: none
@@ -78,22 +89,37 @@ p
 	&:active
 		cursor: nwse-resize
 
-.post-index-item-picture-expand
+.post-index-item-picture-expand,
+.post-index-item-picture-collapse
 	cursor: pointer
 	color: lighten($color_text, 30%)
+	&:hover
+		color: $color_brand_main
+
+.post-index-item-picture-collapse
+	display: none
 
 .post-index-item-rate
-	padding: 5px
+	float: left
+	display: block
+	width: 40px
+	margin-top: 2px
+	text-align: center
 	color: lighten($color_text, 30%)
+	& .up, .middle, .down
+		font-size: 1.1em
+		padding: 0 0 2px 0
+		display: block
 	&:hover
 		text-decoration: none
-	&:hover.up, &.up.rated
+	& .up:hover, & .up.rated
 		color: $color_upvote
-	&:hover.down, &.down.rated
+	& .down:hover, & .down.rated
 		color: $color_downvote
 
 .post-index-item-type
 	display: block
+	float: right
 	font-size: 1.8em
 	width: 60px
 	height: 60px
@@ -129,11 +155,12 @@ p
 
 .post-view-content-image
 	padding: 5px 15px 10px 15px
+	text-align: right
 	& img
 		max-width: 100%
+		+border-radius(3px)
 	&:hover .post-view-content-image-link
 		color: $color_brand_main
-		text-decoration: none !important
 
 .post-view-content-image-link
 	font-size: 0.9em
@@ -244,7 +271,7 @@ p
 
 .dropdown-menu > li > a:hover
 	background: transparent
-	color: lighten($color_brand_main, 10%)
+	color: lighten($color_brand_secondary, 10%)
 
 .dropdown-menu > .active > a
 	background: transparent
