@@ -47,8 +47,8 @@ def index_category(category):
         posts=posts)
 
 
-@posts.route('/<category>/<uuid>/', defaults={'slug': None})
-@posts.route('/<category>/<uuid>/<slug>')
+@posts.route('/posts/<category>/<uuid>/', defaults={'slug': None})
+@posts.route('/posts/<category>/<uuid>/<slug>')
 def view(category, uuid, slug):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
