@@ -47,6 +47,7 @@
 
 		{% if post.comments %}
 			{% for comment in post.comments %}
+				<a name="comment-{{comment.id}}"></a>
 				<div class="post-view-comments-item">
 					<div class="row">
 						<div class="col-md-1">
@@ -56,7 +57,7 @@
 							<div class="post-view-comments-item-content">
 								{{comment.content|safe}}
 							</div>
-							<div class="post-view-comments-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+							<div class="post-view-comments-item-details">
 								<a class="post-view-comments-item-rate up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
 									<i class="fa fa-arrow-up"></i>
 								</a>
@@ -68,6 +69,8 @@
 								<span class="separator"></span>
 								{{comment.pretty_creation_date}}
 								<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
+								<span class="separator"></span>
+								<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}"><i class="fa fa-link"></i></a>
 							</div>
 						</div>
 					</div> <!-- row -->
