@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from math import log
 
 epoch = datetime(1970, 1, 1)
