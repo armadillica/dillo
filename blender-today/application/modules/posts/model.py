@@ -5,6 +5,7 @@ from application import imgur_client
 
 from application.modules.users.model import User
 from application.helpers import pretty_date
+from application.helpers.sorting import hot
 
 
 class Post(db.Model):
@@ -45,6 +46,25 @@ class Post(db.Model):
             return picture.link.replace(self.picture, self.picture + size)
         else:
             return None
+
+    epoch = datetime.datetime(1970, 1, 1)
+
+    def epoch_seconds(self, date):
+        """Returns the number of seconds from the epoch to date."""
+        td = date - self.epoch
+        return td.days * 86400 + td.seconds + (float(td.microseconds) / 1000000)
+
+    def score(self, ups, downs):
+        return ups - downs
+
+    def hot(self):
+        from math import log
+        """The hot formula."""
+        s = self.score(self.rating.positive, self.rating.negative)
+        order = log(max(abs(s), 1), 10)
+        sign = 1 if s > 0 else -1 if s < 0 else 0
+        seconds = self.epoch_seconds(self.creation_date) - 1134028003
+        return round(sign * order + seconds / 45000, 7)
 
 
 class Category(db.Model):

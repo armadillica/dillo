@@ -33,6 +33,7 @@ posts = Blueprint('posts', __name__)
 @posts.route('/posts/')
 def index():
     posts = Post.query.all()
+    posts.sort(key=lambda p: p.hot(), reverse=True)
     return render_template('posts/index.html', 
         posts=posts)
 
