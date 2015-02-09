@@ -16,7 +16,7 @@
 						<span class="down"><i class="fa fa-angle-down"></i></span>
 					</a>
 				</div>
-				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
 					<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 						{% if post.post_type.url == 'link' %}
 							<i class="fa fa-link"></i>
@@ -29,14 +29,14 @@
 
 			<div class="col-md-10 col-sm-10 col-xs-10">
 
-				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}" title="{{post.title}}">
+				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="{{post.title}}">
 					{{post.title}}
 				</a>
 
-				<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+				<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
 					{{post.post_type}}
 					<span class="separator"></span>
-					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comments">
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
 						{{post.comments|length}} comments
 					</a>
 					<span class="separator"></span>
@@ -45,7 +45,7 @@
 					</span>
 
 					<small>by</small>
-					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comments">
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
 						{{post.user.first_name}} {{post.user.last_name}}
 					</a>
 
