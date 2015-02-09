@@ -34,15 +34,25 @@
 					<span class="separator"></span>
 					{{post.post_type}}
 					<span class="separator"></span>
-					{{post.comments|length}} comments
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comments">
+						{{post.comments|length}} comments
+					</a>
 					<span class="separator"></span>
-					<span title="{{post.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{post.pretty_creation_date}}</span>
-					<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
+					<span title="{{post.creation_date.strftime('%H:%M on %d %B, %Y')}}">
+						{{post.pretty_creation_date}}
+					</span>
+
+					<small>by</small>
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comments">
+						{{post.user.first_name}} {{post.user.last_name}}
+					</a>
+
 					{% if post.picture %}
 					<span class="separator"></span>
 					<span class="post-index-item-picture-expand"><i class="fa fa-plus"></i></span>
 					<img class="post-index-item-picture" data-rel="{{post.thumbnail('l')}}"  src=""/>
 					{% endif %}
+
 				</div>
 			</div>
 		</div>

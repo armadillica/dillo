@@ -43,12 +43,13 @@
 	</div>
 
 	<div class="post-view-comments">
+		<a name="comments"></a>
 		<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
 
 		{% if post.comments %}
 			{% for comment in post.comments %}
 				<a name="comment-{{comment.id}}"></a>
-				<div class="post-view-comments-item">
+				<div class="post-view-comments-item {{ loop.cycle('odd', 'even') }}">
 					<div class="row">
 						<div class="col-md-1 col-sm-1 col-xs-2">
 							<img class="img-circle" src="{{comment.user.gravatar()}}">
