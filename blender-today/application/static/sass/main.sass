@@ -58,7 +58,7 @@ a
 	margin: 0 0 10px 0
 	padding: 0
 	+border-radius(3px)
-	+box-shadow(2px, 2px, 0, black, 0.1)
+	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 
 .post-index-item-title
 	font-family: $font_headings
@@ -153,8 +153,9 @@ a
 /* post-view */
 .post-view, .post-submit
 	background-color: white
+	border: thin solid darken($color_background, 2%)
 	+border-radius(3px)
-	+box-shadow(2px, 2px, 0, black, 0.1)
+	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 
 .post-view-title
 	float: left
