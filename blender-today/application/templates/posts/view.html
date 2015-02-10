@@ -66,10 +66,10 @@
 							</div>
 							<div class="post-view-comments-item-details">
 								<a class="post-view-comments-item-rate up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
-									<i class="fa fa-arrow-up"></i>
+									<i class="fa fa-chevron-up"></i>
 								</a>
 								<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">
-									<i class="fa fa-arrow-down"></i>
+									<i class="fa fa-chevron-down"></i>
 								</a>
 								<span class="separator"></span>
 								{{comment.rating.positive - comment.rating.negative}}

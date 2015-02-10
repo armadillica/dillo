@@ -17,7 +17,7 @@
 					</a>
 				</div>
 				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
-					<div class="post-index-item-type" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
+					<div class="post-index-item-type {{post.post_type.url}}" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 						{% if post.post_type.url == 'link' %}
 							<i class="fa fa-link"></i>
 						{% elif post.post_type.url == 'text' %}
@@ -34,7 +34,7 @@
 				</a>
 
 				<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
-					{{post.post_type}}
+					<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
 					<span class="separator"></span>
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
 						{{post.comments|length}} comments

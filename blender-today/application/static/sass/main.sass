@@ -121,13 +121,18 @@ a
 	height: 60px
 	margin: 12px 0 0 0
 	color: white
-	background-color: lighten($color_text, 50%)
+	background-color: lighten($color_text, 55%)
 	text-align: center
 	position: relative
+	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
 	& i
 		top: 40%
 		@extend .vertical-align
+	&.link
+		background-color: lighten($color_brand_secondary, 25%)
+	&.text
+		background-color: lighten($color_brand_main, 25%)
 
 	+media-xs
 		margin-left: 10px
@@ -234,7 +239,8 @@ a
 .post-view-comments-item-details
 	display: block
 	padding: 0 0 0 10px
-	color: lighten($color_text, 10%)
+	color: lighten($color_text, 30%)
+	font-size: 0.9em
 	+media-xs
 		padding-left: 0
 	+media-md
