@@ -10,123 +10,124 @@
 		<li class="active">{{post.title}}</li>
 	</ol>
 
-<div class="post-view">
-	<div class="post-view-rate">
-		<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
-			<i class="fa fa-angle-up"></i>
-		</a>
-		<span class="middle">{{post.rating.positive - post.rating.negative}}</span>
-		<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
-			<i class="fa fa-angle-down"></i>
-		</a>
-	</div>
-	<div class="post-view-title">
-		<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-			{{post.title}}
-		</a>
-	</div>
+	<div class="post-view">
+		<div class="post-view-rate">
+			<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
+				<i class="fa fa-angle-up"></i>
+			</a>
+			<span class="middle">{{post.rating.positive - post.rating.negative}}</span>
+			<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
+				<i class="fa fa-angle-down"></i>
+			</a>
+		</div>
+		<div class="post-view-title">
+			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+				{{post.title}}
+			</a>
+		</div>
 
-	<div class="clearfix"></div>
+		<div class="clearfix"></div>
 
-	<div class="post-view-content">{{post.content|safe}}</div>
+		<div class="post-view-content">{{post.content|safe}}</div>
 
-	{% if post.picture %}
-	<div class="post-view-content-image">
-		<a href="http://imgur.com/{{post.picture}}" target="_blank">
-			<img src="{{post.thumbnail('h')}}"/>
-			<div class="post-view-content-image-link">view on imgur.com</div>
-		</a>
-	</div>
-	{% endif %}
-
-	<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-		<span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
-		<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
-		<span class="separator"></span>
-		<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-			permalink
-		</a>
-	</div>
-
-	<div class="post-view-comments">
-		<a name="comments"></a>
-		<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
-
-		{% if post.comments %}
-			{% for comment in post.comments %}
-				<a name="comment-{{comment.id}}"></a>
-				<div class="post-view-comments-item {{ loop.cycle('odd', 'even') }}">
-					<div class="row">
-						<div class="col-md-1 col-sm-1 col-xs-2">
-							<img class="img-circle" src="{{comment.user.gravatar()}}">
-						</div>
-						<div class="col-md-11 col-sm-11 col-xs-10">
-							<div class="post-view-comments-item-content">
-								{{comment.content|safe}}
-							</div>
-							<div class="post-view-comments-item-details">
-								<a class="post-view-comments-item-rate up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
-									<i class="fa fa-chevron-up"></i>
-								</a>
-								<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">
-									<i class="fa fa-chevron-down"></i>
-								</a>
-								<span class="separator"></span>
-								{{comment.rating.positive - comment.rating.negative}}
-								<span class="separator"></span>
-								<span title="{{comment.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{comment.pretty_creation_date}}</span>
-								<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
-								<span class="separator"></span>
-								<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}"><i class="fa fa-link"></i></a>
-							</div>
-						</div>
-					</div> <!-- row -->
-				</div> <!-- post-view-comments-item -->
-			{% endfor %}
-		{% else %}
-			<div class="post-view-comments-empty">
-				No comments yet. Be the first!
-			</div>
+		{% if post.picture %}
+		<div class="post-view-content-image">
+			<a href="http://imgur.com/{{post.picture}}" target="_blank">
+				<img src="{{post.thumbnail('h')}}"/>
+				<div class="post-view-content-image-link">view on imgur.com</div>
+			</a>
+		</div>
 		{% endif %}
 
-		<div class="post-view-comments-submit">
-			<div class="row">
-				<div class="col-md-1">
-				</div>
-				<div class="col-md-11">
-					{% if current_user.is_anonymous() %}
-						<h3><a href="{{url_for_security('login')}}">Login to comment</a></h3>
-					{% else %}
-						<h3>Leave a comment</h3>
-					{% endif %}
-				</div>
+		<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+			<span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+			<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
+			<span class="separator"></span>
+			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+				permalink
+			</a>
+		</div>
 
-				<div class="col-md-1">
+		<div class="post-view-comments">
+			<a name="comments"></a>
+			<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
+
+			{% if post.comments %}
+				{% for comment in post.comments %}
+					<a name="comment-{{comment.id}}"></a>
+					<div class="post-view-comments-item {{ loop.cycle('odd', 'even') }}">
+						<div class="row">
+							<div class="col-md-1 col-sm-1 col-xs-2">
+								<img class="img-circle" src="{{comment.user.gravatar()}}">
+							</div>
+							<div class="col-md-11 col-sm-11 col-xs-10">
+								<div class="post-view-comments-item-content">
+									{{comment.content|safe}}
+								</div>
+								<div class="post-view-comments-item-details">
+									<a class="post-view-comments-item-rate up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
+										<i class="fa fa-chevron-up"></i>
+									</a>
+									<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">
+										<i class="fa fa-chevron-down"></i>
+									</a>
+									<span class="separator"></span>
+									{{comment.rating.positive - comment.rating.negative}}
+									<span class="separator"></span>
+									<span title="{{comment.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{comment.pretty_creation_date}}</span>
+									<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
+									<span class="separator"></span>
+									<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}"><i class="fa fa-link"></i></a>
+								</div>
+							</div>
+						</div> <!-- row -->
+					</div> <!-- post-view-comments-item -->
+				{% endfor %}
+			{% else %}
+				<div class="post-view-comments-empty">
+					No comments yet. Be the first!
 				</div>
-				<div class="col-md-11">
-					{% if not current_user.is_anonymous() %}
-					<form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
-					{{ form.hidden_tag() }}
-					<div class="form-group">
-						{{ form.content(class='form-control', id='post_comment') }}
-						{% if form.content.errors %}
-							<ul class="error">
-									{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
-							</ul>
+			{% endif %}
+
+			<div class="post-view-comments-submit">
+				<div class="row">
+					<div class="col-md-1">
+					</div>
+					<div class="col-md-11">
+						{% if current_user.is_anonymous() %}
+							<h3><a href="{{url_for_security('login')}}">Login to comment</a></h3>
+						{% else %}
+							<h3>Leave a comment</h3>
 						{% endif %}
 					</div>
 
-					<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
-						<i class="fa fa-check"></i> Submit Comment
-					</button>
+					<div class="col-md-1">
+					</div>
+					<div class="col-md-11">
+						{% if not current_user.is_anonymous() %}
+						<form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
+						{{ form.hidden_tag() }}
+						<div class="form-group">
+							{{ form.content(class='form-control', id='post_comment') }}
+							{% if form.content.errors %}
+								<ul class="error">
+										{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+								</ul>
+							{% endif %}
+						</div>
 
-				</form>
-				{% endif %}
+						<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+							<i class="fa fa-check"></i> Submit Comment
+						</button>
+
+					</form>
+					{% endif %}
+					</div>
 				</div>
 			</div>
-		</div>
-	</div> <!-- post-comments -->
-</div> <!-- post-view -->
+		</div> <!-- post-view-comments -->
+	</div> <!-- post-view -->
+</div> <!-- col-md -->
 {% endblock %}
 
 {% block footer_scripts %}

@@ -35,7 +35,8 @@ posts = Blueprint('posts', __name__)
 def index():
     posts = Post.query.all()
     posts.sort(key=lambda p: p.hot, reverse=True)
-    return render_template('posts/index.html', 
+    return render_template('posts/index.html',
+        title='index',
         posts=posts)
 
 
@@ -43,7 +44,9 @@ def index():
 def index_category(category):
     posts = Post.query.join(Category).filter(Category.name == category).all()
     posts.sort(key=lambda p: p.hot, reverse=True)
-    return render_template('posts/index.html', 
+    return render_template('posts/index.html',
+        title='index_category',
+        category=category,
         posts=posts)
 
 
@@ -61,6 +64,7 @@ def view(category, uuid, slug):
     post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
     return render_template('posts/view.html',
+        title='view',
         post=post,
         form=form,
         picture=post.thumbnail('m'))
@@ -103,8 +107,8 @@ def submit():
         return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
 
     return render_template('posts/submit.html',
-        form=form,
-        title='submit')
+        title='submit',
+        form=form)
 
 
 @posts.route('/posts/<uuid>/rate/<int:rating>')

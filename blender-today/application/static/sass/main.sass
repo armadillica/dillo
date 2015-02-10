@@ -1,15 +1,15 @@
 @import reset
 
-$color_brand_main: #296bb6
-$color_brand_secondary: #dc2900
-$color_background: #f0f0f0
+$color_brand_main: #34495e // # 296bb6
+$color_brand_secondary: #e74c3c // e74c3c - dc2900
+$color_background: #f0f2f3 // f0f0f0 // f9f7f6
 $color_text: #444
 
 $color_upvote: #ff8b60
 $color_downvote: #74a4ff
 
 $font_body: 'Open Sans', Verdana, Arial, Helvetica, sans-serif
-$font_headings: 'Lato', 'Lucida Sans', 'Lucida Grande', sans-serif
+$font_headings: 'Raleway', 'Lucida Sans', 'Lucida Grande', sans-serif
 $font_size: 14px
 
 @import helpers
@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6
 	font-family: $font_headings
 
 p
-	margin-bottom: 20px // replaces '10px' by bootstrap
+	margin-bottom: 20px /* replaces '10px' by bs */
 
 a
 	color: $color_brand_main
@@ -38,6 +38,18 @@ a
 	margin: 0 5px
 	background-color: lighten($color_text, 60%)
 	vertical-align: middle
+
+/* Navbar */
+.navbar
+	background-color: transparent
+	border: none
+
+/* Breadcrumb */
+.breadcrumb
+	background: transparent /* replaces white in bs */
+	padding: 8px 0
+	font-size: 0.9em
+	margin-bottom: 0
 
 /* post-index */
 .post-index-item
@@ -130,7 +142,7 @@ a
 		top: 40%
 		@extend .vertical-align
 	&.link
-		background-color: lighten($color_brand_secondary, 25%)
+		background-color: lighten($color_brand_secondary, 15%)
 	&.text
 		background-color: lighten($color_brand_main, 25%)
 

@@ -12,6 +12,7 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
     {% else %}
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
@@ -59,20 +60,17 @@
             </li>
 
             {% if current_user.is_authenticated() %}
-            <li class="dropdown absolute right">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{current_user.email}} <b class="caret"></b></a>
-              <ul class="dropdown-menu right">
 
-                {% if current_user.has_role('admin') %}
-                <li class="text-danger">
-                  <a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i> Woosh!</a>
-                </li>
-                {% endif %}
+              <li><a href="{{ url_for('about') }}">{{current_user.email}}</a></li>
 
-                <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="{{url_for('logout')}}"><i class="fa fa-power-off"></i> Log out</a></li>
-              </ul>
-            </li>
+              {% if current_user.has_role('admin') %}
+              <li>
+                <a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i></a>
+              </li>
+              {% endif %}
+
+              <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i></a></li>
+              <li><a href="{{url_for('logout')}}"><i class="fa fa-power-off"></i></a></li>
             {% else %}
             <li class="absolute right"><a href="{{url_for_security('login')}}"><i class="fa fa-sign-in"></i> Sign in</a></li>
             {% endif %}

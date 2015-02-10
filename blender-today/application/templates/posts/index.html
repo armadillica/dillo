@@ -1,6 +1,13 @@
 {% extends 'layout.html' %}
 {% block body %}
-<h3>All posts <small>({{posts|length}})</small></h3>
+<h3>{% if title == 'index_category' %}
+			<span class="text-capitalize">{{category}}</span>
+		{% else %}
+			All
+		{% endif %}
+
+		<small>({{posts|length}})</small>
+</h3>
 
 <div class="row post-index">
 	<div class="col-md-9">
@@ -29,7 +36,15 @@
 
 			<div class="col-md-10 col-sm-10 col-xs-10">
 
-				<a class="post-index-item-title" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="{{post.title}}">
+				<a class="post-index-item-title"
+					 href="
+					 {% if post.post_type.url == 'link' %}
+					 	{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}
+					 {% else %}
+					 	{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}
+					 {% endif %}
+					 "
+					 title="{{post.title}}">
 					{{post.title}}
 				</a>
 
