@@ -45,8 +45,6 @@ a
 	background-color: white
 	margin: 0 0 10px 0
 	padding: 0
-	//padding: 10px 0
-	//border-bottom: thin solid lighten($color_text, 60%)
 	+border-radius(3px)
 	+box-shadow(2px, 2px, 0, black, 0.1)
 
@@ -56,7 +54,6 @@ a
 	font-size: 1.5em
 	padding: 15px 0 5px 0
 	@extend .text-overflow-ellipsis
-	// padding: 15px 0 5px 5px
 	// +media-xs
 	// 	padding-left: 0
 	// +media-md
@@ -72,7 +69,6 @@ a
 	font-size: 0.9em
 	color: lighten($color_text, 10%)
 	padding: 3px 0 15px 0
-	// padding: 3px 0 15px 5px
 	// +media-xs
 	// 	padding-left: 0
 	// +media-md
@@ -103,18 +99,18 @@ a
 	float: left
 	display: block
 	width: 40px
-	margin-top: 2px
+	padding-top: 8px
 	text-align: center
-	color: lighten($color_text, 30%)
 	& .up, .middle, .down
 		font-size: 1.1em
 		padding: 0 0 2px 0
 		display: block
+		color: lighten($color_text, 30%)
 	&:hover
 		text-decoration: none
-	& .up:hover, & .up.rated
+	.up:hover, .up.rated
 		color: $color_upvote
-	& .down:hover, & .down.rated
+	.down:hover, .down.rated
 		color: $color_downvote
 
 .post-index-item-type
@@ -144,21 +140,48 @@ a
 	+box-shadow(2px, 2px, 0, black, 0.1)
 
 .post-view-title
+	float: left
+	display: block
 	font-family: $font_headings
 	font-size: 2.1em
-	padding: 15px 15px 10px 15px
+	padding: 27px 15px 10px 15px
 	line-height: 1.3em
+
+.post-view-rate
+	float: left
+	display: block
+	width: 40px
+	text-align: center
+	padding-top: 10px
+	margin: 0 0 0 15px
+	+user-select-none
+	& .up, .middle, .down
+		font-size: 1.3em
+		padding: 0 0 2px 0
+		display: block
+		color: lighten($color_text, 30%)
+	&:hover
+		text-decoration: none
+	.up:hover, .up.rated
+		color: $color_upvote
+	.down:hover, .down.rated
+		color: $color_downvote
 
 .post-view-content
 	font-size: 1.1em
-	padding: 10px 15px 10px 15px
+	padding: 10px 15px 0 15px
+	margin: 0 0 0 55px
 
 .post-view-content-image
-	padding: 5px 15px 10px 15px
-	text-align: right
+	text-align: center
+	margin: 0 auto
+	padding: 0
+	//margin: 0 0 0 65px
 	& img
 		max-width: 100%
-		+border-radius(3px)
+	.post-view-content-image-link
+		text-align: right
+		padding: 0 15px 0 
 	&:hover .post-view-content-image-link
 		color: $color_brand_main
 
@@ -170,27 +193,21 @@ a
 .post-view-details
 	display: block
 	font-size: 1.1em
-	padding: 15px 0 15px 15px
+	text-align: right
+	padding: 15px
+	margin: 0 0 0 55px
 	color: lighten($color_text, 10%)
-
-.post-view-rate
-	padding: 5px
-	color: lighten($color_text, 30%)
-	&:hover
-		text-decoration: none
-	&:hover.up, &.up.rated
-		color: $color_upvote
-	&:hover.down, &.down.rated
-		color: $color_downvote
 
 .post-view-comments
 	padding: 0
 	margin: 0
+	border-top: thin solid lighten($color_text, 60%)
 
 .post-view-comments .title
 	font-family: $font_headings
 	padding: 15px
 	margin: 0
+	+user-select-none
 
 .post-view-comments-item
 	display: block

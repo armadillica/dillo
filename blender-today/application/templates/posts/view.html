@@ -11,8 +11,25 @@
 	</ol>
 
 <div class="post-view">
-	<div class="post-view-title">{{post.title}}</div>
+	<div class="post-view-rate">
+		<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
+			<i class="fa fa-angle-up"></i>
+		</a>
+		<span class="middle">{{post.rating.positive - post.rating.negative}}</span>
+		<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
+			<i class="fa fa-angle-down"></i>
+		</a>
+	</div>
+	<div class="post-view-title">
+		<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+			{{post.title}}
+		</a>
+	</div>
+
+	<div class="clearfix"></div>
+
 	<div class="post-view-content">{{post.content|safe}}</div>
+
 	{% if post.picture %}
 	<div class="post-view-content-image">
 		<a href="http://imgur.com/{{post.picture}}" target="_blank">
@@ -23,18 +40,7 @@
 	{% endif %}
 
 	<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-		<a class="post-view-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote">
-			<i class="fa fa-arrow-up"></i>
-		</a>
-		<a class="post-view-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote">
-			<i class="fa fa-arrow-down"></i>
-		</a>
-		<span class="separator"></span>
-		{{post.rating.positive - post.rating.negative}}
-		<span class="separator"></span>
-		{{post.post_type}}
-		<span class="separator"></span>
-		<span title="{{post.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{post.pretty_creation_date}}</span>
+		<span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
 		<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
 		<span class="separator"></span>
 		<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">

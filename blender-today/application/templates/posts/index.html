@@ -8,12 +8,12 @@
 		<div class="row post-index-item">
 			<div class="col-md-2 col-sm-2 col-xs-2">
 				<div class="post-index-item-rate">
-					<a class="post-index-item-rate up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
-						<span class="up"><i class="fa fa-angle-up"></i></span>
+					<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
+						<i class="fa fa-angle-up"></i>
 					</a>
 					<span class="middle">{{post.rating.positive - post.rating.negative}}</span>
-					<a class="post-index-item-rate down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
-						<span class="down"><i class="fa fa-angle-down"></i></span>
+					<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
+						<i class="fa fa-angle-down"></i>
 					</a>
 				</div>
 				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
