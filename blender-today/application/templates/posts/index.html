@@ -73,15 +73,15 @@
 		$(this).next($('.post-index-item-picture')).attr('src', $(this).next().data('rel'));
 		$(this).next($('.post-index-item-picture')).css('display', 'block');
 		$(this).next($('.post-index-item-picture')).animate({'opacity': 1.0});
-		$(this).fadeOut(function(){
-			$(this).prev().fadeIn();
+		$(this).fadeOut('fast', function(){
+			$(this).prev().fadeIn('fast');
 		});
 	});
 
 	$('.post-index-item-picture-collapse').click(function(){
 		$(this).next().next().fadeOut('fast');
-		$(this).fadeOut(function(){
-			$(this).next().fadeIn();
+		$(this).fadeOut('fast', function(){
+			$(this).next().fadeIn('fast');
 		});
 	});
 
