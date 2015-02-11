@@ -133,13 +133,20 @@ a.logo
 		font-size: 1.1em
 		padding: 0 0 2px 0
 		display: block
+		position: relative
 		color: lighten($color_text, 30%)
+		top: 0
+		+transition(top, 50ms, ease-out)
 	&:hover
 		text-decoration: none
 	.up:hover, .up.rated
 		color: $color_upvote
+	& .up:hover
+		top: -2px
 	.down:hover, .down.rated
 		color: $color_downvote
+	& .down:hover
+		top: 2px
 
 .post-index-item-type
 	display: block
@@ -152,11 +159,14 @@ a.logo
 	background-color: lighten($color_text, 55%)
 	text-align: center
 	position: relative
+	+transition(opacity, 25ms, ease-in)
 	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
 	& i
 		top: 40%
 		@extend .vertical-align
+	&:hover
+		opacity: 0.8
 	&.link
 		background-color: lighten($color_brand_secondary, 15%)
 	&.text
