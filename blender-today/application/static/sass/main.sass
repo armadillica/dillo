@@ -1,3 +1,4 @@
+@import url(../css/font-borg.css)
 @import reset
 
 $color_brand_main: #34495e // # 296bb6
@@ -175,6 +176,11 @@ a.logo
 	+media-xs
 		margin-left: 10px
 
+.post-index-end
+	color: darken($color_background, 5%)
+	text-align: center
+	+user-select-none
+
 /* //post-index */
 /* post-view */
 .post-view, .post-submit
@@ -310,6 +316,11 @@ a.logo
 
 /* //post-view */
 
+/* Footer */
+footer
+	padding-top: 20px
+	color: darken($color_background, 10%)
+	font-size: 0.9em
 
 /* Boostrap overrides */
 /* DROPDOWN MENUS */

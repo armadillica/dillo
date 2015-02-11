@@ -1,0 +1,32 @@
+@font-face{
+	font-family:'FontBorg';
+	src:url('../fonts/font-borg-webfont.eot');
+	src:url('../fonts/font-borg-webfont.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/font-borg-webfont.woff') format('woff'),
+		url('../fonts/font-borg-webfont.ttf') format('truetype'),
+        url('../fonts/font-borg-webfont.svg#fontborgregular') format('svg');
+	font-weight:normal;
+	font-style:normal;
+}
+
+[class^="bf-"],[class*=" bf-"]{
+	font-family:FontBorg;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:inherit;
+	-webkit-font-smoothing:antialiased;
+	display:inline;
+	width:auto;
+	height:auto;
+	line-height:normal;
+	vertical-align:baseline;
+	background-image:none;
+	background-position:0% 0%;
+	background-repeat:repeat;
+	margin-top:0;
+}
+
+.bf-blender:before{content:"\f000";}
+.bf-cloud:before{content:"\f001";}
+.bf-network:before{content:"\f002";}
+.bf-creativecommons:before{content:"\f003";}
