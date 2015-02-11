@@ -1,7 +1,17 @@
 {% extends 'layout.html' %}
+{% block page_title %}
+	{% if title == 'index_category' %}
+		{{category}}
+	{% else %}
+		All
+	{% endif %}
+{% endblock%}
+
 {% block body %}
 <h3>{% if title == 'index_category' %}
-			<span class="text-capitalize">{{category}}</span>
+			<a href="{{url_for('posts.index')}}">All</a>
+			<strong>·</strong>
+			<a href="{{url_for('index')}}{{category}}" class="text-capitalize">{{category}}</a>
 		{% else %}
 			All
 		{% endif %}
