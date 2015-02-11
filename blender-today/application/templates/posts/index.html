@@ -22,7 +22,8 @@
 <div class="row post-index">
 	<div class="col-md-9">
 		{% for post in posts %}
-		<div class="row post-index-item">
+		<div class="row post-index-item
+								{{ loop.cycle('odd', 'even') }}">
 			<div class="col-md-2 col-sm-2 col-xs-2">
 				<div class="post-index-item-rate">
 					<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
