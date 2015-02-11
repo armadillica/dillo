@@ -58,7 +58,7 @@
 					<div class="post-view-comments-item {{ loop.cycle('odd', 'even') }}">
 						<div class="row">
 							<div class="col-md-1 col-sm-1 col-xs-2">
-								<img class="img-circle" src="{{comment.user.gravatar()}}">
+								<img class="img-circle" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
 							</div>
 							<div class="col-md-11 col-sm-11 col-xs-10">
 								<div class="post-view-comments-item-content">
