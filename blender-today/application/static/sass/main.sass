@@ -391,6 +391,26 @@ footer
 	border-bottom-left-radius: 3px !important
 	border-bottom-right-radius: 3px !important
 
+/* Not really an override, it's our cool logout stuff */
+.nav-logout-widget
+	position: relative
+	height: 33px
+	cursor: pointer
+	& .nav-logout-widget-icon, .nav-logout-widget-question
+		position: absolute
+		bottom: -3px
+		left: 10px
+		+transition(color, 100ms, ease-out)
+	& .nav-logout-widget-question
+		color: crimson
+		font-weight: bold
+		left: 13px
+		opacity: 0
+
+	&:focus .nav-logout-widget-icon
+		color: crimson
+
+
 /* CKEditor Overrides */
 .cke_chrome
 	font-family: $font_body !important

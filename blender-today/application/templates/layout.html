@@ -70,7 +70,13 @@
               {% endif %}
 
               <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i></a></li>
-              <li><a href="{{url_for('logout')}}"><i class="fa fa-power-off"></i></a></li>
+
+              <li>
+                <a class="nav-logout-widget" href="">
+                  <span class="nav-logout-widget-icon"><i class="fa fa-power-off"></i></span>
+                  <span class="nav-logout-widget-question">?</span>
+                </a>
+              </li>
             {% else %}
             <li class="absolute right"><a href="{{url_for_security('login')}}"><i class="fa fa-sign-in"></i> Sign in</a></li>
             {% endif %}
@@ -120,7 +126,21 @@
     <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
     <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
     {% endif %}
-  {% block footer_scripts %}{% endblock %}
+
+    <script type="text/javascript">
+      $('.nav-logout-widget').click(function(e){
+        e.preventDefault();
+
+        $('.nav-logout-widget-question').animate({'opacity': 1.0, 'left' : 22}, 300);
+        $('.nav-logout-widget-icon').css('color', 'crimson');
+        $('.nav-logout-widget-icon').animate({'left' : 5}, 250, function(){
+          $('.nav-logout-widget').unbind();
+          $('.nav-logout-widget').attr('href', '{{url_for("logout")}}');
+        });
+      });
+    </script>
+  {% block footer_scripts %}
+  {% endblock %}
 
   {# 
     <script>
