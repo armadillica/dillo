@@ -1,7 +1,7 @@
 @import url(../css/font-borg.css)
 @import reset
 
-$color_brand_main: #34495e // # 296bb6
+$color_brand_main: #0092A0 // # 296bb6 - serious blue 34495e, greenish 009587
 $color_brand_secondary: #e74c3c // e74c3c - dc2900
 $color_background: #f0f2f3 // f0f0f0 // f9f7f6
 $color_text: #444
@@ -74,6 +74,8 @@ a.logo
 		background-color:	darken($color_background, 1%)
 		& .post-index-item-title
 			+text-shadow(1px, 1px, 0, white, 0.8)
+	&:hover .post-index-item-type
+		opacity: 0.8
 
 .post-index-item-title
 	font-family: $font_headings
@@ -95,7 +97,7 @@ a.logo
 .post-index-item-details
 	display: block
 	font-size: 0.9em
-	color: lighten($color_text, 10%)
+	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
 	// +media-xs
 	// 	padding-left: 0
@@ -103,6 +105,10 @@ a.logo
 	// 	padding-left: 15px
 	// +media-lg
 	// 	padding-left: 5px
+	& a
+		color: lighten($color_text, 20%)
+		&:hover
+			color: $color_brand_secondary
 
 .post-index-item-picture
 	display: none
@@ -183,8 +189,6 @@ a.logo
 	& i
 		top: 40%
 		@extend .vertical-align
-	&:hover
-		opacity: 0.8
 	&.link
 		background-color: lighten($color_brand_secondary, 15%)
 	&.text
@@ -212,6 +216,14 @@ a.logo
 	font-size: 2.1em
 	padding: 27px 15px 10px 15px
 	line-height: 1.3em
+	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
+
+.post-view-avatar
+	float: left
+	display: block
+	padding-top: 10px
+	margin: 0 15px
+
 
 .post-view-rate
 	float: left
@@ -258,16 +270,17 @@ a.logo
 
 .post-view-details
 	display: block
-	font-size: 1.1em
 	text-align: right
 	padding: 15px
-	margin: 0 0 0 55px
+	//margin: 0 0 0 55px
+	width: 100%
+	background-color: darken($color_background, 5%)
 	color: lighten($color_text, 10%)
 
 .post-view-comments
 	padding: 0
 	margin: 0
-	border-top: thin solid lighten($color_text, 60%)
+	border-top: thin solid lighten($color_text, 65%)
 
 .post-view-comments .title
 	font-family: $font_headings
@@ -281,7 +294,7 @@ a.logo
 	background-color: white
 	padding: 15px 15px 25px 15px
 	margin: 0
-	border-top: thin solid lighten($color_text, 60%)
+	border-top: thin solid lighten($color_text, 65%)
 	&.odd
 		background-color: darken(white, 5%)
 	&.reply
