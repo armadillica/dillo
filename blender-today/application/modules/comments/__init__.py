@@ -2,6 +2,7 @@ from flask import render_template
 from flask import Blueprint
 from flask import redirect
 from flask import url_for
+from flask import jsonify
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -39,9 +40,13 @@ def submit(post_id):
             )
         db.session.add(comment_rating)
         db.session.commit()
-        return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
+        return redirect(url_for('posts.view',
+            category=post.category.url, 
+            uuid=post.uuid))
 
-    return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
+    return redirect(url_for('posts.view',
+        category=post.category.url,
+        uuid=post.uuid))
 
 
 @comments.route('/<int:comment_id>/rate/<int:rating>')
@@ -51,7 +56,8 @@ def rate(comment_id, rating):
     # Check if comment has been rated
     user_comment_rating = UserCommentRating.query\
         .filter_by(comment_id=comment.id, user_id=current_user.id).first()
-    # If a rating exists, we update the the user comment record and the comment record accordingly
+    # If a rating exists, we update the the user comment record and the comment
+    # record accordingly
     if user_comment_rating:
         if user_comment_rating.is_positive != rating:
             user_comment_rating.is_positive = rating
@@ -70,7 +76,8 @@ def rate(comment_id, rating):
                 comment.rating.negative -= 1
             db.session.delete(user_comment_rating)
             db.session.commit()
-            return 'None'
+            return jsonify(rating=None,
+                rating_delta=comment.rating_delta)
     else:
         user_comment_rating = UserCommentRating(
             user_id=current_user.id,
@@ -83,5 +90,6 @@ def rate(comment_id, rating):
         db.session.add(user_comment_rating)
         db.session.commit()
 
-    return str(user_comment_rating.is_positive)
+    return jsonify(rating=str(user_comment_rating.is_positive),
+        rating_delta=comment.rating_delta)
 
