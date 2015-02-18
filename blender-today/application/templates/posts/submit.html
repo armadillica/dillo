@@ -5,32 +5,92 @@
 {% block body %}
 <div class="col-md-9">
 	<div class="post-submit">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Submit Your News</h2>
+			</div>
+		</div>
 		<form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('posts.submit')}}">
 			{{ form.hidden_tag() }}
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					{{ form.title(class='form-control post-submit-field-title', placeholder='Pick a Title') }}
+					{% if form.title.errors %}
+						<ul class="error">
+							{% for error in form.title.errors %}<li>{{ error }}</li>{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				
+				<div class="form-group">
+					<select id="post_type_id" name="post_type_id" placeholder="Post Type">
+						<option value="1">Link</option>
+						<option value="2">Text</option>
+					</select>
+				</div>
+
+				<h3>What type of post is it?</h3>
+			</div>
+		</div>
+		<div class="row post-submit-field-type">
+			<div class="col-md-6">
+				<a data-role="button" data-val="1" class="select-change post-submit-field-type-button">
+					<div class="post-submit-field-type-button-icon">
+						<span class="fa-stack fa-2x fa-lg">
+							<i class="fa fa-circle-thin fa-stack-2x"></i>
+							<i class="fa fa-stack-1x fa-link"></i>
+						</span>
+					</div>
+					<div class="post-submit-field-type-button-text">
+						It's a Link
+						<small>The title will link directly there</small>
+					</div>
+				</a>
+			</div>
+			<div class="col-md-6">
+				<a data-role="button" data-val="2" class="select-change post-submit-field-type-button">
+					<div class="post-submit-field-type-button-icon">
+						<span class="fa-stack fa-2x fa-lg">
+							<i class="fa fa-circle-thin fa-stack-2x"></i>
+							<i class="fa fa-stack-1x fa-file-text-o"></i>
+						</span>
+					</div>
+					<div class="post-submit-field-type-button-text">
+						It's an Article
+						<small>Type in </small>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				What Category does it fit in?
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form.category_id(class='form-control post-submit-field-category', placeholder='Category') }}
+				</div>
+			</div>
+		</div>
+
 			<div class="form-group">
-				{#{{ form.title.label }}#}
-				{{ form.title(class='form-control', placeholder='Title') }}
-				{% if form.title.errors %}
-					<ul class="error">
-						{% for error in form.title.errors %}<li>{{ error }}</li>{% endfor %}
-					</ul>
-				{% endif %}
+				{{ form.content(class='form-control post-submit-field-content', id='post_content') }}
 			</div>
 			<div class="form-group">
-				{{ form.post_type_id.label() }}
-				{{ form.post_type_id(class='form-control') }}
+				{{ form.url(class='form-control post-submit-field-url', placeholder='URL (with http://)') }}
 			</div>
 			<div class="form-group">
-				{{ form.category_id.label() }}
-				{{ form.category_id(class='form-control') }}
+				{{ form.picture(class='form-control post-submit-field-picture') }}
 			</div>
-			<div class="form-group">
-				{{ form.content(class='form-control', id='post_content') }}
-			</div>
-			<div class="form-group">
-				{{ form.picture(class='form-control') }}
-			</div>
-			<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+			<button type="submit" class="btn btn-default btn-block btn-success submit" value="Go">
 				<i class="fa fa-check"></i> Submit </button>
 		</form>
 	</div> <!-- post-submit -->
@@ -39,7 +99,6 @@
 
 {% block footer_scripts %}
 	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
-	<link href="{{ url_for('static', filename='js/ckeditor.js') }}" rel="stylesheet">
 	<script type="text/javascript">
 
 	CKEDITOR.replace( 'post_content', {
@@ -48,5 +107,10 @@
 	});
 
 	CKEDITOR.config.forcePasteAsPlainText = true;
+
+		$('.select-change').click(function(){ 
+		    $('#post_type_id').val($(this).data('val')).trigger('change');
+		})
+
 	</script>
 {% endblock %}

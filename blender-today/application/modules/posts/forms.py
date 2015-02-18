@@ -9,7 +9,8 @@ class PostForm(Form):
     category_id = SelectField('Group', coerce=int)
     post_type_id = SelectField('Post Type', coerce=int)
     title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
+    content = TextAreaField('Content')
+    url = StringField('URL')
     picture = FileField('A picture')
 
 class CommentForm(Form):

@@ -355,6 +355,42 @@ a.logo
 
 
 /* //post-view */
+/* post-submit */
+.post-submit
+	padding: 15px
+
+.post-submit .form-control
+	font-size: 1.4em
+	padding: 6px 15px
+	height: auto
+	width: auto
+
+	&.post-submit-field-title, &.post-submit-field-url,
+	&.post-submit-field-category, &.post-submit-field-content, &.post-submit-field-picture
+		width: 100%
+
+.post-submit .post-submit-field-type
+	display: block
+	margin: 20px 0
+
+	& .post-submit-field-type-button
+		display: inline-block
+		width: 100%
+		cursor: pointer
+
+		&:hover, &:focus
+			text-decoration: none !important
+
+	& .post-submit-field-type-button-icon
+		float: left
+		margin-right: 10px
+
+	& .post-submit-field-type-button-text
+		display: block
+		font-size: 1.5em
+		& small
+			display: block
+			font-size: 0.7em
 
 /* Footer */
 footer
@@ -363,6 +399,15 @@ footer
 	font-size: 0.9em
 
 /* Boostrap overrides */
+/* FORMS */
+.form-group .form-control
+	border: 2px solid darken($color_background, 6%)
+	background-color: darken($color_background, 4%)
+	+border-radius(3px)
+	+box-shadow(2px, 2px, 0, black, .1)	
+	&:focus
+		border-color: $color_brand_main
+
 /* DROPDOWN MENUS */
 .dropdown-menu
 	border: 0
