@@ -247,8 +247,12 @@ a.logo
 
 .post-view-content
 	font-size: 1.1em
+	line-height: 1.8em
 	padding: 10px 15px 0 15px
 	margin: 0 0 0 55px
+
+.post-view-content p
+	margin-bottom: 25px
 
 .post-view-content-image
 	text-align: center
@@ -270,12 +274,18 @@ a.logo
 
 .post-view-details
 	display: block
-	text-align: right
 	padding: 15px
 	//margin: 0 0 0 55px
 	width: 100%
-	background-color: darken($color_background, 5%)
+	background-color: darken($color_background, 3%)
+	border-bottom: thick solid darken($color_background, 5%)
 	color: lighten($color_text, 10%)
+
+.post-view-details-meta
+	margin-left: 10px
+	& .author
+		display: block
+		font-size: 1.2em
 
 .post-view-comments
 	padding: 0

@@ -39,13 +39,26 @@
 		</div>
 		{% endif %}
 
-		<div class="post-view-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-			Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
-			<small>by</small> {{post.user.first_name}} {{post.user.last_name}}
-			<span class="separator"></span>
-			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-				permalink
-			</a>
+		<div class="post-view-details">
+			<div class="row">
+				<div class="col-md-1 col-sm-1 col-xs-2">
+					<div class="post-view-details-avatar">
+						<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
+					</div>
+				</div>
+				<div class="col-md-11 col-sm-11 col-xs-10">
+					<div class="post-view-details-meta">
+						<span class="author">{{post.user.first_name}} {{post.user.last_name}}</span>
+						<span class="date">
+						Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+						</span>
+						<span class="separator"></span>
+						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+							permalink
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div class="post-view-comments">
