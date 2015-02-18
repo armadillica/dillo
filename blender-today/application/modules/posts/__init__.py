@@ -5,6 +5,7 @@ from flask import render_template
 from flask import Blueprint
 from flask import redirect
 from flask import url_for
+from flask import jsonify
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -64,7 +65,6 @@ def view(category, uuid, slug):
     post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
     return render_template('posts/view.html',
-        rating=post.rating.positive - post.rating.negative,
         title='view',
         post=post,
         form=form,
@@ -139,7 +139,7 @@ def rate(uuid, rating):
                 post.rating.negative -= 1
             db.session.delete(user_post_rating)
             db.session.commit()
-            return 'None'
+            return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
         user_post_rating = UserPostRating(
             user_id=current_user.id,
@@ -152,4 +152,4 @@ def rate(uuid, rating):
         db.session.add(user_post_rating)
         db.session.commit()
 
-    return str(user_post_rating.is_positive)
+    return jsonify(rating=str(user_post_rating.is_positive), rating_delta=post.rating_delta)

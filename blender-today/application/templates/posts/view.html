@@ -15,7 +15,7 @@
 			<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="#" title="Upvote, click again to undo">
 				<i class="fa fa-angle-up"></i>
 			</a>
-			<span class="middle" rating="{{rating}}">{{rating}}</span>
+			<span class="middle">{{post.rating_delta}}</span>
 			<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="#" title="Downvote, click again to undo">
 				<i class="fa fa-angle-down"></i>
 			</a>
@@ -158,27 +158,25 @@
 	$(".up").click(function(e) {
 		e.preventDefault();
 		$.get("{{url_for('posts.rate', uuid=post.uuid, rating='1')}}", function(data){
-			rating = parseInt($(".middle").attr("rating"));
-			if (data === 'True') {
+			$(".down").removeClass('rated');
+			if (data['rating'] === 'True') {
 				$(".up").addClass('rated');
-				$(".middle").text(rating + 1);
 			} else {
 				$(".up").removeClass('rated');
-				$(".middle").text(rating);
 			}
+			$(".middle").text(data['rating_delta']);
 		});
 	});
 	$(".down").click(function(e) {
 		e.preventDefault();
 		$.get("{{url_for('posts.rate', uuid=post.uuid, rating='0')}}", function(data){
-			rating = parseInt($(".middle").attr("rating"));
-			if (data === 'False') {
+			$(".up").removeClass('rated');
+			if (data['rating'] === 'False') {
 				$(".down").addClass('rated');
-				$(".middle").text(rating - 1);
 			} else {
 				$(".down").removeClass('rated');
-				$(".middle").text(rating);
 			}
+			$(".middle").text(data['rating_delta']);
 		});
 	});
 	</script>

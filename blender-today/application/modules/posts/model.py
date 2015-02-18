@@ -49,6 +49,10 @@ class Post(db.Model):
             return None
 
     @property
+    def rating_delta(self):
+        return self.rating.positive - self.rating.negative
+
+    @property
     def hot(self):
         return hot(self.rating.positive, self.rating.negative, self.creation_date)
 
