@@ -64,6 +64,7 @@ def view(category, uuid, slug):
     post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
     return render_template('posts/view.html',
+        rating=post.rating.positive - post.rating.negative,
         title='view',
         post=post,
         form=form,
