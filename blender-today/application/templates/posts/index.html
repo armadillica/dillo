@@ -132,9 +132,8 @@
 	$(".up").click(function(e) {
 		e.preventDefault();
 		var up = $(this);
-		var middle = $(this).next();
+		var rate = $(this).next();
 		var down = $(this).next().next();
-		console.log(middle);
 		$.get($(this).attr("href"), function(data){
 			down.removeClass('rated');
 			if (data['rating'] === "True") {
@@ -142,13 +141,13 @@
 			} else {
 				up.removeClass('rated');
 			}
-			middle.text(data['rating_delta']);
+			rate.text(data['rating_delta']);
 		});
 	});
 	$(".down").click(function(e) {
 		e.preventDefault();
 		var up = $(this).prev().prev();
-		var middle = $(this).prev();
+		var rate = $(this).prev();
 		var down = $(this);
 		$.get($(this).attr("href"), function(data){
 			up.removeClass('rated');
@@ -157,7 +156,7 @@
 			} else {
 				$(".down").removeClass('rated');
 			}
-			middle.text(data['rating_delta']);
+			rate.text(data['rating_delta']);
 		});
 	});
 
