@@ -50,6 +50,17 @@ roles_users = db.Table('roles_users',
     db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
     db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
+
+class UserOauth(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    service = db.Column(db.String(80), nullable=False)
+    service_user_id = db.Column(db.String(80))
+    token = db.Column(db.String(255))
+
+    def __str__(self):
+        return self.service_user_id
+
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)

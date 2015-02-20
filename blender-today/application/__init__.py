@@ -34,6 +34,17 @@ google = oauth.remote_app(
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
 
+facebook = oauth.remote_app(
+    'facebook',
+    consumer_key=app.config.get('SOCIAL_FACEBOOK')['app_id'],
+    consumer_secret=app.config.get('SOCIAL_FACEBOOK')['app_secret'],
+    request_token_params={'scope': 'email'},
+    base_url='https://graph.facebook.com',
+    request_token_url=None,
+    access_token_url='/oauth/access_token',
+    authorize_url='https://www.facebook.com/dialog/oauth'
+)
+
 imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
 
 from modules.admin import backend
