@@ -10,4 +10,11 @@ manager.add_command('db', MigrateCommand)
 def create_all_tables():
     db.create_all()
 
+@manager.command
+def runserver():
+    import os
+    os.environ['DEBUG'] = 'true'
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'
+    app.run()
+
 manager.run()

@@ -45,6 +45,18 @@ facebook = oauth.remote_app(
     authorize_url='https://www.facebook.com/dialog/oauth'
 )
 
+
+blender_id = oauth.remote_app(
+    'blender_id',
+    consumer_key=app.config.get('SOCIAL_BLENDER_ID')['app_id'],
+    consumer_secret=app.config.get('SOCIAL_BLENDER_ID')['app_secret'],
+    request_token_params={'scope': 'email'},
+    base_url=app.config['BLENDER_ID_BASE_URL'],
+    request_token_url=None,
+    access_token_url=app.config['BLENDER_ID_BASE_ACCESS_TOKEN_URL'],
+    authorize_url=app.config['BLENDER_ID_AUTHORIZE_URL']
+)
+
 imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
 
 from modules.admin import backend
