@@ -6,6 +6,7 @@ from flask import Blueprint
 from flask import redirect
 from flask import url_for
 from flask import jsonify
+from sqlalchemy import desc
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -33,27 +34,37 @@ posts = Blueprint('posts', __name__)
 
 
 @posts.route('/posts/')
-def index():
-    posts = Post.query.all()
-    posts.sort(key=lambda p: p.hot, reverse=True)
+@posts.route('/posts/<int:page>')
+def index(page=1):
+    #posts = Post.query.all()
+    #posts.sort(key=lambda p: p.hot, reverse=True)
+    posts = Post.query\
+        .join(PostRating)\
+        .order_by(desc(PostRating.hot))\
+        .paginate(page).items
     return render_template('posts/index.html',
         title='index',
         posts=posts)
 
 
 @posts.route('/<category>')
-def index_category(category):
-    posts = Post.query.join(Category).filter(Category.name == category).all()
-    posts.sort(key=lambda p: p.hot, reverse=True)
+@posts.route('/<category>/<int:page>')
+def index_category(category, page=1):
+    posts = Post.query\
+        .join(Category)\
+        .join(PostRating)\
+        .filter(Category.name == category)\
+        .order_by(desc(PostRating.hot))\
+        .paginate(page).items
     return render_template('posts/index.html',
         title='index_category',
         category=category,
         posts=posts)
 
 
-@posts.route('/posts/<category>/<uuid>/', defaults={'slug': None})
+@posts.route('/posts/<category>/<uuid>/')
 @posts.route('/posts/<category>/<uuid>/<slug>')
-def view(category, uuid, slug):
+def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     # Aggressive redirect if the URL does not have a slug
@@ -95,6 +106,7 @@ def submit():
             negative=0
             )
         db.session.add(post_rating)
+        post.update_hot()
         if form.picture.data:
             filename = secure_filename(form.picture.data.filename)
             filepath = '/tmp/' + filename
@@ -139,6 +151,7 @@ def rate(uuid, rating):
                 post.rating.negative -= 1
             db.session.delete(user_post_rating)
             db.session.commit()
+            post.update_hot()
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
         user_post_rating = UserPostRating(
@@ -151,5 +164,6 @@ def rate(uuid, rating):
             post.rating.negative += 1
         db.session.add(user_post_rating)
         db.session.commit()
+    post.update_hot()
 
     return jsonify(rating=str(user_post_rating.is_positive), rating_delta=post.rating_delta)

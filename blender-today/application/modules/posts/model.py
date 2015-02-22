@@ -56,6 +56,9 @@ class Post(db.Model):
     def hot(self):
         return hot(self.rating.positive, self.rating.negative, self.creation_date)
 
+    def update_hot(self):
+        self.rating.hot = hot(self.rating.positive, self.rating.negative, self.creation_date)
+        db.session.commit()
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -134,6 +137,7 @@ class PostRating(db.Model):
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
     positive = db.Column(db.Integer)
     negative = db.Column(db.Integer)
+    hot = db.Column(db.Float)
 
 
 class UserPostRating(db.Model):
