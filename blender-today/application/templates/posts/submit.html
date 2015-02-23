@@ -46,7 +46,7 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row post-submit-div-title">
 				<div class="col-md-12">
 					<div class="form-group">
 						{{ form.title(class='form-control post-submit-field-title', placeholder='Pick a Title') }}
@@ -59,7 +59,15 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row post-submit-div-url">
+				<div class="col-md-12">
+					<div class="form-group">
+						{{ form.url(class='form-control post-submit-field-url', placeholder='URL (with http://)') }}
+					</div>
+				</div>
+			</div>
+
+			<div class="row post-submit-div-category">
 				<div class="col-md-6">
 					What Category does it fit in?
 				</div>
@@ -70,26 +78,34 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-				{{ form.content(class='form-control post-submit-field-content', id='post_content') }}
+			<div class="row post-submit-div-content">
+				<div class="col-md-12">
+					<div class="form-group">
+						{{ form.content(class='form-control post-submit-field-content', id='post_content') }}
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
-				{{ form.url(class='form-control post-submit-field-url', placeholder='URL (with http://)') }}
+
+			<div class="row post-submit-div-picture">
+				<div class="col-md-12">
+					<div class="form-group">
+						{{ form.picture(class='form-control post-submit-field-picture') }}
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
-				{{ form.picture(class='form-control post-submit-field-picture') }}
-			</div>
-			<div class="post-submit-field-submit">
-				<button type="submit" class="btn btn-default btn-block btn-success submit" value="Go">
+
+			<div class="post-submit-div-submit">
+				<button type="submit" class="btn btn-default btn-block btn-success submit post-submit-field-submit" value="Go">
 					<i class="fa fa-check"></i> Submit
 				</button>
 			</div>
 
+			{# JUST 4 DEBUG
 					<select id="post_type_id" name="post_type_id" placeholder="Post Type">
 						<option value="1">Link</option>
 						<option value="2">Text</option>
 					</select>
-
+			#}
 		</form>
 	</div> <!-- post-submit -->
 </div>
@@ -114,18 +130,20 @@
 
 		$('.select-change').click(function(){ 
 			if ($('#post_type_id').val() == 1){
-				$('.post-submit-field-title').fadeIn();
-				$('.post-submit-field-category').fadeIn();
-				$('.post-submit-field-content').fadeOut();
-				$('.post-submit-field-url').fadeIn();
-				$('.post-submit-field-submit').fadeIn();
+				$('.post-submit-div-title').fadeIn();
+				$('.post-submit-div-category').fadeIn();
+				$('.post-submit-div-content').fadeOut();
+				$('.post-submit-div-picture').fadeOut();
+				$('.post-submit-div-url').fadeIn();
+				$('.post-submit-div-submit').fadeIn();
 			};
 			if ($('#post_type_id').val() == 2){
-				$('.post-submit-field-title').fadeIn();
-				$('.post-submit-field-category').fadeIn();
-				$('.post-submit-field-content').fadeIn();
-				$('.post-submit-field-url').fadeOut('fast');
-				$('.post-submit-field-submit').fadeIn();
+				$('.post-submit-div-title').fadeIn();
+				$('.post-submit-div-category').fadeIn();
+				$('.post-submit-div-content').fadeIn();
+				$('.post-submit-div-picture').fadeIn();
+				$('.post-submit-div-url').fadeOut('fast');
+				$('.post-submit-div-submit').fadeIn();
 			};
 		});
 		console.log($('#post_type_id').val());
