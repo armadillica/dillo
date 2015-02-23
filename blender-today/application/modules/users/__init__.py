@@ -172,6 +172,16 @@ def blender_id_authorized():
         resp.data['email'])
 
     login_user(user)
+
+    # Update or create roles
+    for role, is_assigned in resp.data['roles'].items():
+        r = user_datastore.find_or_create_role(role)
+        if is_assigned:
+            user_datastore.add_role_to_user(user, r)
+        else:
+            user_datastore.remove_role_from_user(user, r)
+    db.session.commit()
+
     return redirect(url_for('index'))
 
 
