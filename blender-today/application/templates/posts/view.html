@@ -44,6 +44,15 @@
 				<div class="col-md-1 col-sm-1 col-xs-2">
 					<div class="post-view-details-avatar">
 						<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
+						{% if post.user.has_role('network_member') %}
+						<div class="post-view-details-avatar-label">
+							{% if post.user.has_role('bfct_trainer') %}
+								<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+							{% else %}
+								<i class="network_member bf-network" title="Blender Network Member"></i>
+							{% endif %}
+						</div>
+						{% endif %}
 					</div>
 				</div>
 				<div class="col-md-11 col-sm-11 col-xs-10">
@@ -70,9 +79,22 @@
 					<a name="comment-{{comment.id}}"></a>
 					<div class="post-view-comments-item {{ loop.cycle('odd', 'even') }}">
 						<div class="row">
+
 							<div class="col-md-1 col-sm-1 col-xs-2">
-								<img class="img-circle" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
+								<div class="post-view-comments-avatar">
+									<img class="img-circle" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
+									{% if post.user.has_role('network_member') %}
+									<div class="post-view-comments-avatar-label">
+										{% if post.user.has_role('bfct_trainer') %}
+											<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+										{% else %}
+											<i class="network_member bf-network" title="Blender Network Member"></i>
+										{% endif %}
+									</div>
+									{% endif %}
+								</div>
 							</div>
+
 							<div class="col-md-11 col-sm-11 col-xs-10">
 								<div class="post-view-comments-item-content">
 									{{comment.content|safe}}

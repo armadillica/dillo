@@ -100,12 +100,11 @@
 				</button>
 			</div>
 
-			{# JUST 4 DEBUG
-					<select id="post_type_id" name="post_type_id" placeholder="Post Type">
-						<option value="1">Link</option>
-						<option value="2">Text</option>
-					</select>
-			#}
+				<select id="post_type_id" name="post_type_id" placeholder="Post Type" class="hidden">
+					<option value="1">Link</option>
+					<option value="2">Text</option>
+				</select>
+
 		</form>
 	</div> <!-- post-submit -->
 </div>
@@ -115,14 +114,13 @@
 	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
 	<script type="text/javascript">
 
- {#
 	CKEDITOR.replace( 'post_content', {
 		removePlugins: 'elementspath',
 		resize_enabled: false
 	});
 
 	CKEDITOR.config.forcePasteAsPlainText = true;
-#}
+
 		$('.select-change').click(function(){ 
 		    $('#post_type_id').val($(this).data('val')).trigger('change');
 		    console.log($('#post_type_id').val());

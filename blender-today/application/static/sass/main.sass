@@ -218,12 +218,6 @@ a.logo
 	line-height: 1.3em
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
 
-.post-view-avatar
-	float: left
-	display: block
-	padding-top: 10px
-	margin: 0 15px
-
 
 .post-view-rate
 	float: left
@@ -249,7 +243,7 @@ a.logo
 	font-size: 1.1em
 	line-height: 1.8em
 	padding: 10px 15px 0 15px
-	margin: 0 0 0 55px
+	margin: 0 10px 55px 55px
 
 .post-view-content p
 	margin-bottom: 25px
@@ -288,6 +282,64 @@ a.logo
 	& .author
 		display: block
 		font-size: 1.2em
+
+.post-view-details-avatar,
+.post-view-comments-avatar
+	position: relative
+
+.post-view-details-avatar img,
+.post-view-comments-avatar img
+	background: white
+	+box-shadow(2px, 2px, 0, black, .1)
+
+.post-view-details-avatar img
+	max-width: 70px
+	padding: 3px
+
+.post-view-comments-avatar img
+	max-width: 60px
+	padding: 2px
+
+.post-view-details-avatar-label,
+.post-view-comments-avatar-label
+	padding: 0
+	position: absolute
+	display: block
+	bottom: 0
+	background: white
+	+border-radius(50%)
+	& i
+		position: relative
+		&.network_member
+			color: #d91b5c
+		&.bfct_trainer
+			color: #40b0e0
+			font-size: 0.9em
+
+.post-view-details-avatar-label
+	width: 23px
+	height: 23px
+	left: 42px
+	+box-shadow(2px, 2px, 0, black, .1)
+	& i
+		font-size: 1.4em
+		left: 4px
+		top: 1px
+
+
+.post-view-comments-avatar-label
+	width: 20px
+	height: 20px
+	left: 42px
+	+box-shadow(2px, 2px, 0, black, .05)
+	& i
+		left: 3px
+		bottom: 1px
+		&.bfct_trainer
+			font-size: 0.8em
+			left: 4px
+
+
 
 .post-view-comments
 	padding: 0
