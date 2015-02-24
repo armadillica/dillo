@@ -21,7 +21,8 @@ class User(db.Model, UserMixin):
     last_login_ip = db.Column(db.String(100))
     current_login_ip = db.Column(db.String(100))
     login_count = db.Column(db.Integer)
-    
+
+    karma = db.relationship('UserKarma', backref=db.backref('user'), uselist=False)
     roles = db.relationship('Role', secondary='roles_users',
                             backref=db.backref('users', lazy='dynamic'))
 
@@ -31,6 +32,10 @@ class User(db.Model, UserMixin):
         return "https://www.gravatar.com/avatar/" + \
             hashlib.md5(self.email.lower()).hexdigest() + \
             "?" + urllib.urlencode(parameters)
+
+    def update_karma(self):
+        self.karma.value = self.karma.positive - self.karma.negative
+        db.session.commit()
 
     # Required for administrative interface
     def __str__(self):
@@ -60,6 +65,17 @@ class UserOauth(db.Model):
 
     def __str__(self):
         return self.service_user_id
+
+
+class UserKarma(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    positive = db.Column(db.Integer(), default=0)
+    negative = db.Column(db.Integer(), default=0)
+    value = db.Column(db.Integer(), default=0)
+
+    def __str__(self):
+        return str(self.value)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)

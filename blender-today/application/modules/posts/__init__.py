@@ -139,19 +139,26 @@ def rate(uuid, rating):
             if user_post_rating.is_positive:
                 post.rating.positive += 1
                 post.rating.negative -= 1
+                post.user.karma.positive += 5
+                post.user.karma.negative -= 5
             else:
                 post.rating.negative += 1
                 post.rating.positive -= 1
+                post.user.karma.negative += 5
+                post.user.karma.positive -= 5
             db.session.commit()
         else:
             # Remove existing vote
             if user_post_rating.is_positive:
                 post.rating.positive -= 1
+                post.user.karma.positive -= 5
             else:
                 post.rating.negative -= 1
+                post.user.karma.negative -= 5
             db.session.delete(user_post_rating)
             db.session.commit()
             post.update_hot()
+            post.user.update_karma()
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
         user_post_rating = UserPostRating(
@@ -160,10 +167,13 @@ def rate(uuid, rating):
             is_positive=rating)
         if user_post_rating.is_positive:
             post.rating.positive += 1
+            post.user.karma.positive += 5
         else:
             post.rating.negative += 1
+            post.user.karma.negative -= 5
         db.session.add(user_post_rating)
         db.session.commit()
     post.update_hot()
+    post.user.update_karma()
 
     return jsonify(rating=str(user_post_rating.is_positive), rating_delta=post.rating_delta)

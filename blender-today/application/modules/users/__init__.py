@@ -15,6 +15,7 @@ from application import facebook
 from application import blender_id
 from application.modules.users.model import user_datastore
 from application.modules.users.model import UserOauth
+from application.modules.users.model import UserKarma
 
 
 def user_get_or_create(email, first_name, last_name, service, service_user_id):
@@ -51,12 +52,15 @@ def user_get_or_create(email, first_name, last_name, service, service_user_id):
             )
         db.session.commit()
 
-
         user_oauth = UserOauth(
             user_id=user.id,
             service=service,
             service_user_id=service_user_id)
         db.session.add(user_oauth)
+
+        user_karma = UserKarma(
+            user_id=user.id)
+        db.session.add(user_karma)
         db.session.commit()
 
     return user

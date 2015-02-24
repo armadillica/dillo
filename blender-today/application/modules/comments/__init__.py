@@ -64,18 +64,25 @@ def rate(comment_id, rating):
             if user_comment_rating.is_positive:
                 comment.rating.positive += 1
                 comment.rating.negative -= 1
+                comment.user.karma.positive += 1
+                comment.user.karma.negative -= 1
             else:
                 comment.rating.negative += 1
                 comment.rating.positive -= 1
+                comment.user.karma.negative += 1
+                comment.user.karma.positive -= 1
             db.session.commit()
         else:
             # Remove existing rate
             if user_comment_rating.is_positive:
                 comment.rating.positive -= 1
+                comment.user.karma.positive -= 1
             else:
                 comment.rating.negative -= 1
+                comment.user.karma.negative -= 1
             db.session.delete(user_comment_rating)
             db.session.commit()
+            comment.user.update_karma()
             return jsonify(rating=None,
                 rating_delta=comment.rating_delta)
     else:
@@ -85,10 +92,13 @@ def rate(comment_id, rating):
             is_positive=rating)
         if user_comment_rating.is_positive:
             comment.rating.positive += 1
+            comment.user.karma.positive += 1
         else:
             comment.rating.negative += 1
+            comment.user.karma.positive += 1
         db.session.add(user_comment_rating)
         db.session.commit()
+        comment.user.update_karma()
 
     return jsonify(rating=str(user_comment_rating.is_positive),
         rating_delta=comment.rating_delta)
