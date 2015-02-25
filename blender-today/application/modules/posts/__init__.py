@@ -7,6 +7,7 @@ from flask import redirect
 from flask import url_for
 from flask import jsonify
 from sqlalchemy import desc
+from flask import abort
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -117,7 +118,8 @@ def submit():
             os.remove(filepath)
         db.session.commit()
 
-        return redirect(url_for('posts.view', category=post.category.url, uuid=post.uuid))
+        return redirect(url_for('posts.view',
+            category=post.category.url, uuid=post.uuid))
 
     return render_template('posts/submit.html',
         title='submit',
@@ -132,7 +134,8 @@ def rate(uuid, rating):
     # Check if post has been rated
     user_post_rating = UserPostRating.query\
         .filter_by(post_id=post.id, user_id=current_user.id).first()
-    # If a rating exists, we update the the user post record and the post record accordingly
+    # If a rating exists, we update the the user post record and the post
+    # record accordingly
     if user_post_rating:
         if user_post_rating.is_positive != rating:
             user_post_rating.is_positive = rating
@@ -161,6 +164,7 @@ def rate(uuid, rating):
             post.user.update_karma()
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
+        # if the post has not bee rated, create rating
         user_post_rating = UserPostRating(
             user_id=current_user.id,
             post_id=post.id,
@@ -170,10 +174,58 @@ def rate(uuid, rating):
             post.user.karma.positive += 5
         else:
             post.rating.negative += 1
-            post.user.karma.negative -= 5
+            post.user.karma.negative += 5
         db.session.add(user_post_rating)
         db.session.commit()
     post.update_hot()
     post.user.update_karma()
 
-    return jsonify(rating=str(user_post_rating.is_positive), rating_delta=post.rating_delta)
+    return jsonify(rating=str(user_post_rating.is_positive),
+        rating_delta=post.rating_delta)
+
+
+@posts.route('/posts/<uuid>/flag/<int:flag>')
+@login_required
+def flag(uuid, flag):
+    post_id = decode_id(uuid)
+    post = Post.query.get_or_404(post_id)
+    # Get post
+    user_post_rating = UserPostRating.query\
+        .filter_by(post_id=post.id, user_id=current_user.id).first()
+    # Check if user rated the post
+    if user_post_rating:
+        # Check if the flag is different from the current one (prevents repeat)
+        if user_post_rating.is_flagged != flag:
+            user_post_rating.is_flagged = flag
+            # Update user karma
+            if flag == 1:
+                post.user.karma.negative += 5
+            else:
+                post.user.karma.negative -= 5
+    else:
+        # We only consider if flag == 1, when the post has been flagged
+        if flag == 1:
+            user_post_rating = UserPostRating(
+                user_id=current_user.id,
+                post_id=post.id,
+                is_flagged=flag)
+            post.user.karma.negative += 5
+            db.session.add(user_post_rating)
+        else:
+            # Unflagging is not allowed if the user did not flag first
+            return abort(403)
+
+    # Commit changes so far
+    db.session.commit()
+
+    # Check if the post has been flagged multiple times, currently 
+    # the value is hardcoded to 5
+    flags = UserPostRating.query\
+        .filter_by(post_id=post.id, is_flagged=True)\
+        .all()
+    if len(flags) > 5:
+        post.status = 'flagged'
+    post.user.update_karma()
+
+    return jsonify(is_flagged=str(flag))
+

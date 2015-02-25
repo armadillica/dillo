@@ -12,9 +12,12 @@ from application.helpers.sorting import confidence
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(6), unique=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
-    category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=False)
-    post_type_id = db.Column(db.Integer(), db.ForeignKey('post_type.id'), nullable=False)
+    user_id = db.Column(db.Integer(),
+        db.ForeignKey('user.id'), nullable=False)
+    category_id = db.Column(db.Integer(),
+        db.ForeignKey('category.id'), nullable=False)
+    post_type_id = db.Column(db.Integer(),
+        db.ForeignKey('post_type.id'), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     slug = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)
@@ -22,6 +25,7 @@ class Post(db.Model):
     picture_deletehash = db.Column(db.String(80))
     creation_date = db.Column(db.DateTime(), default=datetime.datetime.now)
     edit_date = db.Column(db.DateTime())
+    status = db.Column(db.String(12), default='published')
 
     user = db.relationship('User', backref=db.backref('post'), uselist=False)
     category = db.relationship('Category', uselist=False)
@@ -57,7 +61,8 @@ class Post(db.Model):
         return hot(self.rating.positive, self.rating.negative, self.creation_date)
 
     def update_hot(self):
-        self.rating.hot = hot(self.rating.positive, self.rating.negative, self.creation_date)
+        self.rating.hot = hot(
+            self.rating.positive, self.rating.negative, self.creation_date)
         db.session.commit()
 
 class Category(db.Model):
@@ -83,19 +88,39 @@ class PostType(db.Model):
 
 
 class Comment(db.Model):
+    """The comment model.
+    Besides the similarties with the post model, it features the parent_id row,
+    which allows nested comments. While nesting can be unlimited, we allow only
+    one level of nesting.
+
+    Comment status can be:
+    - published (the default)
+    - deleted
+    - flagged
+    - pinned
+    - edited (maybe - we will not preserve history)
+
+    In general the edit date refers to when the current status was assigned.
+    """
     id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
+    post_id = db.Column(db.Integer(),
+        db.ForeignKey('post.id'), nullable=False)
     uuid = db.Column(db.String(6), unique=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer(),
+        db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.DateTime(), default=datetime.datetime.now)
     edit_date = db.Column(db.DateTime())
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
+    status = db.Column(db.String(12), default='published')
     parent = db.relationship('Comment', 
         remote_side=[id], backref=db.backref('children', order_by=creation_date))
-    user = db.relationship('User', backref=db.backref('comments'))
-    post = db.relationship('Post', backref=db.backref('comments', cascade='all,delete'))
-    rating = db.relationship('CommentRating', cascade='all,delete', uselist=False)
+    user = db.relationship('User',
+        backref=db.backref('comments'))
+    post = db.relationship('Post',
+        backref=db.backref('comments', cascade='all,delete'))
+    rating = db.relationship('CommentRating',
+        cascade='all,delete', uselist=False)
 
     def __str__(self):
         return str(self.uuid)
@@ -121,15 +146,19 @@ class Comment(db.Model):
 
 class CommentRating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    comment_id = db.Column(db.Integer(), db.ForeignKey('comment.id'), nullable=False)
+    comment_id = db.Column(db.Integer(),
+        db.ForeignKey('comment.id'), nullable=False)
     positive = db.Column(db.Integer)
     negative = db.Column(db.Integer)
 
 
 class UserCommentRating(db.Model):
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), primary_key=True)
-    comment_id = db.Column(db.Integer(), db.ForeignKey('comment.id'), primary_key=True)
+    user_id = db.Column(db.Integer(),
+        db.ForeignKey('user.id'), primary_key=True)
+    comment_id = db.Column(db.Integer(),
+        db.ForeignKey('comment.id'), primary_key=True)
     is_positive = db.Column(db.Boolean())
+    is_flagged = db.Column(db.Boolean())
 
 
 class PostRating(db.Model):
@@ -144,3 +173,4 @@ class UserPostRating(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), primary_key=True)
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), primary_key=True)
     is_positive = db.Column(db.Boolean())
+    is_flagged = db.Column(db.Boolean())
