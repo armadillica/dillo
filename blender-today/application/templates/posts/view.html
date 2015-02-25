@@ -24,6 +24,10 @@
 			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
 				{{post.title}}
 			</a>
+			<a class="flag{% if post.user_rating and post.user_rating.is_flagged %} rated{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
+				<i class="fa fa-flag"></i>
+			</a>
+			
 		</div>
 
 		<div class="clearfix"></div>
@@ -113,6 +117,9 @@
 									<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
 									<span class="separator"></span>
 									<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}"><i class="fa fa-link"></i></a>
+									<a class="post-view-comments-item-flag{% if comment.user_rating and not comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}">
+										<i class="fa fa-flag"></i>
+									</a>
 								</div>
 							</div>
 						</div> <!-- row -->

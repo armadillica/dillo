@@ -105,35 +105,29 @@ def rate(comment_id, rating):
         rating_delta=comment.rating_delta)
 
 
-@comments.route('/<int:comment_id>/flag/<int:flag>')
+@comments.route('/<int:comment_id>/flag')
 @login_required
-def flag(comment_id, flag):
+def flag(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     # Get comment
     user_comment_rating = UserCommentRating.query\
         .filter_by(comment_id=comment.id, user_id=current_user.id).first()
     # Check if user rated the comment
     if user_comment_rating:
-        # Check if the flag is different from the current one (prevents repeat)
-        if user_comment_rating.is_flagged != flag:
-            user_comment_rating.is_flagged = flag
-            # Update user karma
-            if flag == 1:
-                comment.user.karma.negative += 5
-            else:
-                comment.user.karma.negative -= 5
-    else:
-        # We only consider if flag == 1, when the comment has been flagged
-        if flag == 1:
-            user_comment_rating = UserCommentRating(
-                user_id=current_user.id,
-                comment_id=comment.id,
-                is_flagged=flag)
+        # If the comment was previously flagged
+        if user_comment_rating.is_flagged == True:
+            user_comment_rating.is_flagged = 0
             comment.user.karma.negative += 5
-            db.session.add(user_comment_rating)
         else:
-            # Unflagging is not allowed if the user did not flag first
-            return abort(403)
+            user_comment_rating.is_flagged = 1
+            comment.user.karma.negative -= 5
+    else:
+        user_comment_rating = UserCommentRating(
+            user_id=current_user.id,
+            comment_id=comment.id,
+            is_flagged=True)
+        comment.user.karma.negative += 5
+        db.session.add(user_comment_rating)
 
     # Commit changes so far
     db.session.commit()
@@ -147,4 +141,4 @@ def flag(comment_id, flag):
         comment.status = 'flagged'
     comment.user.update_karma()
 
-    return jsonify(is_flagged=str(flag))
+    return jsonify(is_flagged=user_comment_rating.is_flagged)
