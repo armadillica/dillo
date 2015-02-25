@@ -21,6 +21,8 @@ class User(db.Model, UserMixin):
     last_login_ip = db.Column(db.String(100))
     current_login_ip = db.Column(db.String(100))
     login_count = db.Column(db.Integer)
+    signup_date = db.Column(db.DateTime(), default=datetime.datetime.now)
+
 
     karma = db.relationship('UserKarma', backref=db.backref('user'), uselist=False)
     roles = db.relationship('Role', secondary='roles_users',
