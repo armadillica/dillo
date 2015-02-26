@@ -204,42 +204,42 @@ a.logo
 	&.text
 		background-color: lighten($color_brand_main, 5%)
 	&:hover
-		width: 70px
-		height: 70px
-		margin: 8px -12px 0 0
 		color: rgba(white, 0.2)
 	+media-xs
+		font-size: 1.3em
 		width: 40px
 		height: 40px
-		margin: 12px -20px 0 0
-		&:hover
-			width: 50px
-			height: 50px
-			margin: 8px -12px 0 0
+		top: 15px
+		right: -5px
 	+media-sm
-		width: 40px
-		height: 40px
-		margin: 12px -12px 0 0
+		width: 60px
+		height: 60px
+		top: 15px
+		right: 5px
 		&:hover
-			width: 50px
-			height: 50px
-			margin: 8px -12px 0 0
+			+border-radius(3px)
 	+media-md
 		width: 60px
 		height: 60px
-		margin: 12px -15px 0 0
+		top: 15px
+		right: 3px
 		&:hover
+			+border-radius(3px)
 			width: 70px
 			height: 70px
-			margin: 8px -12px 0 0
+			top: 8px
+			right: -2px
 	+media-lg
 		width: 60px
 		height: 60px
-		margin: 12px -8px 0 0
+		top: 15px
+		right: 10px
 		&:hover
+			+border-radius(3px)
 			width: 70px
 			height: 70px
-			margin: 8px -12px 0 0
+			top: 8px
+			right: 5px
 
 .post-index-end
 	color: darken($color_background, 5%)
@@ -562,6 +562,9 @@ footer
 .navbar-nav .open .dropdown-menu
 	border-bottom-left-radius: 3px !important
 	border-bottom-right-radius: 3px !important
+
+.navbar-submit a:hover
+	cursor: pointer
 
 /* Not really an override, it's our cool logout stuff */
 .nav-logout-widget
