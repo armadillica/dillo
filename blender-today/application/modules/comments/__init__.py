@@ -1,3 +1,4 @@
+import datetime
 from flask import render_template
 from flask import Blueprint
 from flask import redirect
@@ -147,3 +148,39 @@ def flag(comment_id):
     comment.user.update_karma()
 
     return jsonify(is_flagged=user_comment_rating.is_flagged)
+
+
+@comments.route('/<int:comment_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    if current_user.id == comment.user.id:
+        form = CommentForm()
+        post = Post.query.get_or_404(post_id)
+
+        if form.validate_on_submit():
+            comment.content = form.content.data
+            comment.status = 'edited'
+            comment.edited = datetime.datetime.now
+            db.session.commit()
+
+        return jsonify(comment=dict(
+            content=comment.content))
+    else:
+        return abort(403)
+
+
+@comments.route('/<int:comment_id>/delete')
+@login_required
+def delete(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    if current_user.id == comment.user.id:
+        post = Post.query.get_or_404(post_id)
+        comment.status = 'deleted'
+        comment.edited = datetime.datetime.now
+        db.session.commit()
+
+        return jsonify(comment=dict(
+            status=comment.status))
+    else:
+        return abort(403)
