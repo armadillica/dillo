@@ -8,6 +8,7 @@
     <meta name="keywords" content="news, community, blender, animation, 3d" />
     <meta name="description" content="Community-driven Blender News"/>
     <meta name="author" content="Blender Today"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {% if config.USE_ASSETS_CDN %}
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
@@ -131,7 +132,7 @@
       <div id="submit" class="dialog">
         <div class="dialog__overlay"></div>
           <div class="dialog__content">
-            <iframe src="{{ url_for('posts.submit') }}" style="border: none; width: 100%; height: 400px"></iframe>
+            {% include 'posts/form.html' %}
             <button class="action" data-dialog-close>
               <i class="fa fa-times"></i>
             </button>
@@ -164,8 +165,41 @@
 
     <script src="{{url_for('static', filename='js/dialogFx.js')}}"></script>
     <script src="{{url_for('static', filename='js/classie.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery-fileupload.min.js')}}"></script>
+    <script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
+    <script type="text/javascript">
+      var csrftoken = $('meta[name=csrf-token]').attr('content');
 
-    <script>
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+          }
+        }
+      });
+
+      $("form").on("submit", function (event) {
+          event.preventDefault();
+          //$('#edit_notifications').html('<i>Updating</i>');
+          var data = $(this).serialize();
+          url = $(this).attr('action');
+          var formData = new FormData($(this)[0]);
+          $.ajax( {
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false
+              } )
+          .done(function() {
+              window.location = data['post_url'];
+          })
+          .fail(function() {
+              //$('#edit_notifications').html('Error: could not update asset');
+          });
+      });
+
       (function() {
 
         var dlgtrigger = document.querySelector( '[data-dialog]' ),
@@ -175,10 +209,45 @@
         dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
 
       })();
+
+      CKEDITOR.replace( 'post_content', {
+        removePlugins: 'elementspath',
+        resize_enabled: false
+      });
+
+      CKEDITOR.config.forcePasteAsPlainText = true;
+      $('.select-change').click(function(){ 
+          $('#post_type_id').val($(this).data('val')).trigger('change');
+      })
+
+      $('.select-change').click(function(){ 
+        if ($('#post_type_id').val() == 1){
+          $('.post-submit-link').show();
+          $('.post-submit-article').hide();
+          // $('.post-submit-div-title').fadeIn();
+          // $('.post-submit-div-category').fadeIn();
+          // $('.post-submit-div-content').fadeOut();
+          // $('.post-submit-div-picture').fadeOut();
+          // $('.post-submit-div-url').fadeIn();
+          // $('.post-submit-div-submit').fadeIn();
+        };
+        if ($('#post_type_id').val() == 2){
+          $('.post-submit-link').hide();
+          $('.post-submit-article').show();
+          // $('.post-submit-div-title').fadeIn();
+          // $('.post-submit-div-category').fadeIn();
+          // $('.post-submit-div-content').fadeIn();
+          // $('.post-submit-div-picture').fadeIn();
+          // $('.post-submit-div-url').fadeOut('fast');
+          // $('.post-submit-div-submit').fadeIn();
+        };
+      });
     </script>
 
   {% block footer_scripts %}
   {% endblock %}
+
+
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

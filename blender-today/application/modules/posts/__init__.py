@@ -118,6 +118,10 @@ def submit():
             os.remove(filepath)
         db.session.commit()
 
+        return jsonify(
+            post_url=url_for('posts.view',
+                category=post.category.url, uuid=post.uuid))
+
         return redirect(url_for('posts.view',
             category=post.category.url, uuid=post.uuid))
 

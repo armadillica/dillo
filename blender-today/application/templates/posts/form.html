@@ -1,0 +1,99 @@
+<form id="submit_post_form" role="form" method="POST" enctype="multipart/form-data" action="{{url_for('posts.submit')}}">
+    {{ submit_post_form.hidden_tag() }}
+
+    {# What type is it? #}
+    <div class="row">
+        <div class="col-md-12">
+            <h3>What type of post is it?</h3>
+        </div>
+    </div>
+    <div class="row post-submit-field-type">
+        <div class="col-md-6">
+            <a data-role="button" data-val="1" class="select-change post-submit-field-type-button">
+                <div class="post-submit-field-type-button-icon">
+                    <span class="fa-stack fa-2x fa-lg">
+                        <i class="fa fa-circle-thin fa-stack-2x"></i>
+                        <i class="fa fa-stack-1x fa-link"></i>
+                    </span>
+                </div>
+                <div class="post-submit-field-type-button-text">
+                    It's a Link
+                    <small>The title will link directly there</small>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a data-role="button" data-val="2" class="select-change post-submit-field-type-button">
+                <div class="post-submit-field-type-button-icon">
+                    <span class="fa-stack fa-2x fa-lg">
+                        <i class="fa fa-circle-thin fa-stack-2x"></i>
+                        <i class="fa fa-stack-1x fa-file-text-o"></i>
+                    </span>
+                </div>
+                <div class="post-submit-field-type-button-text">
+                    It's an Article
+                    <small>Type in </small>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ submit_post_form.title(class='form-control post-submit-field-title', placeholder='Pick a Title') }}
+                {% if submit_post_form.title.errors %}
+                    <ul class="error">
+                        {% for error in submit_post_form.title.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row post-submit-div-url post-submit-link">
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ submit_post_form.url(class='form-control post-submit-field-url', placeholder='URL (with http://)') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-md-6">
+            What Category does it fit in?
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ submit_post_form.category_id(class='form-control post-submit-field-category', placeholder='Category') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row post-submit-div-content post-submit-article">
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ submit_post_form.content(class='form-control post-submit-field-content', id='post_content') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ submit_post_form.picture(class='form-control post-submit-field-picture') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="post-submit-div-submit">
+        <button type="submit" class="btn btn-default btn-block btn-success submit post-submit-field-submit" value="Go">
+            <i class="fa fa-check"></i> Submit
+        </button>
+    </div>
+
+        <select id="post_type_id" name="post_type_id" placeholder="Post Type" class="hidden">
+            <option value="1">Link</option>
+            <option value="2">Text</option>
+        </select>
+</form>

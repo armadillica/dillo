@@ -77,3 +77,13 @@ app.register_blueprint(posts)
 app.register_blueprint(comments, url_prefix='/comments')
 
 from modules.users.model import user_datastore
+
+@app.context_processor
+def inject_submit_post_form():
+    from application.modules.posts.model import Category
+    from application.modules.posts.forms import PostForm
+    from application.modules.posts.model import PostType
+    form = PostForm()
+    form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
+    form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
+    return {'submit_post_form' : form}
