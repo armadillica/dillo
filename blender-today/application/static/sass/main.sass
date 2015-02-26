@@ -158,15 +158,33 @@ a.logo
 		text-decoration: none
 	.up:hover, .up.rated
 		color: $color_upvote
-	& .up:hover
-		top: -2px
 	.down:hover, .down.rated
 		color: $color_downvote
-	& .down:hover
-		top: 2px
+
+.ink
+	display: block
+	position: absolute
+	border: 2px solid $color_brand_main
+	background: transparent
+	border-radius: 100%
+	transform: scale(0)
+	&.animate
+		animation: ripple 0.65s ease-out
+
+.up .ink
+	background: $color_upvote
+
+.down .ink
+	background: $color_downvote
+
+@keyframes ripple
+	100%
+		opacity: 0
+		transform: scale(1)
+
 
 .post-index-item-type
-	display: block
+	display: inline-block
 	float: right
 	font-size: 1.8em
 	width: 60px
@@ -174,16 +192,8 @@ a.logo
 	color: white
 	background-color: lighten($color_text, 55%)
 	text-align: center
-	position: relative
-	+media-xs
-		margin: 12px -20px 0 0
-	+media-sm
-		margin: 12px -12px 0 0
-	+media-md
-		margin: 12px -15px 0 0
-	+media-lg
-		margin: 12px -8px 0 0
-	+transition(opacity, 25ms, ease-in)
+	position: absolute
+	+transition(all, 0.2s, ease-out)
 	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
 	& i
@@ -193,9 +203,43 @@ a.logo
 		background-color: lighten($color_brand_secondary, 10%)
 	&.text
 		background-color: lighten($color_brand_main, 5%)
-
+	&:hover
+		width: 70px
+		height: 70px
+		margin: 8px -12px 0 0
+		color: rgba(white, 0.2)
 	+media-xs
-		margin-left: 10px
+		width: 40px
+		height: 40px
+		margin: 12px -20px 0 0
+		&:hover
+			width: 50px
+			height: 50px
+			margin: 8px -12px 0 0
+	+media-sm
+		width: 40px
+		height: 40px
+		margin: 12px -12px 0 0
+		&:hover
+			width: 50px
+			height: 50px
+			margin: 8px -12px 0 0
+	+media-md
+		width: 60px
+		height: 60px
+		margin: 12px -15px 0 0
+		&:hover
+			width: 70px
+			height: 70px
+			margin: 8px -12px 0 0
+	+media-lg
+		width: 60px
+		height: 60px
+		margin: 12px -8px 0 0
+		&:hover
+			width: 70px
+			height: 70px
+			margin: 8px -12px 0 0
 
 .post-index-end
 	color: darken($color_background, 5%)
