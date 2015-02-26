@@ -41,10 +41,15 @@ def submit(post_id):
             )
         db.session.add(comment_rating)
         db.session.commit()
-        return redirect(url_for('posts.view',
-            category=post.category.url, 
-            uuid=post.uuid))
-
+    return jsonify(comment=dict(
+        user_name="{0} {1}".format(
+            comment.user.first_name, comment.user.last_name),
+        gravatar=comment.user.gravatar(),
+        content=comment.content,
+        comment_id=comment.id,
+        post_uuid=post.uuid,
+        creation_date=comment.pretty_creation_date,
+        ))
     return redirect(url_for('posts.view',
         category=post.category.url,
         uuid=post.uuid))

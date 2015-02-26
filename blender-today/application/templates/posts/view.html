@@ -1,6 +1,10 @@
 {% extends 'layout.html' %}
 {% block page_title %}{{post.title}}{% endblock %}
 
+{% block header %}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+{% endblock %}
+
 {% block body %}
 <div class="col-md-9">
 
@@ -147,7 +151,7 @@
 					</div>
 					<div class="col-md-11">
 						{% if not current_user.is_anonymous() %}
-						<form role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
+						<form id="form-comment" role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
 						{{ form.hidden_tag() }}
 						<div class="form-group">
 							{{ form.content(class='form-control', id='post_comment') }}
@@ -158,7 +162,7 @@
 							{% endif %}
 						</div>
 
-						<button type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+						<button id="submit-post" type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
 							<i class="fa fa-check"></i> Submit Comment
 						</button>
 
@@ -174,15 +178,29 @@
 
 {% block footer_scripts %}
 
+
 	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
 	<script type="text/javascript">
 
-	CKEDITOR.replace( 'post_comment', {
+	CKEDITOR.replace('post_comment', {
 			removePlugins: 'elementspath',
 			resize_enabled: false
 	});
 
 	CKEDITOR.config.forcePasteAsPlainText = true;
+
+	CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
+
+
+	var csrftoken = $('meta[name=csrf-token]').attr('content')
+
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+			if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken)
+			}
+		}
+	})
 
 	var upvote = function(up, down, rate) {
 		$.get(up.attr("href"), function(data){
@@ -228,6 +246,51 @@
 		e.preventDefault();
 		$(this).toggleClass('flagged');
 		$.get($(this).attr("href"));
+	});
+
+	var print_comment = function(comment) {
+	comment = 
+	'<div class="post-view-comments-item even"> \
+		<div class="row"> \
+			<div class="col-md-1 col-sm-1 col-xs-2">\
+				<div class="post-view-comments-avatar">\
+					<img src="' + comment['gravatar'] + '" class="img-circle">\
+				</div>\
+			</div>\
+			<div class="col-md-11 col-sm-11 col-xs-10">\
+				<div class="post-view-comments-item-content">\
+					' + comment['content'] + '\
+				</div>\
+				<div class="post-view-comments-item-details">\
+					<a href="/comments/' + comment['comment_id'] + '/rate/1" class="post-view-comments-item-rate comment-up up">\
+						<i class="fa fa-chevron-up"></i>\
+					</a>\
+					<a href="/comments/' + comment['comment_id'] + '/rate/0" class="post-view-comments-item-rate down">\
+						<i class="fa fa-chevron-down"></i>\
+					</a>\
+					<span class="separator"></span>\
+					<span class="rating">0</span>\
+					<span class="separator"></span>\
+					<span>' + comment['creation_date'] + '</span>\
+					<small>by</small> ' + comment['user_name'] + '\
+					<span class="separator"></span>\
+					<a href="/posts/news/' + comment['post_uuid'] + '/#comment-' + comment['comment_id'] + '"><i class="fa fa-link"></i></a>\
+					<a href="/comments/' + comment['comment_id'] + '/flag" class="post-view-comments-item-flag flag">\
+						<i class="fa fa-flag"></i>\
+					</a>\
+				</div>\
+			</div>\
+		</div> \
+	</div>';
+	return comment;
+	}
+
+	$("form").on("submit", function( event ) {
+		event.preventDefault();
+		$.post($(this).attr('action'), $(this).serialize(),function(data){
+			c = print_comment(data['comment']);
+			$(".post-view-comments-submit").before(c);                  
+		});
 	});
 
 

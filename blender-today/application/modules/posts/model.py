@@ -11,7 +11,7 @@ from application.helpers.sorting import confidence
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String(6), unique=True)
+    uuid = db.Column(db.String(6))
     user_id = db.Column(db.Integer(),
         db.ForeignKey('user.id'), nullable=False)
     category_id = db.Column(db.Integer(),
@@ -105,7 +105,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer(),
         db.ForeignKey('post.id'), nullable=False)
-    uuid = db.Column(db.String(6), unique=True)
+    uuid = db.Column(db.String(6))
     user_id = db.Column(db.Integer(),
         db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)

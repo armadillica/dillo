@@ -6,6 +6,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_oauthlib.client import OAuth
 from imgurpython import ImgurClient
+from flask_wtf.csrf import CsrfProtect
 
 import config
 
@@ -18,6 +19,7 @@ app.config.from_object(config.Deployment)
 db = SQLAlchemy(app)
 mail = Mail(app)
 oauth = OAuth(app)
+CsrfProtect(app)
 
 # Config at https://console.developers.google.com/
 google = oauth.remote_app(
