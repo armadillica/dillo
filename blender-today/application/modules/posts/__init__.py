@@ -20,7 +20,6 @@ from application.modules.posts.model import Category
 from application.modules.posts.model import Post
 from application.modules.posts.model import PostRating
 from application.modules.posts.model import UserPostRating
-from application.modules.posts.model import Category
 from application.modules.posts.model import PostType
 from application.modules.posts.model import Comment
 from application.modules.posts.model import CommentRating

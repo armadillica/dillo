@@ -21,7 +21,6 @@
     <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
     {% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
 
     <!-- IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -45,13 +44,6 @@
 
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-menu">
-            <span class="sr-only">Toggle navigation</span>
-            <i class="fa fa-bars"></i>
-          </button>
-          <a class="logo" href="{{url_for('index')}}"><i class="fa fa-coffee"></i> Blender.Today</a>
-        </div>
 
         <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
           <ul class="nav navbar-nav navbar-right">

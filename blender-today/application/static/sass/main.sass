@@ -321,14 +321,24 @@ a.logo
 
 .post-view-details-meta
 	margin-left: 10px
+	position: relative
 	+media-xs
 		margin-left: 0
 	+media-sm
 		margin-left: 25px
 
-	& .author
+	& .author-name
 		display: block
 		font-size: 1.2em
+	& .author-roles
+		display: block
+		font-size: 0.9em
+	& .meta
+		position: absolute
+		top: 0
+		right: 0
+		display: block
+		font-size: 0.9em
 	& .flag:hover, & .flag:focus
 		text-decoration: none
 	& .flag:after
@@ -586,6 +596,34 @@ footer
 .navbar-nav .open .dropdown-menu
 	border-bottom-left-radius: 3px !important
 	border-bottom-right-radius: 3px !important
+
+/* Tooltips/Popovers */
+.popover .arrow
+	display: none
+
+.popover
+	font-family: $font_body
+	background-color: transparent
+	border: none
+	+box-shadow-none()
+	+border-radius(3px)
+
+.popover-title
+	background-color: $color_brand_main
+	color: white
+	font-size: 110%
+	+border-radius(0px)
+	display: none
+
+.popover-content
+	font-size: $font_size
+	background-color: $color_brand_main
+	color: white
+	padding: 6px 14px
+	border: thin solid darken($color_brand_main, 3%)
+	+border-radius(3px)
+	+text-shadow(1px, 1px, 0, black, 0.2)
+	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 
 .navbar-submit
 	font-family: $font_headings

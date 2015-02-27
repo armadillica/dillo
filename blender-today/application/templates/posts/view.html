@@ -17,7 +17,11 @@
 			<li class="active">{{post.title}}</li>
 		</ol>
 
-		<div class="post-view-rate">
+		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
+				{% if current_user.is_anonymous() %}
+				 data-toggle="popover" data-trigger="hover" data-placement="bottom"
+				 data-content="Please login to vote"
+				{% endif %}>
 			<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
 				<i class="fa fa-angle-up"></i>
 			</a>
@@ -63,17 +67,27 @@
 				</div>
 				<div class="col-md-11 col-sm-11 col-xs-10">
 					<div class="post-view-details-meta">
-						<span class="author">{{post.user.first_name}} {{post.user.last_name}}</span>
-						<span class="date">
-						Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+						<span class="author-name">{{post.user.first_name}} {{post.user.last_name}}</span>
+						<span class="author-roles">
+							{% if post.user.has_role('network_member') %}
+								Blender Network
+							{% endif %}
+							{% if post.user.has_role('bfct_trainer') %}
+								Blender Foundation Certified Trainer
+							{% endif %}	
 						</span>
-						<span class="separator"></span>
-						<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-							<i class="fa fa-link"></i>
-						</a>
-						<span class="separator"></span>
-						<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
-						</a>
+						<span class="meta">
+							<span class="date">
+							Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+							</span>
+							<span class="separator"></span>
+							<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+								<i class="fa fa-link"></i>
+							</a>
+							<span class="separator"></span>
+							<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
+							</a>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -183,10 +197,10 @@
 
 {% block footer_scripts %}
 
-
 	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
 	<script type="text/javascript">
 
+	{% if not current_user.is_anonymous() %}
 	CKEDITOR.replace('post_comment', {
 			removePlugins: 'elementspath',
 			resize_enabled: false
@@ -196,6 +210,7 @@
 
 	CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
 
+	{% endif %}
 
 	var upvote = function(up, down, rate) {
 		$.get(up.attr("href"), function(data){
@@ -288,6 +303,9 @@
 		});
 	});
 
+	{% if current_user.is_anonymous() %}
+		$('.popover-vote').popover();
+	{% endif %}
 
 	</script>
 {% endblock %}

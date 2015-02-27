@@ -27,7 +27,12 @@
 		<div class="row post-index-item
 								{{ loop.cycle('odd', 'even') }}">
 			<div class="col-md-2 col-sm-2 col-xs-2">
-				<div class="post-index-item-rate" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes">
+				<div class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
+						 title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes"
+						{% if current_user.is_anonymous() %}
+						 data-toggle="popover" data-trigger="hover" data-placement="bottom"
+						 data-content="Please login to vote"
+						{% endif %}>
 					<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
 						<i class="fa fa-angle-up"></i>
 					</a>
@@ -187,6 +192,10 @@
 			rate.text(data['rating_delta']);
 		});
 	});
+
+	{% if current_user.is_anonymous() %}
+		$('.popover-vote').popover();
+	{% endif %}
 
 </script>
 {% endblock %}
