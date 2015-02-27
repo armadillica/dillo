@@ -50,35 +50,37 @@
             <span class="sr-only">Toggle navigation</span>
             <i class="fa fa-bars"></i>
           </button>
-          <a class="logo label label-primary " href="{{url_for('index')}}"><i class="fa fa-coffee"></i> Blender Today</a>
+          <a class="logo" href="{{url_for('index')}}"><i class="fa fa-coffee"></i> Blender.Today</a>
         </div>
 
         <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
           <ul class="nav navbar-nav navbar-right">
 
-            <li class="navbar-submit">
-              <a data-dialog="submit" class="trigger">Submit</a>
+            <li data-dialog="submit" class="navbar-submit trigger">
+              <a>Submit</a>
             </li>
 
+            {# 
             <li {% if title == 'submit': %} class="active"{% endif %}>
               <a href="{{ url_for('posts.submit') }}">Old Submit</a>
             </li>
-
-            <li {% if title == 'about': %} class="active"{% endif %}>
-              <a href="{{ url_for('about') }}">About</a>
-            </li>
+            #}
 
             {% if current_user.is_authenticated() %}
 
-              <li><a href="{{ url_for('about') }}">{{current_user.email}}</a></li>
+              <li>
+                <a href="#" title="{{current_user.email}}">
+                  <i class="fa fa-male"></i>
+                </a>
+              </li>
+
+              <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i></a></li>
 
               {% if current_user.has_role('admin') %}
               <li>
                 <a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i></a>
               </li>
               {% endif %}
-
-              <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i></a></li>
 
               <li>
                 <a class="nav-logout-widget" href="">
@@ -115,13 +117,15 @@
       <div class="container">
         <span class="pull-left">
           <p class="text-center">
-            Blender Today · Made with <i class="fa fa-heart-o"></i> in Amsterdam
+            Made with <i class="fa fa-heart-o"></i> in Amsterdam
           </p>
         </span>
         <span class="pull-right">
           <p>
-            <a href="{{url_for('index')}}">Blender Today</a>
-            <a href="#hop"><i class="fa fa-caret-up"></i></a>
+            <a href="http://twitter.com/BlenderToday"
+               title="Follow *yourself* on Twitter @BlenderToday">@BlenderToday</a>
+            <span class="separator"></span>
+            <a href="#hop"><i class="fa fa-angle-up"></i></a>
           </p>
         </span>
       </div> <!-- /footer-container -->
@@ -197,13 +201,10 @@
       });
 
       (function() {
-
         var dlgtrigger = document.querySelector( '[data-dialog]' ),
           somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
           dlg = new DialogFx( somedialog );
-
         dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
-
       })();
 
       CKEDITOR.replace( 'post_content', {
@@ -231,6 +232,7 @@
           $('.post-submit-article').show();
         };
       });
+
     </script>
 
   {% block footer_scripts %}

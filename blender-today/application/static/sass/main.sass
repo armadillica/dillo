@@ -47,12 +47,22 @@ a.logo
 	display: block
 	font-size: 1.2em
 	font-family: $font_headings
-	font-weight: bold
+	& i
+		opacity: 0.2
 
 /* Navbar */
 .navbar
 	background-color: transparent
 	border: none
+	margin-bottom: 0
+
+.navbar li a
+	color: lighten($color_text, 20%)
+
+	&:hover
+		color: $color_brand_main !important
+	&:active, &:focus
+		color: $color_brand_secondary !important
 
 /* Breadcrumb */
 .breadcrumb
@@ -202,7 +212,7 @@ a.logo
 	+media-xs
 		width: 45px
 		height: 45px
-		right: -8px
+		right: -6px
 		font-size: 1.4em
 	+media-sm
 		width: 60px
@@ -577,6 +587,61 @@ footer
 	border-bottom-left-radius: 3px !important
 	border-bottom-right-radius: 3px !important
 
+.navbar-submit
+	font-family: $font_headings
+	font-weight: bold
+	display: block
+	background: $color_brand_main
+	color: white
+	width: 70px
+	height: 70px
+	margin-right: 10px
+	position: absolute
+	top: -15px
+	text-align: center
+	overflow: hidden
+	+user-select-none
+	+border-radius(100%)
+	+transition(all, 0.1s, ease-out)
+	+box-shadow(2px, 2px, 0, black, .1)
+	&:hover
+		background: lighten($color_brand_main, 5%)
+		cursor: pointer
+		&:after
+			font-size: 10em
+			top: -60px
+			left: -32px
+			color: $color_brand_secondary
+
+	&:after
+		content: '\f005'
+		font-family: 'FontAwesome'
+		position: absolute
+		left: 18px
+		top: 15px
+		color: darken($color_brand_main, 3%)
+		font-size: 2.6em
+		z-index: 0
+		+transition(all, 0.35s, ease-out)
+	&.navbar-submit-active
+		background: $color_brand_secondary
+		&:after
+			color: darken($color_brand_secondary, 15%)
+	& a
+		color: white !important
+		position: absolute
+		top: 15px
+		right: 3px
+		z-index: 1
+		&:hover
+			color: white !important
+			cursor: pointer
+
+li.navbar-submit a:hover,
+li.navbar-submit a:active,
+li.navbar-submit a:focus,
+	color: white !important /* Stupidity */
+
 /* Not really an override, it's our cool logout stuff */
 .nav-logout-widget
 	position: relative
@@ -642,7 +707,7 @@ footer
 
 	& .nav-sidebar-mug
 		display: block
-		margin: 20px auto 0 auto
+		margin: 15px auto 0 auto
 
 
 /* Login */
