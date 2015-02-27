@@ -162,7 +162,6 @@
 
     <script src="{{url_for('static', filename='js/dialogFx.js')}}"></script>
     <script src="{{url_for('static', filename='js/classie.js')}}"></script>
-    <script src="{{url_for('static', filename='js/jquery-fileupload.min.js')}}"></script>
     <script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
     <script type="text/javascript">
       var csrftoken = $('meta[name=csrf-token]').attr('content');
@@ -190,7 +189,7 @@
                 cache: false
               } )
           .done(function() {
-              window.location = data['post_url'];
+              //window.location = data['post_url'];
           })
           .fail(function() {
               //$('#edit_notifications').html('Error: could not update asset');
@@ -218,25 +217,18 @@
       })
 
       $('.select-change').click(function(){ 
+        $('.post-submit-div-title').show();
+        $('.post-submit-div-category').show();
+        $('.post-submit-div-picture').show();
+        $('.post-submit-div-submit').show();
+
         if ($('#post_type_id').val() == 1){
           $('.post-submit-link').show();
           $('.post-submit-article').hide();
-          // $('.post-submit-div-title').fadeIn();
-          // $('.post-submit-div-category').fadeIn();
-          // $('.post-submit-div-content').fadeOut();
-          // $('.post-submit-div-picture').fadeOut();
-          // $('.post-submit-div-url').fadeIn();
-          // $('.post-submit-div-submit').fadeIn();
         };
         if ($('#post_type_id').val() == 2){
           $('.post-submit-link').hide();
           $('.post-submit-article').show();
-          // $('.post-submit-div-title').fadeIn();
-          // $('.post-submit-div-category').fadeIn();
-          // $('.post-submit-div-content').fadeIn();
-          // $('.post-submit-div-picture').fadeIn();
-          // $('.post-submit-div-url').fadeOut('fast');
-          // $('.post-submit-div-submit').fadeIn();
         };
       });
     </script>

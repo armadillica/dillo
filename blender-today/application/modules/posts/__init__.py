@@ -90,13 +90,20 @@ def submit():
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
     form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     if form.validate_on_submit():
+        content = form.content.data
+        # If the post is a link
+        if form.post_type_id.data == 1:
+            content = form.url.data
+        if not content:
+            return abort(400)
+
         post = Post(
             user_id=current_user.id,
             category_id=form.category_id.data,
             post_type_id=form.post_type_id.data,
             title=form.title.data,
             slug=slugify(form.title.data),
-            content=form.content.data)
+            content=content)
         db.session.add(post)
         db.session.commit()
         post.uuid = encode_id(post.id)
