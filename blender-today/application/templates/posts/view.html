@@ -9,13 +9,14 @@
 {% block body %}
 <div class="row post-view">
 <div class="col-md-9">
-	<ol class="breadcrumb">
-		<li><a href="{{url_for('index')}}">Home</a></li>
-		<li><a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a></li>
-		<li class="active">{{post.title}}</li>
-	</ol>
-
 	<div class="post-view-container">
+
+		<ol class="breadcrumb">
+			<li><a href="{{url_for('index')}}">Home</a></li>
+			<li><a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a></li>
+			<li class="active">{{post.title}}</li>
+		</ol>
+
 		<div class="post-view-rate">
 			<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
 				<i class="fa fa-angle-up"></i>
@@ -26,7 +27,7 @@
 			</a>
 		</div>
 		<div class="post-view-title">
-			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}" title="{{post.title}}">
 				{{post.title}}
 			</a>
 		</div>
@@ -37,7 +38,7 @@
 
 		{% if post.picture %}
 		<div class="post-view-content-image">
-			<a href="http://imgur.com/{{post.picture}}" target="_blank">
+			<a href="http://imgur.com/{{post.picture}}" title="View on imgur.com" target="_blank">
 				<img src="{{post.thumbnail('h')}}"/>
 				<div class="post-view-content-image-link">view on imgur.com</div>
 			</a>
@@ -67,11 +68,11 @@
 						Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
 						</span>
 						<span class="separator"></span>
-						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+						<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
 							<i class="fa fa-link"></i>
 						</a>
 						<span class="separator"></span>
-						<a class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
+						<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
 						</a>
 					</div>
 				</div>
