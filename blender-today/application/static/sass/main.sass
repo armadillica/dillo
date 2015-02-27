@@ -307,6 +307,11 @@ a.logo
 
 .post-view-details-meta
 	margin-left: 10px
+	+media-xs
+		margin-left: 0
+	+media-sm
+		margin-left: 25px
+
 	& .author
 		display: block
 		font-size: 1.2em
@@ -406,6 +411,8 @@ a.logo
 	padding: 0 0 15px 10px
 	+media-xs
 		padding-left: 0
+	+media-sm
+		padding-left: 0
 	+media-md
 		padding-left: 15px
 	+media-lg
@@ -417,6 +424,8 @@ a.logo
 	color: lighten($color_text, 30%)
 	font-size: 0.9em
 	+media-xs
+		padding-left: 0
+	+media-sm
 		padding-left: 0
 	+media-md
 		padding-left: 15px
@@ -607,9 +616,18 @@ footer
 		margin: 0
 		padding: 10px 0 0 0
 		color: $color_brand_main
+		position: relative
 		+user-select-none
 		+pointer-events-none
 		+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
+
+		& small
+			position: relative
+			left: 1px
+			font-size: 1.1em
+			color: $color_brand_secondary
+			+text-shadow-none
+
 	& p
 		font-size: 0.9em
 		color: lighten($color_text, 20%)
