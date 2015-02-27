@@ -11,17 +11,18 @@ settings = Blueprint('settings', __name__)
 @login_required
 def profile():
     # Initialize the profile form, preloading existing data
-    
     form = ProfileForm(
         email=current_user.email,
         first_name=current_user.first_name,
-        last_name=current_user.last_name
+        last_name=current_user.last_name,
+        username=current_user.username
         )
-    
+
     # If the form is submitted via POST and is succesfully validated
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
+        current_user.username = form.username.data
         db.session.commit()
 
     return render_template('settings/profile.html', 
