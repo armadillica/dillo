@@ -101,28 +101,45 @@
 			</div>
 		</div>
 		{% endfor %}
-		<div class="post-index-end"><i class="bf-blender"></i></div>
+
+		<div class="row text-center">
+			<div class="col-md-12">
+				<nav>
+					<ul class="pagination">
+						{% if posts.has_prev %}
+							<li><a href="{{ url_for('posts.index', page=posts.page-1) }}"><i class="fa fa-arrow-left"></i></a></li>
+						{% else %}
+							<li class="disabled"><a><i class="fa fa-arrow-left"></i></a></li>
+						{% endif %}
+
+						{%- for post in posts.iter_pages() %}
+							{% if post %}
+								{% if post != posts.page %}
+									<li><a href="{{ url_for('posts.index', page=post) }}">{{ post }}</a><li>
+								{% else %}
+									<li class="active"><a href="#">{{ post }}</a></li>
+								{% endif %}
+							{% else %}
+								<span class="ellipsis">…</span>
+							{% endif %}
+						{%- endfor %}
+
+						{% if posts.has_next %}
+							<li><a href="{{ url_for('posts.index', page=posts.page+1) }}"><i class="fa fa-arrow-right"></i></a></li>
+						{% else %}
+							<li class="disabled"><a><i class="fa fa-arrow-right"></i></a></li>
+						{% endif %}
+					</ul>
+				</nav>
+			</div>
+		</div>
+
+		<!-- <div class="post-index-end"><i class="bf-blender"></i></div> -->
 	</div>
 	<div class="col-md-3">
 		{% include '_sidebar.html' %}
 	</div>
 </div>
-
-<nav>
-	<ul class="pagination pagination-lg">
-		{%- for post in posts.iter_pages() %}
-			{% if post %}
-				{% if post != posts.page %}
-					<li><a href="{{ url_for('posts.index', page=post) }}">{{ post }}</a><li>
-				{% else %}
-					<li class="active"><a href="#">{{ post }}</a></li>
-				{% endif %}
-			{% else %}
-				<span class="ellipsis">…</span>
-			{% endif %}
-		{%- endfor %}
-	</ul>
-</nav>
 
 
 {% endblock %}

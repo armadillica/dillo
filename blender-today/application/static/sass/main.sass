@@ -625,6 +625,38 @@ footer
 	+text-shadow(1px, 1px, 0, black, 0.2)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 
+/* Pagination */
+.pagination
+	display: inline-block
+	margin: 15px auto
+	& li
+		& a
+			border: none
+			color: $color_brand_main
+			background-color: transparent
+		&:hover a, &:active a, &:focus a
+			color: $color_brand_secondary
+			background-color: transparent
+
+		&.active 
+			& a
+				border: none
+				font-weight: bold
+				background-color: desaturate($color_brand_secondary, 10%)
+				+border-radius(50%)
+			&:hover a, &:active a, &:focus a
+				background-color: lighten($color_brand_secondary, 5%)
+
+		&.disabled
+			& a
+				border: none
+				background-color: transparent
+				+border-radius(50%)
+			&:hover a, &:active a, &:focus a
+				background-color: transparent
+
+
+/* Submit Button */
 .navbar-submit
 	font-family: $font_headings
 	font-weight: bold
