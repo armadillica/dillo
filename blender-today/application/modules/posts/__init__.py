@@ -42,7 +42,7 @@ def index(page=1):
     posts = Post.query\
         .join(PostRating)\
         .order_by(desc(PostRating.hot))\
-        .paginate(page).items
+        .paginate(page, per_page=10)
     return render_template('posts/index.html',
         title='index',
         posts=posts)
