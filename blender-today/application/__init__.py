@@ -3,6 +3,7 @@ from flask import session
 from flask import Blueprint
 
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.cache import Cache
 from flask_mail import Mail
 from flask_oauthlib.client import OAuth
 from imgurpython import ImgurClient
@@ -20,6 +21,7 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 oauth = OAuth(app)
 CsrfProtect(app)
+cache = Cache(app)
 
 # Config at https://console.developers.google.com/
 google = oauth.remote_app(

@@ -15,6 +15,7 @@ from flask.ext.security import current_user
 from application import app
 from application import db
 from application import imgur_client
+from application import cache
 
 from application.modules.posts.model import Category
 from application.modules.posts.model import Post
@@ -35,6 +36,7 @@ posts = Blueprint('posts', __name__)
 
 @posts.route('/posts/')
 @posts.route('/posts/<int:page>')
+@cache.memoize(timeout=60)
 def index(page=1):
     #posts = Post.query.all()
     #posts.sort(key=lambda p: p.hot, reverse=True)
@@ -49,16 +51,19 @@ def index(page=1):
 
 @posts.route('/<category>')
 @posts.route('/<category>/<int:page>')
+@cache.memoize(timeout=60)
 def index_category(category, page=1):
+    category = Category.query.filter_by(name=category).first_or_404()
+
     posts = Post.query\
         .join(Category)\
         .join(PostRating)\
         .filter(Category.name == category)\
         .order_by(desc(PostRating.hot))\
-        .paginate(page).items
+        .paginate(page, per_page=10)
     return render_template('posts/index.html',
         title='index_category',
-        category=category,
+        category=category.name,
         posts=posts)
 
 

@@ -9,3 +9,6 @@ blender-today/application/static/css/main.css
 node_modules
 .sass-cache/
 *.css.map
+
+*.rdb
+blender-today/cache/
