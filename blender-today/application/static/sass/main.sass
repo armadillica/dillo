@@ -310,6 +310,15 @@ a.logo
 	& .author
 		display: block
 		font-size: 1.2em
+	& .flag:hover, & .flag:focus
+		text-decoration: none
+	& .flag:after
+		content: '\f11d'
+		font-family: 'FontAwesome'
+	& .flag.flagged:after
+		content: '\f024'
+		font-family: 'FontAwesome'
+
 
 .post-view-details-avatar,
 .post-view-comments-avatar
@@ -413,6 +422,14 @@ a.logo
 		padding-left: 15px
 	+media-lg
 		padding-left: 5px
+	& .flag:hover, & .flag:focus
+		text-decoration: none
+	& .flag:after
+		content: '\f11d'
+		font-family: 'FontAwesome'
+	& .flag.flagged:after
+		content: '\f024'
+		font-family: 'FontAwesome'
 
 .post-view-comments-item-rate
 	padding: 5px
