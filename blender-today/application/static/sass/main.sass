@@ -184,7 +184,7 @@ a.logo
 
 
 .post-index-item-type
-	display: inline-block
+	display: block
 	float: right
 	font-size: 1.8em
 	width: 60px
@@ -193,7 +193,25 @@ a.logo
 	background-color: lighten($color_text, 55%)
 	text-align: center
 	position: absolute
-	+transition(all, 0.2s, ease-out)
+	top: 15px
+	right: 5px
+	+media-xs
+		width: 45px
+		height: 45px
+		right: -8px
+		font-size: 1.4em
+	+media-sm
+		width: 60px
+		height: 60px
+		right: 5px
+	+media-md
+		width: 60px
+		height: 60px
+		right: -5px
+	+media-lg
+		width: 60px
+		height: 60px
+		right: 10px
 	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
 	& i
@@ -203,43 +221,9 @@ a.logo
 		background-color: lighten($color_brand_secondary, 10%)
 	&.text
 		background-color: lighten($color_brand_main, 5%)
-	&:hover
-		color: rgba(white, 0.2)
+
 	+media-xs
-		font-size: 1.3em
-		width: 40px
-		height: 40px
-		top: 15px
-		right: -5px
-	+media-sm
-		width: 60px
-		height: 60px
-		top: 15px
-		right: 5px
-		&:hover
-			+border-radius(3px)
-	+media-md
-		width: 60px
-		height: 60px
-		top: 15px
-		right: 3px
-		&:hover
-			+border-radius(3px)
-			width: 70px
-			height: 70px
-			top: 8px
-			right: -2px
-	+media-lg
-		width: 60px
-		height: 60px
-		top: 15px
-		right: 10px
-		&:hover
-			+border-radius(3px)
-			width: 70px
-			height: 70px
-			top: 8px
-			right: 5px
+		margin-left: 10px
 
 .post-index-end
 	color: darken($color_background, 5%)
@@ -248,7 +232,7 @@ a.logo
 
 /* //post-index */
 /* post-view */
-.post-view, .post-submit
+.post-view-container, .post-submit
 	background-color: white
 	border: thin solid darken($color_background, 3%)
 	+border-radius(3px)
@@ -563,9 +547,6 @@ footer
 	border-bottom-left-radius: 3px !important
 	border-bottom-right-radius: 3px !important
 
-.navbar-submit a:hover
-	cursor: pointer
-
 /* Not really an override, it's our cool logout stuff */
 .nav-logout-widget
 	position: relative
@@ -584,6 +565,46 @@ footer
 
 	&:focus .nav-logout-widget-icon
 		color: crimson
+
+/* Sidebar */
+.nav-sidebar
+	display: block
+	background-color: white
+	border: thin solid darken($color_background, 3%)
+	+border-radius(3px)
+	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
+
+.nav-sidebar p
+	padding: 10px 20px
+
+.nav-sidebar+.nav-sidebar
+	margin-top: 20px
+
+.nav-sidebar.branding
+	text-align: center
+
+	& h3
+		font-family: $font_headings
+		display: block
+		font-size: 1.5em
+		margin: 0
+		padding: 10px 0 0 0
+		color: $color_brand_main
+		+user-select-none
+		+pointer-events-none
+		+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
+	& p
+		font-size: 0.9em
+		color: lighten($color_text, 20%)
+		margin: 0
+		padding: 10px 0 20px 0
+		+user-select-none
+		+pointer-events-none
+
+	& .nav-sidebar-mug
+		display: block
+		margin: 20px auto 0 auto
+
 
 /* Login */
 .dialog, .dialog__overlay
