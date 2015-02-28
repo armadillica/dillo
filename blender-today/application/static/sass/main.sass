@@ -775,6 +775,11 @@ li.navbar-submit a:focus,
 .nav-sidebar.branding
 	text-align: center
 
+	& a:hover
+		text-decoration: none
+		& h3
+			color: lighten($color_brand_main, 5%)
+
 	& h3
 		font-family: $font_headings
 		display: block
@@ -806,6 +811,8 @@ li.navbar-submit a:focus,
 		display: block
 		margin: 15px auto 0 auto
 
+	&:hover
+		text-decoration: none
 
 /* Login */
 .dialog, .dialog__overlay
