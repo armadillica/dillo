@@ -1,6 +1,58 @@
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+
+        <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
+          <ul class="nav navbar-nav navbar-right">
+
+            <li data-dialog="submit"
+                class="navbar-submit{% if current_user.is_anonymous() %} popover-submit{% endif %}"
+                {% if current_user.is_anonymous() %}
+                 data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                 data-content="Sign in to Submit"
+                {% endif %}>
+              <a>Submit</a>
+            </li>
+
+            {# 
+            <li {% if title == 'submit': %} class="active"{% endif %}>
+              <a href="{{ url_for('posts.submit') }}">Old Submit</a>
+            </li>
+            #}
+
+            {% if current_user.is_authenticated() %}
+
+              <li>
+                <a href="#" title="{{current_user.email}}">
+                  <i class="fa fa-male"></i>
+                </a>
+              </li>
+
+              <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i></a></li>
+
+              {% if current_user.has_role('admin') %}
+              <li>
+                <a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i></a>
+              </li>
+              {% endif %}
+
+              <li>
+                <a class="nav-logout-widget" href="">
+                  <span class="nav-logout-widget-icon"><i class="fa fa-power-off"></i></span>
+                  <span class="nav-logout-widget-question">?</span>
+                </a>
+              </li>
+            {% else %}
+            <li class="absolute right"><a href="{{url_for_security('login')}}"><i class="fa fa-sign-in"></i> Sign in</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+
+    </div>
+
 	<div class="nav-sidebar branding">
-		<img class="nav-sidebar-mug" src="{{url_for('static', filename='images/today_manumug_150x150.jpg')}}"/>
-		<h3>Blender<small>.</small>Today</h3>
+		<a href="{{url_for('index')}}">
+			<img class="nav-sidebar-mug" src="{{url_for('static', filename='images/today_manumug_150x150.jpg')}}"/>
+		</a>
+		<a href="{{url_for('index')}}"><h3>Blender<small>.</small>Today</h3></a>
 		<p>
 			You decide what makes the news
 		</p>

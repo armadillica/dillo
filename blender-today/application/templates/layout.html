@@ -42,52 +42,6 @@
     {% endblock %}
     <a name="hop"></a>
 
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class="container">
-
-        <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
-          <ul class="nav navbar-nav navbar-right">
-
-            <li data-dialog="submit" class="navbar-submit trigger">
-              <a>Submit</a>
-            </li>
-
-            {# 
-            <li {% if title == 'submit': %} class="active"{% endif %}>
-              <a href="{{ url_for('posts.submit') }}">Old Submit</a>
-            </li>
-            #}
-
-            {% if current_user.is_authenticated() %}
-
-              <li>
-                <a href="#" title="{{current_user.email}}">
-                  <i class="fa fa-male"></i>
-                </a>
-              </li>
-
-              <li><a href="{{url_for('settings.profile')}}"><i class="fa fa-cog"></i></a></li>
-
-              {% if current_user.has_role('admin') %}
-              <li>
-                <a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i></a>
-              </li>
-              {% endif %}
-
-              <li>
-                <a class="nav-logout-widget" href="">
-                  <span class="nav-logout-widget-icon"><i class="fa fa-power-off"></i></span>
-                  <span class="nav-logout-widget-question">?</span>
-                </a>
-              </li>
-            {% else %}
-            <li class="absolute right"><a href="{{url_for_security('login')}}"><i class="fa fa-sign-in"></i> Sign in</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
-    </div>
-
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
       <div class="container">
@@ -160,69 +114,76 @@
     <script src="{{url_for('static', filename='js/classie.js')}}"></script>
     <script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
     <script type="text/javascript">
-      var csrftoken = $('meta[name=csrf-token]').attr('content');
 
-      $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+
+      {% if current_user.is_anonymous() %}
+        $('.popover-submit').popover();
+      {% else %}
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            }
           }
-        }
-      });
+        });
 
-      $("#submit_post_form").on("submit", function (event) {
-          event.preventDefault();
-          //$('#edit_notifications').html('<i>Updating</i>');
-          var data = $(this).serialize();
-          url = $(this).attr('action');
-          var formData = new FormData($(this)[0]);
-          $.ajax( {
-                url: url,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                cache: false
-              } )
-          .done(function(data) {
-              console.log(data['message']);
-          })
-          .fail(function(data) {
-          });
-      });
+        $("#submit_post_form").on("submit", function (event) {
+            event.preventDefault();
+            //$('#edit_notifications').html('<i>Updating</i>');
+            var data = $(this).serialize();
+            url = $(this).attr('action');
+            var formData = new FormData($(this)[0]);
+            $.ajax( {
+                  url: url,
+                  type: 'POST',
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  cache: false
+                } )
+            .done(function(data) {
+                console.log(data['message']);
+            })
+            .fail(function(data) {
+            });
+        });
 
-      (function() {
-        var dlgtrigger = document.querySelector( '[data-dialog]' ),
-          somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
-          dlg = new DialogFx( somedialog );
-        dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
-      })();
+        (function() {
+          var dlgtrigger = document.querySelector( '[data-dialog]' ),
+            somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
+            dlg = new DialogFx( somedialog );
+          dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+        })();
 
-      CKEDITOR.replace( 'post_content', {
-        removePlugins: 'elementspath',
-        resize_enabled: false
-      });
+        CKEDITOR.replace( 'post_content', {
+          removePlugins: 'elementspath',
+          resize_enabled: false
+        });
 
-      CKEDITOR.config.forcePasteAsPlainText = true;
-      $('.select-change').click(function(){ 
-          $('#post_type_id').val($(this).data('val')).trigger('change');
-      })
+        CKEDITOR.config.forcePasteAsPlainText = true;
+        $('.select-change').click(function(){ 
+            $('#post_type_id').val($(this).data('val')).trigger('change');
+        })
 
-      $('.select-change').click(function(){ 
-        $('.post-submit-div-title').show();
-        $('.post-submit-div-category').show();
-        $('.post-submit-div-picture').show();
-        $('.post-submit-div-submit').show();
+        $('.select-change').click(function(){ 
+          $('.post-submit-div-title').show();
+          $('.post-submit-div-category').show();
+          $('.post-submit-div-picture').show();
+          $('.post-submit-div-submit').show();
 
-        if ($('#post_type_id').val() == 1){
-          $('.post-submit-link').show();
-          $('.post-submit-article').hide();
-        };
-        if ($('#post_type_id').val() == 2){
-          $('.post-submit-link').hide();
-          $('.post-submit-article').show();
-        };
-      });
+          if ($('#post_type_id').val() == 1){
+            $('.post-submit-link').show();
+            $('.post-submit-article').hide();
+          };
+          if ($('#post_type_id').val() == 2){
+            $('.post-submit-link').hide();
+            $('.post-submit-article').show();
+          };
+        });
+
+      {% endif %}
 
     </script>
 

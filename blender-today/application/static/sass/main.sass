@@ -425,11 +425,36 @@ a.logo
 	padding: 15px 15px 25px 15px
 	margin: 0
 	border-top: thin solid lighten($color_text, 65%)
+	position: relative
 	&.odd
 		background-color: darken(white, 5%)
+		+text-shadow(1px, 1px, 0, white, 0.8)
 	&.reply
 		padding-left: 80px
 		border-top: thin dashed lighten($color_text, 60%)
+	&.flash
+		animation: effect-flash-fadeout 2s ease forwards
+
+@-webkit-keyframes effect-flash-fadeout
+	0%
+		background-color: white
+		color: white
+		top: 5px
+	100%
+		background-color: lighten(desaturate($color_brand_main, 80%), 60%)
+		color: $color_text
+		top: 0
+
+@keyframes effect-flash-fadeout
+	0%
+		background-color: white
+		color: white
+		top: 5px
+	100%
+		background-color: lighten(desaturate($color_brand_main, 80%), 60%)
+		color: $color_text
+		top: 0
+
 
 .post-view-comments-item-content
 	padding: 0 0 15px 10px
@@ -623,7 +648,7 @@ footer
 	border: thin solid darken($color_brand_main, 3%)
 	+border-radius(3px)
 	+text-shadow(1px, 1px, 0, black, 0.2)
-	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
+	+box-shadow(1px, 2px, 2px, black, 0.1)
 
 /* Pagination */
 .pagination
@@ -644,7 +669,8 @@ footer
 				font-weight: bold
 				background-color: desaturate($color_brand_secondary, 10%)
 				+border-radius(50%)
-			&:hover a, &:active a, &:focus a
+			&:hover a, &:active a, &:focus a,
+			& a:hover, & a:active, & a:focus
 				background-color: lighten($color_brand_secondary, 5%)
 
 		&.disabled
@@ -707,6 +733,7 @@ footer
 			color: white !important
 			cursor: pointer
 
+
 li.navbar-submit a:hover,
 li.navbar-submit a:active,
 li.navbar-submit a:focus,
@@ -748,6 +775,11 @@ li.navbar-submit a:focus,
 .nav-sidebar.branding
 	text-align: center
 
+	& a:hover
+		text-decoration: none
+		& h3
+			color: lighten($color_brand_main, 5%)
+
 	& h3
 		font-family: $font_headings
 		display: block
@@ -779,6 +811,8 @@ li.navbar-submit a:focus,
 		display: block
 		margin: 15px auto 0 auto
 
+	&:hover
+		text-decoration: none
 
 /* Login */
 .dialog, .dialog__overlay

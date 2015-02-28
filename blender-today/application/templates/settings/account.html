@@ -2,9 +2,15 @@
 {% from 'settings/_macros.html' import sidebar_navigation %}
 
 {% block body %}
-    <div class="row">
-        {{sidebar_navigation(title)}}
-        <div class="col-md-9">
+<div class="row">
+    <div class="col-md-9">
+
+          {{sidebar_navigation(title)}}
+
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="account">
+            <h2>Account Settings</h2>
+
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">
@@ -34,7 +40,12 @@
                     <p>Security form for deleting account</p>
                 </div>
             </div>
-       </div>
-    </div>
+        </div> <!-- tab-content -->
+      </div> <!-- tab-panel -->
+   </div> <!-- col-md -->
+   <div class="col-md-3">
+    {% include '_sidebar.html' %}
+   </div>
+</div> <!-- row -->
 {% endblock %}
 
