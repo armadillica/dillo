@@ -565,17 +565,21 @@ a.logo
 			font-size: 0.7em
 
 /* User Login */
-.user-login, .user-settings
+.user-login,
+.user-register,
+.user-settings
 	margin-top: 30px
 
-.user-login-container
+.user-login-container,
+.user-register-container
 	background-color: white
 	border: thin solid darken($color_background, 3%)
 	text-align: center
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 
-	& .user-login-branding
+	& .user-login-branding,
+	& .user-register-branding
 		padding-bottom: 20px
 		border-bottom: thin solid darken($color_background, 3%)
 
@@ -647,10 +651,10 @@ a.logo
 			&:hover
 				color: lighten($color_text, 30%)
 
-.user-login-container-uncool
+.user-login-container-uncool,
+.user-register-form
 	width: 80%
 	display: inline-block
-	display: none
 	margin: 0 auto
 	& .input-group
 		margin: 0 auto
@@ -665,7 +669,8 @@ a.logo
 		width: 100%
 		margin: 10px auto 0 auto
 
-	& .user-login-back
+	& .user-login-back,
+	& .user-register-back
 		font-size: 0.8em
 		margin: 0 auto 14px auto
 		padding: 0
@@ -673,6 +678,8 @@ a.logo
 		cursor: pointer
 		&:hover
 			color: lighten($color_brand_main, 5%)
+	& .user-register-back
+		margin: 10px auto
 
 	& .user-login-extra
 		display: inline-block
@@ -694,6 +701,14 @@ a.logo
 			&:hover
 				color: $color_brand_main
 
+.user-login-container-uncool
+	display: none
+
+.user-register-container
+	& p
+		font-size: 0.9em
+		color: lighten($color_text, 10%)
+		padding: 0 30px
 
 /* User Settings */
 .user-settings-avatar
@@ -717,15 +732,19 @@ footer
 /* Boostrap overrides */
 /* NAVTABS */
 .nav-tabs li a, .nav-tabs li.active a,
-.nav-tabs li a:hover, .nav-tabs li.active a:hover
+.nav-tabs li a:hover, .nav-tabs li.active a:hover,
+.nav-tabs li a:focus, .nav-tabs li.active a:focus,
+.nav-tabs li a:active, .nav-tabs li.active a:active
 	background-color: transparent
 	border: none
+	outline: none !important
 
 .nav-tabs li
 	&.active a
 		color: $color_brand_main
 		border-bottom: 2px solid $color_brand_secondary
-		&:hover
+		&:hover, &:active, &:focus
+			outline: none !important
 			border-bottom: 2px solid lighten($color_brand_secondary, 5%)
 
 .tab-content
@@ -756,6 +775,11 @@ footer
 		border: 1px solid transparent
 		&:focus
 			border-color: $color_brand_main
+	&+.error
+		color: #dd4b39
+		list-style-type: none
+		font-size: 0.8em
+		text-align: left
 
 
 fieldset
@@ -949,6 +973,7 @@ li.navbar-submit a:focus,
 
 	&:focus .nav-logout-widget-icon
 		color: crimson
+		outline: none !important
 
 /* Sidebar */
 .nav-sidebar
@@ -965,8 +990,18 @@ li.navbar-submit a:focus,
 	margin-top: 20px
 
 .nav-sidebar.branding,
-.user-login-branding
+.user-login-branding,
+.user-register-branding
 	text-align: center
+
+	& .nav-sidebar-mug,
+	& .user-login-branding-mug,
+	& .user-register-branding-mug
+		display: block
+		margin: 15px auto 0 auto
+
+	&:hover
+		text-decoration: none
 
 	& a:hover
 		text-decoration: none
@@ -999,14 +1034,6 @@ li.navbar-submit a:focus,
 		padding: 10px 0 20px 0
 		+user-select-none
 		+pointer-events-none
-
-	& .nav-sidebar-mug,
-	& .user-login-branding-mug,
-		display: block
-		margin: 15px auto 0 auto
-
-	&:hover
-		text-decoration: none
 
 /* Submit Dialog */
 .dialog, .dialog__overlay
