@@ -2,79 +2,100 @@
 {% from "security/_macros.html" import render_field_with_errors, render_login_field_with_errors, render_register_field_with_errors, render_field %}
 
 {% block page_title %}
-  Welcome!
+	Welcome!
 {% endblock %}
 
 {% block body %}
 <div class="row">
-  <div class="col-md-9 user-login">
-    <div class="">
-      <form role="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
-        {{ login_user_form.hidden_tag() }}
-        <fieldset>
-         <!-- Email input-->
-          <div class="input-group input-group-lg">
-            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-            {{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
-          </div>
+	<div class="col-lg-4 col-lg-push-4 col-md-6 col-md-push-3 user-login">
+		<div class="user-login-container">
+			<div class="row">
+				<div class="col-md-12">
 
-         <!-- Password input-->
-          <div class="input-group input-group-lg">
-            <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
-            {{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
-          </div>
+					<div class="user-login-branding">
+						<a href="{{url_for('index')}}">
+							<img class="user-login-branding-mug" src="{{url_for('static', filename='images/today_manumug_150x150.jpg')}}"/>
+						</a>
+						<a href="{{url_for('index')}}"><h3>Blender<small>.</small>Today</h3></a>
+					</div>
 
-         <!-- Multiple Checkboxes (inline) -->
-         <div class="login-extra">
-           <div class="control-group">
-             <label class="control-label remember pull-left" for="remember">
-             {{ render_login_field_with_errors(login_user_form.remember) }}
-               Remember me
-             </label>
-             <a class="pull-right small" href="{{url_for_security('forgot_password')}}">forgot password?</a>
-           </div>
-         </div>
+					<h2>welcome</h2>
+					<div class="user-login-container-cool">
+						<a class="user-login-button-oauth blender-id" href="{{url_for('blender_id_login')}}">
+							<i class="icon bf-blender"></i> Login with Blender ID <small>(recommended)</small>
+						</a>
 
-          {{ render_field(login_user_form.next) }}
-          <div class="control-group">
-            <label class="control-label" for="signin"></label>
-            <div class="controls content-align-center">
-              {{ render_field(login_user_form.submit, value="Sign In", class='btn btn-default btn-lg btn-squishy width-75') }}
-            </div>
-          </div>
-        </form>
-    </div>
-    <div>
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Login using</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="center-block">
-            <i class="fa bf-blender fa-4x"></i>
-          </div>
-          <a href="{{url_for('blender_id_login')}}">Blender ID</a>
-        </div>
-        <div class="col-md-4">
-          <div class="center-block">
-            <i class="fa fa-google fa-4x"></i>
-          </div>
-          <a href="{{url_for('google_login')}}">Google</a>
-        </div>
-        <div class="col-md-4">
-          <div class="center-block">
-            <i class="fa fa-facebook fa-4x"></i>
-          </div>
-          <a href="{{url_for('facebook_login')}}">Facebook</a>
-        </div>
-      </div>
-      <a href="{{url_for_security('register')}}">or create an account</a>
-    </div>
-  </div>
-  <div class="col-md-3">
-     {% include '_sidebar.html' %}
-  </div>
-</div>
+						<a class="user-login-button-oauth google" href="{{url_for('google_login')}}">
+							<i class="icon fa fa-google"></i> Login with Google
+						</a>
+
+						<a class="user-login-button-oauth facebook" href="{{url_for('facebook_login')}}">
+							<i class="icon fa fa-facebook"></i> Login with Facebook
+						</a>
+
+						<span class="user-login-button-others">
+							<a id="user-login-button-others-regular">
+								use regular login
+							</a>
+							<span class="separator"></span>
+							<a href="{{url_for_security('register')}}">
+								create account
+							</a>
+						</span>
+					</div>
+					<div class="user-login-container-uncool">
+
+						<form role="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+							{{ login_user_form.hidden_tag() }}
+							<fieldset>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+									{{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
+								</div>
+
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+									{{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
+								</div>
+
+								{{ render_field(login_user_form.next) }}
+
+								{{ render_field(login_user_form.submit, value="Sign In", class='btn btn-default btn-success') }}
+
+								<div class="user-login-extra">
+									<label class="remember" for="remember">
+										{{ render_login_field_with_errors(login_user_form.remember) }}
+										Remember me
+									</label>
+									<a class="forgot" href="{{url_for_security('forgot_password')}}">forgot password?</a>
+								</div>
+							</fieldset>
+						</form>
+
+						<div class="user-login-back">
+							<i class="fa fa-angle-double-left"></i> sign in using Blender ID or others
+						</div>
+
+					</div> <!-- user-login-container-uncool -->
+
+				</div> <!-- col-md -->
+			</div> <!-- row -->
+		</div> <!-- user-login-container -->
+	</div> <!-- col-md-push -->
+</div><!-- row -->
+{% endblock %}
+
+{% block footer_scripts %}
+<script type="text/javascript">
+	$("#user-login-button-others-regular").click(function(){
+		$(".user-login-container-cool").fadeOut(function(){
+			$(".user-login-container-uncool").fadeIn();
+		});
+	});
+	$(".user-login-back").click(function(){
+		$(".user-login-container-uncool").fadeOut(function(){
+			$(".user-login-container-cool").fadeIn();
+		});
+	});
+</script>
 {% endblock %}

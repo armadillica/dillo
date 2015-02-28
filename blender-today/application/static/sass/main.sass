@@ -322,6 +322,7 @@ a.logo
 	background-color: darken($color_background, 3%)
 	border-bottom: thick solid darken($color_background, 5%)
 	color: lighten($color_text, 10%)
+	+text-shadow(1px, 1px, 0, white, 0.4)
 
 .post-view-details-meta
 	margin-left: 10px
@@ -563,10 +564,138 @@ a.logo
 			display: block
 			font-size: 0.7em
 
-/* User Settings */
-.user-settings, .user-login
+/* User Login */
+.user-login, .user-settings
 	margin-top: 30px
 
+.user-login-container
+	background-color: white
+	border: thin solid darken($color_background, 3%)
+	text-align: center
+	+border-radius(3px)
+	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
+
+	& .user-login-branding
+		padding-bottom: 20px
+		border-bottom: thin solid darken($color_background, 3%)
+
+	& h2
+		text-align: center
+		color: lighten($color_text, 25%)
+		padding-bottom: 15px
+		font-weight: lighter
+
+	& .user-login-button-oauth
+		display: block
+		width: 80%
+		margin: 10px auto 0 auto
+		padding: 10px 10px 10px 20px
+		text-align: left
+		position: relative
+		background-color: darken($color_background, 2%)
+		+border-radius(8px)
+		+text-shadow(1px, 1px, 0, black, 0.2)
+		+box-shadow(1px, 2px, 0, black, 0.1)
+
+		&:hover
+			text-decoration: none
+		& i.icon
+			width: 20px
+
+		$color_blender-orange: #ec8e30
+		$color_blender-blue: #025384
+		$color_google: #dd4b39
+		$color_facebook: #3b5998
+
+		&.blender-id
+			color: $color_blender-blue
+			background-color: $color_background
+			border: thin solid darken($color_background, 3%)
+			+text-shadow(1px, 1px, 0, white, 0.2)
+			&:hover
+				color: lighten($color_blender-blue, 5%)
+				background-color: lighten($color_background, 5%)
+			& small
+				opacity: 0.8
+				font-size: 0.65em
+			& i
+				position: relative
+				right: 4px
+				font-size: 1.1em
+				color: lighten($color_blender-blue, 10%)
+
+		&.google
+			color: white
+			background-color: $color_google
+			&:hover
+				background-color: lighten($color_google, 5%)
+
+		&.facebook
+			color: white
+			background-color: $color_facebook
+			&:hover
+				background-color: lighten($color_facebook, 5%)
+
+	& .user-login-button-others
+		display: block
+		margin: 8px auto 20px auto
+		font-size: 0.75em
+		text-align: center
+		& a
+			cursor: pointer
+			color: lighten($color_text, 45%)
+			&:hover
+				color: lighten($color_text, 30%)
+
+.user-login-container-uncool
+	width: 80%
+	display: inline-block
+	display: none
+	margin: 0 auto
+	& .input-group
+		margin: 0 auto
+	& .input-group+.input-group
+		margin: 10px auto 0 auto
+
+	& .form-control
+		font-size: 1em
+		padding: 20px auto
+
+	& .btn
+		width: 100%
+		margin: 10px auto 0 auto
+
+	& .user-login-back
+		font-size: 0.8em
+		margin: 0 auto 14px auto
+		padding: 0
+		color: $color_brand_main
+		cursor: pointer
+		&:hover
+			color: lighten($color_brand_main, 5%)
+
+	& .user-login-extra
+		display: inline-block
+		font-size: 0.75em
+		width: 100%
+		height: 20px
+		margin: 6px auto 0 auto
+		& .remember
+			float: left
+			position: relative
+			top: -6px
+			font-weight: lighter
+			& input
+				position: relative
+				top: 2px
+		& .forgot
+			float: right
+			color: lighten($color_text, 30%)
+			&:hover
+				color: $color_brand_main
+
+
+/* User Settings */
 .user-settings-avatar
 	margin: 0 auto
 	display: block
@@ -612,9 +741,27 @@ footer
 	border: 2px solid darken($color_background, 6%)
 	background-color: darken($color_background, 4%)
 	+border-radius(3px)
-	+box-shadow(2px, 2px, 0, black, .1)	
+	+box-shadow(2px, 2px, 0, black, .1)
 	&:focus
 		border-color: $color_brand_main
+
+.input-group
+	border: thin solid darken($color_background, 6%)
+	background-color: darken($color_background, 4%)
+	+border-radius(6px)
+
+	& .form-control, & .input-group-addon
+		+box-shadow-none
+		background-color: transparent
+		border: 1px solid transparent
+		&:focus
+			border-color: $color_brand_main
+
+
+fieldset
+	border: none
+	padding: 0
+	margin: 0
 
 /* DROPDOWN MENUS */
 .dropdown-menu
@@ -817,7 +964,8 @@ li.navbar-submit a:focus,
 .nav-sidebar+.nav-sidebar
 	margin-top: 20px
 
-.nav-sidebar.branding
+.nav-sidebar.branding,
+.user-login-branding
 	text-align: center
 
 	& a:hover
@@ -852,14 +1000,15 @@ li.navbar-submit a:focus,
 		+user-select-none
 		+pointer-events-none
 
-	& .nav-sidebar-mug
+	& .nav-sidebar-mug,
+	& .user-login-branding-mug,
 		display: block
 		margin: 15px auto 0 auto
 
 	&:hover
 		text-decoration: none
 
-/* Login */
+/* Submit Dialog */
 .dialog, .dialog__overlay
 	width: 100%
 	height: 100%

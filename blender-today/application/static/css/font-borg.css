@@ -15,7 +15,7 @@
 	font-style:normal;
 	text-decoration:inherit;
 	-webkit-font-smoothing:antialiased;
-	display:inline;
+	display:inline-block;
 	width:auto;
 	height:auto;
 	line-height:normal;

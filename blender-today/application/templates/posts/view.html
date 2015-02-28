@@ -77,7 +77,7 @@
 						<span class="author-name">{{post.user.first_name}} {{post.user.last_name}}</span>
 						<span class="author-roles">
 							{% if post.user.has_role('network_member') %}
-								Blender Network
+								Blender Network Member<br/>
 							{% endif %}
 							{% if post.user.has_role('bfct_trainer') %}
 								Blender Foundation Certified Trainer
@@ -87,7 +87,7 @@
 							<span class="date">
 							Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
 							{% if post.status == 'edited' %}
-								<span title="{{post.pretty_edit_date}}">
+								<span title="Last edited {{post.pretty_edit_date}}">
 									<span class="disabled">(edited)</span>
 								</span>
 							{% endif %}
