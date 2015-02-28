@@ -14,24 +14,17 @@
 	<h3>{% if title == 'index_category' %}
 			<a href="{{url_for('posts.index')}}">All</a>
 			<strong>·</strong>
-			<a href="{{url_for('index')}}{{category.url}}">{{category}}</a>
+			<a href="{{url_for('posts.index_category', category=category.url)}}">{{category.name}}</a>
 		{% else %}
 			All
 		{% endif %}
 
 		<span class="badge">({{posts.items|length}})</span>
 	</h3>
-
 		{% for post in posts.items %}
-		<div class="row post-index-item
-								{{ loop.cycle('odd', 'even') }}">
+		<div class="row post-index-item {{ loop.cycle('odd', 'even') }}">
 			<div class="col-md-2 col-sm-2 col-xs-2">
-				<div class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
-						 title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes"
-						{% if current_user.is_anonymous() %}
-						 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-						 data-content="Please login to vote"
-						{% endif %}>
+				<div class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if current_user.is_anonymous() %} data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Please login to vote" {% endif %}>
 					<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
 						<i class="fa fa-angle-up"></i>
 					</a>
@@ -40,14 +33,8 @@
 						<i class="fa fa-angle-down"></i>
 					</a>
 				</div>
-				<a href="
-						{% if post.post_type.url == 'link' %}
-							{{post.content}}
-						{% else %}
-							{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}
-						{% endif %}">
-					<div class="post-index-item-type {{post.post_type.url}}"
-					  {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
+				<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}">
+					<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 						{% if post.post_type.url == 'link' %}
 							<i class="fa fa-link"></i>
 						{% elif post.post_type.url == 'text' %}
@@ -75,7 +62,7 @@
 					<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
 					<span class="separator"></span>
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
-						{{post.comments|length}} comments
+						{{post.comments_count}} comments
 					</a>
 					<span class="separator"></span>
 
@@ -104,6 +91,7 @@
 		</div>
 		{% endfor %}
 
+
 		<div class="row text-center">
 			<div class="col-md-12">
 				<nav>
@@ -114,7 +102,7 @@
 							<li class="disabled"><a><i class="fa fa-arrow-left"></i></a></li>
 						{% endif %}
 
-						{%- for post in posts.iter_pages() %}
+						{% for post in posts.iter_pages() %}
 							{% if post %}
 								{% if post != posts.page %}
 									<li><a href="{{ url_for('posts.index', page=post) }}">{{ post }}</a><li>
@@ -124,7 +112,7 @@
 							{% else %}
 								<span class="ellipsis">…</span>
 							{% endif %}
-						{%- endfor %}
+						{% endfor %}
 
 						{% if posts.has_next %}
 							<li><a href="{{ url_for('posts.index', page=posts.page+1) }}"><i class="fa fa-arrow-right"></i></a></li>
