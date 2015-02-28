@@ -8,7 +8,7 @@
 {% block body %}
 <div class="row">
   <div class="col-md-9 user-login">
-    <div class="hidden">
+    <div class="">
       <form role="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
         {{ login_user_form.hidden_tag() }}
         <fieldset>
@@ -52,12 +52,21 @@
       </div>
       <div class="row">
         <div class="col-md-4">
+          <div class="center-block">
+            <i class="fa bf-blender fa-4x"></i>
+          </div>
           <a href="{{url_for('blender_id_login')}}">Blender ID</a>
         </div>
         <div class="col-md-4">
+          <div class="center-block">
+            <i class="fa fa-google fa-4x"></i>
+          </div>
           <a href="{{url_for('google_login')}}">Google</a>
         </div>
         <div class="col-md-4">
+          <div class="center-block">
+            <i class="fa fa-facebook fa-4x"></i>
+          </div>
           <a href="{{url_for('facebook_login')}}">Facebook</a>
         </div>
       </div>

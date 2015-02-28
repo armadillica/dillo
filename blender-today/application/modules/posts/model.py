@@ -45,6 +45,10 @@ class Post(db.Model):
     def pretty_creation_date(self):
         return pretty_date(self.creation_date)
 
+    @property
+    def pretty_edit_date(self):
+        return pretty_date(self.edit_date)
+
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
             picture = imgur_client.get_image(self.picture)

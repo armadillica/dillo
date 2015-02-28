@@ -83,6 +83,11 @@
 						<span class="meta">
 							<span class="date">
 							Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+							{% if post.status == 'edited' %}
+								<span title="{{post.pretty_edit_date}}">
+									<span class="disabled">(edited)</span>
+								</span>
+							{% endif %}
 							</span>
 							<span class="separator"></span>
 							<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">

@@ -78,9 +78,8 @@
 						{{post.comments|length}} comments
 					</a>
 					<span class="separator"></span>
-					<span title="{{post.creation_date.strftime('%H:%M on %d %B, %Y')}}">
-						{{post.pretty_creation_date}}
-					</span>
+
+					{{post.pretty_creation_date}}
 
 					<small>by</small>
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
