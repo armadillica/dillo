@@ -1,4 +1,13 @@
-from flask import request, Blueprint, render_template, redirect, url_for, request, flash
+from flask import request
+from flask import Blueprint
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from flask import request
+from flask import flash
+from flask import abort
+from flask import jsonify
+
 from flask.ext.security import login_required, current_user
 
 from application import app, db
@@ -23,7 +32,16 @@ def profile():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.username = form.username.data
+
+        if not current_user.first_name or not current_user.last_name:
+            if not current_user.username:
+                flash('Please set your first and last name or pick a username')
+                return redirect(url_for('settings.profile'))
+                # return jsonify(
+                #     error=400,
+                #     message=str('Please set your first and last name or pick a username')), 400
         db.session.commit()
+        flash('Profile updated!')
 
     return render_template('settings/profile.html', 
         form=form,

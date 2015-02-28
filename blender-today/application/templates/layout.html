@@ -170,7 +170,7 @@
         }
       });
 
-      $("form").on("submit", function (event) {
+      $("#submit_post_form").on("submit", function (event) {
           event.preventDefault();
           //$('#edit_notifications').html('<i>Updating</i>');
           var data = $(this).serialize();
@@ -184,11 +184,10 @@
                 contentType: false,
                 cache: false
               } )
-          .done(function() {
-              //window.location = data['post_url'];
+          .done(function(data) {
+              console.log(data['message']);
           })
-          .fail(function() {
-              //$('#edit_notifications').html('Error: could not update asset');
+          .fail(function(data) {
           });
       });
 

@@ -4,6 +4,7 @@ from flask import session
 from flask import redirect
 from flask import url_for
 from flask import request
+from flask import flash
 
 from flask.ext.security.utils import login_user
 from flask_oauthlib.client import OAuthException
@@ -185,6 +186,11 @@ def blender_id_authorized():
         else:
             user_datastore.remove_role_from_user(user, r)
     db.session.commit()
+
+    if not user.first_name or not user.last_name:
+        if not user.username:
+            flash('Please set your first and last name or pick a username')
+            return redirect(url_for('settings.profile'))
 
     return redirect(url_for('index'))
 
