@@ -38,7 +38,11 @@
 
 		<div class="clearfix"></div>
 
-		<div class="post-view-content">{{post.content|safe}}</div>
+		<div class="post-view-content" id="post-content">{{post.content|safe}}</div>
+		{% if current_user.is_owner %}
+			<span id="edit-post-toggle" class="btn btn-default">Edit</span>
+			<a id="edit-post-save" class="btn btn-default" href="{{ url_for('posts.edit', uuid=post.uuid) }}">Save</a>
+		{% endif %}
 
 		{% if post.picture %}
 		<div class="post-view-content-image">
@@ -200,110 +204,129 @@
 	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
 	<script type="text/javascript">
 
-	{% if not current_user.is_anonymous() %}
-	CKEDITOR.replace('post_comment', {
-			removePlugins: 'elementspath',
-			resize_enabled: false
-	});
+	{% if current_user.is_authenticated() %}
+		CKEDITOR.replace('post_comment', {
+				removePlugins: 'elementspath',
+				resize_enabled: false
+		});
+		CKEDITOR.disableAutoInline = true;
 
-	CKEDITOR.config.forcePasteAsPlainText = true;
+		CKEDITOR.config.forcePasteAsPlainText = true;
 
-	CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
+		CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
 
-	{% endif %}
 
-	var upvote = function(up, down, rate) {
-		$.get(up.attr("href"), function(data){
-			down.removeClass('rated');
-			if (data['rating'] === "True") {
-				up.addClass('rated');
-			} else {
+		var upvote = function(up, down, rate) {
+			$.get(up.attr("href"), function(data){
+				down.removeClass('rated');
+				if (data['rating'] === "True") {
+					up.addClass('rated');
+				} else {
+					up.removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		}
+
+		var downvote = function(up, down, rate) {
+			$.get(down.attr("href"), function(data){
 				up.removeClass('rated');
-			}
-			rate.text(data['rating_delta']);
+				if (data['rating'] === "False") {
+					$(".down").addClass('rated');
+				} else {
+					$(".down").removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		}
+
+		$(".up").click(function(e) {
+			e.preventDefault();
+			var up = $(this);
+			var rate = $(this).siblings('.rating');
+			var down = $(this).siblings('.down');
+			upvote(up, down, rate)	
 		});
-	}
 
-	var downvote = function(up, down, rate) {
-		$.get(down.attr("href"), function(data){
-			up.removeClass('rated');
-			if (data['rating'] === "False") {
-				$(".down").addClass('rated');
-			} else {
-				$(".down").removeClass('rated');
-			}
-			rate.text(data['rating_delta']);
+		$(".down").click(function(e) {
+			e.preventDefault();
+			var up = $(this).siblings('.up');
+			var rate = $(this).siblings('.rating');
+			var down = $(this);
+			downvote(up, down, rate)	
 		});
-	}
 
-	$(".up").click(function(e) {
-		e.preventDefault();
-		var up = $(this);
-		var rate = $(this).siblings('.rating');
-		var down = $(this).siblings('.down');
-		upvote(up, down, rate)	
-	});
-
-	$(".down").click(function(e) {
-		e.preventDefault();
-		var up = $(this).siblings('.up');
-		var rate = $(this).siblings('.rating');
-		var down = $(this);
-		downvote(up, down, rate)	
-	});
-
-	$(".flag").click(function(e) {
-		e.preventDefault();
-		$(this).toggleClass('flagged');
-		$.get($(this).attr("href"));
-	});
-
-	var print_comment = function(comment) {
-	comment = 
-	'<div class="post-view-comments-item flash"> \
-		<div class="row"> \
-			<div class="col-md-1 col-sm-1 col-xs-2">\
-				<div class="post-view-comments-avatar">\
-					<img src="' + comment['gravatar'] + '" class="img-circle">\
-				</div>\
-			</div>\
-			<div class="col-md-11 col-sm-11 col-xs-10">\
-				<div class="post-view-comments-item-content">\
-					' + comment['content'] + '\
-				</div>\
-				<div class="post-view-comments-item-details">\
-					<a href="/comments/' + comment['comment_id'] + '/rate/1" class="post-view-comments-item-rate comment-up up">\
-						<i class="fa fa-chevron-up"></i>\
-					</a>\
-					<a href="/comments/' + comment['comment_id'] + '/rate/0" class="post-view-comments-item-rate down">\
-						<i class="fa fa-chevron-down"></i>\
-					</a>\
-					<span class="separator"></span>\
-					<span class="rating">0</span>\
-					<span class="separator"></span>\
-					<span>' + comment['creation_date'] + '</span>\
-					<small>by</small> ' + comment['user_name'] + '\
-					<span class="separator"></span>\
-					<a href="/posts/news/' + comment['post_uuid'] + '/#comment-' + comment['comment_id'] + '"><i class="fa fa-link"></i></a>\
-					<a href="/comments/' + comment['comment_id'] + '/flag" class="post-view-comments-item-flag flag">\
-						<i class="fa fa-flag"></i>\
-					</a>\
-				</div>\
-			</div>\
-		</div> \
-	</div>';
-	return comment;
-	}
-
-	$("form").on("submit", function( event ) {
-		event.preventDefault();
-		$.post($(this).attr('action'), $(this).serialize(),function(data){
-			c = print_comment(data['comment']);
-			$(".post-view-comments-submit").before(c);
+		$(".flag").click(function(e) {
+			e.preventDefault();
+			$(this).toggleClass('flagged');
+			$.get($(this).attr("href"));
 		});
-	});
 
-	{% if current_user.is_anonymous() %}
+		var print_comment = function(comment) {
+		comment = 
+		'<div class="post-view-comments-item flash"> \
+			<div class="row"> \
+				<div class="col-md-1 col-sm-1 col-xs-2">\
+					<div class="post-view-comments-avatar">\
+						<img src="' + comment['gravatar'] + '" class="img-circle">\
+					</div>\
+				</div>\
+				<div class="col-md-11 col-sm-11 col-xs-10">\
+					<div class="post-view-comments-item-content">\
+						' + comment['content'] + '\
+					</div>\
+					<div class="post-view-comments-item-details">\
+						<a href="/comments/' + comment['comment_id'] + '/rate/1" class="post-view-comments-item-rate comment-up up">\
+							<i class="fa fa-chevron-up"></i>\
+						</a>\
+						<a href="/comments/' + comment['comment_id'] + '/rate/0" class="post-view-comments-item-rate down">\
+							<i class="fa fa-chevron-down"></i>\
+						</a>\
+						<span class="separator"></span>\
+						<span class="rating">0</span>\
+						<span class="separator"></span>\
+						<span>' + comment['creation_date'] + '</span>\
+						<small>by</small> ' + comment['user_name'] + '\
+						<span class="separator"></span>\
+						<a href="/posts/news/' + comment['post_uuid'] + '/#comment-' + comment['comment_id'] + '"><i class="fa fa-link"></i></a>\
+						<a href="/comments/' + comment['comment_id'] + '/flag" class="post-view-comments-item-flag flag">\
+							<i class="fa fa-flag"></i>\
+						</a>\
+					</div>\
+				</div>\
+			</div> \
+		</div>';
+		return comment;
+		}
+
+		$("form").on("submit", function( event ) {
+			event.preventDefault();
+			$.post($(this).attr('action'), $(this).serialize(),function(data){
+				c = print_comment(data['comment']);
+				$(".post-view-comments-submit").before(c);
+			});
+		});
+
+		{% if current_user.is_owner %}
+			$("#edit-post-toggle").click(function() {
+				var ck = CKEDITOR.inline('post-content');
+				ck.on( 'instanceReady', function( ev ) {
+					var editor = ev.editor;
+					editor.setReadOnly( false );
+				});
+				$(this).hide();
+				$("#edit-post-save").show();
+			});
+			$("#edit-post-save").click(function(e) {
+				e.preventDefault();
+				$.post($(this).attr("href"), {
+					content : $("#post-content").html()}, 
+					function(data){
+				});
+			});
+		{% endif %}
+
+	{% else %}
 		$('.popover-vote').popover();
 	{% endif %}
 

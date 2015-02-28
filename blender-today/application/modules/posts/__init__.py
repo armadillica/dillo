@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 from werkzeug import secure_filename
 from flask import render_template
 from flask import Blueprint
@@ -8,6 +9,7 @@ from flask import url_for
 from flask import jsonify
 from sqlalchemy import desc
 from flask import abort
+from flask import request
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -80,6 +82,9 @@ def view(category, uuid, slug=None):
             slug=post.slug))
     post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
+    current_user.is_owner = False
+    if post.user.id == current_user.id and current_user.is_authenticated():
+        current_user.is_owner = True
     return render_template('posts/view.html',
         title='view',
         post=post,
@@ -237,4 +242,19 @@ def flag(uuid):
     post.user.update_karma()
 
     return jsonify(is_flagged=user_post_rating.is_flagged)
+
+
+@posts.route('/posts/<uuid>/edit', methods = ['POST'])
+@login_required
+def edit(uuid):
+    post_id = decode_id(uuid)
+    post = Post.query.get_or_404(post_id)
+    if post.user.id == current_user.id:
+        post.content = request.form['content']
+        post.status = 'edited'
+        post.edit_date = datetime.datetime.now()
+        db.session.commit()
+        return 'ok'
+    else:
+        return abort(400)
 
