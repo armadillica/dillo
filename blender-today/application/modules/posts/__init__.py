@@ -65,7 +65,7 @@ def index_category(category, page=1):
         .paginate(page, per_page=10)
     return render_template('posts/index.html',
         title='index_category',
-        category=category.name,
+        category=category,
         posts=posts)
 
 

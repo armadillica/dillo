@@ -14,7 +14,7 @@
 	<h3>{% if title == 'index_category' %}
 			<a href="{{url_for('posts.index')}}">All</a>
 			<strong>·</strong>
-			<a href="{{url_for('index')}}{{category}}" class="text-capitalize">{{category}}</a>
+			<a href="{{url_for('index')}}{{category.url}}">{{category}}</a>
 		{% else %}
 			All
 		{% endif %}
