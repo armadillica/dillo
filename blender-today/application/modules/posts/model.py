@@ -2,6 +2,7 @@ import datetime
 from application import app
 from application import db
 from application import imgur_client
+from application import cache
 
 from application.modules.users.model import User
 from application.helpers import pretty_date
@@ -36,10 +37,18 @@ class Post(db.Model):
         return str(self.title)
 
     @property
+    @cache.memoize(timeout=60)
     def user_rating(self):
         return UserPostRating.query\
             .filter_by(post_id=self.id, user_id=self.user.id)\
             .first()
+
+    @property
+    @cache.memoize(timeout=60)
+    def comments_count(self):
+        return Comment.query\
+            .filter_by(post_id=self.id)\
+            .count()
 
     @property
     def pretty_creation_date(self):
@@ -49,6 +58,7 @@ class Post(db.Model):
     def pretty_edit_date(self):
         return pretty_date(self.edit_date)
 
+    @cache.memoize(timeout=60)
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
             picture = imgur_client.get_image(self.picture)

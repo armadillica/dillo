@@ -13,6 +13,7 @@ from flask import request
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
+#from flask.ext.sqlalchemy_cache import FromCache
 
 from application import app
 from application import db
@@ -36,10 +37,39 @@ from application.helpers import slugify
 posts = Blueprint('posts', __name__)
 
 
+@cache.memoize(timeout=60)
+def query_posts_all(page):
+    paginate = Post.query\
+        .filter_by(status='published')\
+        .join(PostRating)\
+        .order_by(desc(PostRating.hot))\
+        .paginate(page, per_page=10)
+    posts = dict(
+        items=paginate.items,
+        has_prev=paginate.has_prev,
+        has_next=paginate.has_next,
+        page=paginate.page,
+        #iter_pages=paginate.iter_pages()
+        )
+    return posts
+
+
+@cache.memoize(timeout=60)
+def query_posts_category(category, page):
+    return Post.query\
+        .filter_by(status='published')\
+        .join(Category)\
+        .join(PostRating)\
+        .filter(Category.name == category)\
+        .order_by(desc(PostRating.hot))\
+        .paginate(page, per_page=10)\
+        .items
+
+
 @posts.route('/posts/')
 @posts.route('/posts/<int:page>')
-@cache.memoize(timeout=60)
 def index(page=1):
+    #posts = query_posts_all(page)
     posts = Post.query\
         .filter_by(status='published')\
         .join(PostRating)\
@@ -52,17 +82,18 @@ def index(page=1):
 
 @posts.route('/<category>')
 @posts.route('/<category>/<int:page>')
-@cache.memoize(timeout=60)
 def index_category(category, page=1):
-    category = Category.query.filter_by(name=category).first_or_404()
-
+    category = Category.query\
+        .filter_by(name=category).first_or_404()
+    #posts = query_posts_category(category.url, page)
     posts = Post.query\
         .filter_by(status='published')\
         .join(Category)\
         .join(PostRating)\
         .filter(Category.name == category)\
         .order_by(desc(PostRating.hot))\
-        .paginate(page, per_page=10)
+        .paginate(page, per_page=10)\
+
     return render_template('posts/index.html',
         title='index_category',
         category=category,
@@ -71,6 +102,7 @@ def index_category(category, page=1):
 
 @posts.route('/posts/<category>/<uuid>/')
 @posts.route('/posts/<category>/<uuid>/<slug>')
+@cache.memoize(timeout=60)
 def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
@@ -257,7 +289,7 @@ def edit(uuid):
         db.session.commit()
         return jsonify(status='edited')
     else:
-        return abort(400)
+        return abort(403)
 
 
 @posts.route('/posts/<uuid>/delete', methods=['POST'])
@@ -271,4 +303,4 @@ def delete(uuid):
         db.session.commit()
         return jsonify(status='deleted')
     else:
-        return abort(400)
+        return abort(403)
