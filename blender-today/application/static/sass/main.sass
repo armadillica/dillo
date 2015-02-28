@@ -76,6 +76,9 @@ a.logo
 	padding: 12px 15px
 
 /* post-index */
+.post-index, .post-view
+	margin-top: 15px
+
 .post-index-item
 	display: block
 	background-color: white
@@ -555,6 +558,22 @@ a.logo
 			display: block
 			font-size: 0.7em
 
+/* User Settings */
+.user-settings
+	margin-top: 30px
+
+.user-settings-avatar
+	margin: 0 auto
+	display: block
+	text-align: center
+	& img
+		padding: 5px
+		+box-shadow(2px, 2px, 0, black, .1)
+	& small
+		display: block
+		margin-top: 10px
+		font-size: 0.8em
+
 /* Footer */
 footer
 	padding-top: 20px
@@ -562,6 +581,27 @@ footer
 	font-size: 0.9em
 
 /* Boostrap overrides */
+/* NAVTABS */
+.nav-tabs li a, .nav-tabs li.active a,
+.nav-tabs li a:hover, .nav-tabs li.active a:hover
+	background-color: transparent
+	border: none
+
+.nav-tabs li
+	&.active a
+		color: $color_brand_main
+		border-bottom: 2px solid $color_brand_secondary
+		&:hover
+			border-bottom: 2px solid lighten($color_brand_secondary, 5%)
+
+.tab-content
+	background-color: white
+	padding: 20px
+	& h2
+		margin: 0 0 20px 0
+		color: lighten($color_text, 10%)
+		+text-shadow(1px, 1px, 0, black, 0.1)
+
 /* FORMS */
 .form-group .form-control
 	border: 2px solid darken($color_background, 6%)
