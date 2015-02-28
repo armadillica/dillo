@@ -1,3 +1,4 @@
+import bugsnag
 from flask import Flask
 from flask import session
 from flask import Blueprint
@@ -8,6 +9,8 @@ from flask_mail import Mail
 from flask_oauthlib.client import OAuth
 from imgurpython import ImgurClient
 from flask_wtf.csrf import CsrfProtect
+from bugsnag.flask import handle_exceptions
+
 
 import config
 
@@ -22,6 +25,13 @@ mail = Mail(app)
 oauth = OAuth(app)
 CsrfProtect(app)
 cache = Cache(app)
+
+
+bugsnag.configure(
+  api_key = app.config['BUGSNAG_KEY'],
+  project_root = app.config['BUGSNAG_APP_PATH']
+)
+handle_exceptions(app)
 
 # Config at https://console.developers.google.com/
 google = oauth.remote_app(
