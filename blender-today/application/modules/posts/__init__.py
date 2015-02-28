@@ -82,8 +82,9 @@ def view(category, uuid, slug=None):
             slug=post.slug))
     post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
-    current_user.is_owner = False
-    if post.user.id == current_user.id and current_user.is_authenticated():
+    if current_user.is_anonymous():
+        current_user.is_owner = False
+    elif current_user.is_authenticated() and post.user.id == current_user.id:
         current_user.is_owner = True
     return render_template('posts/view.html',
         title='view',
