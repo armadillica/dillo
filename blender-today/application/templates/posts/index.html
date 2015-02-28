@@ -85,7 +85,11 @@
 
 					<small>by</small>
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
-						{{post.user.first_name}} {{post.user.last_name}}
+						{% if post.user.first_name %}
+							{{post.user.first_name}} {{post.user.last_name}}
+						{% else %}
+							{{post.user.username}}
+						{% endif %}
 					</a>
 
 					{% if post.picture %}

@@ -1,17 +1,11 @@
 {% macro sidebar_navigation(title) %}
-    <div class="col-md-3">
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <h3 class="panel-title">Settings</h3>
-            </div>
-            <!-- List group -->
-            <ul class="list-group">
-                <a href="{{url_for('settings.profile')}}" class="list-group-item {% if title == 'settings_profile': %}active{% endif %}">Profile</a>
-                <a href="{{url_for('settings.account')}}" class="list-group-item {% if title == 'settings_account': %}active{% endif %}">Account settings</a>
-                {#<a href="{{url_for('settings.email')}}" class="list-group-item {% if title == 'settings_email': %}active{% endif %}">Email</a>#}
-            </ul>
-        </div>
-    </div>
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" {% if title == 'settings_profile': %}class="active"{% endif %}>
+        <a href="{{url_for('settings.profile')}}">Profile</a>
+    </li>
+    <li role="presentation" {% if title == 'settings_account': %}class="active"{% endif %}>
+        <a href="{{url_for('settings.account')}}">Account</a>
+    </li>
+  </ul>
 {% endmacro %}
 
