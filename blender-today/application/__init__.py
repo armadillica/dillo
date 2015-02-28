@@ -10,6 +10,7 @@ from flask_oauthlib.client import OAuth
 from imgurpython import ImgurClient
 from flask_wtf.csrf import CsrfProtect
 from bugsnag.flask import handle_exceptions
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 import config
@@ -25,6 +26,7 @@ mail = Mail(app)
 oauth = OAuth(app)
 CsrfProtect(app)
 cache = Cache(app)
+toolbar = DebugToolbarExtension(app)
 
 
 bugsnag.configure(
