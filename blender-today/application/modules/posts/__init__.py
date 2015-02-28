@@ -40,9 +40,8 @@ posts = Blueprint('posts', __name__)
 @posts.route('/posts/<int:page>')
 @cache.memoize(timeout=60)
 def index(page=1):
-    #posts = Post.query.all()
-    #posts.sort(key=lambda p: p.hot, reverse=True)
     posts = Post.query\
+        .filter_by(status='published')\
         .join(PostRating)\
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=10)
@@ -58,6 +57,7 @@ def index_category(category, page=1):
     category = Category.query.filter_by(name=category).first_or_404()
 
     posts = Post.query\
+        .filter_by(status='published')\
         .join(Category)\
         .join(PostRating)\
         .filter(Category.name == category)\
@@ -245,7 +245,7 @@ def flag(uuid):
     return jsonify(is_flagged=user_post_rating.is_flagged)
 
 
-@posts.route('/posts/<uuid>/edit', methods = ['POST'])
+@posts.route('/posts/<uuid>/edit', methods=['POST'])
 @login_required
 def edit(uuid):
     post_id = decode_id(uuid)
@@ -255,7 +255,20 @@ def edit(uuid):
         post.status = 'edited'
         post.edit_date = datetime.datetime.now()
         db.session.commit()
-        return 'ok'
+        return jsonify(status='edited')
     else:
         return abort(400)
 
+
+@posts.route('/posts/<uuid>/delete', methods=['POST'])
+@login_required
+def delete(uuid):
+    post_id = decode_id(uuid)
+    post = Post.query.get_or_404(post_id)
+    if post.user.id == current_user.id:
+        post.status = 'deleted'
+        post.edit_date = datetime.datetime.now()
+        db.session.commit()
+        return jsonify(status='deleted')
+    else:
+        return abort(400)

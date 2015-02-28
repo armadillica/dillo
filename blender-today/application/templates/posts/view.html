@@ -42,6 +42,9 @@
 		{% if current_user.is_owner %}
 			<span id="edit-post-toggle" class="btn btn-default">Edit</span>
 			<a id="edit-post-save" class="btn btn-default" href="{{ url_for('posts.edit', uuid=post.uuid) }}">Save</a>
+			{% if post.status != 'deleted' %}
+			<a id="edit-post-delete" class="btn btn-default" href="{{ url_for('posts.delete', uuid=post.uuid) }}">Delete</a>
+			{% endif %}
 		{% endif %}
 
 		{% if post.picture %}
@@ -206,7 +209,6 @@
 
 {% block footer_scripts %}
 
-	<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
 	<script type="text/javascript">
 
 	{% if current_user.is_authenticated() %}
@@ -250,7 +252,7 @@
 			var up = $(this);
 			var rate = $(this).siblings('.rating');
 			var down = $(this).siblings('.down');
-			upvote(up, down, rate)	
+			upvote(up, down, rate);
 		});
 
 		$(".down").click(function(e) {
@@ -258,7 +260,7 @@
 			var up = $(this).siblings('.up');
 			var rate = $(this).siblings('.rating');
 			var down = $(this);
-			downvote(up, down, rate)	
+			downvote(up, down, rate);
 		});
 
 		$(".flag").click(function(e) {
@@ -304,7 +306,7 @@
 		return comment;
 		}
 
-		$("form").on("submit", function( event ) {
+		$("#form-comment").on("submit", function( event ) {
 			event.preventDefault();
 			$.post($(this).attr('action'), $(this).serialize(),function(data){
 				c = print_comment(data['comment']);
@@ -327,6 +329,12 @@
 				$.post($(this).attr("href"), {
 					content : $("#post-content").html()}, 
 					function(data){
+				});
+			});
+			$("#edit-post-delete").click(function(e) {
+				e.preventDefault();
+				$.post($(this).attr("href"), function(data){
+
 				});
 			});
 		{% endif %}
