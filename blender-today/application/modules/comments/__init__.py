@@ -22,6 +22,13 @@ from application.helpers import decode_id
 
 comments = Blueprint('comments', __name__)
 
+
+@comments.route('/<int:post_id>/')
+@login_required
+def index(post_id):
+    post = Post.query.get_or_404(post_id)
+    return 'ok'
+
 @comments.route('/<int:post_id>/submit', methods=['POST'])
 @login_required
 def submit(post_id):
@@ -150,37 +157,28 @@ def flag(comment_id):
     return jsonify(is_flagged=user_comment_rating.is_flagged)
 
 
-@comments.route('/<int:comment_id>/edit', methods=['GET', 'POST'])
+@comments.route('/<int:comment_id>/edit', methods=['POST'])
 @login_required
 def edit(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if current_user.id == comment.user.id:
-        form = CommentForm()
-        post = Post.query.get_or_404(post_id)
-
-        if form.validate_on_submit():
-            comment.content = form.content.data
-            comment.status = 'edited'
-            comment.edited = datetime.datetime.now
-            db.session.commit()
-
-        return jsonify(comment=dict(
-            content=comment.content))
+        comment.content = request.form['content']
+        comment.status = 'edited'
+        comment.edit_date = datetime.datetime.now()
+        db.session.commit()
+        return jsonify(status='edited')
     else:
         return abort(403)
 
 
-@comments.route('/<int:comment_id>/delete')
+@comments.route('/<int:comment_id>/delete', methods=['POST'])
 @login_required
 def delete(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if current_user.id == comment.user.id:
-        post = Post.query.get_or_404(post_id)
         comment.status = 'deleted'
         comment.edited = datetime.datetime.now
         db.session.commit()
-
-        return jsonify(comment=dict(
-            status=comment.status))
+        return jsonify(status='deleted')
     else:
         return abort(403)
