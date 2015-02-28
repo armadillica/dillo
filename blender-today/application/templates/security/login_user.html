@@ -6,59 +6,66 @@
 {% endblock %}
 
 {% block body %}
+<div class="row">
+  <div class="col-md-9 user-login">
+    <div class="hidden">
+      <form role="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+        {{ login_user_form.hidden_tag() }}
+        <fieldset>
+         <!-- Email input-->
+          <div class="input-group input-group-lg">
+            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+            {{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
+          </div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 col-md-push-2">
-      <div class="col-md-6">
-          <form role="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form" class="offset-top-5">
-            {{ login_user_form.hidden_tag() }}
-            <fieldset>
-             <!-- Email input-->
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                  {{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
+         <!-- Password input-->
+          <div class="input-group input-group-lg">
+            <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+            {{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
+          </div>
 
-              </div>
+         <!-- Multiple Checkboxes (inline) -->
+         <div class="login-extra">
+           <div class="control-group">
+             <label class="control-label remember pull-left" for="remember">
+             {{ render_login_field_with_errors(login_user_form.remember) }}
+               Remember me
+             </label>
+             <a class="pull-right small" href="{{url_for_security('forgot_password')}}">forgot password?</a>
+           </div>
+         </div>
 
-             <div class="clearfix offset-vertical-2"></div>
-
-             <!-- Password input-->
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
-                  {{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
-              </div>
-
-             <!-- Multiple Checkboxes (inline) -->
-             <div class="login-extra offset-vertical-2">
-               <div class="control-group">
-                 <label class="control-label remember pull-left" for="remember">
-                   {{ render_login_field_with_errors(login_user_form.remember) }}
-                   Remember me
-                 </label>
-                 <a class="pull-right small" href="{{url_for_security('forgot_password')}}">forgot password?</a>
-               </div>
-             <div class="clearfix"></div>
-             </div>
-
-              {{ render_field(login_user_form.next) }}
-              <div class="control-group">
-                <label class="control-label" for="signin"></label>
-                <div class="controls content-align-center">
-                  {{ render_field(login_user_form.submit, value="Sign In", class='btn btn-default btn-lg btn-squishy width-75') }}
-                </div>
-              </div>
-             <div class="clearfix"></div>
-      </div> <!-- col-md-6 -->
-      <div class="col-md-6">
-        <h2>No account yet?</h2>
-        <a href="{{url_for('blender_id_login')}}" class="btn btn-default btn-block btn-lg">Blender ID</a>
-        <a href="{{url_for('google_login')}}" class="btn btn-default btn-block btn-lg">Google</a>
-        <a href="{{url_for('facebook_login')}}" class="btn btn-default btn-block btn-lg">Facebook</a>
-        <a href="{{url_for_security('register')}}">Use your email to register</a>
+          {{ render_field(login_user_form.next) }}
+          <div class="control-group">
+            <label class="control-label" for="signin"></label>
+            <div class="controls content-align-center">
+              {{ render_field(login_user_form.submit, value="Sign In", class='btn btn-default btn-lg btn-squishy width-75') }}
+            </div>
+          </div>
+        </form>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Login using</h2>
+        </div>
       </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a href="{{url_for('blender_id_login')}}">Blender ID</a>
+        </div>
+        <div class="col-md-4">
+          <a href="{{url_for('google_login')}}">Google</a>
+        </div>
+        <div class="col-md-4">
+          <a href="{{url_for('facebook_login')}}">Facebook</a>
+        </div>
+      </div>
+      <a href="{{url_for_security('register')}}">or create an account</a>
     </div>
   </div>
+  <div class="col-md-3">
+     {% include '_sidebar.html' %}
+  </div>
 </div>
-
 {% endblock %}

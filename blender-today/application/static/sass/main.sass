@@ -3,7 +3,7 @@
 
 $color_brand_main: #0092A0 // # 296bb6 - serious blue 34495e, greenish 009587
 $color_brand_secondary: #e74c3c // e74c3c - dc2900
-$color_background: #f0f2f3 // f0f0f0 // f9f7f6
+$color_background: #f0f1f3 // f0f0f0 // f9f7f6
 $color_text: #444
 
 $color_upvote: #ff8b60
@@ -89,6 +89,7 @@ a.logo
 	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 	&.even
 		background-color:	darken($color_background, 1%)
+		border: thin solid darken($color_background, 5%)
 		& .post-index-item-title
 			+text-shadow(1px, 1px, 0, white, 0.8)
 	&:hover .post-index-item-type
@@ -326,9 +327,13 @@ a.logo
 	margin-left: 10px
 	position: relative
 	+media-xs
-		margin-left: 0
+		margin-left: 15px
 	+media-sm
 		margin-left: 25px
+	+media-md
+		margin-left: 25px
+	+media-lg
+		margin-left: 10px
 
 	& .author-name
 		display: block
@@ -559,7 +564,7 @@ a.logo
 			font-size: 0.7em
 
 /* User Settings */
-.user-settings
+.user-settings, .user-login
 	margin-top: 30px
 
 .user-settings-avatar
