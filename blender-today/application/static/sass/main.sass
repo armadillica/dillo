@@ -9,6 +9,9 @@ $color_text: #444
 $color_upvote: #ff8b60
 $color_downvote: #74a4ff
 
+$color_danger: #dd4b39
+$color_success: #d5d644
+
 $font_body: 'Open Sans', Verdana, Arial, Helvetica, sans-serif
 $font_headings: 'Raleway', 'Lucida Sans', 'Lucida Grande', sans-serif
 $font_size: 14px
@@ -357,6 +360,42 @@ a.logo
 		content: '\f024'
 		font-family: 'FontAwesome'
 
+	& .post-actions
+		float: right
+		display: block
+		position: relative
+		top: 30px
+		& .post-actions-button
+			display: inline-block
+			margin: 0 0 0 10px
+			height: 40px
+			width: 40px
+			color: white
+			font-size: 1.2em
+			cursor: pointer
+			position: relative
+			background-color: $color_brand_main
+			+border-radius(50%)
+			+text-shadow(1px, 1px, 0, black, .1)
+			+box-shadow(1px, 2px, 0, black, .1)
+
+			&:hover
+				background-color: lighten($color_brand_main, 5%)
+
+			& i
+				position: relative
+				top: 8px
+				left: 13px
+
+			&.delete:hover
+				background-color: $color_danger
+
+			&.save
+				display: none
+				opacity: 0
+
+				&:hover
+					background-color: $color_success
 
 .post-view-details-avatar,
 .post-view-comments-avatar
@@ -871,7 +910,8 @@ fieldset
 	display: inline-block
 	margin: 15px auto
 	& li
-		& a
+		& a,
+		& span
 			border: none
 			color: $color_brand_main
 			background-color: transparent
@@ -897,6 +937,9 @@ fieldset
 			&:hover a, &:active a, &:focus a
 				background-color: transparent
 
+		& span.ellipsis
+			+user-select-none
+			+pointer-events-none
 
 /* Submit Button */
 .navbar-submit
