@@ -64,6 +64,9 @@ def index_category(category, page=1):
     category = Category.query\
         .filter_by(name=category).first_or_404()
     #posts = query_posts_category(category.url, page)
+    user_string_id = ''
+    if current_user.is_authenticated():
+        user_string_id = current_user.string_id
     posts = Post.query\
         .filter_by(status='published')\
         .join(Category)\
@@ -76,6 +79,8 @@ def index_category(category, page=1):
         title='index_category',
         category_url=category.url, #used for caching index
         category=category,
+        user_string_id=user_string_id,
+        page=str(page),
         posts=posts)
 
 

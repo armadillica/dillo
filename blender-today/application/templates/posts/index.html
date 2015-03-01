@@ -10,7 +10,7 @@
 
 {% block body %}
 
-{% cache 60*5, 'post_list', page, category_url, user_string_id %}
+{% cache 60*5, 'post_list', category_url, page, user_string_id %}
 <div class="row">
 	<div class="col-md-9 post-index">
 	<h3>{% if title == 'index_category' %}
