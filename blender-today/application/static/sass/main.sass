@@ -516,6 +516,7 @@ a.logo
 div#post-comment-reply-container
 	padding: 20px 20px 60px 90px
 	background-color: $color_brand_main
+	border-top: thick solid $color_brand_secondary
 
 #form-comment-reply-submit
 	margin-top: 10px
@@ -673,6 +674,12 @@ div#post-comment-reply-container
 		text-align: center
 		padding: 5px 0 0 0
 		+text-shadow(1px, 2px, 2px, black, .2)
+		& .fa-file-text-o,
+		& .fa-link
+			font-size: 85%
+		& .fa-link
+			top: 2px
+
 
 	& .post-submit-field-type-button-title
 		display: block
