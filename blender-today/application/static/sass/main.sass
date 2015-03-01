@@ -648,9 +648,10 @@ a.logo
 		background-color: lighten(desaturate($color_brand_main, 60%), 18%)
 		border: 2px solid darken($color_brand_main, 2%)
 		margin-bottom: 10px
+		+user-select-none
 		+border-radius(10px)
 		+transition(background-color, 0.1s, ease)
-
+		+box-shadow(2px, 2px, 2px, black, .2)
 		&:hover, &:focus
 			text-decoration: none !important
 			background-color: lighten(desaturate($color_brand_main, 40%), 5%)
@@ -658,9 +659,8 @@ a.logo
 			background-color: darken(desaturate($color_brand_main, 40%), 5%)
 
 		&.activato
-			border: 2px dashed darken(desaturate($color_brand_secondary, 5%), 25%)
+			border: 2px solid darken(desaturate($color_brand_secondary, 5%), 25%)
 			background-color: darken(desaturate($color_brand_secondary, 5%), 8%)
-			box-shadow: 0 0 0 3px darken(desaturate($color_brand_secondary, 5%), 8%), 1px 2px 2px rgba(0,0,0,0.2)
 
 
 	& .post-submit-field-type-button-icon
@@ -692,15 +692,12 @@ a.logo
 	color: white
 	background-color: $color_brand_secondary
 	border: none
+	font-size: 1.5em
 	+box-shadow(1px, 2px, 2px, black, .2)
-
-.post-submit .post-submit-field-cancel
-	color: lighten($color_text, 20%)
-	background-color: $color_background
-	border: none
-	+box-shadow(1px, 2px, 2px, black, .2)
-	&:hover
-		background-color: lighten($color_background, 3%)
+	&:hover, &:focus
+		background-color: lighten($color_brand_secondary, 10%)
+	&:active
+		background-color: darken($color_brand_secondary, 10%)
 
 /* User Login */
 .user-login,
