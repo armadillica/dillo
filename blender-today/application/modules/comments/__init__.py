@@ -27,7 +27,14 @@ comments = Blueprint('comments', __name__)
 @login_required
 def index(post_id):
     post = Post.query.get_or_404(post_id)
-    return 'ok'
+    comments = []
+    for comment in post.first_level_comments():
+        comments.append({
+            'uuid' : comment.uuid,
+            'user_id' : comment.user.id
+            })
+    #comments = [comment for comment in post.first_level_comments()]
+    return jsonify(comments=comments)
 
 @comments.route('/<int:post_id>/submit', methods=['POST'])
 @login_required
@@ -35,9 +42,15 @@ def submit(post_id):
     form = CommentForm()
     post = Post.query.get_or_404(post_id)
     if form.validate_on_submit():
+        parent_id = form.parent_id.data
+        if not parent_id:
+            parent_id = None
+        else:
+            parent_id = int(form.parent_id.data)
         comment = Comment(
             user_id=current_user.id,
             post_id=post.id,
+            parent_id=parent_id,
             content=form.content.data)
         db.session.add(comment)
         db.session.commit()
@@ -55,6 +68,7 @@ def submit(post_id):
         gravatar=comment.user.gravatar(),
         content=comment.content,
         comment_id=comment.id,
+        parent_id=comment.parent_id,
         post_uuid=post.uuid,
         creation_date=comment.pretty_creation_date,
         ))

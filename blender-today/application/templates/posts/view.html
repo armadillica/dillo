@@ -187,6 +187,9 @@
 									<span class="separator"></span>
 									<a class="post-view-comments-item-flag flag{% if comment.user_rating and not comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}">
 									</a>
+									<span class="separator"></span>
+									<a comment="{{comment.id}}"  class="post-comment-reply" href="{{url_for('comments.submit', post_id=post.id)}}">Reply...
+									</a>
 								</div>
 							</div>
 						</div> <!-- row -->
@@ -215,21 +218,22 @@
 					<div class="col-md-11">
 						{% if not current_user.is_anonymous() %}
 						<form id="form-comment" role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
-						{{ form.hidden_tag() }}
-						<div class="form-group">
-							{{ form.content(class='form-control', id='post_comment') }}
-							{% if form.content.errors %}
-								<ul class="error">
-										{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
-								</ul>
-							{% endif %}
-						</div>
+							{{ form.hidden_tag() }}
+							<div class="form-group">
+								{{ form.content(class='form-control', id='post_comment') }}
+								{% if form.content.errors %}
+									<ul class="error">
+											{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+									</ul>
+								{% endif %}
+							</div>
+							{{ form.parent_id }}
 
-						<button id="submit-post" type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
-							<i class="fa fa-check"></i> Submit Comment
-						</button>
+							<button id="submit-post" type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+								<i class="fa fa-check"></i> Submit Comment
+							</button>
 
-					</form>
+						</form>
 					{% endif %}
 					</div>
 				</div>
@@ -249,15 +253,14 @@
 
 	{% if current_user.is_authenticated() %}
 		CKEDITOR.replace('post_comment', {
-				removePlugins: 'elementspath',
-				resize_enabled: false
+			removePlugins: 'elementspath',
+			resize_enabled: false
 		});
 		CKEDITOR.disableAutoInline = true;
-
 		CKEDITOR.config.forcePasteAsPlainText = true;
-
 		CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
 
+		var comment_reply_editor, html = '';
 
 		var upvote = function(up, down, rate) {
 			$.get(up.attr("href"), function(data){
@@ -302,12 +305,38 @@
 		$(".flag").click(function(e) {
 			e.preventDefault();
 			$(this).toggleClass('flagged');
-			$.get($(this).attr("href"));
+			$.get($(this).attr('href'));
 		});
 
-		var print_comment = function(comment) {
+		$(".post-comment-reply").click(function(e) {
+			e.preventDefault();
+			if(comment_reply_editor){
+				//$("#post-comment-reply-container").appendTo($(this));
+				comment_reply_editor.destroy();
+				comment_reply_editor = null;
+				$("#post-comment-reply-container").remove();
+			}
+
+			var comment = $(this).attr('comment');
+			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default">Submit</span></div>');
+			var config = {};
+			comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
+		});
+
+
+		$(document).on('click','#form-comment-reply-submit',function(e){
+			var parent_id = $("#post-comment-reply-container").attr("parent_id");
+			var comment_reply_content = comment_reply_editor.getData();
+			$.post($("#form-comment").attr("action"), {parent_id:parent_id, content:comment_reply_content},function(data){
+				c = print_comment(data['comment'], 'reply ');
+				$("#post-comment-reply-container").before(c);
+			});
+		});
+
+
+		var print_comment = function(comment, reply='') {
 		comment = 
-		'<div class="post-view-comments-item flash"> \
+		'<div class="post-view-comments-item '+ reply +'flash"> \
 			<div class="row"> \
 				<div class="col-md-1 col-sm-1 col-xs-2">\
 					<div class="post-view-comments-avatar">\
@@ -330,8 +359,8 @@
 		return comment;
 		}
 
-		$("#form-comment").on("submit", function( event ) {
-			event.preventDefault();
+		$("#form-comment").on("submit", function(e) {
+			e.preventDefault();
 			$.post($(this).attr('action'), $(this).serialize(),function(data){
 				c = print_comment(data['comment']);
 				$(".post-view-comments-submit").before(c);
@@ -358,21 +387,21 @@
 				});
 			});
 
-      $('.edit-post-delete-widget').click(function(e){
-        e.preventDefault();
-        $('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
-        $('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
-          $('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
-        });
-      });
+	$('.edit-post-delete-widget').click(function(e){
+		e.preventDefault();
+		$('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
+		$('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
+		$('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
+		});
+	});
 
-      $('.edit-post-delete-widget-action').click(function(e){
-      	$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
-					$('.edit-post-delete-widget').fadeOut(function(){
-						$('#edit-post-delete-label').toggleClass('hidden');
-					});
-      	});
-      });
+	$('.edit-post-delete-widget-action').click(function(e){
+		$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
+			$('.edit-post-delete-widget').fadeOut(function(){
+				$('#edit-post-delete-label').toggleClass('hidden');
+			});
+		});
+	});
 
 		{% endif %}
 

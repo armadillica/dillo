@@ -81,7 +81,6 @@ def index_category(category, page=1):
 
 @posts.route('/posts/<category>/<uuid>/')
 @posts.route('/posts/<category>/<uuid>/<slug>')
-@cache.memoize(timeout=60)
 def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)

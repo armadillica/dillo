@@ -79,6 +79,13 @@ class Post(db.Model):
             self.rating.positive, self.rating.negative, self.creation_date)
         db.session.commit()
 
+    def first_level_comments(self):
+        comments = [comment for comment in self.comments if comment.parent_id]
+        comments.sort(key=lambda comment: comment.confidence, reverse=True)
+        return comments
+        #self.comments.sort([c for c self.comments if not c.parent_id], key=lambda comment: comment.confidence, reverse=True)
+
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
