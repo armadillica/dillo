@@ -127,7 +127,7 @@
 
         $("#submit_post_form").on("submit", function (e) {
             e.preventDefault();
-            $('.post-submit-field-submit').html('<i>Posting</i>');
+            $('.post-submit-field-submit').html('<i class="fa fa-spinner fa-spin"></i> <i>Submitting...</i>');
             var data = $(this).serialize();
             url = $(this).attr('action');
             var formData = new FormData($(this)[0]);

@@ -121,13 +121,14 @@
 						<span class="meta">
 							<span class="date">
 							Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
-							{% if post.edit_date %}
-								<span class="edited" title="Last edited {{post.pretty_edit_date}}">
-									(edited)
-								</span>
-							{% endif %}
 							{% if post.status == 'deleted' %}
 								<span class="disabled">(deleted)</span>
+							{% else %}
+								{% if post.edit_date %}
+									<span class="edited" title="Last edited {{post.pretty_edit_date}}">
+										(edited)
+									</span>
+								{% endif %}
 							{% endif %}
 							</span>
 							<span class="separator"></span>
@@ -363,6 +364,7 @@
 			$('.edit-post-delete-widget').fadeOut(function(){
 				$('#edit-post-delete-label').toggleClass('hidden');
 			});
+			$('#edit-post-toggle').fadeOut();
 		});
 	});
 

@@ -23,10 +23,10 @@
 					{{comment.content|safe}}
 				</div>
 				<div class="post-view-comments-item-details">
-					<a class="post-view-comments-item-rate comment-up up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
+					<a class="post-view-comments-item-rate comment-up up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}" title="Upvote this comment">
 						<i class="fa fa-chevron-up"></i>
 					</a>
-					<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">
+					<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}" title="Downvote this comment">
 						<i class="fa fa-chevron-down"></i>
 					</a>
 					<span class="separator"></span>
@@ -35,13 +35,13 @@
 					<span title="{{comment.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{comment.pretty_creation_date}}</span>
 					<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
 					<span class="separator"></span>
-					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}"><i class="fa fa-link"></i></a>
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}" title="Permalink"><i class="fa fa-link"></i></a>
 					<span class="separator"></span>
-					<a class="post-view-comments-item-flag flag{% if comment.user_rating and not comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}">
+					<a class="post-view-comments-item-flag flag{% if comment.user_rating and not comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}" title="Flag comment">
 					</a>
 					{% if not is_reply %}
 					<span class="separator"></span>
-					<a comment="{{comment.id}}"  class="post-comment-reply" href="{{url_for('comments.submit', post_id=post.id)}}">Reply...
+					<a comment="{{comment.id}}"  class="post-comment-reply" href="{{url_for('comments.submit', post_id=post.id)}}" title="Reply to this comment">reply
 					</a>
 					{%endif %} 
 				</div>
