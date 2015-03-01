@@ -320,12 +320,11 @@ a.logo
 .post-view-details
 	display: block
 	padding: 15px
-	//margin: 0 0 0 55px
 	width: 100%
-	background-color: darken($color_background, 3%)
-	border-bottom: thick solid darken($color_background, 5%)
-	color: lighten($color_text, 10%)
-	+text-shadow(1px, 1px, 0, white, 0.4)
+	background-color: $color_brand_main
+	border-bottom: thick solid darken($color_brand_main, 3%)
+	color: white
+	+text-shadow(1px, 1px, 0, black, 0.4)
 
 .post-view-details-meta
 	margin-left: 10px
@@ -338,6 +337,12 @@ a.logo
 		margin-left: 25px
 	+media-lg
 		margin-left: 10px
+
+	& a
+		color: white
+		&:hover
+			color: $color_brand_secondary
+			text
 
 	& .author-name
 		display: block
@@ -374,28 +379,49 @@ a.logo
 			font-size: 1.2em
 			cursor: pointer
 			position: relative
-			background-color: $color_brand_main
+			background-color: $color_brand_secondary
+			border: 2px solid white
 			+border-radius(50%)
 			+text-shadow(1px, 1px, 0, black, .1)
 			+box-shadow(1px, 2px, 0, black, .1)
 
-			&:hover
-				background-color: lighten($color_brand_main, 5%)
+			&:hover, &:active, &:focus
+				background-color: lighten($color_brand_secondary, 5%)
+				text-decoration: none
 
 			& i
 				position: relative
-				top: 8px
-				left: 13px
+				top: 6px
+				left: 11px
 
 			&.delete:hover
-				background-color: $color_danger
+				background-color: lighten($color_brand_secondary, 5%)
+			&.delete:active, &.delete:focus				
+				background-color: darken($color_danger, 10%)
 
 			&.save
 				display: none
 				opacity: 0
 
 				&:hover
-					background-color: $color_success
+					background-color: darken($color_success, 20%)
+
+		& .edit-post-delete-widget
+			&:focus .edit-post-delete-widget-icon
+				outline: none !important
+
+		& .edit-post-delete-widget-icon,
+		& .edit-post-delete-widget-question
+			position: relative
+			text-decoration: none
+			&:hover, &:active, &:focus
+				text-decoration: none
+
+		& .edit-post-delete-widget-question
+			font-weight: bold
+			left: 0
+			top: 8px
+			opacity: 0
 
 .post-view-details-avatar,
 .post-view-comments-avatar
@@ -430,6 +456,7 @@ a.logo
 			color: #40b0e0
 			font-size: 0.9em
 
+
 .post-view-details-avatar-label
 	width: 23px
 	height: 23px
@@ -454,7 +481,6 @@ a.logo
 			left: 4px
 
 
-
 .post-view-comments
 	padding: 0
 	margin: 0
@@ -462,9 +488,13 @@ a.logo
 
 .post-view-comments .title
 	font-family: $font_headings
-	padding: 15px
+	padding: 30px 0 15px 15px
 	margin: 0
 	+user-select-none
+	& small
+		font-family: $font_body
+		font-size: 0.8em
+		color: lighten($color_text, 30%)
 
 .post-view-comments-item
 	display: block

@@ -18,7 +18,7 @@
 			<strong>·</strong>
 			<a href="{{url_for('posts.index_category', category=category.url)}}">{{category.name}}</a>
 		{% else %}
-			All
+			<a href="{{url_for('posts.index')}}">All</a>
 		{% endif %}
 
 		<span class="badge">({{posts.items|length}})</span>
