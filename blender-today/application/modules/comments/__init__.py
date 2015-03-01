@@ -19,6 +19,7 @@ from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import CommentForm
 from application.helpers import encode_id
 from application.helpers import decode_id
+from application.helpers import bleach_input
 
 comments = Blueprint('comments', __name__)
 
@@ -51,7 +52,7 @@ def submit(post_id):
             user_id=current_user.id,
             post_id=post.id,
             parent_id=parent_id,
-            content=form.content.data)
+            content = bleach_input(form.content.data))
         db.session.add(comment)
         db.session.commit()
         comment.uuid = encode_id(comment.id)
@@ -72,9 +73,9 @@ def submit(post_id):
         post_uuid=post.uuid,
         creation_date=comment.pretty_creation_date,
         ))
-    return redirect(url_for('posts.view',
-        category=post.category.url,
-        uuid=post.uuid))
+    # return redirect(url_for('posts.view',
+    #     category=post.category.url,
+    #     uuid=post.uuid))
 
 
 @comments.route('/<int:comment_id>/rate/<int:rating>')
@@ -176,7 +177,7 @@ def flag(comment_id):
 def edit(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if current_user.id == comment.user.id:
-        comment.content = request.form['content']
+        comment.content = bleach_input(request.form['content'])
         comment.status = 'edited'
         comment.edit_date = datetime.datetime.now()
         db.session.commit()

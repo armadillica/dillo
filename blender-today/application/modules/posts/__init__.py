@@ -34,6 +34,7 @@ from application.modules.posts.forms import CommentForm
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import slugify
+from application.helpers import bleach_input
 
 posts = Blueprint('posts', __name__)
 
@@ -41,7 +42,6 @@ posts = Blueprint('posts', __name__)
 @posts.route('/posts/')
 @posts.route('/posts/<int:page>')
 def index(page=1):
-    #posts = query_posts_all(page)
     posts = Post.query\
         .filter_by(status='published')\
         .join(PostRating)\
@@ -114,6 +114,9 @@ def submit():
         # If the post is a link (is 1)
         if form.post_type_id.data == 1:
             content = form.url.data
+        else:
+            # Clean the content
+            content = bleach_input(content)
         if not content:
             return abort(400)
 
@@ -271,7 +274,7 @@ def edit(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     if post.user.id == current_user.id:
-        post.content = request.form['content']
+        post.content = bleach_input(request.form['content'])
         post.status = 'edited'
         post.edit_date = datetime.datetime.now()
         db.session.commit()
