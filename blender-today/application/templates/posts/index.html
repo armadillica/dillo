@@ -9,6 +9,8 @@
 {% endblock%}
 
 {% block body %}
+{% cache 60*5, current_user.id %}
+
 <div class="row">
 	<div class="col-md-9 post-index">
 	<h3>{% if title == 'index_category' %}
@@ -131,6 +133,7 @@
 	</div>
 </div>
 
+{% endcache %}
 
 {% endblock %}
 
