@@ -1,6 +1,6 @@
     <div class="navbar navbar-default navbar-static-top" role="navigation">
 
-        <nav class="collapse navbar-collapse" id="navbar-collapse-menu">
+        <nav>
           <ul class="nav navbar-nav">
 
             <li data-dialog="submit"
@@ -11,12 +11,6 @@
                 {% endif %}>
               <a>Submit</a>
             </li>
-
-            {# 
-            <li {% if title == 'submit': %} class="active"{% endif %}>
-              <a href="{{ url_for('posts.submit') }}">Old Submit</a>
-            </li>
-            #}
 
             {% if current_user.is_authenticated() %}
 
