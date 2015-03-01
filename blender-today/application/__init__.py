@@ -101,3 +101,7 @@ def inject_submit_post_form():
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
     form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     return {'submit_post_form' : form}
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html'), 404
