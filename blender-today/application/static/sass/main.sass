@@ -511,12 +511,18 @@ a.logo
 		padding-left: 80px
 		border-top: thin dashed lighten($color_text, 60%)
 	&.flash
-		animation: effect-flash-fadeout 2s ease forwards
+		+text-shadow(1px, 1px, 0, black, 0.3)
+		animation: effect-flash-fadeout 1.5s ease forwards
+		& .post-view-comments-item-details
+			color: white
+			& a
+				color: white
+				+text-shadow-none
 
 div#post-comment-reply-container
 	padding: 20px 20px 60px 90px
 	background-color: $color_brand_main
-	border-top: thick solid $color_brand_secondary
+	border-top: thick solid darken($color_brand_main, 10%)
 
 #form-comment-reply-submit
 	margin-top: 10px
@@ -531,21 +537,25 @@ div#post-comment-reply-container
 	0%
 		background-color: white
 		color: white
-		top: 5px
+		padding-top: 0
+		opacity: 0
 	100%
-		background-color: lighten(desaturate($color_brand_main, 80%), 60%)
-		color: $color_text
-		top: 0
+		opacity: 1
+		background-color: lighten(desaturate($color_brand_main, 60%), 25%)
+		color: white
+		padding-top: 15px
 
 @keyframes effect-flash-fadeout
 	0%
 		background-color: white
 		color: white
-		top: 5px
+		padding-top: 0
+		opacity: 0
 	100%
-		background-color: lighten(desaturate($color_brand_main, 80%), 60%)
-		color: $color_text
-		top: 0
+		opacity: 1
+		background-color: lighten(desaturate($color_brand_main, 60%), 25%)
+		color: white
+		padding-top: 15px
 
 
 .post-view-comments-item-content
