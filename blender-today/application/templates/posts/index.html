@@ -9,8 +9,8 @@
 {% endblock%}
 
 {% block body %}
-{% cache 60*5, current_user.id %}
 
+{% cache 60*5, 'post_list', category, current_user.string_id %}
 <div class="row">
 	<div class="col-md-9 post-index">
 	<h3>{% if title == 'index_category' %}

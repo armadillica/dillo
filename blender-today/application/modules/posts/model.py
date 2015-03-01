@@ -37,14 +37,14 @@ class Post(db.Model):
         return str(self.title)
 
     @property
-    @cache.memoize(timeout=60)
+    #@cache.memoize(timeout=60)
     def user_rating(self):
         return UserPostRating.query\
             .filter_by(post_id=self.id, user_id=self.user.id)\
             .first()
 
     @property
-    @cache.memoize(timeout=60)
+    #@cache.memoize(timeout=60)
     def comments_count(self):
         return Comment.query\
             .filter_by(post_id=self.id)\
@@ -58,7 +58,7 @@ class Post(db.Model):
     def pretty_edit_date(self):
         return pretty_date(self.edit_date)
 
-    @cache.memoize(timeout=60)
+    #@cache.memoize(timeout=60)
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
             picture = imgur_client.get_image(self.picture)

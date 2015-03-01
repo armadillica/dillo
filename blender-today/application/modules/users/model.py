@@ -39,6 +39,10 @@ class User(db.Model, UserMixin):
         self.karma.value = self.karma.positive - self.karma.negative
         db.session.commit()
 
+    @property
+    def string_id(self):
+        return str(self.id)
+
     # Required for administrative interface
     def __str__(self):
         return self.email

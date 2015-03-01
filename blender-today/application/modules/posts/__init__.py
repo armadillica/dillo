@@ -13,6 +13,7 @@ from flask import request
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
+from flask.ext.cache import make_template_fragment_key
 #from flask.ext.sqlalchemy_cache import FromCache
 
 from application import app
@@ -77,6 +78,7 @@ def index(page=1):
         .paginate(page, per_page=10)
     return render_template('posts/index.html',
         title='index',
+        category='',
         posts=posts)
 
 
@@ -215,6 +217,11 @@ def rate(uuid, rating):
             db.session.commit()
             post.update_hot()
             post.user.update_karma()
+
+            cache_key = make_template_fragment_key('post_list',
+                vary_on=['', current_user.string_id])
+            print cache_key
+            cache.delete(cache_key)
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
         # if the post has not bee rated, create rating
@@ -232,6 +239,11 @@ def rate(uuid, rating):
         db.session.commit()
     post.update_hot()
     post.user.update_karma()
+
+    cache_key = make_template_fragment_key('post_list',
+        vary_on=['', current_user.string_id])
+    print cache_key
+    cache.delete(cache_key)
 
     return jsonify(rating=str(user_post_rating.is_positive),
         rating_delta=post.rating_delta)
