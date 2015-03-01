@@ -124,24 +124,26 @@
           }
         });
 
-        $("#submit_post_form").on("submit", function (event) {
-            event.preventDefault();
-            //$('#edit_notifications').html('<i>Updating</i>');
+        $("#submit_post_form").on("submit", function (e) {
+            e.preventDefault();
+            $('.post-submit-field-submit').html('<i>Posting</i>');
             var data = $(this).serialize();
             url = $(this).attr('action');
             var formData = new FormData($(this)[0]);
-            $.ajax( {
+            $.ajax({
                   url: url,
                   type: 'POST',
                   data: formData,
                   processData: false,
                   contentType: false,
                   cache: false
-                } )
-            .done(function(data) {
-                console.log(data['message']);
+                })
+            .done(function(data){
+                console.log(data['post_url']);
+                window.location.replace(data['post_url']);
             })
-            .fail(function(data) {
+            .fail(function(data){
+              console.log('We have a problem.');
             });
         });
 
@@ -156,20 +158,23 @@
           removePlugins: 'elementspath',
           resize_enabled: false
         });
-
         CKEDITOR.config.forcePasteAsPlainText = true;
+        CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
+
         $('.select-change').click(function(){ 
             $('#post_type_id').val($(this).data('val')).trigger('change');
         })
 
+
+
         $('.select-change').click(function(){
 
           $('.select-change').each(function() {
-            $(this).removeClass('activato');  
+            $(this).removeClass('activato');
           });
 
           $(this).addClass('activato');
-          
+
           $('.post-submit-div-title').show();
           $('.post-submit-div-category').show();
           $('.post-submit-div-picture').show();

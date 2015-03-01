@@ -111,7 +111,7 @@ def submit():
     form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     if form.validate_on_submit():
         content = form.content.data
-        # If the post is a link
+        # If the post is a link (is 1)
         if form.post_type_id.data == 1:
             content = form.url.data
         if not content:
