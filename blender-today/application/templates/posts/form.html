@@ -115,10 +115,6 @@
 				</div>
 			</div>
 		</div>
-
-		<select id="post_type_id" name="post_type_id" placeholder="Post Type" class="hidden">
-			<option value="1">Link</option>
-			<option value="2">Text</option>
-		</select>
+		{{ submit_post_form.post_type_id(id='the_post_type_id') }}
 	</div> <!-- post-submit -->
 </form>

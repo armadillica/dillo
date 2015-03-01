@@ -72,18 +72,16 @@
           </p>
         </span>
       </div> <!-- /footer-container -->
-
-      <div id="submit" class="dialog">
-        <div class="dialog__overlay"></div>
-          <div class="dialog__content">
-            {% include 'posts/form.html' %}
-            <button class="action dialog__button-close" data-dialog-close>
-              <i class="fa fa-times"></i>
-            </button>
-        </div>
-      </div>
-
     </footer>
+    <div id="submit" class="dialog">
+      <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+          {% include 'posts/form.html' %}
+          <button class="action dialog__button-close" data-dialog-close>
+            <i class="fa fa-times"></i>
+          </button>
+      </div>
+    </div>
     {% if config.USE_ASSETS_CDN %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -161,14 +159,8 @@
         CKEDITOR.config.forcePasteAsPlainText = true;
         CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
 
-        $('.select-change').click(function(){ 
-            $('#post_type_id').val($(this).data('val')).trigger('change');
-        })
-
-
-
         $('.select-change').click(function(){
-
+          $('#the_post_type_id').val($(this).data('val'));
           $('.select-change').each(function() {
             $(this).removeClass('activato');
           });
@@ -180,11 +172,11 @@
           $('.post-submit-div-picture').show();
           $('.post-submit-div-submit').show();
 
-          if ($('#post_type_id').val() == 1){
+          if ($('#the_post_type_id').val() == 1){
             $('.post-submit-link').show();
             $('.post-submit-article').hide();
           };
-          if ($('#post_type_id').val() == 2){
+          if ($('#the_post_type_id').val() == 2){
             $('.post-submit-link').hide();
             $('.post-submit-article').show();
           };

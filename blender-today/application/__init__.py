@@ -99,7 +99,8 @@ def inject_submit_post_form():
     from application.modules.posts.model import PostType
     form = PostForm()
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
-    form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
+    #form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
+    form.post_type_id.data = 1
     return {'submit_post_form' : form}
 
 @app.errorhandler(404)
