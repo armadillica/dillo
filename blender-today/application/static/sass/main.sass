@@ -420,8 +420,16 @@ a.logo
 		& .edit-post-delete-widget-question
 			font-weight: bold
 			left: 0
-			top: 8px
+			top: 6px
 			opacity: 0
+
+		& .edit-post-delete-widget-action
+			position: absolute
+			float: left
+			background-color: transparent
+			height: 36px
+			width: 36px
+			z-index: 1
 
 .post-view-details-avatar,
 .post-view-comments-avatar
@@ -954,6 +962,7 @@ fieldset
 				border: none
 				font-weight: bold
 				background-color: desaturate($color_brand_secondary, 10%)
+				z-index: 0
 				+border-radius(50%)
 			&:hover a, &:active a, &:focus a,
 			& a:hover, & a:active, & a:focus

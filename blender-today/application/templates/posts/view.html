@@ -78,8 +78,9 @@
 							<span id="edit-post-toggle" class="post-actions-button edit">
 								<i class="fa fa-pencil"></i>
 							</span>
-              <a class="edit-post-delete-widget post-actions-button delete" href=""
-              	 title="Delete Post">
+              <a class="edit-post-delete-widget post-actions-button delete" 
+              	 title="Delete Post" href="">
+              	<span class="edit-post-delete-widget-action" link=""></span>
                 <span class="edit-post-delete-widget-icon"><i class="fa fa-trash"></i></span>
                 <span class="edit-post-delete-widget-question">?</span>
               </a>
@@ -340,12 +341,13 @@
         e.preventDefault();
         $('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
         $('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
-          $('.edit-post-delete-widget').attr('href', '{{ url_for("posts.delete", uuid=post.uuid) }}');
-          $.post($('.edit-post-delete-widget').attr("href"), function(data){
-          });
+          $('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
         });
       });
 
+      $('.edit-post-delete-widget-action').click(function(e){
+      	$.post($('.edit-post-delete-widget-action').attr("link"), function(data){});
+      });
 
 		{% endif %}
 
