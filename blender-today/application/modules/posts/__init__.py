@@ -38,35 +38,6 @@ from application.helpers import slugify
 posts = Blueprint('posts', __name__)
 
 
-@cache.memoize(timeout=60)
-def query_posts_all(page):
-    paginate = Post.query\
-        .filter_by(status='published')\
-        .join(PostRating)\
-        .order_by(desc(PostRating.hot))\
-        .paginate(page, per_page=10)
-    posts = dict(
-        items=paginate.items,
-        has_prev=paginate.has_prev,
-        has_next=paginate.has_next,
-        page=paginate.page,
-        #iter_pages=paginate.iter_pages()
-        )
-    return posts
-
-
-@cache.memoize(timeout=60)
-def query_posts_category(category, page):
-    return Post.query\
-        .filter_by(status='published')\
-        .join(Category)\
-        .join(PostRating)\
-        .filter(Category.name == category)\
-        .order_by(desc(PostRating.hot))\
-        .paginate(page, per_page=10)\
-        .items
-
-
 @posts.route('/posts/')
 @posts.route('/posts/<int:page>')
 def index(page=1):
@@ -76,9 +47,13 @@ def index(page=1):
         .join(PostRating)\
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=10)
+    user_string_id = ''
+    if current_user.is_authenticated():
+        user_string_id = current_user.string_id
     return render_template('posts/index.html',
         title='index',
-        category='',
+        category_url='', #used for caching index
+        user_string_id=user_string_id,
         posts=posts)
 
 
@@ -98,6 +73,7 @@ def index_category(category, page=1):
 
     return render_template('posts/index.html',
         title='index_category',
+        category_url=category.url, #used for caching index
         category=category,
         posts=posts)
 
