@@ -26,6 +26,8 @@
 		{% for post in posts.items %}
 		<div class="row post-index-item {{ loop.cycle('odd', 'even') }}">
 			<div class="col-md-2 col-sm-2 col-xs-2">
+
+				{# Post Rating #}
 				<div class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if current_user.is_anonymous() %} data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Please login to vote" {% endif %}>
 					<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
 						<i class="fa fa-angle-up"></i>
@@ -35,7 +37,9 @@
 						<i class="fa fa-angle-down"></i>
 					</a>
 				</div>
-				<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}">
+
+				{# Post Circle #}
+				<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
 					<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 						{% if post.post_type.url == 'link' %}
 							<i class="fa fa-link"></i>
@@ -49,14 +53,9 @@
 			<div class="col-md-10 col-sm-10 col-xs-10">
 
 				<a class="post-index-item-title"
-					href="
-					{% if post.post_type.url == 'link' %}
-						{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}
-					{% else %}
-						{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}
-					{% endif %}
-					"
-					title="{{post.title}}">
+					href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}"
+					title="{{post.title}}"
+					{% if post.post_type.url == 'link' %}target="_blank"{% endif %}>
 					{{post.title}}
 				</a>
 

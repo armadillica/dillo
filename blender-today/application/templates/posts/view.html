@@ -30,15 +30,22 @@
 				<i class="fa fa-angle-down"></i>
 			</a>
 		</div>
+
 		<div class="post-view-title">
-			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}" title="{{post.title}}">
+			<a
+				href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}"
+				title="{{post.title}}"
+				{% if post.post_type.url == 'link' %}target="_blank"{% endif %}>
 				{{post.title}}
+				{% if post.post_type.url == 'link' %}<small><i class="fa fa-link"></i></small>{% endif %}
 			</a>
 		</div>
 
 		<div class="clearfix"></div>
 
-		<div class="post-view-content" id="post-content">{{post.content|safe}}</div>
+		{% if post.post_type.url != 'link' %}
+			<div class="post-view-content" id="post-content">{{post.content|safe}}</div>
+		{% endif %}
 
 		{% if post.picture %}
 		<div class="post-view-content-image">
@@ -71,21 +78,27 @@
 						{% if current_user.is_owner %}
 						<div class="post-actions">
 							{% if post.status != 'deleted' %}
-							<a id="edit-post-save" class="post-actions-button save"
-								 href="{{ url_for('posts.edit', uuid=post.uuid) }}">
-								 <i class="fa fa-save"></i>
-							</a>
-							<span id="edit-post-toggle" class="post-actions-button edit">
-								<i class="fa fa-pencil"></i>
-							</span>
-              <a class="edit-post-delete-widget post-actions-button delete" 
-              	 title="Delete Post" href="">
-              	<span class="edit-post-delete-widget-action" link=""></span>
-                <span class="edit-post-delete-widget-icon"><i class="fa fa-trash"></i></span>
-                <span class="edit-post-delete-widget-question">?</span>
-              </a>
 
+								{% if post.post_type.url != 'link' %}
+									<a id="edit-post-save" class="post-actions-button save"
+										 href="{{ url_for('posts.edit', uuid=post.uuid) }}">
+										 <i class="fa fa-save"></i>
+									</a>
+									<span id="edit-post-toggle" class="post-actions-button edit">
+										<i class="fa fa-pencil"></i>
+									</span>
+								{% endif %}
+
+								<a class="edit-post-delete-widget post-actions-button delete" 
+									 title="Delete Post" href="">
+									<span class="edit-post-delete-widget-action" link=""></span>
+									<span class="edit-post-delete-widget-icon"><i class="fa fa-trash"></i></span>
+									<span class="edit-post-delete-widget-question">?</span>
+								</a>
 							{% endif %}
+							<h4 class="{% if post.status != 'deleted' %}hidden{% endif %}" id="edit-post-delete-label">
+								<span class="label label-lg label-danger">This post has been deleted</span>
+							</h4>
 						</div>
 						{% endif %}
 
@@ -354,7 +367,11 @@
       });
 
       $('.edit-post-delete-widget-action').click(function(e){
-      	$.post($('.edit-post-delete-widget-action').attr("link"), function(data){});
+      	$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
+					$('.edit-post-delete-widget').fadeOut(function(){
+						$('#edit-post-delete-label').toggleClass('hidden');
+					});
+      	});
       });
 
 		{% endif %}
