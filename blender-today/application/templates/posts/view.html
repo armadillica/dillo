@@ -334,7 +334,8 @@
 		});
 
 
-		var print_comment = function(comment, reply='') {
+		var print_comment = function(comment, reply) {
+		if (typeof(reply)==='undefined') reply = '';
 		comment = 
 		'<div class="post-view-comments-item '+ reply +'flash"> \
 			<div class="row"> \
