@@ -18,3 +18,7 @@ def about():
 @app.route('/')
 def index():
     return redirect(url_for('posts.index'))
+
+@app.route('/faq')
+def faq():
+    return view('faq')

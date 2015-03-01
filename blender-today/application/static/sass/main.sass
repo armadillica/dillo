@@ -105,12 +105,6 @@ a.logo
 	padding: 15px 0 5px 0
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
 	@extend .text-overflow-ellipsis
-	// +media-xs
-	// 	padding-left: 0
-	// +media-md
-	// 	padding-left: 15px
-	// +media-lg
-	// 	padding-left: 5px
 
 	&:hover
 		text-decoration: none
@@ -120,12 +114,6 @@ a.logo
 	font-size: 0.9em
 	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
-	// +media-xs
-	// 	padding-left: 0
-	// +media-md
-	// 	padding-left: 15px
-	// +media-lg
-	// 	padding-left: 5px
 	& a
 		color: lighten($color_text, 20%)
 		&:hover
@@ -701,6 +689,23 @@ a.logo
 		background-color: lighten($color_brand_secondary, 10%)
 	&:active
 		background-color: darken($color_brand_secondary, 10%)
+
+/* Page View */
+.page-view
+	display: block
+	padding-top: 6px
+
+.page-view-container
+	display: block
+	background-color: white
+	margin: 0 0 10px 0
+	padding: 0
+	border: thin solid darken($color_background, 3%)
+	+border-radius(3px)
+	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
+
+	& .page-view-content
+		padding: 15px
 
 /* User Login */
 .user-login,

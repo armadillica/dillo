@@ -1,5 +1,19 @@
 {% extends 'layout.html' %}
 {% block body %}
-    {{content|safe}}
+<div class="row">
+   <div class="col-md-9">
+   	<div class="page-view">
+			<h2>{{title}}</h2>
+			<div class="page-view-container">
+				<div class="page-view-content">
+					{{content|safe}}
+				</div>
+			</div>
+		</div> <!-- page-view -->
+   </div> <!-- col-md -->
+   <div class="col-md-3">
+    {% include '_sidebar.html' %}
+   </div> <!-- col-md -->
+</div> <!-- row -->
 {% endblock %}
 
