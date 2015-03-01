@@ -318,7 +318,7 @@
 			}
 
 			var comment = $(this).attr('comment');
-			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default">Submit</span></div>');
+			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default btn-block btn-success"><i class="fa fa-check"></i> Submit Reply</span></div>');
 			var config = {};
 			comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
 		});
