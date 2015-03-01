@@ -19,6 +19,8 @@
                     <div class="col-md-6">
                         <form role="form" method="POST" action="{{url_for('settings.profile')}}">
                             {{ form.hidden_tag() }}
+
+                            {#
                             <div class="form-group">
                                 {{ form.email.label }} 
                                 {{ form.email(class='form-control', placeholder='Email address') }}
@@ -28,6 +30,8 @@
                                     </ul>
                                 {% endif %}
                             </div>
+                            #}
+
                             <div class="form-group">
                                 {{ form.first_name.label }} 
                                 {{ form.first_name(class='form-control', placeholder='Your first name') }}

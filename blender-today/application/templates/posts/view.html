@@ -89,7 +89,12 @@
 						</div>
 						{% endif %}
 
-						<span class="author-name">{{post.user.first_name}} {{post.user.last_name}}</span>
+						<span class="author-name">
+							{{post.user.first_name}} {{post.user.last_name}}
+							{% if post.user.username %}
+								({{post.user.username}})
+							{% endif %}
+						</span>
 						<span class="author-roles">
 							{% if post.user.has_role('network_member') %}
 								Blender Network Member<br/>
@@ -105,6 +110,9 @@
 								<span title="Last edited {{post.pretty_edit_date}}">
 									<span class="disabled">(edited)</span>
 								</span>
+							{% endif %}
+							{% if post.status == 'deleted' %}
+								<span class="disabled">(deleted)</span>
 							{% endif %}
 							</span>
 							<span class="separator"></span>
