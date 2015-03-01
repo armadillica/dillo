@@ -54,6 +54,7 @@ def index(page=1):
         title='index',
         category_url='', #used for caching index
         user_string_id=user_string_id,
+        page=str(page),
         posts=posts)
 
 
