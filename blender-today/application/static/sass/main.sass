@@ -253,7 +253,7 @@ a.logo
 
 /* //post-index */
 /* post-view */
-.post-view-container, .post-submit
+.post-view-container
 	background-color: white
 	border: thin solid darken($color_background, 3%)
 	+border-radius(3px)
@@ -342,7 +342,6 @@ a.logo
 		color: white
 		&:hover
 			color: $color_brand_secondary
-			text
 
 	& .author-name
 		display: block
@@ -603,14 +602,12 @@ a.logo
 
 /* //post-view */
 /* post-submit */
-.post-submit
-	padding: 15px
-
-.post-submit .form-control
+.post-submit .form-group .form-control
 	font-size: 1.4em
 	padding: 6px 15px
 	height: auto
 	width: auto
+	background-color: white
 
 	&.post-submit-field-title, &.post-submit-field-url,
 	&.post-submit-field-category, &.post-submit-field-content, &.post-submit-field-picture
@@ -622,28 +619,88 @@ a.logo
 .post-submit-div-submit
 	display: none
 
-.post-submit .post-submit-field-type
+.post-submit-div-category,
+.post-submit-div-picture,
+.post-submit-div-title,
+.post-submit-div-url
+	margin-top: 10px
+	margin-bottom: 10px
+	& span
+		font-size: 1.6em
+		display: block
+		padding-top: 6px
+		+text-shadow(1px, 1px, 0, black, .2)
+
+.post-submit-div-title,
+.post-submit-div-url
+	margin-top: 0
+
+.post-submit-field-type
 	display: block
-	margin: 20px 0
+	margin-top: 20px
+	margin-bottom: 20px
 
 	& .post-submit-field-type-button
 		display: inline-block
 		width: 100%
 		cursor: pointer
+		padding: 5px 5px 10px 5px
+		background-color: lighten(desaturate($color_brand_main, 60%), 18%)
+		border: 2px solid darken($color_brand_main, 2%)
+		margin-bottom: 10px
+		+border-radius(10px)
+		+transition(background-color, 0.1s, ease)
 
 		&:hover, &:focus
 			text-decoration: none !important
+			background-color: lighten(desaturate($color_brand_main, 40%), 5%)
+		&:active
+			background-color: darken(desaturate($color_brand_main, 40%), 5%)
+
+		&.activato
+			border: 2px dashed darken(desaturate($color_brand_secondary, 5%), 25%)
+			background-color: darken(desaturate($color_brand_secondary, 5%), 8%)
+			box-shadow: 0 0 0 3px darken(desaturate($color_brand_secondary, 5%), 8%), 1px 2px 2px rgba(0,0,0,0.2)
+
 
 	& .post-submit-field-type-button-icon
 		float: left
-		margin-right: 10px
+		width: 20%
+		text-align: center
+		padding: 5px 0 0 0
+		+text-shadow(1px, 2px, 2px, black, .2)
 
-	& .post-submit-field-type-button-text
+	& .post-submit-field-type-button-title
 		display: block
-		font-size: 1.5em
-		& small
-			display: block
-			font-size: 0.7em
+		float: right
+		width: 80%
+		font-size: 1.7em
+		margin: 5px 0 0 0
+		+text-shadow(1px, 1px, 0, black, .2)
+
+	& .post-submit-field-type-button-description
+		clear: both
+		display: inline-block
+		font-size: 1.1em
+		margin: 0
+		+text-shadow(1px, 1px, 0, black, .1)
+
+.post-submit-title
+	+text-shadow(1px, 1px, 0, black, .2)
+
+.post-submit .btn-success
+	color: white
+	background-color: $color_brand_secondary
+	border: none
+	+box-shadow(1px, 2px, 2px, black, .2)
+
+.post-submit .post-submit-field-cancel
+	color: lighten($color_text, 20%)
+	background-color: $color_background
+	border: none
+	+box-shadow(1px, 2px, 2px, black, .2)
+	&:hover
+		background-color: lighten($color_background, 3%)
 
 /* User Login */
 .user-login,
@@ -1141,7 +1198,8 @@ li.navbar-submit a:focus,
 .dialog__overlay
 	position: absolute
 	z-index: 1
-	background: rgba(darken(desaturate($color_brand_main, 15%), 25%), 0.6)
+	background: rgba($color_background, .9)
+	//background: rgba(darken(desaturate($color_brand_main, 15%), 25%), 0.6)
 	opacity: 0
 	-webkit-transition: opacity 0.3s
 	transition: opacity 0.3s
@@ -1153,15 +1211,33 @@ li.navbar-submit a:focus,
 
 .dialog__content
 	width: 80%
-	max-width: 800px
+	max-width: 760px
 	min-width: 290px
-	background: white
+	color: white
+	background: $color_brand_main
 	padding: 2em
 	position: relative
 	z-index: 5
 	opacity: 0
 	+border-radius(3px)
 	+box-shadow(2px, 2px, 0, black, .1)
+	& a
+		color: white
+
+.dialog__button-close
+	position: absolute
+	top: -15px
+	right: 15px
+	background: $color_brand_secondary
+	color: white
+	border: none
+	height: 40px
+	width: 40px
+	font-size: 1.3em
+	+border-radius(50%)
+	+box-shadow(2px, 2px, 0, black, .1)
+	&:hover
+		background: lighten($color_brand_secondary, 5%)
 
 .dialog--open .dialog__content
 	pointer-events: auto

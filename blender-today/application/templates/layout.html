@@ -80,7 +80,7 @@
         <div class="dialog__overlay"></div>
           <div class="dialog__content">
             {% include 'posts/form.html' %}
-            <button class="action" data-dialog-close>
+            <button class="action dialog__button-close" data-dialog-close>
               <i class="fa fa-times"></i>
             </button>
         </div>
@@ -114,8 +114,6 @@
     <script src="{{url_for('static', filename='js/classie.js')}}"></script>
     <script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
     <script type="text/javascript">
-
-
       {% if current_user.is_anonymous() %}
         $('.popover-submit').popover();
       {% else %}
@@ -167,7 +165,14 @@
             $('#post_type_id').val($(this).data('val')).trigger('change');
         })
 
-        $('.select-change').click(function(){ 
+        $('.select-change').click(function(){
+
+          $('.select-change').each(function() {
+            $(this).removeClass('activato');  
+          });
+
+          $(this).addClass('activato');
+          
           $('.post-submit-div-title').show();
           $('.post-submit-div-category').show();
           $('.post-submit-div-picture').show();
@@ -184,13 +189,10 @@
         });
 
       {% endif %}
-
     </script>
 
   {% block footer_scripts %}
   {% endblock %}
-
-
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
