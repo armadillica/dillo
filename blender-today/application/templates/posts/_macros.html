@@ -1,0 +1,52 @@
+{% macro print_comment(comment, loop, post, is_reply=False) %}
+	<a name="comment-{{comment.id}}"></a>
+	<div class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cycle('odd', 'even') }}">
+		<div class="row">
+
+			<div class="col-md-1 col-sm-1 col-xs-2">
+				<div class="post-view-comments-avatar">
+					<img class="img-circle" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
+					{% if post.user.has_role('network_member') %}
+					<div class="post-view-comments-avatar-label">
+						{% if post.user.has_role('bfct_trainer') %}
+							<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+						{% else %}
+							<i class="network_member bf-network" title="Blender Network Member"></i>
+						{% endif %}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="col-md-11 col-sm-11 col-xs-10">
+				<div class="post-view-comments-item-content">
+					{{comment.content|safe}}
+				</div>
+				<div class="post-view-comments-item-details">
+					<a class="post-view-comments-item-rate comment-up up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+					<a class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}" href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}">
+						<i class="fa fa-chevron-down"></i>
+					</a>
+					<span class="separator"></span>
+					<span class="rating">{{comment.rating_delta}}</span>
+					<span class="separator"></span>
+					<span title="{{comment.creation_date.strftime('%H:%M on %d %B, %Y')}}">{{comment.pretty_creation_date}}</span>
+					<small>by</small> {{comment.user.first_name}} {{comment.user.last_name}}
+					<span class="separator"></span>
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}"><i class="fa fa-link"></i></a>
+					<span class="separator"></span>
+					<a class="post-view-comments-item-flag flag{% if comment.user_rating and not comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}">
+					</a>
+					{% if not is_reply %}
+					<span class="separator"></span>
+					<a comment="{{comment.id}}"  class="post-comment-reply" href="{{url_for('comments.submit', post_id=post.id)}}">Reply...
+					</a>
+					{%endif %} 
+				</div>
+			</div>
+		</div> <!-- row -->
+	</div> <!-- post-view-comments-item -->
+{% endmacro %}
+

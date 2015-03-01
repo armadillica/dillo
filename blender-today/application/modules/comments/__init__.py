@@ -28,12 +28,12 @@ comments = Blueprint('comments', __name__)
 def index(post_id):
     post = Post.query.get_or_404(post_id)
     comments = []
-    for comment in post.first_level_comments():
+    for comment in post.comments_first_level:
         comments.append({
             'uuid' : comment.uuid,
             'user_id' : comment.user.id
             })
-    #comments = [comment for comment in post.first_level_comments()]
+    #comments = [comment for comment in post.comments_first_level()]
     return jsonify(comments=comments)
 
 @comments.route('/<int:post_id>/submit', methods=['POST'])

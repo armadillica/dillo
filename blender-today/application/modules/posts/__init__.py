@@ -90,7 +90,7 @@ def view(category, uuid, slug=None):
             category=category,
             uuid=uuid,
             slug=post.slug))
-    post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
+    #post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
     form = CommentForm()
     if current_user.is_anonymous():
         current_user.is_owner = False

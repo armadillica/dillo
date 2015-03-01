@@ -79,8 +79,9 @@ class Post(db.Model):
             self.rating.positive, self.rating.negative, self.creation_date)
         db.session.commit()
 
-    def first_level_comments(self):
-        comments = [comment for comment in self.comments if comment.parent_id]
+    @property
+    def comments_first_level(self):
+        comments = [comment for comment in self.comments if not comment.parent_id]
         comments.sort(key=lambda comment: comment.confidence, reverse=True)
         return comments
         #self.comments.sort([c for c self.comments if not c.parent_id], key=lambda comment: comment.confidence, reverse=True)
