@@ -35,6 +35,7 @@ from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import slugify
 from application.helpers import bleach_input
+from application.helpers import check_url
 
 posts = Blueprint('posts', __name__)
 
@@ -120,6 +121,8 @@ def submit():
         # a hidden field
         if int(form.post_type_id.data) == 1:
             content = form.url.data
+            if not check_url(content):
+                return abort(404)
         else:
             # Clean the content
             content = bleach_input(content)

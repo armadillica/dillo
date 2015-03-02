@@ -12,7 +12,7 @@ class PostForm(Form):
     post_type_id = HiddenField('Post type id', validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content')
-    url = StringField('URL', validators=[URL()])
+    url = StringField('URL')
     picture = FileField('A picture')
 
 class CommentForm(Form):

@@ -1,5 +1,7 @@
 import math
 import bleach
+import httplib
+from urlparse import urlparse
 
 ALPHABET = "bcdfghjklmnpqrstvwxyz0123456789BCDFGHJKLMNPQRSTVWXYZ"
 BASE = len(ALPHABET)
@@ -105,3 +107,12 @@ def bleach_input(markup):
     ALLOWED_TAGS = [u'a', u'abbr', u'acronym', u'b', u'blockquote', u'code', u'em', u'i', u'li', u'ol', u'strong', u'ul', u'p']
     output = bleach.clean(markup, tags=ALLOWED_TAGS, strip=False)
     return output
+
+
+def check_url(url):
+    p = urlparse(url)
+    conn = httplib.HTTPConnection(p.netloc)
+    conn.request('HEAD', p.path)
+    resp = conn.getresponse()
+    return resp.status < 400
+
