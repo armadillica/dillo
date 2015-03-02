@@ -16,6 +16,11 @@ $font_body: 'Open Sans', Verdana, Arial, Helvetica, sans-serif
 $font_headings: 'Raleway', 'Lucida Sans', 'Lucida Grande', sans-serif
 $font_size: 14px
 
+$color_blender-orange: #ec8e30
+$color_blender-blue: #025384
+$color_google: #dd4b39
+$color_facebook: #3b5998
+
 @import helpers
 
 body
@@ -338,6 +343,17 @@ a.logo
 	& .author-roles
 		display: block
 		font-size: 0.9em
+		& i
+			width: 15px
+			opacity: 0.95
+			+text-shadow-none
+			&.bf-network
+				position: relative
+				left: 2px
+			&.fa-graduation-cap
+				font-size: 0.75em
+				position: relative
+				left: 2px
 	& .meta
 		position: absolute
 		top: 0
@@ -450,12 +466,15 @@ a.logo
 	+border-radius(50%)
 	& i
 		position: relative
+		+text-shadow-none
 		&.network_member
 			color: #d91b5c
 		&.bfct_trainer
 			color: #40b0e0
 			font-size: 0.9em
-
+		&.dev_core
+			color: $color_brand_secondary
+			font-size: 1.0em
 
 .post-view-details-avatar-label
 	width: 23px
@@ -778,11 +797,6 @@ div#post-comment-reply-container
 			text-decoration: none
 		& i.icon
 			width: 20px
-
-		$color_blender-orange: #ec8e30
-		$color_blender-blue: #025384
-		$color_google: #dd4b39
-		$color_facebook: #3b5998
 
 		&.blender-id
 			color: $color_blender-blue
