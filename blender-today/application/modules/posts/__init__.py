@@ -39,8 +39,8 @@ from application.helpers import bleach_input
 posts = Blueprint('posts', __name__)
 
 
-@posts.route('/posts/')
-@posts.route('/posts/<int:page>')
+@posts.route('/p/')
+@posts.route('/p/<int:page>')
 def index(page=1):
     posts = Post.query\
         .filter_by(status='published')\
@@ -84,8 +84,8 @@ def index_category(category, page=1):
         posts=posts)
 
 
-@posts.route('/posts/<category>/<uuid>/')
-@posts.route('/posts/<category>/<uuid>/<slug>')
+@posts.route('/p/<category>/<uuid>/')
+@posts.route('/p/<category>/<uuid>/<slug>')
 def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
@@ -108,7 +108,7 @@ def view(category, uuid, slug=None):
         picture=post.thumbnail('m'))
 
 
-@posts.route('/posts/submit', methods=['GET', 'POST'])
+@posts.route('/p/submit', methods=['GET', 'POST'])
 @login_required
 def submit():
     form = PostForm()
@@ -166,7 +166,7 @@ def submit():
         form=form)
 
 
-@posts.route('/posts/<uuid>/rate/<int:rating>')
+@posts.route('/p/<uuid>/rate/<int:rating>')
 @login_required
 def rate(uuid, rating):
     post_id = decode_id(uuid)
@@ -234,7 +234,7 @@ def rate(uuid, rating):
         rating_delta=post.rating_delta)
 
 
-@posts.route('/posts/<uuid>/flag')
+@posts.route('/p/<uuid>/flag')
 @login_required
 def flag(uuid):
     post_id = decode_id(uuid)
@@ -274,7 +274,7 @@ def flag(uuid):
     return jsonify(is_flagged=user_post_rating.is_flagged)
 
 
-@posts.route('/posts/<uuid>/edit', methods=['POST'])
+@posts.route('/p/<uuid>/edit', methods=['POST'])
 @login_required
 def edit(uuid):
     post_id = decode_id(uuid)
@@ -289,7 +289,7 @@ def edit(uuid):
         return abort(403)
 
 
-@posts.route('/posts/<uuid>/delete', methods=['POST'])
+@posts.route('/p/<uuid>/delete', methods=['POST'])
 @login_required
 def delete(uuid):
     post_id = decode_id(uuid)
