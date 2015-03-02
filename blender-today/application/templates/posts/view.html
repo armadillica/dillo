@@ -11,14 +11,14 @@
 {% cache 60*5, 'comments', post.uuid %}
 <div class="row">
 <div class="col-md-9 post-view">
+
+		<h4>
+				<a href="{{url_for('index')}}">Home</a>
+				<strong>·</strong>
+				<a href="{{url_for('index')}}{{post.category.url}}">{{post.category.name}}</a>
+		</h4>
+
 	<div class="post-view-container">
-
-		<ol class="breadcrumb">
-			<li><a href="{{url_for('index')}}">Home</a></li>
-			<li><a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a></li>
-			<li class="active">{{post.title}}</li>
-		</ol>
-
 		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
 				{% if current_user.is_anonymous() %}
 				 data-toggle="popover" data-trigger="hover" data-placement="bottom"

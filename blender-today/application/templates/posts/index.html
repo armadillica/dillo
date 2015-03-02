@@ -12,20 +12,18 @@
 {% cache 60*5, 'post_list', category_url, page, user_string_id %}
 <div class="row">
 	<div class="col-md-9 post-index">
-		<a href="{{url_for('posts.index')}}">
-			<div class="today-minimug" style="background-image: url({{url_for('static', filename='images/today_manumug_40x40.png')}})"></div>
-		</a>
-	<h3>
-		{% if title == 'index_category' %}
-			<a href="{{url_for('posts.index')}}">All</a>
-			<strong>·</strong>
-			<a href="{{url_for('posts.index_category', category=category.url)}}">{{category.name}}</a>
-		{% else %}
-			<a href="{{url_for('posts.index')}}">All</a>
-		{% endif %}
+		<h4
+			{% if title == 'index_category' %}
+				<a href="{{url_for('posts.index')}}">Home</a>
+				<strong>·</strong>
+				<a href="{{url_for('posts.index_category', category=category.url)}}">{{category.name}}</a>
+			{% else %}
+				<a href="{{url_for('posts.index')}}">Home</a>
+			{% endif %}
 
-		<span class="badge">({{posts.items|length}})</span>
-	</h3>
+			<span class="badge">({{posts.items|length}})</span>
+		</h4>
+
 		{% for post in posts.items %}
 		<div class="row post-index-item {{ loop.cycle('odd', 'even') }}">
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-1">
