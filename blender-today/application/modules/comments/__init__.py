@@ -72,6 +72,10 @@ def submit(post_id):
         parent_id=comment.parent_id,
         post_uuid=post.uuid,
         creation_date=comment.pretty_creation_date,
+        post_url=url_for('posts.view',
+            category=post.category.url,
+            uuid=post.uuid,
+            slug=post.slug)
         ))
     # return redirect(url_for('posts.view',
     #     category=post.category.url,
