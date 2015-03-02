@@ -109,6 +109,10 @@ a.logo
 	font-size: 1.5em
 	padding: 15px 0 5px 0
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
+
+	+media-xs
+		font-size: 1.4em
+
 	@extend .text-overflow-ellipsis
 
 	&:hover
@@ -123,6 +127,9 @@ a.logo
 		color: lighten($color_text, 20%)
 		&:hover
 			color: $color_brand_secondary
+
+	+media-xs
+		font-size: 0.8em
 
 .post-index-item-picture
 	display: none
@@ -260,7 +267,8 @@ a.logo
 	padding: 20px 15px 10px 15px
 	line-height: 1.3em
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
-
+	+media-xs
+		font-size: 1.8em
 
 .post-view-rate
 	float: left
@@ -529,6 +537,14 @@ a.logo
 	&.reply
 		padding-left: 80px
 		border-left: thick solid $color_brand_main
+		+media-xs
+			padding-left: 10px
+		+media-sm
+			padding-left: 50px
+	&.odd.reply
+		background-color: white
+	&.even.reply
+		background-color: darken(white, 5%)
 	&.flash
 		+text-shadow(1px, 1px, 0, black, 0.3)
 		animation: effect-flash-fadeout 1.5s ease forwards
@@ -582,7 +598,7 @@ div#post-comment-reply-container
 	+media-xs
 		padding-left: 0
 	+media-sm
-		padding-left: 0
+		padding-left: 20px
 	+media-md
 		padding-left: 15px
 	+media-lg
@@ -596,7 +612,7 @@ div#post-comment-reply-container
 	+media-xs
 		padding-left: 0
 	+media-sm
-		padding-left: 0
+		padding-left: 20px
 	+media-md
 		padding-left: 15px
 	+media-lg
@@ -1247,8 +1263,8 @@ li.navbar-submit a:focus,
 	left: 0
 
 .dialog
-	position: absolute
-	overflow: scroll
+	position: fixed // POS on mobile
+	// overflow: scroll
 	display: -webkit-flex
 	display: flex
 	-webkit-align-items: center
