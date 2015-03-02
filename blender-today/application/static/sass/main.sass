@@ -1,7 +1,9 @@
 @import url(../css/font-borg.css)
 @import reset
 
-$color_brand_main: #0092A0 // # 296bb6 - serious blue 34495e, greenish 009587
+//$color_brand_main: lighten(desaturate(#0092A0, 65%), 15%) // # 296bb6 - serious blue 34495e, greenish 009587
+$color_brand_main: #4d98a0
+//$color_brand_main: #0092A0
 $color_brand_secondary: #e74c3c // e74c3c - dc2900
 $color_background: #f0f1f3 // f0f0f0 // f9f7f6
 $color_text: #444
@@ -695,7 +697,7 @@ div#post-comment-reply-container
 		width: 100%
 		cursor: pointer
 		padding: 5px 5px 10px 5px
-		background-color: lighten(desaturate($color_brand_main, 60%), 18%)
+		background-color: lighten($color_brand_main, 10%)
 		border: 2px solid darken($color_brand_main, 2%)
 		margin-bottom: 10px
 		+user-select-none
@@ -704,9 +706,9 @@ div#post-comment-reply-container
 		+box-shadow(2px, 2px, 2px, black, .2)
 		&:hover, &:focus
 			text-decoration: none !important
-			background-color: lighten(desaturate($color_brand_main, 40%), 5%)
+			background-color: lighten($color_brand_main, 5%)
 		&:active
-			background-color: darken(desaturate($color_brand_main, 40%), 5%)
+			background-color: darken($color_brand_main, 5%)
 
 		&.activato
 			border: 2px solid darken(desaturate($color_brand_secondary, 5%), 25%)
@@ -934,6 +936,9 @@ footer
 
 /* Boostrap overrides */
 /* NAVTABS */
+.nav-tabs
+	border-bottom: 3px solid $color_brand_main
+
 .nav-tabs li a, .nav-tabs li.active a,
 .nav-tabs li a:hover, .nav-tabs li.active a:hover,
 .nav-tabs li a:focus, .nav-tabs li.active a:focus,
@@ -941,18 +946,25 @@ footer
 	background-color: transparent
 	border: none
 	outline: none !important
+	position: relative
+	bottom: -2px
 
 .nav-tabs li
 	&.active a
 		color: $color_brand_main
-		border-bottom: 2px solid $color_brand_secondary
+		position: relative
+		bottom: -2px
+		border-bottom: 3px solid $color_brand_secondary
 		&:hover, &:active, &:focus
 			outline: none !important
-			border-bottom: 2px solid lighten($color_brand_secondary, 5%)
+			border-bottom: 3px solid lighten($color_brand_secondary, 5%)
 
 .tab-content
 	background-color: white
 	padding: 20px
+	border-bottom-left-radius: 3px
+	border-bottom-right-radius: 3px
+	+box-shadow(2px, 2px, 2px, black, .1)
 	& h2
 		margin: 0 0 20px 0
 		color: lighten($color_text, 10%)
@@ -1069,6 +1081,11 @@ fieldset
 	+text-shadow(1px, 1px, 0, black, 0.2)
 	+box-shadow(1px, 2px, 2px, black, 0.1)
 
+/* logout needs love */
+#popover-logout+.popover .popover-content
+	width: 80px !important
+	text-align: center
+
 /* Pagination */
 .pagination
 	display: inline-block
@@ -1123,57 +1140,16 @@ fieldset
 	font-family: $font_headings
 	font-weight: bold
 	display: block
-	background: $color_brand_main
-	color: white
-	width: 70px
-	height: 70px
-	margin-right: 10px
-	position: absolute
-	top: -15px
 	text-align: center
-	overflow: hidden
 	+user-select-none
-	+border-radius(100%)
-	+transition(all, 0.1s, ease-out)
-	+box-shadow(2px, 2px, 0, black, .1)
 	&:hover
-		background: lighten($color_brand_main, 5%)
 		cursor: pointer
-		&:after
-			font-size: 10em
-			top: -60px
-			left: -32px
-			color: $color_brand_secondary
+		color: $color_brand_secondary
 
-	&:after
-		content: '\f005'
-		font-family: 'FontAwesome'
-		position: absolute
-		left: 18px
-		top: 15px
-		color: darken($color_brand_main, 3%)
-		font-size: 2.6em
-		z-index: 0
-		+transition(all, 0.35s, ease-out)
 	&.navbar-submit-active
 		background: $color_brand_secondary
 		&:after
 			color: darken($color_brand_secondary, 15%)
-	& a
-		color: white !important
-		position: absolute
-		top: 15px
-		right: 3px
-		z-index: 1
-		&:hover
-			color: white !important
-			cursor: pointer
-
-
-li.navbar-submit a:hover,
-li.navbar-submit a:active,
-li.navbar-submit a:focus,
-	color: white !important /* Stupidity */
 
 /* Not really an override, it's our cool logout stuff */
 .nav-logout-widget
@@ -1197,6 +1173,7 @@ li.navbar-submit a:focus,
 
 /* Sidebar */
 .nav-sidebar
+	margin-top: 15px
 	display: block
 	background-color: white
 	border: thin solid darken($color_background, 3%)
@@ -1205,9 +1182,6 @@ li.navbar-submit a:focus,
 
 .nav-sidebar p
 	padding: 10px 20px
-
-.nav-sidebar+.nav-sidebar
-	margin-top: 20px
 
 .nav-sidebar.branding,
 .user-login-branding,
@@ -1254,6 +1228,22 @@ li.navbar-submit a:focus,
 		padding: 10px 0 20px 0
 		+user-select-none
 		+pointer-events-none
+
+.nav-sidebar.navigation
+	display: block
+	position: relative
+	text-align: center
+	& nav
+		display: inline-block
+		padding: 10px 0
+	& ul
+		list-style-type: none
+		margin: 0
+		padding: 0
+		& li
+			float: left
+			& a
+				padding: 0 15px
 
 /* Submit Dialog */
 .dialog, .dialog__overlay
