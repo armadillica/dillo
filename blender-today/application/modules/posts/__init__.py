@@ -113,11 +113,12 @@ def view(category, uuid, slug=None):
 def submit():
     form = PostForm()
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
-    form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
+    #form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     if form.validate_on_submit():
         content = form.content.data
-        # If the post is a link (is 1)
-        if form.post_type_id.data == 1:
+        # If the post is a link (is 1), we cast this because it's coming from
+        # a hidden field
+        if int(form.post_type_id.data) == 1:
             content = form.url.data
         else:
             # Clean the content

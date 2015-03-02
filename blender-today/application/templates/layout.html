@@ -160,7 +160,7 @@
         CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
 
         $('.select-change').click(function(){
-          $('#the_post_type_id').val($(this).data('val'));
+          $('#post_type_id').val($(this).data('val'));
           $('.select-change').each(function() {
             $(this).removeClass('activato');
           });
@@ -172,11 +172,11 @@
           $('.post-submit-div-picture').show();
           $('.post-submit-div-submit').show();
 
-          if ($('#the_post_type_id').val() == 1){
+          if ($('#post_type_id').val() == 1){
             $('.post-submit-link').show();
             $('.post-submit-article').hide();
           };
-          if ($('#the_post_type_id').val() == 2){
+          if ($('#post_type_id').val() == 2){
             $('.post-submit-link').hide();
             $('.post-submit-article').show();
           };
