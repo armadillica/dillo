@@ -5,13 +5,14 @@ from wtforms import SelectField
 from wtforms import TextAreaField
 from wtforms import HiddenField
 from wtforms.validators import DataRequired
+from wtforms.validators import URL
 
 class PostForm(Form):
     category_id = SelectField('Group', coerce=int)
     post_type_id = HiddenField('Post type id', validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content')
-    url = StringField('URL')
+    url = StringField('URL', validators=[URL()])
     picture = FileField('A picture')
 
 class CommentForm(Form):

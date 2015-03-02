@@ -108,7 +108,7 @@ def view(category, uuid, slug=None):
         picture=post.thumbnail('m'))
 
 
-@posts.route('/p/submit', methods=['GET', 'POST'])
+@posts.route('/p/submit', methods=['POST'])
 @login_required
 def submit():
     form = PostForm()
@@ -156,14 +156,18 @@ def submit():
 
         return jsonify(
             post_url=url_for('posts.view',
-                category=post.category.url, uuid=post.uuid))
+                category=post.category.url,
+                uuid=post.uuid,
+                slug=post.slug))
+    else:
+        return abort(400, '{"message" : "form validation error"}')
 
-        return redirect(url_for('posts.view',
-            category=post.category.url, uuid=post.uuid))
+    #     return redirect(url_for('posts.view',
+    #         category=post.category.url, uuid=post.uuid))
 
-    return render_template('posts/submit.html',
-        title='submit',
-        form=form)
+    # return render_template('posts/submit.html',
+    #     title='submit',
+    #     form=form)
 
 
 @posts.route('/p/<uuid>/rate/<int:rating>')
