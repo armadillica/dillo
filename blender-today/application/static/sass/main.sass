@@ -933,6 +933,14 @@ div#post-comment-reply-container
 		margin-top: 10px
 		font-size: 0.8em
 
+.user-settings-roles
+	+user-select-none
+	& i
+		width: 18px
+	& .empty
+		+user-select-none
+		color: lighten($color_text, 40%)
+
 /* Footer */
 footer
 	padding-top: 20px
@@ -1163,7 +1171,6 @@ fieldset
 	cursor: pointer
 	& .nav-logout-widget-icon, .nav-logout-widget-question
 		position: absolute
-		bottom: -3px
 		left: 10px
 		+transition(color, 100ms, ease-out)
 	& .nav-logout-widget-question
@@ -1240,13 +1247,31 @@ fieldset
 	text-align: center
 	& nav
 		display: inline-block
-		padding: 10px 0
+		padding: 0
+		width: 100%
+		margin-bottom: -6px
 	& ul
 		list-style-type: none
 		margin: 0
 		padding: 0
 		& li
 			float: left
+			padding: 10px 0
+			&.navbar-submit
+				border-top-left-radius: 3px
+				border-bottom-left-radius: 3px
+				border-right: thin solid darken($color_background, 5%)
+				background-color: $color_brand_main
+				color: white
+				& a
+					color: white
+				&:hover
+					background-color: $color_brand_secondary
+					& a
+						color: white
+			&.navbar-logout
+				float: right
+				margin-right: 10px
 			& a
 				padding: 0 15px
 
@@ -1259,7 +1284,7 @@ fieldset
 
 .dialog
 	position: fixed // POS on mobile
-	// overflow: scroll
+	overflow: scroll
 	display: -webkit-flex
 	display: flex
 	-webkit-align-items: center
@@ -1309,7 +1334,10 @@ fieldset
 		max-width: auto
 		height: auto
 		padding: 1em
-
+	+media-md
+		font-size: 0.9em
+	+media-lg
+		font-size: 0.9em
 
 .dialog__button-close
 	position: absolute

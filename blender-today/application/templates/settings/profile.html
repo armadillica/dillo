@@ -10,13 +10,9 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="profile">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h2>Profile Settings</h2>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-md-6">
+                        <h2>Profile Settings</h2>
+
                         <form role="form" method="POST" action="{{url_for('settings.profile')}}">
                             {{ form.hidden_tag() }}
 
@@ -52,7 +48,8 @@
                             </div>
                             <div class="form-group">
                                 {{ form.username.label }} 
-                                {{ form.username(class='form-control', placeholder='Your Nickname') }}
+                                {{ form.username(class='form-control',
+                                                 placeholder='Your Nickname (optional)') }}
                                 {% if form.username.errors %}
                                     <ul class="error">
                                         {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
@@ -67,10 +64,27 @@
                     <div class="col-md-6">
                         <div class="user-settings-avatar">
                             <a href="http://gravatar.com" target="_blank">
-                              <img class="img-circle" src="{{current_user.gravatar(size=256)}}"
+                              <img class="img-circle" src="{{current_user.gravatar(size=128)}}"
                                    title="Gravatar Profile Picture"/>
                               <small>Change Gravatar <i class="fa fa-angle-double-right"></i></small>
                             </a>
+                        </div>
+                        <hr/>
+                        <div class="user-settings-roles">
+                            <h3>Community Badges</h3>
+                            {% if current_user.roles %}
+                                {% if current_user.has_role('dev_core') %}
+                                    <i class="bf-blender"></i> Blender Core Developer<br/>
+                                {% endif %}
+                                {% if current_user.has_role('network_member') %}
+                                    <i class="bf-network"></i> Blender Network Member<br/>
+                                {% endif %}
+                                {% if current_user.has_role('bfct_trainer') %}
+                                    <i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
+                                {% endif %}
+                            {% else %}
+                                <span class="empty">No badges yet</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

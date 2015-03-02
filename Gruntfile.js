@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         uglify: {
             all_src : {
               src : 'blender-today/application/static/js/uglify/*.js',
-              dest : 'blender-today/application/static/js/theuniverse.min.js'
+              dest : 'blender-today/application/static/js/theuniverse.all.min.js'
             }
         },
 
@@ -36,6 +36,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
 
-    grunt.registerTask('default', ['sass', 'autoprefixer']);
-    grunt.registerTask('default', [ 'uglify' ]);
+    grunt.registerTask('default', ['sass', 'autoprefixer', 'uglify']);
 };
