@@ -6,6 +6,7 @@
 config.py
 
 blender-today/application/static/css/main.css
+blender-today/application/static/js/theuniverse.all.min.js
 node_modules
 .sass-cache/
 *.css.map

@@ -110,6 +110,13 @@
         $('#popover-settings').popover();
         $('#popover-logout').popover();
       {% endif %}
+
+      $( function() {
+        $( '#cd-dropdown' ).dropdown( {
+          gutter : 5
+        } );
+      });
+
     </script>
 
   {% block footer_scripts %}

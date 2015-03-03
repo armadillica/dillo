@@ -117,18 +117,6 @@
 					} );
 				} );
 
-			if( !this.options.slidingIn ) {
-				this.opts
-					.eq( this.optsCount - 1 )
-					.css( { top : this.options.stack ? 9 : 0, left : this.options.stack ? 4 : 0, width : this.options.stack ? this.size.width - 8 : this.size.width, transform : 'none' } )
-					.end()
-					.eq( this.optsCount - 2 )
-					.css( { top : this.options.stack ? 6 : 0, left : this.options.stack ? 2 : 0, width : this.options.stack ? this.size.width - 4 : this.size.width, transform : 'none' } )
-					.end()
-					.eq( this.optsCount - 3 )
-					.css( { top : this.options.stack ? 3 : 0, left : 0, transform : 'none' } );
-			}
-
 		},
 		_initEvents : function() {
 			
