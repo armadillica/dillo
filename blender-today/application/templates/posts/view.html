@@ -82,7 +82,6 @@
 					<div class="post-view-details-meta">
 
 						<div class="post-actions">
-
 							<span id="social">
 								<span class="icons">
 
@@ -106,8 +105,8 @@
 										<i class="fa fa-twitter"></i>
 									</a>
 
-								</span>
-							</span>
+								</span> <!-- icons -->
+							</span> <!-- social -->
 
 							<span id="social-toggle" class="post-actions-button social">
 								<i class="fa fa-share-alt"></i>
@@ -137,15 +136,16 @@
 							<h4 class="{% if post.status != 'deleted' %}hidden{% endif %}" id="edit-post-delete-label">
 								<span class="label label-lg label-danger">This post has been deleted</span>
 							</h4>
-						</div>
 						{% endif %}
+						</div> <!-- post-actions -->
 
 						<span class="author-name">
 							{{post.user.first_name}} {{post.user.last_name}}
 							{% if post.user.username %}
 								({{post.user.username}})
 							{% endif %}
-						</span>
+						</span> <!-- author-name -->
+
 						<span class="author-roles">
 							{% if post.user.has_role('dev_core') %}
 								<i class="bf-blender"></i> Blender Core Developer<br/>
@@ -156,7 +156,7 @@
 							{% if post.user.has_role('bfct_trainer') %}
 								<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
 							{% endif %}	
-						</span>
+						</span> <!-- author-roles -->
 
 						<span class="meta">
 							{{post.post_type.name}}
@@ -183,11 +183,11 @@
 							<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
 							</a>
 
-						</span>
-					</div>
-				</div>
-			</div>
-		</div>
+						</span> <!-- meta -->
+					</div> <!-- post-view-details-meta -->
+				</div> <!-- col-md -->
+			</div> <!-- row -->
+		</div> <!-- post-view-details -->
 
 		<div class="post-view-comments">
 			<a name="comments"></a>
