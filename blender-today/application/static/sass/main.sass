@@ -590,7 +590,7 @@ div#post-comment-reply-container
 		opacity: 0
 	100%
 		opacity: 1
-		background-color: lighten(desaturate($color_brand_main, 60%), 25%)
+		background-color: lighten(desaturate($color_brand_main, 10%), 25%)
 		color: white
 		padding-top: 15px
 
@@ -602,7 +602,7 @@ div#post-comment-reply-container
 		opacity: 0
 	100%
 		opacity: 1
-		background-color: lighten(desaturate($color_brand_main, 60%), 25%)
+		background-color: lighten(desaturate($color_brand_main, 10%), 25%)
 		color: white
 		padding-top: 15px
 
@@ -1456,19 +1456,20 @@ fieldset
 .cke_chrome
 	font-family: $font_body !important
 	font-weight: lighter
-	color: darken($color_text, 10%) !important
+	color: lighten($color_text, 10%) !important
 	border: thin solid lighten($color_text, 60%) !important
 	background-color: lighten($color_background, 3%) !important
 	resize: none
 	margin: 0 !important
 	+border-radius(3px)
 
+iframe.cke_wysiwyg_frame.cke_reset,
 body.cke_editable.cke_editable_themed.cke_contents_ltr
-	font-size: 110% !important
+	font-size: 180% !important
 	margin-top: 0 !important
 	margin: 0 !important
+	padding: 0 !important
 	font-family: $font_body !important
-	font-size: 1.2em
 
 span.cke_top
 	padding: 5px 5px 0 5px !important
@@ -1505,7 +1506,7 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 	color: white !important
 	+box-shadow-none
 
-
+/* Codrops Dropdown */
 .cd-dropdown,
 .cd-select
 	float: right

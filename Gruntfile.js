@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         uglify: {
             all_src : {
               src : 'blender-today/application/static/js/uglify/*.js',
-              dest : 'blender-today/application/static/js/theuniverse.all.min.js'
+              dest : 'blender-today/application/static/js/theuniverse.min.js'
             }
         },
 
