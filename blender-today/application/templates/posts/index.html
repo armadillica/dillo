@@ -28,10 +28,9 @@
 			<div class="col-md-6">
 				<select id="cd-dropdown" name="cd-dropdown" class="cd-select">
 					<option value="-1" selected>Categories</option>
-					<option value="1"><i class="fa fa-rocket"></i>Monkey</option>
-					<option value="2"><i class="fa fa-rocket"></i>Bear</option>
-					<option value="3"><i class="fa fa-rocket"></i>Squirrel</option>
-					<option value="4"><i class="fa fa-rocket"></i> Elephant</option>
+					{% for category in categories %}
+						<option value="1"><i class="fa fa-rocket"></i>{{category.name}}</option>
+					{% endfor %}
 				</select>
 			</div>
 		</div>
