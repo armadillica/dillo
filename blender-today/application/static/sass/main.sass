@@ -409,32 +409,42 @@ a
 			font-size: 1.2em
 			cursor: pointer
 			position: relative
-			background-color: $color_brand_secondary
-			border: 2px solid white
+			background-color: darken($color_brand_main, 10%)
+			border: 2px solid darken($color_brand_main, 20%)
+			+user-select-none
 			+border-radius(50%)
 			+text-shadow(1px, 1px, 0, black, .1)
+
 			+box-shadow(1px, 2px, 0, black, .1)
 
-			&:hover, &:active, &:focus
-				background-color: lighten($color_brand_secondary, 5%)
+			&:hover, &:focus
+				background-color: lighten($color_brand_main, 5%)
+				border: 2px solid darken($color_brand_main, 10%)
 				text-decoration: none
+			&:active
+				background-color: darken($color_brand_main, 25%)
+				border: 2px solid darken($color_brand_main, 5%)
 
 			& i
 				position: relative
 				top: 6px
 				left: 11px
 
+			&.edit
+				&:hover
+					background-color: darken($color_success, 20%)
+
 			&.delete:hover
 				background-color: lighten($color_brand_secondary, 5%)
 			&.delete:active, &.delete:focus				
-				background-color: darken($color_danger, 10%)
+				background-color: $color_danger
 
 			&.save
 				display: none
 				opacity: 0
 
 				&:hover
-					background-color: darken($color_success, 20%)
+					background-color: darken($color_success, 10%)
 
 		& .edit-post-delete-widget
 			&:focus .edit-post-delete-widget-icon
@@ -460,6 +470,26 @@ a
 			height: 36px
 			width: 36px
 			z-index: 1
+
+		& #social
+			position: relative
+			& .icons
+				position: relative
+				top: 2px
+				right: 0
+			& a
+				position: absolute
+				opacity: 0
+				+text-shadow-none
+
+				& .fa-circle
+					color: darken($color_brand_main, 20%)
+
+				&:hover .fa-circle
+					color: lighten($color_brand_main, 10%)
+
+		& #social-toggle.activato
+			background-color: darken($color_brand_main, 20%)
 
 .post-view-details-avatar,
 .post-view-comments-avatar

@@ -81,8 +81,46 @@
 				<div class="col-md-11 col-sm-11 col-xs-10">
 					<div class="post-view-details-meta">
 
-						{% if current_user.is_owner %}
 						<div class="post-actions">
+
+							<span id="social">
+								<span class="icons">
+									<a href="https://twitter.com/home?status={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Twitter" class="pop">
+										<span class="fa-stack fa-lg twitter">
+											<i class="fa fa-circle fa-stack-2x"></i>
+											<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+										</span>
+									</a>
+
+									<a href="https://www.facebook.com/sharer/sharer.php?u={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop">
+										<span class="fa-stack fa-lg facebook">
+											<i class="fa fa-circle fa-stack-2x"></i>
+											<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+										</span>
+									</a>
+
+									<a href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Google+" class="pop">
+										<span class="fa-stack fa-lg google-plus">
+											<i class="fa fa-circle fa-stack-2x"></i>
+											<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+										</span>
+									</a>
+
+									<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop">
+										<span class="fa-stack fa-lg email">
+											<i class="fa fa-circle fa-stack-2x"></i>
+											<i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
+										</span>
+									</a>
+								</span>
+							</span>
+
+							<span id="social-toggle" class="post-actions-button social">
+								<i class="fa fa-share-alt"></i>
+							</span>
+
+						{% if current_user.is_owner %}
+
 							{% if post.status != 'deleted' %}
 
 								{% if post.post_type.url != 'link' %}
@@ -150,8 +188,8 @@
 							<span class="separator"></span>
 							<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
 							</a>
-						</span>
 
+						</span>
 					</div>
 				</div>
 			</div>
@@ -386,6 +424,29 @@
 	{% else %}
 		$('.popover-vote').popover();
 	{% endif %}
+
+	$('#social-toggle').click(function(){
+		var pops = $('a');
+
+		if ($(this).hasClass('activato')){
+			$(this).removeClass('activato');
+			$(this).html('<i class="fa fa-share-alt"></i>');
+
+			$('#social').find(pops).each(function(i){
+				$(this).animate({'right' : (5 * i) * -1, 'opacity' : 0});
+			});
+
+		} else {
+			$(this).addClass('activato');
+
+			$('#social').find(pops).each(function(i){
+				$(this).animate({'right' : 40 * i, 'opacity' : 1.0});
+			});
+
+			$(this).html('<i class="fa fa-times"></i>');
+		};
+	});
+
 
 	</script>
 {% endblock %}
