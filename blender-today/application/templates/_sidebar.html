@@ -22,7 +22,7 @@
 					<li>
 							<a href="{{url_for('settings.profile')}}" id="popover-settings"
 								 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-								 data-content="Settings">
+								 data-content="Settings" {% if title in ('settings_profile', 'settings_account') %}class="active"{% endif %}>
 								 <i class="fa fa-cog"></i>
 							</a>
 					</li>

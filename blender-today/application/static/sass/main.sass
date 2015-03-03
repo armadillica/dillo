@@ -678,10 +678,10 @@ div#post-comment-reply-container
 .post-submit-div-picture,
 .post-submit-div-title,
 .post-submit-div-url
-	margin-top: 10px
-	margin-bottom: 10px
+	margin-top: 5px
+	margin-bottom: 5px
 	& span
-		font-size: 1.6em
+		font-size: 1.5em
 		display: block
 		padding-top: 6px
 		+text-shadow(1px, 1px, 0, black, .2)
@@ -695,7 +695,7 @@ div#post-comment-reply-container
 
 .post-submit-field-type
 	display: block
-	margin-top: 20px
+	margin-top: 10px
 
 	& .post-submit-field-type-button
 		display: inline-block
@@ -716,8 +716,8 @@ div#post-comment-reply-container
 			background-color: darken($color_brand_main, 5%)
 
 		&.activato
-			border: 2px solid darken(desaturate($color_brand_secondary, 5%), 25%)
-			background-color: darken(desaturate($color_brand_secondary, 5%), 8%)
+			border: 2px solid lighten(desaturate($color_brand_secondary, 5%), 5%)
+			background-color: desaturate($color_brand_secondary, 10%)
 
 
 	& .post-submit-field-type-button-icon
@@ -783,7 +783,7 @@ div#post-comment-reply-container
 .user-login,
 .user-register,
 .user-settings
-	margin-top: 30px
+	margin-top: 25px
 
 .user-login-container,
 .user-register-container
@@ -961,6 +961,8 @@ footer
 	outline: none !important
 	position: relative
 	bottom: -2px
+	font-family: $font_headings
+	font-size: 1.3em
 
 .nav-tabs li
 	&.active a
@@ -1274,6 +1276,8 @@ fieldset
 				margin-right: 10px
 			& a
 				padding: 0 15px
+				&.active
+					color: $color_brand_secondary
 
 /* Submit Dialog */
 .dialog, .dialog__overlay
@@ -1462,6 +1466,9 @@ span.cke_toolgroup
 	border-bottom: 2px solid transparent
 	background-image: none
 	background-color: white
+
+.cke_contents
+	height: 150px !important
 
 a.cke_button_off
 	border-bottom: 2px solid transparent !important
