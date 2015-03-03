@@ -29,7 +29,10 @@ body
 	font-family: $font_body
 	font-size: $font_size
 	color: $color_text
-	background-color: $color_background
+	/* This is for the footer actually, */
+	/* page color is in page-container  */
+	background-color: lighten(desaturate($color_brand_main, 20%), 40%)
+	cursor: default
 
 h1, h2, h3, h4, h5, h6
 	font-family: $font_headings
@@ -41,6 +44,11 @@ a
 	color: $color_brand_main
 	&:hover
 		color: $color_brand_secondary
+
+.page-container
+	background-color: $color_background
+	padding-bottom: 25px
+	border-bottom: 6px solid lighten(desaturate($color_brand_main, 20%), 38%)
 
 .separator
 	display: inline-block
@@ -997,7 +1005,10 @@ div#post-comment-reply-container
 		font-size: 0.8em
 
 .user-settings-roles
+	color: $color_brand_main
 	+user-select-none
+	& h3
+		color: $color_text
 	& i
 		width: 18px
 	& .empty
@@ -1005,10 +1016,33 @@ div#post-comment-reply-container
 		color: lighten($color_text, 40%)
 
 /* Footer */
+.page-footer
+	color: desaturate($color_brand_main, 25%)
+	+user-select-none
+	& h3
+		font-size: 1.6em
+	& p, & ul
+		font-size: 0.9em
+		color: lighten(desaturate($color_brand_main, 20%), 12%)
+		& a
+			color: lighten(desaturate($color_brand_main, 20%), 15%)
+	& ul
+		list-style-type: none
+		padding: 0
+		margin: 0
+	& hr
+		height: 1px
+		border: none
+		background-color: lighten(desaturate($color_brand_main, 20%), 30%)
+		margin: 0
+		padding: 0
+
+
 footer
 	padding-top: 20px
-	color: darken($color_background, 10%)
-	font-size: 0.9em
+	color: lighten(desaturate($color_brand_main, 20%), 20%)
+	font-size: 0.85em
+	+user-select-none	
 
 /* Boostrap overrides */
 /* NAVTABS */
@@ -1362,6 +1396,7 @@ fieldset
 .dialog
 	position: fixed // POS on mobile
 	overflow: scroll
+	overflow-x: hidden
 	display: -webkit-flex
 	display: flex
 	-webkit-align-items: center

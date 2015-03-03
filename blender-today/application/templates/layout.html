@@ -48,13 +48,50 @@
     </div>
     {% endfor %}
 
+    <div class="page-container">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            {% block body %}{% endblock %}
+          </div> <!-- col -->
+        </div><!-- row -->
+      </div> <!-- container -->
+    </div> <!-- page-container -->
+
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          {% block body %}{% endblock %}
+      <div class="row page-footer">
+        <div class="col-md-6">
+          <h3>About</h3>
+          <p>
+            In a nutshell, Blender.Today is community-driven <a href="http://www.blender.org">Blender</a> news.
+            If you don't know what <a href="http://www.blender.org">Blender</a> is,
+            then you should probably go, or not! Stay and learn, we have cookies.
+            Just keep in mind this site is run by the community. You're free to share
+            what's up, upvote the awesomeness or even downvote if it's not your thing.
+          </p>
+          <p>
+            Go share. It's time for you to decide what makes the news.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h3>Contact</h3>
+          <p>
+            We're on Twitter <a href="http://twitter.com/BlenderToday">@BlenderToday</a>,
+            or <a href="http://facebook.com/BlenderToday">facebook.com/BlenderToday</a> if you're into that.
+          </p>
+          <hr/>
+          <h3>Moar Blender Stuff</h3>
+          <ul>
+            <li><a href="https://cloud.blender.org">Blender Cloud</a>
+                - All the open content and training you ever wanted</li>
+            <li><a href="https://www.blendernetwork.org">Blender Network</a>
+                 - Online directory of Blender Professionals and Certified Trainers</li>
+            <li><a href="https://www.blender.org/e-shop">Blender E-shop</a>
+                 - Education & swag deals that keep Blender Foundation afloat</li>
+          </ul>
         </div>
       </div>
-    </div> <!-- /container -->
+    </div>
 
     <footer>
       <div class="container">
@@ -73,15 +110,17 @@
         </span>
       </div> <!-- /footer-container -->
     </footer>
+
     <div id="submit" class="dialog">
       <div class="dialog__overlay"></div>
-        <div class="dialog__content">
-          {% include 'posts/form.html' %}
-          <button class="action dialog__button-close" data-dialog-close>
-            <i class="fa fa-times"></i>
-          </button>
-      </div>
-    </div>
+      <div class="dialog__content">
+        {% include 'posts/form.html' %}
+        <button class="action dialog__button-close" data-dialog-close>
+          <i class="fa fa-times"></i>
+        </button>
+      </div> <!-- dialog__content -->
+    </div> <!-- dialog -->
+
     {% if config.USE_ASSETS_CDN %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

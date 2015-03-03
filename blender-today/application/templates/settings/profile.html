@@ -49,7 +49,7 @@
                             <div class="form-group">
                                 {{ form.username.label }} 
                                 {{ form.username(class='form-control',
-                                                 placeholder='Your Nickname (optional)') }}
+                                                 placeholder='Your username') }}
                                 {% if form.username.errors %}
                                     <ul class="error">
                                         {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
@@ -73,6 +73,9 @@
                         <div class="user-settings-roles">
                             <h3>Community Badges</h3>
                             {% if current_user.roles %}
+                                {% if current_user.has_role('cloud_member') %}
+                                    <i class="bf-cloud"></i> Blender Cloud Member<br/>
+                                {% endif %}
                                 {% if current_user.has_role('dev_core') %}
                                     <i class="bf-blender"></i> Blender Core Developer<br/>
                                 {% endif %}
