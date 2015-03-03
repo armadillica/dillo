@@ -90,6 +90,12 @@ a
 .post-view-container
 	margin-top: 15px
 
+.post-view-container-title
+	position: relative
+	top: -10px
+	& strong
+		color: $color_brand_secondary
+
 /* post-index */
 .post-index, .post-view
 	margin-top: 25px
@@ -358,6 +364,7 @@ a
 		color: white
 		&:hover
 			color: $color_brand_secondary
+			text-decoration: none
 
 	& .author-name
 		display: block
@@ -414,8 +421,8 @@ a
 			+user-select-none
 			+border-radius(50%)
 			+text-shadow(1px, 1px, 0, black, .1)
-
 			+box-shadow(1px, 2px, 0, black, .1)
+			+transition(all, 0.1s, ease)
 
 			&:hover, &:focus
 				background-color: lighten($color_brand_main, 5%)
@@ -475,18 +482,27 @@ a
 			position: relative
 			& .icons
 				position: relative
-				top: 2px
+				top: 6px
 				right: 0
 			& a
 				position: absolute
 				opacity: 0
+				height: 30px
+				width: 30px
+				color: white
+				background-color: darken($color_brand_main, 20%)
+				+border-radius(50%)
 				+text-shadow-none
-
-				& .fa-circle
-					color: darken($color_brand_main, 20%)
-
-				&:hover .fa-circle
-					color: lighten($color_brand_main, 10%)
+				&:hover
+					background-color: lighten($color_brand_main, 10%)
+				& i
+					position: relative
+					top: 5px
+					left: 10px
+					&.fa-reddit
+						left: 7px
+					&.fa-envelope-o
+						left: 8px
 
 		& #social-toggle.activato
 			background-color: darken($color_brand_main, 20%)

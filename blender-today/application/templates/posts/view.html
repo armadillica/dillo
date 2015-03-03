@@ -12,7 +12,7 @@
 <div class="row">
 <div class="col-md-9 post-view">
 
-		<h4>
+		<h4 class="post-view-container-title">
 				<a href="{{url_for('index')}}">Home</a>
 				<strong>·</strong>
 				<a href="{{url_for('index')}}{{post.category.url}}">{{post.category.name}}</a>
@@ -85,33 +85,27 @@
 
 							<span id="social">
 								<span class="icons">
-									<a href="https://twitter.com/home?status={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Twitter" class="pop">
-										<span class="fa-stack fa-lg twitter">
-											<i class="fa fa-circle fa-stack-2x"></i>
-											<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-										</span>
+
+									<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop">
+											<i class="fa fa-envelope-o"></i>
 									</a>
 
-									<a href="https://www.facebook.com/sharer/sharer.php?u={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop">
-										<span class="fa-stack fa-lg facebook">
-											<i class="fa fa-circle fa-stack-2x"></i>
-											<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-										</span>
+									<a href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Reddit" class="pop">
+										<i class="fa fa-reddit"></i>
 									</a>
 
 									<a href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Google+" class="pop">
-										<span class="fa-stack fa-lg google-plus">
-											<i class="fa fa-circle fa-stack-2x"></i>
-											<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
-										</span>
+										<i class="fa fa-google-plus"></i>
 									</a>
 
-									<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop">
-										<span class="fa-stack fa-lg email">
-											<i class="fa fa-circle fa-stack-2x"></i>
-											<i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
-										</span>
+									<a href="https://www.facebook.com/sharer/sharer.php?u={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop">
+										<i class="fa fa-facebook"></i>
 									</a>
+
+									<a href="https://twitter.com/home?status={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Twitter" class="pop">
+										<i class="fa fa-twitter"></i>
+									</a>
+
 								</span>
 							</span>
 
