@@ -104,6 +104,9 @@ a
 	position: relative
 	top: -10px
 
+.post-index select
+	display: none // so the select categories doesn't appear for a moment 
+
 .post-index-item
 	display: block
 	background-color: white
@@ -511,6 +514,9 @@ a
 .post-view-comments-avatar
 	position: relative
 
+.post-view-comments-avatar
+	left: 10px
+
 .post-view-details-avatar img,
 .post-view-comments-avatar img
 	background: white
@@ -521,8 +527,12 @@ a
 	padding: 3px
 
 .post-view-comments-avatar img
-	max-width: 60px
-	padding: 2px
+	max-width: 50px
+	padding: 3px
+	&.op
+		background-color: $color_brand_main
+	&.police
+		background-color: $color_brand_secondary
 
 .post-view-details-avatar-label,
 .post-view-comments-avatar-label
@@ -558,7 +568,7 @@ a
 .post-view-comments-avatar-label
 	width: 20px
 	height: 20px
-	left: 42px
+	left: 32px
 	+box-shadow(2px, 2px, 0, black, .05)
 	& i
 		left: 3px
@@ -1359,6 +1369,7 @@ fieldset
 	-webkit-justify-content: center
 	justify-content: center
 	pointer-events: none
+	z-index: 5
 
 .dialog__overlay
 	position: absolute

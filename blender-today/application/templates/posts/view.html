@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% from 'posts/_macros.html' import print_comment with context %}
+{% from 'posts/_macros.html' import category_dropdown, print_comment with context %}
 
 {% block page_title %}{{post.title}}{% endblock %}
 
@@ -12,11 +12,18 @@
 <div class="row">
 <div class="col-md-9 post-view">
 
-		<h4 class="post-view-container-title">
+	<div class="row">
+		<div class="col-md-6">
+			<h4 class="post-view-container-title">
 				<a href="{{url_for('index')}}">Home</a>
 				<strong>·</strong>
 				<a href="{{url_for('index')}}{{post.category.url}}">{{post.category.name}}</a>
-		</h4>
+			</h4>
+		</div>
+		<div class="col-md-6">
+			{{ category_dropdown(title, category, categories) }}
+		</div>
+	</div>
 
 	<div class="post-view-container">
 		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"

@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% from 'posts/_macros.html' import category_dropdown %}
 
 {% block page_title %}
 	{% if title == 'index_category' %}
@@ -26,12 +27,7 @@
 				</h4>
 			</div>
 			<div class="col-md-6">
-				<select id="cd-dropdown" name="cd-dropdown" class="cd-select">
-					<option value="-1" selected>Categories</option>
-					{% for category in categories %}
-						<option value="1"><i class="fa fa-rocket"></i>{{category.name}}</option>
-					{% endfor %}
-				</select>
+				{{ category_dropdown(title, category, categories) }}
 			</div>
 		</div>
 

@@ -5,15 +5,20 @@
 
 			<div class="col-md-1 col-sm-1 col-xs-2">
 				<div class="post-view-comments-avatar">
-					<img class="img-circle" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
-					{% if post.user.has_role('network_member') %}
-					<div class="post-view-comments-avatar-label">
-						{% if post.user.has_role('bfct_trainer') %}
+					<img class="img-circle{% if post.user.id == comment.user.id %} op{% endif %}" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
+
+					{% if comment.user.has_role('dev_core') %}
+						<div class="post-view-comments-avatar-label">
+							<i class="dev_core bf-blender" title="Blender Core Developer"></i>
+						</div>
+					{% elif comment.user.has_role('bfct_trainer') %}
+						<div class="post-view-comments-avatar-label">
 							<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
-						{% else %}
+						</div>
+					{% elif comment.user.has_role('network_member') %}
+						<div class="post-view-comments-avatar-label">
 							<i class="network_member bf-network" title="Blender Network Member"></i>
-						{% endif %}
-					</div>
+						</div>
 					{% endif %}
 				</div>
 			</div>
@@ -50,3 +55,19 @@
 	</div> <!-- post-view-comments-item -->
 {% endmacro %}
 
+{% macro category_dropdown(title, category, categories) %}
+	<select id="cd-dropdown" name="cd-dropdown" class="cd-select" onchange="location = this.options[this.selectedIndex].value;">
+		<option value="-1" selected>
+			{% if title == 'index_category' %}
+				{{category}}
+			{% else %}
+				Categories
+			{% endif %}
+		</option>
+		{% for category in categories %}
+			<option value="{{url_for('posts.index_category', category=category.url)}}">
+				<i class="fa fa-rocket"></i>{{category.name}}
+			</option>
+		{% endfor %}
+	</select>
+{% endmacro %}

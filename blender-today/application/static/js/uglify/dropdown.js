@@ -19,7 +19,7 @@
 
 	// the options
 	$.DropDown.defaults = {
-		speed : 300,
+		speed : 350,
 		easing : 'ease',
 		gutter : 0,
 		// initial stack effect
@@ -49,7 +49,7 @@
 		_layout : function() {
 
 			var self = this;
-			this.minZIndex = 1000;
+			this.minZIndex = 1;
 			var value = this._transformSelect();
 			this.opts = this.listopts.children( 'li' );
 			this.optsCount = this.opts.length;
@@ -134,6 +134,7 @@
 					self.options.onOptionSelect( opt );
 					self.inputEl.val( opt.data( 'value' ) );
 					self.selectlabel.html( opt.html() );
+					window.location.replace(opt.data('value'));
 					self.close();
 				}
 			} );

@@ -94,6 +94,8 @@ def index_category(category, page=1):
 def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    categories = Category.query.all()
+
     # Aggressive redirect if the URL does not have a slug
     if not slug:
         return redirect(url_for('posts.view', 
@@ -110,6 +112,7 @@ def view(category, uuid, slug=None):
         title='view',
         post=post,
         form=form,
+        categories=categories,
         picture=post.thumbnail('m'))
 
 
