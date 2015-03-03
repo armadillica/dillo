@@ -17,6 +17,7 @@ from application import blender_id
 from application.modules.users.model import user_datastore
 from application.modules.users.model import UserOauth
 from application.modules.users.model import UserKarma
+from application.modules.users.model import User
 
 
 def user_get_or_create(email, first_name, last_name, service, service_user_id):
@@ -42,8 +43,18 @@ def user_get_or_create(email, first_name, last_name, service, service_user_id):
         db.session.commit()
     else:
         # If user does not exist, create and assign roles
+        # Generate unique username, by searching for an existing username and
+        # progressively increment until a free one is found
+        username = email.split("@")[0]
+        index = 1
+        while User.query.filter_by(username=username).first():
+            print index
+            username = "{0}{1}".format(username, index)
+            index += 1
+
         user = user_datastore.create_user(
             email=email,
+            username=username,
             active=True,
             first_name=first_name,
             last_name=last_name,
