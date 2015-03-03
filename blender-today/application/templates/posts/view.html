@@ -67,13 +67,13 @@
 							<div class="post-view-details-avatar-label">
 								<i class="dev_core bf-blender" title="Blender Core Developer"></i>
 							</div>
+						{% elif post.user.has_role('bfct_trainer') %}
+							<div class="post-view-details-avatar-label">
+								<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+							</div>
 						{% elif post.user.has_role('network_member') %}
 							<div class="post-view-details-avatar-label">
-								{% if post.user.has_role('bfct_trainer') %}
-									<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
-								{% else %}
-									<i class="network_member bf-network" title="Blender Network Member"></i>
-								{% endif %}
+								<i class="network_member bf-network" title="Blender Network Member"></i>
 							</div>
 						{% endif %}
 					</div>
@@ -125,7 +125,12 @@
 								<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
 							{% endif %}	
 						</span>
+
 						<span class="meta">
+							{{post.post_type.name}}
+
+							<span class="separator"></span>
+
 							<span class="date">
 							Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
 							{% if post.status == 'deleted' %}
@@ -146,6 +151,7 @@
 							<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
 							</a>
 						</span>
+
 					</div>
 				</div>
 			</div>

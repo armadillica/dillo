@@ -85,7 +85,9 @@
 					{% endif %}
 
 
-					{{post.post_type}}
+					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+						{{post.post_type}}
+					</a>
 					<span class="separator"></span>
 					<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
 					<span class="separator"></span>

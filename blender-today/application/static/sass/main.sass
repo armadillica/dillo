@@ -339,6 +339,9 @@ a
 	color: white
 	+text-shadow(1px, 1px, 0, black, 0.4)
 
+	& .separator
+		background-color: darken($color_brand_main, 10%)
+
 .post-view-details-meta
 	margin-left: 10px
 	position: relative
@@ -349,7 +352,7 @@ a
 	+media-md
 		margin-left: 25px
 	+media-lg
-		margin-left: 10px
+		margin-left: 15px
 
 	& a
 		color: white
@@ -1190,6 +1193,16 @@ fieldset
 		outline: none !important
 
 /* Sidebar */
+.nav-sidebar-container
+	+media-xs
+		position: relative
+	+media-sm
+		position: relative
+	+media-md
+		position: fixed
+	+media-lg
+		position: fixed
+
 .nav-sidebar
 	margin-top: 15px
 	display: block
