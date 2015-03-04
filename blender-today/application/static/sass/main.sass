@@ -2,8 +2,10 @@
 @import reset
 
 //$color_brand_main: lighten(desaturate(#0092A0, 65%), 15%) // # 296bb6 - serious blue 34495e, greenish 009587
-$color_brand_main: #4d98a0
+//$color_brand_main: #4d98a0
 //$color_brand_main: #0092A0
+$color_brand_main: #4D84A0 // 4D84A0 // 4D8DA0
+
 $color_brand_secondary: #e74c3c // e74c3c - dc2900
 //$color_background: #f0f1f3 // f0f0f0 // f9f7f6
 $color_background: #EaEbEf
@@ -16,7 +18,7 @@ $color_danger: #dd4b39
 $color_success: #d5d644
 
 $font_body: 'Open Sans', Verdana, Arial, Helvetica, sans-serif
-$font_headings: 'Raleway', 'Lucida Sans', 'Lucida Grande', sans-serif
+$font_headings: 'Oxygen', 'Lucida Sans', 'Lucida Grande', sans-serif
 $font_size: 14px
 
 $color_blender-orange: #ec8e30
@@ -130,23 +132,24 @@ a
 		background-color: lighten($color_background, 2%)
 		border: thin solid darken($color_background, 5%)
 		& .post-index-item-title
-			+text-shadow(1px, 1px, 0, white, 0.8)
+			+text-shadow(1px, 1px, 0, white, 0.6)
+
 	&:hover .post-index-item-type
 		opacity: 0.8
 
 .post-index-item-title
 	font-family: $font_headings
 	display: block
-	font-size: 1.5em
+	font-size: 1.6em
 	padding: 15px 0 5px 0
-	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
+	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
 
 	+media-xs
 		font-size: 1.4em
 
 	@extend .text-overflow-ellipsis
 
-	&:hover
+	&:hover, &:focus
 		text-decoration: none
 
 .post-index-item-details
