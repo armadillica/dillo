@@ -46,6 +46,7 @@ a
 		color: $color_brand_secondary
 
 .page-container
+	min-height: 345px /* avoids the fixed sidebar to go over the footer */
 	background-color: $color_background
 	padding-bottom: 25px
 	border-bottom: 6px solid lighten(desaturate($color_brand_main, 20%), 38%)
@@ -209,6 +210,14 @@ a
 		color: $color_upvote
 	.down:hover, .down.rated
 		color: $color_downvote
+
+.post-index-empty
+	margin: 30px auto
+	color: lighten($color_text, 50%)
+	text-align: center
+	+user-select-none
+	& h3
+		margin: 30px auto
 
 .ink
 	display: block
