@@ -130,7 +130,8 @@ def submit():
         content = form.content.data
         # If the post is a link (is 1), we cast this because it's coming from
         # a hidden field
-        if int(form.post_type_id.data) == 1:
+        post_type_id = int(form.post_type_id.data)
+        if post_type_id== 1:
             content = form.url.data
             if not check_url(content):
                 return abort(404)
@@ -143,7 +144,7 @@ def submit():
         post = Post(
             user_id=current_user.id,
             category_id=form.category_id.data,
-            post_type_id=form.post_type_id.data,
+            post_type_id=post_type_id,
             title=form.title.data,
             slug=slugify(form.title.data),
             content=content)
