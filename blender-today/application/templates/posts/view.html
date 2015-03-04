@@ -379,6 +379,7 @@
 		$("#form-comment").on("submit", function(e) {
 			e.preventDefault();
 			$.post($(this).attr('action'), $(this).serialize(),function(data){
+				$(".post-view-comments-empty").hide();
 				c = print_comment(data['comment']);
 				$(".post-view-comments-submit").before(c);
 			});
