@@ -35,6 +35,7 @@ from application.helpers import slugify
 from application.helpers import bleach_input
 from application.helpers import check_url
 from application.helpers import delete_redis_cache_keys
+from application.helpers import delete_redis_cache_post
 
 posts = Blueprint('posts', __name__)
 
@@ -217,6 +218,7 @@ def rate(uuid, rating):
             post.user.update_karma()
             delete_redis_cache_keys('post_list')
             delete_redis_cache_keys('post_list', post.category.url)
+            delete_redis_cache_post(post.uuid)
 
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
@@ -238,6 +240,7 @@ def rate(uuid, rating):
 
     delete_redis_cache_keys('post_list')
     delete_redis_cache_keys('post_list', post.category.url)
+    delete_redis_cache_post(post.uuid)
 
     return jsonify(rating=str(user_post_rating.is_positive),
         rating_delta=post.rating_delta)

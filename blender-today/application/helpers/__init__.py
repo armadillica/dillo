@@ -129,12 +129,24 @@ def make_redis_cache_key(cache_prefix, category=''):
         user_id = current_user.string_id
     cache_key = make_template_fragment_key(cache_prefix,
         vary_on=[user_id, category])
-    # Add prefix to the cache key
+    # Add prefix to the cache key and a *
     return '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
 
 
 def delete_redis_cache_keys(cache_prefix, category=''):
     key = make_redis_cache_key(cache_prefix, category)
+    keys_list = redis_client.keys(key)
+    for key in keys_list: redis_client.delete(key)
+
+
+def delete_redis_cache_post(uuid):
+    user_id = 'ANONYMOUS'
+    if current_user.is_authenticated():
+        user_id = current_user.string_id
+    cache_key = make_template_fragment_key('post',
+        vary_on=[uuid])
+    # Add prefix to the cache key
+    key = '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
     keys_list = redis_client.keys(key)
     for key in keys_list: redis_client.delete(key)
 
