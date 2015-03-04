@@ -307,7 +307,7 @@ def edit(uuid):
     post = Post.query.get_or_404(post_id)
     if post.user.id == current_user.id:
         post.content = bleach_input(request.form['content'])
-        post.status = 'pusblished'
+        post.status = 'published'
         post.edit_date = datetime.datetime.now()
         db.session.commit()
 
@@ -316,7 +316,7 @@ def edit(uuid):
         delete_redis_cache_keys('post_list', post.category.url)
         delete_redis_cache_post(post.uuid)
 
-        return jsonify(status='pusblished')
+        return jsonify(status='published')
     else:
         return abort(403)
 
