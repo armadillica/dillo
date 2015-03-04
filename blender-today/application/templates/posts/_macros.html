@@ -19,6 +19,10 @@
 						<div class="post-view-comments-avatar-label">
 							<i class="network_member bf-network" title="Blender Network Member"></i>
 						</div>
+					{% elif comment.user.has_role('cloud_member') %}
+						<div class="post-view-comments-avatar-label">
+							<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
+						</div>
 					{% endif %}
 				</div>
 			</div>

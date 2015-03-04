@@ -387,9 +387,10 @@ a
 			width: 15px
 			opacity: 0.95
 			+text-shadow-none
-			&.bf-network
+			&.bf-cloud, &.bf-network
 				position: relative
-				left: 2px
+				left: 1px
+				font-size: 1.2em
 			&.fa-graduation-cap
 				font-size: 0.75em
 				position: relative
@@ -555,6 +556,11 @@ a
 		+text-shadow-none
 		&.network_member
 			color: #d91b5c
+		&.cloud_member
+			color: $color_text
+			font-size: 1.2em
+			left: 5px
+
 		&.bfct_trainer
 			color: #40b0e0
 			font-size: 0.9em

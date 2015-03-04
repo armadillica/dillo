@@ -82,6 +82,10 @@
 							<div class="post-view-details-avatar-label">
 								<i class="network_member bf-network" title="Blender Network Member"></i>
 							</div>
+						{% elif post.user.has_role('cloud_member') %}
+							<div class="post-view-details-avatar-label">
+								<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
+							</div>
 						{% endif %}
 					</div>
 				</div>
@@ -156,6 +160,9 @@
 						<span class="author-roles">
 							{% if post.user.has_role('dev_core') %}
 								<i class="bf-blender"></i> Blender Core Developer<br/>
+							{% endif %}
+							{% if post.user.has_role('cloud_member') %}
+								<i class="bf-cloud"></i> Blender Cloud Member<br/>
 							{% endif %}
 							{% if post.user.has_role('network_member') %}
 								<i class="bf-network"></i> Blender Network Member<br/>
@@ -356,7 +363,7 @@
 			<div class="row"> \
 				<div class="col-md-1 col-sm-1 col-xs-2">\
 					<div class="post-view-comments-avatar">\
-						<img src="' + comment['gravatar'] + '" class="img-circle">\
+						<img src="' + comment['gravatar'] + '" class="img-circle op">\
 					</div>\
 				</div>\
 				<div class="col-md-11 col-sm-11 col-xs-10">\
