@@ -5,7 +5,8 @@
 $color_brand_main: #4d98a0
 //$color_brand_main: #0092A0
 $color_brand_secondary: #e74c3c // e74c3c - dc2900
-$color_background: #f0f1f3 // f0f0f0 // f9f7f6
+//$color_background: #f0f1f3 // f0f0f0 // f9f7f6
+$color_background: #EaEbEf
 $color_text: #444
 
 $color_upvote: #ff8b60
@@ -31,7 +32,7 @@ body
 	color: $color_text
 	/* This is for the footer actually, */
 	/* page color is in page-container  */
-	background-color: lighten(desaturate($color_brand_main, 20%), 40%)
+	background-color: lighten(desaturate($color_brand_main, 20%), 35%)
 	cursor: default
 
 h1, h2, h3, h4, h5, h6
@@ -125,7 +126,8 @@ a
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
 	&.even
-		background-color:	darken($color_background, 1%)
+		//background-color:	lighten($color_background, 1%)
+		background-color: lighten($color_background, 2%)
 		border: thin solid darken($color_background, 5%)
 		& .post-index-item-title
 			+text-shadow(1px, 1px, 0, white, 0.8)
@@ -284,10 +286,6 @@ a
 	+media-xs
 		margin-left: 10px
 
-.post-index-end
-	color: darken($color_background, 5%)
-	text-align: center
-	+user-select-none
 
 /* //post-index */
 /* post-view */
@@ -1035,15 +1033,15 @@ div#post-comment-reply-container
 
 /* Footer */
 .page-footer
-	color: desaturate($color_brand_main, 25%)
+	color: desaturate($color_brand_main, 20%)
 	+user-select-none
 	& h3
 		font-size: 1.6em
 	& p, & ul
 		font-size: 0.9em
-		color: lighten(desaturate($color_brand_main, 20%), 12%)
+		color: lighten(desaturate($color_brand_main, 20%), 8%)
 		& a
-			color: lighten(desaturate($color_brand_main, 20%), 15%)
+			color: lighten(desaturate($color_brand_main, 20%), 10%)
 	& ul
 		list-style-type: none
 		padding: 0
@@ -1408,6 +1406,7 @@ fieldset
 				&.active
 					color: $color_brand_secondary
 
+
 /* Submit Dialog */
 .dialog, .dialog__overlay
 	width: 100%
@@ -1710,7 +1709,7 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 .cd-active.cd-dropdown > span,
 .cd-active.cd-dropdown ul li span
 	box-shadow: 0 1px 1px rgba(0,0,0,0.1)
-	background-color: $color_background
+	background-color: lighten($color_background, 3%)
 	color: $color_brand_main
 	border: thin solid darken($color_background, 3%)
 
