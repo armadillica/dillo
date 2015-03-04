@@ -600,6 +600,8 @@ a
 		&.bfct_trainer
 			font-size: 0.8em
 			left: 4px
+			top: 0
+
 		&.cloud_member
 			font-size: 1.1em
 			left: 4px
@@ -748,7 +750,7 @@ div#post-comment-reply-container
 /* //post-view */
 /* post-submit */
 .post-submit .form-group .form-control
-	font-size: 1.4em
+	font-size: 1.3em
 	padding: 6px 15px
 	height: auto
 	width: auto
@@ -771,9 +773,10 @@ div#post-comment-reply-container
 	margin-top: 5px
 	margin-bottom: 5px
 	& span
-		font-size: 1.5em
+		font-size: 1.4em
 		display: block
-		padding-top: 6px
+		padding-top: 8px
+		text-align: right
 		+text-shadow(1px, 1px, 0, black, .2)
 
 .post-submit-div-title,
@@ -793,7 +796,6 @@ div#post-comment-reply-container
 		cursor: pointer
 		padding: 5px 5px 10px 5px
 		background-color: lighten($color_brand_main, 10%)
-		border: 2px solid darken($color_brand_main, 2%)
 		margin-bottom: 10px
 		+user-select-none
 		+border-radius(10px)
@@ -806,7 +808,6 @@ div#post-comment-reply-container
 			background-color: darken($color_brand_main, 5%)
 
 		&.activato
-			border: 2px solid lighten(desaturate($color_brand_secondary, 5%), 5%)
 			background-color: desaturate($color_brand_secondary, 10%)
 
 
@@ -1428,7 +1429,7 @@ fieldset
 	-webkit-justify-content: center
 	justify-content: center
 	pointer-events: none
-	z-index: 5
+	z-index: 9999
 
 .dialog__overlay
 	position: absolute
