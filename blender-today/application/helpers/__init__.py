@@ -110,7 +110,7 @@ def pretty_date(time=False):
 
 
 def bleach_input(markup):
-    ALLOWED_TAGS = [u'a', u'abbr', u'acronym', u'b', u'blockquote', u'code', u'em', u'i', u'li', u'ol', u'strong', u'ul', u'p']
+    ALLOWED_TAGS = [u'a', u'abbr', u'acronym', u'b', u'blockquote', u'code', u'em', u'i', u'li', u'ol', u'strong', u'ul', u'p', 'br']
     output = bleach.clean(markup, tags=ALLOWED_TAGS, strip=False)
     return output
 
