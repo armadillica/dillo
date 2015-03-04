@@ -68,9 +68,16 @@ def submit(post_id):
 
         # Clear all the caches
         delete_redis_cache_post(post.uuid)
+
+        if comment.user.first_name and comment.user.last_name:
+            display_name = "{0} {1}".format(
+                comment.user.first_name.encode('utf-8'),
+                comment.user.last_name.encode('utf-8'))
+        else:
+            display_name = comment.user.username
+
     return jsonify(comment=dict(
-        user_name="{0} {1}".format(
-            comment.user.first_name, comment.user.last_name),
+        user_name=display_name,
         gravatar=comment.user.gravatar(),
         content=comment.content,
         comment_id=comment.id,
