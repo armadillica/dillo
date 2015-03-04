@@ -65,7 +65,7 @@ def index(page=1):
 @posts.route('/<category>/<int:page>')
 def index_category(category, page=1):
     category = Category.query\
-        .filter_by(name=category).first_or_404()
+        .filter_by(name=Category.url).first_or_404()
     categories = Category.query.all()
     #posts = query_posts_category(category.url, page)
     user_string_id = 'ANONYMOUS'
@@ -163,6 +163,10 @@ def submit():
             post.picture_deletehash = image['deletehash']
             os.remove(filepath)
         db.session.commit()
+
+        # Clear all the caches
+        delete_redis_cache_keys('post_list')
+        delete_redis_cache_keys('post_list', post.category.url)
 
         return jsonify(
             post_url=url_for('posts.view',
@@ -283,6 +287,11 @@ def flag(uuid):
         post.status = 'flagged'
     post.user.update_karma()
 
+    # Clear all the caches
+    delete_redis_cache_keys('post_list')
+    delete_redis_cache_keys('post_list', post.category.url)
+    delete_redis_cache_post(post.uuid)
+
     return jsonify(is_flagged=user_post_rating.is_flagged)
 
 
@@ -293,10 +302,16 @@ def edit(uuid):
     post = Post.query.get_or_404(post_id)
     if post.user.id == current_user.id:
         post.content = bleach_input(request.form['content'])
-        post.status = 'edited'
+        post.status = 'pusblished'
         post.edit_date = datetime.datetime.now()
         db.session.commit()
-        return jsonify(status='edited')
+
+        # Clear all the caches
+        delete_redis_cache_keys('post_list')
+        delete_redis_cache_keys('post_list', post.category.url)
+        delete_redis_cache_post(post.uuid)
+
+        return jsonify(status='pusblished')
     else:
         return abort(403)
 
@@ -310,6 +325,10 @@ def delete(uuid):
         post.status = 'deleted'
         post.edit_date = datetime.datetime.now()
         db.session.commit()
+        # Clear all the caches
+        delete_redis_cache_keys('post_list')
+        delete_redis_cache_keys('post_list', post.category.url)
+        delete_redis_cache_post(post.uuid)
         return jsonify(status='deleted')
     else:
         return abort(403)

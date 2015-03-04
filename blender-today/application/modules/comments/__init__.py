@@ -20,6 +20,7 @@ from application.modules.posts.forms import CommentForm
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import bleach_input
+from application.helpers import delete_redis_cache_post
 
 comments = Blueprint('comments', __name__)
 
@@ -36,6 +37,7 @@ def index(post_id):
             })
     #comments = [comment for comment in post.comments_first_level()]
     return jsonify(comments=comments)
+
 
 @comments.route('/<int:post_id>/submit', methods=['POST'])
 @login_required
@@ -63,6 +65,9 @@ def submit(post_id):
             )
         db.session.add(comment_rating)
         db.session.commit()
+
+        # Clear all the caches
+        delete_redis_cache_post(post.uuid)
     return jsonify(comment=dict(
         user_name="{0} {1}".format(
             comment.user.first_name, comment.user.last_name),
@@ -116,6 +121,8 @@ def rate(comment_id, rating):
             db.session.delete(user_comment_rating)
             db.session.commit()
             comment.user.update_karma()
+            # Clear all the caches
+            delete_redis_cache_post(post.uuid)
             return jsonify(rating=None,
                 rating_delta=comment.rating_delta)
     else:
@@ -132,7 +139,9 @@ def rate(comment_id, rating):
         db.session.add(user_comment_rating)
         db.session.commit()
         comment.user.update_karma()
-
+        # Clear all the caches
+        post = Post.query.get(comment.post_id)
+        delete_redis_cache_post(post.uuid)
     return jsonify(rating=str(user_comment_rating.is_positive),
         rating_delta=comment.rating_delta)
 
@@ -172,6 +181,9 @@ def flag(comment_id):
     if len(flags) > 5:
         comment.status = 'flagged'
     comment.user.update_karma()
+    # Clear all the caches
+    post = Post.query.get(comment.post_id)
+    delete_redis_cache_post(post.uuid)
 
     return jsonify(is_flagged=user_comment_rating.is_flagged)
 
