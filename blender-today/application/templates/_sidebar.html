@@ -14,12 +14,6 @@
 					{% if current_user.is_authenticated() %}
 
 						<li>
-							<a href="#" title="{{current_user.email}}">
-								<i class="fa fa-male"></i>
-							</a>
-						</li>
-
-						<li>
 								<a href="{{url_for('settings.profile')}}" id="popover-settings"
 									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
 									 data-content="Settings" {% if title in ('settings_profile', 'settings_account') %}class="active"{% endif %}>
