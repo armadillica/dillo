@@ -95,6 +95,9 @@ def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     categories = Category.query.all()
+    user_string_id = 'ANONYMOUS'
+    if current_user.is_authenticated():
+        user_string_id = current_user.string_id
 
     # Aggressive redirect if the URL does not have a slug
     if not slug:
@@ -113,6 +116,7 @@ def view(category, uuid, slug=None):
         post=post,
         form=form,
         categories=categories,
+        user_string_id=user_string_id,
         picture=post.thumbnail('m'))
 
 

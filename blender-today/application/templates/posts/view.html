@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-{% cache 60*5, 'post', post.uuid %}
+{% cache 60*5, 'post', post.uuid, user_string_id %}
 <div class="row">
 <div class="col-md-9 post-view">
 

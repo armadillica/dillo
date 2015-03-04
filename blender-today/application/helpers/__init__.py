@@ -144,7 +144,7 @@ def delete_redis_cache_post(uuid):
     if current_user.is_authenticated():
         user_id = current_user.string_id
     cache_key = make_template_fragment_key('post',
-        vary_on=[uuid])
+        vary_on=[uuid, user_id])
     # Add prefix to the cache key
     key = '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
     keys_list = redis_client.keys(key)
