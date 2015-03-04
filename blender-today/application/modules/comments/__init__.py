@@ -122,6 +122,7 @@ def rate(comment_id, rating):
             db.session.commit()
             comment.user.update_karma()
             # Clear all the caches
+            post = Post.query.get(comment.post_id)
             delete_redis_cache_post(post.uuid)
             return jsonify(rating=None,
                 rating_delta=comment.rating_delta)

@@ -46,7 +46,7 @@
 					<span class="separator"></span>
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}" title="Permalink"><i class="fa fa-link"></i></a>
 					<span class="separator"></span>
-					<a class="post-view-comments-item-flag flag{% if comment.user_rating and not comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}" title="Flag comment">
+					<a class="post-view-comments-item-flag flag{% if comment.user_rating and comment.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('comments.flag', comment_id=comment.id)}}" title="Flag comment">
 					</a>
 					{% if not is_reply %}
 					<span class="separator"></span>
