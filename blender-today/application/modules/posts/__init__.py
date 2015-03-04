@@ -65,7 +65,7 @@ def index(page=1):
 @posts.route('/<category>/<int:page>')
 def index_category(category, page=1):
     category = Category.query\
-        .filter_by(name=Category.url).first_or_404()
+        .filter_by(url=category).first_or_404()
     categories = Category.query.all()
     #posts = query_posts_category(category.url, page)
     user_string_id = 'ANONYMOUS'
@@ -75,7 +75,7 @@ def index_category(category, page=1):
         .filter_by(status='published')\
         .join(Category)\
         .join(PostRating)\
-        .filter(Category.name == category)\
+        .filter(Category.name == category.url)\
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=10)\
 
