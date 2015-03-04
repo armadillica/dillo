@@ -22,3 +22,7 @@ def index():
 @app.route('/faq')
 def faq():
     return view('faq')
+
+@app.route('/terms')
+def terms():
+    return view('terms')
