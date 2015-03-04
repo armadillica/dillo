@@ -132,7 +132,7 @@ a
 		background-color: lighten($color_background, 2%)
 		border: thin solid darken($color_background, 5%)
 		& .post-index-item-title
-			+text-shadow(1px, 1px, 0, white, 0.6)
+			+text-shadow(1px, 1px, 0, white, 0.3)
 
 	&:hover .post-index-item-type
 		opacity: 0.8
@@ -726,7 +726,7 @@ div#post-comment-reply-container
 .post-view-comments-item-rate
 	padding: 5px
 	color: lighten($color_text, 30%)
-	&:hover
+	&:hover, &:focus
 		text-decoration: none
 	&:hover.up, &.up.rated
 		color: $color_upvote
@@ -1044,7 +1044,7 @@ div#post-comment-reply-container
 		font-size: 0.9em
 		color: lighten(desaturate($color_brand_main, 20%), 8%)
 		& a
-			color: lighten(desaturate($color_brand_main, 20%), 10%)
+			color: desaturate($color_brand_main, 20%)
 	& ul
 		list-style-type: none
 		padding: 0
