@@ -1,3 +1,4 @@
+import redis
 import bugsnag
 from flask import Flask
 from flask import session
@@ -28,6 +29,9 @@ CsrfProtect(app)
 cache = Cache(app)
 toolbar = DebugToolbarExtension(app)
 
+redis_client = redis.StrictRedis(
+    host=app.config['CACHE_REDIS_HOST'],
+    port=app.config['CACHE_REDIS_PORT'])
 
 bugsnag.configure(
   api_key = app.config['BUGSNAG_KEY'],

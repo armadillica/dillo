@@ -3,6 +3,12 @@ import bleach
 import httplib
 from urlparse import urlparse
 
+from application import app
+from application import redis_client
+
+from flask.ext.security import current_user
+from flask.ext.cache import make_template_fragment_key
+
 ALPHABET = "bcdfghjklmnpqrstvwxyz0123456789BCDFGHJKLMNPQRSTVWXYZ"
 BASE = len(ALPHABET)
 MAXLEN = 6
@@ -115,4 +121,20 @@ def check_url(url):
     conn.request('HEAD', p.path)
     resp = conn.getresponse()
     return resp.status < 400
+
+
+def make_redis_cache_key(cache_prefix):
+    user_id = 'ANONYMOUS'
+    if current_user.is_authenticated():
+        user_id = current_user.string_id
+    cache_key = make_template_fragment_key(cache_prefix,
+        vary_on=[user_id, ''])
+    # Add prefix to the cache key
+    return '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
+
+
+def delete_redis_cache_keys(cache_prefix):
+    key = make_redis_cache_key(cache_prefix)
+    keys_list = redis_client.keys(key)
+    for key in keys_list: redis_client.delete(key)
 

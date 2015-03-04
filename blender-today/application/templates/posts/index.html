@@ -10,7 +10,7 @@
 {% block body %}
 
 {# Heavy caching starts here #}
-{% cache 60*5, 'post_list', category_url, page, user_string_id %}
+{% cache 60*5, 'post_list', user_string_id, category_url, page %}
 <div class="row">
 	<div class="col-md-9 post-index">
 		<div class="row">

@@ -13,13 +13,11 @@ from flask import request
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
-from flask.ext.cache import make_template_fragment_key
-#from flask.ext.sqlalchemy_cache import FromCache
 
 from application import app
 from application import db
 from application import imgur_client
-from application import cache
+
 
 from application.modules.posts.model import Category
 from application.modules.posts.model import Post
@@ -36,6 +34,7 @@ from application.helpers import decode_id
 from application.helpers import slugify
 from application.helpers import bleach_input
 from application.helpers import check_url
+from application.helpers import delete_redis_cache_keys
 
 posts = Blueprint('posts', __name__)
 
@@ -49,7 +48,7 @@ def index(page=1):
         .join(PostRating)\
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=10)
-    user_string_id = ''
+    user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
     return render_template('posts/index.html',
@@ -68,7 +67,7 @@ def index_category(category, page=1):
         .filter_by(name=category).first_or_404()
     categories = Category.query.all()
     #posts = query_posts_category(category.url, page)
-    user_string_id = ''
+    user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
     posts = Post.query\
@@ -216,11 +215,8 @@ def rate(uuid, rating):
             db.session.commit()
             post.update_hot()
             post.user.update_karma()
+            delete_redis_cache_keys('post_list')
 
-            cache_key = make_template_fragment_key('post_list',
-                vary_on=['', current_user.string_id])
-            print cache_key
-            cache.delete(cache_key)
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
         # if the post has not bee rated, create rating
@@ -239,10 +235,7 @@ def rate(uuid, rating):
     post.update_hot()
     post.user.update_karma()
 
-    cache_key = make_template_fragment_key('post_list',
-        vary_on=['', current_user.string_id])
-    print cache_key
-    cache.delete(cache_key)
+    delete_redis_cache_keys('post_list')
 
     return jsonify(rating=str(user_post_rating.is_positive),
         rating_delta=post.rating_delta)
