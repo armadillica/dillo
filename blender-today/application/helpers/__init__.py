@@ -123,18 +123,18 @@ def check_url(url):
     return resp.status < 400
 
 
-def make_redis_cache_key(cache_prefix):
+def make_redis_cache_key(cache_prefix, category=''):
     user_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_id = current_user.string_id
     cache_key = make_template_fragment_key(cache_prefix,
-        vary_on=[user_id, ''])
+        vary_on=[user_id, category])
     # Add prefix to the cache key
     return '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
 
 
-def delete_redis_cache_keys(cache_prefix):
-    key = make_redis_cache_key(cache_prefix)
+def delete_redis_cache_keys(cache_prefix, category=''):
+    key = make_redis_cache_key(cache_prefix, category)
     keys_list = redis_client.keys(key)
     for key in keys_list: redis_client.delete(key)
 

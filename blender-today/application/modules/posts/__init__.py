@@ -216,6 +216,7 @@ def rate(uuid, rating):
             post.update_hot()
             post.user.update_karma()
             delete_redis_cache_keys('post_list')
+            delete_redis_cache_keys('post_list', post.category.url)
 
             return jsonify(rating=None, rating_delta=post.rating_delta)
     else:
@@ -236,6 +237,7 @@ def rate(uuid, rating):
     post.user.update_karma()
 
     delete_redis_cache_keys('post_list')
+    delete_redis_cache_keys('post_list', post.category.url)
 
     return jsonify(rating=str(user_post_rating.is_positive),
         rating_delta=post.rating_delta)
