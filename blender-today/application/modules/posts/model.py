@@ -9,6 +9,8 @@ from application.helpers import pretty_date
 from application.helpers.sorting import hot
 from application.helpers.sorting import confidence
 
+from flask.ext.security import current_user
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,9 +41,12 @@ class Post(db.Model):
     @property
     #@cache.memoize(timeout=60)
     def user_rating(self):
-        return UserPostRating.query\
-            .filter_by(post_id=self.id, user_id=self.user.id)\
-            .first()
+        if current_user.is_authenticated():
+            return UserPostRating.query\
+                .filter_by(post_id=self.id, user_id=current_user.id)\
+                .first()
+        else:
+            return False
 
     @property
     #@cache.memoize(timeout=60)
@@ -149,9 +154,12 @@ class Comment(db.Model):
 
     @property
     def user_rating(self):
-        return UserCommentRating.query\
-            .filter_by(comment_id=self.id, user_id=self.user.id)\
-            .first()
+        if current_user.is_authenticated():
+            return UserCommentRating.query\
+                .filter_by(comment_id=self.id, user_id=current_user.id)\
+                .first()
+        else:
+            return False
 
     @property
     def pretty_creation_date(self):
