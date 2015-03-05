@@ -75,7 +75,7 @@ def index_category(category, page=1):
         .filter_by(status='published')\
         .join(Category)\
         .join(PostRating)\
-        .filter(Category.name == category.url)\
+        .filter(Category.url == category.url)\
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=10)\
 
