@@ -30,20 +30,23 @@ def encode_id(n):
     return "".join(reversed(s))
 
 def decode_id(n):
-    n = "".join(reversed(n))
-    s = 0
-    l = len(n) - 1
-    t = 0
-    while True:
-        bcpow = int(pow(BASE, l - t))
-        s = s + ALPHABET.index(n[t:t+1]) * bcpow
-        t += 1
-        if t > l: break
+    if len(n) == MAXLEN:
+        n = "".join(reversed(n))
+        s = 0
+        l = len(n) - 1
+        t = 0
+        while True:
+            bcpow = int(pow(BASE, l - t))
+            s = s + ALPHABET.index(n[t:t+1]) * bcpow
+            t += 1
+            if t > l: break
 
-    pad = MAXLEN - 1
-    s = int(s - pow(BASE, pad))
+        pad = MAXLEN - 1
+        s = int(s - pow(BASE, pad))
 
-    return int(s)
+        return int(s)
+    else:
+        return 0
 
 
 import re
