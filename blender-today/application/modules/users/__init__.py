@@ -197,7 +197,7 @@ def blender_id_authorized():
         resp.data['first_name'],
         resp.data['last_name'],
         'blender-id',
-        resp.data['email'])
+        resp.data['id'])
 
     if user.is_active:
         login_user(user, remember=True)
