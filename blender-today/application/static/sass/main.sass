@@ -184,7 +184,7 @@ a
 	+media-xs
 		font-size: 0.75em
 		width: 80%
-		padding: 10px 5px 10px 0
+		padding: 10px 8px 6px 0
 		float: right
 		+text-overflow-ellipsis
 	+media-sm
@@ -227,7 +227,7 @@ a
 		width: 16%
 		float: left
 		position: absolute
-		bottom: 8px
+		bottom: 6px
 		left: 5px
 		font-size: 0.8em
 	+media-sm
@@ -917,6 +917,8 @@ div#post-comment-reply-container
 .user-register,
 .user-settings
 	margin-top: 25px
+	+media-xs
+		margin-top: 15px
 
 .user-login-container,
 .user-register-container
@@ -965,6 +967,8 @@ div#post-comment-reply-container
 			& small
 				opacity: 0.8
 				font-size: 0.65em
+				+media-xs
+					display: none
 			& i
 				position: relative
 				right: 4px
