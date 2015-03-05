@@ -209,7 +209,7 @@ a
 		color: lighten($color_text, 30%)
 		top: 0
 		+transition(top, 50ms, ease-out)
-	&:hover
+	&:hover, &:focus
 		text-decoration: none
 	.up:hover, .up.rated
 		color: $color_upvote
@@ -302,7 +302,7 @@ a
 .post-view-title
 	display: block
 	font-family: $font_headings
-	font-size: 2.1em
+	font-size: 2em
 	padding: 20px 15px 10px 15px
 	line-height: 1.3em
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
@@ -311,6 +311,8 @@ a
 	& i
 		color: lighten(desaturate($color_brand_main, 20%), 30%)
 		+text-shadow-none
+	& a:focus
+		text-decoration: none
 
 .post-view-rate
 	float: left
@@ -318,14 +320,14 @@ a
 	width: 40px
 	text-align: center
 	padding-top: 10px
-	margin: 0 15px 10px 15px
+	margin: 0 25px 10px 30px
 	+user-select-none
 	& .up, .middle, .down
 		font-size: 1.3em
 		padding: 0 0 2px 0
 		display: block
 		color: lighten($color_text, 30%)
-	&:hover
+	&:hover, &:focus
 		text-decoration: none
 	.up:hover, .up.rated
 		color: $color_upvote
@@ -335,8 +337,8 @@ a
 .post-view-content
 	font-size: 1.1em
 	line-height: 1.8em
-	padding: 10px 15px 0 15px
-	margin: 0 10px 55px 55px
+	padding: 10px 15px 0 100px
+	margin: 0 10px 55px 0
 
 .post-view-content p
 	margin-bottom: 25px
@@ -366,7 +368,8 @@ a
 	padding: 15px
 	width: 100%
 	background-color: $color_brand_main
-	border-bottom: thick solid darken($color_brand_main, 3%)
+	border-top: 3px solid lighten(desaturate($color_brand_main, 20%), 40%)
+	border-bottom: thick solid darken($color_brand_main, 4%)
 	color: white
 	+text-shadow(1px, 1px, 0, black, 0.4)
 
@@ -383,11 +386,11 @@ a
 	+media-md
 		margin-left: 25px
 	+media-lg
-		margin-left: 15px
+		margin-left: 10px
 
 	& a
 		color: white
-		&:hover
+		&:hover, &:focus
 			color: $color_brand_secondary
 			text-decoration: none
 
@@ -433,6 +436,8 @@ a
 		display: block
 		position: relative
 		top: 30px
+		padding-bottom: 25px
+
 		& .post-actions-button
 			display: inline-block
 			margin: 0 0 0 10px
@@ -546,7 +551,7 @@ a
 	+box-shadow(2px, 2px, 0, black, .1)
 
 .post-view-details-avatar img
-	max-width: 70px
+	max-width: 60px
 	padding: 3px
 
 .post-view-comments-avatar img
@@ -913,7 +918,7 @@ div#post-comment-reply-container
 		+text-shadow(1px, 1px, 0, black, 0.2)
 		+box-shadow(1px, 2px, 0, black, 0.1)
 
-		&:hover
+		&:hover, &:focus
 			text-decoration: none
 		& i.icon
 			width: 20px
@@ -1345,10 +1350,10 @@ fieldset
 		display: block
 		margin: 15px auto 0 auto
 
-	&:hover
+	&:hover, &:focus
 		text-decoration: none
 
-	& a:hover
+	& a:hover, &:focus
 		text-decoration: none
 		& h3
 			color: lighten($color_brand_main, 5%)
