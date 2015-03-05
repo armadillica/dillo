@@ -69,6 +69,8 @@ def submit(post_id):
         # Clear all the caches
         delete_redis_cache_post(post.uuid)
 
+        # This is to prevent encoding error when jsonify prints out
+        # a non ASCII name
         if comment.user.first_name and comment.user.last_name:
             display_name = "{0} {1}".format(
                 comment.user.first_name.encode('utf-8'),

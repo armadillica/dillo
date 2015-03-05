@@ -117,10 +117,14 @@ def bleach_input(markup):
 
 def check_url(url):
     p = urlparse(url)
-    conn = httplib.HTTPConnection(p.netloc)
-    conn.request('HEAD', p.path)
-    resp = conn.getresponse()
-    return resp.status < 400
+    try:
+        conn = httplib.HTTPConnection(p.netloc, timeout=2)
+        conn.request('HEAD', p.path)
+        resp = conn.getresponse()
+        return resp.status < 400
+    except:
+        # TODO: this is bad, we should get the real exception
+        return False
 
 
 def make_redis_cache_key(cache_prefix, category=''):
