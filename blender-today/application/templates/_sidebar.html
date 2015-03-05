@@ -7,11 +7,15 @@
 							<a>Submit</a>
 						</li>
 					{% else %}
-						<li data-dialog="submit" class="navbar-submit popover-submit navbar-submit-disabled"
-								data-toggle="popover" data-trigger="hover" data-placement="bottom"
-								data-content="Sign in to Submit">
-							<a href="{{url_for_security('login')}}">Submit</a>
-						</li>
+						<a href="{{url_for_security('login')}}">
+							<span class="navbar-submit-disabled-overlay popover-submit"
+										data-toggle="popover" data-trigger="hover" data-placement="bottom"
+										data-content="Sign in to Submit">
+								<li data-dialog="submit" class="navbar-submit navbar-submit-disabled">
+									<a href="{{url_for_security('login')}}">Submit</a>
+								</li>
+							</span>
+						</a>
 					{% endif %}
 
 					{% if current_user.is_authenticated() %}

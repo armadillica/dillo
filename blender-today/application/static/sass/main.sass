@@ -1308,6 +1308,22 @@ fieldset
 
 	&.navbar-submit-disabled
 		background: repeating-linear-gradient(-45deg, $color_brand_main, $color_brand_main 10px, darken($color_brand_main, 5%) 10px, darken($color_brand_main, 5%) 20px)
+		+pointer-events-none
+		& a
+			padding-left: 0 !important
+
+.navbar-submit-disabled-overlay
+	width: 80px
+	height: 45px
+	position: absolute
+	top: 0
+	left: 0
+	display: block
+
+.navbar-submit-disabled-overlay + .navbar-login,
+.popover + .navbar-login
+	position: relative
+	left: 70px
 
 /* Not really an override, it's our cool logout stuff */
 .nav-logout-widget

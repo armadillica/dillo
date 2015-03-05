@@ -24,14 +24,12 @@ $(document).ready(function() {
                   cache: false
                 })
             .done(function(data){
-                console.log(data['post_url']);
                 $('.post-submit-field-submit').css('background-color', '#5cb85c');
                 $('.post-submit-field-submit').html('<i class="fa fa-check"></i> Success!');
                 window.location.replace(data['post_url']);
             })
             .fail(function(data){
-              console.log('We have a problemos.');
-              $('.post-submit-field-submit').html('<i class="fa fa-frown-o fa-spin"></i> Problemo');
+              $('.post-submit-field-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
             });
         });
 
