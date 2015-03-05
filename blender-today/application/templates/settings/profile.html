@@ -39,7 +39,7 @@
                             </div>
                             <div class="form-group">
                                 {{ form.last_name.label }} 
-                                {{ form.last_name(class='form-control', placeholder='Your family name') }}
+                                {{ form.last_name(class='form-control', placeholder='Your last name') }}
                                 {% if form.last_name.errors %}
                                     <ul class="error">
                                         {% for error in form.last_name.errors %}<li>{{ error }}</li>{% endfor %}
