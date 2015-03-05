@@ -645,13 +645,9 @@ a
 	&.even.reply
 		background-color: darken(white, 5%)
 	&.flash
-		+text-shadow(1px, 1px, 0, black, 0.3)
+		+text-shadow-none
 		animation: effect-flash-fadeout 1.5s ease forwards
-		& .post-view-comments-item-details
-			color: white
-			& a
-				color: white
-				+text-shadow-none
+
 
 div#post-comment-reply-container
 	padding: 20px 20px 60px 90px
@@ -669,26 +665,22 @@ div#post-comment-reply-container
 
 @-webkit-keyframes effect-flash-fadeout
 	0%
-		background-color: white
 		color: white
 		padding-top: 0
 		opacity: 0
 	100%
 		opacity: 1
-		background-color: lighten(desaturate($color_brand_main, 10%), 15%)
-		color: white
+		color: $color_brand_main
 		padding-top: 15px
 
 @keyframes effect-flash-fadeout
 	0%
-		background-color: white
 		color: white
 		padding-top: 0
 		opacity: 0
 	100%
 		opacity: 1
-		background-color: lighten(desaturate($color_brand_main, 10%), 15%)
-		color: white
+		color: $color_brand_main
 		padding-top: 15px
 
 
