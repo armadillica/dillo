@@ -303,7 +303,7 @@ a
 	display: block
 	font-family: $font_headings
 	font-size: 2em
-	padding: 20px 15px 10px 15px
+	padding: 30px 15px 10px 15px
 	line-height: 1.3em
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
 	+media-xs
@@ -1349,6 +1349,9 @@ fieldset
 	& .user-register-branding-mug
 		display: block
 		margin: 15px auto 0 auto
+		+transition(opacity, 0.2s, ease)
+		&:hover
+			opacity: 0.9
 
 	&:hover, &:focus
 		text-decoration: none
