@@ -49,7 +49,7 @@
 
 					{# Post circle thingie #}
 					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}"
-						 class="hidden-xs">
+						 class="hidden-xs" title="View post and comments">
 						<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
 							{% if post.post_type.url == 'link' %}
 								<i class="fa fa-link"></i>
@@ -95,13 +95,11 @@
 						{{post.pretty_creation_date}}
 
 						<small>by</small>
-						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
 							{% if post.user.first_name %}
 								{{post.user.first_name}} {{post.user.last_name}}
 							{% else %}
 								{{post.user.username}}
 							{% endif %}
-						</a>
 					</div>
 				</div>
 			</div>
