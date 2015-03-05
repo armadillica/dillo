@@ -1,4 +1,6 @@
 import datetime
+import random
+import string
 
 from flask import session
 from flask import redirect
@@ -48,13 +50,13 @@ def user_get_or_create(email, first_name, last_name, service, service_user_id):
         username = email.split("@")[0]
         index = 1
         while User.query.filter_by(username=username).first():
-            print index
             username = "{0}{1}".format(username, index)
             index += 1
 
         user = user_datastore.create_user(
             email=email,
             username=username,
+            password=''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5)),
             active=True,
             first_name=first_name,
             last_name=last_name,
@@ -107,7 +109,12 @@ def google_authorized():
         'google',
         resp.data['email'])
 
-    login_user(user)
+    if user.is_active:
+        login_user(user, remember=True)
+    elif user.deleted:
+        flash('This username has been deleted')
+    else:
+        flash('This account is disabled')
     return redirect(url_for('index'))
 
 
@@ -147,7 +154,12 @@ def facebook_authorized():
         'facebook',
         resp.data['id'])
 
-    login_user(user)
+    if user.is_active:
+        login_user(user, remember=True)
+    elif user.deleted:
+        flash('This username has been deleted')
+    else:
+        flash('This account is disabled')
     return redirect(url_for('index'))
 
 
@@ -187,7 +199,14 @@ def blender_id_authorized():
         'blender-id',
         resp.data['email'])
 
-    login_user(user)
+    if user.is_active:
+        login_user(user, remember=True)
+    elif user.deleted:
+        flash('This username has been deleted')
+        return redirect(url_for('index'))
+    else:
+        flash('This account is disabled')
+        return redirect(url_for('index'))
 
     # Update or create roles
     for role, is_assigned in resp.data['roles'].items():

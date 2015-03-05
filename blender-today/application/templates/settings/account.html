@@ -10,26 +10,18 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="account">
             <h2>Account Settings</h2>
-
+            {% if current_user.password|length > 6 %}
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">
                     <h3 class="panel-title">Change Password</h3>
                 </div>
                 <div class="panel-body">
-                    <p>Security forms for changing password</p>
+                    <p>You can reset your password here>/p>
                 </div>
             </div>
+            {% endif %}
 
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
-                <div class="panel-heading">
-                    <h3 class="panel-title">Change Username</h3>
-                </div>
-                <div class="panel-body">
-                    <p>Security forms for changing username</p>
-                </div>
-            </div>
 
             <div class="panel panel-danger">
                 <!-- Default panel contents -->
@@ -37,7 +29,8 @@
                     <h3 class="panel-title">Delete account</h3>
                 </div>
                 <div class="panel-body">
-                    <p>Security form for deleting account</p>
+                    <p>Danger. Pressing this button will immediately delete your account. The content you have posted on Blender.Today will remain as is, only your name will be obfuscated. You will not be able to access this account anymore.</p>
+                    <a href="{{url_for('settings.delete')}}" class="btn btn-danger btn-block">I know what I'm doing. Delete.</a>
                 </div>
             </div>
         </div> <!-- tab-content -->
@@ -48,4 +41,3 @@
    </div>
 </div> <!-- row -->
 {% endblock %}
-

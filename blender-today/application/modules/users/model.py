@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
+    deleted = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))

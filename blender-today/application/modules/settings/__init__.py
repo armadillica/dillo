@@ -8,10 +8,15 @@ from flask import flash
 from flask import abort
 from flask import jsonify
 
-from flask.ext.security import login_required, current_user
+from flask.ext.security import login_required
+from flask.ext.security import current_user
+from flask.ext.security import logout_user
 
-from application import app, db
+from application import app
+from application import db
 from application.modules.settings.forms import ProfileForm
+from application.modules.users.model import user_datastore, User
+
 
 settings = Blueprint('settings', __name__)
 
@@ -54,6 +59,16 @@ def account():
     return render_template('settings/account.html', 
         title='settings_account')
 
+
+@settings.route('/delete')
+@login_required
+def delete():
+    current_user.deleted = True
+    user_datastore.deactivate_user(current_user)
+    logout_user()
+    db.session.commit()
+    flash('Goodbye! We are sorry to see you go!')
+    return redirect(url_for('index'))
 
 # TODO(fsiddi): Handle primary and seconday emails
 #
