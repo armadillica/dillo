@@ -2,14 +2,17 @@
 		<div class="nav-sidebar navigation" role="navigation">
 			<nav>
 				<ul>
-					<li data-dialog="submit"
-							class="navbar-submit{% if current_user.is_anonymous() %} popover-submit{% endif %}"
-							{% if current_user.is_anonymous() %}
-							 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-							 data-content="Sign in to Submit"
-							{% endif %}>
-						<a>Submit</a>
-					</li>
+					{% if current_user.is_authenticated() %}
+						<li data-dialog="submit" class="navbar-submit">
+							<a>Submit</a>
+						</li>
+					{% else %}
+						<li data-dialog="submit" class="navbar-submit popover-submit navbar-submit-disabled"
+								data-toggle="popover" data-trigger="hover" data-placement="bottom"
+								data-content="Sign in to Submit">
+							<a href="{{url_for_security('login')}}">Submit</a>
+						</li>
+					{% endif %}
 
 					{% if current_user.is_authenticated() %}
 
@@ -44,7 +47,7 @@
 							</a>
 						</li>
 					{% else %}
-					<li class="absolute right"><a href="{{url_for_security('login')}}"><i class="fa fa-sign-in"></i> Sign in</a></li>
+					<li class="navbar-login"><a href="{{url_for_security('login')}}"><i class="fa fa-sign-in"></i> Sign in</a></li>
 					{% endif %}
 				</ul>
 			</nav>

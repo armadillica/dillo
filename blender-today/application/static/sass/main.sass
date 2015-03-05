@@ -769,7 +769,8 @@ div#post-comment-reply-container
 /* post-submit */
 .post-submit .form-group .form-control
 	font-size: 1.3em
-	padding: 6px 15px
+	padding: 4px 12px
+	margin-bottom: 10px
 	height: auto
 	width: auto
 	background-color: white
@@ -788,10 +789,8 @@ div#post-comment-reply-container
 .post-submit-div-picture,
 .post-submit-div-title,
 .post-submit-div-url
-	margin-top: 5px
-	margin-bottom: 5px
 	& span
-		font-size: 1.4em
+		font-size: 1.3em
 		display: block
 		padding-top: 8px
 		text-align: right
@@ -831,7 +830,7 @@ div#post-comment-reply-container
 
 	& .post-submit-field-type-button-icon
 		float: left
-		width: 20%
+		width: 22%
 		text-align: center
 		padding: 5px 0 0 0
 		+text-shadow(1px, 2px, 2px, black, .2)
@@ -845,20 +844,22 @@ div#post-comment-reply-container
 	& .post-submit-field-type-button-title
 		display: block
 		float: right
-		width: 80%
-		font-size: 1.7em
+		width: 78%
+		font-size: 1.6em
 		margin: 5px 0 0 0
 		+text-shadow(1px, 1px, 0, black, .2)
 
 	& .post-submit-field-type-button-description
-		//clear: both
-		//display: inline-block
 		font-size: 1.1em
 		margin: 0
 		+text-shadow(1px, 1px, 0, black, .1)
 
 .post-submit-title
 	+text-shadow(1px, 1px, 0, black, .2)
+	& h3
+		text-align: center
+		font-size: 1.8em
+		margin-top: 0
 
 .post-submit .btn-success
 	color: white
@@ -1305,6 +1306,9 @@ fieldset
 		&:after
 			color: darken($color_brand_secondary, 15%)
 
+	&.navbar-submit-disabled
+		background: repeating-linear-gradient(-45deg, $color_brand_main, $color_brand_main 10px, darken($color_brand_main, 5%) 10px, darken($color_brand_main, 5%) 20px)
+
 /* Not really an override, it's our cool logout stuff */
 .nav-logout-widget
 	position: relative
@@ -1323,6 +1327,14 @@ fieldset
 	&:focus .nav-logout-widget-icon
 		color: crimson
 		outline: none !important
+
+.navbar-login
+	font-family: $font_headings
+	& a
+		color: $color_brand_secondary
+	& i
+		margin-right: 2px
+		font-size: 0.9em
 
 /* Sidebar */
 .nav-sidebar-container
@@ -1468,11 +1480,11 @@ fieldset
 
 .dialog__content
 	width: 80%
-	max-width: 760px
+	max-width: 660px
 	min-width: 290px
 	color: white
 	background: $color_brand_main
-	padding: 2em
+	padding: 1.5em 2em
 	position: relative
 	z-index: 5
 	opacity: 0
