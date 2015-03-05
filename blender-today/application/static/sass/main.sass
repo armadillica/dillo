@@ -63,6 +63,7 @@ a
 	vertical-align: middle
 	+media-xs
 		height: 10px
+		margin: 0 2px
 
 /* Branding */
 .today-minimug
@@ -148,15 +149,17 @@ a
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
 
 	+media-xs
-		font-size: 1.2em
+		float: left
+		font-size: 1.1em
 		width: 100%
-		padding: 0 15px
+		padding: 10px 15px 0 10px
+		line-height: 1.2em
+
 	+media-sm
 		font-size: 1.3em
 	+media-md
 		font-size: 1.4em
-
-	@extend .text-overflow-ellipsis
+		+text-overflow-ellipsis
 
 	&:hover, &:focus
 		text-decoration: none
@@ -164,6 +167,7 @@ a
 .post-index-item-details
 	display: block
 	font-size: 0.9em
+	float: left
 	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
 	& a
@@ -173,13 +177,15 @@ a
 
 	+media-xs
 		font-size: 0.7em
-		width: 100%
-		padding: 10px 15px
+		width: 80%
+		padding: 10px 5px 10px 0
+		float: right
 	+media-sm
 		font-size: 0.8em
 	+media-md
 		font-size: 0.9em
-	& .post-index-item-details-comments
+	& .post-index-item-details-comments,
+	& .post-index-item-details-type
 		display: inline-block
 
 	& .deleted
@@ -211,7 +217,12 @@ a
 	padding-top: 8px
 	text-align: center
 	+media-xs
-		width: 100%
+		width: 16%
+		float: left
+		position: absolute
+		bottom: 8px
+		left: 5px
+		font-size: 0.8em
 	+media-sm
 		width: 60px
 	+media-md
@@ -228,7 +239,7 @@ a
 		+transition(top, 50ms, ease-out)
 		+media-xs
 			display: inline-block
-			padding: 0 15px
+			padding: 0 3px
 	&:hover, &:focus
 		text-decoration: none
 	.up:hover, .up.rated
@@ -302,12 +313,13 @@ a
 	display: block
 	font-family: $font_headings
 	font-size: 2em
-	padding: 30px 15px 10px 15px
+	padding: 30px 15px 25px 15px
 	line-height: 1.3em
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
 	+media-xs
 		font-size: 1.8em
 	& i
+		margin-left: 5px
 		color: lighten(desaturate($color_brand_main, 20%), 30%)
 		+text-shadow-none
 	& a:focus
@@ -362,6 +374,8 @@ a
 		bottom: 5px
 	&:hover .post-view-content-image-link
 		color: $color_brand_main
+	& + .post-view-details
+		border-top: none
 
 .post-view-content-image-link
 	font-size: 0.9em

@@ -67,6 +67,7 @@
 						</a>
 
 						<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+
 							{% if post.picture %}
 							<span class="post-index-item-picture-collapse"><i class="fa fa-minus"></i></span>
 							<span class="post-index-item-picture-expand"><i class="fa fa-picture-o"></i></span>
@@ -76,9 +77,17 @@
 							<span class="separator"></span>
 							{% endif %}
 
-
-							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
-								{{post.post_type}}
+							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" class="post-index-item-details-type">
+								<span class="hidden-xs">
+									{{post.post_type}}
+								</span>
+								<span class="visible-xs">
+									{% if post.post_type.url == 'link' %}
+										<i class="fa fa-link"></i>
+									{% elif post.post_type.url == 'text' %}
+										<i class="fa fa-file-text-o"></i>
+									{% endif %}
+								</span>
 							</a>
 							<span class="separator"></span>
 							<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
@@ -108,7 +117,8 @@
 								{{post.user.username}}
 							{% endif %}
 						</div>
-					</div>
+						<div class="clearfix"></div>
+					</div> <!-- post-index-item -->
 				</div> <!-- col-md -->
 			</div> <!-- row -->
 			{% endfor %}

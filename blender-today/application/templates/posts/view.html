@@ -1,7 +1,9 @@
 {% extends 'layout.html' %}
 {% from 'posts/_macros.html' import category_dropdown, print_comment with context %}
 
-{% block page_title %}{{post.title}}{% endblock %}
+{% block page_title %}
+	{{post.title}} - 
+{% endblock %}
 
 {% block header %}
 
