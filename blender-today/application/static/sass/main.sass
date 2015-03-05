@@ -137,9 +137,15 @@ a
 		border: thin solid darken($color_background, 5%)
 		& .post-index-item-title
 			+text-shadow(1px, 1px, 0, white, 0.3)
+		+media-xs
+			background-color: white
 
 	&:hover .post-index-item-type
 		opacity: 0.8
+
+	+media-xs
+		width: 102%
+		left: -2%
 
 .post-index-item-title
 	font-family: $font_headings
@@ -150,7 +156,7 @@ a
 
 	+media-xs
 		float: left
-		font-size: 1.1em
+		font-size: 1.2em
 		width: 100%
 		padding: 10px 15px 0 10px
 		line-height: 1.2em
@@ -176,10 +182,11 @@ a
 			color: $color_brand_secondary
 
 	+media-xs
-		font-size: 0.7em
+		font-size: 0.75em
 		width: 80%
 		padding: 10px 5px 10px 0
 		float: right
+		+text-overflow-ellipsis
 	+media-sm
 		font-size: 0.8em
 	+media-md
