@@ -78,19 +78,22 @@ def submit(post_id):
         else:
             display_name = comment.user.username
 
-    return jsonify(comment=dict(
-        user_name=display_name,
-        gravatar=comment.user.gravatar(),
-        content=comment.content,
-        comment_id=comment.id,
-        parent_id=comment.parent_id,
-        post_uuid=post.uuid,
-        creation_date=comment.pretty_creation_date,
-        post_url=url_for('posts.view',
-            category=post.category.url,
-            uuid=post.uuid,
-            slug=post.slug)
-        ))
+        return jsonify(comment=dict(
+            user_name=display_name,
+            gravatar=comment.user.gravatar(),
+            content=comment.content,
+            comment_id=comment.id,
+            parent_id=comment.parent_id,
+            post_uuid=post.uuid,
+            creation_date=comment.pretty_creation_date,
+            post_url=url_for('posts.view',
+                category=post.category.url,
+                uuid=post.uuid,
+                slug=post.slug)
+            ))
+    else:
+        return abort(400)
+
     # return redirect(url_for('posts.view',
     #     category=post.category.url,
     #     uuid=post.uuid))

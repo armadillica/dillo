@@ -356,6 +356,7 @@
 			$.post($("#form-comment").attr("action"), {parent_id:parent_id, content:comment_reply_content},function(data){
 				c = print_comment(data['comment'], 'reply ');
 				$("#post-comment-reply-container").before(c);
+				$("#post-comment-reply-container").hide();
 			});
 		});
 
@@ -392,6 +393,8 @@
 				$(".post-view-comments-empty").hide();
 				c = print_comment(data['comment']);
 				$(".post-view-comments-submit").before(c);
+				// Clear the form
+				CKEDITOR.instances['post_comment'].setData('');
 			});
 		});
 
