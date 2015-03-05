@@ -61,6 +61,8 @@ a
 	margin: 0 5px
 	background-color: lighten($color_text, 60%)
 	vertical-align: middle
+	+media-xs
+		height: 10px
 
 /* Branding */
 .today-minimug
@@ -121,6 +123,7 @@ a
 
 .post-index-item
 	display: block
+	position: relative
 	background-color: white
 	margin: 0 0 10px 0
 	padding: 0
@@ -145,6 +148,12 @@ a
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
 
 	+media-xs
+		font-size: 1.2em
+		width: 100%
+		padding: 0 15px
+	+media-sm
+		font-size: 1.3em
+	+media-md
 		font-size: 1.4em
 
 	@extend .text-overflow-ellipsis
@@ -163,7 +172,16 @@ a
 			color: $color_brand_secondary
 
 	+media-xs
+		font-size: 0.7em
+		width: 100%
+		padding: 10px 15px
+	+media-sm
 		font-size: 0.8em
+	+media-md
+		font-size: 0.9em
+	& .post-index-item-details-comments
+		display: inline-block
+
 	& .deleted
 		color: lighten($color_text, 50%)
 		+user-select-none
@@ -189,21 +207,17 @@ a
 
 .post-index-item-rate
 	float: left
-	display: block
+	display: inline-block
 	padding-top: 8px
 	text-align: center
 	+media-xs
-		width: 15px
-		margin-left: 0
+		width: 100%
 	+media-sm
-		width: 25px
-		margin-left: 0
+		width: 60px
 	+media-md
-		width: 30px
-		margin-left: 0
+		width: 60px
 	+media-lg
-		width: 40px
-		margin-left: 4px
+		width: 70px
 	& .up, .middle, .down
 		font-size: 1.1em
 		padding: 0 0 2px 0
@@ -212,6 +226,9 @@ a
 		color: lighten($color_text, 30%)
 		top: 0
 		+transition(top, 50ms, ease-out)
+		+media-xs
+			display: inline-block
+			padding: 0 15px
 	&:hover, &:focus
 		text-decoration: none
 	.up:hover, .up.rated
@@ -227,31 +244,10 @@ a
 	& h3
 		margin: 30px auto
 
-.ink
-	display: block
-	position: absolute
-	border: 2px solid $color_brand_main
-	background: transparent
-	border-radius: 100%
-	transform: scale(0)
-	&.animate
-		animation: ripple 0.65s ease-out
-
-.up .ink
-	background: $color_upvote
-
-.down .ink
-	background: $color_downvote
-
-@keyframes ripple
-	100%
-		opacity: 0
-		transform: scale(1)
-
 
 .post-index-item-type
-	display: block
-	float: right
+	display: inline-block
+	float: left
 	font-size: 1.8em
 	width: 60px
 	height: 60px
@@ -259,27 +255,27 @@ a
 	background-color: lighten($color_text, 55%)
 	background-size: cover !important
 	text-align: center
-	position: absolute
-	top: 15px
-	right: 5px
+	position: relative
+	margin: 0 10px 0 0
+	top: 12px
 	+text-shadow(1px, 1px, 0, black, 0.2)
 	+media-xs
 		width: 45px
 		height: 45px
-		right: -6px
 		font-size: 1.4em
+		display: none
 	+media-sm
-		width: 60px
-		height: 60px
-		right: 5px
+		width: 50px
+		height: 50px
+		margin: 0 15px 0 0
 	+media-md
-		width: 60px
-		height: 60px
-		right: -5px
+		width: 55px
+		height: 55px
+		margin: 0 15px 0 0
 	+media-lg
 		width: 60px
 		height: 60px
-		right: 10px
+
 	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
 	& i
@@ -342,9 +338,15 @@ a
 	line-height: 1.8em
 	padding: 10px 15px 0 100px
 	margin: 0 10px 55px 0
+	+media-xs
+		font-size: 1em
+		padding: 10px
+		margin: 10px
 
 .post-view-content p
 	margin-bottom: 25px
+	+media-xs
+		margin-bottom: 10px
 
 .post-view-content-image
 	text-align: center
@@ -1680,6 +1682,8 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 	width: 250px
 	display: inline-block
 	top: -10px
+	+media-xs
+		width: 100%
 
 
 .cd-dropdown > span
@@ -1698,6 +1702,8 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 	border: thin solid darken($color_background, 3%)
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 10%), 1.0)
+	+media-xs
+		width: auto
 
 .cd-dropdown > span:after
 	content: '\f107'
@@ -1705,6 +1711,10 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 	position: absolute
 	right: 15px
 	+transition(transform, 0.3s, ease)
+	+media-xs
+		position: absolute
+		right: 15px
+		top: 0
 
 .cd-dropdown.cd-active > span:after
 	transform: rotate(180deg)
@@ -1777,3 +1787,25 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 .cd-active.cd-dropdown ul li span:hover
 	background: white
 	color: $color_brand_secondary
+
+
+.ink
+	display: block
+	position: absolute
+	border: 2px solid $color_brand_main
+	background: transparent
+	border-radius: 100%
+	transform: scale(0)
+	&.animate
+		animation: ripple 0.65s ease-out
+
+.up .ink
+	background: $color_upvote
+
+.down .ink
+	background: $color_downvote
+
+@keyframes ripple
+	100%
+		opacity: 0
+		transform: scale(1)

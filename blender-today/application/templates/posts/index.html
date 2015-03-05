@@ -14,7 +14,7 @@
 <div class="row">
 	<div class="col-md-9 post-index">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				<h4>
 					{% if title == 'index_category' %}
 						<a href="{{url_for('posts.index')}}">Home</a>
@@ -26,83 +26,91 @@
 						<span class="badge">({{posts.items|length}})</span>
 				</h4>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				{{ category_dropdown(title, category, categories) }}
 			</div>
 		</div>
 
 		{% if posts.items %}
 			{% for post in posts.items %}
-			<div class="row post-index-item {{ loop.cycle('odd', 'even') }}">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-1">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="post-index-item {{ loop.cycle('odd', 'even') }}">
 
-					{# Post Rating #}
-					<div class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if current_user.is_anonymous() %} data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Please login to vote" {% endif %}>
-						<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
-							<i class="fa fa-angle-up"></i>
-						</a>
-						<span class="middle">{{post.rating_delta}}</span>
-						<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
-							<i class="fa fa-angle-down"></i>
-						</a>
-					</div>
+						{# Post Rating #}
+						<div class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}" title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes" {% if current_user.is_anonymous() %} data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Please login to vote" {% endif %}>
+							<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
+								<i class="fa fa-angle-up"></i>
+							</a>
+							<span class="middle">{{post.rating_delta}}</span>
+							<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
+								<i class="fa fa-angle-down"></i>
+							</a>
+						</div>
 
-					{# Post circle thingie #}
-					<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}"
-						 class="hidden-xs" title="View post and comments">
-						<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
-							{% if post.post_type.url == 'link' %}
-								<i class="fa fa-link"></i>
-							{% elif post.post_type.url == 'text' %}
-								<i class="fa fa-file-text-o"></i>
+						{# Post circle thingie #}
+						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="View post and comments">
+							<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
+								{% if post.post_type.url == 'link' %}
+									<i class="fa fa-link"></i>
+								{% elif post.post_type.url == 'text' %}
+									<i class="fa fa-file-text-o"></i>
+								{% endif %}
+							</div>
+						</a>
+
+						<a class="post-index-item-title"
+							href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}"
+							title="{{post.title}}"
+							{% if post.post_type.url == 'link' %}target="_blank"{% endif %}>
+							{{post.title}}
+						</a>
+
+						<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+							{% if post.picture %}
+							<span class="post-index-item-picture-collapse"><i class="fa fa-minus"></i></span>
+							<span class="post-index-item-picture-expand"><i class="fa fa-picture-o"></i></span>
+							<img class="post-index-item-picture"
+									 title="Click and drag to resize"
+									 data-rel="{{post.thumbnail('l')}}" src=""/>
+							<span class="separator"></span>
+							{% endif %}
+
+
+							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+								{{post.post_type}}
+							</a>
+							<span class="separator"></span>
+							<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
+							<span class="separator"></span>
+							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments" class="post-index-item-details-comments">
+								<span class="hidden-xs">
+								{% if post.comments_count == 0 %}
+									comment
+								{% elif post.comments_count == 1 %}
+									1 comment
+								{% else %}
+									{{post.comments_count}} comments
+								{% endif %}
+								</span>
+								<span class="visible-xs">
+									{{post.comments_count}} <i class="fa fa-comments-o"></i>
+								</span>
+							</a>
+							<span class="separator"></span>
+
+							{{post.pretty_creation_date}}
+
+							<small>by</small>
+							{% if post.user.deleted %}
+								<span class="deleted" title="This account no longer exists">[deleted]</span>
+							{% else %}
+								{{post.user.username}}
 							{% endif %}
 						</div>
-					</a>
-
-				</div>
-
-				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-11">
-
-					<a class="post-index-item-title"
-						href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}"
-						title="{{post.title}}"
-						{% if post.post_type.url == 'link' %}target="_blank"{% endif %}>
-						{{post.title}}
-					</a>
-
-					<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
-						{% if post.picture %}
-						<span class="post-index-item-picture-collapse"><i class="fa fa-minus"></i></span>
-						<span class="post-index-item-picture-expand"><i class="fa fa-picture-o"></i></span>
-						<img class="post-index-item-picture"
-								 title="Click and drag to resize"
-								 data-rel="{{post.thumbnail('l')}}" src=""/>
-						<span class="separator"></span>
-						{% endif %}
-
-
-						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
-							{{post.post_type}}
-						</a>
-						<span class="separator"></span>
-						<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
-						<span class="separator"></span>
-						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments">
-							{{post.comments_count}} comments
-						</a>
-						<span class="separator"></span>
-
-						{{post.pretty_creation_date}}
-
-						<small>by</small>
-						{% if post.user.deleted %}
-							<span class="deleted" title="This account no longer exists">[deleted]</span>
-						{% else %}
-							{{post.user.username}}
-						{% endif %}
 					</div>
-				</div>
-			</div>
+				</div> <!-- col-md -->
+			</div> <!-- row -->
 			{% endfor %}
 		{% else %}
 			<div class="post-index-empty">
