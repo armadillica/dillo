@@ -98,11 +98,7 @@
 						{% if post.user.deleted %}
 							<span class="deleted" title="This account no longer exists">[deleted]</span>
 						{% else %}
-							{% if post.user.first_name %}
-								{{post.user.first_name}} {{post.user.last_name}}
-							{% else %}
-								{{post.user.username}}
-							{% endif %}
+							{{post.user.username}}
 						{% endif %}
 					</div>
 				</div>
