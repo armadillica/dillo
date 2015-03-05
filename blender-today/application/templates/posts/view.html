@@ -87,6 +87,12 @@
 					<div class="post-view-details-meta">
 
 						<div class="post-actions">
+
+							<h4 class="{% if post.status != 'deleted' %}hidden{% endif %}" id="edit-post-delete-label">
+								<span class="label label-lg label-danger">This post has been deleted</span>
+							</h4>
+
+						{% if post.status != 'deleted' %}
 							<span id="social">
 								<span class="icons">
 
@@ -116,6 +122,7 @@
 							<span id="social-toggle" class="post-actions-button social">
 								<i class="fa fa-share-alt"></i>
 							</span>
+						{% endif %}
 
 						{% if current_user.is_owner %}
 
@@ -138,10 +145,8 @@
 									<span class="edit-post-delete-widget-question">?</span>
 								</a>
 							{% endif %}
-							<h4 class="{% if post.status != 'deleted' %}hidden{% endif %}" id="edit-post-delete-label">
-								<span class="label label-lg label-danger">This post has been deleted</span>
-							</h4>
 						{% endif %}
+
 						</div> <!-- post-actions -->
 
 						<span class="author-name">
@@ -187,9 +192,14 @@
 							<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
 								<i class="fa fa-link"></i>
 							</a>
+
+							{% if post.status != 'deleted' %}
+
 							<span class="separator"></span>
 							<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
 							</a>
+
+							{% endif %}
 
 						</span> <!-- meta -->
 					</div> <!-- post-view-details-meta -->
@@ -419,6 +429,8 @@
 				$('#edit-post-delete-label').toggleClass('hidden');
 			});
 			$('#edit-post-toggle').fadeOut();
+			$('#social').fadeOut();
+			$('#social-toggle').fadeOut();
 		});
 	});
 
