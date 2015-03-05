@@ -164,6 +164,9 @@ a
 
 	+media-xs
 		font-size: 0.8em
+	& .deleted
+		color: lighten($color_text, 50%)
+		+user-select-none
 
 .post-index-item-picture
 	display: none
@@ -375,6 +378,10 @@ a
 
 	& .separator
 		background-color: darken($color_brand_main, 10%)
+	& .deleted
+		color: lighten(desaturate($color_brand_main, 10%), 30%)
+		+user-select-none
+		+text-shadow-none
 
 .post-view-details-meta
 	margin-left: 10px
@@ -1602,19 +1609,19 @@ body.cke_editable.cke_editable_themed.cke_contents_ltr
 	padding: 0 !important
 	font-family: $font_body !important
 
-span.cke_top
+span.cke_top, .cke_top
 	padding: 5px 5px 0 5px !important
-	border: none
-	background-image: none
+	border: none !important
+	background-image: none !important
 	background-color: transparent !important
 	resize: none
 	+box-shadow-none
 
 span.cke_toolgroup
 	border: none
-	border-bottom: 2px solid transparent
-	background-image: none
-	background-color: white
+	border-bottom: 2px solid transparent !important
+	background-image: none !important
+	background-color: white !important
 
 .cke_contents
 	height: 150px !important

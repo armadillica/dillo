@@ -130,10 +130,10 @@
 
 								{% if post.post_type.url != 'link' %}
 									<a id="edit-post-save" class="post-actions-button save"
-										 href="{{ url_for('posts.edit', uuid=post.uuid) }}">
+										 href="{{ url_for('posts.edit', uuid=post.uuid) }}" title="Save Changes">
 										 <i class="fa fa-save"></i>
 									</a>
-									<span id="edit-post-toggle" class="post-actions-button edit">
+									<span id="edit-post-toggle" class="post-actions-button edit" title="Edit Post">
 										<i class="fa fa-pencil"></i>
 									</span>
 								{% endif %}
@@ -150,26 +150,32 @@
 						</div> <!-- post-actions -->
 
 						<span class="author-name">
-							{{post.user.first_name}} {{post.user.last_name}}
-							{% if post.user.username %}
-								({{post.user.username}})
+							{% if post.user.deleted %}
+								<span class="deleted" title="This account no longer exists">[deleted]</span>
+							{% else %}
+								{{post.user.first_name}} {{post.user.last_name}}
+								{% if post.user.username %}
+									({{post.user.username}})
+								{% endif %}
 							{% endif %}
 						</span> <!-- author-name -->
 
-						<span class="author-roles">
-							{% if post.user.has_role('dev_core') %}
-								<i class="bf-blender"></i> Blender Core Developer<br/>
-							{% endif %}
-							{% if post.user.has_role('cloud_member') %}
-								<i class="bf-cloud"></i> Blender Cloud Member<br/>
-							{% endif %}
-							{% if post.user.has_role('network_member') %}
-								<i class="bf-network"></i> Blender Network Member<br/>
-							{% endif %}
-							{% if post.user.has_role('bfct_trainer') %}
-								<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
-							{% endif %}	
-						</span> <!-- author-roles -->
+						{% if not post.user.deleted %}
+							<span class="author-roles">
+								{% if post.user.has_role('dev_core') %}
+									<i class="bf-blender"></i> Blender Core Developer<br/>
+								{% endif %}
+								{% if post.user.has_role('cloud_member') %}
+									<i class="bf-cloud"></i> Blender Cloud Member<br/>
+								{% endif %}
+								{% if post.user.has_role('network_member') %}
+									<i class="bf-network"></i> Blender Network Member<br/>
+								{% endif %}
+								{% if post.user.has_role('bfct_trainer') %}
+									<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
+								{% endif %}	
+							</span> <!-- author-roles -->
+						{% endif %}
 
 						<span class="meta">
 							{{post.post_type.name}}

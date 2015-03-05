@@ -95,11 +95,15 @@
 						{{post.pretty_creation_date}}
 
 						<small>by</small>
+						{% if post.user.deleted %}
+							<span class="deleted" title="This account no longer exists">[deleted]</span>
+						{% else %}
 							{% if post.user.first_name %}
 								{{post.user.first_name}} {{post.user.last_name}}
 							{% else %}
 								{{post.user.username}}
 							{% endif %}
+						{% endif %}
 					</div>
 				</div>
 			</div>
