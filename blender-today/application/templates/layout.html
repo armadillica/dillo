@@ -8,7 +8,7 @@
     <meta name="keywords" content="news, community, blender, animation, 3d" />
     <meta name="description" content="Community-driven Blender News"/>
     <meta name="author" content="Blender Today"/>
-    <meta name="theme-color" content="#0092A0">
+    <meta name="theme-color" content="#4D84A0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {% if config.USE_ASSETS_CDN %}
@@ -145,13 +145,9 @@
         $('#popover-settings').popover();
         $('#popover-logout').popover();
       {% endif %}
-
-      $( function() {
-        $( '#cd-dropdown' ).dropdown( {
-          gutter : 5
-        } );
+      $('#popover-home').popover();
+      $( function() {$( '#cd-dropdown' ).dropdown( {gutter : 5 } );
       });
-
     </script>
 
   {% block footer_scripts %}

@@ -14,6 +14,14 @@
 					{% if current_user.is_authenticated() %}
 
 						<li>
+								<a href="{{url_for('index')}}" id="popover-home"
+									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
+									 data-content="Home">
+									 <i class="fa fa-home"></i>
+								</a>
+						</li>
+
+						<li>
 								<a href="{{url_for('settings.profile')}}" id="popover-settings"
 									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
 									 data-content="Settings" {% if title in ('settings_profile', 'settings_account') %}class="active"{% endif %}>
