@@ -137,6 +137,14 @@ a
 	border: thin solid darken($color_background, 3%)
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+
+	+media-xs
+		width: 104%
+		left: -2%
+		margin: 0 0 5px 0
+		overflow: hidden
+		border: none
+
 	&.even
 		//background-color:	lighten($color_background, 1%)
 		background-color: lighten($color_background, 2%)
@@ -145,14 +153,10 @@ a
 			+text-shadow(1px, 1px, 0, white, 0.3)
 		+media-xs
 			background-color: white
+			border: none
 
 	&:hover .post-index-item-type
 		opacity: 0.8
-
-	+media-xs
-		width: 104%
-		left: -2%
-		margin: 0 0 5px 0
 
 .post-index-item-title
 	font-family: $font_headings
@@ -209,24 +213,44 @@ a
 		color: lighten($color_text, 50%)
 		+user-select-none
 
+.post-index-item-details-type
+	+media-xs
+		display: none
+
 .post-index-item-picture
 	display: none
 	min-width: 300px
 	max-width: 100%
 	opacity: 0
 	margin: 20px 0 10px 0
+
+	+media-xs
+		margin: 10px 0 0 -70px
+		max-width: 130%
+		border-bottom-left-radius: 3px
+		border-bottom-right-radius: 3px
+
 	&:active
 		cursor: nwse-resize
 
 .post-index-item-picture-expand,
 .post-index-item-picture-collapse
 	cursor: pointer
-	color: lighten($color_text, 30%)
+	color: lighten($color_text, 50%)
 	&:hover
 		color: $color_brand_main
+	+media-xs
+		position: absolute
+		right: 6px
+		top: 4px
+		font-size: 1.3em
 
 .post-index-item-picture-collapse
 	display: none
+
+.post-index-item-details > .post-index-item-picture
+	margin-bottom: -10px
+
 
 .post-index-item-rate
 	float: left
@@ -237,8 +261,8 @@ a
 		width: 16%
 		float: left
 		position: absolute
-		bottom: 6px
-		left: 3px
+		top: 60px
+		left: 5px
 		font-size: 0.8em
 	+media-sm
 		width: 60px
@@ -505,9 +529,9 @@ a
 		top: 30px
 		padding-bottom: 25px
 		+media-xs
-			top: 0
+			top: -6px
 			padding-bottom: 0
-			width: 40px
+			width: 32px
 
 		& .post-actions-button
 			display: inline-block
@@ -529,6 +553,7 @@ a
 			+media-xs
 				height: 30px
 				width: 30px
+				margin-bottom: 3px
 			&:hover, &:focus
 				background-color: lighten($color_brand_main, 5%)
 				border: 2px solid darken($color_brand_main, 10%)
