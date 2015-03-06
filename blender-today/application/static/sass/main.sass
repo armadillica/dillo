@@ -122,9 +122,11 @@ a
 .post-index h4
 	position: relative
 	top: -10px
+	+media-xs
+		margin-bottom: 0
+
 	& strong
 		color: $color_brand_secondary
-
 .post-index select
 	display: none // so the select categories doesn't appear for a moment 
 
@@ -141,7 +143,6 @@ a
 	+media-xs
 		width: 104%
 		left: -2%
-		margin: 0 0 5px 0
 		overflow: hidden
 		border: none
 
@@ -169,7 +170,7 @@ a
 		float: left
 		font-size: 1.2em
 		width: 78%
-		padding: 10px 15px 0 10px
+		padding: 5px 5px 5px 10px
 		line-height: 1.2em
 		color: $color_brand_main
 		font-weight: 500
@@ -190,21 +191,23 @@ a
 	float: left
 	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
-	& a
-		color: lighten($color_text, 20%)
-		&:hover
-			color: $color_brand_secondary
-
 	+media-xs
 		font-size: 0.75em
 		width: 100%
 		padding: 10px 8px 6px 70px
 		float: right
+		border-top: thin solid lighten($color_text, 70%)
 		+text-overflow-ellipsis
 	+media-sm
 		font-size: 0.8em
 	+media-md
 		font-size: 0.9em
+
+	& a
+		color: lighten($color_text, 20%)
+		&:hover
+			color: $color_brand_secondary
+
 	& .post-index-item-details-comments,
 	& .post-index-item-details-type
 		display: inline-block
