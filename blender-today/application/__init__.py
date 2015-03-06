@@ -12,7 +12,8 @@ from imgurpython import ImgurClient
 from flask_wtf.csrf import CsrfProtect
 from bugsnag.flask import handle_exceptions
 from flask_debugtoolbar import DebugToolbarExtension
-
+from micawber.providers import bootstrap_basic
+from micawber.providers import Provider
 
 import config
 
@@ -28,6 +29,12 @@ oauth = OAuth(app)
 CsrfProtect(app)
 cache = Cache(app)
 toolbar = DebugToolbarExtension(app)
+
+registry = bootstrap_basic()
+registry.register('http://monitor.eibriel.com/\S*',
+    Provider('http://monitor.eibriel.com/api/job/oembed'))
+registry.register('https?://sketchfab.com/models/*',
+    Provider('https://sketchfab.com/oembed'))
 
 redis_client = redis.StrictRedis(
     host=app.config['CACHE_REDIS_HOST'],

@@ -22,6 +22,7 @@ itsdangerous==0.24
 Jinja2==2.7.3
 Mako==1.0.1
 MarkupSafe==0.23
+micawber==0.3.1
 MySQL-python==1.2.5
 oauthlib==0.7.2
 passlib==1.6.2

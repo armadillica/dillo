@@ -51,6 +51,9 @@
 		{% if post.post_type.url != 'link' %}
 			<div class="post-view-content" id="post-content">{{post.content|safe}}</div>
 		{% endif %}
+		{% if oembed %}
+			<div class="post-view-content" id="post-content">{{oembed['html']|safe}}</div>
+		{% endif %}
 
 		{% if post.picture %}
 		<div class="post-view-content-image">

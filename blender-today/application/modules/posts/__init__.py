@@ -11,12 +11,15 @@ from sqlalchemy import desc
 from flask import abort
 from flask import request
 
+from micawber.exceptions import ProviderNotFoundException
+
 from flask.ext.security import login_required
 from flask.ext.security import current_user
 
 from application import app
 from application import db
 from application import imgur_client
+from application import registry
 
 
 from application.modules.posts.model import Category
@@ -106,6 +109,23 @@ def view(category, uuid, slug=None):
             uuid=uuid,
             slug=post.slug))
     #post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
+
+    oembed = None
+    # If the content is a link, we try to pass it through micawber to do
+    # some nice embedding
+    if post.post_type_id == 1:
+        try:
+            oembed = registry.request(post.content)
+            print oembed
+            # Keep in mind that oembed can be of different types:
+            # - photo
+            # - video
+            # - link
+            # - etc
+        except ProviderNotFoundException:
+            # If the link is not an OEmbed provider, we move on
+            pass
+
     form = CommentForm()
     if current_user.is_anonymous():
         current_user.is_owner = False
@@ -114,6 +134,7 @@ def view(category, uuid, slug=None):
     return render_template('posts/view.html',
         title='view',
         post=post,
+        oembed=oembed,
         form=form,
         categories=categories,
         user_string_id=user_string_id,
