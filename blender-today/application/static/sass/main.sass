@@ -104,6 +104,10 @@ a
 
 .post-view-container
 	margin-top: 5px
+	+media-xs
+		width: 104%
+		left: -2%
+		position: relative
 
 .post-view-container-title
 	position: relative
@@ -118,6 +122,8 @@ a
 .post-index h4
 	position: relative
 	top: -10px
+	& strong
+		color: $color_brand_secondary
 
 .post-index select
 	display: none // so the select categories doesn't appear for a moment 
@@ -325,6 +331,10 @@ a
 	+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
 	+media-xs
 		font-size: 1.8em
+		padding: 15px 0 15px 15px
+		font-size: 1.7em
+		float: left
+		width: 85%
 	& i
 		margin-left: 5px
 		color: lighten(desaturate($color_brand_main, 20%), 30%)
@@ -340,6 +350,12 @@ a
 	padding-top: 10px
 	margin: 0 25px 10px 30px
 	+user-select-none
+	+media-xs
+		margin: 0 10px 10px 15px
+		float: right
+		width: 10%
+		margin: 0 5px 0 0
+
 	& .up, .middle, .down
 		font-size: 1.3em
 		padding: 0 0 2px 0
@@ -410,7 +426,7 @@ a
 	margin-left: 10px
 	position: relative
 	+media-xs
-		margin-left: 15px
+		margin-left: 5px
 	+media-sm
 		margin-left: 25px
 	+media-md
@@ -427,9 +443,16 @@ a
 	& .author-name
 		display: block
 		font-size: 1.2em
+		+media-xs
+			font-size: 1em
+			display: inline-block
+
 	& .author-roles
 		display: block
 		font-size: 0.9em
+		+media-xs
+			font-size: 0.8em
+			display: inline-block
 		& i
 			width: 15px
 			opacity: 0.95
@@ -448,6 +471,10 @@ a
 		right: 0
 		display: block
 		font-size: 0.9em
+		+media-xs
+			font-size: 0.8em
+			display: inline-block
+			position: relative
 
 	& .edited
 		opacity: 0.9
@@ -467,6 +494,10 @@ a
 		position: relative
 		top: 30px
 		padding-bottom: 25px
+		+media-xs
+			top: 0
+			padding-bottom: 0
+			width: 40px
 
 		& .post-actions-button
 			display: inline-block
@@ -485,6 +516,9 @@ a
 			+box-shadow(1px, 2px, 0, black, .1)
 			+transition(all, 0.1s, ease)
 
+			+media-xs
+				height: 30px
+				width: 30px
 			&:hover, &:focus
 				background-color: lighten($color_brand_main, 5%)
 				border: 2px solid darken($color_brand_main, 10%)
@@ -497,6 +531,10 @@ a
 				position: relative
 				top: 6px
 				left: 11px
+				+media-xs
+					font-size: 0.9em
+					top: 0px
+					left: 7px
 
 			&.edit
 				&:hover
@@ -572,9 +610,6 @@ a
 .post-view-comments-avatar
 	position: relative
 
-.post-view-comments-avatar
-	left: 10px
-
 .post-view-details-avatar img,
 .post-view-comments-avatar img
 	background: white
@@ -583,6 +618,8 @@ a
 .post-view-details-avatar img
 	max-width: 60px
 	padding: 3px
+	+media-xs
+		max-width: 50px
 
 .post-view-comments-avatar img
 	max-width: 50px
@@ -591,6 +628,10 @@ a
 		background-color: $color_brand_main
 	&.police
 		background-color: $color_brand_secondary
+
+	+media-xs
+		padding: 2px
+		max-width: 35px
 
 .post-view-details-avatar-label,
 .post-view-comments-avatar-label
@@ -622,6 +663,10 @@ a
 	height: 23px
 	left: 42px
 	+box-shadow(2px, 2px, 0, black, .1)
+
+	+media-xs
+		left: 30px
+
 	& i
 		font-size: 1.4em
 		left: 4px
@@ -633,13 +678,24 @@ a
 	height: 20px
 	left: 32px
 	+box-shadow(2px, 2px, 0, black, .05)
+	+media-xs
+		width: 15px
+		height: 15px
+		left: 25px
+
 	& i
 		left: 3px
 		bottom: 1px
+
+
 		&.bfct_trainer
+			position: relative
 			font-size: 0.8em
-			left: 4px
-			top: 0
+			left: 2px
+			+media-xs
+				font-size: 0.6em
+				left: 0
+				top: -4px
 
 		&.cloud_member
 			font-size: 1.1em
@@ -702,6 +758,8 @@ div#post-comment-reply-container
 	padding: 20px 20px 60px 90px
 	background-color: $color_brand_main
 	border-top: thick solid darken($color_brand_main, 10%)
+	+media-xs
+		padding: 20px 20px 60px 20px
 
 #form-comment-reply-submit
 	margin-top: 10px
@@ -732,31 +790,53 @@ div#post-comment-reply-container
 		color: $color_brand_main
 		padding-top: 15px
 
+.post-view-comments-avatar
+	float: left
+	text-align: center
+	+media-xs
+		width: 40px
+		margin-right: 0
+		margin-left: 0
+	+media-sm
+		width: 50px
+		margin-right: 10px
+		margin-left: 5px
+	+media-md
+		width: 50px
+		margin-right: 10px
+		margin-left: 5px
+	+media-lg
+		width: 50px
+		margin-right: 10px
+		margin-left: 5px
 
 .post-view-comments-item-content
-	padding: 0 0 15px 10px
+	//padding: 0 0 15px 10px
+	display: block
 	+media-xs
-		padding-left: 0
+		margin-left: 55px
 	+media-sm
-		padding-left: 20px
+		margin-left: 80px
 	+media-md
-		padding-left: 15px
+		margin-left: 80px
 	+media-lg
-		padding-left: 10px
+		margin-left: 80px
 
 .post-view-comments-item-details
 	display: block
-	padding: 0 0 0 10px
 	color: lighten($color_text, 30%)
 	font-size: 0.9em
 	+media-xs
 		padding-left: 0
+		padding-top: 10px
+		font-size: 0.8em
 	+media-sm
-		padding-left: 20px
+		margin-left: 80px
 	+media-md
-		padding-left: 15px
+		margin-left: 80px
 	+media-lg
-		padding-left: 5px
+		margin-left: 80px
+
 	& .flag:hover, & .flag:focus
 		text-decoration: none
 	& .flag:after
