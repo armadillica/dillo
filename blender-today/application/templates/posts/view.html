@@ -31,7 +31,7 @@
 		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
 				{% if current_user.is_anonymous() %}
 				 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-				 data-content="Please login to vote"
+				 data-content="Sign in to vote"
 				{% endif %}>
 			<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
 				<i class="fa fa-angle-up"></i>
@@ -65,23 +65,27 @@
 			<div class="row">
 				<div class="col-md-1 col-sm-1 col-xs-2">
 					<div class="post-view-details-avatar">
-						<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
-						{% if post.user.has_role('dev_core') %}
-							<div class="post-view-details-avatar-label">
-								<i class="dev_core bf-blender" title="Blender Core Developer"></i>
-							</div>
-						{% elif post.user.has_role('bfct_trainer') %}
-							<div class="post-view-details-avatar-label">
-								<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
-							</div>
-						{% elif post.user.has_role('network_member') %}
-							<div class="post-view-details-avatar-label">
-								<i class="network_member bf-network" title="Blender Network Member"></i>
-							</div>
-						{% elif post.user.has_role('cloud_member') %}
-							<div class="post-view-details-avatar-label">
-								<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
-							</div>
+						{% if not post.user.deleted %}
+							<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
+							{% if post.user.has_role('dev_core') %}
+								<div class="post-view-details-avatar-label">
+									<i class="dev_core bf-blender" title="Blender Core Developer"></i>
+								</div>
+							{% elif post.user.has_role('bfct_trainer') %}
+								<div class="post-view-details-avatar-label">
+									<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+								</div>
+							{% elif post.user.has_role('network_member') %}
+								<div class="post-view-details-avatar-label">
+									<i class="network_member bf-network" title="Blender Network Member"></i>
+								</div>
+							{% elif post.user.has_role('cloud_member') %}
+								<div class="post-view-details-avatar-label">
+									<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
+								</div>
+							{% endif %}
+						{% else %}
+							<span class="post-view-details-avatar-deleted"></span>
 						{% endif %}
 					</div>
 				</div>
@@ -218,9 +222,9 @@
 
 		<div class="post-view-comments">
 			<a name="comments"></a>
-			<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
-
 			{% if post.comments %}
+				<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
+
 				{% for comment in post.comments_first_level %}
 					{{print_comment(comment, loop, post)}}
 					{% for reply in comment.children %}
@@ -229,12 +233,16 @@
 				{% endfor %}
 
 			{% else %}
-				<div class="post-view-comments-empty">
-					No comments yet. Be the first!
-				</div>
+				<h3 class="title">No Comments {% if post.status != 'deleted' %}<small>(yet)</small>{% endif %}</h3>
+				{% if post.status != 'deleted' %}
+					<div class="post-view-comments-empty">
+						It's your chance. Be the first!
+					</div>
+				{% endif %}
+				<br/>
 			{% endif %}
 
-
+			{% if post.status != 'deleted' %}
 			<div class="post-view-comments-submit">
 				<div class="row">
 					<div class="col-md-1">
@@ -271,8 +279,11 @@
 					{% endif %}
 					</div>
 				</div>
-			</div>
+			</div> <!-- post-view-comments-submit -->
+			{% endif %}
+
 		</div> <!-- post-view-comments -->
+
 	</div> <!-- post-view -->
 </div> <!-- col-md -->
 <div class="col-md-3">
@@ -427,30 +438,34 @@
 				});
 			});
 
-	$('.edit-post-delete-widget').click(function(e){
-		e.preventDefault();
-		$('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
-		$('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
-		$('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
-		});
-	});
-
-	$('.edit-post-delete-widget-action').click(function(e){
-		$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
-			$('.edit-post-delete-widget').fadeOut(function(){
-				$('#edit-post-delete-label').toggleClass('hidden');
+			$('.edit-post-delete-widget').click(function(e){
+				e.preventDefault();
+				$('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
+				$('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
+				$('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
+				});
 			});
-			$('#edit-post-toggle').fadeOut();
-			$('#social').fadeOut();
-			$('#social-toggle').fadeOut();
-		});
-	});
 
-		{% endif %}
+			$('.edit-post-delete-widget-action').click(function(e){
+				$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
+					$('.edit-post-delete-widget').fadeOut(function(){
+						$('#edit-post-delete-label').toggleClass('hidden');
+					});
+					$('#edit-post-toggle').fadeOut();
+					$('#social').fadeOut();
+					$('#social-toggle').fadeOut();
+				});
+			});
+
+		{% endif %} // endif is_owner
 
 	{% else %}
+
 		$('.popover-vote').popover();
-	{% endif %}
+	  $('.popover-comment-reply').popover();
+	  $('.popover-comment-vote').popover();
+
+	{% endif %} // endif is_authenticated
 
 	$('#social-toggle').click(function(){
 		var pops = $('a');
@@ -472,8 +487,7 @@
 
 			$(this).html('<i class="fa fa-times"></i>');
 		};
-	});
-
+	}); // social-toggle
 
 	</script>
 {% endblock %}

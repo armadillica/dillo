@@ -166,6 +166,9 @@ a
 		width: 100%
 		padding: 10px 15px 0 10px
 		line-height: 1.2em
+		color: $color_brand_main
+		font-weight: 500
+		+text-shadow-none
 
 	+media-sm
 		font-size: 1.3em
@@ -335,6 +338,8 @@ a
 		font-size: 1.7em
 		float: left
 		width: 85%
+		+media-xs
+			+text-shadow-none
 	& i
 		margin-left: 5px
 		color: lighten(desaturate($color_brand_main, 20%), 30%)
@@ -610,6 +615,33 @@ a
 .post-view-comments-avatar
 	position: relative
 
+	& .post-view-comments-avatar-deleted,
+	& .post-view-details-avatar-deleted
+		width: 50px
+		height: 50px
+		display: block
+		background-color: lighten($color_text, 65%)
+		padding: 0
+		+border-radius(50%)
+		+text-shadow-none
+		+media-xs
+			width: 40px
+			height: 40px
+		&:after
+			content: '\f118'
+			font-family: 'FontAwesome'
+			color: lighten($color_text, 60%)
+			font-size: 3.2em
+			top: -7px
+			position: relative
+			+media-xs
+				font-size: 2.8em
+
+.post-view-details-avatar
+	& .post-view-details-avatar-deleted
+		&:after
+			left: 6px
+
 .post-view-details-avatar img,
 .post-view-comments-avatar img
 	background: white
@@ -690,8 +722,8 @@ a
 
 		&.bfct_trainer
 			position: relative
-			font-size: 0.8em
-			left: 2px
+			font-size: 0.75em
+			left: 1px
 			+media-xs
 				font-size: 0.6em
 				left: 0
@@ -740,6 +772,7 @@ a
 		+text-shadow(1px, 1px, 0, white, 0.8)
 	&.reply
 		padding-left: 80px
+		border-top: thin dashed lighten($color_text, 60%)
 		border-left: thick solid $color_brand_main
 		+media-xs
 			padding-left: 10px
@@ -820,6 +853,25 @@ div#post-comment-reply-container
 		width: 50px
 		margin-right: 10px
 		margin-left: 5px
+	& .post-view-comments-avatar-deleted
+		width: 50px
+		height: 50px
+		display: block
+		background-color: lighten($color_text, 65%)
+		padding: 0
+		+border-radius(50%)
+		+media-xs
+			width: 40px
+			height: 40px
+		&:after
+			content: '\f118'
+			font-family: 'FontAwesome'
+			color: lighten($color_text, 60%)
+			font-size: 3.2em
+			top: -7px
+			position: relative
+			+media-xs
+				font-size: 2.8em
 
 .post-view-comments-item-content
 	//padding: 0 0 15px 10px
