@@ -30,7 +30,7 @@ class Post(db.Model):
     edit_date = db.Column(db.DateTime())
     status = db.Column(db.String(12), default='published')
 
-    user = db.relationship('User', backref=db.backref('post'), uselist=False)
+    user = db.relationship('User', backref=db.backref('posts'), uselist=False)
     category = db.relationship('Category', uselist=False)
     post_type = db.relationship('PostType', uselist=False)
     rating = db.relationship('PostRating', cascade='all,delete', uselist=False)

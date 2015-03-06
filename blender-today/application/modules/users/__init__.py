@@ -9,6 +9,8 @@ from flask import request
 from flask import flash
 
 from flask.ext.security.utils import login_user
+from flask.ext.security import login_required
+from flask.ext.security import current_user
 from flask_oauthlib.client import OAuthException
 
 from application import app
@@ -234,3 +236,15 @@ def get_blender_id_oauth_token():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+
+@app.route('/u/<int:user_id>')
+def view(user_id):
+    user = User.query.get_or_404(user_id)
+    user_string_id = 'ANONYMOUS'
+    if current_user.is_authenticated():
+        user_string_id = current_user.string_id
+    return render_template('users/view.html',
+        title='user_view',
+        user_string_id=user_string_id,
+        user=user)
