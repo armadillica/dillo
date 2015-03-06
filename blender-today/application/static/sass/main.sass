@@ -150,8 +150,9 @@ a
 		opacity: 0.8
 
 	+media-xs
-		width: 102%
+		width: 104%
 		left: -2%
+		margin: 0 0 5px 0
 
 .post-index-item-title
 	font-family: $font_headings
@@ -163,7 +164,7 @@ a
 	+media-xs
 		float: left
 		font-size: 1.2em
-		width: 100%
+		width: 78%
 		padding: 10px 15px 0 10px
 		line-height: 1.2em
 		color: $color_brand_main
@@ -192,8 +193,8 @@ a
 
 	+media-xs
 		font-size: 0.75em
-		width: 80%
-		padding: 10px 8px 6px 0
+		width: 100%
+		padding: 10px 8px 6px 70px
 		float: right
 		+text-overflow-ellipsis
 	+media-sm
@@ -237,7 +238,7 @@ a
 		float: left
 		position: absolute
 		bottom: 6px
-		left: 5px
+		left: 3px
 		font-size: 0.8em
 	+media-sm
 		width: 60px
@@ -285,12 +286,19 @@ a
 	position: relative
 	margin: 0 10px 0 0
 	top: 12px
+	+box-shadow(2px, 2px, 0, black, .1)
+	+border-radius(50%)
 	+text-shadow(1px, 1px, 0, black, 0.2)
+
 	+media-xs
-		width: 45px
-		height: 45px
+		width: 60px
+		height: 60px
 		font-size: 1.4em
-		display: none
+		top: 0
+		margin: 0
+		+border-radius(0)
+		border-top-left-radius: 3px !important
+		+box-shadow-none
 	+media-sm
 		width: 50px
 		height: 50px
@@ -302,9 +310,6 @@ a
 	+media-lg
 		width: 60px
 		height: 60px
-
-	+box-shadow(2px, 2px, 0, black, .1)
-	+border-radius(50%)
 	& i
 		top: 40%
 		@extend .vertical-align
@@ -312,9 +317,6 @@ a
 		background-color: lighten($color_brand_secondary, 10%)
 	&.text
 		background-color: lighten($color_brand_main, 5%)
-
-	+media-xs
-		margin-left: 10px
 
 
 /* //post-index */

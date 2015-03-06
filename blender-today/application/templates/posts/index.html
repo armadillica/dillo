@@ -102,11 +102,14 @@
 									{{post.comments_count}} comments
 								{% endif %}
 								</span>
-								<span class="visible-xs">
-									{{post.comments_count}} <i class="fa fa-comments-o"></i>
-								</span>
+								{% if post.comments_count > 0 %}
+									<span class="visible-xs">
+										{{post.comments_count}} <i class="fa fa-comments-o"></i>
+									</span>
+								{% endif %}
 							</a>
-							<span class="separator"></span>
+
+							<span class="separator hidden-xs"></span>
 
 							{{post.pretty_creation_date}}
 
