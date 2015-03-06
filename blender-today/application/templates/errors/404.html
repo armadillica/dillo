@@ -12,9 +12,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {% if config.USE_ASSETS_CDN %}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oxygen:300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:300,400' rel='stylesheet' type='text/css'>
     {% else %}
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
@@ -32,10 +33,10 @@
   </head>
 
   <body class="error-404">
-		<img src="{{ url_for('static', filename='images/today_404_andy.jpg') }}"/>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/today_404_andy.jpg') }}"/>
 		<h2>404 - This page doesn't exist</h2>
 		<div class="error-goback">
 			<a href="http://blender.today"><i class="fa fa-angle-left"></i> back to blender.today</a>
 		</div>
   </body>
-  </html>
+</html>

@@ -240,13 +240,18 @@ a
 .post-index-item-picture-collapse
 	cursor: pointer
 	color: lighten($color_text, 50%)
+	position: relative
+	top: 1px
+	margin-left: 5px
 	&:hover
 		color: $color_brand_main
 	+media-xs
 		position: absolute
 		right: 6px
-		top: 4px
-		font-size: 1.3em
+		top: 2px
+		font-size: 1.8em
+		margin-left: 10px
+		color: lighten($color_text, 40%)
 
 .post-index-item-picture-collapse
 	display: none
@@ -1826,6 +1831,8 @@ fieldset
 		font-size: 2.2em
 		margin: 20px 0 0 0
 		padding: 0
+		+media-xs
+			font-size: 1.6em
 
 /* CKEditor Overrides */
 .cke_chrome
