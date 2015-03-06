@@ -745,6 +745,12 @@ a
 			padding-left: 10px
 		+media-sm
 			padding-left: 50px
+
+		& .post-view-comments-item-content
+			margin-left: 80px
+			+media-xs
+				margin-left: 50px
+
 	&.odd.reply
 		background-color: white
 	&.even.reply
@@ -752,6 +758,11 @@ a
 	&.flash
 		+text-shadow-none
 		animation: effect-flash-fadeout 1.5s ease forwards
+		& .post-view-comments-item-content,
+		& .post-view-comments-item-details
+			margin-left: 15px
+			+media-xs
+				margin-left: -5px
 
 
 div#post-comment-reply-container
