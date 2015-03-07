@@ -61,7 +61,9 @@
 			{% if comment.user.deleted %}
 				<span class="deleted" title="This account no longer exists">[deleted]</span>
 			{% else %}
-				{{comment.user.username}}
+				<a href="{{url_for('index')}}u/{{comment.user.id}}" class="author">
+					{{comment.user.username}}
+				</a>
 			{% endif %}
 
 			<span class="separator"></span>

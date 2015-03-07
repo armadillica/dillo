@@ -944,6 +944,9 @@ div#post-comment-reply-container
 	+media-lg
 		margin-left: 80px
 
+	& .author
+		color: lighten($color_text, 20%)
+
 	& .flag:hover, & .flag:focus
 		text-decoration: none
 	& .flag:after
@@ -1116,11 +1119,15 @@ div#post-comment-reply-container
 	display: inline-block
 	position: relative
 	width: 100%
+	+media-xs
+		margin: 0
 	& h3
 		font-weight: lighter
 		margin: 10px 0 0 140px
 		color: $color_brand_main
 		font-size: 2em
+		+media-xs
+			margin: 10px 0 0 105px
 
 	& h4
 		margin-top: 5px
@@ -1134,6 +1141,9 @@ div#post-comment-reply-container
 		min-height: 80px
 		+border-radius(3px)
 		+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+		+media-xs
+			margin: 15px 0 0 0
+			padding: 20px 0 0 15px
 
 	& .user-view-info-avatar
 		position: absolute
@@ -1144,10 +1154,15 @@ div#post-comment-reply-container
 			background-color: white
 			+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
+			+media-xs
+				max-width: 100px
+
 	& .user-view-info-roles
 		margin-top: 5px
 		font-size: 0.9em
 		color: lighten($color_text, 10%)
+		+media-xs
+			margin-top: 10px
 
 	& .user-view-info-meta
 		margin-top: 10px

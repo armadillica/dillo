@@ -103,7 +103,9 @@
 							{% if post.user.deleted %}
 								<span class="deleted" title="This account no longer exists">[deleted]</span>
 							{% else %}
-								{{post.user.username}}
+								<a href="{{url_for('index')}}u/{{post.user.id}}">
+									{{post.user.username}}
+								</a>
 							{% endif %}
 
 							{% if post.picture %}
