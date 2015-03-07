@@ -421,10 +421,14 @@ a
 		padding: 10px
 		margin: 10px
 
-.post-view-content p
-	margin-bottom: 25px
-	+media-xs
-		margin-bottom: 10px
+	& p
+		margin-bottom: 25px
+		+media-xs
+			margin-bottom: 10px
+
+	& iframe
+		width: 100%
+		min-height: 436px
 
 .post-view-content-image
 	text-align: center
@@ -1096,6 +1100,64 @@ div#post-comment-reply-container
 
 	& .page-view-content
 		padding: 15px
+
+/* User View */
+.user-view
+	margin-top: 15px
+
+.user-view-index
+	& h4
+		color: lighten($color_text, 30%)
+		font-weight: lighter
+
+.user-view-info
+	margin: 0 0 15px 0
+	padding: 0 0 20px 0
+	display: inline-block
+	position: relative
+	width: 100%
+	& h3
+		font-weight: lighter
+		margin: 10px 0 0 140px
+		color: $color_brand_main
+		font-size: 2em
+
+	& h4
+		margin-top: 5px
+		font-weight: lighter
+
+	& .user-view-info-container
+		background-color: white
+		border: thin solid darken($color_background, 3%)
+		margin: 15px 0 0 80px
+		padding-left: 60px
+		min-height: 80px
+		+border-radius(3px)
+		+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+
+	& .user-view-info-avatar
+		position: absolute
+		top: 10px
+		left: -5px
+		& img
+			padding: 4px
+			background-color: white
+			+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+
+	& .user-view-info-roles
+		margin-top: 5px
+		font-size: 0.9em
+		color: lighten($color_text, 10%)
+
+	& .user-view-info-meta
+		margin-top: 10px
+		font-size: 0.9em
+		color: lighten($color_text, 40%)
+
+.user-view
+	.post-index-item-type
+		margin-left: 15px
+
 
 /* User Login */
 .user-login,

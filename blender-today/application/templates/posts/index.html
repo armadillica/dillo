@@ -29,7 +29,7 @@
 			<div class="col-md-6 col-xs-6">
 				{{ category_dropdown(title, category, categories) }}
 			</div>
-		</div>
+		</div> <!-- row -->
 
 		{% if posts.items %}
 			{% for post in posts.items %}
@@ -128,7 +128,6 @@
 			</div>
 		{% endif %}
 
-
 		<div class="row text-center">
 			<div class="col-md-12">
 				<nav>
@@ -158,15 +157,15 @@
 						{% endif %}
 					</ul>
 				</nav>
-			</div>
+			</div><!-- col-md -->
+
 		</div>
 
-		<!-- <div class="post-index-end"><i class="bf-blender"></i></div> -->
-	</div>
+	</div> <!--row -->
 	<div class="col-md-3">
 		{% include '_sidebar.html' %}
 	</div>
-</div>
+</div><!-- row -->
 
 {% endcache %}
 {# Heavy caching ends here #}
@@ -175,38 +174,6 @@
 
 {% block footer_scripts %}
 <script type="text/javascript">
-
-	$('.post-index-item-picture-expand').click(function(){
-		$(this).next($('.post-index-item-picture')).attr('src', $(this).next().data('rel'));
-		$(this).next($('.post-index-item-picture')).css('display', 'block');
-		$(this).next($('.post-index-item-picture')).animate({'opacity': 1.0});
-		$(this).fadeOut('fast', function(){
-			$(this).prev().fadeIn('fast');
-		});
-	});
-
-	$('.post-index-item-picture-collapse').click(function(){
-		$(this).next().next().fadeOut('fast');
-		$(this).fadeOut('fast', function(){
-			$(this).next().fadeIn('fast');
-		});
-	});
-
-	$('.post-index-item-picture').mousedown(function(e){
-		e.preventDefault();
-
-		image = $(this);
-
-		$(document).mousemove(function(e){
-			e.preventDefault();
-			var x = ((e.pageX - image.parent().offset().left) + (image.width())) * 0.6;
-			$(image).css("width", x);
-		})
-	});
-
-	$(document).mouseup(function(e){
-		$(document).unbind('mousemove');
-	});
 
 	$(".up").click(function(e) {
 		e.preventDefault();

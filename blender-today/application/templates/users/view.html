@@ -1,0 +1,165 @@
+{% extends 'layout.html' %}
+
+{% block page_title %}
+	{{user.username}} - 
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="col-md-9 user-view">
+
+		<div class="user-view-info">
+
+			<h3>
+				{% if user.first_name != 'None' %}
+					{{user.first_name}} {{user.last_name}} <small>({{user.username}})</small>
+				{% else %}
+					{{user.username}}
+				{% endif %}
+			</h3>
+
+			<div class="user-view-info-container">
+
+				<div class="user-view-info-avatar">
+					<img class="img-circle" src="{{user.gravatar(size=128)}}" title="{{user.first_name}} {{user.last_name}}">
+				</div>
+
+				{% if user.roles %}
+					<div class="user-view-info-roles">
+						{% if user.has_role('cloud_member') %}
+							<i class="bf-cloud"></i> Blender Cloud Member<br/>
+						{% endif %}
+						{% if user.has_role('dev_core') %}
+							<i class="bf-blender"></i> Blender Core Developer<br/>
+						{% endif %}
+						{% if user.has_role('network_member') %}
+							<i class="bf-network"></i> Blender Network Member<br/>
+						{% endif %}
+						{% if user.has_role('bfct_trainer') %}
+							<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
+						{% endif %}
+					</div>
+				{% endif %}
+
+				<div class="user-view-info-meta">
+					<span class="karma">Karma {{user.karma.positive}}</span>
+					<br/>
+					<span class="lastseen">Last seen {{user.current_login_at.strftime('%d %B %Y at %H:%M')}}</span>
+					- <span class="joined" title="{{user.signup_date.strftime('%d %B, %Y')}}">
+							Joined {{user.signup_date.strftime('%B %Y')}}
+						</span>
+				</div>
+			</div>
+	</div>
+
+		{% if user.posts %}
+			<div class="user-view-index">
+				<h4>Submissions by {{user.username}}</h4>
+			</div>
+			{% for post in user.posts %}
+			<div class="row">
+				<div class="col-md-12">
+					<div class="post-index-item {{ loop.cycle('odd', 'even') }}">
+
+						{# Post circle thingie #}
+						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="View post and comments">
+							<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
+								{% if post.post_type.url == 'link' %}
+									<i class="fa fa-link"></i>
+								{% elif post.post_type.url == 'text' %}
+									<i class="fa fa-file-text-o"></i>
+								{% endif %}
+							</div>
+						</a>
+
+						<a class="post-index-item-title"
+							href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}"
+							title="{{post.title}}"
+							{% if post.post_type.url == 'link' %}target="_blank"{% endif %}>
+							{{post.title}}
+						</a>
+
+						<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+
+							{{post.rating_delta}} points
+
+							<span class="separator"></span>
+
+							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" class="post-index-item-details-type">
+								{{post.post_type}}
+							</a>
+
+							<span class="separator"></span>
+
+							<a href="{{url_for('index')}}{{post.category.url}}">{{post.category}}</a>
+
+							<span class="separator"></span>
+
+							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments" class="post-index-item-details-comments">
+								<span class="hidden-xs">
+								{% if post.comments_count == 0 %}
+									Comment
+								{% elif post.comments_count == 1 %}
+									1 comment
+								{% else %}
+									{{post.comments_count}} comments
+								{% endif %}
+								</span>
+								{% if post.comments_count > 0 %}
+									<span class="visible-xs">
+										{{post.comments_count}} <i class="fa fa-comments-o"></i>
+									</span>
+								{% endif %}
+							</a>
+
+							<span class="separator hidden-xs"></span>
+
+							{{post.pretty_creation_date}}
+
+							<small>by</small>
+							{% if post.user.deleted %}
+								<span class="deleted" title="This account no longer exists">[deleted]</span>
+							{% else %}
+								{{post.user.username}}
+							{% endif %}
+
+							{% if post.picture %}
+
+							<span class="post-index-item-picture-collapse"><i class="fa fa-minus-square-o"></i></span>
+							<span class="post-index-item-picture-expand"><i class="fa fa-plus-square-o"></i></span>
+							<img class="post-index-item-picture"
+									 title="Click and drag to resize"
+									 data-rel="{{post.thumbnail('l')}}" src=""/>
+							{% endif %}
+
+						</div>
+						<div class="clearfix"></div>
+					</div> <!-- post-index-item -->
+				</div> <!-- col-md -->
+			</div> <!-- row -->
+			{% endfor %}
+		{% else %}
+			<div class="post-index-empty">
+				<h3>Nothing to see here... yet.</h3>
+				<h4>tell {{user.username}} to post something awesome</h4>
+			</div>
+		{% endif %}
+
+	</div> <!-- col-md -->
+	<div class="col-md-3">
+		{% include '_sidebar.html' %}
+	</div>
+</div><!-- row -->
+
+{% endblock %}
+
+{% block footer_scripts %}
+<script type="text/javascript">
+	{% if current_user.is_authenticated() %}
+		$('#popover-profile').popover();
+	{% endif %}
+</script>
+{% endblock %}
