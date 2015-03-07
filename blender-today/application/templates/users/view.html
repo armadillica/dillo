@@ -48,9 +48,11 @@
 					<span class="karma">Karma {{user.karma.positive}}</span>
 					<br/>
 					<span class="lastseen">Last seen {{user.current_login_at.strftime('%d %B %Y at %H:%M')}}</span>
+					{% if user.signup_date %}
 					- <span class="joined" title="{{user.signup_date.strftime('%d %B, %Y')}}">
 							Joined {{user.signup_date.strftime('%B %Y')}}
 						</span>
+					{% endif %}
 				</div>
 			</div>
 	</div>
