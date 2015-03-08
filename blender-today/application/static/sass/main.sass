@@ -1588,6 +1588,10 @@ fieldset
 	display: block
 	text-align: center
 	+user-select-none
+
+	+media-xs
+		display: none // sad, but for the time being is better to hide it on mobile 
+
 	&:hover
 		cursor: pointer
 		color: $color_brand_secondary
