@@ -3,6 +3,13 @@
 {% block og %}
 	<meta property="og:type" content="profile" />
 	<meta property="og:title" content="Blender.Today" />
+
+	{% if user.first_name and user.first_name != 'None' %}
+		<meta property="og:title" content="{{user.first_name}} {{user.last_name}}  - Blender Today" />
+	{% else %}
+		<meta property="og:title" content="{{user.username}} - Blender Today" />
+	{% endif %}
+
 	<meta property="og:url" content="{{url_for('index')}}u/{{user.id}}" />
 	{% if user.gravatar %}
 		<meta property="og:image" content="{{user.gravatar(size=192)}}" />
