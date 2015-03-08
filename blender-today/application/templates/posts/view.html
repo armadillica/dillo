@@ -1,6 +1,21 @@
 {% extends 'layout.html' %}
 {% from 'posts/_macros.html' import category_dropdown, print_comment with context %}
 
+{% block og %}
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="{{post.title}}" />
+	<meta property="og:url" content="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" />
+
+	{% if post.picture %}
+		<meta property="og:image" content="{{post.thumbnail('h')}}" />
+	{% else %}
+		<meta property="og:image" content="{{ url_for('static', filename='images/favicon_192x192.png') }}" />
+	{% endif %}
+
+	<meta property="article:title" content="{{post.title}}" />
+	<meta property="article:published_time" content="{{post.creation_date}}" />
+{% endblock %}
+
 {% block page_title %}
 	{{post.title}} - 
 {% endblock %}
