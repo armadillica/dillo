@@ -1,6 +1,13 @@
 {% extends 'layout.html' %}
 {% from 'posts/_macros.html' import category_dropdown %}
 
+{% block og %}
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Blender.Today" />
+	<meta property="og:url" content="http://blender.today" />
+	<meta property="og:image" content="{{ url_for('static', filename='images/favicon_192x192.png') }}" />
+{% endblock %}
+
 {% block page_title %}
 	{% if title == 'index_category' %}
 		{{category}}
