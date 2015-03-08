@@ -3,19 +3,19 @@
 {% block og %}
 	<meta property="og:type" content="profile" />
 	<meta property="og:title" content="Blender.Today" />
-	<meta property="og:url" content="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" />
+	<meta property="og:url" content="{{url_for('index')}}u/{{user.id}}" />
 	{% if user.gravatar %}
 		<meta property="og:image" content="{{user.gravatar(size=192)}}" />
 	{% else %}
 		<meta property="og:image" content="{{ url_for('static', filename='images/favicon_192x192.png') }}" />
 	{% endif %}
-	{% if post.user.first_name and post.user.first_name != 'None' %}
-		<meta property="profile:first_name" content="{{post.user.first_name}}" />
+	{% if user.first_name and user.first_name != 'None' %}
+		<meta property="profile:first_name" content="{{user.first_name}}" />
 	{% endif %}
-	{% if post.user.last_name and post.user.last_name != 'None' %}
-		<meta property="profile:last_name" content="{{post.user.last_name}}" />
+	{% if user.last_name and user.last_name != 'None' %}
+		<meta property="profile:last_name" content="{{user.last_name}}" />
 	{% endif %}
-	<meta property="profile:username" content="{{post.user.username}}" />
+	<meta property="profile:username" content="{{user.username}}" />
 {% endblock %}
 
 {% block page_title %}

@@ -3,7 +3,7 @@
 {% block og %}
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="Blender.Today" />
-	<meta property="og:url" content="http://blender.today" />
+	<meta property="og:url" content="{{url_for('index')}}{{url}}" />
 	<meta property="og:image" content="{{ url_for('static', filename='images/favicon_192x192.png') }}" />
 {% endblock %}
 

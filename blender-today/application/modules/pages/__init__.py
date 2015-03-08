@@ -14,4 +14,5 @@ def view(url):
     page = Page.query.filter_by(url=url).one()
     return render_template('pages/view.html', 
         content=page.content,
+        url=page.url,
         title=page.title)
