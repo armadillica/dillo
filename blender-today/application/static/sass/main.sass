@@ -197,6 +197,7 @@ a
 		padding: 10px 8px 6px 70px
 		float: right
 		border-top: thin solid lighten($color_text, 70%)
+		position: relative
 		+text-overflow-ellipsis
 	+media-sm
 		font-size: 0.8em
@@ -248,11 +249,12 @@ a
 		color: $color_brand_main
 	+media-xs
 		position: absolute
+		float: right
 		right: 6px
-		top: 2px
-		font-size: 1.8em
-		margin-left: 10px
-		color: lighten($color_text, 40%)
+		top: 4px
+		font-size: 1.9em
+		margin: 0
+		color: lighten(desaturate($color_brand_main, 10%), 10%)
 
 .post-index-item-picture-collapse
 	display: none
@@ -414,7 +416,7 @@ a
 .post-view-content
 	font-size: 1.1em
 	line-height: 1.8em
-	padding: 10px 15px 0 100px
+	padding: 10px 15px 0 95px
 	margin: 0 10px 55px 0
 	+media-xs
 		font-size: 1em
@@ -429,6 +431,20 @@ a
 	& iframe
 		width: 100%
 		min-height: 436px
+
+	& ul
+		list-style-type: none
+		padding-left: 30px
+
+		& li
+			margin-bottom: 20px
+
+		& li:before
+			content: '·'
+			position: relative
+			font-weight: bolder
+			left: -10px
+			color: lighten($color_text, 20%)
 
 .post-view-content-image
 	text-align: center
@@ -1170,8 +1186,8 @@ div#post-comment-reply-container
 		color: lighten($color_text, 40%)
 
 .user-view
-	.post-index-item-type
-		margin-left: 15px
+	& .post-index-item-details
+		padding-left: 10px
 
 
 /* User Login */

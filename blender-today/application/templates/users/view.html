@@ -153,8 +153,13 @@
 								{{post.user.username}}
 							{% endif %}
 
-							{% if post.picture %}
+							{% if post.status == 'deleted' %}
+								<span class="separator"></span>
+								<span class="label label-danger">Deleted</span>
+							{% endif %}
 
+							{% if post.picture %}
+							<span class="separator hidden-xs"></span>
 							<span class="post-index-item-picture-collapse"><i class="fa fa-minus-square-o"></i></span>
 							<span class="post-index-item-picture-expand"><i class="fa fa-plus-square-o"></i></span>
 							<img class="post-index-item-picture"
