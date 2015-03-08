@@ -137,6 +137,7 @@ a
 	margin: 0 0 10px 0
 	padding: 0
 	border: thin solid darken($color_background, 3%)
+	overflow: hidden
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
@@ -156,8 +157,6 @@ a
 			background-color: white
 			border: none
 
-	&:hover .post-index-item-type
-		opacity: 0.8
 
 .post-index-item-title
 	font-family: $font_headings
@@ -178,9 +177,12 @@ a
 
 	+media-sm
 		font-size: 1.3em
+		padding-left: 170px
 	+media-md
 		font-size: 1.4em
-		+text-overflow-ellipsis
+		padding-left: 170px
+	+media-lg
+		padding-left: 175px
 
 	&:hover, &:focus
 		text-decoration: none
@@ -201,8 +203,12 @@ a
 		+text-overflow-ellipsis
 	+media-sm
 		font-size: 0.8em
+		padding-left: 110px
 	+media-md
 		font-size: 0.9em
+		padding-left: 110px
+	+media-lg
+		padding-left: 115px
 
 	& a
 		color: lighten($color_text, 20%)
@@ -241,10 +247,11 @@ a
 .post-index-item-picture-expand,
 .post-index-item-picture-collapse
 	cursor: pointer
-	color: lighten($color_text, 50%)
+	color: lighten($color_text, 30%)
 	position: relative
 	top: 1px
 	margin-left: 5px
+	font-size: 1.1em
 	&:hover
 		color: $color_brand_main
 	+media-xs
@@ -280,7 +287,7 @@ a
 	+media-md
 		width: 60px
 	+media-lg
-		width: 70px
+		width: 60px
 	& .up, .middle, .down
 		font-size: 1.1em
 		padding: 0 0 2px 0
@@ -312,18 +319,16 @@ a
 	display: inline-block
 	float: left
 	font-size: 1.8em
-	width: 60px
-	height: 60px
+	width: 100px
+	height: 100px
 	color: white
 	background-color: lighten($color_text, 55%)
 	background-size: cover !important
 	text-align: center
 	position: relative
-	margin: 0 10px 0 0
 	top: 12px
 	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
-	+text-shadow(1px, 1px, 0, black, 0.2)
 
 	+media-xs
 		width: 60px
@@ -335,23 +340,31 @@ a
 		border-top-left-radius: 3px !important
 		+box-shadow-none
 	+media-sm
-		width: 50px
-		height: 50px
-		margin: 0 15px 0 0
+		position: absolute
+		top: -10px
+		left: 55px
+		width: 100px
+		height: 100px
 	+media-md
-		width: 55px
-		height: 55px
-		margin: 0 15px 0 0
+		position: absolute
+		top: -8px
+		left: 55px
+		width: 100px
+		height: 100px
 	+media-lg
-		width: 60px
-		height: 60px
+		position: absolute
+		top: -8px
+		left: 55px
+		width: 100px
+		height: 100px
 	& i
-		top: 40%
+		top: 45%
+		opacity: 0.6
 		@extend .vertical-align
 	&.link
-		background-color: lighten($color_brand_secondary, 10%)
+		background-color: lighten($color_brand_main, 20%)
 	&.text
-		background-color: lighten($color_brand_main, 5%)
+		background-color: lighten($color_brand_secondary, 20%)
 
 
 /* //post-index */
@@ -1186,9 +1199,27 @@ div#post-comment-reply-container
 		color: lighten($color_text, 40%)
 
 .user-view
+	& .post-index-item-title
+		+media-sm
+			padding-left: 140px
+		+media-md
+			padding-left: 140px
+		+media-lg
+			padding-left: 140px
 	& .post-index-item-details
-		padding-left: 10px
-
+		+media-sm
+			padding-left: 140px
+		+media-md
+			padding-left: 140px
+		+media-lg
+			padding-left: 140px
+	& .post-index-item-type
+		+media-sm
+			left: 15px
+		+media-md
+			left: 15px
+		+media-lg
+			left: 15px
 
 /* User Login */
 .user-login,

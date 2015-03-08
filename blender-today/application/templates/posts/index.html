@@ -58,10 +58,13 @@
 						{# Post circle thingie #}
 						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="View post and comments">
 							<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
-								{% if post.post_type.url == 'link' %}
-									<i class="fa fa-link"></i>
-								{% elif post.post_type.url == 'text' %}
-									<i class="fa fa-file-text-o"></i>
+
+								{% if not post.picture %}
+									{% if post.post_type.url == 'link' %}
+										<i class="fa fa-link"></i>
+									{% elif post.post_type.url == 'text' %}
+										<i class="fa fa-file-text-o"></i>
+									{% endif %}
 								{% endif %}
 							</div>
 						</a>
@@ -117,8 +120,8 @@
 
 							{% if post.picture %}
 
-							<span class="post-index-item-picture-collapse"><i class="fa fa-minus-square-o"></i></span>
-							<span class="post-index-item-picture-expand"><i class="fa fa-plus-square-o"></i></span>
+							<span class="post-index-item-picture-collapse" title="Collapse"><i class="fa fa-minus-square-o"></i></span>
+							<span class="post-index-item-picture-expand" title="Expand"><i class="fa fa-plus-square-o"></i></span>
 							<img class="post-index-item-picture"
 									 title="Click and drag to resize"
 									 data-rel="{{post.thumbnail('l')}}" src=""/>
