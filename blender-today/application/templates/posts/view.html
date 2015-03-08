@@ -13,6 +13,13 @@
 	{% endif %}
 
 	<meta property="article:title" content="{{post.title}}" />
+
+	{% if post.user.first_name and post.user.first_name != 'None' %}
+		<meta property="article:author" content="{{post.user.first_name}} {{post.user.last_name}}" />
+	{% else %}
+		<meta property="article:author" content="{{post.user.username}}" />
+	{% endif %}
+
 	<meta property="article:published_time" content="{{post.creation_date}}" />
 {% endblock %}
 
