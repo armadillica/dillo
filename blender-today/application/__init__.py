@@ -35,6 +35,8 @@ registry.register('http://monitor.eibriel.com/\S*',
     Provider('http://monitor.eibriel.com/api/job/oembed'))
 registry.register('https?://sketchfab.com/models/*',
     Provider('https://sketchfab.com/oembed'))
+registry.register('https?://p3d.in/*',
+    Provider('https://p3d.in/oembed'))
 
 redis_client = redis.StrictRedis(
     host=app.config['CACHE_REDIS_HOST'],
