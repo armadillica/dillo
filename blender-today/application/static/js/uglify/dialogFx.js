@@ -82,11 +82,15 @@
 				classie.remove( self.el, 'dialog--close' );
 			} );
 
+			$('.dialog').css('overflow', 'hidden');
+
 			// callback on close
 			this.options.onCloseDialog( this );
 		}
 		else {
 			classie.add( this.el, 'dialog--open' );
+
+			$('.dialog').css('overflow-y', 'scroll');
 
 			// callback on open
 			this.options.onOpenDialog( this );
