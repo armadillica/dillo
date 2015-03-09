@@ -429,8 +429,11 @@ a
 .post-view-content
 	font-size: 1.1em
 	line-height: 1.8em
-	padding: 10px 15px 0 95px
-	margin: 0 10px 55px 0
+	padding: 10px 15px 25px 95px
+	margin: 0 0 0 0
+	border: 3px solid transparent
+	position: relative
+
 	+media-xs
 		font-size: 1em
 		padding: 10px
@@ -458,6 +461,23 @@ a
 			font-weight: bolder
 			left: -10px
 			color: lighten($color_text, 20%)
+
+	&.action-edit
+		border: 3px dashed lighten($color_text, 40%)
+
+	&.action-edit:after
+		content: "editing"
+		color: lighten($color_text, 40%)
+		position: absolute
+		bottom: 5px
+		right: 10px
+
+	&.action-edit:focus
+		border: 3px dashed lighten($color_brand_main, 20%)
+		color: black
+
+	&.action-edit:focus:after
+		color: $color_brand_main
 
 .post-view-content-image
 	text-align: center
@@ -625,9 +645,12 @@ a
 			&.save
 				display: none
 				opacity: 0
+				background-color: darken(saturate($color_success, 30%), 15%)
 
 				&:hover
-					background-color: darken($color_success, 10%)
+					background-color: $color_success
+				&:active
+					background-color: darken($color_success, 20%)
 
 		& .edit-post-delete-widget
 			&:focus .edit-post-delete-widget-icon
@@ -1008,6 +1031,24 @@ div#post-comment-reply-container
 	padding: 0 0 0 15px
 	color: lighten($color_text, 40%)
 
+.notification-post-saved,
+.notification-post-fail
+	height: 25px
+	position: fixed
+	top: -25px
+	left: 40%
+	width: 20%
+	text-align: center
+	z-index: 9999
+	background-color: darken(saturate($color_success, 10%), 10%)
+	color: white
+	padding-top: 2px
+	border-bottom-left-radius: 3px
+	border-bottom-right-radius: 3px
+	font-family: $font_headings
+
+.notification-post-fail
+	background-color: $color_danger
 
 /* //post-view */
 /* post-submit */

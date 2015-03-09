@@ -70,8 +70,13 @@
 
 		<div class="clearfix"></div>
 
+		<div class="notification-post-saved"><i class="fa fa-floppy-o"></i> Saving...</div>
+		<div class="notification-post-fail"><i class="fa fa-frown-o fa-spin"></i> Failed... try again?</div>
+
 		{% if post.post_type.url != 'link' %}
-			<div class="post-view-content" id="post-content">{{post.content|safe}}</div>
+			<div class="post-view-content" id="post-content">
+				{{post.content|safe}}
+			</div>
 		{% endif %}
 		{% if oembed %}
 			<div class="post-view-content" id="post-content">{{oembed['html']|safe}}</div>
@@ -450,6 +455,9 @@
 					var editor = ev.editor;
 					editor.setReadOnly( false );
 				});
+
+				$('.post-view-content').addClass('action-edit');
+
 				$(this).fadeOut(function(){
 					$("#edit-post-save").css('display', 'inline-block');
 					$("#edit-post-save").animate({'opacity' : 1});
@@ -460,7 +468,17 @@
 				$.post($(this).attr("href"), {
 					content : $("#post-content").html()}, 
 					function(data){
-				});
+				})
+					.done(function() {
+						$('.notification-post-saved').animate({'top' : '0'});
+					})
+					.fail(function() {
+						$('.notification-post-fail').animate({'top' : '0'});
+					})
+					.always(function() {
+						$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+						$('.notification-post-saved').delay(2000).animate({'top' : '-25px'})
+					});
 			});
 
 			$('.edit-post-delete-widget').click(function(e){
