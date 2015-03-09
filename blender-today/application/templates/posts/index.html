@@ -76,6 +76,8 @@
 							{{post.title}}
 						</a>
 
+						<div class="post-index-item-type-ripple"></div>
+
 						<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
 
 							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" class="post-index-item-details-type">

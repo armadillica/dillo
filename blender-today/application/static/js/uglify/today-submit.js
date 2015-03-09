@@ -69,4 +69,10 @@ $(document).ready(function() {
             $('.post-submit-article').show();
           };
         });
+      $('.post-index-item-type').click(function(e){
+        $(this).parent().parent().find('.post-index-item-type-ripple').css('display', 'block');
+      });
+      $('.post-index-item-title').click(function(e){
+        $(this).parent().find('.post-index-item-type-ripple').css('display', 'block');
+      });
 });
