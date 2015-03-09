@@ -98,7 +98,9 @@
 				<div class="col-md-1 col-sm-1 col-xs-2">
 					<div class="post-view-details-avatar">
 						{% if not post.user.deleted %}
-							<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
+							<a href="{{url_for('index')}}u/{{post.user.id}}">
+								<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
+							</a>
 							{% if post.user.has_role('dev_core') %}
 								<div class="post-view-details-avatar-label">
 									<i class="dev_core bf-blender" title="Blender Core Developer"></i>
@@ -191,11 +193,13 @@
 							{% if post.user.deleted %}
 								<span class="deleted" title="This account no longer exists">[deleted]</span>
 							{% else %}
+							<a href="{{url_for('index')}}u/{{post.user.id}}">
 								{% if post.user.first_name and post.user.first_name != 'None' %}
 									{{post.user.first_name}} {{post.user.last_name}} ({{post.user.username}})
 								{% else %}
 									{{post.user.username}}
 								{% endif %}
+							</a>
 							{% endif %}
 						</span> <!-- author-name -->
 
