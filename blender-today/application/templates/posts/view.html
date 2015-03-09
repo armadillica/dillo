@@ -70,8 +70,10 @@
 
 		<div class="clearfix"></div>
 
-		<div class="notification-post-saved"><i class="fa fa-floppy-o"></i> Saving...</div>
-		<div class="notification-post-fail"><i class="fa fa-frown-o fa-spin"></i> Failed... try again?</div>
+		{% if current_user.is_owner or current_user.has_role('admin') %}
+			<div class="notification-post-saved"><i class="fa fa-floppy-o"></i> Saving...</div>
+			<div class="notification-post-fail"><i class="fa fa-frown-o fa-spin"></i> Failed... try again?</div>
+		{% endif %}
 
 		{% if post.post_type.url != 'link' %}
 			<div class="post-view-content" id="post-content">
@@ -470,14 +472,14 @@
 					function(data){
 				})
 					.done(function() {
-						$('.notification-post-saved').animate({'top' : '0'});
+						$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
 					})
 					.fail(function() {
-						$('.notification-post-fail').animate({'top' : '0'});
+						$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
 					})
 					.always(function() {
 						$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
-						$('.notification-post-saved').delay(2000).animate({'top' : '-25px'})
+						$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
 					});
 			});
 
