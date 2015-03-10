@@ -95,7 +95,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
     @expose('/logout/')
     def logout_view(self):
         login.logout_user()
-        return redirect(url_for('homepage'))
+        return redirect(url_for('index'))
 
 
 # Create admin
