@@ -81,7 +81,7 @@
 			</div>
 		{% endif %}
 		{% if oembed %}
-			<div class="post-view-content" id="post-content">{{oembed['html']|safe}}</div>
+			<div class="post-view-content oembed" id="post-content">{{oembed['html']|safe}}</div>
 		{% endif %}
 
 		{% if post.picture %}
@@ -167,7 +167,6 @@
 						{% if current_user.is_owner %}
 
 							{% if post.status != 'deleted' %}
-
 								{% if post.post_type.url != 'link' %}
 									<a id="edit-post-save" class="post-actions-button save"
 										 href="{{ url_for('posts.edit', uuid=post.uuid) }}" title="Save Changes">

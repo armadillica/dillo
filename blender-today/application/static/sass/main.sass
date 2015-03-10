@@ -467,7 +467,7 @@ a
 	font-size: 1.1em
 	line-height: 1.8em
 	padding: 10px 15px 25px 95px
-	margin: 0 0 0 0
+	margin: 0
 	border: 3px solid transparent
 	position: relative
 
@@ -483,7 +483,21 @@ a
 
 	& iframe
 		width: 100%
-		min-height: 436px
+		min-height: 476px
+		+box-shadow-none
+		+media-xs
+			min-height: 334px
+		+media-sm
+			min-height: 434px
+		+media-md
+			min-height: 422px
+		+media-lg
+			min-height: 476px
+
+		&#twitter-widget-0, &.twitter-tweet, &.twitter-tweet-rendered
+			border: none !important
+			margin: 0 15px 25px 75px !important
+			width: 90% !important
 
 	& ul
 		list-style-type: none
@@ -515,6 +529,19 @@ a
 
 	&.action-edit:focus:after
 		color: $color_brand_main
+
+	&.oembed
+		margin: 0
+		padding: 0
+		width: 100%
+		border: none
+		line-height: 1em
+		font-size: 1em
+		& + .post-view-details
+			border-top: none
+			position: relative
+			top: -2px
+
 
 .post-view-content-image
 	text-align: center
