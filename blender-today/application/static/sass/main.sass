@@ -249,16 +249,21 @@ a
 .post-index-item-picture
 	display: none
 	min-width: 300px
-	max-width: 100%
 	opacity: 0
 	margin: 20px 0 10px 0
-	max-width: 700px
+	max-width: 670px
 
 	+media-xs
 		margin: 10px 0 0 -70px
 		max-width: 130%
 		border-bottom-left-radius: 3px
 		border-bottom-right-radius: 3px
+	+media-sm
+		max-width: 548px
+	+media-md
+		max-width: 525px
+	+media-lg
+		max-width: 670px
 
 	&:active
 		cursor: nwse-resize
