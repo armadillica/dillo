@@ -73,7 +73,7 @@
 							href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}"
 							title="{{post.title}}"
 							{% if post.post_type.url == 'link' %}target="_blank"{% endif %}>
-							{{post.title}}
+							{{post.title}} {% if post.post_type.url == 'link' %}<small class="post-index-item-title-url">{{post.content}}</small>{% endif %}
 						</a>
 
 						<div class="post-index-item-type-ripple"></div>

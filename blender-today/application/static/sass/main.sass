@@ -188,6 +188,24 @@ a
 	&:hover, &:focus
 		text-decoration: none
 
+	& .post-index-item-title-url
+		color: lighten($color_text, 30%)
+		font-size: 0.6em
+		max-width: 180px !important
+		visibility: hidden
+		display: inline-block
+		position: relative
+		bottom: -4px
+		left: 5px
+		+text-shadow-none
+		+text-overflow-ellipsis
+		&:before
+			content: '('
+			color: lighten($color_text, 40%)
+		&:after
+			content: ')'
+			color: lighten($color_text, 40%)
+
 .post-index-item-details
 	display: block
 	font-size: 0.9em
