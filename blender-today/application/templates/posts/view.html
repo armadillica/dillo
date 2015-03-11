@@ -136,23 +136,23 @@
 							<span id="social">
 								<span class="icons">
 
-									<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop">
+									<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop" target="_blank">
 											<i class="fa fa-envelope-o"></i>
 									</a>
 
-									<a href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Reddit" class="pop">
+									<a href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Reddit" class="pop" target="_blank">
 										<i class="fa fa-reddit"></i>
 									</a>
 
-									<a href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Google+" class="pop">
+									<a href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Google+" class="pop" target="_blank">
 										<i class="fa fa-google-plus"></i>
 									</a>
 
-									<a href="https://www.facebook.com/sharer/sharer.php?u={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop">
+									<a href="https://www.facebook.com/sharer/sharer.php?u={{post.title}}%20{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop" target="_blank">
 										<i class="fa fa-facebook"></i>
 									</a>
 
-									<a href="https://twitter.com/home?status={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Twitter" class="pop">
+									<a href="https://twitter.com/home?status={{post.title}} @BlenderToday {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}} %23b3d" title="Share on Twitter" class="pop" target="_blank">
 										<i class="fa fa-twitter"></i>
 									</a>
 
