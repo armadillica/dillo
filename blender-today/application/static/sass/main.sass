@@ -439,7 +439,11 @@ a
 		text-decoration: none
 
 	& .post-title-url
-		top: 0.7em
+		font-size: 0.6em
+		&:before
+			top: 0.2em
+			left: -1.3em
+			font-size: 0.7em
 
 .post-view-rate
 	float: left
@@ -545,7 +549,13 @@ a
 		border: none
 		line-height: 1em
 		font-size: 1em
-		& + .post-view-details
+		overflow: hidden
+		& + .post-view-details, & + .post-view-content-image
+			border-top: none
+			position: relative
+			top: -2px
+
+		& + .post-view-content-image + .post-view-details
 			border-top: none
 			position: relative
 			top: -2px
@@ -1131,20 +1141,21 @@ div#post-comment-reply-container
 /* //post-view */
 
 .post-title-url
-	color: lighten($color_text, 30%)
+	color: lighten($color_text, 25%)
 	font-size: 0.6em
 	visibility: hidden
 	display: inline-block
 	position: relative
-	bottom: -4px
-	left: 5px
+	top: 0
+	left: 18px
 	+text-shadow-none
-	+text-overflow-ellipsis
 	&:before
-		content: '('
-		color: lighten($color_text, 40%)
-	&:after
-		content: ')'
+		content: '\f08e'
+		font-family: 'FontAwesome'
+		position: absolute
+		left: -1.4em
+		top: 0.4em
+		font-size: 0.8em
 		color: lighten($color_text, 40%)
 
 /* post-submit */
