@@ -184,24 +184,6 @@ a
 	&:hover, &:focus
 		text-decoration: none
 
-	& .post-index-item-title-url
-		color: lighten($color_text, 30%)
-		font-size: 0.6em
-		max-width: 180px !important
-		visibility: hidden
-		display: inline-block
-		position: relative
-		bottom: -4px
-		left: 5px
-		+text-shadow-none
-		+text-overflow-ellipsis
-		&:before
-			content: '('
-			color: lighten($color_text, 40%)
-		&:after
-			content: ')'
-			color: lighten($color_text, 40%)
-
 .post-index-item-details
 	display: block
 	font-size: 0.9em
@@ -391,7 +373,7 @@ a
 .post-index-item-type-ripple
 	display: none
 	float: left
-	background-color: darken($color_background, 3%)
+	background-color: darken($color_background, 5%)
 	z-index: 0
 	transform: scale(1)
 	animation: ripple 1s ease-out forwards
@@ -455,6 +437,9 @@ a
 		+text-shadow-none
 	& a:focus
 		text-decoration: none
+
+	& .post-title-url
+		top: 0.7em
 
 .post-view-rate
 	float: left
@@ -1144,6 +1129,24 @@ div#post-comment-reply-container
 	background-color: $color_danger
 
 /* //post-view */
+
+.post-title-url
+	color: lighten($color_text, 30%)
+	font-size: 0.6em
+	visibility: hidden
+	display: inline-block
+	position: relative
+	bottom: -4px
+	left: 5px
+	+text-shadow-none
+	+text-overflow-ellipsis
+	&:before
+		content: '('
+		color: lighten($color_text, 40%)
+	&:after
+		content: ')'
+		color: lighten($color_text, 40%)
+
 /* post-submit */
 .post-submit .form-group .form-control
 	font-size: 1.3em

@@ -65,7 +65,7 @@
 		</div>
 
 		<div class="post-view-title">
-			<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}" title="{{post.title}}" {% if post.post_type.url == 'link' %}target="_blank"{% endif %}>{{post.title}} {% if post.post_type.url == 'link' %}<small><i class="fa fa-link"></i></small>{% endif %}</a>
+			<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}" title="{{post.title}}" {% if post.post_type.url == 'link' %}target="_blank"{% endif %}>{{post.title}} {% if post.post_type.url == 'link' %}<small class="post-title-url">{{post.content}}</small>{% endif %}</a>
 		</div>
 
 		<div class="clearfix"></div>
