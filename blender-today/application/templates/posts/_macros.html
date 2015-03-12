@@ -6,6 +6,8 @@
 			{% if comment.user.deleted %}
 				<span class="post-view-comments-avatar-deleted"></span>
 			{% else %}
+
+				{# - Add a special class "op" if the comment is by the post author #}
 				<img class="img-circle{% if post.user.id == comment.user.id %} op{% endif %}" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
 
 				{% if comment.user.has_role('dev_core') %}
@@ -65,6 +67,7 @@
 					{{comment.user.username}}
 				</a>
 			{% endif %}
+			{% if post.user.id == comment.user.id %} [OP]{% endif %}
 
 			<span class="separator"></span>
 			<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}" title="Permalink"><i class="fa fa-link"></i></a>
