@@ -134,6 +134,7 @@ a
 	padding: 0
 	border: thin solid darken($color_background, 3%)
 	overflow: hidden
+	color: darken($color_brand_main, 10%)
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
@@ -183,6 +184,14 @@ a
 
 	&:hover, &:focus
 		text-decoration: none
+
+	&:visited
+		color: lighten($color_brand_main, 5%)
+		&:hover
+			color: $color_brand_secondary
+
+// .post-index-item-type:visited + a.post-index-item-title
+// 	color: blue
 
 .post-index-item-details
 	display: block
@@ -360,6 +369,10 @@ a
 		left: 55px
 		width: 100px
 		height: 100px
+
+	&:hover
+		color: white
+
 	& i
 		top: 45%
 		opacity: 0.6

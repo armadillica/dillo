@@ -56,17 +56,14 @@
 						</div>
 
 						{# Post circle thingie #}
-						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="View post and comments">
-							<div class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
-
-								{% if not post.picture %}
-									{% if post.post_type.url == 'link' %}
-										<i class="fa fa-link"></i>
-									{% elif post.post_type.url == 'text' %}
-										<i class="fa fa-file-text-o"></i>
-									{% endif %}
+						<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" title="View post and comments" class="post-index-item-type {{post.post_type.url}}" {% if post.picture %}style="background: url({{post.thumbnail('s')}}) top left no-repeat"{% endif %}>
+							{% if not post.picture %}
+								{% if post.post_type.url == 'link' %}
+									<i class="fa fa-link"></i>
+								{% elif post.post_type.url == 'text' %}
+									<i class="fa fa-file-text-o"></i>
 								{% endif %}
-							</div>
+							{% endif %}
 						</a>
 
 						<a class="post-index-item-title"
@@ -93,7 +90,7 @@
 							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments" class="post-index-item-details-comments">
 								<span class="hidden-xs">
 								{% if post.comments_count == 0 %}
-									Comment
+									comment
 								{% elif post.comments_count == 1 %}
 									1 comment
 								{% else %}

@@ -51,7 +51,7 @@ def index(page=1):
         .filter_by(status='published')\
         .join(PostRating)\
         .order_by(desc(PostRating.hot))\
-        .paginate(page, per_page=10)
+        .paginate(page, per_page=20)
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
@@ -80,7 +80,7 @@ def index_category(category, page=1):
         .join(PostRating)\
         .filter(Category.url == category.url)\
         .order_by(desc(PostRating.hot))\
-        .paginate(page, per_page=10)\
+        .paginate(page, per_page=20)\
 
     return render_template('posts/index.html',
         title='index_category',
