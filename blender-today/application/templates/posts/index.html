@@ -77,7 +77,7 @@
 
 						<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
 
-							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}" class="post-index-item-details-type">
+							<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}" class="post-index-item-details-type">
 								{{post.post_type}}
 							</a>
 
