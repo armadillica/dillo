@@ -29,14 +29,6 @@
 						</li>
 
 						<li>
-								<a href="{{url_for('index')}}u/{{current_user.id}}" id="popover-profile"
-									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-									 data-content="Profile">
-									 <i class="fa fa-male"></i>
-								</a>
-						</li>
-
-						<li>
 								<a href="{{url_for('settings.profile')}}" id="popover-settings"
 									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
 									 data-content="Settings" {% if title in ('settings_profile', 'settings_account') %}class="active"{% endif %}>
@@ -44,11 +36,13 @@
 								</a>
 						</li>
 
-						{% if current_user.has_role('admin') %}
 						<li>
-							<a href="{{url_for('admin.index')}}"><i class="fa fa-fighter-jet"></i></a>
+								<a href="{{url_for('index')}}u/{{current_user.id}}">
+									 <div class="nav-sidebar-avatar" style="background-image: url({{current_user.gravatar(size=32)}});" id="popover-profile"
+									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
+									 data-content="Profile"></div>
+								</a>
 						</li>
-						{% endif %}
 
 						<li class="navbar-logout">
 							<a class="nav-logout-widget" href="" id="popover-logout"
@@ -76,11 +70,15 @@
 		</div>
 
 		<div class="nav-sidebar meta">
-			<a href="http://blender.today/p/community/fcbbbc/blender-today-roadmap-feedback">
 				<p>
-					Roadmap & Feedback
+					<a href="http://blender.today/p/community/fcbbbc/blender-today-roadmap-feedback">
+						Roadmap & Feedback
+					</a>
+					{% if current_user.has_role('admin') %}
+					<a href="{{url_for('admin.index')}}" class="pull-right">
+							<i class="fa fa-fighter-jet"></i> Whoosh!
+					</a>
+					{% endif %}
 				</p>
-			</a>
-		</div>
-
+		</div> <!-- nav-sidebar-meta -->
 	</div>
