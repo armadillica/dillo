@@ -11,6 +11,8 @@ from sqlalchemy import desc
 from flask import abort
 from flask import request
 
+from werkzeug.contrib.atom import AtomFeed
+
 from micawber.exceptions import ProviderNotFoundException
 
 from flask.ext.security import login_required
@@ -20,6 +22,7 @@ from application import app
 from application import db
 from application import imgur_client
 from application import registry
+from application import cache
 
 
 from application.modules.posts.model import Category
@@ -358,3 +361,29 @@ def delete(uuid):
         return jsonify(status='deleted')
     else:
         return abort(403)
+
+
+@posts.route('/p/feed/latest.atom')
+@cache.cached(60*5)
+def posts_feed():
+    feed = AtomFeed('Blender.Today - Posts',
+                    feed_url=request.url, url=request.url_root)
+    posts = Post.query\
+        .filter_by(status='published')\
+        .order_by(desc(Post.creation_date))\
+        .limit(15)\
+        .all()
+    for post in posts:
+        author = ''
+        if post.user:
+            author = post.user.username
+
+        updated = post.edit_date if post.edit_date else post.creation_date
+
+        feed.add(post.title, unicode(post.content),
+                 content_type='html',
+                 author=author,
+                 url=url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True),
+                 updated=updated,
+                 published=post.creation_date)
+    return feed.get_response()
