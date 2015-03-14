@@ -365,7 +365,7 @@ def delete(uuid):
 
 @posts.route('/p/feed/latest.atom')
 @cache.cached(60*5)
-def posts_feed():
+def feed():
     feed = AtomFeed('Blender.Today - Posts',
                     feed_url=request.url, url=request.url_root)
     posts = Post.query\
