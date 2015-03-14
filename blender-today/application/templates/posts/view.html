@@ -80,11 +80,10 @@
 				{{post.content|safe}}
 			</div>
 		{% endif %}
+
 		{% if oembed %}
 			<div class="post-view-content oembed" id="post-content">{{oembed['html']|safe}}</div>
-		{% endif %}
-
-		{% if post.picture %}
+		{% elif post.picture %}
 		<div class="post-view-content-image">
 			<a href="http://imgur.com/{{post.picture}}" title="View on imgur.com" target="_blank">
 				<img src="{{post.thumbnail('h')}}"/>
