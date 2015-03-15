@@ -37,10 +37,10 @@
 						</li>
 
 						<li>
-								<a href="{{url_for('index')}}u/{{current_user.id}}">
-									 <div class="nav-sidebar-avatar" style="background-image: url({{current_user.gravatar(size=32)}});" id="popover-profile"
+								<a href="{{url_for('index')}}u/{{current_user.id}}"
+									 class="nav-sidebar-avatar" style="background-image: url({{current_user.gravatar(size=32)}});" id="popover-profile"
 									 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-									 data-content="Profile"></div>
+									 data-content="Profile">
 								</a>
 						</li>
 
@@ -74,9 +74,14 @@
 					<a href="http://blender.today/p/community/fcbbbc/blender-today-roadmap-feedback">
 						Roadmap & Feedback
 					</a>
+					· 
+					<a href="{{url_for('posts.feed')}}">
+						<i class="fa fa-rss"></i> Feed
+					</a>
 					{% if current_user.has_role('admin') %}
-					<a href="{{url_for('admin.index')}}" class="pull-right">
-							<i class="fa fa-fighter-jet"></i> Whoosh!
+					<br/>
+					<a href="{{url_for('admin.index')}}">
+						<i class="fa fa-fighter-jet"></i> Whoosh!
 					</a>
 					{% endif %}
 				</p>
