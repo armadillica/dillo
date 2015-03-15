@@ -67,8 +67,8 @@ def index(page=1):
         posts=posts)
 
 
-@posts.route('/<category>')
-@posts.route('/<category>/<int:page>')
+@posts.route('/p/<category>')
+@posts.route('/p/<category>/<int:page>')
 def index_category(category, page=1):
     category = Category.query\
         .filter_by(url=category).first_or_404()

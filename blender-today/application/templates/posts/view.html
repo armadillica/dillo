@@ -85,7 +85,7 @@
 			<div class="post-view-content oembed" id="post-content">{{oembed['html']|safe}}</div>
 		{% elif post.picture %}
 		<div class="post-view-content-image">
-			<a href="http://imgur.com/{{post.picture}}" title="View on imgur.com" target="_blank">
+			<a href="{{post.original_image}}" title="View on imgur.com" target="_blank">
 				<img src="{{post.thumbnail('h')}}"/>
 				<div class="post-view-content-image-link">view on imgur.com</div>
 			</a>

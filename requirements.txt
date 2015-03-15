@@ -28,11 +28,12 @@ oauthlib==0.7.2
 passlib==1.6.2
 Pillow==2.7.0
 redis==2.10.3
-requests==2.5.1
+requests==2.5.3
 requests-oauthlib==0.4.2
 six==1.9.0
 SQLAlchemy==0.9.7
 translitcodec==0.3
+tweepy==3.3.0
 WebOb==1.4
 Werkzeug==0.9.6
 WTForms==2.0.1

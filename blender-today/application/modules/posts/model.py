@@ -34,6 +34,7 @@ class Post(db.Model):
     category = db.relationship('Category', uselist=False)
     post_type = db.relationship('PostType', uselist=False)
     rating = db.relationship('PostRating', cascade='all,delete', uselist=False)
+    properties = db.relationship('PostProperties', cascade='all,delete')
 
     def __str__(self):
         return str(self.title)
@@ -68,6 +69,15 @@ class Post(db.Model):
         if self.picture:
             picture = imgur_client.get_image(self.picture)
             return picture.link.replace(self.picture, self.picture + size)
+        else:
+            return None
+
+    @property
+    @cache.memoize(timeout=3600)
+    def original_image(self):
+        if self.picture:
+            picture = imgur_client.get_image(self.picture)
+            return picture.link
         else:
             return None
 
@@ -204,3 +214,11 @@ class UserPostRating(db.Model):
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), primary_key=True)
     is_positive = db.Column(db.Boolean())
     is_flagged = db.Column(db.Boolean())
+
+
+class PostProperties(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
+    field_type = db.Column(db.String(18), nullable=False) #tweet_id, #gplus_id, #gallery_image
+    value = db.Column(db.String(256), nullable=False)
+    order = db.Column(db.Integer())

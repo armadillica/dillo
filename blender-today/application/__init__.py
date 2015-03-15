@@ -1,5 +1,6 @@
 import redis
 import bugsnag
+import tweepy
 from flask import Flask
 from flask import session
 from flask import Blueprint
@@ -47,6 +48,14 @@ bugsnag.configure(
   project_root = app.config['BUGSNAG_APP_PATH']
 )
 handle_exceptions(app)
+
+auth = tweepy.OAuthHandler(
+    app.config.get('SOCIAL_TWITTER')['app_id'],
+    app.config.get('SOCIAL_TWITTER')['app_secret'])
+auth.set_access_token(
+    app.config.get('SOCIAL_TWITTER')['access_token'],
+    app.config.get('SOCIAL_TWITTER')['access_token_secret'])
+twitter_api = tweepy.API(auth)
 
 # Config at https://console.developers.google.com/
 google = oauth.remote_app(
