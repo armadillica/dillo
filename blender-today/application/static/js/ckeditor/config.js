@@ -16,6 +16,7 @@ CKEDITOR.editorConfig = function( config ) {
 	CKEDITOR.plugins.addExternal( 'format', '/static/js/ckeditor/format/' );
 	CKEDITOR.plugins.addExternal( 'blockquote', '/static/js/ckeditor/blockquote/' );
 	CKEDITOR.plugins.addExternal( 'colorbutton', '/static/js/ckeditor/colorbutton/' );
+	CKEDITOR.plugins.addExternal( 'removeformat', '/static/js/ckeditor/removeformat/' );
 
 	// The toolbar groups arrangement, optimized for a single toolbar row.
 	config.toolbarGroups = [
@@ -34,7 +35,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
-	config.extraPlugins = 'panel,panelbutton,floatpanel,listblock,richcombo,format,blockquote,colorbutton';
+	config.extraPlugins = 'panel,panelbutton,floatpanel,listblock,richcombo,format,blockquote,colorbutton,removeformat';
 	config.removePlugins = 'elementspath';
 
 	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Subscript,Superscript,About,NumberedList,Indent,Outdent,BGColor';
