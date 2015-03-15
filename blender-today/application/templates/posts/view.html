@@ -50,7 +50,7 @@
 	</div>
 
 	<div class="post-view-container">
-		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
+		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-post-vote{% endif %}"
 				{% if current_user.is_anonymous() %}
 				 data-toggle="popover" data-trigger="hover" data-placement="bottom"
 				 data-content="Sign in to vote"
@@ -508,33 +508,10 @@
 
 	{% else %}
 
-		$('.popover-vote').popover();
+		$('.popover-post-vote').popover();
 	  $('.popover-comment-reply').popover();
 	  $('.popover-comment-vote').popover();
 
 	{% endif %} // endif is_authenticated
-
-	$('#social-toggle').click(function(){
-		var pops = $('a');
-
-		if ($(this).hasClass('activato')){
-			$(this).removeClass('activato');
-			$(this).html('<i class="fa fa-share-alt"></i>');
-
-			$('#social').find(pops).each(function(i){
-				$(this).animate({'right' : (5 * i) * -1, 'opacity' : 0});
-			});
-
-		} else {
-			$(this).addClass('activato');
-
-			$('#social').find(pops).each(function(i){
-				$(this).animate({'right' : 40 * i, 'opacity' : 1.0});
-			});
-
-			$(this).html('<i class="fa fa-times"></i>');
-		};
-	}); // social-toggle
-
 	</script>
 {% endblock %}
