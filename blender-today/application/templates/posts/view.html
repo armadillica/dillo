@@ -229,8 +229,8 @@
 									<span class="disabled">(deleted)</span>
 								{% else %}
 									{% if post.edit_date %}
-										<span class="edited" title="Last edited {{post.pretty_edit_date}}">
-											(edited)
+										<span class="edited" title="Last edited {{post.edit_date.strftime('%H:%M on %A %d, %B %Y')}}">
+											(edited {{post.pretty_edit_date}})
 										</span>
 									{% endif %}
 								{% endif %}
