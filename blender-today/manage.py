@@ -8,7 +8,7 @@ from application import twitter_api
 from application import imgur_client
 from application.modules.posts.model import Post
 from application.modules.posts.model import PostRating
-from application.modules.posts.model import PostCustomFields
+from application.modules.posts.model import PostProperties
 from application.modules.users.model import user_datastore
 from application.helpers import encode_id
 from application.helpers import slugify
@@ -60,7 +60,7 @@ def twitter_fetch():
     for tweet in recent_tweets:
         #print dir(tweet)
         if tweet.favorite_count > 10:
-            if not PostCustomFields.query\
+            if not PostProperties.query\
                 .filter_by(field_type='tweet_id', value=tweet.id_str)\
                 .first():
 
@@ -80,7 +80,7 @@ def twitter_fetch():
                 db.session.add(post)
                 db.session.commit()
                 post.uuid = encode_id(post.id)
-                twitter_id = PostCustomFields(
+                twitter_id = PostProperties(
                     post_id=post.id,
                     field_type='tweet_id',
                     value=tweet.id_str)
