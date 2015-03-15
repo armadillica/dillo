@@ -41,10 +41,9 @@ $(document).ready(function() {
         })();
 
         CKEDITOR.replace( 'post_content', {
-          removePlugins: 'elementspath',
-          resize_enabled: false
+          customConfig: '/static/js/ckeditor/config.js") }}',
         });
-        CKEDITOR.config.forcePasteAsPlainText = true;
+
         CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
 
         $('.select-change').click(function(){

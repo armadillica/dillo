@@ -44,6 +44,11 @@ a
 	&:hover
 		color: $color_brand_secondary
 
+blockquote
+	font-size: 1em
+	background-color: lighten($color_background, 2%)
+	border-left: 5px solid darken($color_background, 5%)
+
 .page-container
 	min-height: 345px /* avoids the fixed sidebar to go over the footer */
 	background-color: $color_background
@@ -486,7 +491,7 @@ a
 
 .post-view-content
 	font-size: 1.1em
-	line-height: 1.8em
+	line-height: 1.7em
 	padding: 10px 15px 25px 95px
 	margin: 0
 	border: 3px solid transparent
@@ -498,7 +503,7 @@ a
 		margin: 10px
 
 	& p
-		margin-bottom: 25px
+		margin-bottom: 20px
 		word-break:	break-word
 		+media-xs
 			margin-bottom: 10px
@@ -527,10 +532,12 @@ a
 
 	& ul
 		list-style-type: none
-		padding-left: 30px
+		padding-left: 20px
+		+media-xs
+			padding-left: 10px
 
 		& li
-			margin-bottom: 20px
+			margin-bottom: 10px
 
 		& li:before
 			content: '·'
@@ -966,7 +973,6 @@ a
 
 	&.odd
 		background-color: darken(white, 5%)
-		+text-shadow(1px, 1px, 0, white, 0.8)
 	&.reply
 		padding-left: 80px
 		border-top: thin dashed lighten($color_text, 60%)
@@ -1082,8 +1088,20 @@ div#post-comment-reply-container
 	+media-lg
 		margin-left: 80px
 
-	& p
+	& p, & h1, & h2, & blockquote
 		word-break: break-word
+
+	& h1
+		font-size: 2em
+	& h2
+		font-size: 1.6em
+	& pre
+		font-size: 1em
+		padding: 2px 4px
+		color: #c7254e
+		background-color: #f9f2f4
+		border: none
+		+border-radius(3px)
 
 .post-view-comments-item-details
 	display: block
@@ -2150,10 +2168,40 @@ fieldset
 			font-size: 1.6em
 
 /* CKEditor Overrides */
+.cke_reset, .cke_reset_all *
+	font: normal normal normal 1em $font_body
+
+.cke_panel
+	border: thin solid lighten($color_background, 2%)
+	font-family: $font_body !important
+	+box-shadow-none	
+
+.cke_combopanel
+	border: thin solid lighten($color_background, 2%)
+	font-family: $font_body !important
+	+box-shadow-none
+	& body
+	font-family: $font_body !important
+
+.cke_panel_listItem.cke_selected a
+	font-family: $font_body !important
+	+box-shadow-none
+
+
+.cke_combo_button
+	+box-shadow-none
+	border: none !important
+	background-image: none !important
+	background-color: transparent !important
+
+.cke_combo_off a.cke_combo_button:active, .cke_combo_on a.cke_combo_button
+	+box-shadow-none
+	background-color: $color_background !important
+
 .cke_chrome
 	font-family: $font_body !important
 	font-weight: lighter
-	color: lighten($color_text, 10%) !important
+	//color: lighten($color_text, 10%) !important
 	border: thin solid lighten($color_text, 60%) !important
 	background-color: lighten($color_background, 3%) !important
 	resize: none

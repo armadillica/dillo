@@ -332,12 +332,12 @@
 	<script type="text/javascript">
 
 	{% if current_user.is_authenticated() %}
+
 		CKEDITOR.replace('post_comment', {
-			removePlugins: 'elementspath',
-			resize_enabled: false
+			customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}',
 		});
+
 		CKEDITOR.disableAutoInline = true;
-		CKEDITOR.config.forcePasteAsPlainText = true;
 		CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
 
 		var comment_reply_editor, html = '';
@@ -454,7 +454,10 @@
 
 		{% if current_user.is_owner %}
 			$("#edit-post-toggle").click(function() {
-				var ck = CKEDITOR.inline('post-content');
+				var ck = CKEDITOR.inline('post-content',
+								{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
+								);
+
 				ck.on( 'instanceReady', function( ev ) {
 					var editor = ev.editor;
 					editor.setReadOnly( false );
