@@ -1970,7 +1970,7 @@ fieldset
 		padding: 0
 		& li
 			float: left
-			padding: 10px 0
+			padding: 0
 			&.navbar-submit
 				border-top-left-radius: 3px
 				border-bottom-left-radius: 3px
@@ -1987,7 +1987,8 @@ fieldset
 				float: right
 				margin-right: 10px
 			& a
-				padding: 0 10px 0 15px
+				display: inline-block
+				padding: 10px 10px 10px 15px
 				&.active
 					color: $color_brand_secondary
 	& .nav-sidebar-avatar
@@ -1995,10 +1996,12 @@ fieldset
 		height: 30px
 		width: 30px
 		background-size: cover
-		position: absolute
+		position: relative
 		top: 5px
 		+border-radius(50%)
 		+box-shadow(2px, 2px, 0, black, .1)
+		&:hover
+			opacity: .9
 
 .nav-sidebar.meta
 	background-color: transparent
