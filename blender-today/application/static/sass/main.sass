@@ -553,6 +553,14 @@ blockquote
 			left: -10px
 			color: lighten($color_text, 20%)
 
+	& pre
+		font-size: 1em
+		padding: 2px 4px
+		color: #c7254e
+		background-color: #f9f2f4
+		border: none
+		+border-radius(3px)
+
 	&.action-edit
 		border: 3px dashed lighten($color_text, 40%)
 
@@ -1998,6 +2006,7 @@ fieldset
 		background-size: cover
 		position: relative
 		top: 5px
+		margin-left: 5px
 		+border-radius(50%)
 		+box-shadow(2px, 2px, 0, black, .1)
 		&:hover
