@@ -399,7 +399,7 @@
 
 			var comment = $(this).attr('comment');
 			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default btn-block btn-success"><i class="fa fa-check"></i> Submit Reply</span></div>');
-			var config = {};
+			var config = { customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' };
 			comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
 		});
 
@@ -407,10 +407,19 @@
 		$(document).on('click','#form-comment-reply-submit',function(e){
 			var parent_id = $("#post-comment-reply-container").attr("parent_id");
 			var comment_reply_content = comment_reply_editor.getData();
+			$('#form-comment-reply-submit').html('<i class="fa fa-spinner fa-spin"></i> Submitting');
+
 			$.post($("#form-comment").attr("action"), {parent_id:parent_id, content:comment_reply_content},function(data){
 				c = print_comment(data['comment'], 'reply ');
 				$("#post-comment-reply-container").before(c);
 				$("#post-comment-reply-container").hide();
+			})
+			.done(function(data){
+			    $('#form-comment-reply-submit').css('background-color', '#5cb85c');
+			    $('#form-comment-reply-submit').html('<i class="fa fa-check"></i> Success!');
+			})
+			.fail(function(data){
+			  $('#form-comment-reply-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
 			});
 		});
 

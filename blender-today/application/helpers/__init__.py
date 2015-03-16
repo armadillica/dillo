@@ -117,6 +117,7 @@ def bleach_input(markup):
                     u'i', u'ins', u'li', u'ol', u's', u'span', u'strong', u'ul', u'p', u'pre', 'br']
     ALLOWED_ATTRS = {
         '*': ['style'],
+        'a': ['href', 'rel'],
         }
 
     ALLOWED_STYLES = ['color', 'background-color']
