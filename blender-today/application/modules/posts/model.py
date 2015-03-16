@@ -64,7 +64,7 @@ class Post(db.Model):
     def pretty_edit_date(self):
         return pretty_date(self.edit_date)
 
-    #@cache.memoize(timeout=60)
+    @cache.memoize(timeout=3600)
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
             picture = imgur_client.get_image(self.picture)
