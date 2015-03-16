@@ -219,10 +219,6 @@
 							{% endif %}
 
 							<span class="meta">
-								{{post.post_type.name}}
-
-								<span class="separator"></span>
-
 								<span class="date">
 								Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
 								{% if post.status == 'deleted' %}
