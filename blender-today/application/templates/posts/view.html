@@ -34,295 +34,291 @@
 {% block body %}
 {% cache 60*5, 'post', post.uuid, user_string_id %}
 <div class="row">
-<div class="col-md-9 post-view">
+	<div class="col-md-9 post-view">
 
-	<div class="row">
-		<div class="col-md-6 col-xs-6">
-			<h4 class="post-view-container-title">
-				<a href="{{url_for('index')}}">Home</a>
-				<strong>·</strong>
-				<a href="{{url_for('index')}}{{post.category.url}}">{{post.category.name}}</a>
-			</h4>
-		</div>
-		<div class="col-md-6 col-xs-6">
-			{{ category_dropdown(title, category, categories) }}
-		</div>
-	</div>
-
-	<div class="post-view-container">
-		<div class="post-view-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}"
-				{% if current_user.is_anonymous() %}
-				 data-toggle="popover" data-trigger="hover" data-placement="bottom"
-				 data-content="Sign in to vote"
-				{% endif %}>
-			<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
-				<i class="fa fa-angle-up"></i>
-			</a>
-			<span class="middle rating">{{post.rating_delta}}</span>
-			<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
-				<i class="fa fa-angle-down"></i>
-			</a>
-		</div>
-
-		<div class="post-view-title">
-			<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}" title="{{post.title}}" {% if post.post_type.url == 'link' %}target="_blank"{% endif %}>{{post.title}} {% if post.post_type.url == 'link' %}<small class="post-title-url">{{post.content}}</small>{% endif %}</a>
-		</div>
-
-		<div class="clearfix"></div>
-
-		{% if current_user.is_owner or current_user.has_role('admin') %}
-			<div class="notification-post-saved"><i class="fa fa-floppy-o"></i> Saving...</div>
-			<div class="notification-post-fail"><i class="fa fa-frown-o fa-spin"></i> Failed... try again?</div>
-		{% endif %}
-
-		{% if post.post_type.url != 'link' %}
-			<div class="post-view-content" id="post-content">
-				{{post.content|safe}}
+		<div class="row">
+			<div class="col-md-6 col-xs-6">
+				<h4 class="post-view-container-title">
+					<a href="{{url_for('index')}}">Home</a>
+					<strong>·</strong>
+					<a href="{{url_for('index')}}{{post.category.url}}">{{post.category.name}}</a>
+				</h4>
 			</div>
-		{% endif %}
-
-		{% if oembed %}
-			<div class="post-view-content oembed" id="post-content">{{oembed['html']|safe}}</div>
-		{% elif post.picture %}
-		<div class="post-view-content-image">
-			<a href="{{post.original_image}}" title="View on imgur.com" target="_blank">
-				<img src="{{post.thumbnail('h')}}"/>
-				<div class="post-view-content-image-link">view on imgur.com</div>
-			</a>
+			<div class="col-md-6 col-xs-6">
+				{{ category_dropdown(title, category, categories) }}
+			</div>
 		</div>
-		{% endif %}
 
-		<div class="post-view-details">
-			<div class="row">
-				<div class="col-md-1 col-sm-1 col-xs-2">
-					<div class="post-view-details-avatar">
-						{% if not post.user.deleted %}
-							<a href="{{url_for('index')}}u/{{post.user.id}}">
-								<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
-							</a>
-							{% if post.user.has_role('dev_core') %}
-								<div class="post-view-details-avatar-label">
-									<i class="dev_core bf-blender" title="Blender Core Developer"></i>
-								</div>
-							{% elif post.user.has_role('bfct_trainer') %}
-								<div class="post-view-details-avatar-label">
-									<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
-								</div>
-							{% elif post.user.has_role('network_member') %}
-								<div class="post-view-details-avatar-label">
-									<i class="network_member bf-network" title="Blender Network Member"></i>
-								</div>
-							{% elif post.user.has_role('cloud_member') %}
-								<div class="post-view-details-avatar-label">
-									<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
-								</div>
-							{% endif %}
-						{% else %}
-							<span class="post-view-details-avatar-deleted"></span>
-						{% endif %}
-					</div>
-				</div>
-				<div class="col-md-11 col-sm-11 col-xs-10">
-					<div class="post-view-details-meta">
+		<div class="post-view-container">
+			<div class="post-view-rate{% if current_user.is_anonymous() %} popover-post-vote{% endif %}"
+					{% if current_user.is_anonymous() %}
+					 data-toggle="popover" data-trigger="hover" data-placement="bottom"
+					 data-content="Sign in to vote"
+					{% endif %}>
+				<a class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}" title="Upvote, click again to undo">
+					<i class="fa fa-angle-up"></i>
+				</a>
+				<span class="middle rating">{{post.rating_delta}}</span>
+				<a class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}" href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}" title="Downvote, click again to undo">
+					<i class="fa fa-angle-down"></i>
+				</a>
+			</div>
 
-						<div class="post-actions">
+			<div class="post-view-title">
+				<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}" title="{{post.title}}" {% if post.post_type.url == 'link' %}target="_blank"{% endif %}>{{post.title}} {% if post.post_type.url == 'link' %}<small class="post-title-url">{{post.content}}</small>{% endif %}</a>
+			</div>
 
-							<h4 class="{% if post.status != 'deleted' %}hidden{% endif %}" id="edit-post-delete-label">
-								<span class="label label-lg label-danger">This post has been deleted</span>
-							</h4>
+			<div class="clearfix"></div>
 
-						{% if post.status != 'deleted' %}
-							<span id="social">
-								<span class="icons">
-
-									<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop" target="_blank">
-											<i class="fa fa-envelope-o"></i>
-									</a>
-
-									<a href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Reddit" class="pop" target="_blank">
-										<i class="fa fa-reddit"></i>
-									</a>
-
-									<a href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Google+" class="pop" target="_blank">
-										<i class="fa fa-google-plus"></i>
-									</a>
-
-									<a href="https://www.facebook.com/sharer/sharer.php?u={{post.title}}%20{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop" target="_blank">
-										<i class="fa fa-facebook"></i>
-									</a>
-
-									<a href="https://twitter.com/home?status={{post.title}} @BlenderToday {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}} %23b3d" title="Share on Twitter" class="pop" target="_blank">
-										<i class="fa fa-twitter"></i>
-									</a>
-
-								</span> <!-- icons -->
-							</span> <!-- social -->
-
-							<span id="social-toggle" class="post-actions-button social" title="Share">
-								<i class="fa fa-share-alt"></i>
-							</span>
-						{% endif %}
-
-						{% if current_user.is_owner %}
-
-							{% if post.status != 'deleted' %}
-								{% if post.post_type.url != 'link' %}
-									<a id="edit-post-save" class="post-actions-button save"
-										 href="{{ url_for('posts.edit', uuid=post.uuid) }}" title="Save Changes">
-										 <i class="fa fa-save"></i>
-									</a>
-									<span id="edit-post-toggle" class="post-actions-button edit" title="Edit Post">
-										<i class="fa fa-pencil"></i>
-									</span>
-								{% endif %}
-
-								<a class="edit-post-delete-widget post-actions-button delete" 
-									 title="Delete Post" href="">
-									<span class="edit-post-delete-widget-action" link=""></span>
-									<span class="edit-post-delete-widget-icon"><i class="fa fa-trash"></i></span>
-									<span class="edit-post-delete-widget-question">?</span>
-								</a>
-							{% endif %}
-						{% endif %}
-
-						</div> <!-- post-actions -->
-
-						<span class="author-name">
-							{% if post.user.deleted %}
-								<span class="deleted" title="This account no longer exists">[deleted]</span>
-							{% else %}
-							<a href="{{url_for('index')}}u/{{post.user.id}}">
-								{% if post.user.first_name and post.user.first_name != 'None' %}
-									{{post.user.first_name}} {{post.user.last_name}} ({{post.user.username}})
-								{% else %}
-									{{post.user.username}}
-								{% endif %}
-							</a>
-							{% endif %}
-						</span> <!-- author-name -->
-
-						{% if not post.user.deleted %}
-							<span class="author-roles">
-								{% if post.user.has_role('dev_core') %}
-									<i class="bf-blender"></i> Blender Core Developer<br/>
-								{% endif %}
-								{% if post.user.has_role('cloud_member') %}
-									<i class="bf-cloud"></i> Blender Cloud Member<br/>
-								{% endif %}
-								{% if post.user.has_role('network_member') %}
-									<i class="bf-network"></i> Blender Network Member<br/>
-								{% endif %}
-								{% if post.user.has_role('bfct_trainer') %}
-									<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
-								{% endif %}	
-							</span> <!-- author-roles -->
-						{% endif %}
-
-						<span class="meta">
-							{{post.post_type.name}}
-
-							<span class="separator"></span>
-
-							<span class="date">
-							Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
-							{% if post.status == 'deleted' %}
-								<span class="disabled">(deleted)</span>
-							{% else %}
-								{% if post.edit_date %}
-									<span class="edited" title="Last edited {{post.pretty_edit_date}}">
-										(edited)
-									</span>
-								{% endif %}
-							{% endif %}
-							</span>
-							<span class="separator"></span>
-							<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
-								<i class="fa fa-link"></i>
-							</a>
-
-							{% if post.status != 'deleted' %}
-
-							<span class="separator"></span>
-							<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
-							</a>
-
-							{% endif %}
-
-						</span> <!-- meta -->
-					</div> <!-- post-view-details-meta -->
-				</div> <!-- col-md -->
-			</div> <!-- row -->
-		</div> <!-- post-view-details -->
-
-		<div class="post-view-comments">
-			<a name="comments"></a>
-			{% if post.comments %}
-				<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
-
-				{% for comment in post.comments_first_level %}
-					{{print_comment(comment, loop, post)}}
-					{% for reply in comment.children %}
-						{{print_comment(reply, loop, post, is_reply=True)}}
-					{% endfor %}
-				{% endfor %}
-
-			{% else %}
-				<h3 class="title">No Comments {% if post.status != 'deleted' %}<small>(yet)</small>{% endif %}</h3>
-				{% if post.status != 'deleted' %}
-					<div class="post-view-comments-empty">
-						It's your chance. Be the first!
-					</div>
-				{% endif %}
-				<br/>
+			{% if current_user.is_owner or current_user.has_role('admin') %}
+				<div class="notification-post-saved"><i class="fa fa-floppy-o"></i> Saving...</div>
+				<div class="notification-post-fail"><i class="fa fa-frown-o fa-spin"></i> Failed... try again?</div>
 			{% endif %}
 
-			{% if post.status != 'deleted' %}
-			<div class="post-view-comments-submit">
+			{% if post.post_type.url != 'link' %}
+				<div class="post-view-content" id="post-content">
+					{{post.content|safe}}
+				</div>
+			{% endif %}
+
+			{% if oembed %}
+				<div class="post-view-content oembed" id="post-content">{{oembed['html']|safe}}</div>
+			{% elif post.picture %}
+			<div class="post-view-content-image">
+				<a href="{{post.original_image}}" title="View on imgur.com" target="_blank">
+					<img src="{{post.thumbnail('h')}}"/>
+					<div class="post-view-content-image-link">view on imgur.com</div>
+				</a>
+			</div>
+			{% endif %}
+
+			<div class="post-view-details">
 				<div class="row">
-					<div class="col-md-1">
-					</div>
-					<div class="col-md-11">
-						{% if current_user.is_anonymous() %}
-							<h3><a href="{{url_for_security('login')}}">Login to comment</a></h3>
-						{% else %}
-							<h3>Leave a comment</h3>
-						{% endif %}
-					</div>
-
-					<div class="col-md-1">
-					</div>
-					<div class="col-md-11">
-						{% if not current_user.is_anonymous() %}
-						<form id="form-comment" role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
-							{{ form.hidden_tag() }}
-							<div class="form-group">
-								{{ form.content(class='form-control', id='post_comment') }}
-								{% if form.content.errors %}
-									<ul class="error">
-											{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
-									</ul>
+					<div class="col-md-1 col-sm-1 col-xs-2">
+						<div class="post-view-details-avatar">
+							{% if not post.user.deleted %}
+								<a href="{{url_for('index')}}u/{{post.user.id}}">
+									<img class="img-circle" src="{{post.user.gravatar()}}" title="{{post.user.first_name}} {{post.user.last_name}}">
+								</a>
+								{% if post.user.has_role('dev_core') %}
+									<div class="post-view-details-avatar-label">
+										<i class="dev_core bf-blender" title="Blender Core Developer"></i>
+									</div>
+								{% elif post.user.has_role('bfct_trainer') %}
+									<div class="post-view-details-avatar-label">
+										<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+									</div>
+								{% elif post.user.has_role('network_member') %}
+									<div class="post-view-details-avatar-label">
+										<i class="network_member bf-network" title="Blender Network Member"></i>
+									</div>
+								{% elif post.user.has_role('cloud_member') %}
+									<div class="post-view-details-avatar-label">
+										<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
+									</div>
 								{% endif %}
-							</div>
-							{{ form.parent_id }}
-
-							<button id="submit-post" type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
-								<i class="fa fa-check"></i> Submit Comment
-							</button>
-
-						</form>
-					{% endif %}
+							{% else %}
+								<span class="post-view-details-avatar-deleted"></span>
+							{% endif %}
+						</div>
 					</div>
-				</div>
-			</div> <!-- post-view-comments-submit -->
-			{% endif %}
+					<div class="col-md-11 col-sm-11 col-xs-10">
+						<div class="post-view-details-meta">
 
-		</div> <!-- post-view-comments -->
+							<div class="post-actions">
 
-	</div> <!-- post-view -->
-</div> <!-- col-md -->
-<div class="col-md-3">
-	{% include '_sidebar.html' %}
-</div>
+								<h4 class="{% if post.status != 'deleted' %}hidden{% endif %}" id="edit-post-delete-label">
+									<span class="label label-lg label-danger">This post has been deleted</span>
+								</h4>
+
+							{% if post.status != 'deleted' %}
+								<span id="social">
+									<span class="icons">
+
+										<a href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share via Email" class="pop" target="_blank">
+												<i class="fa fa-envelope-o"></i>
+										</a>
+
+										<a href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Reddit" class="pop" target="_blank">
+											<i class="fa fa-reddit"></i>
+										</a>
+
+										<a href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Google+" class="pop" target="_blank">
+											<i class="fa fa-google-plus"></i>
+										</a>
+
+										<a href="https://www.facebook.com/sharer/sharer.php?u={{post.title}}%20{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" title="Share on Facebook" class="pop" target="_blank">
+											<i class="fa fa-facebook"></i>
+										</a>
+
+										<a href="https://twitter.com/home?status={{post.title}} @BlenderToday {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}} %23b3d" title="Share on Twitter" class="pop" target="_blank">
+											<i class="fa fa-twitter"></i>
+										</a>
+
+									</span> <!-- icons -->
+								</span> <!-- social -->
+
+								<span id="social-toggle" class="post-actions-button social" title="Share">
+									<i class="fa fa-share-alt"></i>
+								</span>
+							{% endif %}
+
+							{% if current_user.is_owner %}
+
+								{% if post.status != 'deleted' %}
+									{% if post.post_type.url != 'link' %}
+										<a id="edit-post-save" class="post-actions-button save"
+											 href="{{ url_for('posts.edit', uuid=post.uuid) }}" title="Save Changes">
+											 <i class="fa fa-save"></i>
+										</a>
+										<span id="edit-post-toggle" class="post-actions-button edit" title="Edit Post">
+											<i class="fa fa-pencil"></i>
+										</span>
+									{% endif %}
+
+									<a class="edit-post-delete-widget post-actions-button delete" 
+										 title="Delete Post" href="">
+										<span class="edit-post-delete-widget-action" link=""></span>
+										<span class="edit-post-delete-widget-icon"><i class="fa fa-trash"></i></span>
+										<span class="edit-post-delete-widget-question">?</span>
+									</a>
+								{% endif %}
+							{% endif %}
+
+							</div> <!-- post-actions -->
+
+							<span class="author-name">
+								{% if post.user.deleted %}
+									<span class="deleted" title="This account no longer exists">[deleted]</span>
+								{% else %}
+								<a href="{{url_for('index')}}u/{{post.user.id}}">
+									{% if post.user.first_name and post.user.first_name != 'None' %}
+										{{post.user.first_name}} {{post.user.last_name}} ({{post.user.username}})
+									{% else %}
+										{{post.user.username}}
+									{% endif %}
+								</a>
+								{% endif %}
+							</span> <!-- author-name -->
+
+							{% if not post.user.deleted %}
+								<span class="author-roles">
+									{% if post.user.has_role('dev_core') %}
+										<i class="bf-blender"></i> Blender Core Developer<br/>
+									{% endif %}
+									{% if post.user.has_role('cloud_member') %}
+										<i class="bf-cloud"></i> Blender Cloud Member<br/>
+									{% endif %}
+									{% if post.user.has_role('network_member') %}
+										<i class="bf-network"></i> Blender Network Member<br/>
+									{% endif %}
+									{% if post.user.has_role('bfct_trainer') %}
+										<i class="fa fa-graduation-cap"></i> Blender Foundation Certified Trainer
+									{% endif %}	
+								</span> <!-- author-roles -->
+							{% endif %}
+
+							<span class="meta">
+								<span class="date">
+								Posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+								{% if post.status == 'deleted' %}
+									<span class="disabled">(deleted)</span>
+								{% else %}
+									{% if post.edit_date %}
+										<span class="edited" title="Last edited {{post.edit_date.strftime('%H:%M on %A %d, %B %Y')}}">
+											(edited {{post.pretty_edit_date}})
+										</span>
+									{% endif %}
+								{% endif %}
+								</span>
+								<span class="separator"></span>
+								<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+									<i class="fa fa-link"></i>
+								</a>
+
+								{% if post.status != 'deleted' %}
+
+								<span class="separator"></span>
+								<a title="Flag this post" class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}" href="{{url_for('posts.flag', uuid=post.uuid)}}" title="Flag, click again to undo">
+								</a>
+
+								{% endif %}
+
+							</span> <!-- meta -->
+						</div> <!-- post-view-details-meta -->
+					</div> <!-- col-md -->
+				</div> <!-- row -->
+			</div> <!-- post-view-details -->
+
+			<div class="post-view-comments">
+				<a name="comments"></a>
+				{% if post.comments %}
+					<h3 class="title">Comments <small>({{post.comments|length}})</small></h3>
+
+					{% for comment in post.comments_first_level %}
+						{{print_comment(comment, loop, post)}}
+						{% for reply in comment.children %}
+							{{print_comment(reply, loop, post, is_reply=True)}}
+						{% endfor %}
+					{% endfor %}
+
+				{% else %}
+					<h3 class="title">No Comments {% if post.status != 'deleted' %}<small>(yet)</small>{% endif %}</h3>
+					{% if post.status != 'deleted' %}
+						<div class="post-view-comments-empty">
+							It's your chance. Be the first!
+						</div>
+					{% endif %}
+					<br/>
+				{% endif %}
+
+				{% if post.status != 'deleted' %}
+				<div class="post-view-comments-submit">
+					<div class="row">
+						<div class="col-md-1">
+						</div>
+						<div class="col-md-11">
+							{% if current_user.is_anonymous() %}
+								<h3><a href="{{url_for_security('login')}}">Login to comment</a></h3>
+							{% else %}
+								<h3>Leave a comment</h3>
+							{% endif %}
+						</div>
+
+						<div class="col-md-1">
+						</div>
+						<div class="col-md-11">
+							{% if not current_user.is_anonymous() %}
+							<form id="form-comment" role="form" method="POST" enctype="multipart/form-data" action="{{url_for('comments.submit', post_id=post.id)}}">
+								{{ form.hidden_tag() }}
+								<div class="form-group">
+									{{ form.content(class='form-control', id='post_comment') }}
+									{% if form.content.errors %}
+										<ul class="error">
+												{% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+										</ul>
+									{% endif %}
+								</div>
+								{{ form.parent_id }}
+
+								<button id="submit-post" type="submit" class="btn btn-default btn-block btn-squishy btn-success submit" value="Go">
+									<i class="fa fa-check"></i> Submit Comment
+								</button>
+
+							</form>
+						{% endif %}
+						</div>
+					</div>
+				</div> <!-- post-view-comments-submit -->
+				{% endif %}
+
+			</div> <!-- post-view-comments -->
+
+		</div> <!-- post-view -->
+	</div> <!-- col-md -->
+	<div class="col-md-3">
+		{% include '_sidebar.html' %}
+	</div>
 </div> <!-- row -->
 {% endcache %}
 {% endblock %}
@@ -332,12 +328,12 @@
 	<script type="text/javascript">
 
 	{% if current_user.is_authenticated() %}
+
 		CKEDITOR.replace('post_comment', {
-			removePlugins: 'elementspath',
-			resize_enabled: false
+			customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}',
 		});
+
 		CKEDITOR.disableAutoInline = true;
-		CKEDITOR.config.forcePasteAsPlainText = true;
 		CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
 
 		var comment_reply_editor, html = '';
@@ -399,7 +395,7 @@
 
 			var comment = $(this).attr('comment');
 			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default btn-block btn-success"><i class="fa fa-check"></i> Submit Reply</span></div>');
-			var config = {};
+			var config = { customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' };
 			comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
 		});
 
@@ -407,10 +403,19 @@
 		$(document).on('click','#form-comment-reply-submit',function(e){
 			var parent_id = $("#post-comment-reply-container").attr("parent_id");
 			var comment_reply_content = comment_reply_editor.getData();
+			$('#form-comment-reply-submit').html('<i class="fa fa-spinner fa-spin"></i> Submitting');
+
 			$.post($("#form-comment").attr("action"), {parent_id:parent_id, content:comment_reply_content},function(data){
 				c = print_comment(data['comment'], 'reply ');
 				$("#post-comment-reply-container").before(c);
 				$("#post-comment-reply-container").hide();
+			})
+			.done(function(data){
+			    $('#form-comment-reply-submit').css('background-color', '#5cb85c');
+			    $('#form-comment-reply-submit').html('<i class="fa fa-check"></i> Success!');
+			})
+			.fail(function(data){
+			  $('#form-comment-reply-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
 			});
 		});
 
@@ -454,7 +459,10 @@
 
 		{% if current_user.is_owner %}
 			$("#edit-post-toggle").click(function() {
-				var ck = CKEDITOR.inline('post-content');
+				var ck = CKEDITOR.inline('post-content',
+								{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
+								);
+
 				ck.on( 'instanceReady', function( ev ) {
 					var editor = ev.editor;
 					editor.setReadOnly( false );
@@ -508,33 +516,10 @@
 
 	{% else %}
 
-		$('.popover-vote').popover();
+		$('.popover-post-vote').popover();
 	  $('.popover-comment-reply').popover();
 	  $('.popover-comment-vote').popover();
 
 	{% endif %} // endif is_authenticated
-
-	$('#social-toggle').click(function(){
-		var pops = $('a');
-
-		if ($(this).hasClass('activato')){
-			$(this).removeClass('activato');
-			$(this).html('<i class="fa fa-share-alt"></i>');
-
-			$('#social').find(pops).each(function(i){
-				$(this).animate({'right' : (5 * i) * -1, 'opacity' : 0});
-			});
-
-		} else {
-			$(this).addClass('activato');
-
-			$('#social').find(pops).each(function(i){
-				$(this).animate({'right' : 40 * i, 'opacity' : 1.0});
-			});
-
-			$(this).html('<i class="fa fa-times"></i>');
-		};
-	}); // social-toggle
-
 	</script>
 {% endblock %}

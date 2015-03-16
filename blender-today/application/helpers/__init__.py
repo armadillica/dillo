@@ -113,8 +113,16 @@ def pretty_date(time=False):
 
 
 def bleach_input(markup):
-    ALLOWED_TAGS = [u'a', u'abbr', u'acronym', u'b', u'blockquote', u'code', u'em', u'i', u'li', u'ol', u'strong', u'ul', u'p', 'br']
-    output = bleach.clean(markup, tags=ALLOWED_TAGS, strip=False)
+    ALLOWED_TAGS = [u'a', u'abbr', u'acronym', u'b', u'blockquote', u'code', u'del', u'em', u'h1', u'h2',
+                    u'i', u'ins', u'li', u'ol', u's', u'span', u'strong', u'ul', u'p', u'pre', 'br']
+    ALLOWED_ATTRS = {
+        '*': ['style'],
+        'a': ['href', 'rel'],
+        }
+
+    ALLOWED_STYLES = ['color', 'background-color']
+
+    output = bleach.clean(markup, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRS, styles=ALLOWED_STYLES, strip=False)
     return output
 
 

@@ -44,6 +44,11 @@ a
 	&:hover
 		color: $color_brand_secondary
 
+blockquote
+	font-size: 1em
+	background-color: lighten($color_background, 2%)
+	border-left: 5px solid darken($color_background, 5%)
+
 .page-container
 	min-height: 345px /* avoids the fixed sidebar to go over the footer */
 	background-color: $color_background
@@ -486,7 +491,7 @@ a
 
 .post-view-content
 	font-size: 1.1em
-	line-height: 1.8em
+	line-height: 1.7em
 	padding: 10px 15px 25px 95px
 	margin: 0
 	border: 3px solid transparent
@@ -498,10 +503,16 @@ a
 		margin: 10px
 
 	& p
-		margin-bottom: 25px
+		margin-bottom: 20px
 		word-break:	break-word
 		+media-xs
 			margin-bottom: 10px
+
+	& h1
+		font-size: 2em
+
+	& h2
+		font-size: 1.5em
 
 	& iframe
 		width: 100%
@@ -527,10 +538,13 @@ a
 
 	& ul
 		list-style-type: none
-		padding-left: 30px
+		padding-left: 20px
+		margin: 20px 0 25px 0
+		+media-xs
+			padding-left: 10px
 
 		& li
-			margin-bottom: 20px
+			margin-bottom: 10px
 
 		& li:before
 			content: '·'
@@ -538,6 +552,14 @@ a
 			font-weight: bolder
 			left: -10px
 			color: lighten($color_text, 20%)
+
+	& pre
+		font-size: 1em
+		padding: 2px 4px
+		color: #c7254e
+		background-color: #f9f2f4
+		border: none
+		+border-radius(3px)
 
 	&.action-edit
 		border: 3px dashed lighten($color_text, 40%)
@@ -551,7 +573,6 @@ a
 
 	&.action-edit:focus
 		border: 3px dashed lighten($color_brand_main, 20%)
-		color: black
 
 	&.action-edit:focus:after
 		color: $color_brand_main
@@ -966,7 +987,6 @@ a
 
 	&.odd
 		background-color: darken(white, 5%)
-		+text-shadow(1px, 1px, 0, white, 0.8)
 	&.reply
 		padding-left: 80px
 		border-top: thin dashed lighten($color_text, 60%)
@@ -1082,8 +1102,20 @@ div#post-comment-reply-container
 	+media-lg
 		margin-left: 80px
 
-	& p
+	& p, & h1, & h2, & blockquote
 		word-break: break-word
+
+	& h1
+		font-size: 2em
+	& h2
+		font-size: 1.6em
+	& pre
+		font-size: 1em
+		padding: 2px 4px
+		color: #c7254e
+		background-color: #f9f2f4
+		border: none
+		+border-radius(3px)
 
 .post-view-comments-item-details
 	display: block
@@ -1946,7 +1978,7 @@ fieldset
 		padding: 0
 		& li
 			float: left
-			padding: 10px 0
+			padding: 0
 			&.navbar-submit
 				border-top-left-radius: 3px
 				border-bottom-left-radius: 3px
@@ -1963,17 +1995,22 @@ fieldset
 				float: right
 				margin-right: 10px
 			& a
-				padding: 0 15px
+				display: inline-block
+				padding: 10px 10px 10px 15px
 				&.active
 					color: $color_brand_secondary
 	& .nav-sidebar-avatar
+		display: inline-block
 		height: 30px
 		width: 30px
 		background-size: cover
-		position: absolute
+		position: relative
 		top: 5px
+		margin-left: 5px
 		+border-radius(50%)
 		+box-shadow(2px, 2px, 0, black, .1)
+		&:hover
+			opacity: .9
 
 .nav-sidebar.meta
 	background-color: transparent
@@ -1981,10 +2018,14 @@ fieldset
 	margin: 0
 	padding: 0
 	font-size: 0.8em
+	text-align: center
 	+box-shadow-none
 	& p
-		padding: 10px 0 10px 15px
+		padding: 10px 0
 		margin: 0
+		& a
+			display: inline-block
+			padding: 0 5px 5px 5px
 
 /* Submit Dialog */
 .dialog, .dialog__overlay
@@ -2146,10 +2187,40 @@ fieldset
 			font-size: 1.6em
 
 /* CKEditor Overrides */
+.cke_reset, .cke_reset_all *
+	font: normal normal normal 1em $font_body
+
+.cke_panel
+	border: thin solid lighten($color_background, 2%)
+	font-family: $font_body !important
+	+box-shadow-none	
+
+.cke_combopanel
+	border: thin solid lighten($color_background, 2%)
+	font-family: $font_body !important
+	+box-shadow-none
+	& body
+		font-family: $font_body !important
+
+.cke_panel_listItem.cke_selected a
+	font-family: $font_body !important
+	+box-shadow-none
+
+
+.cke_combo_button
+	+box-shadow-none
+	border: none !important
+	background-image: none !important
+	background-color: transparent !important
+
+.cke_combo_off a.cke_combo_button:active, .cke_combo_on a.cke_combo_button
+	+box-shadow-none
+	background-color: $color_background !important
+
 .cke_chrome
 	font-family: $font_body !important
 	font-weight: lighter
-	color: lighten($color_text, 10%) !important
+	//color: lighten($color_text, 10%) !important
 	border: thin solid lighten($color_text, 60%) !important
 	background-color: lighten($color_background, 3%) !important
 	resize: none
