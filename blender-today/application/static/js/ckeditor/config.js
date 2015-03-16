@@ -8,16 +8,16 @@ CKEDITOR.editorConfig = function( config ) {
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
-	CKEDITOR.plugins.addExternal( 'panel', '/static/js/ckeditor/panel/' );
-	CKEDITOR.plugins.addExternal( 'panelbutton', '/static/js/ckeditor/panelbutton/' );
-	CKEDITOR.plugins.addExternal( 'floatpanel', '/static/js/ckeditor/floatpanel/' );
-	CKEDITOR.plugins.addExternal( 'listblock', '/static/js/ckeditor/listblock/' );
-	CKEDITOR.plugins.addExternal( 'richcombo', '/static/js/ckeditor/richcombo/' );
-	CKEDITOR.plugins.addExternal( 'format', '/static/js/ckeditor/format/' );
-	CKEDITOR.plugins.addExternal( 'blockquote', '/static/js/ckeditor/blockquote/' );
-	CKEDITOR.plugins.addExternal( 'colorbutton', '/static/js/ckeditor/colorbutton/' );
-	CKEDITOR.plugins.addExternal( 'removeformat', '/static/js/ckeditor/removeformat/' );
-	CKEDITOR.plugins.addExternal( 'autolink', '/static/js/ckeditor/autolink/' );
+	CKEDITOR.plugins.addExternal( 'panel', '/static/js/ckeditor/panel/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'panelbutton', '/static/js/ckeditor/panelbutton/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'floatpanel', '/static/js/ckeditor/floatpanel/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'listblock', '/static/js/ckeditor/listblock/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'richcombo', '/static/js/ckeditor/richcombo/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'format', '/static/js/ckeditor/format/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'blockquote', '/static/js/ckeditor/blockquote/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'colorbutton', '/static/js/ckeditor/colorbutton/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'removeformat', '/static/js/ckeditor/removeformat/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'autolink', '/static/js/ckeditor/autolink/', 'plugin.min.js', 'plugin.min.js' );
 
 	// The toolbar groups arrangement, optimized for a single toolbar row.
 	config.toolbarGroups = [
