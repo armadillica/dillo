@@ -3,6 +3,7 @@ from flask import redirect
 from flask import url_for
 from flask import request
 from flask import flash
+from flask import send_from_directory
 
 from flask.ext.security import login_required
 
@@ -26,3 +27,7 @@ def faq():
 @app.route('/terms')
 def terms():
     return view('terms')
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
