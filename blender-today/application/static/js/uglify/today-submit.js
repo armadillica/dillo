@@ -41,7 +41,7 @@ $(document).ready(function() {
         })();
 
         CKEDITOR.replace( 'post_content', {
-          customConfig: '/static/js/ckeditor/config.js") }}',
+          customConfig: '/static/js/ckeditor/config.js',
         });
 
         CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });

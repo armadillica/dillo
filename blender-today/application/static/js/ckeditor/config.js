@@ -41,7 +41,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Subscript,Superscript,About,NumberedList,Indent,Outdent,BGColor';
 
-	config.resize_enabled = false;
 	config.forcePasteAsPlainText = true;
 
 	// Plugin Settings
