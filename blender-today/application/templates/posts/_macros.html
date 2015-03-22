@@ -7,26 +7,29 @@
 				<span class="post-view-comments-avatar-deleted"></span>
 			{% else %}
 
-				{# - Add a special class "op" if the comment is by the post author #}
-				<img class="img-circle{% if post.user.id == comment.user.id %} op{% endif %}" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
 
-				{% if comment.user.has_role('dev_core') %}
-					<div class="post-view-comments-avatar-label">
-						<i class="dev_core bf-blender" title="Blender Core Developer"></i>
-					</div>
-				{% elif comment.user.has_role('bfct_trainer') %}
-					<div class="post-view-comments-avatar-label">
-						<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
-					</div>
-				{% elif comment.user.has_role('network_member') %}
-					<div class="post-view-comments-avatar-label">
-						<i class="network_member bf-network" title="Blender Network Member"></i>
-					</div>
-				{% elif comment.user.has_role('cloud_member') %}
-					<div class="post-view-comments-avatar-label">
-						<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
-					</div>
-				{% endif %}
+				<a href="{{url_for('index')}}u/{{comment.user.id}}">
+				{# - Add a special class "op" if the comment is by the post author #}
+					<img class="img-circle{% if post.user.id == comment.user.id %} op{% endif %}" src="{{comment.user.gravatar()}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">
+
+					{% if comment.user.has_role('dev_core') %}
+						<div class="post-view-comments-avatar-label">
+							<i class="dev_core bf-blender" title="Blender Core Developer"></i>
+						</div>
+					{% elif comment.user.has_role('bfct_trainer') %}
+						<div class="post-view-comments-avatar-label">
+							<i class="bfct_trainer fa fa-graduation-cap" title="Blender Foundation Certified Trainer"></i>
+						</div>
+					{% elif comment.user.has_role('network_member') %}
+						<div class="post-view-comments-avatar-label">
+							<i class="network_member bf-network" title="Blender Network Member"></i>
+						</div>
+					{% elif comment.user.has_role('cloud_member') %}
+						<div class="post-view-comments-avatar-label">
+							<i class="cloud_member bf-cloud" title="Blender Cloud Member"></i>
+						</div>
+					{% endif %}
+				</a>
 			{% endif %}
 		</div>
 

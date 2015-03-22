@@ -87,7 +87,11 @@
 
 		{% if user.posts %}
 			<div class="user-view-index">
-				<h4>Submissions by {{user.username}}</h4>
+				<h4 class="post-view-container-title">
+					<a href="{{url_for('index')}}">Home</a>
+					<strong>·</strong>
+					Submissions by {{user.username}}
+				</h4>
 			</div>
 			{% for post in user.posts %}
 			<div class="row">
