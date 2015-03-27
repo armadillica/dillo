@@ -70,7 +70,7 @@
 				{% endif %}
 
 				<div class="user-view-info-meta">
-					<span class="karma">Karma {{user.karma.positive}}</span>
+					<span class="karma">Karma {{user.karma.value}}</span>
 					<br/>
 					{% if user.current_login_at %}
 						<span class="lastseen">Last seen {{user.current_login_at.strftime('%d %B %Y at %H:%M')}}</span>

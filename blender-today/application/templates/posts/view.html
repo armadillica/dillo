@@ -194,6 +194,7 @@
 								<a href="{{url_for('index')}}u/{{post.user.id}}">
 									{% if post.user.first_name and post.user.first_name != 'None' %}
 										{{post.user.first_name}} {{post.user.last_name}} ({{post.user.username}})
+										<span class="author-karma" title="Reputation">[{{post.user.karma.value}}]</span>
 									{% else %}
 										{{post.user.username}}
 									{% endif %}
