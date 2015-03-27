@@ -38,6 +38,10 @@ registry.register('https?://sketchfab.com/models/*',
     Provider('https://sketchfab.com/oembed'))
 registry.register('https?://p3d.in/*',
     Provider('https://p3d.in/oembed'))
+registry.register('https?://vine.co/v/*',
+    Provider('https://vine.co/oembed.json'))
+registry.register('https?://instagram.com/p/*',
+    Provider('http://api.instagram.com/oembed'))
 
 redis_client = redis.StrictRedis(
     host=app.config['CACHE_REDIS_HOST'],
