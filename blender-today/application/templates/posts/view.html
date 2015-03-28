@@ -192,13 +192,13 @@
 									<span class="deleted" title="This account no longer exists">[deleted]</span>
 								{% else %}
 								<a href="{{url_for('index')}}u/{{post.user.id}}">
-									{% if post.user.first_name and post.user.first_name != 'None' %}
-										{{post.user.first_name}} {{post.user.last_name}} ({{post.user.username}})
-										<span class="author-karma" title="Reputation">[{{post.user.karma.value}}]</span>
+									{% if (post.user.first_name and post.user.first_name != 'None') %}
+										{{post.user.first_name}} {{post.user.last_name}}
 									{% else %}
 										{{post.user.username}}
 									{% endif %}
 								</a>
+								<span class="author-karma" title="Reputation score">{{post.user.karma.value}}</span>
 								{% endif %}
 							</span> <!-- author-name -->
 
