@@ -59,7 +59,7 @@ blockquote
 	display: inline-block
 	height: 15px
 	width: 1px
-	margin: 0 5px
+	margin: 0 4px
 	background-color: lighten($color_text, 60%)
 	vertical-align: middle
 	+media-xs
@@ -640,7 +640,8 @@ blockquote
 	+text-shadow(1px, 1px, 0, black, 0.4)
 
 	& .separator
-		background-color: darken($color_brand_main, 10%)
+		background-color: darken($color_brand_main, 15%)
+
 	& .deleted
 		color: lighten(desaturate($color_brand_main, 10%), 30%)
 		+user-select-none
@@ -660,8 +661,7 @@ blockquote
 
 	& a
 		color: white
-		&:hover, &:focus
-			color: $color_brand_secondary
+		&:hover i, &:focus i
 			text-decoration: none
 
 	& .author-name
