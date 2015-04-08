@@ -64,20 +64,25 @@ class Post(db.Model):
     def pretty_edit_date(self):
         return pretty_date(self.edit_date)
 
+    @staticmethod
     @cache.memoize(timeout=3600)
+    def get_picture_link(picture_id):
+        picture = imgur_client.get_image(picture_id)
+        return picture.link
+
+
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
-            picture = imgur_client.get_image(self.picture)
-            return picture.link.replace(self.picture, self.picture + size)
+            picture_link = Post.get_picture_link(self.picture)
+            return picture_link.replace(self.picture, self.picture + size)
         else:
             return None
 
     @property
-    @cache.memoize(timeout=3600)
     def original_image(self):
         if self.picture:
-            picture = imgur_client.get_image(self.picture)
-            return picture.link
+            picture_link = Post.get_picture_link(self.picture)
+            return picture_link
         else:
             return None
 
