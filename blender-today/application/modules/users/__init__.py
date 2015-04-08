@@ -3,6 +3,7 @@ import random
 import string
 from datetime import date
 from datetime import timedelta
+from sqlalchemy import desc
 
 from flask import session
 from flask import redirect
@@ -26,6 +27,7 @@ from application.modules.users.model import user_datastore
 from application.modules.users.model import UserOauth
 from application.modules.users.model import UserKarma
 from application.modules.users.model import User
+from application.modules.posts.model import Post
 
 
 def user_get_or_create(email, first_name, last_name, service, service_user_id):
@@ -248,11 +250,16 @@ def view(user_id):
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
+    posts = Post.query\
+        .filter_by(user_id=user.id)\
+        .filter(Post.status != 'deleted')\
+        .order_by(desc(Post.creation_date))\
+        .all()
     return render_template('users/view.html',
         title='user_view',
         user_string_id=user_string_id,
+        posts=posts,
         user=user)
-
 
 
 @app.route('/u/stats')

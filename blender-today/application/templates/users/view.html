@@ -93,8 +93,7 @@
 					Submissions by {{user.username}}
 				</h4>
 			</div>
-			{% for post in user.posts %}
-			{% if (post.status != 'deleted') %}
+			{% for post in posts %}
 			<div class="row">
 				<div class="col-md-12">
 					<div class="post-index-item {{ loop.cycle('odd', 'even') }}">
@@ -181,7 +180,6 @@
 					</div> <!-- post-index-item -->
 				</div> <!-- col-md -->
 			</div> <!-- row -->
-			{% endif %}
 			{% endfor %}
 		{% else %}
 			<div class="post-index-empty">
