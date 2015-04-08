@@ -1,6 +1,8 @@
 import datetime
 import random
 import string
+from datetime import date
+from datetime import timedelta
 
 from flask import session
 from flask import redirect
@@ -8,6 +10,7 @@ from flask import url_for
 from flask import request
 from flask import flash
 from flask import render_template
+from flask import jsonify
 
 from flask.ext.security.utils import login_user
 from flask.ext.security import login_required
@@ -249,3 +252,18 @@ def view(user_id):
         title='user_view',
         user_string_id=user_string_id,
         user=user)
+
+
+
+@app.route('/u/stats')
+def stats():
+    """Query the amount of total users in the last 7 days
+    """
+    import sqlalchemy as sa
+    d = date.today() - timedelta(days=7)
+    stats = User.query.with_entities(User.signup_date, sa.func.count(User.signup_date))\
+        .filter(User.signup_date > d)\
+        .group_by(sa.func.day(User.signup_date))\
+        .all()
+
+    return jsonify(stats=stats)
