@@ -128,6 +128,8 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+		<script src="//cdn.embed.ly/jquery.embedly-3.1.1.min.js" type="text/javascript"></script>
+
 		{% endif %}
 
 		<script type="text/javascript">
@@ -155,6 +157,29 @@
 			$('#popover-home').popover();
 			$( function() {$( '#cd-dropdown' ).dropdown( {gutter : 5 } );
 			});
+
+			{% if current_user.is_authenticated() %}
+			$(document).ready(function () {
+				$.embedly.defaults.key = 'e41ded41bd6e47aabb1bfcb8a17dccb7';
+				$('#url').keyup(function(){
+					var url = $('#url').val();
+					$.embedly.extract(url).progress(function(data){
+						$('#title').val(data.title);
+						if (data.images[0]) {
+							$('.remote-picture-container').html('<img src="'+data.images[0].url+'"/>');
+							$('.post-submit-div-remote-picture').show();
+							$('#remote_picture').val(data.images[0].url);
+							$('.post-submit-div-picture').hide();
+						};
+					});
+				});
+				$('#dismiss-remote-picture').click(function(){
+					$('#remote_picture').val('');
+					$('.post-submit-div-remote-picture').hide();
+					$('.post-submit-div-picture').show();
+				});
+			});
+			{% endif %}
 		</script>
 
 	{% block footer_scripts %}

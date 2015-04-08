@@ -45,6 +45,18 @@
 			</div>
 		</div>
 
+		<div class="row post-submit-div-url post-submit-link">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>URL (with http://)</label>
+					{{ submit_post_form.url(
+						type='url',
+						class='form-control post-submit-field-url',
+						placeholder='URL including http:// . e.g: "http://gooseberry.blender.org"') }}
+				</div>
+			</div>
+		</div>
+
 		<div class="row post-submit-div-title">
 			<div class="col-md-12">
 				<div class="form-group">
@@ -57,18 +69,6 @@
 							{% for error in submit_post_form.title.errors %}<li>{{ error }}</li>{% endfor %}
 						</ul>
 					{% endif %}
-				</div>
-			</div>
-		</div>
-
-		<div class="row post-submit-div-url post-submit-link">
-			<div class="col-md-12">
-				<div class="form-group">
-					<label>URL (with http://)</label>
-					{{ submit_post_form.url(
-						type='url',
-						class='form-control post-submit-field-url',
-						placeholder='URL including http:// . e.g: "http://gooseberry.blender.org"') }}
 				</div>
 			</div>
 		</div>
@@ -104,6 +104,10 @@
 			</div>
 		</div>
 
+		<div class="row post-submit-div-remote-picture">
+			<div class="remote-picture-container"></div>
+			<span id="dismiss-remote-picture">X</span>
+		</div>
 
 		<div class="post-submit-div-submit">
 			<div class="row">

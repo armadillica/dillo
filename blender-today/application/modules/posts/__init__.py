@@ -1,6 +1,8 @@
 import os
 import json
 import datetime
+import requests
+
 from werkzeug import secure_filename
 from flask import render_template
 from flask import Blueprint
@@ -183,10 +185,25 @@ def submit():
             )
         db.session.add(post_rating)
         post.update_hot()
-        if form.picture.data:
-            filename = secure_filename(form.picture.data.filename)
-            filepath = '/tmp/' + filename
-            form.picture.data.save(filepath)
+        if form.picture.data or form.remote_picture.data:
+            if form.picture.data:
+                # If the user uploads an image from the form
+                filename = secure_filename(form.picture.data.filename)
+                filepath = '/tmp/' + filename
+                form.picture.data.save(filepath)
+            else:
+                # If the url is retrieved via embedly
+                filename = secure_filename(form.remote_picture.data)
+                filepath = '/tmp/' + filename
+                with open(filepath, 'wb') as handle:
+                    response = requests.get(form.remote_picture.data, stream=True)
+                    for block in response.iter_content(1024):
+                        if not block:
+                            break
+                        handle.write(block)
+
+            # In both cases we get the image now saved in temp and upload it
+            # to Imgur
             image = imgur_client.upload_from_path(filepath, config=None, anon=True)
             post.picture = image['id']
             post.picture_deletehash = image['deletehash']
@@ -383,7 +400,11 @@ def feed():
         feed.add(post.title, unicode(post.content),
                  content_type='html',
                  author=author,
-                 url=url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True),
+                 url=url_for('posts.view',
+                    category=post.category.url,
+                    uuid=post.uuid,
+                    slug=post.slug,
+                    _external=True),
                  updated=updated,
                  published=post.creation_date)
     return feed.get_response()

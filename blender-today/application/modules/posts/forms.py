@@ -14,6 +14,7 @@ class PostForm(Form):
     content = TextAreaField('Content')
     url = StringField('URL')
     picture = FileField('A picture')
+    remote_picture = HiddenField('A picture coming from the web')
 
 class CommentForm(Form):
     content = TextAreaField('Content', validators=[DataRequired()])
