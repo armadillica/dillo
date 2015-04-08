@@ -166,16 +166,16 @@
 					$.embedly.extract(url).progress(function(data){
 						$('#title').val(data.title);
 						if (data.images[0]) {
-							$('.remote-picture-container').html('<img src="'+data.images[0].url+'"/>');
-							$('.post-submit-div-remote-picture').show();
+							$('.picture-remote-container').html('<img src="'+data.images[0].url+'"/>');
+							$('.post-submit-div-picture-remote').show();
 							$('#remote_picture').val(data.images[0].url);
 							$('.post-submit-div-picture').hide();
 						};
 					});
 				});
-				$('#dismiss-remote-picture').click(function(){
+				$('#dismiss-picture-remote').click(function(){
 					$('#remote_picture').val('');
-					$('.post-submit-div-remote-picture').hide();
+					$('.post-submit-div-picture-remote').hide();
 					$('.post-submit-div-picture').show();
 				});
 			});

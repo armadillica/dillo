@@ -185,7 +185,7 @@ def submit():
             )
         db.session.add(post_rating)
         post.update_hot()
-        if form.picture.data or form.remote_picture.data:
+        if form.picture.data or form.picture_remote.data:
             if form.picture.data:
                 # If the user uploads an image from the form
                 filename = secure_filename(form.picture.data.filename)
@@ -193,10 +193,10 @@ def submit():
                 form.picture.data.save(filepath)
             else:
                 # If the url is retrieved via embedly
-                filename = secure_filename(form.remote_picture.data)
+                filename = secure_filename(form.picture_remote.data)
                 filepath = '/tmp/' + filename
                 with open(filepath, 'wb') as handle:
-                    response = requests.get(form.remote_picture.data, stream=True)
+                    response = requests.get(form.picture_remote.data, stream=True)
                     for block in response.iter_content(1024):
                         if not block:
                             break
