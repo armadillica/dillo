@@ -108,10 +108,10 @@ class Post(db.Model):
 
     @property
     def is_featured(self):
-        """If some artwork is popular (gets many upvotes), this flag allows us
+        """If a submission is popular (gets many upvotes), this flag allows us
         to style it properly in the UI.
         """
-        if self.rating_delta >= 10:
+        if self.rating_delta >= 12:
             if self.picture:
                 return True
         return False
