@@ -106,6 +106,16 @@ class Post(db.Model):
         return comments
         #self.comments.sort([c for c self.comments if not c.parent_id], key=lambda comment: comment.confidence, reverse=True)
 
+    @property
+    def is_featured(self):
+        """If some artwork is popular (gets many upvotes), this flag allows us
+        to style it properly in the UI.
+        """
+        if self.category.url == 'artwork' and self.rating_delta > 10:
+            if self.picture:
+                return True
+        return False
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
