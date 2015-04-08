@@ -163,6 +163,7 @@ blockquote
 
 	&.featured
 		min-height: 240px
+		border: none
 
 		&:hover .post-index-item-featured-backdrop
 			background-position: 50% 33%
@@ -181,6 +182,10 @@ blockquote
 			border-bottom-left-radius: 3px
 			+text-shadow(1px, 1px, 0, black, .2)
 			+box-shadow(0, 0, 3px, black, 1.0)
+
+			&:visited
+				&:hover
+					color: white
 
 			& .post-index-item-title-details
 				position: relative
