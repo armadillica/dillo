@@ -161,80 +161,6 @@ blockquote
 			background-color: white
 			border: none
 
-	&-title
-		display: block
-		position: relative
-		z-index: 1
-		padding: 15px 0 5px 0
-		font-family: $font_headings
-		font-size: 1.6em
-		//+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
-
-		+media-xs
-			float: left
-			font-size: 1.2em
-			width: 78%
-			padding: 5px 5px 5px 10px
-			line-height: 1.2em
-			color: $color_brand_main
-			font-weight: 500
-			+text-shadow-none
-
-		+media-sm
-			font-size: 1.3em
-			padding-left: 170px
-		+media-md
-			font-size: 1.4em
-			padding-left: 170px
-		+media-lg
-			padding-left: 175px
-
-		&:hover, &:focus
-			text-decoration: none
-
-		&:visited
-			color: lighten($color_brand_main, 5%)
-			&:hover
-				color: $color_brand_secondary
-
-	&-details
-		display: block
-		position: relative
-		z-index: 1
-		font-size: 0.9em
-		float: left
-		color: lighten($color_text, 30%)
-		padding: 3px 0 15px 0
-		+media-xs
-			font-size: 0.75em
-			width: 100%
-			padding: 10px 8px 6px 70px
-			float: right
-			border-top: thin solid lighten($color_text, 70%)
-			position: relative
-			+text-overflow-ellipsis
-		+media-sm
-			font-size: 0.8em
-			padding-left: 110px
-		+media-md
-			font-size: 0.9em
-			padding-left: 110px
-		+media-lg
-			padding-left: 115px
-
-		& a
-			color: lighten($color_text, 20%)
-			&:hover
-				color: $color_brand_secondary
-
-		& .post-index-item-details-comments,
-		& .post-index-item-details-type
-			display: inline-block
-
-		& .deleted
-			color: lighten($color_text, 50%)
-			+user-select-none
-
 	&.featured
 		min-height: 240px
 
@@ -283,18 +209,91 @@ blockquote
 		& .post-index-item-rate .down.rated
 			color: $color_downvote
 
-	&-featured
-		&-backdrop
-			width: 100%
-			height: 100%
-			display: inline-block
-			position: absolute
-			z-index: 0
-			background-size: cover
-			background-repeat: no-repeat
-			background-position: 50% 50%
-			+border-radius(3px)
-			+transition(background-position, 250ms, ease)
+.post-index-item-title
+	display: block
+	position: relative
+	z-index: 1
+	padding: 15px 0 5px 0
+	font-family: $font_headings
+	font-size: 1.6em
+	//+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
+
+	+media-xs
+		float: left
+		font-size: 1.2em
+		width: 78%
+		padding: 5px 5px 5px 10px
+		line-height: 1.2em
+		color: $color_brand_main
+		font-weight: 500
+		+text-shadow-none
+
+	+media-sm
+		font-size: 1.3em
+		padding-left: 170px
+	+media-md
+		font-size: 1.4em
+		padding-left: 170px
+	+media-lg
+		padding-left: 175px
+
+	&:hover, &:focus
+		text-decoration: none
+
+	&:visited
+		color: lighten($color_brand_main, 5%)
+		&:hover
+			color: $color_brand_secondary
+
+.post-index-item-featured-backdrop
+	width: 100%
+	height: 100%
+	display: inline-block
+	position: absolute
+	z-index: 0
+	background-size: cover
+	background-repeat: no-repeat
+	background-position: 50% 50%
+	+border-radius(3px)
+	+transition(background-position, 250ms, ease)
+
+.post-index-item-details
+	display: block
+	position: relative
+	z-index: 1
+	font-size: 0.9em
+	float: left
+	color: lighten($color_text, 30%)
+	padding: 3px 0 15px 0
+	+media-xs
+		font-size: 0.75em
+		width: 100%
+		padding: 10px 8px 6px 70px
+		float: right
+		border-top: thin solid lighten($color_text, 70%)
+		position: relative
+		+text-overflow-ellipsis
+	+media-sm
+		font-size: 0.8em
+		padding-left: 110px
+	+media-md
+		font-size: 0.9em
+		padding-left: 110px
+	+media-lg
+		padding-left: 115px
+
+	& a
+		color: lighten($color_text, 20%)
+		&:hover
+			color: $color_brand_secondary
+
+	& .post-index-item-details-comments,
+	& .post-index-item-details-type
+		display: inline-block
+
+	& .deleted
+		color: lighten($color_text, 50%)
+		+user-select-none
 
 
 .post-index-item-details-type
