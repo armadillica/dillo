@@ -59,9 +59,9 @@ $(document).ready(function() {
           $('.post-submit-div-picture').show();
           $('.post-submit-div-submit').show();
 
-          if ($('#post_picture_remote').val() != ''){
-            $('.post-submit-div-picture').hide();
-          };
+          // if ($('#post_picture_remote').val() != ''){
+          //   $('.post-submit-div-picture').hide();
+          // };
 
           if ($('#post_type_id').val() == 1){
             $('.post-submit-link').show();
