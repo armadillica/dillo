@@ -100,21 +100,20 @@
 					{% if post.is_featured %}
 						<div class="post-index-item featured">
 
-							<a class="post-index-item-title"
-								href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}"
-								title="{{post.title}}">
+							<div class="post-index-item-title">
 								{{post.title}}
 								<span class="post-index-item-title-details">
 									{{post.pretty_creation_date}}
 									· 
-									<small>by</small>
-									{% if post.user.deleted %}
-										<span class="deleted" title="This account no longer exists">[deleted]</span>
-									{% else %}
-										{{post.user.username}}
+									<a href="{{url_for('index')}}p/{{post.category.url}}">{{post.category}}</a>
+									{% if post.comments_count > 0 %}
+									·
+									<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments" class="post-index-item-details-comments">
+										{{post.comments_count}} <i class="fa fa-comment"></i>
+									</a>
 									{% endif %}
 								</span>
-							</a>
+							</div>
 
 							<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
 								<div class="post-index-item-featured-backdrop"
