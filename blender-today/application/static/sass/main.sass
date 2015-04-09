@@ -180,8 +180,12 @@ blockquote
 			color: white
 			padding: 10px 15px
 			border-bottom-left-radius: 3px
+			line-height: 1.4em
 			+text-shadow(1px, 1px, 0, black, .2)
 			+box-shadow(0, 0, 3px, black, 1.0)
+
+			+media-xs
+				width: 100%
 
 			&:visited
 				&:hover
@@ -207,9 +211,7 @@ blockquote
 			+text-shadow(0, 0, 25px, black, 1.0)
 
 			+media-xs
-				top: initial
-				left: 10px
-				width: initial
+				display: none
 
 		& .post-index-item-rate .up,
 		& .post-index-item-rate .middle,
@@ -287,6 +289,9 @@ blockquote
 		border-top: thin solid lighten($color_text, 70%)
 		position: relative
 		+text-overflow-ellipsis
+
+		padding: 10px 8px 6px 10px
+
 	+media-sm
 		font-size: 0.8em
 		padding-left: 110px
@@ -377,6 +382,8 @@ blockquote
 		top: 60px
 		left: 5px
 		font-size: 0.8em
+
+		display: none
 	+media-sm
 		width: 60px
 	+media-md
@@ -486,32 +493,29 @@ blockquote
 		display: none !important
 	+media-sm
 		position: absolute
-		//top: -10px
+		top: -10px
 		left: 55px
 		width: 100px
 		height: 100px
 		top: 50%
-		transform: translateY(-50%)
 	+media-md
 		position: absolute
-		//top: -8px
+		top: -8px
 		left: 55px
 		width: 100px
 		height: 100px
 		top: 50%
-		transform: translateY(-50%)
 	+media-lg
 		position: absolute
-		//top: -8px
+		top: -8px
 		left: 55px
 		width: 100px
 		height: 100px
-		top: 50%
-		transform: translateY(-50%)
 
 @keyframes ripple
 	100%
 		opacity: 0
+		top: 0
 		transform: scale(1.5)
 
 /* //post-index */
@@ -533,13 +537,11 @@ blockquote
 	//+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
 
 	+media-xs
-		font-size: 1.8em
+		font-size: 1.6em
 		padding: 15px 0 15px 15px
-		font-size: 1.7em
 		float: left
-		width: 85%
-		+media-xs
-			+text-shadow-none
+		width: 100%
+		+text-shadow-none
 	& i
 		margin-left: 5px
 		color: lighten(desaturate($color_brand_main, 20%), 30%)
@@ -567,6 +569,8 @@ blockquote
 		float: right
 		width: 10%
 		margin: 0 5px 0 0
+
+		display: none
 
 	& .up, .middle, .down
 		font-size: 1.3em
@@ -628,6 +632,9 @@ blockquote
 			width: 90% !important
 			min-height: initial !important
 			max-height: initial !important
+			+media-xs
+				width: 100% !important
+				margin: 0 0 15px 2px !important
 
 		&#instagram-embed-0
 			min-height: initial !important
@@ -779,7 +786,7 @@ blockquote
 		display: block
 		font-size: 0.9em
 		+media-xs
-			font-size: 0.8em
+			font-size: 0.75em
 			display: inline-block
 		& i
 			width: 15px
@@ -800,7 +807,7 @@ blockquote
 		display: block
 		font-size: 0.9em
 		+media-xs
-			font-size: 0.8em
+			font-size: 0.75em
 			display: inline-block
 			position: relative
 
@@ -1270,6 +1277,9 @@ div#post-comment-reply-container
 	&:hover.down, &.down.rated
 		color: $color_downvote
 
+	+media-xs
+		display: none
+
 .post-view-comments-submit
 	display: block
 	width: 100%
@@ -1537,7 +1547,7 @@ div#post-comment-reply-container
 			margin-top: 10px
 
 	& .user-view-info-meta
-		margin-top: 10px
+		margin: 10px 0
 		font-size: 0.9em
 		color: lighten($color_text, 40%)
 
