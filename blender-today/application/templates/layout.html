@@ -167,15 +167,15 @@
 						$('#title').val(data.title);
 						if (data.images[0]) {
 							$('.picture-remote-container').html('<img src="'+data.images[0].url+'"/>');
-							$('.post-submit-div-picture-remote').show();
-							$('#remote_picture').val(data.images[0].url);
+							$('.post-submit-div-picture-remote').css('display', 'block');
+							$('#picture_remote').val(data.images[0].url);
 							$('.post-submit-div-picture').hide();
 						};
 					});
 				});
 				$('#dismiss-picture-remote').click(function(){
-					$('#remote_picture').val('');
-					$('.post-submit-div-picture-remote').hide();
+					$('#picture_remote').val('');
+					$('.post-submit-div-picture-remote').css('display', 'none');
 					$('.post-submit-div-picture').show();
 				});
 			});

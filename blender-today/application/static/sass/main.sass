@@ -477,22 +477,28 @@ blockquote
 		display: none !important
 	+media-sm
 		position: absolute
-		top: -10px
+		//top: -10px
 		left: 55px
 		width: 100px
 		height: 100px
+		top: 50%
+		transform: translateY(-50%)
 	+media-md
 		position: absolute
-		top: -8px
+		//top: -8px
 		left: 55px
 		width: 100px
 		height: 100px
+		top: 50%
+		transform: translateY(-50%)
 	+media-lg
 		position: absolute
-		top: -8px
+		//top: -8px
 		left: 55px
 		width: 100px
 		height: 100px
+		top: 50%
+		transform: translateY(-50%)
 
 @keyframes ripple
 	100%
@@ -1323,8 +1329,8 @@ div#post-comment-reply-container
 		width: 100%
 
 .post-submit-div-title, .post-submit-div-url,
-.post-submit-div-category, .post-submit-div-content, 
-.post-submit-div-picture,
+.post-submit-div-category, .post-submit-div-content,
+.post-submit-div-picture, .post-submit-div-picture-remote,
 .post-submit-div-submit
 	display: none
 
@@ -1343,8 +1349,36 @@ div#post-comment-reply-container
 .post-submit-div-url
 	margin-top: 0
 
-.post-submit-div-title
-	margin-top: 20px
+
+.post-submit-div-picture-remote
+	position: relative
+	margin: 20px auto
+	max-height: 200px
+	overflow: hidden
+	+border-radius(3px)
+
+	& img
+		width: 100%
+		position: relative
+		z-index: 0
+		
+	& .dialog__button-close
+		top: 10px
+		cursor: pointer
+		& i
+			position: absolute
+			top: 30%
+			left: 33%
+
+	& .post-submit-div-picture-remote-overlay
+		background: linear-gradient(to top, $color_brand_main 0%, rgba($color_brand_main, 0) 100%)
+		display: inline-block
+		position: absolute
+		z-index: 2
+		width: 100%
+		height: 33%
+		bottom: 0
+		left: 0
 
 .post-submit-field-type
 	display: block
@@ -1369,7 +1403,7 @@ div#post-comment-reply-container
 
 		&.activato
 			background-color: desaturate($color_brand_secondary, 10%)
-
+			margin-bottom: 20px
 
 	& .post-submit-field-type-button-icon
 		float: left
