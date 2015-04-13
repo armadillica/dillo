@@ -18,6 +18,38 @@ CKEDITOR.editorConfig = function( config ) {
 	CKEDITOR.plugins.addExternal( 'colorbutton', '/static/js/ckeditor/colorbutton/', 'plugin.min.js' );
 	CKEDITOR.plugins.addExternal( 'removeformat', '/static/js/ckeditor/removeformat/', 'plugin.min.js' );
 	CKEDITOR.plugins.addExternal( 'autolink', '/static/js/ckeditor/autolink/', 'plugin.min.js', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'image', '/static/js/ckeditor/image/', 'plugin.min.js' );
+
+	CKEDITOR.on( 'dialogDefinition', function( ev )
+		{
+			var dialogName = ev.data.name;
+			var dialogDefinition = ev.data.definition;
+
+			if ( dialogName == 'image' )
+			{
+			dialogDefinition.removeContents( 'Link' );
+			dialogDefinition.removeContents( 'advanced' );
+
+			var infoTab = dialogDefinition.getContents( 'info' );
+
+			infoTab.remove( 'txtHSpace');
+			infoTab.remove( 'txtVSpace');
+			infoTab.remove( 'txtAlt');
+			infoTab.remove( 'txtBorder');
+			infoTab.remove( 'ratioLock');
+			infoTab.remove( 'cmbAlign');
+			infoTab.remove( 'basic');
+		}
+
+			if ( dialogName == 'link' )
+			{
+			dialogDefinition.removeContents( 'target' );
+
+			var infoTab = dialogDefinition.getContents( 'info' );
+
+			infoTab.remove( 'linkType');
+		}
+	});
 
 	// The toolbar groups arrangement, optimized for a single toolbar row.
 	config.toolbarGroups = [
@@ -36,7 +68,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
-	config.extraPlugins = 'panel,panelbutton,floatpanel,listblock,richcombo,format,blockquote,colorbutton,removeformat,autolink';
+	config.extraPlugins = 'panel,panelbutton,floatpanel,listblock,richcombo,format,blockquote,colorbutton,removeformat,image,autolink';
 	config.removePlugins = 'elementspath';
 
 	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Subscript,Superscript,About,NumberedList,Indent,Outdent,BGColor';
@@ -45,10 +77,12 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Plugin Settings
 	config.format_tags = 'p;h1;h2;pre';
+	config.image_previewText = ' ';
 
 	// Default colors for ColorButton plugin are fugly, set our own
 	config.colorButton_colors = '444444,BBBBBB,FFFFFF,BE2633,E06F8B,493C2B,A46422,EB8931,F7E26B,2F484E,44891A,A3CE27,1B2632,005784,31A2F2,B2DCEF';
 
 	// Dialog windows are simplified.
 	config.removeDialogTabs = 'link:advanced';
+
 };

@@ -604,6 +604,7 @@ blockquote
 	margin: 0
 	border: 3px solid transparent
 	position: relative
+	word-break: break-all
 
 	+media-xs
 		font-size: 1em
@@ -621,6 +622,9 @@ blockquote
 
 	& h2
 		font-size: 1.5em
+
+	& img
+		max-width: 100%
 
 	& iframe
 		width: 100%
@@ -1255,9 +1259,12 @@ div#post-comment-reply-container
 		background-color: #f9f2f4
 		border: none
 		+border-radius(3px)
+	& img
+		max-width: 100%
 
 .post-view-comments-item-details
-	display: block
+	display: inline-block
+	clear: both
 	color: lighten($color_text, 30%)
 	font-size: 0.9em
 	+media-xs
@@ -2363,7 +2370,8 @@ fieldset
 
 /* CKEditor Overrides */
 .cke_reset, .cke_reset_all *
-	font: normal normal normal 1em $font_body
+	font: normal normal normal 1em $font_body !important
+	font-family: $font_body !important
 
 .cke_panel
 	border: thin solid lighten($color_background, 2%)
@@ -2444,6 +2452,91 @@ a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:a
 	border-bottom: 2px solid $color_brand_secondary !important
 	color: white !important
 	+box-shadow-none
+
+.cke_dialog_contents_body
+	height: auto !important
+
+.cke_dialog_title, .cke_dialog_footer
+	background: white !important
+	background-image: white !important
+	border-bottom: none !important
+	outline: none !important
+
+.cke_dialog_footer
+	outline: none !important
+
+input.cke_dialog_ui_input_text,
+input.cke_dialog_ui_input_password,
+textarea.cke_dialog_ui_input_textarea
+	border: 2px solid darken($color_background, 6%) !important
+	background-color: darken($color_background, 4%) !important
+	+border-radius(3px)
+	+box-shadow(2px, 2px, 0, black, .1)
+	&:focus
+		border-color: $color_brand_main
+
+.cke_ltr .cke_dialog_ui_hbox_child
+	width: 100% !important
+
+.cke_dialog .ImagePreviewBox
+	border: 2px solid darken($color_background, 6%) !important
+	background-color: darken($color_background, 4%) !important
+	width: 100% !important
+	overflow: hidden !important
+	overflow-y: scroll
+	+border-radius(3px)
+	+box-shadow(2px, 2px, 0, black, .1)
+	& img
+		max-width: 100% !important
+
+.cke_dialog_footer_buttons a.cke_dialog_ui_button span
+	padding: 0 12px !important
+
+a.cke_dialog_ui_button, a.cke_dialog_ui_button_ok
+	background: lighten($color_text, 68%) !important
+	background-color: lighten($color_text, 68%) !important
+	color: $color_text !important
+	font-family: $font_headings !important
+	text-shadow: 0 1px 1px rgba(255, 255, 255, .06) !important
+	border: thin solid lighten($color_text, 65%) !important
+	border-bottom: 1px solid lighten($color_text, 58%) !important
+	padding: 4px 0 !important
+	+border-radius(3px)
+
+a.cke_dialog_ui_button:hover, a.cke_dialog_ui_button_ok:hover
+	background: lighten($color_text, 70%) !important
+	background-color: lighten($color_text, 70%) !important
+	border-color: lighten($color_text, 65%) !important
+	border-bottom: 1px solid lighten($color_brand_main, 26%) !important
+	color: $color_brand_main !important
+
+a.cke_dialog_ui_button:active, a.cke_dialog_ui_button_ok:active,
+a.cke_dialog_ui_button:focus, a.cke_dialog_ui_button_ok:focus
+	background: lighten($color_text, 70%) !important
+	background-color: lighten($color_text, 70%) !important
+	color: $color_brand_secondary !important
+	border-color: lighten($color_text, 65%) !important
+	border-bottom-color: $color_brand_secondary !important
+	outline: none !important
+	padding: 4px 0 !important
+	+box-shadow(1px, 1px, 0, black, .1)
+
+a.cke_dialog_ui_button_ok
+	background-color: $color_success !important
+	color: darken($color_success, 40%) !important
+	border-color: darken($color_success, 5%) !important
+	+text-shadow(1px, 1px, 0, white, .6)
+
+a.cke_dialog_ui_button_ok:hover
+	color: $color_text !important
+	background-color: lighten($color_success, 15%) !important
+	border-color: darken($color_success, 5%) !important
+
+a.cke_dialog_ui_button_ok:active, a.cke_dialog_ui_button_ok:focus
+	color: $color_text !important
+	background-color: darken($color_success, 10%) !important
+	border-bottom-color: darken($color_success, 10%) !important
+	padding: 4px 0 !important
 
 /* Codrops Dropdown */
 .cd-dropdown,
