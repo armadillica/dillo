@@ -85,12 +85,12 @@
 			</div>
 	</div>
 
-		{% if user.posts %}
+		{% if posts %}
 			<div class="user-view-index">
 				<h4 class="post-view-container-title">
 					<a href="{{url_for('index')}}">Home</a>
 					<strong>·</strong>
-					Submissions by {{user.username}}
+					Submissions by {{user.username}} ({{posts|length}})
 				</h4>
 			</div>
 			{% for post in posts %}

@@ -58,10 +58,15 @@
 							</div>
 
 							<div class="post-index-item-title">
-								{{post.title}}
+								<a href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+									{{post.title}}
+								</a>
 								<span class="post-index-item-title-details">
-									{{post.pretty_creation_date}}
-									· 
+									<span class="post-index-item-details-rating">
+										{{post.rating_delta}} {% if post.rating_delta == 1 or post.rating_delta == -1 %}point{% else %}points{% endif %}
+										·
+									</span>
+									 
 									<a href="{{url_for('index')}}p/{{post.category.url}}">{{post.category}}</a>
 									·
 									{% if post.comments_count > 0 %}
@@ -70,6 +75,7 @@
 									</a>
 									·
 									{% endif %}
+									{{post.pretty_creation_date}}
 									<small>by</small>
 									{% if post.user.deleted %}
 										<span class="deleted" title="This account no longer exists">[deleted]</span>
@@ -123,9 +129,14 @@
 								{{post.title}} {% if post.post_type.url == 'link' %}<small class="post-title-url">{{post.content}}</small>{% endif %}
 							</a>
 
-							<div class="post-index-item-type-ripple"></div>
+							{# <div class="post-index-item-type-ripple"></div> #}
 
 							<div class="post-index-item-details" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}">
+
+								<span class="post-index-item-details-rating">
+									{{post.rating_delta}} {% if post.rating_delta == 1 or post.rating_delta == -1 %}point{% else %}points{% endif %}
+									<span class="separator"></span>
+								</span>
 
 								<a href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}" class="post-index-item-details-type">
 									{{post.post_type}}

@@ -221,7 +221,14 @@
 
 							<span class="meta">
 								<span class="date">
-								posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+									<a title="Permalink" href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}">
+										posted <span title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}">{{post.pretty_creation_date}}</span>
+										{% if post.edit_date %}
+											<span class="edited" title="Last edited {{post.edit_date.strftime('%H:%M on %A %d, %B %Y')}}">
+												(edited {{post.pretty_edit_date}})
+											</span>
+										{% endif %}
+									</a>
 
 								<span class="separator"></span>
 
@@ -229,12 +236,6 @@
 
 								{% if post.status == 'deleted' %}
 									<span class="disabled">(deleted)</span>
-								{% else %}
-									{% if post.edit_date %}
-										<span class="edited" title="Last edited {{post.edit_date.strftime('%H:%M on %A %d, %B %Y')}}">
-											(edited {{post.pretty_edit_date}})
-										</span>
-									{% endif %}
 								{% endif %}
 								</span>
 

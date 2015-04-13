@@ -191,6 +191,11 @@ blockquote
 				&:hover
 					color: white
 
+			& a
+				color: white
+				&:hover
+					text-decoration: underline
+
 			& .post-index-item-title-details
 				position: relative
 				display: block
@@ -229,7 +234,7 @@ blockquote
 	display: block
 	position: relative
 	z-index: 1
-	padding: 15px 0 5px 0
+	padding: 15px 10px 5px 0
 	font-family: $font_headings
 	font-size: 1.6em
 	//+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
@@ -314,6 +319,10 @@ blockquote
 		color: lighten($color_text, 50%)
 		+user-select-none
 
+.post-index-item-details-rating
+	display: none
+	+media-xs
+		display: inline-block
 
 .post-index-item-details-type
 	+media-xs
@@ -432,6 +441,7 @@ blockquote
 	z-index: 2
 	+box-shadow(2px, 2px, 0, black, .1)
 	+border-radius(50%)
+	+transition(opacity, .25s, ease)
 
 	+media-xs
 		width: 60px
@@ -469,6 +479,9 @@ blockquote
 
 	&:hover
 		color: white
+
+	&:focus, &:active
+		opacity: 0.8
 
 	& i
 		top: 45%
@@ -949,6 +962,9 @@ blockquote
 .post-view-comments-avatar
 	position: relative
 
+	+media-xs
+		display: none
+
 	& .post-view-comments-avatar-deleted,
 	& .post-view-details-avatar-deleted
 		width: 50px
@@ -1217,7 +1233,7 @@ div#post-comment-reply-container
 	//padding: 0 0 15px 10px
 	display: block
 	+media-xs
-		margin-left: 55px
+		margin-left: 0
 	+media-sm
 		margin-left: 80px
 	+media-md
@@ -1288,6 +1304,8 @@ div#post-comment-reply-container
 	& h3
 		font-weight: lighter
 		margin-left: 80px
+		+media-xs
+			margin-left: 0
 
 .post-view-comments-empty
 	font-size: 1.2em
