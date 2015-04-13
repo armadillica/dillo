@@ -150,6 +150,7 @@ blockquote
 		left: -2%
 		overflow: hidden
 		border: none
+		margin-bottom: 15px
 
 	&.even
 		//background-color:	lighten($color_background, 1%)
@@ -289,13 +290,11 @@ blockquote
 	+media-xs
 		font-size: 0.75em
 		width: 100%
-		padding: 10px 8px 6px 70px
+		padding: 10px 25px 6px 10px
 		float: right
 		border-top: thin solid lighten($color_text, 70%)
 		position: relative
 		+text-overflow-ellipsis
-
-		padding: 10px 8px 6px 10px
 
 	+media-sm
 		font-size: 0.8em
@@ -547,10 +546,8 @@ blockquote
 	padding: 30px 15px 25px 15px
 	line-height: 1.3em
 
-	//+text-shadow(1px, 1px, 0, darken($color_background, 3%), 1.0)
-
 	+media-xs
-		font-size: 1.6em
+		font-size: 1.5em
 		padding: 15px 0 15px 15px
 		float: left
 		width: 100%
@@ -804,7 +801,7 @@ blockquote
 		font-size: 0.9em
 		+media-xs
 			font-size: 0.75em
-			display: inline-block
+			display: block
 		& i
 			width: 15px
 			opacity: 0.95
@@ -1095,16 +1092,17 @@ blockquote
 	margin: 0
 	border-top: thin solid lighten($color_text, 65%)
 
-.post-view-comments .title
-	font-family: $font_headings
-	font-weight: lighter
-	padding: 30px 0 15px 15px
-	margin: 0
-	+user-select-none
-	& small
-		font-family: $font_body
-		font-size: 0.8em
-		color: lighten($color_text, 30%)
+	& .title
+		font-family: $font_headings
+		font-weight: lighter
+		padding: 30px 0 15px 15px
+		margin: 0
+		font-size: 1.4em
+		+user-select-none
+		& small
+			font-family: $font_body
+			font-size: 0.8em
+			color: lighten($color_text, 30%)
 
 .post-view-comments-item
 	display: block
