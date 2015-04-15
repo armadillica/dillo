@@ -346,7 +346,7 @@ def flag(uuid):
 def edit(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
-    if post.user.id == current_user.id:
+    if (post.user.id == current_user.id) or (current_user.has_role('admin')):
         post.content = bleach_input(request.form['content'])
         post.status = 'published'
         post.edit_date = datetime.datetime.now()
@@ -367,7 +367,7 @@ def edit(uuid):
 def delete(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
-    if post.user.id == current_user.id:
+    if (post.user.id == current_user.id) or (current_user.has_role('admin')):
         post.status = 'deleted'
         post.edit_date = datetime.datetime.now()
         db.session.commit()

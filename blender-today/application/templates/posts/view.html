@@ -163,7 +163,7 @@
 								</span>
 							{% endif %}
 
-							{% if current_user.is_owner %}
+							{% if current_user.is_owner or current_user.has_role('admin') %}
 
 								{% if post.status != 'deleted' %}
 									{% if post.post_type.url != 'link' %}
@@ -488,7 +488,7 @@
 			});
 		});
 
-		{% if current_user.is_owner %}
+		{% if current_user.is_owner or current_user.has_role('admin') %}
 			$("#edit-post-toggle").click(function() {
 				var ck = CKEDITOR.inline('post-content',
 								{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
