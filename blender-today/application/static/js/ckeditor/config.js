@@ -75,15 +75,16 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Subscript,Superscript,About,NumberedList,Indent,Outdent,BGColor';
 
 	config.forcePasteAsPlainText = true;
+	config.defaultLanguage = 'en';
+	config.disableNativeSpellChecker = false;
 
 	// Plugin Settings
 	config.format_tags = 'p;h1;h2;pre';
 	config.image_previewText = ' ';
 
 	// Default colors for ColorButton plugin are fugly, set our own
-	config.colorButton_colors = '444444,BBBBBB,FFFFFF,BE2633,E06F8B,493C2B,A46422,EB8931,F7E26B,2F484E,44891A,A3CE27,1B2632,005784,31A2F2,B2DCEF';
+	config.colorButton_colors = 'FF00FF,BBBBBB,FFFFFF,BE2633,E06F8B,493C2B,A46422,EB8931,F7E26B,2F484E,44891A,A3CE27,1B2632,005784,31A2F2,B2DCEF';
 
 	// Dialog windows are simplified.
 	config.removeDialogTabs = 'link:advanced';
-
 };
