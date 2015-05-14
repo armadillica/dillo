@@ -17,8 +17,9 @@ CKEDITOR.editorConfig = function( config ) {
 	CKEDITOR.plugins.addExternal( 'blockquote', '/static/js/ckeditor/blockquote/', 'plugin.min.js' );
 	CKEDITOR.plugins.addExternal( 'colorbutton', '/static/js/ckeditor/colorbutton/', 'plugin.min.js' );
 	CKEDITOR.plugins.addExternal( 'removeformat', '/static/js/ckeditor/removeformat/', 'plugin.min.js' );
-	CKEDITOR.plugins.addExternal( 'autolink', '/static/js/ckeditor/autolink/', 'plugin.min.js', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'autolink', '/static/js/ckeditor/autolink/', 'plugin.min.js' );
 	CKEDITOR.plugins.addExternal( 'image', '/static/js/ckeditor/image/', 'plugin.min.js' );
+	CKEDITOR.plugins.addExternal( 'sourcearea', '/static/js/ckeditor/sourcearea/', 'plugin.min.js' );
 
 	CKEDITOR.on( 'dialogDefinition', function( ev )
 		{
@@ -47,13 +48,12 @@ CKEDITOR.editorConfig = function( config ) {
 
 			var infoTab = dialogDefinition.getContents( 'info' );
 
-			infoTab.remove( 'linkType');
 		}
 	});
 
 	// The toolbar groups arrangement, optimized for a single toolbar row.
 	config.toolbarGroups = [
-		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
+		{ name: 'document',	   groups: [ 'document', 'doctools' ] },
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
 		{ name: 'forms' },
@@ -65,10 +65,11 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'styles' },
 		{ name: 'tools' },
 		{ name: 'others' },
+		{ name: 'document',	   groups: [ 'mode' ] },
 		{ name: 'about' }
 	];
 
-	config.extraPlugins = 'panel,panelbutton,floatpanel,listblock,richcombo,format,blockquote,colorbutton,removeformat,image,autolink';
+	config.extraPlugins = 'panel,panelbutton,floatpanel,listblock,richcombo,format,blockquote,colorbutton,removeformat,image,autolink,sourcearea';
 	config.removePlugins = 'elementspath';
 
 	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Subscript,Superscript,About,NumberedList,Indent,Outdent,BGColor';
