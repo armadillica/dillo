@@ -5,6 +5,7 @@
 
 config.py
 
+blender-today/application/templates/**/*
 blender-today/application/static/css/main.css
 blender-today/application/static/js/theuniverse.min.js
 node_modules
@@ -12,4 +13,3 @@ node_modules
 *.css.map
 
 *.rdb
-blender-today/cache/

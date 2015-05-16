@@ -1,0 +1,40 @@
+doctype
+html(lang="en", prefix="og: http://ogp.me/ns#")
+	head
+		meta(name="google-site-verification", content="{{config.GOOGLE_SITE_VERIFICATION}}")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+
+		title 404 - Blender.Today - Community-driven Blender News
+
+		meta(name="keywords", content="news, community, blender, animation, 3d")
+		meta(name="description", content="Community-driven Blender News")
+		meta(name="author", content="Blender Today")
+		meta(name="theme-color", content="#4D84A0")
+		meta(name="csrf-token", content="{{ csrf_token() }}")
+
+		// Open Graph
+		meta(property="og:site_name", content="Blender.Today")
+		meta(property="og:description", content="Community-driven Blender News")
+		| {% block og %}{% endblock %}
+
+		// Style sheets
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", rel="stylesheet")
+		link(href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", rel="stylesheet")
+		link(href="{{ url_for('static', filename='css/main.css') }}", rel="stylesheet")
+
+		// Fonts
+		link(href='//fonts.googleapis.com/css?family=Open+Sans:400&subset=latin,latin-ext', rel='stylesheet', type='text/css')
+		link(href='//fonts.googleapis.com/css?family=Oxygen:400,300&subset=latin,latin-ext', rel='stylesheet', type='text/css')
+
+		link(href="{{ url_for('static', filename='images/favicon_192x192.png') }}", rel="icon", type="image/png")
+
+		| {% block header %}{% endblock %}
+
+	body.error-404
+
+		img.img-responsive(src="{{ url_for('static', filename='images/today_404_andy.jpg') }}")
+		h2 404 - This page doesn't exist
+		.error-goback
+			a(href="http://blender.today").
+				<i class="fa fa-angle-left"></i> back to blender.today
