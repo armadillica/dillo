@@ -1,9 +1,12 @@
 doctype
 html(lang="en", prefix="og: http://ogp.me/ns#")
 	head
-		meta(name="google-site-verification", content="{{config.GOOGLE_SITE_VERIFICATION}}")
-		meta(http-equiv="X-UA-Compatible", content="IE=edge")
-		meta(name="viewport", content="width=device-width, initial-scale=1")
+		meta(name="google-site-verification",
+				 content="{{config.GOOGLE_SITE_VERIFICATION}}")
+		meta(http-equiv="X-UA-Compatible",
+				 content="IE=edge")
+		meta(name="viewport",
+				 content="width=device-width, initial-scale=1")
 
 		title {% block page_title %}{% endblock %}Blender.Today - Community-driven Blender News
 
@@ -19,7 +22,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		| {% block og %}{% endblock %}
 
 		// Style sheets
-		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", rel="stylesheet")
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",rel="stylesheet")
 		link(href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", rel="stylesheet")
 		link(href="{{ url_for('static', filename='css/main.css') }}", rel="stylesheet")
 

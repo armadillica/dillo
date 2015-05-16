@@ -1,0 +1,113 @@
+.nav-sidebar-container
+	.nav-sidebar.navigation(role="navigation")
+		nav
+			ul
+
+				// Submit Button
+				| {% if current_user.is_authenticated() %}
+
+				li.navbar-submit(data-dialog="submit")
+					a Submit
+
+				| {% else %}
+
+				a(href="{{url_for_security('login')}}")
+					span.navbar-submit-disabled-overlay.popover-submit(
+							data-toggle="popover",
+							data-trigger="hover",
+							data-placement="bottom"
+							data-content="Sign in to Submit")
+
+						li.navbar-submit.navbar-submit-disabled
+							a(href="{{url_for_security('login')}}")
+
+				| {% endif %}
+
+
+				// Rest of the navigation bar
+				| {% if current_user.is_authenticated() %}
+
+				li
+					a#popover-home(
+						href="{{url_for('index')}}",
+						data-toggle="popover",
+						data-trigger="hover",
+						data-placement="bottom"
+						data-content="Home")
+						i.fa.fa-home
+
+				li
+					a#popover-settings(
+						href="{{url_for('settings.profile')}}",
+						data-toggle="popover",
+						data-trigger="hover",
+						data-placement="bottom",
+						data-content="Settings",
+						class="{% if title in ('settings_profile', 'settings_account') %}active{% endif %}")
+						i.fa.fa-cog
+
+				li
+					a#popover-profile(
+						href="{{url_for('index')}}u/{{current_user.id}}",
+						data-toggle="popover",
+						data-trigger="hover",
+						data-placement="bottom",
+						data-content="Profile",
+						class="nav-sidebar-avatar",
+						style="background-image: url({{current_user.gravatar(size=32)}})")
+
+				li.navbar-logout
+					a#popover-logout.nav-logout-widget(
+						href="",
+						data-toggle="popover",
+						data-trigger="hover",
+						data-placement="bottom",
+						data-content="Log out",
+						class="{% if title in ('settings_profile', 'settings_account') %}active{% endif %}")
+						span.nav-logout-widget-icon
+							i.fa.fa-power-off
+						span.nav-logout-widget-question.
+							?
+
+				| {% else %}
+
+				li.navbar-login
+					a(href="{{url_for_security('login')}}")
+						i.fa.fa-sign-in
+						| Sign in
+
+				| {% endif %}
+
+	// Logo
+	.nav-sidebar.branding
+
+		a(href="{{url_for('index')}}", title="Blender.Today")
+			img.nav-sidebar-mug(
+				src="{{url_for('static', filename='images/today_manumug_136x136.jpg')}}")
+
+		a(href="{{url_for('index')}}")
+			h3.
+				Blender<small>.</small>Today
+
+		p You decide what makes the news
+
+
+	// Links on the bottom
+	.nav-sidebar.meta
+		p
+			a(href="http://blender.today/p/community/fcbbbc/blender-today-roadmap-feedback").
+				Roadmap &amp; Feedback
+
+			| ·
+
+			a(href="{{url_for('posts.feed')}}")
+				i.fa.fa-rss
+				|  Feed
+
+			| {% if current_user.has_role('admin') %}
+
+			a.whoosh(href="{{url_for('admin.index')}}")
+				i.fa.fa-rocket
+				|  Whoosh!
+
+			| {% endif %}
