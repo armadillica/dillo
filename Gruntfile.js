@@ -60,5 +60,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jade');
     grunt.loadNpmTasks('grunt-autoprefixer');
 
-    grunt.registerTask('default', ['sass', 'autoprefixer', 'uglify']);
+    grunt.registerTask('default', ['sass', 'autoprefixer', 'uglify', 'jade']);
 };
