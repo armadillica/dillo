@@ -59,7 +59,7 @@ blockquote
 	display: inline-block
 	height: 15px
 	width: 1px
-	margin: 0 4px
+	margin: 0 7px
 	background-color: lighten($color_text, 60%)
 	vertical-align: middle
 	+media-xs
@@ -129,6 +129,7 @@ blockquote
 
 		& strong
 			color: $color_brand_secondary
+			margin: 0 5px
 
 	& select
 		display: none // so the select categories doesn't appear for a moment
@@ -210,6 +211,8 @@ blockquote
 					color: white
 					&:hover
 						text-decoration: underline
+				& small
+					margin: 0 3px 0 5px
 
 		& .post-index-item-rate
 			position: absolute
@@ -309,6 +312,9 @@ blockquote
 		color: lighten($color_text, 20%)
 		&:hover
 			color: $color_brand_secondary
+
+	& small
+		margin: 0 3px 0 5px
 
 	& .post-index-item-details-comments,
 	& .post-index-item-details-type
