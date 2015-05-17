@@ -8,7 +8,7 @@ module.exports = function(grunt) {
               data: {
                 debug: false
               },
-              pretty: true,
+              pretty: false,
             },
             files: [{
               expand: true,
