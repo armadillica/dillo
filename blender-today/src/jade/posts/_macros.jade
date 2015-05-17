@@ -1,0 +1,172 @@
+| {% macro print_comment(comment, loop, post, is_reply=False) %}
+a(name="comment-{{comment.id}}")
+div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cycle('odd', 'even') }}")
+
+	// Comment Avatar
+	.post-view-comments-avatar
+
+		| {% if comment.user.deleted %}
+		span.post-view-comments-avatar-deleted
+		| {% else %}
+
+		a(title="{{comment.user.first_name}} {{comment.user.last_name}}",
+			href="{{url_for('index')}}u/{{comment.user.id}}")
+
+			| {# Add a special class "op" if the comment is by the post author #}
+			img(title="{{comment.user.first_name}} {{comment.user.last_name}}",
+					src="{{comment.user.gravatar()}}",
+					class="img-circle{% if post.user.id == comment.user.id %} op{% endif %}")
+
+			| {# User Badges #}
+
+			| {% if comment.user.has_role('dev_core') %}
+			div.post-view-comments-avatar-label
+				i.dev_core.bf-blender(title="Blender Core Developer")
+
+			| {% elif comment.user.has_role('bfct_trainer') %}
+			div.post-view-comments-avatar-label
+				i.bfct_trainer.fa.fa-graduation-cap(
+					title="Blender Foundation Certified Trainer")
+
+			| {% elif comment.user.has_role('network_member') %}
+			div.post-view-comments-avatar-label
+				i.network_member.bf-network(
+					title="Blender Network Member")
+
+			| {% elif comment.user.has_role('cloud_member') %}
+			div.post-view-comments-avatar-label
+				i.cloud_member.bf-cloud(
+					title="Blender Cloud Member")
+
+			| {% endif %}
+		| {% endif %}
+
+
+	// Comment Header
+	.post-view-comments-item-header
+		| {% if comment.user.deleted %}
+		span.deleted(title="This account no longer exists") [deleted]
+		| {% else %}
+		a.author(href="{{url_for('index')}}u/{{comment.user.id}}").
+			{{comment.user.username}}
+		| {% endif %}
+
+		| {% if post.user.id == comment.user.id %} [OP]{% endif %}
+
+		| ·
+
+
+		| {# Date #}
+		span(title="{{comment.creation_date.strftime('%H:%M on %d %B, %Y')}}").
+			{{comment.pretty_creation_date}}
+
+
+	// Comment Text
+	.post-view-comments-item-content
+		| {{comment.content|safe}}
+
+	// Comment Details
+	.post-view-comments-item-details
+
+		| {#
+		| Comment Rating
+		| - If the comment has user_rating, and is_positive, we add the class "rated"
+		| - If the current user is_anonymous, we add the class popover to show a tooltip
+		| #}
+
+		| {# Upvote #}
+		a(title="Upvote this comment",
+			href="{{url_for('comments.rate', comment_id=comment.id, rating='1')}}",
+			class="post-view-comments-item-rate comment-up up{% if comment.user_rating and comment.user_rating.is_positive %} rated{% endif %}{% if current_user.is_anonymous() %} popover-comment-vote{% endif %}",
+			data-toggle="popover",
+			data-trigger="hover",
+			data-placement="bottom",
+			data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
+			i.fa.fa-chevron-up
+
+		| {# Downvote #}
+		a(title="Downvote this comment",
+			href="{{url_for('comments.rate', comment_id=comment.id, rating='0')}}",
+			class="post-view-comments-item-rate down{% if comment.user_rating and not comment.user_rating.is_positive %} rated{% endif %}{% if current_user.is_anonymous() %} popover-comment-vote{% endif %}",
+			data-toggle="popover",
+			data-trigger="hover",
+			data-placement="bottom",
+			data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
+			i.fa.fa-chevron-down
+
+		span.separator.hidden-xs
+
+
+		| {# Points #}
+		span.rating(title="Comment Points").
+			{{comment.rating_delta}}
+
+		| {% if comment.rating_delta == 1 or comment.rating_delta == -1 %} point{% else %} points{% endif %}
+
+		span.separator
+
+
+		| {# Permalink #}
+		a(title="Permalink",
+			href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}")
+			i.fa.fa-link
+
+
+		| {# Flag #}
+		| {% if current_user.is_authenticated() and not comment.user.deleted %}
+		span.separator
+
+		a(title="Flag comment",
+			href="{{url_for('comments.flag', comment_id=comment.id)}}",
+			class="post-view-comments-item-flag flag{% if comment.user_rating and comment.user_rating.is_flagged %} flagged{% endif %}")
+
+		| {% endif %}
+
+
+		| {# Reply #}
+		| {% if not is_reply %}
+		span.separator
+
+		| {% if current_user.is_authenticated() %}
+		a.post-comment-reply(
+			title="Reply to this comment",
+			href="{{url_for('comments.submit', post_id=post.id)}}",
+			comment="{{comment.id}}")
+			| reply
+
+		| {% else%}
+		a.popover-comment-reply(
+			href="{{url_for_security('login')}}",
+			data-toggle="popover",
+			data-trigger="hover",
+			data-placement="bottom"
+			data-content="Sign in to reply")
+			| reply
+
+		| {% endif %}
+		| {% endif %}
+
+	.clearfix
+
+| {% endmacro %}
+
+
+| {% macro category_dropdown(title, category, categories) %}
+
+select#cd-dropdown.cd-select(
+	name="cd-dropdown",
+	onchange="location = this.options[this.selectedIndex].value;")
+
+	option(value="-1", selected).
+		{% if title == 'index_category' %}
+			{{category}}
+		{% else %}
+			Categories
+		{% endif %}
+
+	| {% for category in categories %}
+	option(value="{{url_for('posts.index_category', category=category.url)}}")
+		i.fa.fa-rocket {{category.name}}
+	| {% endfor %}
+
+| {% endmacro %}

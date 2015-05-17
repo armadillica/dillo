@@ -46,7 +46,7 @@ a
 
 blockquote
 	font-size: 1em
-	background-color: lighten($color_background, 2%)
+	background-color: darken($color_background, 1%)
 	border-left: 5px solid darken($color_background, 5%)
 
 .page-container
@@ -968,9 +968,6 @@ blockquote
 .post-view-comments-avatar
 	position: relative
 
-	+media-xs
-		display: none
-
 	& .post-view-comments-avatar-deleted,
 	& .post-view-details-avatar-deleted
 		width: 50px
@@ -1001,7 +998,6 @@ blockquote
 .post-view-details-avatar img,
 .post-view-comments-avatar img
 	background: white
-	+box-shadow(2px, 2px, 0, black, .1)
 
 .post-view-details-avatar img
 	max-width: 60px
@@ -1065,7 +1061,7 @@ blockquote
 	width: 20px
 	height: 20px
 	left: 32px
-	+box-shadow(2px, 2px, 0, black, .05)
+
 	+media-xs
 		width: 15px
 		height: 15px
@@ -1104,19 +1100,25 @@ blockquote
 		margin: 0
 		font-size: 1.4em
 		+user-select-none
+
 		& small
 			font-family: $font_body
 			font-size: 0.8em
 			color: lighten($color_text, 30%)
 
+
 .post-view-comments-item
 	display: block
 	width: 100%
 	background-color: white
-	padding: 15px 15px 25px 15px
+	padding: 15px 30px 20px 15px
 	margin: 0
 	border-top: thin solid lighten($color_text, 65%)
 	position: relative
+
+	+media-xs
+		padding: 20px 5px 20px 15px
+
 	& ul
 		list-style-type: none
 		padding-left: 30px
@@ -1139,7 +1141,7 @@ blockquote
 			padding-left: 50px
 
 		& .post-view-comments-item-content
-			margin-left: 80px
+			margin-left: 75px
 			+media-xs
 				margin-left: 50px
 
@@ -1159,8 +1161,9 @@ blockquote
 
 div#post-comment-reply-container
 	padding: 20px 20px 60px 90px
-	background-color: $color_brand_main
-	border-top: thick solid darken($color_brand_main, 10%)
+	background-color: darken($color_background, 5%)
+	border-top: 2px dashed white
+	border-bottom: thick solid darken($color_background, 10%)
 	+media-xs
 		padding: 20px 20px 60px 20px
 
@@ -1198,7 +1201,7 @@ div#post-comment-reply-container
 	text-align: center
 	+media-xs
 		width: 40px
-		margin-right: 0
+		margin-right: 10px
 		margin-left: 0
 	+media-sm
 		width: 50px
@@ -1236,17 +1239,35 @@ div#post-comment-reply-container
 			+media-xs
 				font-size: 2.8em
 
-.post-view-comments-item-content
-	//padding: 0 0 15px 10px
+.post-view-comments-item-header
 	display: block
+	color: lighten($color_text, 30%)
+	margin-bottom: 10px
+
 	+media-xs
+		margin: 8px 0 0 20px
+	+media-sm
+		margin-left: 75px
+	+media-md
+		margin-left: 75px
+	+media-lg
+		margin-left: 75px
+
+.post-view-comments-item-content
+
+	display: block
+
+	+media-xs
+		clear: both
+		display: block
+		padding: 20px 0 0 0
 		margin-left: 0
 	+media-sm
-		margin-left: 80px
+		margin-left: 75px
 	+media-md
-		margin-left: 80px
+		margin-left: 75px
 	+media-lg
-		margin-left: 80px
+		margin-left: 75px
 
 	& p, & h1, & h2, & blockquote
 		word-break: break-word
@@ -1275,11 +1296,11 @@ div#post-comment-reply-container
 		padding-top: 10px
 		font-size: 0.8em
 	+media-sm
-		margin-left: 80px
+		margin-left: 75px
 	+media-md
-		margin-left: 80px
+		margin-left: 75px
 	+media-lg
-		margin-left: 80px
+		margin-left: 75px
 
 	& .author
 		color: lighten($color_text, 20%)
@@ -1294,7 +1315,7 @@ div#post-comment-reply-container
 		font-family: 'FontAwesome'
 
 .post-view-comments-item-rate
-	padding: 5px
+	padding: 8px
 	color: lighten($color_text, 30%)
 	&:hover, &:focus
 		text-decoration: none
