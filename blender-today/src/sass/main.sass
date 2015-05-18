@@ -298,7 +298,7 @@ blockquote
 	+media-xs
 		font-size: 0.75em
 		width: 100%
-		padding: 10px 25px 6px 10px
+		padding: 10px 25px 6px 65px
 		float: right
 		border-top: thin solid lighten($color_text, 70%)
 		position: relative
@@ -398,8 +398,8 @@ blockquote
 		width: 55px
 		float: left
 		position: absolute
-		top: 60px
-		left: 5px
+		bottom: -3px
+		left: 2px
 		font-size: 0.8em
 
 	+media-sm
@@ -418,7 +418,9 @@ blockquote
 		+transition(top, 50ms, ease-out)
 		+media-xs
 			display: inline-block
-			padding: 0 3px
+			padding: 5px
+			top: -5px
+
 	&:hover, &:focus
 		text-decoration: none
 	.up:hover, .up.rated
@@ -1331,6 +1333,9 @@ div#post-comment-reply-container
 	& .btn.submit
 		width: 50%
 		float: right
+		+media-xs
+			float: none
+			width: 100%
 
 .post-view-comments-item-details
 	display: block
@@ -1378,11 +1383,16 @@ div#post-comment-reply-container
 	width: 100%
 	padding: 15px 15px 25px 15px
 	margin: 0
+
 	& h3
 		font-weight: lighter
 		margin-left: 80px
 		+media-xs
 			margin-left: 0
+
+	+media-xs
+		& .post-view-comments-avatar
+			display: none
 
 .post-view-comments-empty
 	font-size: 1.2em
