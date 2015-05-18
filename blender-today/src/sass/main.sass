@@ -136,6 +136,9 @@ blockquote
 	& select
 		display: none // so the select categories doesn't appear for a moment
 
+		+media-xs
+			display: block
+
 .post-index-item
 	display: block
 	position: relative
@@ -205,7 +208,7 @@ blockquote
 				display: block
 				font-size: .8em
 				& i
-					padding-left: 2px
+					padding: 0 4px
 					font-size: .9em
 					top: -1px
 					position: relative
@@ -399,7 +402,6 @@ blockquote
 		left: 5px
 		font-size: 0.8em
 
-		display: none
 	+media-sm
 		width: 60px
 	+media-md
@@ -725,12 +727,45 @@ blockquote
 			position: relative
 			top: -2px
 
+	&.link
+		width: 100%
+		background-color: lighten($color_background, 2%)
+		color: $color_brand_main
+		padding: 10px 25px 10px 95px
+		border-bottom: thin solid darken($color_background, 5%)
+
+		+media-xs
+			margin: 0
+			padding: 10px
+
+		& a
+			visibility: hidden
+			display: inline-block
+			position: relative
+			top: 5px
+			max-width: 95%
+			+text-overflow-ellipsis
+
+			+media-xs
+				max-width: 90%
+
+		& img
+			display: inline-block
+			position: relative
+			top: -4px
+			margin-right: 5px
+			width: 16px
+			height: 16px
+
+
 
 .post-view-content-image
 	text-align: center
 	margin: 0 auto
 	padding: 0
 	position: relative
+	background:
+		color: $color_background
 	//margin: 0 0 0 65px
 	& img
 		max-width: 100%
@@ -831,6 +866,9 @@ blockquote
 			font-size: 0.75em
 			display: inline-block
 			position: relative
+
+		& .date span
+			padding-left: 5px
 
 	& .edited
 		opacity: 0.9
@@ -1108,6 +1146,7 @@ blockquote
 			font-family: $font_body
 			font-size: 0.8em
 			color: lighten($color_text, 30%)
+			margin: 0 10px
 
 
 .post-view-comments-item
@@ -2685,3 +2724,35 @@ a.cke_dialog_ui_button_ok:active, a.cke_dialog_ui_button_ok:focus
 .cd-active.cd-dropdown ul li span:hover
 	background: white
 	color: $color_brand_secondary
+
+
+/* Swipebox overrides */
+#swipebox-overlay, #swipebox-bottom-bar, #swipebox-top-bar
+	background-color: rgba($color_background, .95) !important
+	text-shadow: none !important
+
+#swipebox-bottom-bar, #swipebox-top-bar
+	display: none !important
+
+#swipebox-title
+	color: $color_text !important
+	font-family: $font_headings !important
+	font-size: 1.3em
+
+a#swipebox-close:after
+	content: '\f00d'
+	font-family: 'FontAwesome'
+	color: $color_brand_main
+	position: absolute
+	right: 30px
+	top: 15px
+	font-size: 2.5em
+
+a#swipebox-close
+	background: none
+	&:hover a#swipebox-close:after
+		color: $color_brand_secondary
+
+a#swipebox-close, a#swipebox-prev, a#swipebox-next
+	width: 100px
+	height: 100px

@@ -32,7 +32,9 @@ meta(property="article:published_time",
 
 | {% block page_title %}{{post.title}} -{% endblock %}
 
-| {% block header %}{% endblock %}
+| {% block header %}
+link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/swipebox.min.css",rel="stylesheet")
+| {% endblock %}
 
 | {% block body %}
 | {% cache 60*5, 'post', post.uuid, user_string_id %}
@@ -92,10 +94,6 @@ meta(property="article:published_time",
 					target="{% if post.post_type.url == 'link' %}_blank{% endif %}")
 					| {{post.title}}
 
-					| {% if post.post_type.url == 'link' %}
-					small.post-title-url {{post.content}}
-					| {% endif %}
-
 			.clearfix
 
 
@@ -113,7 +111,14 @@ meta(property="article:published_time",
 
 
 			| {# Posts type Text #}
-			| {% if post.post_type.url != 'link' %}
+			| {% if post.post_type.url == 'link' %}
+			| {% if not oembed %}
+			#post-content.post-view-content.link.
+				<img src="http://www.google.com/s2/favicons?domain={{post.content}}"/>
+				<a href="{{post.content}}" target="_blank" id="link-url">{{post.content}}</a>
+			| {% endif %}
+
+			| {% else %}
 			#post-content.post-view-content.
 				{{post.content|safe}}
 
@@ -128,10 +133,10 @@ meta(property="article:published_time",
 
 			| {% elif post.picture %}
 			.post-view-content-image
-				a(title="View on imgur.com",
+				a.swipebox(title="{{post.title}}",
 					href="{{post.original_image}}",
 					target="_blank")
-					img(src="{{post.thumbnail('h')}}")
+					img(src="{{post.thumbnail('h')}}", alt="{{post.title}}")
 					.post-view-content-image-link view on imgur.com
 
 			| {% endif %}
@@ -662,5 +667,15 @@ script(type="text/javascript").
 		$('.popover-comment-vote').popover();
 
 	{% endif %} // endif is_authenticated
+
+script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/js/jquery.swipebox.min.js")
+
+script.
+	$( '.swipebox' ).swipebox();
+
+	var link = $('#link-url');
+	var pretty = link.text().replace(/.*?:\/\//g, "").replace(/^www./, "").replace(/\/$/, "");
+	$(link).text(pretty);
+	$(link).css('visibility', 'visible');
 
 | {% endblock %}
