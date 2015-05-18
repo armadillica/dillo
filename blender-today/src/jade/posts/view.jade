@@ -1,0 +1,666 @@
+| {% extends 'layout.html' %}
+| {% from 'posts/_macros.html' import category_dropdown, print_comment with context %}
+
+| {% block og %}
+meta(property="og:type", content="article")
+meta(property="og:title", content="{{post.title}}")
+meta(property="og:url",
+		 content="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}")
+
+| {% if post.picture %}
+meta(property="og:image", content="{{post.thumbnail('h')}}")
+| {% else %}
+meta(property="og:image",
+		 content="{{ url_for('static', filename='images/favicon_192x192.png') }}")
+| {% endif %}
+
+meta(property="article:title", content="{{post.title}}")
+
+
+| {% if post.user.first_name and post.user.first_name != 'None' %}
+meta(property="article:author",
+		 content="{{post.user.first_name}} {{post.user.last_name}}")
+| {% else %}
+meta(property="article:author",
+		 content="{{post.user.username}}")
+| {% endif %}
+
+meta(property="article:published_time",
+		 content="{{post.creation_date}}")
+
+| {% endblock %}
+
+| {% block page_title %}{{post.title}} -{% endblock %}
+
+| {% block header %}{% endblock %}
+
+| {% block body %}
+| {% cache 60*5, 'post', post.uuid, user_string_id %}
+
+.row
+	.col-md-9.post-view
+
+		| {# Header #}
+		.row
+
+
+			| {# Breadcrumbs #}
+			.col-md-6.col-xs-6
+				h4.post-view-container-title
+
+					a(href="{{url_for('index')}}") Home
+
+					strong ·
+
+					// XXX TODO CHECK ON THIS
+					a(href="{{url_for('index')}}p/{{post.category.url}}").
+						{{post.category.name}}
+
+
+			| {# Categories #}
+			.col-md-6.col-xs-6.
+				{{ category_dropdown(title, category, categories) }}
+
+
+		| {# Post View #}
+		.post-view-container
+
+			| {# Post Rating #}
+			div(title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
+					class="post-view-rate{% if current_user.is_anonymous() %} popover-post-vote{% endif %}",
+					data-toggle="popover",
+					data-trigger="hover",
+					data-placement="bottom",
+					data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
+
+				a(class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}",
+					href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
+					title="Upvote, click again to undo")
+					i.fa.fa-angle-up
+
+				span.middle.rating {{post.rating_delta}}
+
+				a(title="Downvote, click again to undo",
+					href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
+					class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
+					i.fa.fa-angle-down
+
+			| {# Post Title #}
+			.post-view-title
+				a(title="{{post.title}}",
+					href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}",
+					target="{% if post.post_type.url == 'link' %}_blank{% endif %}")
+					| {{post.title}}
+
+					| {% if post.post_type.url == 'link' %}
+					small.post-title-url {{post.content}}
+					| {% endif %}
+
+			.clearfix
+
+
+			| {# Notifications #}
+			| {% if current_user.is_owner or current_user.has_role('admin') %}
+			.notification-post-saved
+				i.fa.fa-floppy-o
+				| Saving...
+
+			.notification-post-fail
+				i.fa.fa-frown-o.fa-spin
+				| Failed... try again?
+
+			| {% endif %}
+
+
+			| {# Posts type Text #}
+			| {% if post.post_type.url != 'link' %}
+			#post-content.post-view-content.
+				{{post.content|safe}}
+
+			| {% endif %}
+
+
+			| {# Posts with OEmbed or Picture #}
+
+			| {% if oembed %}
+			#post-content.post-view-content.oembed.
+				{{oembed['html']|safe}}
+
+			| {% elif post.picture %}
+			.post-view-content-image
+				a(title="View on imgur.com",
+					href="{{post.original_image}}",
+					target="_blank")
+					img(src="{{post.thumbnail('h')}}")
+					.post-view-content-image-link view on imgur.com
+
+			| {% endif %}
+
+
+			| {# Posts Details #}
+			.post-view-details
+
+				.row
+					.col-md-1.col-sm-1.col-xs-2
+
+						.post-view-details-avatar
+
+							| {% if post.user.deleted %}
+							span.post-view-details-avatar-deleted
+							| {% else %}
+
+							a(title="{{post.user.first_name}} {{post.user.last_name}}",
+								href="{{url_for('index')}}u/{{post.user.id}}")
+
+								img(title="{{post.user.first_name}} {{post.user.last_name}}",
+										src="{{post.user.gravatar()}}")
+
+								| {# User Badges #}
+
+								| {% if post.user.has_role('dev_core') %}
+								div.post-view-details-avatar-label
+									i.dev_core.bf-blender(title="Blender Core Developer")
+
+								| {% elif post.user.has_role('bfct_trainer') %}
+								div.post-view-details-avatar-label
+									i.bfct_trainer.fa.fa-graduation-cap(
+										title="Blender Foundation Certified Trainer")
+
+								| {% elif post.user.has_role('network_member') %}
+								div.post-view-details-avatar-label
+									i.network_member.bf-network(
+										title="Blender Network Member")
+
+								| {% elif post.user.has_role('cloud_member') %}
+								div.post-view-details-avatar-label
+									i.cloud_member.bf-cloud(
+										title="Blender Cloud Member")
+
+								| {% endif %}
+							| {% endif %}
+
+					.col-md-11.col-sm-11.col-xs-10
+
+						.post-view-details-meta
+
+							.post-actions
+
+								h4#edit-post-delete-label(
+									class="{% if post.status != 'deleted' %}hidden{% endif %}")
+									span.label.label-lg.label-danger This post has been deleted
+
+								| {% if post.status != 'deleted' %}
+								span#social
+									span.icons
+
+										a.pop(
+											title="Share via Email",
+											href="mailto:?subject={{post.title}}&body={{post.title}} on Blender Today | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}",
+											target="_blank")
+											i.fa.fa-envelope-o
+
+
+										a.pop(
+											title="Share on Reddit",
+											href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}",
+											target="_blank")
+											i.fa.fa-reddit
+
+
+										a.pop(
+											title="Share on Google+",
+											href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" ,
+											target="_blank")
+											i.fa.fa-google-plus
+
+
+										a.pop(
+											title="Share on Facebook",
+											href="https://www.facebook.com/sharer/sharer.php?u={{post.title}}%20{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}",
+											target="_blank")
+											i.fa.fa-facebook
+
+
+										a.pop(
+											title="Share on Twitter",
+											href="https://twitter.com/home?status={{post.title}} @BlenderToday {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}} %23b3d" ,
+											target="_blank")
+											i.fa.fa-twitter
+
+								span#social-toggle.post-actions-button.social(title="Share")
+									i.fa.fa-share-alt
+
+								| {% endif %}
+
+
+								| {% if current_user.is_owner or current_user.has_role('admin') %}
+								| {% if post.status != 'deleted' %}
+
+								| {% if post.post_type.url != 'link' %}
+								a#edit-post-save.post-actions-button.save(
+									title="Save Changes",
+									href="{{ url_for('posts.edit', uuid=post.uuid) }}")
+									i.fa.fa-save
+
+								span#edit-post-toggle.post-actions-button.edit(title="Edit Post")
+									i.fa.fa-pencil
+								| {% endif %}
+
+								a.edit-post-delete-widget.post-actions-button.delete(
+									title="Delete Post",
+									href="")
+
+									span.edit-post-delete-widget-action(link="")
+									span.edit-post-delete-widget-icon
+										i.fa.fa-trash
+									span.edit-post-delete-widget-question ?
+
+								| {% endif %}
+								| {% endif %}
+
+
+							| {# Author Name & Karma #}
+							span.author-name
+
+								| {% if post.user.deleted %}
+								span.deleted(title="This account no longer exists") [deleted]
+
+								| {% else %}
+
+								a(href="{{url_for('index')}}u/{{post.user.id}}").
+									{% if (post.user.first_name and post.user.first_name != 'None') %}
+										{{post.user.first_name}} {{post.user.last_name}}
+									{% else %}
+										{{post.user.username}}
+									{% endif %}
+
+								span.author-karma(title="Reputation score") {{post.user.karma.value}}
+
+								| {% endif %}
+
+
+							| {# Author Roles #}
+
+							| {% if not post.user.deleted %}
+							span.author-roles.
+								{% if post.user.has_role('dev_core') %}
+									Blender Core Developer<br/>
+								{% endif %}
+								{% if post.user.has_role('cloud_member') %}
+									Blender Cloud Member<br/>
+								{% endif %}
+								{% if post.user.has_role('network_member') %}
+									Blender Network Member<br/>
+								{% endif %}
+								{% if post.user.has_role('bfct_trainer') %}
+									Blender Foundation Certified Trainer
+								{% endif %}
+
+							| {% endif %}
+
+
+							| {# Post Meta #}
+
+							span.meta
+
+								span.date
+									a(title="Permalink",
+										href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}")
+										| posted
+
+										span(title="{{post.creation_date.strftime('%H:%M on %A %d, %B %Y')}}").
+											{{post.pretty_creation_date}}
+
+										| {% if post.edit_date %}
+										span.edited(title="Last edited {{post.edit_date.strftime('%H:%M on %A %d, %B %Y')}}").
+											(edited {{post.pretty_edit_date}})
+
+										| {% endif %}
+
+
+								span.separator
+
+
+								a(href="{{url_for('index')}}p/{{post.category.url}}").
+									{{post.category.name}}
+
+
+								| {% if post.status == 'deleted' %}
+								span.disabled (deleted)
+								| {% endif %}
+
+
+								span.separator
+
+
+								a(title="Permalink",
+									href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}")
+									i.fa.fa-link
+
+
+								| {% if post.status != 'deleted' %}
+								span.separator
+
+								a(title="Flag this post, click again to undo",
+									href="{{url_for('posts.flag', uuid=post.uuid)}}",
+									class="flag{% if post.user_rating and post.user_rating.is_flagged %} flagged{% endif %}")
+
+								| {% endif %}
+
+
+
+			| {# Posts Comments #}
+			.post-view-comments
+
+				a(name="comments")
+
+				| {% if post.comments %}
+				h3.title
+					| Comments
+					small ({{post.comments|length}})
+
+				| {% for comment in post.comments_first_level %}
+				| 	{{print_comment(comment, loop, post)}}
+				| 	{% for reply in comment.children %}
+				| 		{{print_comment(reply, loop, post, is_reply=True)}}
+				| 	{% endfor %}
+				| {% endfor %}
+
+				| {% else %}
+
+				h3.title.
+					No Comments {% if post.status != 'deleted' %}<small>(yet)</small>{% endif %}
+
+				| {% if post.status != 'deleted' %}
+
+				.post-view-comments-empty.
+					It's your chance. Be the first!
+
+				| {% endif %} <br/>
+
+				| {% endif %}
+
+
+				| {# Submit Comment #}
+
+				| {% if post.status != 'deleted' %}
+				.post-view-comments-submit
+
+					| {% if current_user.is_anonymous() %}
+					h3
+						a(href="{{url_for_security('login')}}") Login to comment
+
+					| {% else %}
+
+					h3 Leave a comment
+					| {% endif %}
+
+
+					| {% if current_user.is_authenticated() %}
+					.post-view-comments-avatar
+						a(href="{{url_for('index')}}u/{{current_user.id}}")
+							img(title="{{current_user.first_name}} {{current_user.last_name}}",
+									src="{{current_user.gravatar()}}",
+									class="{% if post.user.id == current_user.id %} op{% endif %}")
+
+							| {# User Badges #}
+
+							| {% if current_user.has_role('dev_core') %}
+							div.post-view-comments-avatar-label
+								i.dev_core.bf-blender(title="Blender Core Developer")
+
+							| {% elif current_user.has_role('bfct_trainer') %}
+							div.post-view-comments-avatar-label
+								i.bfct_trainer.fa.fa-graduation-cap(
+									title="Blender Foundation Certified Trainer")
+
+							| {% elif current_user.has_role('network_member') %}
+							div.post-view-comments-avatar-label
+								i.network_member.bf-network(
+									title="Blender Network Member")
+
+							| {% elif current_user.has_role('cloud_member') %}
+							div.post-view-comments-avatar-label
+								i.cloud_member.bf-cloud(
+									title="Blender Cloud Member")
+							| {% endif %}
+
+					| {% endif %}
+
+
+					.post-view-comments-item-content
+						| {% if not current_user.is_anonymous() %}
+						form#form-comment(
+							role="form",
+							method="POST",
+							enctype="multipart/form-data",
+							action="{{url_for('comments.submit', post_id=post.id)}}")
+
+							| {{ form.hidden_tag() }}
+
+							.form-group
+								| {{ form.content(class='form-control', id='post_comment') }}
+								| {% if form.content.errors %}
+								ul.error
+									| {% for error in form.content.errors %}
+									li {{ error }}
+									| {% endfor %}
+								| {% endif %}
+
+							| {{ form.parent_id }}
+
+							button#submit-post.btn.btn-default.btn-squishy.btn-success.submit(type="submit")
+								i.fa.fa-check
+								|  Submit Comment
+
+						| {% endif %}
+
+					| {% endif %}
+
+
+
+	.col-md-3
+		| {% include '_sidebar.html' %}
+
+
+| {% endcache %}
+| {% endblock %}
+
+| {% block footer_scripts %}
+script(type="text/javascript").
+	{% if current_user.is_authenticated() %}
+
+		CKEDITOR.replace('post_comment', {
+			customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}',
+		});
+
+		CKEDITOR.disableAutoInline = true;
+		CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
+
+		var comment_reply_editor, html = '';
+
+		var upvote = function(up, down, rate) {
+			$.get(up.attr("href"), function(data){
+				down.removeClass('rated');
+				if (data['rating'] === "True") {
+					up.addClass('rated');
+				} else {
+					up.removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		}
+
+		var downvote = function(up, down, rate) {
+			$.get(down.attr("href"), function(data){
+				up.removeClass('rated');
+				if (data['rating'] === "False") {
+					$(".down").addClass('rated');
+				} else {
+					$(".down").removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		}
+
+		$(".up").click(function(e) {
+			e.preventDefault();
+			var up = $(this);
+			var rate = $(this).siblings('.rating');
+			var down = $(this).siblings('.down');
+			upvote(up, down, rate);
+		});
+
+		$(".down").click(function(e) {
+			e.preventDefault();
+			var up = $(this).siblings('.up');
+			var rate = $(this).siblings('.rating');
+			var down = $(this);
+			downvote(up, down, rate);
+		});
+
+		$(".flag").click(function(e) {
+			e.preventDefault();
+			$(this).toggleClass('flagged');
+			$.get($(this).attr('href'));
+		});
+
+		$(".post-comment-reply").click(function(e) {
+			e.preventDefault();
+			if(comment_reply_editor){
+				//$("#post-comment-reply-container").appendTo($(this));
+				comment_reply_editor.destroy();
+				comment_reply_editor = null;
+				$("#post-comment-reply-container").remove();
+			}
+
+			var comment = $(this).attr('comment');
+			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default btn-block btn-success"><i class="fa fa-check"></i> Submit Reply</span></div>');
+			var config = { customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' };
+			comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
+		});
+
+
+		$(document).on('click','#form-comment-reply-submit',function(e){
+			var parent_id = $("#post-comment-reply-container").attr("parent_id");
+			var comment_reply_content = comment_reply_editor.getData();
+			$('#form-comment-reply-submit').html('<i class="fa fa-spinner fa-spin"></i> Submitting');
+
+			$.post($("#form-comment").attr("action"), {parent_id:parent_id, content:comment_reply_content},function(data){
+				c = print_comment(data['comment'], 'reply ');
+				$("#post-comment-reply-container").before(c);
+				$("#post-comment-reply-container").hide();
+			})
+			.done(function(data){
+				$('#form-comment-reply-submit').css('background-color', '#5cb85c');
+				$('#form-comment-reply-submit').html('<i class="fa fa-check"></i> Success!');
+			})
+			.fail(function(data){
+				$('#form-comment-reply-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
+			});
+		});
+
+
+		var print_comment = function(comment, reply) {
+		if (typeof(reply)==='undefined') reply = '';
+		comment =
+		'<div class="post-view-comments-item '+ reply +'flash"> \
+			<div class="row"> \
+				<div class="col-md-1 col-sm-1 col-xs-2">\
+					<div class="post-view-comments-avatar">\
+						<img src="' + comment['gravatar'] + '" class="img-circle op">\
+					</div>\
+				</div>\
+				<div class="col-md-11 col-sm-11 col-xs-10">\
+					<div class="post-view-comments-item-content">\
+						' + comment['content'] + '\
+					</div>\
+					<div class="post-view-comments-item-details">\
+						<span>' + comment['creation_date'] + '</span>\
+						<small>by</small> ' + comment['user_name'] + '\
+						<span class="separator"></span>\
+						<a href="' + comment['post_url'] + '#comment-' + comment['comment_id'] + '"><i class="fa fa-link"></i></a>\
+					</div>\
+				</div>\
+			</div> \
+		</div>';
+		return comment;
+		}
+
+		$("#form-comment").on("submit", function(e) {
+			e.preventDefault();
+			$.post($(this).attr('action'), $(this).serialize(),function(data){
+				$(".post-view-comments-empty").hide();
+				c = print_comment(data['comment']);
+				$(".post-view-comments-submit").before(c);
+				// Clear the form
+				CKEDITOR.instances['post_comment'].setData('');
+			});
+		});
+
+		{% if current_user.is_owner or current_user.has_role('admin') %}
+			$("#edit-post-toggle").click(function() {
+				var ck = CKEDITOR.inline('post-content',
+								{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
+								);
+
+				ck.on( 'instanceReady', function( ev ) {
+					var editor = ev.editor;
+					editor.setReadOnly( false );
+				});
+
+				$('.post-view-content').addClass('action-edit');
+
+				$(this).fadeOut(function(){
+					$("#edit-post-save").css('display', 'inline-block');
+					$("#edit-post-save").animate({'opacity' : 1});
+				});
+			});
+			$("#edit-post-save").click(function(e) {
+				e.preventDefault();
+				$.post($(this).attr("href"), {
+					content : $("#post-content").html()},
+					function(data){
+				})
+					.done(function() {
+						$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
+					})
+					.fail(function() {
+						$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
+					})
+					.always(function() {
+						$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+						$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
+					});
+			});
+
+			$('.edit-post-delete-widget').click(function(e){
+				e.preventDefault();
+				$('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
+				$('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
+				$('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
+				});
+			});
+
+			$('.edit-post-delete-widget-action').click(function(e){
+				$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
+					$('.edit-post-delete-widget').fadeOut(function(){
+						$('#edit-post-delete-label').toggleClass('hidden');
+					});
+					$('#edit-post-toggle').fadeOut();
+					$('#social').fadeOut();
+					$('#social-toggle').fadeOut();
+				});
+			});
+
+		{% endif %} // endif is_owner
+
+	{% else %}
+
+		$('.popover-post-vote').popover();
+		$('.popover-comment-reply').popover();
+		$('.popover-comment-vote').popover();
+
+	{% endif %} // endif is_authenticated
+
+| {% endblock %}

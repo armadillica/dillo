@@ -64,23 +64,23 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 				.post-index-item.featured
 
 					// Post Rating
-					div(class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}",
-							title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
+					div(title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
+							class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}",
 							data-toggle="popover",
 							data-trigger="hover",
 							data-placement="bottom",
 							data-content="{% if current_user.is_anonymous() %}Please login to vote{% endif %}")
 
-						a(class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}",
+						a(title="Upvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
-							title="Upvote, click again to undo")
+							class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}")
 							i.fa.fa-angle-up
 
 						span.middle {{post.rating_delta}}
 
-						a(class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}",
+						a(title="Downvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
-							title="Downvote, click again to undo")
+							class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
 							i.fa.fa-angle-down
 
 					// Post Title
@@ -135,29 +135,29 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 				div(class="post-index-item {{ loop.cycle('odd', 'even') }}")
 
 					// Post Rating
-					div(class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}",
-							title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
+					div(title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
+							class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}",
 							data-toggle="popover",
 							data-trigger="hover",
 							data-placement="bottom",
 							data-content="{% if current_user.is_anonymous() %}Please login to vote{% endif %}")
 
-						a(class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}",
+						a(title="Upvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
-							title="Upvote, click again to undo")
+							class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}")
 							i.fa.fa-angle-up
 
 						span.middle {{post.rating_delta}}
 
-						a(class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}",
+						a(title="Downvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
-							title="Downvote, click again to undo")
+							class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
 							i.fa.fa-angle-down
 
 
 					// Post Circle Thingie
-					a(href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}",
-						title="View post and comments",
+					a(title="View post and comments",
+						href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}",
 						class="post-index-item-type {{post.post_type.url}}",
 						style="{% if post.picture %}background: url({{post.thumbnail('s')}}) top left no-repeat{% endif %}")
 						| {% if not post.picture %}
@@ -171,8 +171,8 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 					// Post Title
 					a.post-index-item-title(
-						href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}",
 						title="{{post.title}}",
+						href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}",
 						target="{% if post.post_type.url == 'link' %}_blank{% endif %}")
 
 						| {{post.title}}

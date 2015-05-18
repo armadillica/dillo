@@ -2,7 +2,7 @@
 a(name="comment-{{comment.id}}")
 div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cycle('odd', 'even') }}")
 
-	// Comment Avatar
+	| {# Comment Avatar #}
 	.post-view-comments-avatar
 
 		| {% if comment.user.deleted %}
@@ -42,7 +42,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		| {% endif %}
 
 
-	// Comment Header
+	| {# Comment Header #}
 	.post-view-comments-item-header
 		| {% if comment.user.deleted %}
 		span.deleted(title="This account no longer exists") [deleted]
@@ -61,11 +61,11 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			{{comment.pretty_creation_date}}
 
 
-	// Comment Text
+	| {# Comment Text #}
 	.post-view-comments-item-content
 		| {{comment.content|safe}}
 
-	// Comment Details
+	| {# Comment Details #}
 	.post-view-comments-item-details
 
 		| {#

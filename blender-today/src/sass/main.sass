@@ -113,8 +113,10 @@ blockquote
 .post-view-container-title
 	position: relative
 	top: -10px
+
 	& strong
 		color: $color_brand_secondary
+		margin: 0 5px
 
 /* post-index */
 .post-index, .post-view
@@ -445,7 +447,7 @@ blockquote
 	top: 12px
 	z-index: 2
 	+box-shadow(2px, 2px, 0, black, .1)
-	+border-radius(50%)
+	border-radius: 50%
 	+transition(opacity, .25s, ease)
 
 	+media-xs
@@ -506,7 +508,7 @@ blockquote
 	transform: scale(1)
 	animation: ripple 1s ease-out forwards
 	opacity: 1
-	+border-radius(50%)
+	border-radius: 50%
 	+media-xs
 		display: none !important
 	+media-sm
@@ -865,7 +867,7 @@ blockquote
 			background-color: darken($color_brand_main, 10%)
 			border: 2px solid darken($color_brand_main, 20%)
 			+user-select-none
-			+border-radius(50%)
+			border-radius: 50%
 			+text-shadow(1px, 1px, 0, black, .1)
 			+box-shadow(1px, 2px, 0, black, .1)
 			+transition(all, 0.1s, ease)
@@ -948,7 +950,7 @@ blockquote
 				width: 30px
 				color: white
 				background-color: darken($color_brand_main, 20%)
-				+border-radius(50%)
+				border-radius: 50%
 				+text-shadow-none
 				&:hover
 					background-color: lighten($color_brand_main, 10%)
@@ -975,7 +977,7 @@ blockquote
 		display: block
 		background-color: lighten($color_text, 65%)
 		padding: 0
-		+border-radius(50%)
+		border-radius: 50%
 		+text-shadow-none
 		+media-xs
 			width: 40px
@@ -998,6 +1000,7 @@ blockquote
 .post-view-details-avatar img,
 .post-view-comments-avatar img
 	background: white
+	border-radius: 50%
 
 .post-view-details-avatar img
 	max-width: 60px
@@ -1024,7 +1027,7 @@ blockquote
 	display: block
 	bottom: 0
 	background: white
-	+border-radius(50%)
+	border-radius: 50%
 	& i
 		position: relative
 		+text-shadow-none
@@ -1225,7 +1228,7 @@ div#post-comment-reply-container
 		display: block
 		background-color: lighten($color_text, 65%)
 		padding: 0
-		+border-radius(50%)
+		border-radius: 50%
 		+media-xs
 			width: 40px
 			height: 40px
@@ -1254,8 +1257,8 @@ div#post-comment-reply-container
 		margin-left: 75px
 
 .post-view-comments-item-content
-
 	display: block
+	padding: 0 0 20px 0
 
 	+media-xs
 		clear: both
@@ -1286,6 +1289,10 @@ div#post-comment-reply-container
 	& img
 		max-width: 100%
 
+	& .btn.submit
+		width: 50%
+		float: right
+
 .post-view-comments-item-details
 	display: block
 	clear: both
@@ -1296,11 +1303,11 @@ div#post-comment-reply-container
 		padding-top: 10px
 		font-size: 0.8em
 	+media-sm
-		margin-left: 75px
+		margin-left: 70px
 	+media-md
-		margin-left: 75px
+		margin-left: 70px
 	+media-lg
-		margin-left: 75px
+		margin-left: 70px
 
 	& .author
 		color: lighten($color_text, 20%)
@@ -2002,7 +2009,7 @@ fieldset
 				font-weight: bold
 				background-color: desaturate($color_brand_secondary, 10%)
 				z-index: 0
-				+border-radius(50%)
+				border-radius: 50%
 			&:hover a, &:active a, &:focus a,
 			& a:hover, & a:active, & a:focus
 				background-color: lighten($color_brand_secondary, 5%)
@@ -2011,7 +2018,7 @@ fieldset
 			& a
 				border: none
 				background-color: transparent
-				+border-radius(50%)
+				border-radius: 50%
 			&:hover a, &:active a, &:focus a
 				background-color: transparent
 
@@ -2027,7 +2034,7 @@ fieldset
 	height: 25px
 	width: 25px
 	padding: 6px 5px 5px 5px
-	+border-radius(50%)
+	border-radius: 50%
 
 /* // BOOTSTRAP OVERRIDES */
 
@@ -2213,7 +2220,7 @@ fieldset
 		position: relative
 		top: 5px
 		margin-left: 5px
-		+border-radius(50%)
+		border-radius: 50%
 		+box-shadow(2px, 2px, 0, black, .1)
 		&:hover
 			opacity: .9
@@ -2311,7 +2318,7 @@ fieldset
 	height: 40px
 	width: 40px
 	font-size: 1.3em
-	+border-radius(50%)
+	border-radius: 50%
 	+box-shadow(2px, 2px, 0, black, .1)
 	&:hover
 		background: lighten($color_brand_secondary, 5%)
