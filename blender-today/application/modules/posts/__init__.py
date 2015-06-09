@@ -109,7 +109,7 @@ def view(category, uuid, slug=None):
 
     # Aggressive redirect if the URL does not have a slug
     if not slug:
-        return redirect(url_for('posts.view', 
+        return redirect(url_for('posts.view',
             category=category,
             uuid=uuid,
             slug=post.slug))
@@ -121,7 +121,6 @@ def view(category, uuid, slug=None):
     if post.post_type_id == 1:
         try:
             oembed = registry.request(post.content)
-            print oembed
             # Keep in mind that oembed can be of different types:
             # - photo
             # - video
@@ -129,6 +128,9 @@ def view(category, uuid, slug=None):
             # - etc
         except ProviderNotFoundException:
             # If the link is not an OEmbed provider, we move on
+            pass
+        else:
+            # For any other error (e.g. video was unpublished) we also pass
             pass
 
     form = CommentForm()
@@ -324,7 +326,7 @@ def flag(uuid):
     # Commit changes so far
     db.session.commit()
 
-    # Check if the post has been flagged multiple times, currently 
+    # Check if the post has been flagged multiple times, currently
     # the value is hardcoded to 5
     flags = UserPostRating.query\
         .filter_by(post_id=post.id, is_flagged=True)\
