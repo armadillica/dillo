@@ -4,6 +4,7 @@
 			ul
 
 				// Submit Button
+
 				| {% if current_user.is_authenticated() %}
 
 				li.navbar-submit(data-dialog="submit")
@@ -19,7 +20,7 @@
 							data-content="Sign in to Submit")
 
 						li.navbar-submit.navbar-submit-disabled
-							a(href="{{url_for_security('login')}}")
+							a(href="{{url_for_security('login')}}") Submit
 
 				| {% endif %}
 
