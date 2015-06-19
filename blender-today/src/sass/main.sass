@@ -159,7 +159,6 @@ blockquote
 		margin-bottom: 15px
 
 	&.even
-		//background-color:	lighten($color_background, 1%)
 		background-color: lighten($color_background, 2%)
 		border: thin solid darken($color_background, 5%)
 		& .post-index-item-title
@@ -1439,22 +1438,25 @@ div#post-comment-reply-container
 		color: lighten($color_text, 40%)
 
 /* post-submit */
+.post-submit-div-submit
+	display: none
+
 .post-submit .form-group .form-control
-	font-size: 1.3em
-	padding: 4px 12px
+	font-size: 1.5em
+	padding: 8px 12px 8px 16px
 	margin-bottom: 10px
 	height: auto
 	width: auto
 	background-color: white
+	border: none
 
 	&.post-submit-field-title, &.post-submit-field-url,
 	&.post-submit-field-category, &.post-submit-field-content, &.post-submit-field-picture
 		width: 100%
 
-.post-submit-div-title, .post-submit-div-url,
+.post-submit-div-title,
 .post-submit-div-category, .post-submit-div-content,
-.post-submit-div-picture, .post-submit-div-picture-remote,
-.post-submit-div-submit
+.post-submit-div-picture, .post-submit-div-picture-remote
 	display: none
 
 .post-submit-div-category,
@@ -1462,21 +1464,100 @@ div#post-comment-reply-container
 .post-submit-div-title,
 .post-submit-div-url
 	& span
-		font-size: 1.3em
+		font-size: 1.5em
 		display: block
-		padding-top: 8px
-		text-align: right
+		padding-bottom: 8px
+		text-align: left
 		+text-shadow(1px, 1px, 0, black, .2)
 
-.post-submit-div-title,
+// We show this by default
 .post-submit-div-url
-	margin-top: 0
+	display: block
+	margin-top: 30px
+	margin-bottom: 30px
 
+.post-submit-div-title
+	margin-top: 30px
+	margin-bottom: 10px
+
+.post-submit-div-content,
+.post-submit-div-category,
+.post-submit-div-picture
+	margin-bottom: 10px
+
+.post-submit-link
+	& .form-group,
+	& .form-control
+		margin-bottom: 0 !important
+
+.post-submit-field-url
+	padding: 8px 50px 8px 35px !important
+
+.post-submit-field-favicon
+	position: absolute
+	top: 50%
+	transform: translateY(-50%)
+	left: 25px
+	color: lighten($color_text, 50%)
+	font-size: 1.6em
+
+	& img
+		width: 16px
+		height: 16px
+		display: block
+
+.post-submit-field-loading
+	position: absolute
+	top: 50%
+	transform: translateY(-50%)
+	color: lighten($color_text, 40%)
+	right: 30px
+	font-size: 1.8em
+
+	&.success
+		color: $color_success
+
+	&.error
+		color: $color_danger
+
+.post-submit-field-submit
+	color: white
+	background-color: rgba(white, .1)
+	border: 2px solid rgba(white, .8)
+	font-size: 1.5em
+	font-family: $font_headings
+
+	&:hover, &:focus
+		color: white
+		background-color: rgba(white, .3)
+		border: 2px solid white
+		box-shadow: none
+
+	&:active
+		background-color: rgba(white, .4)
+		border: 2px solid white
+		box-shadow: none
+
+	&.disabled
+		color: rgba(white, .8)
+		background-color: transparent
+		border: 2px solid rgba(white, .3)
+
+	&.success
+		color: white
+		background-color: #5cb85c
+		border: 2px solid lighten(#5cb85c, 15%)
+
+	&.houston
+		color: white
+		background-color: $color_danger
+		border: 2px solid lighten($color_danger, 15%)
 
 .post-submit-div-picture-remote
 	position: relative
 	margin: 20px auto
 	max-height: 200px
+	text-align: center
 	overflow: hidden
 	border-top-left-radius: 3px
 	border-top-right-radius: 3px
@@ -1485,6 +1566,7 @@ div#post-comment-reply-container
 		width: 100%
 		position: relative
 		z-index: 0
+		max-width: 320px
 
 	& .dialog__button-close
 		top: 10px
@@ -1510,50 +1592,56 @@ div#post-comment-reply-container
 
 	& .post-submit-field-type-button
 		display: inline-block
+		position: relative
 		width: 100%
+		height: 80px
 		cursor: pointer
-		padding: 5px 5px 10px 5px
-		background-color: lighten($color_brand_main, 10%)
-		margin-bottom: 10px
-		+user-select-none
-		+border-radius(10px)
-		+transition(background-color, 0.1s, ease)
-		+box-shadow(2px, 2px, 2px, black, .2)
+		padding: 0
+		user-select: none
+		color: rgba(white, .9)
+		border-radius: 3px
+		box-shadow: 3px 0 0 darken($color_brand_main, 5%), -3px 0 0 darken($color_brand_main, 5%)
+
+		transition: background-color 0.1s ease, box-shadow 0.2s ease, color 0.2s ease
 		&:hover, &:focus
-			text-decoration: none !important
-			background-color: lighten($color_brand_main, 5%)
+			color: white
+			box-shadow: 3px 0 0 rgba(white, .15), -3px 0 0 rgba(white, .15)
 		&:active
 			background-color: darken($color_brand_main, 5%)
 
 		&.activato
-			background-color: desaturate($color_brand_secondary, 10%)
-			margin-bottom: 20px
+			color: white
+			border-bottom: 4px solid darken($color_brand_main, 15%)
+			background-color: darken($color_brand_main, 15%)
+			box-shadow: 0 3px 0 $color_brand_secondary
+
+			&:hover
+				cursor: default
+
 
 	& .post-submit-field-type-button-icon
-		float: left
-		width: 22%
-		text-align: center
-		padding: 5px 0 0 0
-		+text-shadow(1px, 2px, 2px, black, .2)
-		& .fa-file-text-o,
-		& .fa-link
-			font-size: 85%
-		& .fa-link
-			top: 2px
+		position: absolute
+		top: 50%
+		transform: translateY(-50%)
 
+		width: 65px
+		text-align: center
+		font-size: 2em
+
+
+	& .post-submit-field-type-button-legend
+		position: absolute
+		top: 50%
+		transform: translateY(-50%)
+		left: 65px
 
 	& .post-submit-field-type-button-title
 		display: block
-		float: right
-		width: 78%
 		font-size: 1.6em
-		margin: 5px 0 0 0
-		+text-shadow(1px, 1px, 0, black, .2)
+		font-family: $font_headings
 
 	& .post-submit-field-type-button-description
 		font-size: 1.1em
-		margin: 0
-		+text-shadow(1px, 1px, 0, black, .1)
 
 .post-submit-title
 	+text-shadow(1px, 1px, 0, black, .2)
@@ -1562,16 +1650,6 @@ div#post-comment-reply-container
 		font-size: 1.8em
 		margin-top: 0
 
-.post-submit .btn-success
-	color: white
-	background-color: $color_brand_secondary
-	border: none
-	font-size: 1.5em
-	+box-shadow(1px, 2px, 2px, black, .2)
-	&:hover, &:focus
-		background-color: lighten($color_brand_secondary, 10%)
-	&:active
-		background-color: darken($color_brand_secondary, 10%)
 
 /* Page View */
 .page-view
@@ -2299,22 +2377,23 @@ fieldset
 	left: 0
 
 .dialog
-	position: fixed // POS on mobile
-	overflow: hidden
+	position: absolute // POS on mobile
+	//overflow: hidden
 	display: -webkit-flex
 	display: flex
-	-webkit-align-items: center
-	align-items: center
+	-webkit-align-items: flex-start
+	align-items: flex-start
 	-webkit-justify-content: center
 	justify-content: center
 	pointer-events: none
 	z-index: 9999
 
 .dialog__overlay
-	position: absolute
+	position: fixed
+	width: 100%
+	height: 100%
 	z-index: 1
 	background: rgba($color_background, .9)
-	//background: rgba(darken(desaturate($color_brand_main, 15%), 25%), 0.6)
 	opacity: 0
 	-webkit-transition: opacity 0.3s
 	transition: opacity 0.3s
@@ -2326,15 +2405,17 @@ fieldset
 
 .dialog__content
 	width: 80%
-	max-width: 660px
+	max-width: 720px
 	min-width: 290px
 	color: white
 	background: $color_brand_main
-	padding: 1.5em 2em
+	padding: 2.5em 2em 1.5em 2em
 	position: relative
 	z-index: 5
 	opacity: 0
-	+border-radius(3px)
+	border-bottom-left-radius: 3px
+	border-bottom-right-radius: 3px
+
 	+box-shadow(2px, 2px, 0, black, .1)
 	& a
 		color: white
@@ -2358,26 +2439,26 @@ fieldset
 
 .dialog__button-close
 	position: absolute
-	top: -15px
+	top: 10px
 	right: 15px
-	background: $color_brand_secondary
-	color: white
+	background: none
+	color: rgba(white, .6)
 	border: none
 	height: 40px
 	width: 40px
 	font-size: 1.3em
-	border-radius: 50%
-	+box-shadow(2px, 2px, 0, black, .1)
+
 	&:hover
-		background: lighten($color_brand_secondary, 5%)
+		color: $color_brand_secondary
 
 .dialog--open .dialog__content
 	pointer-events: auto
 
 .dialog.dialog--open .dialog__content,
 .dialog.dialog--close .dialog__content
-	-webkit-animation-duration: 0.3s
-	animation-duration: 0.3s
+	opacity: 1
+	-webkit-animation-duration: 0.5s
+	animation-duration: 0.5s
 	-webkit-animation-fill-mode: forwards
 	animation-fill-mode: forwards
 
@@ -2389,41 +2470,37 @@ fieldset
 	-webkit-animation-name: effect-dialog-close
 	animation-name: effect-dialog-close
 
+
 @-webkit-keyframes effect-dialog-open
 	0%
-		opacity: 0
-		-webkit-transform: scale3d(1.1, 1.1, 1)
+		-webkit-transform: translate3d(0, -100%, 0)
 	100%
-		opacity: 1
-		-webkit-transform: scale3d(1, 1, 1)
+		-webkit-transform: translate3d(0, 0, 0)
 
 
 @keyframes effect-dialog-open
 	0%
-		opacity: 0
-		-webkit-transform: scale3d(1.1, 1.1, 1)
-		transform: scale3d(1.1, 1.1, 1)
+		-webkit-transform: translate3d(0, -100%, 0)
+		transform: translate3d(0, -100%, 0)
 	100%
-		opacity: 1
-		-webkit-transform: scale3d(1, 1, 1)
-		transform: scale3d(1, 1, 1)
+		-webkit-transform: translate3d(0, 0, 0)
+		transform: translate3d(0, 0, 0)
 
 
 @-webkit-keyframes effect-dialog-close
 	0%
-		opacity: 1
+		-webkit-transform: translate3d(0, 0, 0)
 	100%
-		opacity: 0
-		-webkit-transform: scale3d(0.9, 0.9, 1)
+		-webkit-transform: translate3d(0, -100%, 0)
 
 
 @keyframes effect-dialog-close
 	0%
-		opacity: 1
+		-webkit-transform: translate3d(0, 0, 0)
+		transform: translate3d(0, 0, 0)
 	100%
-		opacity: 0
-		-webkit-transform: scale3d(0.9, 0.9, 1)
-		transform: scale3d(0.9, 0.9, 1)
+		-webkit-transform: translate3d(0, -100%, 0)
+		transform: translate3d(0, -100%, 0)
 
 
 /* Errors */
@@ -2488,7 +2565,6 @@ fieldset
 	//color: lighten($color_text, 10%) !important
 	border: thin solid lighten($color_text, 60%) !important
 	background-color: lighten($color_background, 3%) !important
-	//resize: none
 	margin: 0 !important
 	+border-radius(3px)
 

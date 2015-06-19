@@ -4,63 +4,67 @@
 	<div class="post-submit">
 
 		{# What type is it? #}
-		<div class="row post-submit-title">
+		<div class="row post-submit-title hidden">
 			<div class="col-md-12">
 				<h3>What do you want to submit?</h3>
 			</div>
 		</div>
 
 		<div class="row post-submit-field-type">
-			<div class="col-md-6 col-sm-6 col-xs-6">
-				<a data-role="button" data-val="1" class="select-change post-submit-field-type-button">
-					<div class="post-submit-field-type-button-icon">
-						<span class="fa-stack fa-2x fa-lg">
-							<i class="fa fa-circle-thin fa-stack-2x"></i>
-							<i class="fa fa-stack-1x fa-link"></i>
-						</span>
-					</div>
-					<div class="post-submit-field-type-button-title">
-						Submit Link
-					</div>
-					<div class="post-submit-field-type-button-description">
-						No text, I just want to link 
-					</div>
-				</a>
-			</div>
-			<div class="col-md-6 col-sm-6 col-xs-6">
-				<a data-role="button" data-val="2" class="select-change post-submit-field-type-button">
-					<div class="post-submit-field-type-button-icon">
-						<span class="fa-stack fa-2x fa-lg">
-							<i class="fa fa-circle-thin fa-stack-2x"></i>
-							<i class="fa fa-stack-1x fa-file-text-o"></i>
-						</span>
-					</div>
-					<div class="post-submit-field-type-button-title">
-						Submit Text
-					</div>
-					<div class="post-submit-field-type-button-description">
-						I'll write a nice article
-					</div>
-				</a>
+			<div class="col-md-10 col-md-push-1">
+				<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-6">
+					<a data-role="button" data-val="1" class="select-change post-submit-field-type-button activato">
+						<div class="post-submit-field-type-button-icon">
+							<i class="fa fa-link"></i>
+						</div>
+						<div class="post-submit-field-type-button-legend">
+							<span class="post-submit-field-type-button-title">
+								LINK
+							</span>
+							<span class="post-submit-field-type-button-description">
+								Submit a Link
+							</span>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-6">
+					<a data-role="button" data-val="2" class="select-change post-submit-field-type-button">
+						<div class="post-submit-field-type-button-icon">
+							<i class="fa fa-file-text-o"></i>
+						</div>
+						<div class="post-submit-field-type-button-legend">
+							<span class="post-submit-field-type-button-title">
+								TEXT
+							</span>
+							<span class="post-submit-field-type-button-description">
+								I'll write a nice article
+							</span>
+						</div>
+					</a>
+				</div>
+				</div>
 			</div>
 		</div>
 
 		<div class="row post-submit-div-url post-submit-link">
-			<div class="col-md-12">
+			<div class="col-md-10 col-md-push-1">
 				<div class="form-group">
-					<label>URL (with http://)</label>
+					<div class="post-submit-field-favicon">
+						<i class="fa fa-globe"></i>
+					</div>
+					<div class="post-submit-field-loading"></div>
 					{{ submit_post_form.url(
 						type='url',
 						class='form-control post-submit-field-url',
-						placeholder='URL including http:// . e.g: "http://gooseberry.blender.org"') }}
+						placeholder='Paste or type the URL here') }}
 				</div>
 			</div>
 		</div>
 
 		<div class="row post-submit-div-title">
-			<div class="col-md-12">
+			<div class="col-md-10 col-md-push-1">
 				<div class="form-group">
-					<label>Title</label>
 					{{ submit_post_form.title(
 							class='form-control post-submit-field-title',
 							placeholder='Title for your submission. e.g: "My latest work"') }}
@@ -74,19 +78,17 @@
 		</div>
 
 		<div class="row post-submit-div-content post-submit-article">
-			<div class="col-md-12">
+			<div class="col-md-10 col-md-push-1">
 				<div class="form-group">
-					<label>Description</label>
 					{{ submit_post_form.content(class='form-control post-submit-field-content', id='post_content') }}
 				</div>
 			</div>
 		</div>
 
 		<div class="row post-submit-div-category">
-			<div class="col-md-6">
-				<span>Which Category does it fit in?</span>
-			</div>
-			<div class="col-md-6">
+			<div class="col-md-10 col-md-push-1">
+				<span>Choose a Category</span>
+
 				<div class="form-group">
 					{{ submit_post_form.category_id(class='form-control post-submit-field-category', placeholder='Category') }}
 				</div>
@@ -94,10 +96,8 @@
 		</div>
 
 		<div class="row post-submit-div-picture">
-			<div class="col-md-6">
-				<span>Make it prettier with a picture?</span>
-			</div>
-			<div class="col-md-6">
+			<div class="col-md-10 col-md-push-1">
+				<span>Upload an image</span>
 				<div class="form-group">
 					{{ submit_post_form.picture(class='form-control post-submit-field-picture') }}
 				</div>
@@ -114,11 +114,8 @@
 
 		<div class="post-submit-div-submit">
 			<div class="row">
-				<div class="col-md-6">
-
-				</div>
-				<div class="col-md-6">
-					<button type="submit" class="btn btn-default btn-block btn-success submit post-submit-field-submit" value="Go">
+				<div class="col-md-6 col-md-push-3">
+					<button type="submit" class="btn btn-default btn-block submit post-submit-field-submit disabled" value="Go">
 						<i class="fa fa-check"></i> Submit!
 					</button>
 				</div>

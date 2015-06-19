@@ -1,81 +1,107 @@
 $(document).ready(function() {
-        var csrftoken = $('meta[name=csrf-token]').attr('content');
+  var csrftoken = $('meta[name=csrf-token]').attr('content');
 
-        $.ajaxSetup({
-          beforeSend: function(xhr, settings) {
-            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-              xhr.setRequestHeader("X-CSRFToken", csrftoken)
-            }
-          }
-        });
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+      }
+    }
+  });
 
-        $("#submit_post_form").on("submit", function (e) {
-            e.preventDefault();
-            $('.post-submit-field-submit').html('<i class="fa fa-spinner fa-spin"></i> <i>Submitting...</i>');
-            var data = $(this).serialize();
-            url = $(this).attr('action');
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                  url: url,
-                  type: 'POST',
-                  data: formData,
-                  processData: false,
-                  contentType: false,
-                  cache: false
-                })
-            .done(function(data){
-                $('.post-submit-field-submit').css('background-color', '#5cb85c');
-                $('.post-submit-field-submit').html('<i class="fa fa-check"></i> Success!');
-                window.location.replace(data['post_url']);
-            })
-            .fail(function(data){
-              $('.post-submit-field-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
-            });
-        });
 
-        (function() {
-          var dlgtrigger = document.querySelector( '[data-dialog]' ),
-            somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
-            dlg = new DialogFx( somedialog );
-          dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
-        })();
+  $("#submit_post_form").on("submit", function (e) {
 
-        CKEDITOR.replace( 'post_content', {
-          customConfig: '/static/js/ckeditor/config.js',
-        });
+      e.preventDefault();
 
-        CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
+      // Let us know submission is in progress
+      $('.post-submit-field-submit').html('<i class="fa fa-spinner fa-spin"></i> <i>Submitting...</i>');
 
-        $('.select-change').click(function(){
-          $('#post_type_id').val($(this).data('val'));
-          $('.select-change').each(function() {
-            $(this).removeClass('activato');
-          });
+      var data = $(this).serialize();
+      url = $(this).attr('action');
+      var formData = new FormData($(this)[0]);
+      $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false
+          })
+      .done(function(data){
 
-          $(this).addClass('activato');
+        // All went just fine! Let's see the post
+        $('.post-submit-field-submit').removeClass('houston');
+        $('.post-submit-field-submit').addClass('success');
+        $('.post-submit-field-submit').html('<i class="fa fa-check"></i> Success!');
+        window.location.replace(data['post_url']);
 
-          $('.post-submit-div-title').show();
-          $('.post-submit-div-category').show();
-          $('.post-submit-div-picture').show();
-          $('.post-submit-div-submit').show();
+      })
+      .fail(function(data){
 
-          // if ($('#post_picture_remote').val() != ''){
-          //   $('.post-submit-div-picture').hide();
-          // };
+        // Problem found!
+        $('.post-submit-field-submit').addClass('houston');
+        $('.post-submit-field-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston! Try again?');
 
-          if ($('#post_type_id').val() == 1){
-            $('.post-submit-link').show();
-            $('.post-submit-article').hide();
-          };
-          if ($('#post_type_id').val() == 2){
-            $('.post-submit-link').hide();
-            $('.post-submit-article').show();
-          };
-        });
-      $('.post-index-item-type').click(function(e){
-        $(this).parent().parent().find('.post-index-item-type-ripple').css('display', 'block');
       });
-      $('.post-index-item-title').click(function(e){
-        $(this).parent().find('.post-index-item-type-ripple').css('display', 'block');
-      });
+  });
+
+  (function() {
+    var dlgtrigger = document.querySelector( '[data-dialog]' ),
+      somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
+      dlg = new DialogFx( somedialog );
+    dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+  })();
+
+  CKEDITOR.replace( 'post_content', {
+    customConfig: '/static/js/ckeditor/config.js',
+  });
+
+  CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
+
+  $('.select-change').click(function(){
+    $('#post_type_id').val($(this).data('val'));
+
+    $('.select-change').each(function(){
+      $(this).removeClass('activato');
+    });
+
+    $(this).addClass('activato');
+
+    $('.post-submit-div-title').show();
+    $('.post-submit-div-category').show();
+    $('.post-submit-div-picture').show();
+    $('.post-submit-div-submit').show();
+
+    // if ($('#post_picture_remote').val() != ''){
+    //   $('.post-submit-div-picture').hide();
+    // };
+
+    if ($('#post_type_id').val() == 1){
+
+      $('.post-submit-link').show();
+      $('.post-submit-article').hide();
+
+      $('#url').focus()
+
+      $('.post-submit-field-submit').addClass('disabled');
+
+    };
+    if ($('#post_type_id').val() == 2){
+
+      $('.post-submit-link').hide();
+      $('.post-submit-article').show();
+
+      $('#title').focus()
+
+      $('.post-submit-field-submit').removeClass('disabled');
+
+    };
+  });
+// $('.post-index-item-type').click(function(e){
+//   $(this).parent().parent().find('.post-index-item-type-ripple').css('display', 'block');
+// });
+// $('.post-index-item-title').click(function(e){
+//   $(this).parent().find('.post-index-item-type-ripple').css('display', 'block');
+// });
 });
