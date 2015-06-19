@@ -133,30 +133,30 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		script(src="{{url_for('static', filename='js/theuniverse.min.js')}}", type="text/javascript")
 
 		script.
-			$('.nav-logout-widget').click(function(e){
-				e.preventDefault();
+			$(document).ready(function () {
+				$('.nav-logout-widget').click(function(e){
+					e.preventDefault();
 
-				$('.nav-logout-widget-question').animate({'opacity': 1.0, 'left' : 22}, 300);
-				$('.nav-logout-widget-icon').css('color', 'crimson');
-				$('.nav-logout-widget-icon').animate({'left' : 5}, 250, function(){
-					$('.nav-logout-widget').unbind();
-					$('.nav-logout-widget').attr('href', '{{url_for("logout")}}');
+					$('.nav-logout-widget-question').animate({'opacity': 1.0, 'left' : 22}, 300);
+					$('.nav-logout-widget-icon').css('color', 'crimson');
+					$('.nav-logout-widget-icon').animate({'left' : 5}, 250, function(){
+						$('.nav-logout-widget').unbind();
+						$('.nav-logout-widget').attr('href', '{{url_for("logout")}}');
+					});
 				});
-			});
 
-		script.
-			{% if current_user.is_anonymous() %}
-				$('.popover-submit').popover();
-			{% else %}
-				$('#popover-settings').popover();
-				$('#popover-logout').popover();
-			{% endif %}
-			$('#popover-home').popover();
-			$( function() {$( '#cd-dropdown' ).dropdown( {gutter : 5 } );
-			});
+				{% if current_user.is_anonymous() %}
+					$('.popover-submit').popover();
+				{% else %}
+					$('#popover-settings').popover();
+					$('#popover-logout').popover();
+				{% endif %}
+
+				$('#popover-home').popover();
+				$( '#cd-dropdown' ).dropdown( {gutter : 5 } );
 
 			{% if current_user.is_authenticated() %}
-			$(document).ready(function () {
+
 				$.embedly.defaults.key = 'e41ded41bd6e47aabb1bfcb8a17dccb7';
 
 				$('#url').keyup(function(){
@@ -230,8 +230,10 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 					$('.post-submit-div-picture-remote').css('display', 'none');
 					$('.post-submit-div-picture').show();
 				});
-			});
+
 			{% endif %}
+
+			});
 
 		| {% block footer_scripts %}{% endblock %}
 

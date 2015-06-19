@@ -47,18 +47,25 @@ $(document).ready(function() {
   });
 
   (function() {
-    var dlgtrigger = document.querySelector( '[data-dialog]' ),
-      somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
-      dlg = new DialogFx( somedialog );
+    var dlgtrigger = document.querySelector( '[data-dialog]' );
+    var somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) );
+    var dlg = new DialogFx( somedialog );
+    // var dlgtrigger = document.querySelector( '[data-dialog]' ),
+    //   somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
+    //   dlg = new DialogFx( somedialog );
     dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
   })();
 
+  // CKEditor Stuff
   CKEDITOR.replace( 'post_content', {
     customConfig: '/static/js/ckeditor/config.js',
   });
 
-  CKEDITOR.instances['post_content'].on('change', function() { CKEDITOR.instances['post_content'].updateElement() });
+  CKEDITOR.instances['post_content'].on('change', function() {
+    CKEDITOR.instances['post_content'].updateElement()
+  });
 
+  // Change type of submission
   $('.select-change').click(function(){
     $('#post_type_id').val($(this).data('val'));
 
@@ -87,6 +94,7 @@ $(document).ready(function() {
       $('.post-submit-field-submit').addClass('disabled');
 
     };
+
     if ($('#post_type_id').val() == 2){
 
       $('.post-submit-link').hide();
@@ -97,11 +105,6 @@ $(document).ready(function() {
       $('.post-submit-field-submit').removeClass('disabled');
 
     };
-  });
-// $('.post-index-item-type').click(function(e){
-//   $(this).parent().parent().find('.post-index-item-type-ripple').css('display', 'block');
-// });
-// $('.post-index-item-title').click(function(e){
-//   $(this).parent().find('.post-index-item-type-ripple').css('display', 'block');
-// });
+  }); // change type of submission
+
 });
