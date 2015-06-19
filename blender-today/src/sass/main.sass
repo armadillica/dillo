@@ -13,6 +13,8 @@ $color_downvote: #74a4ff
 $color_danger: #dd4b39
 $color_success: #d5d644
 
+$color_background_dialog: darken($color_background, 1%)
+
 $font_body: 'Open Sans', Verdana, Arial, Helvetica, sans-serif
 $font_headings: 'Oxygen', 'Lucida Sans', 'Lucida Grande', sans-serif
 $font_size: 14px
@@ -1440,6 +1442,7 @@ div#post-comment-reply-container
 /* post-submit */
 .post-submit-div-submit
 	display: none
+	padding-bottom: 20px
 
 .post-submit .form-group .form-control
 	font-size: 1.5em
@@ -1468,7 +1471,6 @@ div#post-comment-reply-container
 		display: block
 		padding-bottom: 8px
 		text-align: left
-		+text-shadow(1px, 1px, 0, black, .2)
 
 // We show this by default
 .post-submit-div-url
@@ -1521,27 +1523,28 @@ div#post-comment-reply-container
 		color: $color_danger
 
 .post-submit-field-submit
-	color: white
-	background-color: rgba(white, .1)
-	border: 2px solid rgba(white, .8)
+	color: $color_brand_main
+	//background-color: rgba(white, .1)
+	background-color: transparent
+	border: 2px solid $color_brand_main
 	font-size: 1.5em
 	font-family: $font_headings
 
 	&:hover, &:focus
-		color: white
-		background-color: rgba(white, .3)
-		border: 2px solid white
+		color: rgba($color_brand_main, .8)
+		background-color: rgba(white, .1)
+		border: 2px solid rgba($color_brand_main, .8)
 		box-shadow: none
 
 	&:active
-		background-color: rgba(white, .4)
-		border: 2px solid white
+		background-color: rgba($color_brand_main, .4)
+		border: 2px solid $color_brand_main
 		box-shadow: none
 
 	&.disabled
-		color: rgba(white, .8)
+		color: rgba($color_brand_main, .8)
 		background-color: transparent
-		border: 2px solid rgba(white, .3)
+		border: 2px solid rgba($color_brand_main, .3)
 
 	&.success
 		color: white
@@ -1566,7 +1569,8 @@ div#post-comment-reply-container
 		width: 100%
 		position: relative
 		z-index: 0
-		max-width: 320px
+		//max-width: 320px
+		max-width: 83%
 
 	& .dialog__button-close
 		top: 10px
@@ -1577,7 +1581,7 @@ div#post-comment-reply-container
 			left: 33%
 
 	& .post-submit-div-picture-remote-overlay
-		background: linear-gradient(to top, $color_brand_main 0%, rgba($color_brand_main, 0) 100%)
+		background: linear-gradient(to top, $color_background_dialog 0%, rgba($color_background_dialog, 0) 100%)
 		display: inline-block
 		position: absolute
 		z-index: 2
@@ -1588,7 +1592,10 @@ div#post-comment-reply-container
 
 .post-submit-field-type
 	display: block
-	margin-top: 10px
+	margin: 0
+
+	& [class^="col-"]
+		padding: 0
 
 	& .post-submit-field-type-button
 		display: inline-block
@@ -1598,26 +1605,27 @@ div#post-comment-reply-container
 		cursor: pointer
 		padding: 0
 		user-select: none
-		color: rgba(white, .9)
-		border-radius: 3px
-		box-shadow: 3px 0 0 darken($color_brand_main, 5%), -3px 0 0 darken($color_brand_main, 5%)
+		color: darken($color_background, 50%)
+		border-top: 6px solid darken($color_background, 15%)
+		background-color: darken($color_background_dialog, 5%)
+		transition: background-color 0.1s ease, color 0.2s ease
 
-		transition: background-color 0.1s ease, box-shadow 0.2s ease, color 0.2s ease
 		&:hover, &:focus
-			color: white
-			box-shadow: 3px 0 0 rgba(white, .15), -3px 0 0 rgba(white, .15)
+			color: $color_brand_secondary
+
 		&:active
-			background-color: darken($color_brand_main, 5%)
+			background-color: darken($color_background, 15%)
 
 		&.activato
-			color: white
-			border-bottom: 4px solid darken($color_brand_main, 15%)
-			background-color: darken($color_brand_main, 15%)
-			box-shadow: 0 3px 0 $color_brand_secondary
+			color: $color_brand_main
+			border-top: 6px solid $color_brand_secondary
+			background-color: $color_background_dialog
 
 			&:hover
 				cursor: default
 
+			& .post-submit-field-type-button-icon
+				color: $color_brand_secondary
 
 	& .post-submit-field-type-button-icon
 		position: absolute
@@ -2393,7 +2401,8 @@ fieldset
 	width: 100%
 	height: 100%
 	z-index: 1
-	background: rgba($color_background, .9)
+	//background: rgba($color_background, .9)
+	background: rgba($color_brand_main, .8)
 	opacity: 0
 	-webkit-transition: opacity 0.3s
 	transition: opacity 0.3s
@@ -2407,9 +2416,10 @@ fieldset
 	width: 80%
 	max-width: 720px
 	min-width: 290px
-	color: white
-	background: $color_brand_main
-	padding: 2.5em 2em 1.5em 2em
+	color: $color_text
+	//background: $color_brand_main
+	background: $color_background_dialog
+	padding: 0 auto 2em auto
 	position: relative
 	z-index: 5
 	opacity: 0
@@ -2442,7 +2452,7 @@ fieldset
 	top: 10px
 	right: 15px
 	background: none
-	color: rgba(white, .6)
+	color: rgba($color_brand_main, .6)
 	border: none
 	height: 40px
 	width: 40px
