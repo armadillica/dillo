@@ -766,8 +766,8 @@ blockquote
 	margin: 0 auto
 	padding: 0
 	position: relative
-	background:
-		color: $color_background
+	// background:
+	// 	color: $color_background
 	//margin: 0 0 0 65px
 	& img
 		max-width: 100%
@@ -785,18 +785,45 @@ blockquote
 	color: lighten($color_text, 20%)
 	text-decoration: none !important
 
+.row.post-view-details-container
+	margin: 0
+	padding: 25px 0
+
 .post-view-details
 	display: block
-	padding: 15px
+	position: relative
+	padding: 0
 	width: 100%
 	background-color: $color_brand_main
-	border-top: 3px solid lighten(desaturate($color_brand_main, 20%), 40%)
-	border-bottom: thick solid darken($color_brand_main, 4%)
-	color: white
-	+text-shadow(1px, 1px, 0, black, 0.4)
+	border-top: 3px solid $color_background
+	border-bottom: thick solid darken($color_background, 2%)
+	//+text-shadow(1px, 1px, 0, black, 0.4)
 
-	& .separator
-		background-color: darken($color_brand_main, 15%)
+	&.ab-light
+		color: $color_text
+		text-shadow: 1px 1px 0 rgba(white, .2)
+		& .post-view-details-meta
+			a
+				color: $color_text
+			& .author-karma
+				color: $color_text
+				border-color: rgba($color_text, .5)
+
+		& .separator
+			background-color: darken($color_brand_main, 15%)
+
+	&.ab-dark
+		color: white
+		& .post-view-details-meta
+			a
+				color: white
+
+			& .author-karma
+				color: white
+				border-color: rgba(white, .5)
+
+		& .separator
+			background-color: rgba(white, .5)
 
 	& .deleted
 		color: lighten(desaturate($color_brand_main, 10%), 30%)
@@ -806,6 +833,8 @@ blockquote
 .post-view-details-meta
 	margin-left: 10px
 	position: relative
+	color: white
+
 	+media-xs
 		margin-left: 5px
 	+media-sm
@@ -817,6 +846,7 @@ blockquote
 
 	& a
 		color: white
+
 		&:hover i, &:focus i
 			text-decoration: none
 
@@ -824,7 +854,6 @@ blockquote
 		display: block
 		font-size: 1.2em
 		& a:hover, & a:active, & a:focus
-			color: white
 			text-decoration: underline
 		+media-xs
 			font-size: 1em
@@ -832,12 +861,15 @@ blockquote
 
 	& .author-karma
 		display: inline-block
-		background-color: darken($color_brand_main, 10%)
-		color: lighten($color_brand_main, 20%)
+		//background-color: darken($color_brand_main, 10%)
+		//color: lighten($color_brand_main, 20%)
+		border:
+			style: solid
+			width: thin
 		font-size: 0.65em
 		border-radius: 3px
-		padding: 1px 4px
-		margin: 0 2px
+		padding: 0 4px
+		margin: 0 3px
 		+text-shadow-none
 
 	& .author-roles
@@ -900,12 +932,12 @@ blockquote
 			margin: 0 0 0 10px
 			height: 40px
 			width: 40px
-			color: white
+			color: darken($color_brand_main, 10%)
 			font-size: 1.2em
 			cursor: pointer
 			position: relative
-			background-color: darken($color_brand_main, 10%)
-			border: 2px solid darken($color_brand_main, 20%)
+			background-color: $color_background
+			border: 2px solid darken($color_background, 20%)
 			+user-select-none
 			border-radius: 50%
 			+text-shadow(1px, 1px, 0, black, .1)
@@ -917,12 +949,12 @@ blockquote
 				width: 30px
 				margin-bottom: 3px
 			&:hover, &:focus
-				background-color: lighten($color_brand_main, 5%)
-				border: 2px solid darken($color_brand_main, 10%)
+				background-color: white
+				border: 2px solid darken($color_background, 15%)
 				text-decoration: none
 			&:active
-				background-color: darken($color_brand_main, 25%)
-				border: 2px solid darken($color_brand_main, 5%)
+				background-color: darken($color_background, 25%)
+				border: 2px solid darken($color_background, 5%)
 
 			& i
 				position: relative
@@ -937,10 +969,12 @@ blockquote
 				&:hover
 					background-color: darken($color_success, 20%)
 
-			&.delete:hover
-				background-color: lighten($color_brand_secondary, 5%)
-			&.delete:active, &.delete:focus
-				background-color: $color_danger
+			&.delete
+				background-color: $color_brand_secondary
+				&:hover
+					background-color: lighten($color_brand_secondary, 5%)
+				&:active, &:focus
+					background-color: $color_danger
 
 			&.save
 				display: none
@@ -960,6 +994,7 @@ blockquote
 		& .edit-post-delete-widget-question
 			position: relative
 			text-decoration: none
+			color: white
 			&:hover, &:active, &:focus
 				text-decoration: none
 
@@ -988,12 +1023,14 @@ blockquote
 				opacity: 0
 				height: 30px
 				width: 30px
-				color: white
-				background-color: darken($color_brand_main, 20%)
+				color: darken($color_brand_main, 20%)
+				background-color: white
+				box-shadow: 0 0 3px darken($color_background, 25%)
 				border-radius: 50%
 				+text-shadow-none
 				&:hover
-					background-color: lighten($color_brand_main, 10%)
+					background-color: white
+					color: rgba($color_brand_main, 5%)
 				& i
 					position: relative
 					top: 5px
@@ -1004,7 +1041,7 @@ blockquote
 						left: 8px
 
 		& #social-toggle.activato
-			background-color: darken($color_brand_main, 20%)
+			background-color: darken($color_background, 20%)
 
 .post-view-details-avatar,
 .post-view-comments-avatar
@@ -1130,6 +1167,15 @@ blockquote
 			font-size: 1.1em
 			left: 4px
 			color: lighten($color_text, 20%)
+
+.post-view-details-underlay
+	position: absolute
+	top: 0
+	bottom: 0
+	right: 0
+	left: 0
+	width: 100%
+	background-color: rgba($color_background, .25)
 
 .post-view-comments
 	padding: 0

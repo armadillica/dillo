@@ -127,25 +127,32 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 			| {# Posts with OEmbed or Picture #}
 
-			| {% if oembed %}
-			#post-content.post-view-content.oembed.
-				{{oembed['html']|safe}}
-
-			| {% elif post.picture %}
-			.post-view-content-image
-				a.swipebox(title="{{post.title}}",
-					href="{{post.original_image}}",
-					target="_blank")
-					img(src="{{post.thumbnail('h')}}", alt="{{post.title}}")
-					.post-view-content-image-link view on imgur.com
-
-			| {% endif %}
-
-
 			| {# Posts Details #}
 			.post-view-details
 
-				.row
+				| {% if oembed %}
+				#post-content.post-view-content.oembed.
+					{{oembed['html']|safe}}
+
+				| {% if post.picture %}
+				div.post-view-details-underlay
+				img.hidden(src="{{post.thumbnail('m')}}", data-adaptive-background)
+				| {% endif %}
+
+				| {% endif %}
+
+				| {% if not oembed and post.picture %}
+				.post-view-details-underlay
+				.post-view-content-image
+					a.swipebox(title="{{post.title}}",
+						href="{{post.original_image}}",
+						target="_blank")
+						img.post-view-content-image-src(src="{{post.thumbnail('h')}}", alt="{{post.title}}", data-adaptive-background)
+						.post-view-content-image-link view on imgur.com
+
+				| {% endif %}
+
+				.row.post-view-details-container
 					.col-md-1.col-sm-1.col-xs-2
 
 						.post-view-details-avatar
@@ -658,7 +665,7 @@ script(type="text/javascript").
 				});
 			});
 
-		{% endif %} // endif is_owner
+		{% endif %} {# endif is_owner #}
 
 	{% else %}
 
@@ -666,11 +673,24 @@ script(type="text/javascript").
 		$('.popover-comment-reply').popover();
 		$('.popover-comment-vote').popover();
 
-	{% endif %} // endif is_authenticated
+	{% endif %} {# endif is_authenticated #}
 
 script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/js/jquery.swipebox.min.js")
 
 script.
+	var abdefaults  = {
+		selector: '[data-adaptive-background]',
+		parent:   '.post-view-details',
+		exclude:  [
+			'rgb(0,0,0)', 'rgb(1,1,1)','rgb(2,2,2)','rgb(3,3,3)','rgb(4,4,4)',
+			'rgb(252,252,252)','rgb(253,253,253)','rgb(254,254,254)','rgb(255,255,255)'],
+	};
+	$.adaptiveBackground.run(abdefaults);
+
+	// Scale up the images if they *almost* fill the space
+	var post_image = $('img.post-view-content-image-src');
+	if (post_image.width() >= 512){ post_image.css('width', '100%'); };
+
 	$( '.swipebox' ).swipebox();
 
 	var link = $('#link-url');
