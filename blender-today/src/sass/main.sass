@@ -712,6 +712,7 @@ blockquote
 		color: $color_brand_main
 
 	&.oembed
+		z-index: 1
 		margin: 0
 		padding: 0
 		width: 100%
@@ -803,6 +804,8 @@ blockquote
 		color: $color_text
 		text-shadow: 1px 1px 0 rgba(white, .2)
 		& .post-view-details-meta
+			color: $color_text
+
 			a
 				color: $color_text
 			& .author-karma
@@ -1175,6 +1178,7 @@ blockquote
 	right: 0
 	left: 0
 	width: 100%
+	z-index: 0
 	background-color: rgba($color_background, .25)
 
 .post-view-comments
