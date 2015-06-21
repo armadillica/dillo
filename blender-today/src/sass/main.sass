@@ -66,7 +66,7 @@ blockquote
 	vertical-align: middle
 	+media-xs
 		height: 10px
-		margin: 0 2px
+		margin: 0 4px
 
 /* Branding */
 .today-minimug
@@ -298,7 +298,7 @@ blockquote
 	+media-xs
 		font-size: 0.75em
 		width: 100%
-		padding: 10px 25px 6px 65px
+		padding: 10px 25px 6px 75px
 		float: right
 		border-top: thin solid lighten($color_text, 70%)
 		position: relative
@@ -324,6 +324,11 @@ blockquote
 	& .post-index-item-details-comments,
 	& .post-index-item-details-type
 		display: inline-block
+
+	& .post-index-item-details-comments
+		margin-right: 5px
+		& i
+			margin-left: 5px
 
 	& .deleted
 		color: lighten($color_text, 50%)
@@ -395,11 +400,11 @@ blockquote
 	text-align: center
 
 	+media-xs
-		width: 55px
+		width: 70px
 		float: left
 		position: absolute
-		bottom: -3px
-		left: 2px
+		bottom: -5px
+		left: 0
 		font-size: 0.8em
 
 	+media-sm
@@ -408,6 +413,7 @@ blockquote
 		width: 60px
 	+media-lg
 		width: 60px
+
 	& .up, .middle, .down
 		font-size: 1.1em
 		padding: 0 0 2px 0
@@ -420,6 +426,10 @@ blockquote
 			display: inline-block
 			padding: 5px
 			top: -5px
+
+	& i
+		+media-xs
+			font-size: 1.2em
 
 	&:hover, &:focus
 		text-decoration: none
@@ -459,10 +469,9 @@ blockquote
 		height: 60px
 		font-size: 1.4em
 		top: 0
-		margin: 0
-		+border-radius(0)
-		border-top-left-radius: 3px !important
-		+box-shadow-none
+		margin: 5px 0 0 5px
+		border-radius: 50%
+		box-shadow: none
 	+media-sm
 		position: absolute
 		//top: -10px
