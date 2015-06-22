@@ -4,8 +4,8 @@ from application.modules.admin import CustomModelView, backend
 
 # -------- Views --------
 class UserView(CustomModelView):
-    column_list = ('email', 'active', 'first_name', 'last_name')
-    column_filters = ('id', 'email', 'active', 'first_name', 'last_name')
+    column_list = ('email', 'active', 'username', 'first_name', 'last_name')
+    column_filters = ('id', 'email', 'active', 'username', 'first_name', 'last_name')
 
 
 # Add views
