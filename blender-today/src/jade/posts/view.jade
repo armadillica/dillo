@@ -635,9 +635,13 @@ script(type="text/javascript").
 					function(data){
 				})
 					.done(function() {
+						$('.notification-post-fail').hide();
+						$('.notification-post-saved').show();
 						$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
 					})
 					.fail(function() {
+						$('.notification-post-saved').hide();
+						$('.notification-post-fail').show();
 						$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
 					})
 					.always(function() {
