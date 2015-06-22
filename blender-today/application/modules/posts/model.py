@@ -36,8 +36,8 @@ class Post(db.Model):
     rating = db.relationship('PostRating', cascade='all,delete', uselist=False)
     properties = db.relationship('PostProperties', cascade='all,delete')
 
-    def __str__(self):
-        return str(self.title)
+    def __unicode__(self):
+        return unicode(self.title) or u''
 
     @property
     #@cache.memoize(timeout=60)
@@ -123,7 +123,7 @@ class Category(db.Model):
     url = db.Column(db.String(128), nullable=False)
     order = db.Column(db.Integer)
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    parent = db.relationship('Category', 
+    parent = db.relationship('Category',
         remote_side=[id], backref=db.backref('children', order_by=order))
 
     def __str__(self):
@@ -165,7 +165,7 @@ class Comment(db.Model):
     edit_date = db.Column(db.DateTime())
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
     status = db.Column(db.String(12), default='published')
-    parent = db.relationship('Comment', 
+    parent = db.relationship('Comment',
         remote_side=[id], backref=db.backref('children', order_by=creation_date))
     user = db.relationship('User',
         backref=db.backref('comments'))
