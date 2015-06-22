@@ -350,9 +350,11 @@ def edit(uuid):
     post = Post.query.get_or_404(post_id)
     if (post.user.id == current_user.id) or (current_user.has_role('admin')):
         post.title = request.form['title']
-        post.content = bleach_input(request.form['content'])
         post.status = 'published'
         post.edit_date = datetime.datetime.now()
+
+        if post.post_type.url == 'text':
+            post.content = bleach_input(request.form['content'])
 
         db.session.commit()
 

@@ -104,7 +104,11 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 			| {% if current_user.is_owner or current_user.has_role('admin') %}
 			.notification-post-edit
 				i.fa.fa-edit
+				| {% if post.post_type.url == 'link' %}
+				|  Click on the Title to edit
+				| {% else %}
 				|  Click on the Title or Content to edit
+				| {% endif %}
 
 			.notification-post-saved
 				i.fa.fa-floppy-o
@@ -255,7 +259,6 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 								| {% if current_user.is_owner or current_user.has_role('admin') %}
 								| {% if post.status != 'deleted' %}
 
-								| {% if post.post_type.url != 'link' %}
 								a#edit-post-save.post-actions-button.save(
 									title="Save Changes",
 									href="{{ url_for('posts.edit', uuid=post.uuid) }}")
@@ -263,7 +266,6 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 								span#edit-post-toggle.post-actions-button.edit(title="Edit Post")
 									i.fa.fa-pencil
-								| {% endif %}
 
 								a.edit-post-delete-widget.post-actions-button.delete(
 									title="Delete Post",
@@ -335,6 +337,13 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 											(edited {{post.pretty_edit_date}})
 
 										| {% endif %}
+
+
+								span.separator
+
+
+								a.type(href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}").
+									{{post.post_type}}
 
 
 								span.separator
@@ -618,50 +627,71 @@ script(type="text/javascript").
 		});
 
 		{% if current_user.is_owner or current_user.has_role('admin') %}
+
+			var post_type = '{{post.post_type.url}}';
+
+			{# EDIT POST #}
 			$("#edit-post-toggle").click(function() {
 
 				$('[class^="notification-post"]').hide();
 				$('.notification-post-edit').show();
 				$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
 
-				var ck = CKEDITOR.inline('post-content',
-								{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
-						);
-
-				ck.on( 'instanceReady', function( ev ) {
-					var editor = ev.editor;
-					editor.setReadOnly( false );
-				});
+				if (post_type == 'text') {
+					var ck = CKEDITOR.inline('post-content',
+									{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
+							);
+					ck.on( 'instanceReady', function( ev ) {
+						var editor = ev.editor;
+						editor.setReadOnly( false );
+					});
+				};
 
 				$('#post-view-title').hide();
 				$('#post-edit-title').show();
 
-				$(this).fadeOut(100, function(){
+				$(this).fadeOut(50, function(){
 					$("#edit-post-save").css('display', 'inline-block');
 					$("#edit-post-save").animate({'opacity' : 1});
 				});
 			});
 
+			{# SAVE POST #}
 			$("#edit-post-save").click(function(e) {
 				e.preventDefault();
 
-				if (CKEDITOR.instances['post-content']) {
-					CKEDITOR.instances['post-content'].destroy();
-				};
-
 				$('#post-edit-title').hide();
 				$('#post-view-title').show();
-				$("#post-content").attr('contenteditable', false);
+
+				if ( post_type == 'text') {
+					if (CKEDITOR.instances['post-content']) {
+						CKEDITOR.instances['post-content'].destroy();
+					};
+
+					$("#post-content").attr('contenteditable', false);
+				};
+
 				$('#post-view-title a').html($("#post-edit-title textarea").val());
 
-				$(this).fadeOut(100, function(){
+				$(this).fadeOut(50, function(){
 					$("#edit-post-toggle").css('display', 'inline-block');
 					$("#edit-post-toggle").animate({'opacity' : 1});
 				});
 
-				$.post($(this).attr("href"), {
-					content : $("#post-content").html(),
-					title : $("#post-edit-title textarea").val()},
+				var tosubmit = {};
+
+				if ('{{post.post_type.url}}' == 'link'){
+					tosubmit = {
+						title : $("#post-edit-title textarea").val()
+					};
+				} else {
+					tosubmit = {
+						title : $("#post-edit-title textarea").val(),
+						content : $("#post-content").html()
+					};
+				};
+
+				$.post($(this).attr("href"), tosubmit,
 					function(data){
 				})
 					.done(function() {
