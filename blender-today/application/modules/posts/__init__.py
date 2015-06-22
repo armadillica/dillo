@@ -349,9 +349,11 @@ def edit(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
     if (post.user.id == current_user.id) or (current_user.has_role('admin')):
+        post.title = request.form['title']
         post.content = bleach_input(request.form['content'])
         post.status = 'published'
         post.edit_date = datetime.datetime.now()
+
         db.session.commit()
 
         # Clear all the caches

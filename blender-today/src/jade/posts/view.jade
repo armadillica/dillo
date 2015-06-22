@@ -88,24 +88,31 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 					i.fa.fa-angle-down
 
 			| {# Post Title #}
-			.post-view-title
+			#post-view-title.post-view-title
 				a(title="{{post.title}}",
 					href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}",
 					target="{% if post.post_type.url == 'link' %}_blank{% endif %}")
 					| {{post.title}}
+
+			#post-edit-title.post-view-title
+				textarea(type="text", rows=1, value="{{post.title}}") {{post.title}}
 
 			.clearfix
 
 
 			| {# Notifications #}
 			| {% if current_user.is_owner or current_user.has_role('admin') %}
+			.notification-post-edit
+				i.fa.fa-edit
+				|  Click on the Title or Content to edit
+
 			.notification-post-saved
 				i.fa.fa-floppy-o
-				| Saving...
+				|  Saving...
 
 			.notification-post-fail
 				i.fa.fa-frown-o.fa-spin
-				| Failed... try again?
+				|  Failed... try again?
 
 			| {% endif %}
 
@@ -612,35 +619,58 @@ script(type="text/javascript").
 
 		{% if current_user.is_owner or current_user.has_role('admin') %}
 			$("#edit-post-toggle").click(function() {
+
+				$('[class^="notification-post"]').hide();
+				$('.notification-post-edit').show();
+				$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
+
 				var ck = CKEDITOR.inline('post-content',
 								{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
-								);
+						);
 
 				ck.on( 'instanceReady', function( ev ) {
 					var editor = ev.editor;
 					editor.setReadOnly( false );
 				});
 
-				$('.post-view-content').addClass('action-edit');
+				$('#post-view-title').hide();
+				$('#post-edit-title').show();
 
-				$(this).fadeOut(function(){
+				$(this).fadeOut(100, function(){
 					$("#edit-post-save").css('display', 'inline-block');
 					$("#edit-post-save").animate({'opacity' : 1});
 				});
 			});
+
 			$("#edit-post-save").click(function(e) {
 				e.preventDefault();
+
+				if (CKEDITOR.instances['post-content']) {
+					CKEDITOR.instances['post-content'].destroy();
+				};
+
+				$('#post-edit-title').hide();
+				$('#post-view-title').show();
+				$("#post-content").attr('contenteditable', false);
+				$('#post-view-title a').html($("#post-edit-title textarea").val());
+
+				$(this).fadeOut(100, function(){
+					$("#edit-post-toggle").css('display', 'inline-block');
+					$("#edit-post-toggle").animate({'opacity' : 1});
+				});
+
 				$.post($(this).attr("href"), {
-					content : $("#post-content").html()},
+					content : $("#post-content").html(),
+					title : $("#post-edit-title textarea").val()},
 					function(data){
 				})
 					.done(function() {
-						$('.notification-post-fail').hide();
+						$('[class^="notification-post"]').hide();
 						$('.notification-post-saved').show();
 						$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
 					})
 					.fail(function() {
-						$('.notification-post-saved').hide();
+						$('[class^="notification-post"]').hide();
 						$('.notification-post-fail').show();
 						$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
 					})

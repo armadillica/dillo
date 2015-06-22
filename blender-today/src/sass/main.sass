@@ -11,6 +11,7 @@ $color_upvote: #ff8b60
 $color_downvote: #74a4ff
 
 $color_danger: #dd4b39
+$color_info: #40b0e0
 $color_success: #d5d644
 
 $color_background_dialog: $color_background
@@ -559,6 +560,9 @@ blockquote
 	+border-radius(3px)
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
+#post-edit-title
+	display: none
+
 .post-view-title
 	display: block
 	font-family: $font_headings
@@ -573,6 +577,14 @@ blockquote
 		float: left
 		width: 100%
 		+text-shadow-none
+
+	& textarea
+		color: $color_brand_secondary
+		border: none
+		width: 90%
+		padding: 0
+
+
 	& i
 		margin-left: 5px
 		color: lighten(desaturate($color_brand_main, 20%), 30%)
@@ -1460,6 +1472,7 @@ div#post-comment-reply-container
 	padding: 0 0 0 15px
 	color: lighten($color_text, 40%)
 
+.notification-post-edit,
 .notification-post-saved,
 .notification-post-fail
 	opacity: 0
@@ -1470,12 +1483,15 @@ div#post-comment-reply-container
 	width: 20%
 	text-align: center
 	z-index: 9999
-	background-color: darken(saturate($color_success, 10%), 10%)
+	background-color: darken(saturate($color_info, 10%), 10%)
 	color: white
 	padding-top: 2px
 	border-bottom-left-radius: 3px
 	border-bottom-right-radius: 3px
 	font-family: $font_headings
+
+.notification-post-saved
+	background-color: darken(saturate($color_success, 10%), 10%)
 
 .notification-post-fail
 	background-color: $color_danger
