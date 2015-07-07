@@ -146,7 +146,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
 							class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}")
 							i.fa.fa-angle-up.hidden-xs
-							i.fa.fa-arrow-circle-up.visible-xs
+							i.fa.fa-angle-up.visible-xs
 
 						span.middle {{post.rating_delta}}
 
@@ -154,13 +154,13 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
 							class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
 							i.fa.fa-angle-down.hidden-xs
-							i.fa.fa-arrow-circle-down.visible-xs
+							i.fa.fa-angle-down.visible-xs
 
 
 					// Post Circle Thingie
 					a(title="View post and comments",
 						href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}",
-						class="post-index-item-type {{post.post_type.url}}",
+						class="post-index-item-type {{post.post_type.url}}{% if post.picture %} picture{% endif%}",
 						style="{% if post.picture %}background: url({{post.thumbnail('s')}}) top left no-repeat{% endif %}")
 						| {% if not post.picture %}
 						| {% if post.post_type.url == 'link' %}
@@ -326,38 +326,49 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 | {% block footer_scripts %}
 script.
-	$(".up").click(function(e) {
-		e.preventDefault();
-		var up = $(this);
-		var rate = $(this).next();
-		var down = $(this).next().next();
-		$.get($(this).attr("href"), function(data){
-			down.removeClass('rated');
-			if (data['rating'] === "True") {
-				up.addClass('rated');
-			} else {
-				up.removeClass('rated');
-			}
-			rate.text(data['rating_delta']);
-		});
-	});
-	$(".down").click(function(e) {
-		e.preventDefault();
-		var up = $(this).prev().prev();
-		var rate = $(this).prev();
-		var down = $(this);
-		$.get($(this).attr("href"), function(data){
-			up.removeClass('rated');
-			if (data['rating'] === "False") {
-				$(".down").addClass('rated');
-			} else {
-				$(".down").removeClass('rated');
-			}
-			rate.text(data['rating_delta']);
-		});
-	});
 
-	{% if current_user.is_anonymous() %}
+	if ($(window).width() < 480){
+		$(".post-index-item-type.picture").each(function(e){
+			image_url = document.getElementsByClassName("post-index-item-type picture")[e].style.backgroundImage.slice(4, -1)
+			image = image_url.split("");
+			image[image.length-5] = "l";
+
+			$(this).html('<img src="' + image.join("") + '"/>');
+		});
+	};
+
+	{% if current_user.is_authenticated() %}
+		$(".up").click(function(e) {
+			e.preventDefault();
+			var up = $(this);
+			var rate = $(this).next();
+			var down = $(this).next().next();
+			$.get($(this).attr("href"), function(data){
+				down.removeClass('rated');
+				if (data['rating'] === "True") {
+					up.addClass('rated');
+				} else {
+					up.removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		});
+		$(".down").click(function(e) {
+			e.preventDefault();
+			var up = $(this).prev().prev();
+			var rate = $(this).prev();
+			var down = $(this);
+			$.get($(this).attr("href"), function(data){
+				up.removeClass('rated');
+				if (data['rating'] === "False") {
+					$(".down").addClass('rated');
+				} else {
+					$(".down").removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		});
+	{% else %}
 		$('.popover-vote').popover();
 	{% endif %}
 | {% endblock %}

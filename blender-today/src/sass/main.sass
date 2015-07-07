@@ -253,8 +253,8 @@ blockquote
 	+media-xs
 		float: left
 		font-size: 1.2em
-		width: 78%
-		padding: 5px 5px 5px 10px
+		width: 100%
+		padding: 15px 10px 5px 10px
 		line-height: 1.2em
 		color: $color_brand_main
 		font-weight: 500
@@ -297,9 +297,9 @@ blockquote
 	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
 	+media-xs
-		font-size: 0.75em
+		font-size: 0.8em
 		width: 100%
-		padding: 10px 25px 6px 75px
+		padding: 15px 10px 10px 95px
 		float: right
 		border-top: thin solid lighten($color_text, 70%)
 		position: relative
@@ -338,7 +338,7 @@ blockquote
 .post-index-item-details-rating
 	display: none
 	+media-xs
-		display: inline-block
+		display: none
 
 .post-index-item-details-type
 	+media-xs
@@ -377,13 +377,14 @@ blockquote
 	&:hover
 		color: $color_brand_main
 	+media-xs
-		position: absolute
-		float: right
-		right: 6px
-		top: 4px
-		font-size: 1.9em
-		margin: 0
-		color: lighten(desaturate($color_brand_main, 10%), 10%)
+		display: none
+		// position: absolute
+		// float: right
+		// right: 6px
+		// top: 4px
+		// font-size: 1.9em
+		// margin: 0
+		// color: lighten(desaturate($color_brand_main, 10%), 10%)
 
 .post-index-item-picture-collapse
 	display: none
@@ -401,12 +402,12 @@ blockquote
 	text-align: center
 
 	+media-xs
-		width: 70px
+		width: 85px
 		float: left
 		position: absolute
-		bottom: -5px
-		left: 0
-		font-size: 0.8em
+		bottom: -3px
+		left: 2px
+		font-size: 1em
 
 	+media-sm
 		width: 60px
@@ -425,7 +426,7 @@ blockquote
 		+transition(top, 50ms, ease-out)
 		+media-xs
 			display: inline-block
-			padding: 5px
+			padding: 5px 7px
 			top: -5px
 
 	& i
@@ -466,6 +467,7 @@ blockquote
 	+transition(opacity, .25s, ease)
 
 	+media-xs
+		display: none
 		width: 60px
 		height: 60px
 		font-size: 1.4em
@@ -473,6 +475,16 @@ blockquote
 		margin: 5px 0 0 5px
 		border-radius: 50%
 		box-shadow: none
+
+		&.picture
+			display: inline-block
+			width: 100%
+			height: initial !important
+			border-radius: 0
+			border-top-left-radius: 3px
+			border-top-right-radius: 3px
+			margin: 0
+
 	+media-sm
 		position: absolute
 		//top: -10px
@@ -513,6 +525,10 @@ blockquote
 	&.text
 		background-color: lighten($color_brand_secondary, 20%)
 
+	& img
+		width: 100%
+		border-top-left-radius: 3px
+		border-top-right-radius: 3px
 
 .post-index-item-type-ripple
 	display: none
