@@ -124,6 +124,11 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 				button.action.dialog__button-close(data-dialog-close)
 					i.fa.fa-times
 
+		// Notifications Popup
+		div#notifications.flyout.notifications
+			.flyout-content
+				| {% include '_notifications.html' %}
+
 		// Javascript
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", type="text/javascript")
 		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js", type="text/javascript")
