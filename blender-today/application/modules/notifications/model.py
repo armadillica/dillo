@@ -1,6 +1,6 @@
 import datetime
+from flask.ext.security import current_user
 from application import db
-
 
 class Notification(db.Model):
     """Basic notification. We create one notification per object per user.
@@ -14,6 +14,24 @@ class Notification(db.Model):
         backref=db.backref('notification'))
     is_read = db.Column(db.Boolean(), default=False)
     date_read = db.Column(db.DateTime())
+
+    def get_subscription(self):
+        context_object_type_id = self.notification_object.context_object_type_id
+        context_object_id = self.notification_object.context_object_id
+        notification_subscription = NotificationSubscriptions.query\
+            .filter(NotificationSubscriptions.context_object_type_id == context_object_type_id)\
+            .filter(NotificationSubscriptions.context_object_id == context_object_id)\
+            .filter(NotificationSubscriptions.user_id == current_user.id)\
+            .first()
+        return notification_subscription
+
+    @property
+    def is_subscribed(self):
+        subscription = self.get_subscription()
+        if subscription:
+            return subscription.is_subscribed
+        else:
+            return False
 
     def __str__(self):
         return u"Notification {0}".format(self.id)

@@ -2,6 +2,8 @@ from flask import render_template
 from flask import Blueprint
 from flask import jsonify
 from flask import url_for
+from flask import abort
+from flask import request
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -49,7 +51,7 @@ def notification_object_add(actor_user_id, verb, object_type_id, object_id,
 
     This works using the following pattern:
 
-    ACTOR -> VERB -> OBJECT -> CONTEXT(optional)
+    ACTOR -> VERB -> OBJECT -> CONTEXT
 
     :param actor_user_id: id of the user who is changing the object
     :param verb: the action on the object ('commented', 'replied')
@@ -118,8 +120,8 @@ def notification_parse(notification):
             context_object_name = post.title
             context_object_url = post_url
 
-
     return dict(
+        _id=notification.id,
         username=actor.username,
         username_avatar=actor.gravatar(),
         username_url=url_for('users.view', user_id=actor.id),
@@ -131,18 +133,63 @@ def notification_parse(notification):
         context_object_name=context_object_name,
         context_object_url=context_object_url,
         date=notification_object.date_creation,
-        is_read=notification.is_read,)
+        is_read=notification.is_read,
+        is_subscribed=notification.is_subscribed)
 
 
 @notifications.route('/')
 @login_required
 def index():
+    """Get notifications for the current user.
+
+    Optional url args:
+    - limit: limits the number of notifications
+    - format: html or JSON
+    """
+    limit = request.args.get('limit', 20)
     notifications = Notification.query\
         .filter(Notification.user_id == current_user.id)\
         .order_by(Notification.id.desc())\
-        .limit(20)
+        .limit(limit)
     items = []
     for notification in notifications:
         items.append(notification_parse(notification))
 
     return jsonify(items=items)
+
+
+@notifications.route('/<int:notification_id>/read-toggle')
+@login_required
+def action_read_toggle(notification_id):
+    notification = Notification.query.get_or_404(notification_id)
+    if notification.user_id == current_user.id:
+        if notification.is_read:
+            notification.is_read = False
+        else:
+            notification.is_read = True
+        db.session.commit()
+        return jsonify(message="Updated notification {0}".format(notification_id))
+    else:
+        return abort(403)
+
+
+@notifications.route('/<int:notification_id>/subscription-toggle')
+@login_required
+def action_subscription_toggle(notification_id):
+    notification = Notification.query.get_or_404(notification_id)
+    if notification.user_id == current_user.id:
+        notification_subscription = notification.get_subscription()
+        if notification_subscription:
+            if notification_subscription.is_subscribed:
+                notification_subscription.is_subscribed = False
+                action = "Unsubscribed"
+            else:
+                notification_subscription.is_subscribed = True
+                action = "Subscribed"
+            db.session.commit()
+            return jsonify(message="{0} from notifications".format(action))
+        else:
+            return jsonify(message="No subscription exists")
+    else:
+        return abort(403)
+
