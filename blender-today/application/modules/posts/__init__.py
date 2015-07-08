@@ -37,6 +37,7 @@ from application.modules.posts.model import CommentRating
 from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import PostForm
 from application.modules.posts.forms import CommentForm
+from application.modules.notifications import notification_subscribe
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import slugify
@@ -212,15 +213,18 @@ def submit():
             os.remove(filepath)
         db.session.commit()
 
+        # Subscribe owner to updates for this post (mainly comments)
+        notification_subscribe(1, post.id, current_user.id)
+
         # Clear all the caches
         delete_redis_cache_keys('post_list')
         delete_redis_cache_keys('post_list', post.category.url)
 
         return jsonify(
             post_url=url_for('posts.view',
-                category=post.category.url,
-                uuid=post.uuid,
-                slug=post.slug))
+            category=post.category.url,
+            uuid=post.uuid,
+            slug=post.slug))
     else:
         return abort(400, '{"message" : "form validation error"}')
 

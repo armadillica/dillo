@@ -17,6 +17,8 @@ from application.modules.posts.model import Comment
 from application.modules.posts.model import CommentRating
 from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import CommentForm
+from application.modules.notifications import notification_subscribe
+from application.modules.notifications import notification_object_add
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import bleach_input
@@ -66,15 +68,28 @@ def submit(post_id):
         db.session.add(comment_rating)
         db.session.commit()
 
+        # Subscribe user to post (skips if already subscribed)
+        notification_subscribe(1, post.id, current_user.id)
+
+        # Push notification to users subscribed to the post
+        notification_object_add(1, post.id, current_user.id, 'commented')
+
+        if parent_id:
+            # If the comment is a reply notify the subscriber users
+            notification_object_add(2, comment.id, current_user.id, 'replied')
+        else:
+            # Subscribe to comments to own comment
+            notification_subscribe(2, comment.id, current_user.id)
+
         # Clear all the caches
         delete_redis_cache_post(post.uuid)
 
         # This is to prevent encoding error when jsonify prints out
         # a non ASCII name
         if comment.user.first_name and comment.user.last_name:
-            display_name = "{0} {1}".format(
-                comment.user.first_name.encode('utf-8'),
-                comment.user.last_name.encode('utf-8'))
+            display_name = u"{0} {1}".format(
+                comment.user.first_name,
+                comment.user.last_name)
         else:
             display_name = comment.user.username
 
@@ -186,7 +201,7 @@ def flag(comment_id):
     # Commit changes so far
     db.session.commit()
 
-    # Check if the comment has been flagged multiple times, currently 
+    # Check if the comment has been flagged multiple times, currently
     # the value is hardcoded to 5
     flags = UserCommentRating.query\
         .filter_by(comment_id=comment.id, is_flagged=True)\
