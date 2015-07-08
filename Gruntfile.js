@@ -51,6 +51,9 @@ module.exports = function(grunt) {
               files: 'blender-today/src/jade/**/*.jade',
               tasks: [ 'jade' ]
             },
+            options: {
+              livereload: true,
+            },
         }
     });
 
