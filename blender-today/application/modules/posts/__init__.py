@@ -214,7 +214,7 @@ def submit():
         db.session.commit()
 
         # Subscribe owner to updates for this post (mainly comments)
-        notification_subscribe(1, post.id, current_user.id)
+        notification_subscribe(current_user.id, 1, post.id)
 
         # Clear all the caches
         delete_redis_cache_keys('post_list')

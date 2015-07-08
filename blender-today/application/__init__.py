@@ -103,18 +103,22 @@ imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIE
 
 from modules.admin import backend
 from modules.pages import admin
-from modules.users import admin
+from modules.users import admin, users
 from modules.main import *
 from modules.posts import posts
 from modules.posts import admin
 from modules.settings import settings
 from modules.comments import comments
+from modules.notifications import notifications
+
 
 filemanager = Blueprint('filemanager', __name__, static_folder='static/files')
 app.register_blueprint(filemanager)
 app.register_blueprint(settings, url_prefix='/settings')
 app.register_blueprint(posts)
+app.register_blueprint(users, url_prefix='/u')
 app.register_blueprint(comments, url_prefix='/comments')
+app.register_blueprint(notifications, url_prefix='/notifications')
 
 from modules.users.model import user_datastore
 

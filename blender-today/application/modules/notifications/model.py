@@ -10,6 +10,8 @@ class Notification(db.Model):
         db.ForeignKey('user.id'), nullable=False)
     notification_object_id = db.Column(db.Integer(),
         db.ForeignKey('notification_object.id'), nullable=False)
+    notification_object = db.relationship('NotificationObject',
+        backref=db.backref('notification'))
     is_read = db.Column(db.Boolean(), default=False)
     date_read = db.Column(db.DateTime())
 
@@ -46,8 +48,8 @@ class NotificationSubscriptions(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     # 1: post, 2: comment
-    object_type_id = db.Column(db.Integer(), nullable=False)
-    object_id = db.Column(db.Integer(), nullable=False)
+    context_object_type_id = db.Column(db.Integer(), nullable=False)
+    context_object_id = db.Column(db.Integer(), nullable=False)
     user_id = db.Column(db.Integer(),
         db.ForeignKey('user.id'), nullable=False)
     is_subscribed = db.Column(db.Boolean(), default=True)

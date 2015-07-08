@@ -12,6 +12,7 @@ from flask import request
 from flask import flash
 from flask import render_template
 from flask import jsonify
+from flask import Blueprint
 
 from flask.ext.security.utils import login_user
 from flask.ext.security import login_required
@@ -29,6 +30,7 @@ from application.modules.users.model import UserKarma
 from application.modules.users.model import User
 from application.modules.posts.model import Post
 
+users = Blueprint('users', __name__)
 
 def user_get_or_create(email, first_name, last_name, service, service_user_id):
     user = user_datastore.get_user(email)
@@ -109,7 +111,7 @@ def google_authorized():
 
     session['google_token'] = (resp['access_token'], '')
     resp = google.get('userinfo')
-    
+
     user = user_get_or_create(
         resp.data['email'],
         resp.data['given_name'],
@@ -244,7 +246,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/u/<int:user_id>')
+@users.route('/<int:user_id>')
 def view(user_id):
     user = User.query.get_or_404(user_id)
     user_string_id = 'ANONYMOUS'
@@ -262,7 +264,7 @@ def view(user_id):
         user=user)
 
 
-@app.route('/u/stats')
+@users.route('/stats')
 def stats():
     """Query the amount of total users in the last 7 days
     """

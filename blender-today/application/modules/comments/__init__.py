@@ -69,17 +69,20 @@ def submit(post_id):
         db.session.commit()
 
         # Subscribe user to post (skips if already subscribed)
-        notification_subscribe(1, post.id, current_user.id)
-
-        # Push notification to users subscribed to the post
-        notification_object_add(1, post.id, current_user.id, 'commented')
+        notification_subscribe(current_user.id, 1, post.id)
 
         if parent_id:
-            # If the comment is a reply notify the subscriber users
-            notification_object_add(2, comment.id, current_user.id, 'replied')
+            # If the comment is a reply notify the subscribed users
+            notification_object_add(current_user.id, 'replied', 2, comment.id,
+                2, parent_id)
+            # Subscribe to comments to parent comment
+            notification_subscribe(current_user.id, 2, parent_id)
         else:
+            # Push notification to users subscribed to the post
+            notification_object_add(current_user.id, 'commented', 2, comment.id,
+                1, post.id)
             # Subscribe to comments to own comment
-            notification_subscribe(2, comment.id, current_user.id)
+            notification_subscribe(current_user.id, 2, comment.id)
 
         # Clear all the caches
         delete_redis_cache_post(post.uuid)
