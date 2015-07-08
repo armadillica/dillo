@@ -32,6 +32,8 @@ class NotificationObject(db.Model):
     actor_user_id = db.Column(db.Integer(),
         db.ForeignKey('user.id'), nullable=False)
     verb = db.Column(db.String(64), nullable=False)
+    context_object_type_id = db.Column(db.Integer())
+    context_object_id = db.Column(db.Integer())
     date_creation = db.Column(db.DateTime(), default=datetime.datetime.now)
 
     def __str__(self):
