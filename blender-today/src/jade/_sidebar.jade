@@ -36,7 +36,7 @@
 						data-trigger="hover",
 						data-placement="bottom"
 						data-content="Home")
-						i.fa.fa-home
+						i.fa.fa-bell
 
 				li
 					a#popover-settings(
@@ -79,6 +79,12 @@
 						| Sign in
 
 				| {% endif %}
+
+	// Notifications Popup
+	div#notifications.flyout.notifications
+		.flyout-content
+			span.flyout-title Notifications
+			| {% include '_notifications.html' %}
 
 	// Logo
 	.nav-sidebar.branding

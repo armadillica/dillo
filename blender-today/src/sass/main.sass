@@ -106,6 +106,83 @@ blockquote
 	margin-bottom: 0
 	+border-radius(0)
 
+/* Notifications */
+.flyout
+	display: block
+	background-color: white
+	border-radius: 3px
+	border: thin solid darken($color_background, 3%)
+	+box-shadow(1px, 2px, 2px, black, 0.2)
+
+	& .flyout-title
+		font-weight: 600
+		display: block
+		padding: 5px 10px
+
+	&.notifications
+		position: absolute
+		right: 30px
+		top: 60px
+		z-index: 9999
+		width: 400px
+
+
+#notifications-list
+	list-style-type: none
+	padding: 0 5px
+	margin: 0
+
+
+	& .nc-item, & .nc-loading
+		position: relative
+		padding: 12px 0
+		border-top: thin solid lighten($color_text, 60%)
+		margin: 0
+		width: 100%
+		display: block
+		clear: both
+
+		&.is_read
+			opacity: 0.6
+			color: lighten($color_text, 20%)
+
+	& .nc-link
+		position: absolute
+		top: 0
+		right: 0
+		bottom: 0
+		background-color: rgba(0,0,0,.1)
+
+	& .nc-avatar
+		float: left
+		width: 10%
+		text-align: center
+
+		& img
+			border-radius: 50%
+			width: 24px
+			height: 24px
+
+	& .nc-text
+		width: 90%
+
+	& .nc-date
+		display: block
+		padding-top: 5px
+		margin-left: 40px
+		font-size: .85em
+		color: lighten($color_text, 20%)
+		& a
+			color: lighten($color_text, 20%)
+			&:hover
+				color: lighten($color_text, 30%)
+
+	& .nc-loading
+		text-align: center
+		font-size: 1.5em
+		color: lighten($color_text, 50%)
+
+
 .post-view-container
 	margin-top: 5px
 	+media-xs

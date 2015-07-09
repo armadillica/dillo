@@ -17,6 +17,8 @@ from application.modules.notifications.model import Notification
 from application.modules.notifications.model import NotificationObject
 from application.modules.notifications.model import NotificationSubscriptions
 
+from application.helpers import pretty_date
+
 notifications = Blueprint('notifications', __name__)
 
 def notification_subscribe(user_id, context_object_type_id, context_object_id):
@@ -132,7 +134,7 @@ def notification_parse(notification):
         context_object_type=context_object_type,
         context_object_name=context_object_name,
         context_object_url=context_object_url,
-        date=notification_object.date_creation,
+        date=pretty_date(notification_object.date_creation),
         is_read=notification.is_read,
         is_subscribed=notification.is_subscribed)
 

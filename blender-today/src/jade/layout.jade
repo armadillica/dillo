@@ -124,10 +124,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 				button.action.dialog__button-close(data-dialog-close)
 					i.fa.fa-times
 
-		// Notifications Popup
-		div#notifications.flyout.notifications
-			.flyout-content
-				| {% include '_notifications.html' %}
+
 
 		// Javascript
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", type="text/javascript")
@@ -226,7 +223,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 					$('.post-submit-div-submit').show();
 
 					}); // embedly
-
 				});
 
 				$('post-submit-div-submit').css('display', 'block');
@@ -237,8 +233,53 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 					$('.post-submit-div-picture').show();
 				});
 
-			{% endif %}
+				// Notifications
 
+				$.getJSON( "/notifications", function( data ) {
+
+					var items = [];
+
+					$.each(data['items'], function(i, no){
+
+						is_read = no['is_read'] ? 'is_read' : '';
+
+						content = '<li class="nc-item ' + is_read +'">';
+							content += '<div class="nc-avatar">';
+								content += '<a href="' + no['username_url'] + '">';
+								content += '<img src="' + no['username_avatar'] + '"/> ';
+								content += '</a>';
+							content += '</div>';
+
+							content += '<div class="nc-text">';
+								content += '<a href="' + no['username_url'] + '">' + no['username'] + '</a> ';
+
+								content += no['action'] + ' ';
+
+								content += '<a href="' + no['object_url'] + '">';
+									if (no['context_object_name']){
+										content += no['context_object_name'];
+									} else {
+										content += no['context_object_type'];
+									};
+								content += '</a> ';
+
+								content += '<span class="nc-date">';
+									content += '<a href="' + no['object_url'] + '">' + no['date'] + '</a>';
+								content += '</span>';
+
+							content += '</div>';
+						content += '</li>';
+
+						items.push(content);
+
+						console.log(no);
+					});
+
+					$('#notifications-list').html( items.join('') );
+
+				});
+
+			{% endif %}
 			});
 
 		| {% block footer_scripts %}{% endblock %}
