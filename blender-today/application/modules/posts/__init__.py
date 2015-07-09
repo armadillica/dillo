@@ -15,6 +15,7 @@ from flask import request
 
 from werkzeug.contrib.atom import AtomFeed
 
+from micawber.exceptions import ProviderException
 from micawber.exceptions import ProviderNotFoundException
 
 from flask.ext.security import login_required
@@ -127,7 +128,7 @@ def view(category, uuid, slug=None):
             # - video
             # - link
             # - etc
-        except ProviderNotFoundException:
+        except (ProviderNotFoundException, ProviderException):
             # If the link is not an OEmbed provider, we move on
             pass
         else:
