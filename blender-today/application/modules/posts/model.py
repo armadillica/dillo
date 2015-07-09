@@ -65,7 +65,7 @@ class Post(db.Model):
         return pretty_date(self.edit_date)
 
     @staticmethod
-    @cache.memoize(timeout=3600)
+    @cache.memoize(timeout=3600*24)
     def get_picture_link(picture_id):
         picture = imgur_client.get_image(picture_id)
         return picture.link
