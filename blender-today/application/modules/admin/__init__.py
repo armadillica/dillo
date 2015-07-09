@@ -1,7 +1,9 @@
-from application import app, db
-from application.modules.users.model import user_datastore, User
-from application.modules.pages.model import Page
-
+import os, hashlib, time
+import os.path as op
+from werkzeug import secure_filename
+from jinja2 import Markup
+from wtforms import fields, validators, widgets
+from wtforms.fields import SelectField, TextField
 from flask import render_template, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext import admin, login
@@ -11,13 +13,13 @@ from flask.ext.admin.contrib import sqla
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.base import BaseView
 from flask.ext.security import current_user
+from application import app, db
+from application.modules.users.model import user_datastore, User
+from application.modules.pages.model import Page
+from application.modules.admin.forms import FormLogo
+from application.modules.admin.model import Setting
 
-from werkzeug import secure_filename
-from jinja2 import Markup
-from wtforms import fields, validators, widgets
-from wtforms.fields import SelectField, TextField
-import os, hashlib, time
-import os.path as op
+
 
 # -------- Utilities to upload and present images --------
 def _list_items(view, context, model, name):
@@ -88,9 +90,30 @@ class CustomAdminIndexView(admin.AdminIndexView):
     def is_accessible(self):
         return login.current_user.has_role('admin')
 
-    @expose('/')
+    @expose('/', methods=['GET','POST'])
     def index(self):
-        return super(CustomAdminIndexView, self).index()
+        logo_alt = Setting.query.filter_by(name='logo_alt').first()
+        form_logo = FormLogo(
+            logo_alt=logo_alt.value)
+        return self.render('admin/index.html',
+            form_logo=form_logo)
+
+    @expose('/settings', methods=['GET','POST'])
+    def settings(self):
+        form_logo = FormLogo()
+        if form_logo.validate_on_submit():
+            logo_alt = Setting.query.filter_by(name='logo_alt').first()
+            logo_alt.value = form_logo.logo_alt.data
+            if form_logo.logo_image.data:
+                # If the user uploads an image from the form
+                filename = secure_filename(form_logo.logo_image.data.filename)
+                filepath = os.path.join(app.config['STATIC_IMAGES'], filename)
+                form_logo.logo_image.data.save(filepath)
+                logo_image = Setting.query.filter_by(name='logo_image').first()
+                logo_image.value = filename
+            db.session.commit()
+
+        return redirect(url_for('admin.index'))
 
     @expose('/logout/')
     def logout_view(self):
@@ -100,9 +123,9 @@ class CustomAdminIndexView(admin.AdminIndexView):
 
 # Create admin
 backend = Admin(
-    app, 
-    'Blender Today', 
-    index_view=CustomAdminIndexView(), 
+    app,
+    'Blender Today',
+    index_view=CustomAdminIndexView(),
     base_template='admin/layout_admin.html'
 )
 

@@ -131,7 +131,21 @@ def inject_submit_post_form():
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
     form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     #form.post_type_id.data = 1
-    return {'submit_post_form' : form}
+    return {'submit_post_form': form}
+
+@app.context_processor
+@cache.cached(timeout=3600)
+def inject_settings():
+    """Global application settings"""
+    from modules.admin.model import Setting
+    alt = Setting.query.filter_by(name='logo_alt').first()
+    image = Setting.query.filter_by(name='logo_image').first()
+    settings = {}
+    logo = dict(
+        alt=alt.value,
+        image=image.value)
+    settings['logo'] = logo
+    return {'settings': settings}
 
 @app.errorhandler(404)
 def page_not_found(e):
