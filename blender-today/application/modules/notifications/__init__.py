@@ -103,7 +103,8 @@ def notification_parse(notification):
         comment = Comment.query.get_or_404(notification_object.object_id)
         post = comment.post
         object_type = 'comment'
-        object_name = ""
+        object_name = ''
+
         post_url = url_for('posts.view',
             category=post.category.url,
             uuid=post.uuid,
@@ -114,7 +115,16 @@ def notification_parse(notification):
 
         if comment.parent_id:
             context_object_type = 'comment'
-            context_object_name = None
+
+            parent_comment = Comment.query.get(comment.parent_id)
+
+            if parent_comment.user_id == current_user.id:
+                owner = 'your comment'
+            else:
+                owner = "{0}'s comment".format(parent_comment.user.username)
+
+            context_object_name = owner
+
             context_object_url = "{0}#comment-{1}".format(
                 post_url, comment.parent_id)
         else:
@@ -122,12 +132,19 @@ def notification_parse(notification):
             context_object_name = post.title
             context_object_url = post_url
 
+        if notification_object.verb == 'replied':
+            action = 'replied to'
+        elif notification_object.verb == 'commented':
+            action = 'left a comment on'
+        else:
+            action = notification_object.verb
+
     return dict(
         _id=notification.id,
         username=actor.username,
         username_avatar=actor.gravatar(),
         username_url=url_for('users.view', user_id=actor.id),
-        action=notification_object.verb,
+        action=action,
         object_type=object_type,
         object_name=object_name,
         object_url=object_url,

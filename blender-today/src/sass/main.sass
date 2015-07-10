@@ -108,7 +108,8 @@ blockquote
 
 /* Notifications */
 .flyout
-	display: block
+	display: none
+	font-size: .9em
 	background-color: white
 	border-radius: 3px
 	border: thin solid darken($color_background, 3%)
@@ -321,7 +322,7 @@ blockquote
 .post-index-item-title
 	display: block
 	position: relative
-	z-index: 1
+	z-index: 0 /* XXX CHECK */
 	padding: 15px 10px 5px 0
 	font-family: $font_headings
 	font-size: 1.6em

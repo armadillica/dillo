@@ -234,7 +234,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 				});
 
 				// Notifications
-
 				$.getJSON( "/notifications", function( data ) {
 
 					var items = [];
@@ -251,16 +250,16 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 							content += '</div>';
 
 							content += '<div class="nc-text">';
+								// Username
 								content += '<a href="' + no['username_url'] + '">' + no['username'] + '</a> ';
 
+								// Action
 								content += no['action'] + ' ';
 
+								// Object
+
 								content += '<a href="' + no['object_url'] + '">';
-									if (no['context_object_name']){
-										content += no['context_object_name'];
-									} else {
-										content += no['context_object_type'];
-									};
+									content += no['context_object_name'] + ' ';
 								content += '</a> ';
 
 								content += '<span class="nc-date">';

@@ -91,8 +91,8 @@
 
 		a(href="{{url_for('index')}}", title="Blender.Today")
 			img.nav-sidebar-mug(
-				src="{{url_for('static', filename='images/today_manumug_release-275_136x136.png')}}",
-				title="Happy Blender 2.75 release!")
+				src="{{ settings['logo']['image'] }}",
+				title="{{ settings['logo']['alt'] }}")
 
 		a(href="{{url_for('index')}}")
 			h3.

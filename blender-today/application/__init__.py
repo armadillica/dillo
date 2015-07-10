@@ -134,7 +134,7 @@ def inject_submit_post_form():
     return {'submit_post_form': form}
 
 @app.context_processor
-@cache.cached(timeout=3600)
+#@cache.cached(timeout=3600)
 def inject_settings():
     """Global application settings"""
     from modules.admin.model import Setting
@@ -143,7 +143,7 @@ def inject_settings():
     settings = {}
     logo = dict(
         alt=alt.value,
-        image=image.value)
+        image=url_for('static', filename='images/' + image.value))
     settings['logo'] = logo
     return {'settings': settings}
 

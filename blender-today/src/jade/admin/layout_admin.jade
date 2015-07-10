@@ -1,0 +1,22 @@
+| {% extends 'admin/base.html' %}
+
+| {% block brand %}
+span.brand
+	a(href="{{url_for('index')}}")
+		{{ admin_view.admin.name }}
+| {% endblock %}
+
+| {% block access_control %}
+| {% if current_user.is_authenticated() %}
+.btn-group.pull-right
+	a.btn.dropdown-toggle(data-toggle="dropdown", href="#")
+		i.icon-user
+		| {{ current_user.login }}
+		span.caret
+
+	ul.dropdown-menu
+		li
+			a(href="{{ url_for('admin.logout_view') }}") Log out
+
+| {% endif %}
+| {% endblock %}

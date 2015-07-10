@@ -1,0 +1,24 @@
+| {% extends 'admin/master.html' %}
+
+| {% block head_css %}
+| {{ super() }}
+style(type="text/css").
+	.label-active {
+		background-color: #00CC66;
+		color: #EEE;
+	}
+	.label-unlisted {
+		background-color: #FF9933;
+		color: #EEE;
+	}
+
+| {% endblock %}
+
+| {% block body %}
+.row
+	.span2
+
+
+
+
+| {% endblock %}
