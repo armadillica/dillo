@@ -261,6 +261,7 @@ blockquote
 .post-index-item
 	display: block
 	position: relative
+	z-index: 0
 	background-color: white
 	margin: 0 0 10px 0
 	padding: 0
@@ -301,7 +302,6 @@ blockquote
 			text-align: right
 			font-size: 1em
 			background-color: rgba(darken($color_text, 20%), .6)
-			//background: linear-gradient(to bottom, rgba(black, .5) 90%, rgba(black, 0) 95%)
 			color: white
 			padding: 10px 15px
 			border-bottom-left-radius: 3px
@@ -360,7 +360,7 @@ blockquote
 .post-index-item-title
 	display: block
 	position: relative
-	z-index: 0 /* XXX CHECK */
+	z-index: 1
 	padding: 15px 10px 5px 0
 	font-family: $font_headings
 	font-size: 1.6em
@@ -408,7 +408,7 @@ blockquote
 .post-index-item-details
 	display: block
 	position: relative
-	z-index: 0 // XXX was 1, but we need it higher for notifications panel
+	z-index: 1
 	font-size: 0.9em
 	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
@@ -2448,6 +2448,7 @@ fieldset
 
 /* Sidebar */
 .nav-sidebar-container
+	z-index: 99 // stay above categories
 	+media-xs
 		position: relative
 	+media-sm
