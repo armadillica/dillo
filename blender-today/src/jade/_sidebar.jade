@@ -30,13 +30,9 @@
 				| {% if current_user.is_authenticated() %}
 
 				li
-					a#popover-home(
-						href="{{url_for('index')}}",
-						data-toggle="popover",
-						data-trigger="hover",
-						data-placement="bottom"
-						data-content="Home")
+					a#notifications-toggle
 						i.fa.fa-bell
+						span#notifications-count
 
 				li
 					a#popover-settings(

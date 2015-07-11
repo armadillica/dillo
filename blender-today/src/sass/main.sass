@@ -108,7 +108,7 @@ blockquote
 
 /* Notifications */
 .flyout
-	display: none
+	display: block
 	font-size: .9em
 	background-color: white
 	border-radius: 3px
@@ -119,6 +119,7 @@ blockquote
 		font-weight: 600
 		display: block
 		padding: 5px 10px
+		font-size: 1.1em
 
 	&.notifications
 		position: absolute
@@ -127,6 +128,43 @@ blockquote
 		z-index: 9999
 		width: 400px
 
+#notifications
+	display: none
+
+#notifications-toggle
+	cursor: pointer
+	position: relative
+	user-select: none
+
+	&:hover, &.active
+		color: lighten($color_brand_main, 25%)
+
+	#notifications-count
+		opacity: 0
+		position: absolute
+		top: 4px
+		right: 4px
+		width: 18px
+		height: 18px
+		background-color: $color_brand_secondary
+		border-radius: 50%
+		text-align: center
+		color: white
+		font-size: .7em
+		font-weight: bolder
+		font-family: sans-serif
+		padding: .1em
+		user-select: none
+		border: .2em solid white
+		transform: scale(0)
+		-webkit-transform: scale(0)
+		+transition(transform, 250ms, ease)
+
+
+		&.bloom
+			opacity: 1.0
+			transform: scale(1) !important
+			-webkit-transform: scale(1) !important
 
 #notifications-list
 	list-style-type: none
@@ -326,7 +364,6 @@ blockquote
 	padding: 15px 10px 5px 0
 	font-family: $font_headings
 	font-size: 1.6em
-	//+text-shadow(1px, 1px, 0, darken($color_background, 3%), 0.5)
 
 	+media-xs
 		float: left
@@ -371,7 +408,7 @@ blockquote
 .post-index-item-details
 	display: block
 	position: relative
-	z-index: 1
+	z-index: 0 // XXX was 1, but we need it higher for notifications panel
 	font-size: 0.9em
 	color: lighten($color_text, 30%)
 	padding: 3px 0 15px 0
@@ -380,7 +417,6 @@ blockquote
 		width: 100%
 		padding: 8px 10px 10px 95px
 		float: right
-		//border-top: thin solid lighten($color_text, 65%)
 		position: relative
 		+text-overflow-ellipsis
 
@@ -2518,6 +2554,10 @@ fieldset
 				padding: 10px 10px 10px 15px
 				&.active
 					color: $color_brand_secondary
+
+			& i
+				font-size: 1.3em
+
 	& .nav-sidebar-avatar
 		display: inline-block
 		height: 30px

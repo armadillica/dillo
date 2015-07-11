@@ -161,6 +161,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 			{% if current_user.is_authenticated() %}
 
 				$.embedly.defaults.key = 'e41ded41bd6e47aabb1bfcb8a17dccb7';
+				page_title = document.title;
 
 				$('#url').keyup(function(){
 					var url = $('#url').val();
@@ -232,52 +233,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 					$('.post-submit-div-picture-remote').css('display', 'none');
 					$('.post-submit-div-picture').show();
 				});
-
-				// Notifications
-				$.getJSON( "/notifications", function( data ) {
-
-					var items = [];
-
-					$.each(data['items'], function(i, no){
-
-						is_read = no['is_read'] ? 'is_read' : '';
-
-						content = '<li class="nc-item ' + is_read +'">';
-							content += '<div class="nc-avatar">';
-								content += '<a href="' + no['username_url'] + '">';
-								content += '<img src="' + no['username_avatar'] + '"/> ';
-								content += '</a>';
-							content += '</div>';
-
-							content += '<div class="nc-text">';
-								// Username
-								content += '<a href="' + no['username_url'] + '">' + no['username'] + '</a> ';
-
-								// Action
-								content += no['action'] + ' ';
-
-								// Object
-
-								content += '<a href="' + no['object_url'] + '">';
-									content += no['context_object_name'] + ' ';
-								content += '</a> ';
-
-								content += '<span class="nc-date">';
-									content += '<a href="' + no['object_url'] + '">' + no['date'] + '</a>';
-								content += '</span>';
-
-							content += '</div>';
-						content += '</li>';
-
-						items.push(content);
-
-						console.log(no);
-					});
-
-					$('#notifications-list').html( items.join('') );
-
-				});
-
 			{% endif %}
 			});
 
