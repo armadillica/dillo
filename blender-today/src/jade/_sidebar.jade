@@ -82,8 +82,15 @@
 		.flyout-content
 			span.flyout-title Notifications
 			span#notifications-refresh(title="Refresh notifications feed")
-				i.fa.fa-refresh
+				i#notifications-refresh-icon.fa.fa-refresh
 			| {% include '_notifications.html' %}
+
+	// Newly registered member
+	| {% if not current_user.username %}
+	.nav-sidebar.newcomer
+		p Hello there!<br/>
+			a(href="{{url_for('settings.profile')}}")  What's your name?
+	| {% endif %}
 
 	// Logo
 	.nav-sidebar.branding

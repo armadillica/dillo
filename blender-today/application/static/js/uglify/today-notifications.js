@@ -6,7 +6,7 @@ function getNotifications(){
 		var items = [];
 		var unread_ctr = 0;
 
-		$('#notifications-refresh i').addClass('fa-spin');
+		$('#notifications-refresh-icon').addClass('fa-spin');
 
 		// Only if there's actual data
 		if (data['items'][0]){
@@ -72,9 +72,9 @@ function getNotifications(){
 
 		// Populate the list
 		$('#notifications-list').html( items.join('') );
-
-		$('#notifications-refresh i').removeClass('fa-spin');
-
+	})
+	.done(function(){
+		$('#notifications-refresh-icon').removeClass('fa-spin');
 	});
 };
 
