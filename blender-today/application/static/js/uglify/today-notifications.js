@@ -1,5 +1,6 @@
 // Notifications
 
+// Fetch json
 function getNotifications(){
 	$.getJSON( "/notifications", function( data ) {
 
@@ -74,10 +75,12 @@ function getNotifications(){
 		$('#notifications-list').html( items.join('') );
 	})
 	.done(function(){
+		// Stop spinning the refresh icon when we're done
 		$('#notifications-refresh-icon').removeClass('fa-spin');
 	});
 };
 
+// Used when we click away
 function hideNotifications(){
 	$('#notifications').hide();
 	$('#notifications-toggle').removeAttr('class');
@@ -102,4 +105,6 @@ $('#notifications').on('click', function(e){ e.stopPropagation(); });
 
 $(document).ready(function() {
 	getNotifications();
+
+	setInterval(getNotifications, 30000);
 });

@@ -86,7 +86,7 @@
 			| {% include '_notifications.html' %}
 
 	// Newly registered member
-	| {% if not current_user.username %}
+	| {% if current_user.is_authenticated() and not current_user.username %}
 	.nav-sidebar.newcomer
 		p Hello there!<br/>
 			a(href="{{url_for('settings.profile')}}")  What's your name?
