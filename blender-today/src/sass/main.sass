@@ -120,16 +120,40 @@ blockquote
 		display: block
 		padding: 5px 10px
 		font-size: 1.1em
+		float: left
+
+	& .flyout-hat
+		width: 0
+		height: 0
+		position: absolute
+		border-style: solid
+		border-width: 0 8px 8px 8px
+		border-color: transparent transparent white transparent
 
 	&.notifications
 		position: absolute
-		right: 30px
+		right: 90px
 		top: 60px
 		z-index: 9999
 		width: 400px
 
+		& .flyout-hat
+			top: -8px
+			right: 41px
+
 #notifications
 	display: none
+
+	& #notifications-refresh
+		float: right
+		color: $color_brand_main
+		cursor: pointer
+		padding: 6px 10px
+
+		&:hover, &:focus
+			color: lighten($color_brand_main, 10%)
+		&:active
+			color: $color_brand_secondary
 
 #notifications-toggle
 	cursor: pointer
@@ -171,7 +195,6 @@ blockquote
 	padding: 0 5px
 	margin: 0
 
-
 	& .nc-item, & .nc-loading
 		position: relative
 		padding: 12px 0
@@ -184,6 +207,12 @@ blockquote
 		&.is_read
 			opacity: 0.6
 			color: lighten($color_text, 20%)
+
+		&.nc-item-empty
+			color: lighten($color_text, 20%)
+			text-align: center
+			padding: 24px 0
+			user-select: none
 
 	& .nc-link
 		position: absolute

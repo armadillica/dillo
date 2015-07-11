@@ -1,64 +1,80 @@
 // Notifications
 
-function getnotifications(){
+function getNotifications(){
 	$.getJSON( "/notifications", function( data ) {
 
 		var items = [];
 		var unread_ctr = 0;
 
-		$.each(data['items'], function(i, no){
+		$('#notifications-refresh i').addClass('fa-spin');
 
-			// Increase the unread_ctr counter
-			if (!no['is_read']){ unread_ctr++ };
+		// Only if there's actual data
+		if (data['items'][0]){
 
-			// Check if the current item has been read,
-			// so we can style it nicely
-			is_read = no['is_read'] ? 'is_read' : '';
+			// Loop through each item
+			$.each(data['items'], function(i, no){
 
-			// List item
-			content = '<li class="nc-item ' + is_read +'">';
+				// Increase the unread_ctr counter
+				if (!no['is_read']){ unread_ctr++ };
 
-				// Avatar linking to username profile
-				content += '<div class="nc-avatar">';
-					content += '<a href="' + no['username_url'] + '">';
-					content += '<img src="' + no['username_avatar'] + '"/> ';
-					content += '</a>';
-				content += '</div>';
+				// Check if the current item has been read,
+				// so we can style it nicely
+				is_read = no['is_read'] ? 'is_read' : '';
 
-				// Text of the notification
-				content += '<div class="nc-text">';
+				// List item
+				content = '<li class="nc-item ' + is_read +'">';
 
-					// Username
-					content += '<a href="' + no['username_url'] + '">' + no['username'] + '</a> ';
+					// Avatar linking to username profile
+					content += '<div class="nc-avatar">';
+						content += '<a href="' + no['username_url'] + '">';
+						content += '<img src="' + no['username_avatar'] + '"/> ';
+						content += '</a>';
+					content += '</div>';
 
-					// Action
-					content += no['action'] + ' ';
+					// Text of the notification
+					content += '<div class="nc-text">';
 
-					// Object
-					content += '<a href="' + no['object_url'] + '">';
-						content += no['context_object_name'] + ' ';
-					content += '</a> ';
+						// Username
+						content += '<a href="' + no['username_url'] + '">' + no['username'] + '</a> ';
 
-					// Date
-					content += '<span class="nc-date">';
-						content += '<a href="' + no['object_url'] + '">' + no['date'] + '</a>';
-					content += '</span>';
+						// Action
+						content += no['action'] + ' ';
 
-				content += '</div>';
+						// Object
+						content += '<a href="' + no['object_url'] + '">';
+							content += no['context_object_name'] + ' ';
+						content += '</a> ';
+
+						// Date
+						content += '<span class="nc-date">';
+							content += '<a href="' + no['object_url'] + '">' + no['date'] + '</a>';
+						content += '</span>';
+
+					content += '</div>';
+				content += '</li>';
+
+				items.push(content);
+			});
+
+			if (unread_ctr > 0) {
+				// Set page title, display notifications and set counter
+				document.title = '(' + unread_ctr + ') ' + page_title;
+				$('#notifications-count').addClass('bloom');
+				$('#notifications-count').text(unread_ctr);
+			};
+		} else {
+			content = '<li class="nc-item nc-item-empty">';
+			content += 'No notifications... yet';
 			content += '</li>';
 
 			items.push(content);
-		});
-
-		if (unread_ctr > 0) {
-			// Set page title, display notifications and set counter
-			document.title = '(' + unread_ctr + ') ' + page_title;
-			$('#notifications-count').addClass('bloom');
-			$('#notifications-count').text(unread_ctr);
 		};
 
 		// Populate the list
 		$('#notifications-list').html( items.join('') );
+
+		$('#notifications-refresh i').removeClass('fa-spin');
+
 	});
 };
 
@@ -75,9 +91,15 @@ $('#notifications-toggle').on('click', function(e){
 	e.stopPropagation();
 	$('#notifications').toggle();
 	$(this).toggleClass("active");
+
+	getNotifications();
 });
+
+$('#notifications-refresh').on('click', function(e){ getNotifications(); });
 
 // Clicking inside the #notifications flyout shouldn't hide it
 $('#notifications').on('click', function(e){ e.stopPropagation(); });
 
-getnotifications();
+$(document).ready(function() {
+	getNotifications();
+});

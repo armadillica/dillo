@@ -78,8 +78,11 @@
 
 	// Notifications Popup
 	div#notifications.flyout.notifications
+		.flyout-hat
 		.flyout-content
 			span.flyout-title Notifications
+			span#notifications-refresh(title="Refresh notifications feed")
+				i.fa.fa-refresh
 			| {% include '_notifications.html' %}
 
 	// Logo
