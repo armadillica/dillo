@@ -1428,7 +1428,7 @@ blockquote
 		background-color: darken(white, 5%)
 	&.flash
 		+text-shadow-none
-		animation: effect-flash-fadeout 1.5s ease forwards
+		animation: effect-flash-fadeout 2s ease forwards
 		& .post-view-comments-item-content,
 		& .post-view-comments-item-details
 			margin-left: 15px
@@ -1456,22 +1456,22 @@ div#post-comment-reply-container
 @-webkit-keyframes effect-flash-fadeout
 	0%
 		color: white
-		padding-top: 0
 		opacity: 0
+		border-left: thick solid white
 	100%
 		opacity: 1
-		color: $color_brand_main
-		padding-top: 15px
+		color: $color_text
+		border-left: thick solid $color_brand_secondary
 
 @keyframes effect-flash-fadeout
 	0%
 		color: white
-		padding-top: 0
 		opacity: 0
+		border-left: thick solid white
 	100%
 		opacity: 1
-		color: $color_brand_main
-		padding-top: 15px
+		color: $color_text
+		border-left: thick solid $color_brand_secondary
 
 .post-view-comments-avatar
 	float: left
