@@ -51,6 +51,24 @@ function getNotifications(){
 							content += '<a href="' + no['object_url'] + '">' + no['date'] + '</a>';
 						content += '</span>';
 
+						// Read Toggle
+						content += '<a href="/notifications/' + no['_id'] + '/read-toggle" class="nc-button nc-read_toggle">';
+							if (no['is_read']){
+								content += '<i title="Mark as Unread" class="fa fa-eye-slash"></i>';
+							} else {
+								content += '<i title="Mark as Read" class="fa fa-eye"></i>';
+							};
+						content += '</a>';
+
+						// Subscription Toggle
+						content += '<a href="/notifications/' + no['_id'] + '/subscription-toggle" class="nc-button nc-subscription_toggle">';
+							if (no['is_subscribed']){
+								content += '<i title="Stop Notifications" class="fa fa-toggle-off"></i>';
+							} else {
+								content += '<i title="Resume Notifications" class="fa fa-toggle-on"></i>';
+							};
+						content += '</a>';
+
 					content += '</div>';
 				content += '</li>';
 
@@ -80,7 +98,7 @@ function getNotifications(){
 	});
 };
 
-// Used when we click away
+// Used when we click somewhere in the page
 function hideNotifications(){
 	$('#notifications').hide();
 	$('#notifications-toggle').removeAttr('class');
@@ -89,22 +107,68 @@ function hideNotifications(){
 // Click anywhere in the page to hide the #notifications
 $(document).click(function() { hideNotifications(); });
 
+// Function to set #notifications flyout height and resize if needed
+function notificationsResize(){
+	height = $(window).height() - 80;
+
+	if ($('#notifications').height() > height){
+		$('#notifications').css({
+				'max-height' : height,
+				'overflow-y' : 'scroll'
+			}
+		);
+	} else {
+		$('#notifications').css({
+				'max-height' : 'initial',
+				'overflow-y' : 'initial'
+			}
+		);
+	};
+};
+
 // Toggle the #notifications flyout
 $('#notifications-toggle').on('click', function(e){
 	e.stopPropagation();
+
 	$('#notifications').toggle();
 	$(this).toggleClass("active");
 
+	notificationsResize();
 	getNotifications();
 });
 
-$('#notifications-refresh').on('click', function(e){ getNotifications(); });
+
+// Read/Subscription Toggles
+$('#notifications-list').on('click', '.nc-button', function(e){
+	e.preventDefault();
+
+	$.get($(this).attr('href'));
+	getNotifications();
+});
+
+// Mark All as Read
+$('#notifications-markallread').on('click', function(e){
+	e.preventDefault();
+
+	$.get("/notifications/read-all");
+	getNotifications();
+});
+
+// Refresh Notifications Feed
+$('#notifications-refresh').on('click', function(){ getNotifications(); });
 
 // Clicking inside the #notifications flyout shouldn't hide it
 $('#notifications').on('click', function(e){ e.stopPropagation(); });
 
 $(document).ready(function() {
-	getNotifications();
 
+	getNotifications();
 	setInterval(getNotifications, 30000);
+
+	// Resize #notifications and change overflow for scrollbars
+	$(window).on("resize", function() { notificationsResize(); });
+
+	// Load perfectScrollbar
+	$('#notifications').perfectScrollbar();
+
 });

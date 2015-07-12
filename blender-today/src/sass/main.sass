@@ -118,7 +118,7 @@ blockquote
 	& .flyout-title
 		font-weight: 600
 		display: block
-		padding: 5px 10px
+		padding: 8px 10px 5px 10px
 		font-size: 1.1em
 		float: left
 
@@ -135,25 +135,29 @@ blockquote
 		right: 90px
 		top: 60px
 		z-index: 9999
-		width: 400px
+		width: 420px
 
 		& .flyout-hat
 			top: -8px
 			right: 41px
 
+@import js_perfectscrollbar
+
 #notifications
 	display: none
 
-	& #notifications-refresh
+	& #notifications-refresh,
+	& #notifications-markallread
 		float: right
 		color: $color_brand_main
 		cursor: pointer
-		padding: 6px 10px
+		padding: 9px 10px 6px 10px
 
 		&:hover, &:focus
 			color: lighten($color_brand_main, 10%)
 		&:active
 			color: $color_brand_secondary
+
 
 #notifications-toggle
 	cursor: pointer
@@ -204,6 +208,11 @@ blockquote
 		display: block
 		clear: both
 
+		&:hover
+			& .nc-read_toggle,
+			& .nc-subscription_toggle
+				visibility: visible
+
 		&.is_read
 			opacity: 0.6
 			color: lighten($color_text, 20%)
@@ -250,6 +259,20 @@ blockquote
 		font-size: 1.5em
 		color: lighten($color_text, 50%)
 
+	& .nc-read_toggle,
+	& .nc-subscription_toggle
+		visibility: hidden
+		cursor: pointer
+		display: block
+		float: right
+		position: absolute
+		top: 5px
+		right: 5px
+		padding: 5px
+
+	& .nc-subscription_toggle
+		top: 25px
+		right: 4px
 
 .post-view-container
 	margin-top: 5px

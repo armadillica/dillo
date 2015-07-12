@@ -181,15 +181,33 @@ def index():
 @login_required
 def action_read_toggle(notification_id):
     notification = Notification.query.get_or_404(notification_id)
+
     if notification.user_id == current_user.id:
         if notification.is_read:
             notification.is_read = False
         else:
             notification.is_read = True
         db.session.commit()
-        return jsonify(message="Updated notification {0}".format(notification_id))
+        return jsonify(message="Notification {0} is_read {1}".format(
+            notification_id,
+            notification.is_read))
     else:
         return abort(403)
+
+@notifications.route('/read-all')
+@login_required
+def action_read_all():
+    """Mark all notifications as read"""
+
+    notifications = Notification.query\
+        .filter(Notification.user_id == current_user.id)
+
+    for notification in notifications:
+        notification.is_read = True
+
+    db.session.commit()
+
+    return jsonify(message="All notifications mark as read")
 
 
 @notifications.route('/<int:notification_id>/subscription-toggle')
