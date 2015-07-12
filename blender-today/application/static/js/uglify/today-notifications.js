@@ -63,9 +63,9 @@ function getNotifications(){
 						// Subscription Toggle
 						content += '<a href="/notifications/' + no['_id'] + '/subscription-toggle" class="nc-button nc-subscription_toggle">';
 							if (no['is_subscribed']){
-								content += '<i title="Stop Notifications" class="fa fa-toggle-off"></i>';
+								content += '<i title="Turn On Notifications" class="fa fa-toggle-off"></i>';
 							} else {
-								content += '<i title="Resume Notifications" class="fa fa-toggle-on"></i>';
+								content += '<i title="Turn Off Notifications" class="fa fa-toggle-on"></i>';
 							};
 						content += '</a>';
 
@@ -151,6 +151,8 @@ $('#notifications-markallread').on('click', function(e){
 	e.preventDefault();
 
 	$.get("/notifications/read-all");
+	$('#notifications-count').removeAttr('class');
+	document.title = page_title;
 	getNotifications();
 });
 
