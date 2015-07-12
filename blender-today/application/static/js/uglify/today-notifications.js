@@ -2,7 +2,7 @@
 
 // Fetch json
 function getNotifications(){
-	$.getJSON( "/notifications", function( data ) {
+	$.getJSON( "/notifications/", function( data ) {
 
 		var items = [];
 		var unread_ctr = 0;
@@ -36,19 +36,19 @@ function getNotifications(){
 					content += '<div class="nc-text">';
 
 						// Username
-						content += '<a '+ read_info + '" href="' + no['username_url'] + '">' + no['username'] + '</a> ';
+						content += '<a ' + read_info + '" href="' + no['username_url'] + '">' + no['username'] + '</a> ';
 
 						// Action
 						content += no['action'] + ' ';
 
 						// Object
-						content += '<a '+ read_info + '" href="' + no['object_url'] + '">';
+						content += '<a ' + read_info + '" href="' + no['object_url'] + '">';
 							content += no['context_object_name'] + ' ';
 						content += '</a> ';
 
 						// Date
 						content += '<span class="nc-date">';
-							content += '<a '+ read_info + '" href="' + no['object_url'] + '">' + no['date'] + '</a>';
+							content += '<a ' + read_info + '" href="' + no['object_url'] + '">' + no['date'] + '</a>';
 						content += '</span>';
 
 						// Read Toggle
@@ -124,7 +124,7 @@ function notificationsResize(){
 	};
 };
 
-// Read/Subscription Toggles
+// Click on context of notification
 $('#notifications-list').on('click', 'a[data-id]', function(e){
 	e.preventDefault();
 
@@ -132,6 +132,8 @@ $('#notifications-list').on('click', 'a[data-id]', function(e){
 		$.get("/notifications/" + $(this).attr("data-id") + "/read-toggle");
 	};
 	window.location = $(this).attr("href");
+	// Runs only if page is the same
+	getNotifications();
 });
 
 // Toggle the #notifications flyout
