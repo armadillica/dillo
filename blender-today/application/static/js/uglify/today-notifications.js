@@ -54,9 +54,9 @@ function getNotifications(){
 						// Read Toggle
 						content += '<a href="/notifications/' + no['_id'] + '/read-toggle" class="nc-button nc-read_toggle">';
 							if (no['is_read']){
-								content += '<i title="Mark as Unread" class="fa fa-eye-slash"></i>';
+								content += '<i title="Mark as Unread" class="fa fa-check-circle-o"></i>';
 							} else {
-								content += '<i title="Mark as Read" class="fa fa-eye"></i>';
+								content += '<i title="Mark as Read" class="fa fa-circle-o"></i>';
 							};
 						content += '</a>';
 

@@ -187,7 +187,7 @@ def submit():
             negative=0
             )
         db.session.add(post_rating)
-        #post.update_hot()
+        post.update_hot()
         if form.picture.data or form.picture_remote.data:
             if form.picture.data:
                 # If the user uploads an image from the form
