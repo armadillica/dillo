@@ -19,6 +19,7 @@ from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import CommentForm
 from application.modules.notifications import notification_subscribe
 from application.modules.notifications import notification_object_add
+from application.modules.notifications import notification_get_subscriptions
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import bleach_input
@@ -84,8 +85,12 @@ def submit(post_id):
             # Subscribe to comments to own comment
             notification_subscribe(current_user.id, 2, comment.id)
 
-        # Clear all the caches
+        # Clear cache for current user
         delete_redis_cache_post(post.uuid)
+        # Clear cache for all subscribed users
+        for subscription in notification_get_subscriptions(
+            1, post.id, current_user.id):
+            delete_redis_cache_post(post.uuid, subscription.user_id)
 
         # This is to prevent encoding error when jsonify prints out
         # a non ASCII name

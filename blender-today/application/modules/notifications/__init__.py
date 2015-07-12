@@ -21,6 +21,15 @@ from application.helpers import pretty_date
 
 notifications = Blueprint('notifications', __name__)
 
+def notification_get_subscriptions(context_object_type_id, context_object_id, actor_user_id):
+    return NotificationSubscriptions.query\
+        .filter(NotificationSubscriptions.context_object_type_id == context_object_type_id)\
+        .filter(NotificationSubscriptions.context_object_id == context_object_id)\
+        .filter(NotificationSubscriptions.user_id != actor_user_id)\
+        .filter(NotificationSubscriptions.is_subscribed == True)\
+        .all()
+
+
 def notification_subscribe(user_id, context_object_type_id, context_object_id):
     """Subscribe a user to changes for a specific context. We create a subscription
     if none is found.
@@ -60,12 +69,8 @@ def notification_object_add(actor_user_id, verb, object_type_id, object_id,
     :param object_type_id: hardcoded index, check the notifications/model.py
     :param object_id: object id, to be traced with object_type_id
     """
-    subscriptions = NotificationSubscriptions.query\
-        .filter(NotificationSubscriptions.context_object_type_id == context_object_type_id)\
-        .filter(NotificationSubscriptions.context_object_id == context_object_id)\
-        .filter(NotificationSubscriptions.user_id != actor_user_id)\
-        .filter(NotificationSubscriptions.is_subscribed == True)\
-        .all()
+    subscriptions = notification_get_subscriptions(
+        context_object_type_id, context_object_id, actor_user_id)
 
     if subscriptions:
         notification_object = NotificationObject(
