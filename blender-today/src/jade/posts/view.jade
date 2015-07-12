@@ -731,6 +731,72 @@ script(type="text/javascript").
 
 		{% endif %} {# endif is_owner #}
 
+		{# EDIT COMMENT #}
+		$(".edit-comment-toggle").click(function(e) {
+			e.preventDefault();
+
+			//$('[class^="notification-post"]').hide();
+			//$('.notification-post-edit').show();
+			//$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
+
+			var comment_id = $(this).data('comment-id');
+
+			var ck = CKEDITOR.inline('comment-text-id-' + comment_id,
+							{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
+					);
+			ck.on( 'instanceReady', function( ev ) {
+				var editor = ev.editor;
+				editor.setReadOnly( false );
+			});
+
+
+			//$('#post-view-title').hide();
+			//$('#post-edit-title').show();
+
+			//- $(this).fadeOut(50, function(){
+			//- 	$("#edit-post-save").css('display', 'inline-block');
+			//- 	$("#edit-post-save").animate({'opacity' : 1});
+			//- });
+		});
+
+		{# SAVE COMMENT #}
+		$(".edit-comment-save").click(function(e) {
+			e.preventDefault();
+			var comment_id = $(this).data('comment-id');
+			var comment_text_id_tag = 'comment-text-id-' + comment_id;
+
+			if (CKEDITOR.instances[comment_text_id_tag]) {
+				CKEDITOR.instances[comment_text_id_tag].destroy();
+			};
+
+			var comment_text_id_pointer = '#' + comment_text_id_tag;
+			$(comment_text_id_pointer).attr('contenteditable', false);
+
+			var params = {
+				content : $(comment_text_id_pointer).html()
+			};
+
+			$.post($(this).attr("href"), params,
+				function(data){
+			})
+				//- .done(function() {
+				//- 	$('[class^="notification-post"]').hide();
+				//- 	$('.notification-post-saved').show();
+				//- 	$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
+				//- })
+				//- .fail(function() {
+				//- 	$('[class^="notification-post"]').hide();
+				//- 	$('.notification-post-fail').show();
+				//- 	$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
+				//- })
+				//- .always(function() {
+				//- 	$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+				//- 	$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
+				//- });
+		});
+
+
+
 	{% else %}
 
 		$('.popover-post-vote').popover();

@@ -62,7 +62,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 
 
 	| {# Comment Text #}
-	.post-view-comments-item-content
+	div(class='post-view-comments-item-content', id='comment-text-id-{{comment.id}}')
 		| {{comment.content|safe}}
 
 	| {# Comment Details #}
@@ -119,6 +119,27 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		a(title="Flag comment",
 			href="{{url_for('comments.flag', comment_id=comment.id)}}",
 			class="post-view-comments-item-flag flag{% if comment.user_rating and comment.user_rating.is_flagged %} flagged{% endif %}")
+
+		| {% endif %}
+
+		| {# Edit #}
+		| {% if current_user.is_authenticated() and not comment.user.deleted %}
+		span.separator
+
+		a(title="Edit comment",
+			href="#",
+			data-comment-id="{{comment.id}}",
+			class="edit-comment-toggle")
+			| Edit
+
+		| {# Save #}
+		span.separator
+
+		a(title="Save comment",
+			href="{{url_for('comments.edit', comment_id=comment.id)}}",
+			data-comment-id="{{comment.id}}",
+			class="edit-comment-save")
+			| Save
 
 		| {% endif %}
 

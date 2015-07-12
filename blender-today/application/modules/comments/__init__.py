@@ -5,6 +5,7 @@ from flask import redirect
 from flask import url_for
 from flask import jsonify
 from flask import abort
+from flask import request
 
 from flask.ext.security import login_required
 from flask.ext.security import current_user
@@ -244,7 +245,7 @@ def delete(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if current_user.id == comment.user.id:
         comment.status = 'deleted'
-        comment.edited = datetime.datetime.now
+        comment.edit_date = datetime.datetime.now()
         db.session.commit()
         return jsonify(status='deleted')
     else:
