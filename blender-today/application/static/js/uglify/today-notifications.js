@@ -7,8 +7,6 @@ function getNotifications(){
 		var items = [];
 		var unread_ctr = 0;
 
-		$('#notifications-refresh-icon').addClass('fa-spin');
-
 		// Only if there's actual data
 		if (data['items'][0]){
 
@@ -63,9 +61,9 @@ function getNotifications(){
 						// Subscription Toggle
 						content += '<a href="/notifications/' + no['_id'] + '/subscription-toggle" class="nc-button nc-subscription_toggle">';
 							if (no['is_subscribed']){
-								content += '<i title="Turn On Notifications" class="fa fa-toggle-off"></i>';
-							} else {
 								content += '<i title="Turn Off Notifications" class="fa fa-toggle-on"></i>';
+							} else {
+								content += '<i title="Turn On Notifications" class="fa fa-toggle-off"></i>';
 							};
 						content += '</a>';
 
@@ -80,6 +78,8 @@ function getNotifications(){
 				document.title = '(' + unread_ctr + ') ' + page_title;
 				$('#notifications-count').addClass('bloom');
 				$('#notifications-count').text(unread_ctr);
+			} else {
+				$('#notifications-count').removeAttr('class');
 			};
 		} else {
 			content = '<li class="nc-item nc-item-empty">';
@@ -91,10 +91,6 @@ function getNotifications(){
 
 		// Populate the list
 		$('#notifications-list').html( items.join('') );
-	})
-	.done(function(){
-		// Stop spinning the refresh icon when we're done
-		$('#notifications-refresh-icon').removeClass('fa-spin');
 	});
 };
 
@@ -155,9 +151,6 @@ $('#notifications-markallread').on('click', function(e){
 	document.title = page_title;
 	getNotifications();
 });
-
-// Refresh Notifications Feed
-$('#notifications-refresh').on('click', function(){ getNotifications(); });
 
 // Clicking inside the #notifications flyout shouldn't hide it
 $('#notifications').on('click', function(e){ e.stopPropagation(); });
