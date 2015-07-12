@@ -381,7 +381,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 				| {% if post.comments %}
 				h3.title
 					| Comments
-					small ({{post.comments|length}})
+					small ({{post.comments_count}})
 
 				| {% for comment in post.comments_first_level %}
 				| 	{{print_comment(comment, loop, post)}}
@@ -804,7 +804,8 @@ script(type="text/javascript").
 			e.preventDefault();
 
 			$.get($(this).attr('href'));
-			$(this).closest('.post-view-comments-item ').fadeOut(350);
+			$(this).closest('.post-view-comments-item').addClass('hidden');
+			$('[data-parent-id="' + $(this).data('comment-id') + '"]').addClass('hidden');
 		});
 
 	{% else %}

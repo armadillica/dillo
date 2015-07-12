@@ -160,16 +160,22 @@ def delete_redis_cache_keys(cache_prefix, category=''):
     for key in keys_list: redis_client.delete(key)
 
 
-def delete_redis_cache_post(uuid, user_id=None):
-    if user_id:
-        user_id = str(user_id)
+def delete_redis_cache_post(uuid, user_id=None, all_users=False):
+    if all_users:
+        cache_key = make_template_fragment_key('post',
+            vary_on=[uuid])
     else:
-        if current_user.is_authenticated():
-            user_id = current_user.string_id
+        if user_id:
+            user_id = str(user_id)
         else:
-            user_id = "ANONYMOUS"
-    cache_key = make_template_fragment_key('post',
-        vary_on=[uuid, user_id])
+            if current_user.is_authenticated():
+                user_id = current_user.string_id
+            else:
+                user_id = "ANONYMOUS"
+
+        cache_key = make_template_fragment_key('post',
+            vary_on=[uuid, user_id])
+
     # Add prefix to the cache key
     key = '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
     keys_list = redis_client.keys(key)

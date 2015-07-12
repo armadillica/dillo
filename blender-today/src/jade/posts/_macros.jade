@@ -1,7 +1,8 @@
 | {% macro print_comment(comment, loop, post, is_reply=False) %}
 | {% if comment.status != 'deleted' %}
 a(name="comment-{{comment.id}}")
-div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cycle('odd', 'even') }}")
+div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cycle('odd', 'even') }}",
+	data-parent-id=("{% if is_reply %}{{comment.parent_id}}{% endif %}"))
 
 	| {# Comment Avatar #}
 	.post-view-comments-avatar
@@ -138,7 +139,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 				href="{{url_for('comments.edit', comment_id=comment.id)}}",
 				data-comment-id="{{comment.id}}",
 				class="edit-comment-save")
-				i.fa.fa-check
+				i.fa.fa-floppy-o
 				|  Save changes
 
 			| {# Delete #}

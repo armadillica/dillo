@@ -54,6 +54,7 @@ class Post(db.Model):
     def comments_count(self):
         return Comment.query\
             .filter_by(post_id=self.id)\
+            .filter_by(status='published')\
             .count()
 
     @property

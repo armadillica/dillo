@@ -234,6 +234,8 @@ def edit(comment_id):
         comment.status = 'edited'
         comment.edit_date = datetime.datetime.now()
         db.session.commit()
+
+        delete_redis_cache_post(comment.post.uuid, all_users=True)
         return jsonify(status='edited')
     else:
         return abort(403)
@@ -244,9 +246,20 @@ def edit(comment_id):
 def delete(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if (current_user.id == comment.user.id) or (current_user.has_role('admin')):
+
+        children = Comment.query.filter_by(parent_id=comment.id).all()
+
+        for child in children:
+            child.status = 'deleted'
+            child.edit_date = datetime.datetime.now()
+            db.session.commit()
+
         comment.status = 'deleted'
         comment.edit_date = datetime.datetime.now()
+
         db.session.commit()
+
+        delete_redis_cache_post(comment.post.uuid, all_users=True)
         return jsonify(status='deleted')
     else:
         return abort(403)
