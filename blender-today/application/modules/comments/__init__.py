@@ -229,7 +229,7 @@ def flag(comment_id):
 @login_required
 def edit(comment_id):
     comment = Comment.query.get_or_404(comment_id)
-    if current_user.id == comment.user.id:
+    if current_user.id == comment.user.id or (current_user.has_role('admin')):
         comment.content = bleach_input(request.form['content'])
         comment.status = 'edited'
         comment.edit_date = datetime.datetime.now()
@@ -239,11 +239,11 @@ def edit(comment_id):
         return abort(403)
 
 
-@comments.route('/<int:comment_id>/delete', methods=['POST'])
+@comments.route('/<int:comment_id>/delete', methods=['GET'])
 @login_required
 def delete(comment_id):
     comment = Comment.query.get_or_404(comment_id)
-    if current_user.id == comment.user.id:
+    if (current_user.id == comment.user.id) or (current_user.has_role('admin')):
         comment.status = 'deleted'
         comment.edit_date = datetime.datetime.now()
         db.session.commit()

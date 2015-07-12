@@ -104,11 +104,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 			| {% if current_user.is_owner or current_user.has_role('admin') %}
 			.notification-post-edit
 				i.fa.fa-edit
-				| {% if post.post_type.url == 'link' %}
-				|  Click on the Title to edit
-				| {% else %}
-				|  Click on the Title or Content to edit
-				| {% endif %}
+				|  You're in edit mode!
 
 			.notification-post-saved
 				i.fa.fa-floppy-o
@@ -633,6 +629,12 @@ script(type="text/javascript").
 			{# EDIT POST #}
 			$("#edit-post-toggle").click(function() {
 
+				if (post_type == 'link'){
+					$('.notification-post-edit').text('Click on the Title to edit');
+				} else {
+					$('.notification-post-edit').text('Click on the Title or Content to edit');
+				};
+
 				$('[class^="notification-post"]').hide();
 				$('.notification-post-edit').show();
 				$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
@@ -735,9 +737,13 @@ script(type="text/javascript").
 		$(".edit-comment-toggle").click(function(e) {
 			e.preventDefault();
 
-			//$('[class^="notification-post"]').hide();
-			//$('.notification-post-edit').show();
-			//$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
+			$(this).hide();
+			$(this).next(".edit-comment-save").show();
+
+			$('.notification-post-edit').text("Click on the comment's text to edit");
+			$('[class^="notification-post"]').hide();
+			$('.notification-post-edit').show();
+			$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
 
 			var comment_id = $(this).data('comment-id');
 
@@ -749,19 +755,14 @@ script(type="text/javascript").
 				editor.setReadOnly( false );
 			});
 
-
-			//$('#post-view-title').hide();
-			//$('#post-edit-title').show();
-
-			//- $(this).fadeOut(50, function(){
-			//- 	$("#edit-post-save").css('display', 'inline-block');
-			//- 	$("#edit-post-save").animate({'opacity' : 1});
-			//- });
 		});
 
 		{# SAVE COMMENT #}
 		$(".edit-comment-save").click(function(e) {
 			e.preventDefault();
+
+			save_button = $(this);
+
 			var comment_id = $(this).data('comment-id');
 			var comment_text_id_tag = 'comment-text-id-' + comment_id;
 
@@ -779,23 +780,32 @@ script(type="text/javascript").
 			$.post($(this).attr("href"), params,
 				function(data){
 			})
-				//- .done(function() {
-				//- 	$('[class^="notification-post"]').hide();
-				//- 	$('.notification-post-saved').show();
-				//- 	$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
-				//- })
-				//- .fail(function() {
-				//- 	$('[class^="notification-post"]').hide();
-				//- 	$('.notification-post-fail').show();
-				//- 	$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
-				//- })
-				//- .always(function() {
-				//- 	$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
-				//- 	$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
-				//- });
+				.done(function() {
+					save_button.hide();
+					save_button.prev(".edit-comment-toggle").show();
+
+					$('[class^="notification-post"]').hide();
+					$('.notification-post-saved').show();
+					$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
+				})
+				.fail(function() {
+					$('[class^="notification-post"]').hide();
+					$('.notification-post-fail').show();
+					$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
+				})
+				.always(function() {
+					$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+					$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
+				});
 		});
 
+		{# DELETE COMMENT #}
+		$(".edit-comment-delete").click(function(e) {
+			e.preventDefault();
 
+			$.get($(this).attr('href'));
+			$(this).closest('.post-view-comments-item ').fadeOut(350);
+		});
 
 	{% else %}
 

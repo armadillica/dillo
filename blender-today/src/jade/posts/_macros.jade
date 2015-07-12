@@ -1,4 +1,5 @@
 | {% macro print_comment(comment, loop, post, is_reply=False) %}
+| {% if comment.status != 'deleted' %}
 a(name="comment-{{comment.id}}")
 div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cycle('odd', 'even') }}")
 
@@ -62,7 +63,8 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 
 
 	| {# Comment Text #}
-	div(class='post-view-comments-item-content', id='comment-text-id-{{comment.id}}')
+	div.post-view-comments-item-content(
+			id='comment-text-id-{{comment.id}}')
 		| {{comment.content|safe}}
 
 	| {# Comment Details #}
@@ -123,26 +125,29 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		| {% endif %}
 
 		| {# Edit #}
-		| {% if current_user.is_authenticated() and not comment.user.deleted %}
-		span.separator
+		| {% if current_user.is_authenticated() and ((current_user.id == comment.user.id) or current_user.has_role('admin')) %}
+		.post-view-comments-item-action
+			a(title="Edit comment",
+				href="#",
+				data-comment-id="{{comment.id}}",
+				class="edit-comment-toggle")
+				|  Edit
 
-		a(title="Edit comment",
-			href="#",
-			data-comment-id="{{comment.id}}",
-			class="edit-comment-toggle")
-			| Edit
+			| {# Save #}
+			a(title="Save comment",
+				href="{{url_for('comments.edit', comment_id=comment.id)}}",
+				data-comment-id="{{comment.id}}",
+				class="edit-comment-save")
+				i.fa.fa-check
+				|  Save changes
 
-		| {# Save #}
-		span.separator
-
-		a(title="Save comment",
-			href="{{url_for('comments.edit', comment_id=comment.id)}}",
-			data-comment-id="{{comment.id}}",
-			class="edit-comment-save")
-			| Save
-
+			| {# Delete #}
+			a(title="Delete comment",
+				href="{{url_for('comments.delete', comment_id=comment.id)}}",
+				data-comment-id="{{comment.id}}",
+				class="edit-comment-delete")
+				i.fa.fa-trash
 		| {% endif %}
-
 
 		| {# Reply #}
 		| {% if not is_reply %}
@@ -168,7 +173,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		| {% endif %}
 
 	.clearfix
-
+| {% endif %}
 | {% endmacro %}
 
 
