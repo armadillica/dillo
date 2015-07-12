@@ -147,11 +147,14 @@ blockquote
 		&:active
 			color: $color_brand_secondary
 
-
+// The bell icon for notifications on sidebar
 #notifications-toggle
 	cursor: pointer
 	position: relative
 	user-select: none
+
+	+media-xs
+		display: none
 
 	&:hover, &.active
 		color: lighten($color_brand_main, 25%)

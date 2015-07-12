@@ -20,13 +20,15 @@ function getNotifications(){
 				// so we can style it nicely
 				is_read = no['is_read'] ? 'is_read' : '';
 
+				read_info = 'data-id="'+ no['_id'] + '" data-read="' + no['is_read'] + '"';
+
 				// List item
 				content = '<li class="nc-item ' + is_read +'">';
 
 					// Avatar linking to username profile
 					content += '<div class="nc-avatar">';
-						content += '<a href="' + no['username_url'] + '">';
-						content += '<img src="' + no['username_avatar'] + '"/> ';
+						content += '<a  href="' + no['username_url'] + '">';
+						content += '<img ' + read_info + ' src="' + no['username_avatar'] + '"/> ';
 						content += '</a>';
 					content += '</div>';
 
@@ -34,19 +36,19 @@ function getNotifications(){
 					content += '<div class="nc-text">';
 
 						// Username
-						content += '<a href="' + no['username_url'] + '">' + no['username'] + '</a> ';
+						content += '<a '+ read_info + '" href="' + no['username_url'] + '">' + no['username'] + '</a> ';
 
 						// Action
 						content += no['action'] + ' ';
 
 						// Object
-						content += '<a href="' + no['object_url'] + '">';
+						content += '<a '+ read_info + '" href="' + no['object_url'] + '">';
 							content += no['context_object_name'] + ' ';
 						content += '</a> ';
 
 						// Date
 						content += '<span class="nc-date">';
-							content += '<a href="' + no['object_url'] + '">' + no['date'] + '</a>';
+							content += '<a '+ read_info + '" href="' + no['object_url'] + '">' + no['date'] + '</a>';
 						content += '</span>';
 
 						// Read Toggle
@@ -121,6 +123,16 @@ function notificationsResize(){
 		);
 	};
 };
+
+// Read/Subscription Toggles
+$('#notifications-list').on('click', 'a[data-id]', function(e){
+	e.preventDefault();
+
+	if ($(this).attr("data-read") == 'false') {
+		$.get("/notifications/" + $(this).attr("data-id") + "/read-toggle");
+	};
+	window.location = $(this).attr("href");
+});
 
 // Toggle the #notifications flyout
 $('#notifications-toggle').on('click', function(e){
