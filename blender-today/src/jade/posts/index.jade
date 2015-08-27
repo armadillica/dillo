@@ -224,7 +224,8 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 						span.separator.hidden-xs
 
-						| {{post.pretty_creation_date}}
+						a(href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}").
+							{{post.pretty_creation_date}}
 
 						small by
 
