@@ -151,18 +151,17 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		| {% endif %}
 
 		| {# Reply #}
-		| {% if not is_reply %}
 		span.separator
 
 		| {% if current_user.is_authenticated() %}
 		a.post-comment-reply(
 			title="Reply to this comment",
 			href="{{url_for('comments.submit', post_id=post.id)}}",
-			comment="{{comment.id}}")
+			comment="{% if is_reply %}{{comment.parent_id}}{% else %}{{comment.id}}{% endif %}")
 			| reply
 
 		| {% else%}
-		a.popover-comment-reply(
+		a.post-comment-reply.popover-comment-reply(
 			href="{{url_for_security('login')}}",
 			data-toggle="popover",
 			data-trigger="hover",
@@ -170,7 +169,6 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			data-content="Sign in to reply")
 			| reply
 
-		| {% endif %}
 		| {% endif %}
 
 	.clearfix

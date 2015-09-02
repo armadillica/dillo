@@ -890,7 +890,7 @@ blockquote
 			left: -10px
 			color: lighten($color_text, 20%)
 
-	& pre
+	& pre, & code
 		font-size: 1em
 		padding: 2px 4px
 		color: #c7254e
@@ -1404,6 +1404,11 @@ blockquote
 			color: lighten($color_text, 30%)
 			margin: 0 10px
 
+.post-comment-reply
+	visibility: hidden
+
+	+media-xs
+		visibility: visible
 
 .post-view-comments-item
 	display: block
@@ -1419,7 +1424,8 @@ blockquote
 
 	&:hover
 		& .edit-comment-toggle,
-		& .edit-comment-delete
+		& .edit-comment-delete,
+		& .post-comment-reply
 			visibility: visible
 
 	& ul
@@ -1597,13 +1603,17 @@ div#post-comment-reply-container
 		font-size: 2em
 	& h2
 		font-size: 1.6em
-	& pre
-		font-size: 1em
-		padding: 2px 4px
+	& pre, & code
+		font-size: .9em
+		padding: 10px
+		margin: 10px 0
 		color: #c7254e
 		background-color: #f9f2f4
 		border: none
-		+border-radius(3px)
+		border-top: thin solid rgba(#c7254e, .1)
+		border-bottom: thin solid rgba(#c7254e, .1)
+		word-break: break-word
+		border-radius: 0
 	& img
 		max-width: 100%
 
