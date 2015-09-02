@@ -192,6 +192,10 @@ class Comment(db.Model):
         return pretty_date(self.creation_date)
 
     @property
+    def pretty_edit_date(self):
+        return pretty_date(self.edit_date)
+
+    @property
     def rating_delta(self):
         return self.rating.positive - self.rating.negative
 

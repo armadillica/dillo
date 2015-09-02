@@ -61,6 +61,9 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		| {# Date #}
 		span(title="{{comment.creation_date.strftime('%H:%M on %d %B, %Y')}}").
 			{{comment.pretty_creation_date}}
+			{% if comment.edit_date %}
+				<small>(edited {{comment.pretty_edit_date}})</small>
+			{% endif %}
 
 
 	| {# Comment Text #}

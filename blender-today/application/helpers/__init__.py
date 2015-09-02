@@ -101,7 +101,7 @@ def pretty_date(time=False):
         if second_diff < 86400:
             return str( second_diff / 3600 ) + " hours ago"
     if day_diff == 1:
-        return "Yesterday"
+        return "yesterday"
     if day_diff <= 7:
         return str(day_diff) + " days ago"
     if day_diff <= 31:
@@ -111,8 +111,18 @@ def pretty_date(time=False):
         else:
             return str(week_count) + " weeks ago"
     if day_diff <= 365:
-        return str(day_diff/30) + " months ago"
-    return str(day_diff/365) + " years ago"
+        mounth_count = day_diff/30
+        if mounth_count == 1:
+            return "last month"
+        else:
+            return str(mounth_count) + " months ago"
+
+    if (day_diff/365) == 1:
+        years_ago = 'last year'
+    else:
+        years_ago = str(day_diff/365) + ' years ago'
+
+    return years_ago
 
 
 def bleach_input(markup):
