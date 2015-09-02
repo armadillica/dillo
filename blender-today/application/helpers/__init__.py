@@ -113,7 +113,7 @@ def pretty_date(time=False):
     if day_diff <= 365:
         mounth_count = day_diff/30
         if mounth_count == 1:
-            return "last month"
+            return "a month ago"
         else:
             return str(mounth_count) + " months ago"
 
