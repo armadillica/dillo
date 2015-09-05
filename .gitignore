@@ -5,9 +5,9 @@
 
 config.py
 
-blender-today/application/templates/**/*
-blender-today/application/static/css/main.css
-blender-today/application/static/js/theuniverse.min.js
+dillo/application/templates/**/*
+dillo/application/static/css/main.css
+dillo/application/static/js/theuniverse.min.js
 node_modules
 .sass-cache/
 *.css.map
