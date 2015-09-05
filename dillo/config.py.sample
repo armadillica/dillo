@@ -1,0 +1,91 @@
+class Config(object):
+    DEBUG=True
+
+    # Flask-Mail setup
+    # Having a working email setup is necessary in order to allow user sign-ups
+    # if OAuth is not used. For more info about configuration values, visit
+    # https://pythonhosted.org/Flask-Mail/
+    MAIL_SERVER = ''
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = ''
+    MAIL_PASSWORD = ''
+    DEFAULT_MAIL_SENDER = ''
+
+    # Flask-Security setup
+    # Check out sensible configuration values at https://pythonhosted.org/Flask-Security/
+    SECURITY_LOGIN_WITHOUT_CONFIRMATION = False
+    SECURITY_REGISTERABLE = True
+    SECURITY_RECOVERABLE = True
+    SECURITY_CHANGEABLE = True
+    SECUIRTY_POST_LOGIN = '/'
+    SECURITY_PASSWORD_HASH = ''
+    SECURITY_PASSWORD_SALT = ''
+    SECURITY_EMAIL_SENDER = ''
+    SECURITY_LOGIN_USER_TEMPLATE = 'security/login_user.html'
+
+    # Google analytics setup
+    # All these values can be left empty
+    GOOGLE_ANALYTICS_TRACKING_ID = ''
+    GOOGLE_ANALYTICS_DOMAIN = ''
+    GOOGLE_SITE_VERIFICATION = ''
+
+
+class Development(Config):
+    SECRET_KEY=''
+    SQLALCHEMY_DATABASE_URI=''
+
+    # Caching settings
+    # Check out https://pythonhosted.org/Flask-Cache/ for configuration values
+    # Currently we rely on Redis for high performance caching. This one of the
+    # weakest spots of the application and could use some improvement.
+    # Without caching, the generation of pages can take up to a few seconds.
+    CACHE_DEFAULT_TIMEOUT = 60
+    CACHE_TYPE = 'null' # filesystem or null
+    CACHE_DIR = ''
+    # CACHE_TYPE = 'redis'
+    # CACHE_KEY_PREFIX = 'today_'
+    # CACHE_REDIS_HOST = 'localhost'
+    # CACHE_REDIS_PORT = '6379'
+    # CACHE_REDIS_URL = 'redis://localhost:6379'
+
+    # Configuration for OAuth.
+    # SOCIAL_GOOGLE = {
+    #     'consumer_key': '',
+    #     'consumer_secret': ''
+    # }
+    # SOCIAL_FACEBOOK = {
+    #     'app_id': '',
+    #     'app_secret': ''
+    # }
+    # SOCIAL_BLENDER_ID = {
+    #     'app_id': '',
+    #     'app_secret': ''
+    # }
+    # SOCIAL_TWITTER = {
+    #     'app_id': '',
+    #     'app_secret': '',
+    #     'access_token' : '',
+    #     'access_token_secret' : ''
+    # }
+
+    # Leave these values empty, blender-id authentication is not yet available.
+    BLENDER_ID_BASE_URL = ''
+    BLENDER_ID_BASE_ACCESS_TOKEN_URL = ''
+    BLENDER_ID_AUTHORIZE_URL = ''
+
+
+    # Currently Imgur is the only backend for uploading images. An Imgur API key
+    # is needed in order to run Dillo. We planned to implement a local backend
+    # as well and it will be available soon.
+    IMGUR_CLIENT_ID = ''
+    IMGUR_CLIENT_SECRET = ''
+
+    BUGSNAG_KEY=''
+    BUGSNAG_APP_PATH=''
+
+    DEBUG_TB_INTERCEPT_REDIRECTS=False
+
+class Deployment(Development):
+    DEPLOYMENT = 'Development'
+
