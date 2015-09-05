@@ -8,31 +8,31 @@ var gulp          = require('gulp'),
 
 /* CSS */
 gulp.task('styles', function() {
-    gulp.src('blender-today/src/styles/**/*.sass')
+    gulp.src('dillo/src/styles/**/*.sass')
         .pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: 'compressed'}
             ))
         .pipe(autoprefixer("last 3 version", "safari 5", "ie 8", "ie 9"))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('blender-today/application/static/assets/css'))
+        .pipe(gulp.dest('dillo/application/static/assets/css'))
         .pipe(livereload());
 });
 
 /* Templates - Jade */
 gulp.task('templates', function() {
-    gulp.src('blender-today/src/templates/**/*.jade')
+    gulp.src('dillo/src/templates/**/*.jade')
         .pipe(jade({
             pretty: true
         }))
-        .pipe(gulp.dest('blender-today/application/templates/'))
+        .pipe(gulp.dest('dillo/application/templates/'))
         .pipe(livereload());
 });
 
 /* Scripts */
 gulp.task('scripts', function() {
-    gulp.src('blender-today/src/scripts/uglify/**/*.js')
-        .pipe(gulp.dest('blender-today/application/static/js/'))
+    gulp.src('dillo/src/scripts/uglify/**/*.js')
+        .pipe(gulp.dest('dillo/application/static/js/'))
         .pipe(livereload());
 });
 
@@ -40,9 +40,9 @@ gulp.task('scripts', function() {
 gulp.task('watch',function() {
     livereload.listen();
 
-    gulp.watch('blender-today/src/styles/**/*.sass',['styles']);
-    gulp.watch('blender-today/src/templates/**/*.jade',['templates']);
-    gulp.watch('blender-today/src/scripts/uglify/**/*.js',['templates']);
+    gulp.watch('dillo/src/styles/**/*.sass',['styles']);
+    gulp.watch('dillo/src/templates/**/*.jade',['templates']);
+    gulp.watch('dillo/src/scripts/uglify/**/*.js',['templates']);
 });
 
 // Run 'gulp' to build everything at once

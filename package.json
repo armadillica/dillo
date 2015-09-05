@@ -1,11 +1,11 @@
 {
-  "name": "blender-today",
+  "name": "dillo",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/armadillica/blender-today.git"
+    "url": "https://github.com/armadillica/dillo.git"
   },
-  "author": "Blender Today",
+  "author": "Blender.Today",
   "license": "GPL",
   "devDependencies": {
     "gulp": "~3.9.0",

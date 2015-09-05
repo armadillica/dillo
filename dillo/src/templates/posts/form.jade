@@ -1,0 +1,99 @@
+form#submit_post_form(
+	role="form",
+	method="POST",
+	enctype="multipart/form-data",
+	action="{{url_for('posts.submit')}}")
+
+	| {{ submit_post_form.hidden_tag() }}
+
+	.post-submit
+
+		| {# What type is it? #}
+		.row.post-submit-field-type
+			.col-md-6.col-sm-6.col-xs-6
+				a.select-change.post-submit-field-type-button.activato(
+					data-role="button",
+					data-val="1")
+					.post-submit-field-type-button-icon
+						i.fa.fa-link
+
+					.post-submit-field-type-button-legend
+						span.post-submit-field-type-button-title
+							| LINK
+
+						span.post-submit-field-type-button-description
+							| I want to share a link
+
+
+			.col-md-6.col-sm-6.col-xs-6
+				a.select-change.post-submit-field-type-button(
+					data-role="button",
+					data-val="2")
+					.post-submit-field-type-button-icon
+						i.fa.fa-file-text-o
+
+					.post-submit-field-type-button-legend
+						span.post-submit-field-type-button-title
+							| TEXT
+
+						span.post-submit-field-type-button-description
+							| I'll write a nice article
+
+
+		.row.post-submit-div-url.post-submit-link
+			.col-md-10.col-md-push-1
+				.form-group
+					.post-submit-field-favicon
+						i.fa.fa-globe
+
+					.post-submit-field-loading
+					| {{ submit_post_form.url(type='url', class='form-control post-submit-field-url', placeholder='Paste or type the URL here') }}
+
+
+		.row.post-submit-div-title
+			.col-md-10.col-md-push-1
+				.form-group
+					| {{ submit_post_form.title(class='form-control post-submit-field-title', placeholder='Title for your submission. e.g: "My latest work"') }}
+					| {% if submit_post_form.title.errors %}
+					ul.error
+						| {% for error in submit_post_form.title.errors %}
+						li {{ error }}
+						| {% endfor %}
+					| {% endif %}
+
+
+		.row.post-submit-div-content.post-submit-article
+			.col-md-10.col-md-push-1
+				.form-group
+					| {{ submit_post_form.content(class='form-control post-submit-field-content', id='post_content') }}
+
+
+		.row.post-submit-div-category
+			.col-md-10.col-md-push-1
+				span Choose a Category
+
+				.form-group
+					| {{ submit_post_form.category_id(class='form-control post-submit-field-category', placeholder='Category') }}
+
+
+		.row.post-submit-div-picture
+			.col-md-10.col-md-push-1
+				span Upload an image
+				.form-group
+					| {{ submit_post_form.picture(class='form-control post-submit-field-picture') }}
+
+
+		.row.post-submit-div-picture-remote
+			span.post-submit-div-picture-remote-overlay
+			.picture-remote-container
+			span#dismiss-picture-remote.dialog__button-close
+				i.fa.fa-times
+
+
+		.post-submit-div-submit
+			.row
+				.col-md-6.col-md-push-3
+					button.btn.btn-default.btn-block.submit.post-submit-field-submit.disabled(
+						type="submit")
+						i.fa.fa-check
+						|  Submit!
