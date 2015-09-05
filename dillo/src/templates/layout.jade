@@ -160,7 +160,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 
 			{% if current_user.is_authenticated() %}
 
-				$.embedly.defaults.key = 'e41ded41bd6e47aabb1bfcb8a17dccb7';
+				$.embedly.defaults.key = '{{config.EMBEDLY_APY_KEY}}';
 				page_title = document.title;
 
 				$('#url').keyup(function(){

@@ -81,6 +81,10 @@ class Development(Config):
     IMGUR_CLIENT_ID = ''
     IMGUR_CLIENT_SECRET = ''
 
+    # Embedly is used to retrieve preview images when creating a new post. This
+    # is not a hard requirement for a local deployment.
+    EMBEDLY_APY_KEY = ''
+
     BUGSNAG_KEY=''
     BUGSNAG_APP_PATH=''
 
