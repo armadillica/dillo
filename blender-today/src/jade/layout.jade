@@ -21,9 +21,9 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		meta(property="og:description", content="Community-driven Blender News")
 		| {% block og %}{% endblock %}
 
-		// Style sheets
-		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",rel="stylesheet")
-		link(href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", rel="stylesheet")
+		// Styles
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",rel="stylesheet")
+		link(href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", rel="stylesheet")
 		link(href="{{ url_for('static', filename='css/main.css') }}", rel="stylesheet")
 
 		// Fonts
@@ -123,7 +123,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 				| {% include 'posts/form.html' %}
 				button.action.dialog__button-close(data-dialog-close)
 					i.fa.fa-times
-
 
 
 		// Javascript

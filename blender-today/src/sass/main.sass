@@ -1,30 +1,6 @@
 @import url(../css/font-borg.css)
 @import reset
-
-$color_brand_main: #4c7e93 // 4D84A0 + 4b7886 == 4c7e93
-
-$color_brand_secondary: #e74c3c // e74c3c - dc2900
-$color_background: #EaEbEf
-$color_text: #444
-
-$color_upvote: #ff8b60
-$color_downvote: #74a4ff
-
-$color_danger: #dd4b39
-$color_info: #40b0e0
-$color_success: #d5d644
-
-$color_background_dialog: $color_background
-
-$font_body: 'Open Sans', Verdana, Arial, Helvetica, sans-serif
-$font_headings: 'Oxygen', 'Lucida Sans', 'Lucida Grande', sans-serif
-$font_size: 14px
-
-$color_blender-orange: #ec8e30
-$color_blender-blue: #025384
-$color_google: #dd4b39
-$color_facebook: #3b5998
-
+@import config
 @import helpers
 
 body
@@ -130,7 +106,7 @@ blockquote
 		width: 420px
 		border-top-color: white
 
-@import js_perfectscrollbar
+@import plugins/js_perfectscrollbar
 
 #notifications
 	display: none
@@ -836,6 +812,7 @@ blockquote
 	& img
 		max-width: 100%
 
+	// Embedded Media
 	& iframe
 		width: 100%
 		min-height: 476px
@@ -853,11 +830,13 @@ blockquote
 			min-height: 476px
 			max-height: 476px
 
+		// Twitter Embed Overrides
 		&#twitter-widget-0, &.twitter-tweet, &.twitter-tweet-rendered
 			border: none !important
 			margin: 0 !important
 			padding: 0 0 0 75px !important
 			width: 100% !important
+			max-width: 100% !important
 			background-color: white
 			min-height: initial !important
 			max-height: initial !important
@@ -865,6 +844,11 @@ blockquote
 				width: 100% !important
 				margin: 0 0 15px 2px !important
 
+			.EmbeddedTweet--mediaForward .EmbeddedTweet-tweet,
+			.embeddedtweet--mediaforward .embeddedtweet-tweet
+				border: none !important
+
+		// Instagram Embed Overrides
 		&#instagram-embed-0
 			min-height: initial !important
 			max-height: initial !important
@@ -971,9 +955,7 @@ blockquote
 	margin: 0 auto
 	padding: 0
 	position: relative
-	// background:
-	// 	color: $color_background
-	//margin: 0 0 0 65px
+
 	& img
 		max-width: 100%
 	.post-view-content-image-link
@@ -1002,7 +984,6 @@ blockquote
 	background-color: $color_brand_main
 	border-top: 3px solid $color_background
 	border-bottom: thick solid darken($color_background, 2%)
-	//+text-shadow(1px, 1px, 0, black, 0.4)
 
 	&.ab-light
 		color: $color_text
@@ -1068,13 +1049,11 @@ blockquote
 
 	& .author-karma
 		display: inline-block
-		//background-color: darken($color_brand_main, 10%)
-		//color: lighten($color_brand_main, 20%)
 		border:
 			style: solid
 			width: thin
+			radius: 3px
 		font-size: 0.65em
-		border-radius: 3px
 		padding: 0 4px
 		margin: 0 3px
 		+text-shadow-none
@@ -2842,317 +2821,6 @@ fieldset
 		+media-xs
 			font-size: 1.6em
 
-/* CKEditor Overrides */
-.cke_reset, .cke_reset_all *
-	font: normal normal normal 1em $font_body !important
-	font-family: $font_body !important
-
-.cke_panel
-	border: thin solid lighten($color_background, 2%)
-	font-family: $font_body !important
-	+box-shadow-none
-
-.cke_combopanel
-	border: thin solid lighten($color_background, 2%)
-	font-family: $font_body !important
-	+box-shadow-none
-	& body
-		font-family: $font_body !important
-
-.cke_panel_listItem.cke_selected a
-	font-family: $font_body !important
-	+box-shadow-none
-
-
-.cke_combo_button
-	+box-shadow-none
-	border: none !important
-	background-image: none !important
-	background-color: transparent !important
-
-.cke_combo_off a.cke_combo_button:active, .cke_combo_on a.cke_combo_button
-	+box-shadow-none
-	background-color: $color_background !important
-
-.cke_chrome
-	font-family: $font_body !important
-	font-weight: lighter
-	//color: lighten($color_text, 10%) !important
-	border: thin solid lighten($color_text, 60%) !important
-	background-color: lighten($color_background, 3%) !important
-	margin: 0 !important
-	+border-radius(3px)
-
-iframe.cke_wysiwyg_frame.cke_reset,
-body.cke_editable.cke_editable_themed.cke_contents_ltr
-	font-size: 180% !important
-	margin-top: 0 !important
-	margin: 0 !important
-	padding: 0 !important
-	font-family: $font_body !important
-
-span.cke_top, .cke_top
-	padding: 5px 5px 0 5px !important
-	border: none !important
-	background-image: none !important
-	background-color: transparent !important
-	resize: none
-	+box-shadow-none
-
-span.cke_toolgroup
-	border: none
-	border-bottom: 2px solid transparent !important
-	background-image: none !important
-	background-color: white !important
-
-.cke_contents
-	height: 150px !important
-
-a.cke_button_off
-	border-bottom: 2px solid transparent !important
-	+box-shadow-none
-
-a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active,
-a.cke_button_disabled:hover, a.cke_button_disabled:focus, a.cke_button_disabled:active
-	background-image: none !important
-	background-color: transparent !important
-	color: white !important
-	border-bottom: 2px solid $color_brand_main !important
-
-a.cke_button_on, a.cke_button_on:hover, a.cke_button_on:focus, a.cke_button_on:active
-	background-image: none !important
-	background-color: transparent !important
-	border-bottom: 2px solid $color_brand_secondary !important
-	color: white !important
-	+box-shadow-none
-
-.cke_dialog_contents_body
-	height: auto !important
-
-.cke_dialog_title, .cke_dialog_footer
-	background: white !important
-	background-image: white !important
-	border-bottom: none !important
-	outline: none !important
-
-.cke_dialog_footer
-	outline: none !important
-
-input.cke_dialog_ui_input_text,
-input.cke_dialog_ui_input_password,
-textarea.cke_dialog_ui_input_textarea
-	border: 2px solid darken($color_background, 6%) !important
-	background-color: darken($color_background, 4%) !important
-	+border-radius(3px)
-	+box-shadow(2px, 2px, 0, black, .1)
-	&:focus
-		border-color: $color_brand_main
-
-.cke_ltr .cke_dialog_ui_hbox_child
-	width: 100% !important
-
-.cke_dialog .ImagePreviewBox
-	border: 2px solid darken($color_background, 6%) !important
-	background-color: darken($color_background, 4%) !important
-	width: 100% !important
-	overflow: hidden !important
-	overflow-y: scroll
-	+border-radius(3px)
-	+box-shadow(2px, 2px, 0, black, .1)
-	& img
-		max-width: 100% !important
-
-.cke_dialog_footer_buttons a.cke_dialog_ui_button span
-	padding: 0 12px !important
-
-a.cke_dialog_ui_button, a.cke_dialog_ui_button_ok
-	background: lighten($color_text, 68%) !important
-	background-color: lighten($color_text, 68%) !important
-	color: $color_text !important
-	font-family: $font_headings !important
-	text-shadow: 0 1px 1px rgba(255, 255, 255, .06) !important
-	border: thin solid lighten($color_text, 65%) !important
-	border-bottom: 1px solid lighten($color_text, 58%) !important
-	padding: 4px 0 !important
-	+border-radius(3px)
-
-a.cke_dialog_ui_button:hover, a.cke_dialog_ui_button_ok:hover
-	background: lighten($color_text, 70%) !important
-	background-color: lighten($color_text, 70%) !important
-	border-color: lighten($color_text, 65%) !important
-	border-bottom: 1px solid lighten($color_brand_main, 26%) !important
-	color: $color_brand_main !important
-
-a.cke_dialog_ui_button:active, a.cke_dialog_ui_button_ok:active,
-a.cke_dialog_ui_button:focus, a.cke_dialog_ui_button_ok:focus
-	background: lighten($color_text, 70%) !important
-	background-color: lighten($color_text, 70%) !important
-	color: $color_brand_secondary !important
-	border-color: lighten($color_text, 65%) !important
-	border-bottom-color: $color_brand_secondary !important
-	outline: none !important
-	padding: 4px 0 !important
-	+box-shadow(1px, 1px, 0, black, .1)
-
-a.cke_dialog_ui_button_ok
-	background-color: $color_success !important
-	color: darken($color_success, 40%) !important
-	border-color: darken($color_success, 5%) !important
-	+text-shadow(1px, 1px, 0, white, .6)
-
-a.cke_dialog_ui_button_ok:hover
-	color: $color_text !important
-	background-color: lighten($color_success, 15%) !important
-	border-color: darken($color_success, 5%) !important
-
-a.cke_dialog_ui_button_ok:active, a.cke_dialog_ui_button_ok:focus
-	color: $color_text !important
-	background-color: darken($color_success, 10%) !important
-	border-bottom-color: darken($color_success, 10%) !important
-	padding: 4px 0 !important
-
-/* Codrops Dropdown */
-.cd-dropdown,
-.cd-select
-	float: right
-	position: relative
-	width: 250px
-	display: inline-block
-	top: -10px
-	+media-xs
-		width: 100%
-
-
-.cd-dropdown > span
-	width: 100%
-	height: 40px
-	line-height: 40px
-	color: $color_brand_main
-	font-weight: lighter
-	font-size: 16px
-	background: #fff
-	display: block
-	padding: 0 50px 0 15px
-	position: relative
-	cursor: pointer
-	font-family: $font_headings
-	border: thin solid darken($color_background, 3%)
-	+border-radius(3px)
-	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
-	+media-xs
-		width: auto
-
-.cd-dropdown > span:after
-	content: '\f107'
-	font-family: 'FontAwesome'
-	position: absolute
-	right: 15px
-	+transition(transform, 0.3s, ease)
-	+media-xs
-		position: absolute
-		right: 15px
-		top: 0
-
-.cd-dropdown.cd-active > span:after
-	transform: rotate(180deg)
-	-webkit-transform: rotate(180deg)
-
-.cd-dropdown ul
-	list-style-type: none
-	margin: 0
-	padding: 0
-	display: block
-	position: relative
-
-.cd-dropdown ul li
-	display: block
-
-.cd-dropdown ul li span
-	width: 100%
-	background: transparent
-	color: transparent
-	line-height: 40px
-	padding: 0 0 0 15px
-	display: block
-	cursor: pointer
-	border: thin solid transparent
-	+border-radius(3px)
-
-.cd-dropdown > span,
-.cd-dropdown ul li span
-	-webkit-backface-visibility: hidden
-	-webkit-touch-callout: none
-	-webkit-user-select: none
-	-khtml-user-select: none
-	-moz-user-select: none
-	-ms-user-select: none
-	user-select: none
-
-/* Select fallback styling */
-.cd-select
-	border: 1px solid #ddd
-
-/* Style 1 */
-.cd-dropdown ul
-	position: absolute
-	top: 0px
-	width: 100%
-
-.cd-dropdown ul li
-	position: absolute
-	width: 100%
-
-.cd-active.cd-dropdown > span
-	color: $color_brand_secondary !important
-	background-color: white !important
-
-.cd-active.cd-dropdown > span,
-.cd-active.cd-dropdown ul li span
-	box-shadow: 0 1px 1px rgba(0,0,0,0.1)
-	background-color: lighten($color_background, 3%)
-	color: $color_brand_main
-	border: thin solid darken($color_background, 3%)
-
-.cd-active.cd-dropdown ul li span
-	-webkit-transition: all 0.0.1s linear 0s
-	-moz-transition: all 0.1s linear 0s
-	-ms-transition: all 0.1s linear 0s
-	-o-transition: all 0.1s linear 0s
-	transition: all 0.1s linear 0s
-
-
-.cd-active.cd-dropdown ul li span:hover
-	background: white
-	color: $color_brand_secondary
-
-
-/* Swipebox overrides */
-#swipebox-overlay, #swipebox-bottom-bar, #swipebox-top-bar
-	background-color: rgba($color_background, .95) !important
-	text-shadow: none !important
-
-#swipebox-bottom-bar, #swipebox-top-bar
-	display: none !important
-
-#swipebox-title
-	color: $color_text !important
-	font-family: $font_headings !important
-	font-size: 1.3em
-
-a#swipebox-close:after
-	content: '\f00d'
-	font-family: 'FontAwesome'
-	color: $color_brand_main
-	position: absolute
-	right: 30px
-	top: 15px
-	font-size: 2.5em
-
-a#swipebox-close
-	background: none
-	&:hover a#swipebox-close:after
-		color: $color_brand_secondary
-
-a#swipebox-close, a#swipebox-prev, a#swipebox-next
-	width: 100px
-	height: 100px
+@import plugins/ckeditor
+@import plugins/cd-dropdown
+@import plugins/swipebox
