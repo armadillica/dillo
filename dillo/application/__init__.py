@@ -53,51 +53,52 @@ bugsnag.configure(
 )
 handle_exceptions(app)
 
-# auth = tweepy.OAuthHandler(
-#     app.config.get('SOCIAL_TWITTER')['app_id'],
-#     app.config.get('SOCIAL_TWITTER')['app_secret'])
-# auth.set_access_token(
-#     app.config.get('SOCIAL_TWITTER')['access_token'],
-#     app.config.get('SOCIAL_TWITTER')['access_token_secret'])
-# twitter_api = tweepy.API(auth)
 
 # Config at https://console.developers.google.com/
-google = oauth.remote_app(
-    'google',
-    consumer_key=app.config.get('SOCIAL_GOOGLE')['consumer_key'],
-    consumer_secret=app.config.get('SOCIAL_GOOGLE')['consumer_secret'],
-    request_token_params={
-        'scope': 'https://www.googleapis.com/auth/userinfo.email'
-    },
-    base_url='https://www.googleapis.com/oauth2/v1/',
-    request_token_url=None,
-    access_token_method='POST',
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-)
+if app.config.get('SOCIAL_GOOGLE'):
+    google = oauth.remote_app(
+        'google',
+        consumer_key=app.config.get('SOCIAL_GOOGLE')['consumer_key'],
+        consumer_secret=app.config.get('SOCIAL_GOOGLE')['consumer_secret'],
+        request_token_params={
+            'scope': 'https://www.googleapis.com/auth/userinfo.email'
+        },
+        base_url='https://www.googleapis.com/oauth2/v1/',
+        request_token_url=None,
+        access_token_method='POST',
+        access_token_url='https://accounts.google.com/o/oauth2/token',
+        authorize_url='https://accounts.google.com/o/oauth2/auth',
+    )
+else:
+    google = None
 
-facebook = oauth.remote_app(
-    'facebook',
-    consumer_key=app.config.get('SOCIAL_FACEBOOK')['app_id'],
-    consumer_secret=app.config.get('SOCIAL_FACEBOOK')['app_secret'],
-    request_token_params={'scope': 'email'},
-    base_url='https://graph.facebook.com',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://www.facebook.com/dialog/oauth'
-)
+if app.config.get('SOCIAL_FACEBOOK'):
+    facebook = oauth.remote_app(
+        'facebook',
+        consumer_key=app.config.get('SOCIAL_FACEBOOK')['app_id'],
+        consumer_secret=app.config.get('SOCIAL_FACEBOOK')['app_secret'],
+        request_token_params={'scope': 'email'},
+        base_url='https://graph.facebook.com',
+        request_token_url=None,
+        access_token_url='/oauth/access_token',
+        authorize_url='https://www.facebook.com/dialog/oauth'
+    )
+else:
+    facebook = None
 
-
-blender_id = oauth.remote_app(
-    'blender_id',
-    consumer_key=app.config.get('SOCIAL_BLENDER_ID')['app_id'],
-    consumer_secret=app.config.get('SOCIAL_BLENDER_ID')['app_secret'],
-    request_token_params={'scope': 'email'},
-    base_url=app.config['BLENDER_ID_BASE_URL'],
-    request_token_url=None,
-    access_token_url=app.config['BLENDER_ID_BASE_ACCESS_TOKEN_URL'],
-    authorize_url=app.config['BLENDER_ID_AUTHORIZE_URL']
-)
+if app.config.get('SOCIAL_BLENDER_ID'):
+    blender_id = oauth.remote_app(
+        'blender_id',
+        consumer_key=app.config.get('SOCIAL_BLENDER_ID')['app_id'],
+        consumer_secret=app.config.get('SOCIAL_BLENDER_ID')['app_secret'],
+        request_token_params={'scope': 'email'},
+        base_url=app.config['BLENDER_ID_BASE_URL'],
+        request_token_url=None,
+        access_token_url=app.config['BLENDER_ID_BASE_ACCESS_TOKEN_URL'],
+        authorize_url=app.config['BLENDER_ID_AUTHORIZE_URL']
+    )
+else:
+    blender_id = None
 
 imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
 
