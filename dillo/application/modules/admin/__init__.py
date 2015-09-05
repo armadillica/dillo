@@ -16,9 +16,9 @@ from flask.ext.security import current_user
 from application import app, db
 from application.modules.users.model import user_datastore, User
 from application.modules.pages.model import Page
-from application.modules.admin.forms import FormLogo
-from application.modules.admin.forms import FormTitle
+from application.modules.admin.forms import FormSettings
 from application.modules.admin.model import Setting
+from application.helpers import delete_redis_cache_keys
 
 
 
@@ -94,39 +94,37 @@ class CustomAdminIndexView(admin.AdminIndexView):
     @expose('/', methods=['GET','POST'])
     def index(self):
         logo_alt = Setting.query.filter_by(name='logo_alt').first()
-        form_logo = FormLogo(
-            logo_alt=logo_alt.value)
+        title = Setting.query.filter_by(name='title').first()
+        tagline = Setting.query.filter_by(name='tagline').first()
+        form_settings = FormSettings(
+            logo_alt=logo_alt.value,
+            title=title.value,
+            tagline=tagline.value)
         return self.render('admin/index.html',
-            form_logo=form_logo)
+            form_settings=form_settings)
 
     @expose('/settings', methods=['GET','POST'])
     def settings(self):
-        form_logo = FormLogo()
-        form_title = FormTitle()
-        if form_logo.validate_on_submit():
+        form_settings = FormSettings()
+        if form_settings.validate_on_submit():
             logo_alt = Setting.query.filter_by(name='logo_alt').first()
-            logo_alt.value = form_logo.logo_alt.data
-            if form_logo.logo_image.data:
+            logo_alt.value = form_settings.logo_alt.data
+            if form_settings.logo_image.data:
                 # If the user uploads an image from the form
-                filename = secure_filename(form_logo.logo_image.data.filename)
+                filename = secure_filename(form_settings.logo_image.data.filename)
                 filepath = os.path.join(app.config['STATIC_IMAGES'], filename)
-                form_logo.logo_image.data.save(filepath)
+                form_settings.logo_image.data.save(filepath)
                 logo_image = Setting.query.filter_by(name='logo_image').first()
                 logo_image.value = filename
+            title = Setting.query.filter_by(name='title').first()
+            title.value = form_settings.title.data
+            tagline = Setting.query.filter_by(name='tagline').first()
+            tagline.value = form_settings.tagline.data
             db.session.commit()
+            # Clear cache for homepage
+            delete_redis_cache_keys('post_list')
 
         return redirect(url_for('admin.index'))
-
-    @expose('/settings/form-title', methods=['POST'])
-    def settings_form_title(self):
-        form_title = FormTitle()
-        if form_title.validate_on_submit():
-            title = Setting.query.filter_by(name='title').first()
-            title.value = form_title.title.data
-            tagline = Setting.query.filter_by(name='tagline').first()
-            tagline.value = form_title.tagline.data
-            db.session.commit()
-        return 'ok'
 
     @expose('/logout/')
     def logout_view(self):

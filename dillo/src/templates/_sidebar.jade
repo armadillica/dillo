@@ -105,9 +105,9 @@
 
 		a(href="{{url_for('index')}}")
 			h3.
-				Blender<small>.</small>Today
+				{{ settings['title'] | safe}}
 
-		p You decide what makes the news
+		p {{ settings['tagline']}}
 
 
 	// Links on the bottom

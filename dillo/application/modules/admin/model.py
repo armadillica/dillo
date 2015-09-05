@@ -8,4 +8,4 @@ class Setting(db.Model):
     data_type = db.Column(db.String(128), nullable=False)
 
     def __str__(self):
-        return str(self.name)
+        return "<{0}>".format(str(self.name))

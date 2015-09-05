@@ -138,13 +138,18 @@ def inject_submit_post_form():
 def inject_settings():
     """Global application settings"""
     from modules.admin.model import Setting
-    alt = Setting.query.filter_by(name='logo_alt').first()
-    image = Setting.query.filter_by(name='logo_image').first()
-    settings = {}
-    logo = dict(
-        alt=alt.value,
-        image=url_for('static', filename='images/' + image.value))
-    settings['logo'] = logo
+    logo_alt = Setting.query.filter_by(name='logo_alt').first()
+    logo_image = Setting.query.filter_by(name='logo_image').first()
+    title = Setting.query.filter_by(name='title').first()
+    tagline = Setting.query.filter_by(name='tagline').first()
+    settings = dict(
+        title=title.value,
+        tagline=tagline.value,
+        logo=dict(
+            alt=logo_alt.value,
+            image=url_for('static', filename='images/' + logo_image.value))
+    )
+
     return {'settings': settings}
 
 @app.errorhandler(404)
