@@ -17,8 +17,37 @@ style(type="text/css").
 | {% block body %}
 .row
 	.span2
+		h4 Settings
+		form(
+			role="form",
+			method="POST",
+			enctype="multipart/form-data",
+			action="{{url_for('admin.settings')}}")
 
+			| {{ form_logo.hidden_tag() }}
 
+			.form-group
+				| {{ form_logo.logo_alt.label }}
+				| {{ form_logo.logo_alt(class='form-control', placeholder='Image alt tag') }}
 
+				| {% if form_logo.logo_alt.errors %}
+				ul.error
+					| {% for error in form_logo.logo_alt.errors %}
+					li {{ error }}
+					| {% endfor %}
+				| {% endif %}
+
+			.form-group
+				| {{ form_logo.logo_image.label }}
+				| {{ form_logo.logo_image(class='form-control') }}
+
+				| {% if form_logo.logo_image.errors %}
+				ul.error
+					| {% for error in form_logo.logo_image.errors %}
+					li {{ error }}
+					| {% endfor %}
+				| {% endif %}
+
+			button.btn.btn-success.btn-block(type="submit") Save Changes
 
 | {% endblock %}

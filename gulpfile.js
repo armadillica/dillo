@@ -32,9 +32,6 @@ gulp.task('templates', function() {
 /* Scripts */
 gulp.task('scripts', function() {
     gulp.src('blender-today/src/scripts/uglify/**/*.js')
-        .pipe(jade({
-            pretty: true
-        }))
         .pipe(gulp.dest('blender-today/application/static/js/'))
         .pipe(livereload());
 });
