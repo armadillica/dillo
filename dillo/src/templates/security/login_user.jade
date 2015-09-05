@@ -1,0 +1,99 @@
+| {% extends 'layout.html' %}
+| {% from "security/_macros.html" import render_field_with_errors, render_login_field_with_errors, render_register_field_with_errors, render_field %}
+
+| {% block page_title %} Welcome! {% endblock %}
+
+| {% block body %}
+.row
+	.col-lg-4.col-lg-push-4.col-md-6.col-md-push-3.user-login
+		.user-login-container
+			.row
+				.col-md-12
+					.user-login-branding
+						a(href="{{url_for('index')}}")
+							img.user-login-branding-mug(
+								src="{{ settings['logo']['image'] }}")
+
+						a(href="{{url_for('index')}}")
+							h3 {{ settings['title'] | safe}}
+
+
+					h2 welcome
+
+					.user-login-container-cool
+						a.user-login-button-oauth.blender-id(
+							href="{{url_for('blender_id_login')}}")
+							i.icon.bf-blender
+							| Login with Blender ID
+							small (recommended)
+
+						a.user-login-button-oauth.google(
+							href="{{url_for('google_login')}}")
+							i.icon.fa.fa-google
+							| Login with Google
+
+						a.user-login-button-oauth.facebook(
+							href="{{url_for('facebook_login')}}")
+							i.icon.fa.fa-facebook
+							| Login with Facebook
+
+
+						span.user-login-button-others
+							a#user-login-button-others-regular
+								| use regular login
+
+							span.separator
+							a(href="{{url_for_security('register')}}")
+								| create account
+
+					.user-login-container-uncool
+
+						form(
+							role="login",
+							action="{{ url_for_security('login') }}",
+							method="POST" name="login_user_form")
+							| {{ login_user_form.hidden_tag() }}
+
+							fieldset
+								.input-group
+									span.input-group-addon
+										i.fa.fa-envelope-o.fa-fw
+										| {{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
+
+								.input-group
+									span.input-group-addon
+										i.fa.fa-lock.fa-fw
+										| {{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
+
+								| {{ render_field(login_user_form.next) }}
+
+								| {{ render_field(login_user_form.submit, value="Sign In", class='btn btn-default btn-success') }}
+
+								.user-login-extra
+									label.remember(for="remember")
+										| {{ render_login_field_with_errors(login_user_form.remember) }}
+										| Remember me
+
+									a.forgot(href="{{url_for_security('forgot_password')}}")
+										| forgot password?
+
+
+						.user-login-back
+							i.fa.fa-angle-double-left
+							| sign in using Blender ID or others
+
+| {% endblock %}
+
+| {% block footer_scripts %}
+script(type="text/javascript").
+	$("#user-login-button-others-regular").click(function(){
+		$(".user-login-container-cool").fadeOut(function(){
+			$(".user-login-container-uncool").fadeIn();
+		});
+	});
+	$(".user-login-back").click(function(){
+		$(".user-login-container-uncool").fadeOut(function(){
+			$(".user-login-container-cool").fadeIn();
+		});
+	});
+| {% endblock %}

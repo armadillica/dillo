@@ -104,8 +104,7 @@
 				title="{{ settings['logo']['alt'] }}")
 
 		a(href="{{url_for('index')}}")
-			h3.
-				{{ settings['title'] | safe}}
+			h3 {{ settings['title'] | safe}}
 
 		p {{ settings['tagline']}}
 
