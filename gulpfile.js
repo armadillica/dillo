@@ -1,21 +1,24 @@
 var gulp          = require('gulp'),
+    plumber       = require('gulp-plumber'),
     sass          = require('gulp-sass'),
     sourcemaps    = require('gulp-sourcemaps'),
     autoprefixer  = require('gulp-autoprefixer'),
     jade          = require('gulp-jade'),
     uglify        = require('gulp-uglify'),
+    concat        = require('gulp-concat'),
     livereload    = require('gulp-livereload');
 
 /* CSS */
 gulp.task('styles', function() {
     gulp.src('dillo/src/styles/**/*.sass')
+        .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: 'compressed'}
             ))
         .pipe(autoprefixer("last 3 version", "safari 5", "ie 8", "ie 9"))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('dillo/application/static/assets/css'))
+        .pipe(gulp.dest('dillo/application/static/css'))
         .pipe(livereload());
 });
 
@@ -32,6 +35,10 @@ gulp.task('templates', function() {
 /* Scripts */
 gulp.task('scripts', function() {
     gulp.src('dillo/src/scripts/uglify/**/*.js')
+        .pipe(sourcemaps.init())
+        .pipe(concat("tutti.min.js"))
+        .pipe(uglify())
+        .pipe(sourcemaps.write("./"))
         .pipe(gulp.dest('dillo/application/static/js/'))
         .pipe(livereload());
 });
@@ -42,8 +49,8 @@ gulp.task('watch',function() {
 
     gulp.watch('dillo/src/styles/**/*.sass',['styles']);
     gulp.watch('dillo/src/templates/**/*.jade',['templates']);
-    gulp.watch('dillo/src/scripts/uglify/**/*.js',['templates']);
+    gulp.watch('dillo/src/scripts/uglify/**/*.js',['scripts']);
 });
 
 // Run 'gulp' to build everything at once
-gulp.task('default', ['styles', 'templates']);
+gulp.task('default', ['styles', 'templates', 'scripts']);

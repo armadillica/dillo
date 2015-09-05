@@ -1,0 +1,7 @@
+| {% macro sidebar_navigation(title) %}
+ul.nav.nav-tabs(role="tablist")
+	li(role="presentation", class="{% if title == 'settings_profile': %}active{% endif %}")
+		a(href="{{url_for('settings.profile')}}") Profile
+	li(role="presentation", class="{% if title == 'settings_account': %}active{% endif %}")
+		a(href="{{url_for('settings.account')}}") Account
+| {% endmacro %}

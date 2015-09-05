@@ -1,0 +1,31 @@
+| {% extends 'layout.html' %}
+| {% from 'settings/_macros.html' import sidebar_navigation %}
+
+| {% block body %}
+.row
+	.col-md-9.user-settings
+
+		| {{sidebar_navigation(title)}}
+
+		.tab-content
+			#account.tab-pane.active(role="tabpanel")
+				h2 Account Settings
+				| {# XXX Here goes password reset code #}
+
+			.panel.panel-danger
+				.panel-heading
+					h3.panel-title Delete account
+
+				.panel-body
+					p.
+						Danger. Pressing this button will immediately delete your account.
+						The content you have posted on Blender.Today will remain as is,
+						only your name will be obfuscated.
+						You will not be able to access this account anymore.
+					a.btn.btn-danger.btn-block(href="{{url_for('settings.delete')}}")
+						| I know what I'm doing. Delete.
+
+	.col-md-3
+		| {% include '_sidebar.html' %}
+
+| {% endblock %}

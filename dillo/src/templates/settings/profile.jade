@@ -1,0 +1,99 @@
+| {% extends 'layout.html' %}
+| {% from 'settings/_macros.html' import sidebar_navigation %}
+
+| {% block body %}
+.row
+	.col-md-9.user-settings
+		div(role="tabpanel")
+			| {{sidebar_navigation(title)}}
+
+			.tab-content
+				#profile.tab-pane.active(role="tabpanel")
+					.row
+						.col-md-6
+							h2 Profile Settings
+
+							form(
+								role="form",
+								method="POST",
+								action="{{url_for('settings.profile')}}")
+								| {{ form.hidden_tag() }}
+
+								.form-group
+									| {{ form.first_name.label }}
+									| {{ form.first_name(class='form-control', placeholder='Your first name') }}
+									| {% if form.first_name.errors %}
+									ul.error
+										| {% for error in form.first_name.errors %}
+										li {{ error }}
+										| {% endfor %}
+									| {% endif %}
+
+								.form-group
+									| {{ form.last_name.label }}
+									| {{ form.last_name(class='form-control', placeholder='Your last name') }}
+									| {% if form.last_name.errors %}
+									ul.error
+										| {% for error in form.last_name.errors %}
+										li {{ error }}
+										| {% endfor %}
+									| {% endif %}
+
+								.form-group
+									| {{ form.username.label }}
+									| {{ form.username(class='form-control', placeholder='Your username') }}
+									| {% if form.username.errors %}
+									ul.error
+										| {% for error in form.username.errors %}
+										li {{ error }}
+										| {% endfor %}
+									| {% endif %}
+
+
+								button.btn.btn-default.btn-success.btn-block(type="submit")
+									i.fa.fa-check
+									|  Save Changes
+
+						.col-md-6
+							.user-settings-avatar
+								a(href="http://gravatar.com",
+									target="_blank")
+									img.img-circle(
+										src="{{current_user.gravatar(size=128)}}"
+										title="Gravatar Profile Picture")
+									small Change Gravatar
+										i.fa.fa-angle-double-right
+
+								hr
+
+							.user-settings-roles
+								h3 Community Badges
+
+								| {% if current_user.roles %}
+								| {% if current_user.has_role('cloud_member') %}
+								i.bf-cloud
+								| Blender Cloud Member
+								br
+								| {% endif %}
+								| {% if current_user.has_role('dev_core') %}
+								i.bf-blender
+								| Blender Core Developer
+								br
+								| {% endif %}
+								| {% if current_user.has_role('network_member') %}
+								i.bf-network
+								| Blender Network Member
+								br
+								| {% endif %}
+								| {% if current_user.has_role('bfct_trainer') %}
+								i.fa fa-graduation-cap
+								| Blender Foundation Certified Trainer
+								| {% endif %}
+								| {% else %}
+								span.empty No badges yet
+								| {% endif %}
+
+	.col-md-3
+		| {% include '_sidebar.html' %}
+
+| {% endblock %}
