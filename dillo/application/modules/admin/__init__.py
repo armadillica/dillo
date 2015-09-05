@@ -17,6 +17,7 @@ from application import app, db
 from application.modules.users.model import user_datastore, User
 from application.modules.pages.model import Page
 from application.modules.admin.forms import FormLogo
+from application.modules.admin.forms import FormTitle
 from application.modules.admin.model import Setting
 
 
@@ -101,6 +102,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
     @expose('/settings', methods=['GET','POST'])
     def settings(self):
         form_logo = FormLogo()
+        form_title = FormTitle()
         if form_logo.validate_on_submit():
             logo_alt = Setting.query.filter_by(name='logo_alt').first()
             logo_alt.value = form_logo.logo_alt.data
@@ -114,6 +116,17 @@ class CustomAdminIndexView(admin.AdminIndexView):
             db.session.commit()
 
         return redirect(url_for('admin.index'))
+
+    @expose('/settings/form-title', methods=['POST'])
+    def settings_form_title(self):
+        form_title = FormTitle()
+        if form_title.validate_on_submit():
+            title = Setting.query.filter_by(name='title').first()
+            title.value = form_title.title.data
+            tagline = Setting.query.filter_by(name='tagline').first()
+            tagline.value = form_title.tagline.data
+            db.session.commit()
+        return 'ok'
 
     @expose('/logout/')
     def logout_view(self):
