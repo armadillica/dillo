@@ -17,7 +17,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			| {# Add a special class "op" if the comment is by the post author #}
 			img(title="{{comment.user.first_name}} {{comment.user.last_name}}",
 					src="{{comment.user.gravatar()}}",
-					class="img-circle{% if post.user.id == comment.user.id %} op{% endif %}")
+					class="{% if post.user.id == comment.user.id %} op{% endif %}")
 
 			| {# User Badges #}
 
