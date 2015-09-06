@@ -165,6 +165,8 @@ def make_redis_cache_key(cache_prefix, category=''):
 
 
 def delete_redis_cache_keys(cache_prefix, category=''):
+    if not redis_client:
+        return
     key = make_redis_cache_key(cache_prefix, category)
     keys_list = redis_client.keys(key)
     for key in keys_list: redis_client.delete(key)
@@ -187,6 +189,8 @@ def delete_redis_cache_post(uuid, user_id=None, all_users=False):
             vary_on=[uuid, user_id])
 
     # Add prefix to the cache key
+    if not redis_client:
+        return
     key = '{0}{1}*'.format(app.config['CACHE_KEY_PREFIX'], cache_key)
     keys_list = redis_client.keys(key)
     for key in keys_list: redis_client.delete(key)

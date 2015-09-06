@@ -23,6 +23,7 @@ class Config(object):
     SECURITY_PASSWORD_SALT = ''
     SECURITY_EMAIL_SENDER = ''
     SECURITY_LOGIN_USER_TEMPLATE = 'security/login_user.html'
+    SECURITY_REGISTER_USER_TEMPLATE = 'security/register_user.html'
 
     # Google analytics setup
     # All these values can be left empty
@@ -94,7 +95,7 @@ class Development(Config):
     # every post. If Imgur is enabled, we recomment turning caching on as well,
     # to prevent the Imgur API to block the many requests that will be generated
     # at every page load.
-    IMGUR_CLIENT_ID = ''
+    #IMGUR_CLIENT_ID = ''
     IMGUR_CLIENT_SECRET = ''
 
     # Embedly is used to retrieve preview images when creating a new post. This

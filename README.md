@@ -13,6 +13,12 @@ Dillo is a Flask application, and follows most of the typical install convention
 At this moment we don't provide specific instructions for online deployment, since
 our main focus is to create a Docker file and Docker image for easy installs.
 
+### Dependencies
+- MySQL (on Linux make sure you have `libmysqlclient-dev`)
+- Python 2.7 (on Linux make sure you have `python-dev`)
+- virtualenv
+- Nodejs (in particular we use `npm`)
+
 ### Flask in the virtualenvironment
 ```
 mkdir ~/venvs
@@ -23,9 +29,14 @@ pip install -r requirements.txt
 
 ### Gulp
 ```
+npm install -g gulp
 npm install
 gulp
 ```
+
+### Database
+Set up a MySQL database where you will install dillo. No schema is needed, just
+the database.
 
 ### Config
 The `config.py.sample` must be duplicated into a `config.py`, and edited with
@@ -34,17 +45,17 @@ proper values.
 ### Manage
 Before running the site for the first time, run the following
 ```
-. ~/venvs/dillo/bin activate && python manage.py db upgrade
+. ~/venvs/dillo/bin/activate && python manage.py db upgrade
 ```
 
 ```
-. ~/venvs/dillo/bin activate && python manage.py setup
+. ~/venvs/dillo/bin/activate && python manage.py setup
 ```
 
 Once the setup is complete, the site can be started with:
 
 ```
-. ~/venvs/dillo/bin activate && python manage.py runserver
+. ~/venvs/dillo/bin/activate && python manage.py runserver
 ```
 
 If you find any issues feel free to report them in the issue tracker. Thanks!

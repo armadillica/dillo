@@ -44,9 +44,12 @@ registry.register('https?://vine.co/v/*',
 registry.register('https?://instagram.com/p/*',
     Provider('http://api.instagram.com/oembed'))
 
-redis_client = redis.StrictRedis(
-    host=app.config['CACHE_REDIS_HOST'],
-    port=app.config['CACHE_REDIS_PORT'])
+if app.config.get('CACHE_REDIS_HOST'):
+    redis_client = redis.StrictRedis(
+        host=app.config['CACHE_REDIS_HOST'],
+        port=app.config['CACHE_REDIS_PORT'])
+else:
+    redis_client = None
 
 bugsnag.configure(
   api_key = app.config['BUGSNAG_KEY'],
