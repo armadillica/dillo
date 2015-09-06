@@ -70,6 +70,8 @@
 								h3 Community Badges
 
 								| {% if current_user.roles %}
+
+								| {# XXX Make it a setting, currently hardcoded to Blender roles #}
 								| {% if current_user.has_role('cloud_member') %}
 								i.bf-cloud
 								| Blender Cloud Member

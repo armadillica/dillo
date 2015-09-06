@@ -2,7 +2,7 @@
 
 | {% block og %}
 meta(property="og:type", content="website")
-meta(property="og:title", content="Blender.Today")
+meta(property="og:title", content="{{title}} - {{ settings['title'] | safe}}")
 meta(property="og:url", content="{{url_for('index')}}{{url}}")
 meta(property="og:image", content="{{ url_for('static', filename='images/favicon_192x192.png') }}")
 | {% endblock %}
