@@ -8,6 +8,7 @@ config.py
 dillo/application/templates/**/*
 dillo/application/static/css/main.css
 dillo/application/static/js/tutti.min.js
+dillo/application/static/storage/
 node_modules
 .sass-cache/
 *.css.map

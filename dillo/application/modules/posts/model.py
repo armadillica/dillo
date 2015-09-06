@@ -1,4 +1,7 @@
+import os
 import datetime
+from flask import url_for
+from flask.ext.security import current_user
 from application import app
 from application import db
 from application import imgur_client
@@ -8,8 +11,6 @@ from application.modules.users.model import User
 from application.helpers import pretty_date
 from application.helpers.sorting import hot
 from application.helpers.sorting import confidence
-
-from flask.ext.security import current_user
 
 
 class Post(db.Model):
@@ -71,11 +72,24 @@ class Post(db.Model):
         picture = imgur_client.get_image(picture_id)
         return picture.link
 
-
     def thumbnail(self, size): #s, m, l, h
         if self.picture:
-            picture_link = Post.get_picture_link(self.picture)
-            return picture_link.replace(self.picture, self.picture + size)
+            if imgur_client:
+                if not self.picture.startswith('_'):
+                    picture_link = Post.get_picture_link(self.picture)
+                    return picture_link.replace(self.picture, self.picture + size)
+            if app.config['USE_UPLOADS_LOCAL_STORAGE']:
+                local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
+                local_picture = "{0}_{1}.jpg".format(self.uuid, size)
+                local_picture = os.path.join(local_picture[:2], local_picture)
+                local_file_path = os.path.join(local_storage_path, local_picture)
+                if not os.path.isfile(local_file_path):
+                    return None
+                filename = os.path.join('storage', local_picture)
+                full_link = url_for('static', filename=filename, _external=True)
+                return full_link
+            else:
+                return None
         else:
             return None
 

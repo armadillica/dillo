@@ -2,7 +2,8 @@ import os
 import json
 import datetime
 import requests
-
+import shutil
+from PIL import Image
 from werkzeug import secure_filename
 from flask import render_template
 from flask import Blueprint
@@ -46,6 +47,7 @@ from application.helpers import bleach_input
 from application.helpers import check_url
 from application.helpers import delete_redis_cache_keys
 from application.helpers import delete_redis_cache_post
+from application.helpers.imaging import generate_local_thumbnails
 
 posts = Blueprint('posts', __name__)
 
@@ -208,7 +210,33 @@ def submit():
 
             # In both cases we get the image now saved in temp and upload it
             # to Imgur
-            image = imgur_client.upload_from_path(filepath, config=None, anon=True)
+            if imgur_client:
+                image = imgur_client.upload_from_path(filepath, config=None, anon=True)
+            else:
+                image = dict(id=None, deletehash=None)
+
+            if app.config['USE_UPLOADS_LOCAL_STORAGE']:
+                # Use the post UUID as a name for the local image.
+                # If Imgur is not available save it in the database with a _ to
+                # imply that the file is available only locally.
+                if not image['id']:
+                    image['id'] = '_' + post.uuid
+                image_name = post.uuid + '.jpg'
+                # The root of the local storage path
+                local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
+                # Get the first 2 chars of the image name to make a subfolder
+                storage_folder = os.path.join(local_storage_path, image_name[:2])
+                # Check if the subfolder exists
+                if not os.path.exists(storage_folder):
+                    # Make it if it does not
+                    os.mkdir(storage_folder)
+                # Build the full path to store the image
+                storage_filepath = os.path.join(storage_folder, image_name)
+                # Copy from temp to the storage path
+                im = Image.open(filepath)
+                im.save(storage_filepath, "JPEG")
+                # Make all the thumbnails
+                generate_local_thumbnails(storage_filepath)
             post.picture = image['id']
             post.picture_deletehash = image['deletehash']
             os.remove(filepath)

@@ -35,6 +35,21 @@ class Development(Config):
     SECRET_KEY=''
     SQLALCHEMY_DATABASE_URI=''
 
+    # Save (and eventually serve) a copy of the images uploaded to the CDNs
+    USE_UPLOADS_LOCAL_STORAGE = True
+    # Specify a custom local storage path. Do not edit unless you know about
+    # the static folder configuration in Flask.
+    #UPLOADS_LOCAL_STORAGE_PATH = ""
+    # We mimc the settings of Imgur
+    UPLOADS_LOCAL_STORAGE_THUMBNAILS = {
+        's': {'size': (90, 90), 'crop': True},
+        'b': {'size': (160, 160), 'crop': True},
+        't': {'size': (160, 160), 'crop': False},
+        'm': {'size': (320, 320), 'crop': False},
+        'l': {'size': (640, 640), 'crop': False},
+        'h': {'size': (1024, 1024), 'crop': False}
+    }
+
     # Caching settings
     # Check out https://pythonhosted.org/Flask-Cache/ for configuration values
     # Currently we rely on Redis for high performance caching. This one of the
@@ -75,9 +90,10 @@ class Development(Config):
     BLENDER_ID_AUTHORIZE_URL = ''
 
 
-    # Currently Imgur is the only backend for uploading images. An Imgur API key
-    # is needed in order to run Dillo. We planned to implement a local backend
-    # as well and it will be available soon.
+    # We suggest to take advantage of Imgur to serve the images uploaded with
+    # every post. If Imgur is enabled, we recomment turning caching on as well,
+    # to prevent the Imgur API to block the many requests that will be generated
+    # at every page load.
     IMGUR_CLIENT_ID = ''
     IMGUR_CLIENT_SECRET = ''
 

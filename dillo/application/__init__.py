@@ -1,3 +1,4 @@
+import os
 import redis
 import bugsnag
 import tweepy
@@ -100,7 +101,22 @@ if app.config.get('SOCIAL_BLENDER_ID'):
 else:
     blender_id = None
 
-imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
+# If a UPLOADS_LOCAL_STORAGE_PATH is defined in the config, otherwise use as
+# default a storage folder inside of static.
+uploads_local_storage_path = app.config.get('UPLOADS_LOCAL_STORAGE_PATH',
+    "{0}/static/storage".format(os.path.join(os.path.dirname(__file__))))
+
+if not os.path.exists(uploads_local_storage_path):
+    os.makedirs(uploads_local_storage_path)
+
+app.config['UPLOADS_LOCAL_STORAGE_PATH'] = uploads_local_storage_path
+
+# Configure the Imgur API client
+if app.config.get('IMGUR_CLIENT_ID'):
+    imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'],
+                                app.config['IMGUR_CLIENT_SECRET'])
+else:
+    imgur_client = None
 
 from modules.admin import backend
 from modules.pages import admin
