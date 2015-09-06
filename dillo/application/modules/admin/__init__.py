@@ -129,7 +129,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
             credits.value = form_settings.credits.data
             db.session.commit()
             # Reload the settings
-            load_settings(app, Setting)
+            load_settings(Setting)
             # Clear cache for homepage
             delete_redis_cache_keys('post_list')
 
