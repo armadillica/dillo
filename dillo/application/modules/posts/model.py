@@ -96,8 +96,23 @@ class Post(db.Model):
     @property
     def original_image(self):
         if self.picture:
-            picture_link = Post.get_picture_link(self.picture)
-            return picture_link
+            if imgur_client:
+                if not self.picture.startswith('_'):
+                    picture_link = Post.get_picture_link(self.picture)
+                    return picture_link
+            if app.config['USE_UPLOADS_LOCAL_STORAGE']:
+                local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
+                local_picture = "{0}.jpg".format(self.uuid)
+                local_picture = os.path.join(local_picture[:2], local_picture)
+                local_file_path = os.path.join(local_storage_path, local_picture)
+                if not os.path.isfile(local_file_path):
+                    return None
+                filename = os.path.join('storage', local_picture)
+                full_link = url_for('static', filename=filename, _external=True)
+                return full_link
+            else:
+                return None
+
         else:
             return None
 
