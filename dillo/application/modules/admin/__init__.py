@@ -1,6 +1,7 @@
 import os, hashlib, time
 import os.path as op
 from werkzeug import secure_filename
+from werkzeug.datastructures import MultiDict
 from jinja2 import Markup
 from wtforms import fields, validators, widgets
 from wtforms.fields import SelectField, TextField
@@ -19,7 +20,7 @@ from application.modules.pages.model import Page
 from application.modules.admin.forms import FormSettings
 from application.modules.admin.model import Setting
 from application.helpers import delete_redis_cache_keys
-
+from application.helpers.settings import load_settings
 
 
 # -------- Utilities to upload and present images --------
@@ -93,13 +94,13 @@ class CustomAdminIndexView(admin.AdminIndexView):
 
     @expose('/', methods=['GET','POST'])
     def index(self):
-        logo_alt = Setting.query.filter_by(name='logo_alt').first()
-        title = Setting.query.filter_by(name='title').first()
-        tagline = Setting.query.filter_by(name='tagline').first()
-        form_settings = FormSettings(
-            logo_alt=logo_alt.value,
-            title=title.value,
-            tagline=tagline.value)
+        settings_list = []
+        for setting_name in ['logo_alt', 'title', 'tagline', 'title_html',
+            'footer', 'credits']:
+            setting = Setting.query.filter_by(name=setting_name).first()
+            settings_list.append((setting_name, setting.value))
+        settings_multi_dict = MultiDict(settings_list)
+        form_settings = FormSettings(settings_multi_dict)
         return self.render('admin/index.html',
             form_settings=form_settings)
 
@@ -120,7 +121,15 @@ class CustomAdminIndexView(admin.AdminIndexView):
             title.value = form_settings.title.data
             tagline = Setting.query.filter_by(name='tagline').first()
             tagline.value = form_settings.tagline.data
+            title_html = Setting.query.filter_by(name='title_html').first()
+            title_html.value = form_settings.title_html.data
+            footer = Setting.query.filter_by(name='footer').first()
+            footer.value = form_settings.footer.data
+            credits = Setting.query.filter_by(name='credits').first()
+            credits.value = form_settings.credits.data
             db.session.commit()
+            # Reload the settings
+            load_settings(app, Setting)
             # Clear cache for homepage
             delete_redis_cache_keys('post_list')
 

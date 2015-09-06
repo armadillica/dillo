@@ -3,7 +3,7 @@
 | {% block brand %}
 span.brand
 	a(href="{{url_for('index')}}").
-		{{ settings['title'] | safe}}
+		{{ config.SETTINGS_TITLE | safe}}
 | {% endblock %}
 
 | {% block access_control %}

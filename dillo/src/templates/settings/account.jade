@@ -19,7 +19,7 @@
 				.panel-body
 					p.
 						Danger. Pressing this button will immediately delete your account.
-						The content you have posted on {{ settings['title'] | safe}} will remain as is,
+						The content you have posted on {{ config.SETTINGS_TITLE | safe}} will remain as is,
 						only your name will be obfuscated.
 						You will not be able to access this account anymore.
 					a.btn.btn-danger.btn-block(href="{{url_for('settings.delete')}}")

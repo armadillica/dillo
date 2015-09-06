@@ -14,11 +14,11 @@
 					.user-register-branding
 						a(href="{{url_for('index')}}")
 							img.user-register-branding-logo(
-								src="{{ settings['logo']['image'] }}",
-								title="{{ settings['title'] | safe}}")
+								src="{{ config.SETTINGS_LOGO_IMAGE }}",
+								title="{{ config.SETTINGS_TITLE | safe}}")
 
 						a(href="{{url_for('index')}}")
-							h3 {{ settings['title'] | safe}}
+							h3 {{ config.SETTINGS_TITLE | safe}}
 
 
 					h2 Register

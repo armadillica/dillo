@@ -4,9 +4,9 @@
 meta(property="og:type", content="profile")
 
 | {% if user.first_name and user.first_name != 'None' %}
-meta(property="og:title", content="{{user.first_name}} {{user.last_name}} - {{ settings['title'] | safe}}")
+meta(property="og:title", content="{{user.first_name}} {{user.last_name}} - {{ config.SETTINGS_TITLE | safe}}")
 | {% else %}
-meta(property="og:title", content="{{user.username}} - {{ settings['title'] | safe}}")
+meta(property="og:title", content="{{user.username}} - {{ config.SETTINGS_TITLE | safe}}")
 | {% endif %}
 
 meta(property="og:url", content="{{url_for('index')}}u/{{user.id}}")

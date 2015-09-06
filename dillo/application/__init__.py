@@ -138,6 +138,10 @@ app.register_blueprint(comments, url_prefix='/comments')
 app.register_blueprint(notifications, url_prefix='/notifications')
 
 from modules.users.model import user_datastore
+from application.helpers.settings import load_settings
+from modules.admin.model import Setting
+
+load_settings(app, Setting)
 
 @app.context_processor
 def inject_submit_post_form():
@@ -150,24 +154,6 @@ def inject_submit_post_form():
     #form.post_type_id.data = 1
     return {'submit_post_form': form}
 
-@app.context_processor
-#@cache.cached(timeout=3600)
-def inject_settings():
-    """Global application settings"""
-    from modules.admin.model import Setting
-    logo_alt = Setting.query.filter_by(name='logo_alt').first()
-    logo_image = Setting.query.filter_by(name='logo_image').first()
-    title = Setting.query.filter_by(name='title').first()
-    tagline = Setting.query.filter_by(name='tagline').first()
-    settings = dict(
-        title=title.value,
-        tagline=tagline.value,
-        logo=dict(
-            alt=logo_alt.value,
-            image=url_for('static', filename='images/' + logo_image.value))
-    )
-
-    return {'settings': settings}
 
 @app.errorhandler(404)
 def page_not_found(e):

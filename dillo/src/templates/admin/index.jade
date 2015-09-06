@@ -26,7 +26,7 @@ style(type="text/css").
 
 			| {{ form_settings.hidden_tag() }}
 
-			img(src="{{ settings['logo']['image'] }}")
+			img(src="{{ config.SETTINGS_LOGO_IMAGE }}")
 
 			.form-group
 				| {{ form_settings.logo_image.label }}
@@ -62,12 +62,45 @@ style(type="text/css").
 				| {% endif %}
 
 			.form-group
+				| {{ form_settings.title_html.label }}
+				| {{ form_settings.title_html(class='form-control') }}
+
+				| {% if form_settings.title_html.errors %}
+				ul.error
+					| {% for error in form_settings.title_html.errors %}
+					li {{ error }}
+					| {% endfor %}
+				| {% endif %}
+
+			.form-group
 				| {{ form_settings.tagline.label }}
 				| {{ form_settings.tagline(class='form-control') }}
 
 				| {% if form_settings.tagline.errors %}
 				ul.error
 					| {% for error in form_settings.tagline.errors %}
+					li {{ error }}
+					| {% endfor %}
+				| {% endif %}
+
+			.form-group
+				| {{ form_settings.footer.label }}
+				| {{ form_settings.footer(class='form-control') }}
+
+				| {% if form_settings.footer.errors %}
+				ul.error
+					| {% for error in form_settings.footer.errors %}
+					li {{ error }}
+					| {% endfor %}
+				| {% endif %}
+
+			.form-group
+				| {{ form_settings.credits.label }}
+				| {{ form_settings.credits(class='form-control') }}
+
+				| {% if form_settings.credits.errors %}
+				ul.error
+					| {% for error in form_settings.credits.errors %}
 					li {{ error }}
 					| {% endfor %}
 				| {% endif %}
