@@ -98,8 +98,8 @@
 	// Logo
 	.nav-sidebar.branding
 
-		a(href="{{url_for('index')}}", title="Blender.Today")
-			img.nav-sidebar-mug(
+		a(href="{{url_for('index')}}", title="{{ settings['title'] | safe}}")
+			img.nav-sidebar-logo(
 				src="{{ settings['logo']['image'] }}",
 				title="{{ settings['logo']['alt'] }}")
 

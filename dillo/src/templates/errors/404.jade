@@ -5,22 +5,21 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name="viewport", content="width=device-width, initial-scale=1")
 
-		title 404 - Blender.Today - Community-driven Blender News
+		title 404 - {{ settings['title'] | safe}}
 
-		meta(name="keywords", content="news, community, blender, animation, 3d")
-		meta(name="description", content="Community-driven Blender News")
-		meta(name="author", content="Blender Today")
+		meta(name="description", content="{{ settings['tagline']}}")
+		meta(name="author", content="{{ settings['title'] | safe}}")
 		meta(name="theme-color", content="#4D84A0")
 		meta(name="csrf-token", content="{{ csrf_token() }}")
 
 		// Open Graph
-		meta(property="og:site_name", content="Blender.Today")
-		meta(property="og:description", content="Community-driven Blender News")
+		meta(property="og:site_name", content="{{ settings['title'] | safe}}")
+		meta(property="og:description", content="{{ settings['tagline']}}")
 		| {% block og %}{% endblock %}
 
 		// Style sheets
-		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", rel="stylesheet")
-		link(href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", rel="stylesheet")
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
+		link(href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", rel="stylesheet")
 		link(href="{{ url_for('static', filename='css/main.css') }}", rel="stylesheet")
 
 		// Fonts
@@ -33,8 +32,10 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 
 	body.error-404
 
+		{# XXX - User setting for 404 image #}
 		img.img-responsive(src="{{ url_for('static', filename='images/today_404_andy.jpg') }}")
+
 		h2 404 - This page doesn't exist
 		.error-goback
-			a(href="http://blender.today").
-				<i class="fa fa-angle-left"></i> back to blender.today
+			a(href="{{url_for('index')}}").
+				<i class="fa fa-angle-left"></i>  back to {{ settings['title'] | safe}}

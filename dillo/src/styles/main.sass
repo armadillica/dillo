@@ -45,21 +45,6 @@ blockquote
 		height: 10px
 		margin: 0 4px
 
-/* Branding */
-.today-minimug
-	background: top left no-repeat transparent
-	width: 40px
-	height: 40px
-	padding: 0
-	margin: 0 10px 0 0
-	display: inline-block
-	position: relative
-	float: left
-	top: 15px
-	cursor: pointer
-	&:hover
-		opacity: 0.9
-
 /* Navbar */
 .navbar
 	background-color: transparent
@@ -2509,7 +2494,9 @@ fieldset
 
 /* Sidebar */
 .nav-sidebar-container
-	z-index: 99 // stay above categories
+	z-index: 99 // stay above categories dropdown
+	max-width: 240px
+
 	+media-xs
 		position: relative
 	+media-sm
@@ -2535,9 +2522,9 @@ fieldset
 .user-register-branding,
 	text-align: center
 
-	& .nav-sidebar-mug,
-	& .user-login-branding-mug,
-	& .user-register-branding-mug
+	& .nav-sidebar-logo,
+	& .user-login-branding-logo,
+	& .user-register-branding-logo
 		display: block
 		margin: 15px auto 0 auto
 		+transition(opacity, 0.2s, ease)
