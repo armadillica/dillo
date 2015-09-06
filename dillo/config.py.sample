@@ -106,6 +106,7 @@ class Development(Config):
     BUGSNAG_APP_PATH=''
 
     DEBUG_TB_INTERCEPT_REDIRECTS=False
+    DEBUG_TB_ENABLED = False
 
 class Deployment(Development):
     DEPLOYMENT = 'Development'

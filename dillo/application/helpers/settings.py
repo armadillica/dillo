@@ -16,9 +16,9 @@ def load_settings(setting_model):
                 data_type='str')
             db.session.add(s)
             db.session.commit()
-        else:
-            config_key = 'SETTINGS_' + setting_name.upper()
-            app.config[config_key] = s.value
+
+        config_key = 'SETTINGS_' + setting_name.upper()
+        app.config[config_key] = s.value
 
     # Extra update for the logo image path
     app.config['SETTINGS_LOGO_IMAGE'] = '/static/images/' + app.config['SETTINGS_LOGO_IMAGE']
