@@ -32,14 +32,14 @@ li {{ error }}
 
 | {% macro render_login_field_with_errors(field) %}
 
-| 	{{ field(**kwargs)|safe }}
+| {{ field(**kwargs)|safe }}
 
-| 	{% if field.errors %}
+| {% if field.errors %}
 ul.error
-| 		{% for error in field.errors %}
+| {% for error in field.errors %}
 li {{ error }}
-| 		{% endfor %}
-| 	{% endif %}
+| {% endfor %}
+| {% endif %}
 
 | {% endmacro %}
 
