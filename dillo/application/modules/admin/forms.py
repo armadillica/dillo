@@ -4,10 +4,10 @@ from wtforms import StringField
 from wtforms import TextAreaField
 
 class FormSettings(Form):
-    logo_image = FileField('The logo')
-    logo_alt = StringField('The image alt tag')
-    title = StringField('Dillo title')
-    title_html = StringField('Dillo title with HTML tags')
-    tagline = StringField('Dillo tagline')
+    logo_image = FileField('Site logo')
+    logo_alt = StringField('Logo alternative text')
+    title = StringField('Site title')
+    title_html = StringField('Site title with HTML tags')
+    tagline = StringField('Tagline')
     footer = TextAreaField('Footer')
     credits = StringField('Site credits')

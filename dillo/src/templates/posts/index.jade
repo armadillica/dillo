@@ -65,11 +65,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 					// Post Rating
 					div(title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
-							class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}",
-							data-toggle="popover",
-							data-trigger="hover",
-							data-placement="bottom",
-							data-content="{% if current_user.is_anonymous() %}Please login to vote{% endif %}")
+							class="post-index-item-rate")
 
 						a(title="Upvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
@@ -136,11 +132,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 					// Post Rating
 					div(title="{{post.rating.positive}} Upvotes, {{post.rating.negative}} Downvotes",
-							class="post-index-item-rate{% if current_user.is_anonymous() %} popover-vote{% endif %}",
-							data-toggle="popover",
-							data-trigger="hover",
-							data-placement="bottom",
-							data-content="{% if current_user.is_anonymous() %}Please login to vote{% endif %}")
+							class="post-index-item-rate")
 
 						a(title="Upvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
@@ -369,7 +361,5 @@ script.
 				rate.text(data['rating_delta']);
 			});
 		});
-	{% else %}
-		$('.popover-vote').popover();
 	{% endif %}
 | {% endblock %}

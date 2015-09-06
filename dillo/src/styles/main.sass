@@ -504,13 +504,6 @@ blockquote
 		color: $color_brand_main
 	+media-xs
 		display: none
-		// position: absolute
-		// float: right
-		// right: 6px
-		// top: 4px
-		// font-size: 1.9em
-		// margin: 0
-		// color: lighten(desaturate($color_brand_main, 10%), 10%)
 
 .post-index-item-picture-collapse
 	display: none
@@ -613,7 +606,6 @@ blockquote
 
 	+media-sm
 		position: absolute
-		//top: -10px
 		left: 55px
 		width: 100px
 		height: 100px
@@ -621,7 +613,6 @@ blockquote
 		transform: translateY(-50%)
 	+media-md
 		position: absolute
-		//top: -8px
 		left: 55px
 		width: 100px
 		height: 100px
@@ -629,7 +620,6 @@ blockquote
 		transform: translateY(-50%)
 	+media-lg
 		position: absolute
-		//top: -8px
 		left: 55px
 		width: 100px
 		height: 100px
@@ -1778,7 +1768,6 @@ div#post-comment-reply-container
 
 .post-submit-field-submit
 	color: $color_brand_main
-	//background-color: rgba(white, .1)
 	background-color: transparent
 	border: 2px solid $color_brand_main
 	font-size: 1.5em
@@ -1823,7 +1812,6 @@ div#post-comment-reply-container
 		width: 100%
 		position: relative
 		z-index: 0
-		//max-width: 320px
 		max-width: 83%
 
 	& .dialog__button-close
@@ -2650,9 +2638,6 @@ fieldset
 		padding: 0
 		margin: 0
 
-.whoosh
-	display: block !important
-
 /* Submit Dialog */
 .dialog, .dialog__overlay
 	width: 100%
@@ -2661,8 +2646,7 @@ fieldset
 	left: 0
 
 .dialog
-	position: absolute // POS on mobile
-	//overflow: hidden
+	position: absolute
 	display: -webkit-flex
 	display: flex
 	-webkit-align-items: flex-start
@@ -2677,7 +2661,6 @@ fieldset
 	width: 100%
 	height: 100%
 	z-index: 1
-	//background: rgba($color_background, .9)
 	background: rgba($color_brand_main, .8)
 	opacity: 0
 	-webkit-transition: opacity 0.3s
@@ -2693,7 +2676,6 @@ fieldset
 	max-width: 720px
 	min-width: 290px
 	color: $color_text
-	//background: $color_brand_main
 	background: $color_background_dialog
 	padding: 0 auto 2em auto
 	position: relative

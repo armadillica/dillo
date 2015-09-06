@@ -112,18 +112,13 @@
 	// Links on the bottom
 	.nav-sidebar.meta
 		p
-			a(href="http://blender.today/p/community/fcbbbc/blender-today-roadmap-feedback").
-				Roadmap &amp; Feedback
-
-			| ·
-
 			a(href="{{url_for('posts.feed')}}")
 				i.fa.fa-rss
 				|  Feed
 
 			| {% if current_user.has_role('admin') %}
 
-			a.whoosh(href="{{url_for('admin.index')}}")
+			a(href="{{url_for('admin.index')}}")
 				i.fa.fa-rocket
 				|  Whoosh!
 
