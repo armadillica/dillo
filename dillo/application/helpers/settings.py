@@ -1,4 +1,7 @@
-def load_settings(app, setting_model):
+from application import app
+from application import db
+
+def load_settings(setting_model):
     """Load the application settings in the app config.
     """
 

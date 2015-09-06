@@ -141,7 +141,7 @@ from modules.users.model import user_datastore
 from application.helpers.settings import load_settings
 from modules.admin.model import Setting
 
-load_settings(app, Setting)
+load_settings(Setting)
 
 @app.context_processor
 def inject_submit_post_form():
