@@ -49,7 +49,17 @@ def runserver():
     import os
     os.environ['DEBUG'] = 'true'
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'
-    app.run()
+
+    try:
+        import config
+        PORT = config.Deployment.PORT
+        HOST = config.Deployment.HOST
+    except ImportError:
+        PORT = 5000
+        HOST = '0.0.0.0'
+    app.run(
+        port=PORT,
+        host=HOST)
 
 
 manager.run()
