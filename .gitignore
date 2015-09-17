@@ -15,3 +15,5 @@ node_modules
 *.js.map
 
 *.rdb
+
+docker/dillo.env
