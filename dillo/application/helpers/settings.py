@@ -2,7 +2,8 @@ from application import app
 from application import db
 
 def load_settings(setting_model):
-    """Load the application settings in the app config.
+    """Load the application settings from the Settings table in the database
+    in the app config.
     """
 
     settings_list = ['logo_alt', 'logo_image', 'title', 'title_html', 'tagline', 'footer',
@@ -11,6 +12,7 @@ def load_settings(setting_model):
     for setting_name in settings_list:
         s = setting_model.query.filter_by(name=setting_name).first()
         if not s:
+            # If the queried setting is missing, create one with empty value
             s = setting_model(name=setting_name,
                 value="",
                 data_type='str')

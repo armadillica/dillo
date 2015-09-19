@@ -36,5 +36,6 @@ EXPOSE 5000
 
 ADD runserver.sh /runserver.sh
 
+#RUN bash /runserver.sh db install
+
 ENTRYPOINT ["bash", "/runserver.sh"]
-# CMD ["runserver"]
