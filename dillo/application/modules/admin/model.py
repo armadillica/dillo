@@ -1,4 +1,3 @@
-from application import app
 from application import db
 
 class Setting(db.Model):
