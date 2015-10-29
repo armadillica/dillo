@@ -6,6 +6,7 @@ from flask import Flask
 from flask import session
 from flask import Blueprint
 
+from sqlalchemy.exc import OperationalError
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.cache import Cache
 from flask_mail import Mail
@@ -142,9 +143,11 @@ app.register_blueprint(notifications, url_prefix='/notifications')
 
 from modules.users.model import user_datastore
 from application.helpers.settings import load_settings
-from modules.admin.model import Setting
 
-load_settings(Setting)
+try:
+    load_settings()
+except OperationalError:
+    pass
 
 @app.context_processor
 def inject_submit_post_form():

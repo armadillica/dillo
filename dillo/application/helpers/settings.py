@@ -1,7 +1,8 @@
 from application import app
 from application import db
+from application.modules.admin.model import Setting
 
-def load_settings(setting_model):
+def load_settings():
     """Load the application settings from the Settings table in the database
     in the app config.
     """
@@ -10,10 +11,10 @@ def load_settings(setting_model):
     'credits']
 
     for setting_name in settings_list:
-        s = setting_model.query.filter_by(name=setting_name).first()
+        s = Setting.query.filter_by(name=setting_name).first()
         if not s:
             # If the queried setting is missing, create one with empty value
-            s = setting_model(name=setting_name,
+            s = Setting(name=setting_name,
                 value="",
                 data_type='str')
             db.session.add(s)
