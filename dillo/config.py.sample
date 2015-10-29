@@ -19,8 +19,8 @@ class Config(object):
     SECURITY_RECOVERABLE = True
     SECURITY_CHANGEABLE = True
     SECUIRTY_POST_LOGIN = '/'
-    SECURITY_PASSWORD_HASH = ''
-    SECURITY_PASSWORD_SALT = ''
+    SECURITY_PASSWORD_HASH = 'sha512_crypt' #bcrypt or plaintext for testing
+    SECURITY_PASSWORD_SALT = '__SECURITY_PASSWORD_SALT'
     SECURITY_EMAIL_SENDER = ''
     SECURITY_LOGIN_USER_TEMPLATE = 'security/login_user.html'
     SECURITY_REGISTER_USER_TEMPLATE = 'security/register_user.html'
@@ -33,8 +33,13 @@ class Config(object):
 
 
 class Development(Config):
-    SECRET_KEY=''
-    SQLALCHEMY_DATABASE_URI=''
+    PORT = 5000
+    HOST = '0.0.0.0'
+    # Generate a random secret key (setup.sh does it for you)
+    SECRET_KEY = '__SECRET_KEY'
+    # The database path. By default it's a simple sqlite db, but any backend
+    # supported by SQLAlchemy is available.
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
 
     # Save (and eventually serve) a copy of the images uploaded to the CDNs
     USE_UPLOADS_LOCAL_STORAGE = True
@@ -102,10 +107,10 @@ class Development(Config):
     # is not a hard requirement for a local deployment.
     EMBEDLY_APY_KEY = ''
 
-    BUGSNAG_KEY=''
-    BUGSNAG_APP_PATH=''
+    BUGSNAG_KEY = ''
+    BUGSNAG_APP_PATH = ''
 
-    DEBUG_TB_INTERCEPT_REDIRECTS=False
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
     DEBUG_TB_ENABLED = False
 
 class Deployment(Development):

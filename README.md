@@ -9,9 +9,9 @@ We warmly welcome feedback, suggestions and pull requests.
 
 
 ## Quick install with Docker
-Keep in mind that the current installation insturctions are valid only for testing.
+Keep in mind that the current installation instructions are valid only for testing.
 A production docker image will be available soon. In order to use the docker
-image you need [Docker](https://www.docker.com/)
+image you need [Docker](https://www.docker.com/).
 
 Once installed, you can simply run:
 
