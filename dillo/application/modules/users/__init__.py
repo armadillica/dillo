@@ -16,6 +16,7 @@ from flask import Blueprint
 from flask import abort
 
 from flask.ext.security.utils import login_user
+from flask.ext.security.signals import user_registered
 from flask.ext.security import login_required
 from flask.ext.security import current_user
 from flask_oauthlib.client import OAuthException
@@ -31,7 +32,17 @@ from application.modules.users.model import UserKarma
 from application.modules.users.model import User
 from application.modules.posts.model import Post
 
+
 users = Blueprint('users', __name__)
+
+
+@user_registered.connect_via(app)
+def user_registered_sighandler(sender, **extra):
+    user = extra['user']
+    user_karma = UserKarma(
+        user_id=user.id)
+    db.session.add(user_karma)
+    db.session.commit()
 
 
 def check_oauth_provider(provider):
