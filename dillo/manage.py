@@ -4,6 +4,7 @@ from flask.ext.migrate import MigrateCommand
 from application import app
 from application import db
 from application.modules.users.model import user_datastore
+from application.modules.users.model import UserKarma
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -41,6 +42,10 @@ def setup():
         email=admin_email)
     db.session.commit()
     user_datastore.add_role_to_user(admin, admin_role)
+    db.session.commit()
+    user_karma = UserKarma(
+        user_id=admin.id)
+    db.session.add(user_karma)
     db.session.commit()
     print("Admin user succesfully created!")
 
