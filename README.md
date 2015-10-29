@@ -8,6 +8,34 @@ it is now available as an unbranded site for anyone to power their own community
 We warmly welcome feedback, suggestions and pull requests.
 
 
+## Quick install with Docker
+Keep in mind that the current installation insturctions are valid only for testing.
+A production docker image will be available soon. In order to use the docker
+image you need [Docker](https://www.docker.com/)
+
+Once installed, you can simply run:
+
+```
+docker run --entrypoint="bash" -ti --name dillo_dev -p 5000:5000 \
+-v <YOUR_DILLO_CHECKOUT_PATH>:/data/git/dillo armadillica/dillo_dev
+```
+
+This will download the `dillo_dev` image on your system and log you into the
+container. At that point you should run:
+
+```
+./setup.sh
+```
+
+and follow the instructions. Once the procedure is complete, run:
+
+```
+./manage.sh runserver
+```
+
+At this point Dillo is running and you can see it in your web browser.
+
+
 ## Development installation
 Dillo is a Flask application, and follows most of the typical install conventions.
 At this moment we don't provide specific instructions for online deployment, since
