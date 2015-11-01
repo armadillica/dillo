@@ -64,29 +64,12 @@ def setup():
     # Add default post types
     post_types = ['link', 'post']
     for t in post_types:
-        post_type = Category(
+        post_type = PostType(
             name=t,
             url=t)
         db.session.add(post_type)
         db.session.commit()
         print("Added post type {0}".format(t))
-    # Add default settings
-    settings = dict(
-        logo_alt='Dillo',
-        logo_image='dillogo.png',
-        favicon='favicon.png',
-        title='Dillo',
-        title_html='Dillo',
-        tagline='The open conversation platform',
-        footer='')
-    for s, v in settings.iteritems():
-        setting = Setting(
-            name=s,
-            value=v,
-            data_type='str')
-        db.session.add(setting)
-        db.session.commit()
-    print("Added default settings")
 
 
 @manager.command
