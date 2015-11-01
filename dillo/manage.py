@@ -5,6 +5,10 @@ from application import app
 from application import db
 from application.modules.users.model import user_datastore
 from application.modules.users.model import UserKarma
+from application.modules.posts.model import Category
+from application.modules.posts.model import PostType
+from application.modules.admin.model import Setting
+
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -43,11 +47,47 @@ def setup():
     db.session.commit()
     user_datastore.add_role_to_user(admin, admin_role)
     db.session.commit()
+    # Add karma for the admin
     user_karma = UserKarma(
         user_id=admin.id)
     db.session.add(user_karma)
     db.session.commit()
     print("Admin user succesfully created!")
+    # Add default category
+    category_default = Category(
+        name='News',
+        url='news',
+        order=0)
+    db.session.add(category_default)
+    db.session.commit()
+    print("Added default News category")
+    # Add default post types
+    post_types = ['link', 'post']
+    for t in post_types:
+        post_type = Category(
+            name=t,
+            url=t)
+        db.session.add(post_type)
+        db.session.commit()
+        print("Added post type {0}".format(t))
+    # Add default settings
+    settings = dict(
+        logo_alt='Dillo',
+        logo_image='dillogo.png',
+        favicon='favicon.png',
+        title='Dillo',
+        title_html='Dillo',
+        tagline='The open conversation platform',
+        footer='')
+    for s, v in settings.iteritems():
+        setting = Setting(
+            name=s,
+            value=v,
+            data_type='str')
+        db.session.add(setting)
+        db.session.commit()
+    print("Added default settings")
+
 
 @manager.command
 def runserver():

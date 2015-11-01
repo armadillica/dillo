@@ -8,7 +8,7 @@ def load_settings():
     """
 
     settings_list = ['logo_alt', 'logo_image', 'title', 'title_html', 'tagline', 'footer',
-    'credits']
+    'credits', 'favicon']
 
     for setting_name in settings_list:
         s = Setting.query.filter_by(name=setting_name).first()
@@ -25,3 +25,4 @@ def load_settings():
 
     # Extra update for the logo image path
     app.config['SETTINGS_LOGO_IMAGE'] = '/static/images/' + app.config['SETTINGS_LOGO_IMAGE']
+    app.config['SETTINGS_FAVICON'] = '/static/images/' + app.config['SETTINGS_FAVICON']

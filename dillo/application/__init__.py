@@ -45,7 +45,7 @@ registry.register('https?://vine.co/v/*',
 registry.register('https?://instagram.com/p/*',
     Provider('http://api.instagram.com/oembed'))
 
-if app.config.get('CACHE_REDIS_HOST'):
+if app.config.get('CACHE_REDIS_HOST') and app.config['CACHE_TYPE'] == 'redis':
     redis_client = redis.StrictRedis(
         host=app.config['CACHE_REDIS_HOST'],
         port=app.config['CACHE_REDIS_PORT'])

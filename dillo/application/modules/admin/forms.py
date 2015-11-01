@@ -6,6 +6,7 @@ from wtforms import TextAreaField
 class FormSettings(Form):
     logo_image = FileField('Site logo')
     logo_alt = StringField('Logo alternative text')
+    favicon = FileField('Favicon')
     title = StringField('Site title')
     title_html = StringField('Site title with HTML tags')
     tagline = StringField('Tagline')

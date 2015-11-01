@@ -14,7 +14,7 @@ from flask.ext.admin.contrib import sqla
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.base import BaseView
 from flask.ext.security import current_user
-from application import app, db
+from application import app, db, redis_client
 from application.modules.users.model import user_datastore, User
 from application.modules.pages.model import Page
 from application.modules.admin.forms import FormSettings
@@ -117,6 +117,13 @@ class CustomAdminIndexView(admin.AdminIndexView):
                 form_settings.logo_image.data.save(filepath)
                 logo_image = Setting.query.filter_by(name='logo_image').first()
                 logo_image.value = filename
+            if form_settings.favicon.data:
+                # If the user uploads an image from the form
+                filename = secure_filename(form_settings.favicon.data.filename)
+                filepath = os.path.join(app.config['STATIC_IMAGES'], filename)
+                form_settings.favicon.data.save(filepath)
+                favicon = Setting.query.filter_by(name='favicon').first()
+                favicon.value = filename
             title = Setting.query.filter_by(name='title').first()
             title.value = form_settings.title.data
             tagline = Setting.query.filter_by(name='tagline').first()
@@ -129,9 +136,10 @@ class CustomAdminIndexView(admin.AdminIndexView):
             credits.value = form_settings.credits.data
             db.session.commit()
             # Reload the settings
-            load_settings(Setting)
+            load_settings()
             # Clear cache for homepage
-            delete_redis_cache_keys('post_list')
+            if redis_client:
+                delete_redis_cache_keys('post_list')
 
         return redirect(url_for('admin.index'))
 
