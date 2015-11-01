@@ -100,6 +100,21 @@ style(type="text/css").
 							| {% endfor %}
 						| {% endif %}
 
+					h3 Favicon
+
+					img(src="{{ config.SETTINGS_FAVICON }}")
+					.form-group
+						| {{ form_settings.favicon.label }}
+						| {{ form_settings.favicon(class='form-control', style="width: 80%") }}
+
+						| {% if form_settings.favicon.errors %}
+						ul.error
+							| {% for error in form_settings.favicon.errors %}
+							li {{ error }}
+							| {% endfor %}
+						| {% endif %}
+
+
 			.row
 				.span12
 					hr
