@@ -22,21 +22,27 @@
 					h2 welcome
 
 					.user-login-container-cool
+						| {% if config.SOCIAL_BLENDER_ID %}
 						a.user-login-button-oauth.blender-id(
 							href="{{url_for('blender_id_login')}}")
 							i.icon.bf-blender
 							| Login with Blender ID
 							small  (recommended)
+						| {% endif %}
 
+						| {% if config.SOCIAL_GOOGLE %}
 						a.user-login-button-oauth.google(
 							href="{{url_for('google_login')}}")
 							i.icon.fa.fa-google
 							| Login with Google
+						| {% endif %}
 
+						| {% if config.SOCIAL_FACEBOOK %}
 						a.user-login-button-oauth.facebook(
 							href="{{url_for('facebook_login')}}")
 							i.icon.fa.fa-facebook
 							| Login with Facebook
+						| {% endif %}
 
 
 						span.user-login-button-others
