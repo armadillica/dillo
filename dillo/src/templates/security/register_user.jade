@@ -23,7 +23,7 @@
 
 					h2 Register
 
-					| {# XXX - Make it custom, hardcoded to Blender stuff #}
+					| {% if config.SOCIAL_BLENDER_ID %}
 					p.
 						We highly recommend you
 						login using Blender ID
@@ -35,6 +35,7 @@
 
 					p.
 						Still want to do it? Be my guest!
+					| {% endif %}
 
 
 					.user-register-form

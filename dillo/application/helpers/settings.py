@@ -14,7 +14,10 @@ def load_settings():
         title_html='Dillo',
         tagline='The open conversation platform',
         footer='',
-        credits='')
+        credits='',
+        keywords='news, community, open source',
+        twitter_username='dillospace',
+        )
 
     for setting_name, setting_value in settings.iteritems():
         s = Setting.query.filter_by(name=setting_name).first()

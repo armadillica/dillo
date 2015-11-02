@@ -152,7 +152,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
 # Create admin
 backend = Admin(
     app,
-    'Blender Today',
+    'Dillo',
     index_view=CustomAdminIndexView(),
     base_template='admin/layout_admin.html'
 )

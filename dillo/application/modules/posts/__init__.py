@@ -422,7 +422,7 @@ def delete(uuid):
 @posts.route('/p/feed/latest.atom')
 @cache.cached(60*5)
 def feed():
-    feed = AtomFeed('Blender.Today - Posts',
+    feed = AtomFeed("{0} - Posts".format(app.config['SETTINGS_TITLE']),
                     feed_url=request.url, url=request.url_root)
     posts = Post.query\
         .filter_by(status='published')\

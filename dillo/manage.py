@@ -62,7 +62,7 @@ def setup():
     db.session.commit()
     print("Added default News category")
     # Add default post types
-    post_types = ['link', 'post']
+    post_types = ['link', 'text']
     for t in post_types:
         post_type = PostType(
             name=t,
