@@ -111,7 +111,7 @@ function notificationsResize(){
 
 	if ($('#notifications').height() > height){
 		$('#notifications').css({
-				'max-height' : height,
+				'max-height' : height / 2,
 				'overflow-y' : 'scroll'
 			}
 		);
