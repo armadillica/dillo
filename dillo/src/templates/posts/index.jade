@@ -91,6 +91,17 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 								| {{post.rating_delta}} {% if post.rating_delta == 1 or post.rating_delta == -1 %}point{% else %}points{% endif %}
 								| ·
 
+							a.post-index-item-details-type(
+								href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}")
+								| {% if post.post_type.url == 'link' %}
+								img(
+									title="Link",
+									src="http://www.google.com/s2/favicons?domain={{post.content}}")
+								| {% else %}
+								i.fa.fa-file-text-o(title="Text Post")
+								| {% endif %}
+								|  ·
+
 							a(href="{{url_for('index')}}p/{{post.category.url}}").
 								{{post.category}}
 								·
@@ -185,8 +196,14 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 							span.separator
 
 						a.post-index-item-details-type(
-							href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}").
-							{{post.post_type}}
+							href="{% if post.post_type.url == 'link' %}{{post.content}}{% else %}{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}{% endif %}")
+							| {% if post.post_type.url == 'link' %}
+							img(
+								title="Link",
+								src="http://www.google.com/s2/favicons?domain={{post.content}}")
+							| {% else %}
+							i.fa.fa-file-text-o(title="Text Post")
+							| {% endif %}
 
 						span.separator
 
