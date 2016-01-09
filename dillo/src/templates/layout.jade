@@ -8,7 +8,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		meta(name="viewport",
 				 content="width=device-width, initial-scale=1")
 
-		title {% block page_title %}{% endblock %}{{ config.SETTINGS_TITLE | safe }} - {{ config.SETTINGS_TAGLINE }}}
+		title {% block page_title %}{% endblock %}{{ config.SETTINGS_TITLE | safe }} - {{ config.SETTINGS_TAGLINE }}
 
 		meta(name="keywords", content="{{ config.SETTINGS_KEYWORDS }}")
 		meta(name="description", content="{{ config.SETTINGS_TAGLINE }}")
@@ -18,7 +18,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 
 		// Open Graph
 		meta(property="og:site_name", content="{{ config.SETTINGS_TITLE | safe }}")
-		meta(property="og:description", content="{{ config.SETTINGS_TAGLINE }}}")
+		meta(property="og:description", content="{{ config.SETTINGS_TAGLINE }}")
 		| {% block og %}{% endblock %}
 
 		// Styles
