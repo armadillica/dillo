@@ -7,6 +7,7 @@ from flask import session
 from flask import Blueprint
 
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import ProgrammingError
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.cache import Cache
 from flask_mail import Mail
@@ -52,12 +53,12 @@ if app.config.get('CACHE_REDIS_HOST') and app.config['CACHE_TYPE'] == 'redis':
 else:
     redis_client = None
 
-bugsnag.configure(
-  api_key = app.config['BUGSNAG_KEY'],
-  project_root = app.config['BUGSNAG_APP_PATH']
-)
-handle_exceptions(app)
-
+if app.config.get('BUGSNAG_KEY'):
+    bugsnag.configure(
+      api_key = app.config['BUGSNAG_KEY'],
+      project_root = app.config['BUGSNAG_APP_PATH']
+    )
+    handle_exceptions(app)
 
 # Config at https://console.developers.google.com/
 if app.config.get('SOCIAL_GOOGLE'):
@@ -147,6 +148,8 @@ from application.helpers.settings import load_settings
 try:
     load_settings()
 except OperationalError:
+    pass
+except ProgrammingError:
     pass
 
 @app.context_processor
