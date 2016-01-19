@@ -12,3 +12,5 @@ class FormSettings(Form):
     tagline = StringField('Tagline')
     footer = TextAreaField('Footer')
     credits = StringField('Site credits')
+    keywords = StringField('Keywords')
+    twitter_username = StringField('Twitter Username')

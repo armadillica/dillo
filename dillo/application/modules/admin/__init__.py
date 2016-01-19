@@ -96,7 +96,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
     def index(self):
         settings_list = []
         for setting_name in ['logo_alt', 'title', 'tagline', 'title_html',
-            'footer', 'credits']:
+            'footer', 'credits', 'keywords', 'twitter_username']:
             setting = Setting.query.filter_by(name=setting_name).first()
             settings_list.append((setting_name, setting.value))
         settings_multi_dict = MultiDict(settings_list)
@@ -134,6 +134,10 @@ class CustomAdminIndexView(admin.AdminIndexView):
             footer.value = form_settings.footer.data
             credits = Setting.query.filter_by(name='credits').first()
             credits.value = form_settings.credits.data
+            keywords = Setting.query.filter_by(name='keywords').first()
+            keywords.value = form_settings.keywords.data
+            twitter_username = Setting.query.filter_gy(name='twitter_username').first()
+            twitter_username = form_settings.twitter_username.data
             db.session.commit()
             # Reload the settings
             load_settings()
