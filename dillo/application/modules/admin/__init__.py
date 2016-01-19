@@ -136,7 +136,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
             credits.value = form_settings.credits.data
             keywords = Setting.query.filter_by(name='keywords').first()
             keywords.value = form_settings.keywords.data
-            twitter_username = Setting.query.filter_gy(name='twitter_username').first()
+            twitter_username = Setting.query.filter_by(name='twitter_username').first()
             twitter_username = form_settings.twitter_username.data
             db.session.commit()
             # Reload the settings
