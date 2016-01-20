@@ -33,5 +33,6 @@ def load_settings():
         app.config[config_key] = s.value
 
     # Extra update for the logo image path
+    app.config['STATIC_IMAGES'] = '/data/git/dillo/dillo/application/static/images/'
     app.config['SETTINGS_LOGO_IMAGE'] = '/static/images/' + app.config['SETTINGS_LOGO_IMAGE']
     app.config['SETTINGS_FAVICON'] = '/static/images/' + app.config['SETTINGS_FAVICON']
