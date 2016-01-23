@@ -24,6 +24,9 @@ import config
 app = Flask(__name__,
     template_folder='templates',
     static_folder='static')
+# Static and Template folders are overridden in settings.py, based on user
+# preferences. If a theme is set, it will alter the paths pointing to the
+# custom templates and static provided.
 
 app.config.from_object(config.Deployment)
 

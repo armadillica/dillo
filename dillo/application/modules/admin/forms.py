@@ -12,3 +12,4 @@ class FormSettings(Form):
     tagline = StringField('Tagline')
     footer = TextAreaField('Footer')
     credits = StringField('Site credits')
+    theme = StringField('Theme')

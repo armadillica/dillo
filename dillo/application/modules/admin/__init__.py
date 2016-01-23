@@ -134,6 +134,8 @@ class CustomAdminIndexView(admin.AdminIndexView):
             footer.value = form_settings.footer.data
             credits = Setting.query.filter_by(name='credits').first()
             credits.value = form_settings.credits.data
+            theme = Settings.query.filter_by(name='theme').first()
+            theme.value = form_settings.theme.data
             db.session.commit()
             # Reload the settings
             load_settings()
@@ -156,4 +158,3 @@ backend = Admin(
     index_view=CustomAdminIndexView(),
     base_template='admin/layout_admin.html'
 )
-
