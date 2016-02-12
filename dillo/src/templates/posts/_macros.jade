@@ -69,7 +69,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 	| {# Comment Text #}
 	div.post-view-comments-item-content(
 			id='comment-text-id-{{comment.id}}')
-		| {{comment.content|safe}}
+		div.post-view-comments-item-text {{comment.content|safe}}
 
 	| {# Comment Details #}
 	.post-view-comments-item-details

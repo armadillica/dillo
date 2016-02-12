@@ -57,13 +57,13 @@ $(document).ready(function() {
   })();
 
   // CKEditor Stuff
-  CKEDITOR.replace( 'post_content', {
-    customConfig: '/static/js/ckeditor/config.js',
-  });
+  // CKEDITOR.replace( 'post_content', {
+  //   customConfig: '/static/js/ckeditor/config.js',
+  // });
 
-  CKEDITOR.instances['post_content'].on('change', function() {
-    CKEDITOR.instances['post_content'].updateElement()
-  });
+  // CKEDITOR.instances['post_content'].on('change', function() {
+  //   CKEDITOR.instances['post_content'].updateElement()
+  // });
 
   // Change type of submission
   $('.select-change').click(function(){

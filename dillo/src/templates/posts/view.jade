@@ -463,8 +463,8 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 							| {{ form.hidden_tag() }}
 
-							.form-group
-								| {{ form.content(class='form-control', id='post_comment') }}
+							.form-group.comment-reply-form
+								| {{ form.content(class='form-control comment-reply-field', id='post_comment') }}
 								| {% if form.content.errors %}
 								ul.error
 									| {% for error in form.content.errors %}
@@ -473,6 +473,8 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 								| {% endif %}
 
 							| {{ form.parent_id }}
+
+							.comment-reply-preview
 
 							button#submit-post.btn.btn-default.btn-squishy.btn-success.submit(type="submit")
 								i.fa.fa-check
@@ -493,14 +495,42 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 | {% block footer_scripts %}
 script(type="text/javascript").
+
+	$( ".post-view-comments-item-text" ).each(function(i) {
+		var text = $(this).text();
+		$(this).html(convert(text));
+	});
+
 	{% if current_user.is_authenticated() %}
 
-		CKEDITOR.replace('post_comment', {
-			customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}',
+		/* Build the markdown preview when typing in textarea */
+		$(function() {
+			var $textarea = $('.comment-reply-field'),
+					$container = $('.comment-reply-form'),
+					$preview = $('.comment-reply-preview');
+
+			// As we type in the textarea
+			$textarea.keyup(function() {
+
+				// Convert markdown
+				$preview.html(convert($textarea.val()));
+
+				// While we are at it, style when empty
+				if ($textarea.val()) {
+					$container.addClass('filled');
+				} else {
+					$container.removeClass('filled');
+				};
+
+			}).trigger('keyup');
 		});
 
-		CKEDITOR.disableAutoInline = true;
-		CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
+		//- CKEDITOR.replace('post_comment', {
+		//- 	customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}',
+		//- });
+
+		//- CKEDITOR.disableAutoInline = true;
+		//- CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
 
 		var comment_reply_editor, html = '';
 
@@ -561,8 +591,10 @@ script(type="text/javascript").
 
 			var comment = $(this).attr('comment');
 			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default btn-block btn-success"><i class="fa fa-check"></i> Submit Reply</span></div>');
-			var config = { customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' };
-			comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
+
+			//- var config = { customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' };
+			//- comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
+			// use detach
 		});
 
 
@@ -588,6 +620,7 @@ script(type="text/javascript").
 
 		var print_comment = function(comment, reply) {
 		if (typeof(reply)==='undefined') reply = '';
+
 		comment =
 		'<div class="post-view-comments-item '+ reply +'flash"> \
 			<div class="row"> \
@@ -597,8 +630,8 @@ script(type="text/javascript").
 					</div>\
 				</div>\
 				<div class="col-md-11 col-sm-11 col-xs-10">\
-					<div class="post-view-comments-item-content">\
-						' + comment['content'] + '\
+					<div class="post-view-comments-item-text">\
+						' + convert(comment['content']) + '\
 					</div>\
 					<div class="post-view-comments-item-details">\
 						<span>' + comment['creation_date'] + '</span>\
@@ -618,8 +651,9 @@ script(type="text/javascript").
 				$(".post-view-comments-empty").hide();
 				c = print_comment(data['comment']);
 				$(".post-view-comments-submit").before(c);
+
 				// Clear the form
-				CKEDITOR.instances['post_comment'].setData('');
+				$(".comment-reply-field").val('');
 			});
 		});
 
