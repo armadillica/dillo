@@ -147,10 +147,14 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 
 			| {# Delete #}
 			a(title="Delete comment",
+				href="#",
+				class="edit-comment-delete-fake")
+				i.fa.fa-trash
+			a(title="Delete comment",
 				href="{{url_for('comments.delete', comment_id=comment.id)}}",
 				data-comment-id="{{comment.id}}",
 				class="edit-comment-delete")
-				i.fa.fa-trash
+				|  Sure?
 		| {% endif %}
 
 		| {# Reply #}

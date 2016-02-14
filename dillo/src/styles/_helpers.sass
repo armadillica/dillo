@@ -35,6 +35,14 @@ $screen-md-max: $screen-lg-min - 1
 	@media print
 		@content
 
+=clearfix
+	clear: both
+	&:after
+		// Basically same as .clearfix from bootstrap
+		clear: both
+		display: block
+		content: ' '
+
 =box-shadow($x: 1px, $y: 1px, $blur: 3px, $color: $color_text, $alpha: 1)
 	-webkit-box-shadow: $x $y $blur rgba($color, $alpha) !important
 	-moz-box-shadow: $x $y $blur rgba($color, $alpha) !important
@@ -110,3 +118,80 @@ $screen-md-max: $screen-lg-min - 1
 	overflow: hidden
 	white-space: nowrap
 	text-overflow: ellipsis
+
+
+=text-body
+
+	p
+		margin-bottom: 20px
+		line-height: 1.6em
+		word-break:	break-word
+		+media-xs
+			margin-bottom: 10px
+
+	h1, h2, h3, h4, h5, h6, blockquote
+		word-break: break-word
+
+	h1
+		font-size: 2em
+	h2
+		font-size: 1.5em
+	h3
+		font-size: 1.3em
+	h4
+		font-size: 1.2em
+	h4
+		font-size: 1.1em
+
+	pre, code
+		font-size: .9em
+		padding: 10px
+		margin: 10px 0
+		color: #c7254e
+		background-color: #f9f2f4
+		border: none
+		border-top: thin solid rgba(#c7254e, .1)
+		border-bottom: thin solid rgba(#c7254e, .1)
+		word-break: break-word
+		border-radius: 3px
+
+	ul
+		list-style-type: none
+		padding-left: 20px
+		margin: 20px 0 25px 0
+		+media-xs
+			padding-left: 10px
+
+		li
+			margin-bottom: 10px
+			word-break: break-word
+
+			&:before
+				content: '·'
+				position: relative
+				font-weight: bolder
+				left: -10px
+				color: lighten($color_text, 20%)
+
+	img
+		max-width: 100%
+
+	iframe
+		border: none
+
+		width: 100%
+		max-width: 100%
+		min-height: 476px
+
+		+media-xs
+			min-height: 334px
+			max-height: 334px
+		+media-sm
+			min-height: 434px
+			max-height: 434px
+		+media-md
+			min-height: 422px
+			max-height: 422px
+		+media-lg
+			min-height: 476px
+			max-height: 476px

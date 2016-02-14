@@ -6,7 +6,7 @@
 body
 	font-family: $font_body
 	font-size: $font_size
-	color: $color_text
+	color: $color-text
 	/* This is for the footer actually, */
 	/* page color is in page-container  */
 	background-color: lighten(desaturate($color_brand_main, 20%), 35%)
@@ -39,7 +39,7 @@ blockquote
 	height: 15px
 	width: 1px
 	margin: 0 7px
-	background-color: lighten($color_text, 60%)
+	background-color: lighten($color-text, 60%)
 	vertical-align: middle
 	+media-xs
 		height: 10px
@@ -52,7 +52,7 @@ blockquote
 	margin-bottom: 0
 
 .navbar li a
-	color: lighten($color_text, 20%)
+	color: lighten($color-text, 20%)
 
 	&:hover
 		color: $color_brand_main !important
@@ -170,7 +170,7 @@ blockquote
 	& .nc-item, & .nc-loading
 		position: relative
 		padding: 10px 0
-		border-top: thin solid lighten($color_text, 62%)
+		border-top: thin solid lighten($color-text, 62%)
 		margin: 0
 		width: 100%
 		display: block
@@ -183,10 +183,10 @@ blockquote
 
 		&.is_read
 			opacity: 0.6
-			color: lighten($color_text, 20%)
+			color: lighten($color-text, 20%)
 
 		&.nc-item-empty
-			color: lighten($color_text, 20%)
+			color: lighten($color-text, 20%)
 			text-align: center
 			padding: 24px 0
 			user-select: none
@@ -216,16 +216,16 @@ blockquote
 		padding-top: 5px
 		margin-left: 40px
 		font-size: .85em
-		color: lighten($color_text, 20%)
+		color: lighten($color-text, 20%)
 		& a
-			color: lighten($color_text, 20%)
+			color: lighten($color-text, 20%)
 			&:hover
-				color: lighten($color_text, 30%)
+				color: lighten($color-text, 30%)
 
 	& .nc-loading
 		text-align: center
 		font-size: 1.5em
-		color: lighten($color_text, 50%)
+		color: lighten($color-text, 50%)
 
 	& .nc-read_toggle,
 	& .nc-subscription_toggle
@@ -288,7 +288,7 @@ blockquote
 	border: thin solid darken($color_background, 3%)
 	overflow: hidden
 	color: darken($color_brand_main, 10%)
-	+border-radius(3px)
+	border-radius: 3px
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
 	+media-xs
@@ -312,7 +312,7 @@ blockquote
 			right: 0
 			text-align: right
 			font-size: 1em
-			background-color: rgba(darken($color_text, 20%), .6)
+			background-color: rgba(darken($color-text, 20%), .6)
 			color: white
 			padding: 10px 15px
 			border-bottom-left-radius: 3px
@@ -413,7 +413,7 @@ blockquote
 	background-size: cover
 	background-repeat: no-repeat
 	background-position: 50% 50%
-	+border-radius(3px)
+	border-radius: 3px
 	+transition(background-position, 250ms, ease)
 
 .post-index-item-details
@@ -421,7 +421,7 @@ blockquote
 	position: relative
 	z-index: 1
 	font-size: 0.9em
-	color: lighten($color_text, 30%)
+	color: lighten($color-text, 30%)
 	padding: 3px 0 15px 0
 	+media-xs
 		font-size: 0.8em
@@ -441,7 +441,7 @@ blockquote
 		padding-left: 175px
 
 	& a
-		color: lighten($color_text, 20%)
+		color: lighten($color-text, 20%)
 		&:hover
 			color: $color_brand_secondary
 
@@ -462,7 +462,7 @@ blockquote
 			margin-left: 5px
 
 	& .deleted
-		color: lighten($color_text, 50%)
+		color: lighten($color-text, 50%)
 		+user-select-none
 
 .post-index-item-details-rating
@@ -499,7 +499,7 @@ blockquote
 .post-index-item-picture-expand,
 .post-index-item-picture-collapse
 	cursor: pointer
-	color: lighten($color_text, 30%)
+	color: lighten($color-text, 30%)
 	position: relative
 	top: 1px
 	margin-left: 5px
@@ -544,7 +544,7 @@ blockquote
 		padding: 0 0 2px 0
 		display: block
 		position: relative
-		color: lighten($color_text, 30%)
+		color: lighten($color-text, 30%)
 		top: 0
 		+transition(top, 50ms, ease-out)
 		+media-xs
@@ -565,7 +565,7 @@ blockquote
 
 .post-index-empty
 	margin: 30px auto
-	color: lighten($color_text, 50%)
+	color: lighten($color-text, 50%)
 	text-align: center
 	+user-select-none
 	& h3
@@ -579,13 +579,13 @@ blockquote
 	width: 100px
 	height: 100px
 	color: white
-	background-color: lighten($color_text, 55%)
+	background-color: lighten($color-text, 55%)
 	background-size: cover !important
 	text-align: center
 	position: relative
 	top: 12px
 	z-index: 2
-	+box-shadow(2px, 2px, 0, black, .1)
+	box-shadow: 2px 2px 0 rgba(black, .1)
 	border-radius: 50%
 	+transition(opacity, .25s, ease)
 
@@ -693,7 +693,7 @@ blockquote
 .post-view-container
 	background-color: white
 	border: thin solid darken($color_background, 3%)
-	+border-radius(3px)
+	border-radius: 3px
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
 #post-edit-title
@@ -755,7 +755,7 @@ blockquote
 		font-size: 1.3em
 		padding: 0 0 2px 0
 		display: block
-		color: lighten($color_text, 30%)
+		color: lighten($color-text, 30%)
 	&:hover, &:focus
 		text-decoration: none
 	.up:hover, .up.rated
@@ -764,6 +764,8 @@ blockquote
 		color: $color_downvote
 
 .post-view-content
+	+text-body
+
 	font-size: 1.1em
 	line-height: 1.7em
 	padding: 10px 25px 25px 95px
@@ -776,38 +778,8 @@ blockquote
 		padding: 10px
 		margin: 10px
 
-	& p
-		margin-bottom: 20px
-		word-break:	break-word
-		+media-xs
-			margin-bottom: 10px
-
-	& h1
-		font-size: 2em
-
-	& h2
-		font-size: 1.5em
-
-	& img
-		max-width: 100%
-
 	// Embedded Media
 	& iframe
-		width: 100%
-		min-height: 476px
-		+box-shadow-none
-		+media-xs
-			min-height: 334px
-			max-height: 334px
-		+media-sm
-			min-height: 434px
-			max-height: 434px
-		+media-md
-			min-height: 422px
-			max-height: 422px
-		+media-lg
-			min-height: 476px
-			max-height: 476px
 
 		// Twitter Embed Overrides
 		&#twitter-widget-0, &.twitter-tweet, &.twitter-tweet-rendered
@@ -835,39 +807,17 @@ blockquote
 			padding: 0 20px !important
 			margin: 0 0 20px 0 !important
 
-	& ul
-		list-style-type: none
-		padding-left: 20px
-		margin: 20px 0 25px 0
-		+media-xs
-			padding-left: 10px
-
-		& li
-			margin-bottom: 10px
-			word-break: break-word
-
-		& li:before
-			content: '·'
-			position: relative
-			font-weight: bolder
-			left: -10px
-			color: lighten($color_text, 20%)
 
 	& pre, & code
 		font-size: 1em
 		padding: 2px 4px
-		color: #c7254e
-		background-color: #f9f2f4
-		border: none
-		word-break: break-word
-		+border-radius(3px)
 
 	&.action-edit
-		border: 3px dashed lighten($color_text, 40%)
+		border: 3px dashed lighten($color-text, 40%)
 
 	&.action-edit:after
 		content: "editing"
-		color: lighten($color_text, 40%)
+		color: lighten($color-text, 40%)
 		position: absolute
 		bottom: 5px
 		right: 10px
@@ -948,7 +898,7 @@ blockquote
 
 .post-view-content-image-link
 	font-size: 0.9em
-	color: lighten($color_text, 20%)
+	color: lighten($color-text, 20%)
 	text-decoration: none !important
 
 .row.post-view-details-container
@@ -965,16 +915,16 @@ blockquote
 	border-bottom: thick solid darken($color_background, 2%)
 
 	&.ab-light
-		color: $color_text
+		color: $color-text
 		text-shadow: 1px 1px 0 rgba(white, .2)
 		& .post-view-details-meta
-			color: $color_text
+			color: $color-text
 
 			a
-				color: $color_text
+				color: $color-text
 			& .author-karma
-				color: $color_text
-				border-color: rgba($color_text, .5)
+				color: $color-text
+				border-color: rgba($color-text, .5)
 
 		& .separator
 			background-color: darken($color_brand_main, 15%)
@@ -1102,11 +1052,11 @@ blockquote
 			cursor: pointer
 			position: relative
 			background-color: $color_background
-			border: 2px solid darken($color_background, 20%)
+			border: 2px solid $color_background
 			+user-select-none
 			border-radius: 50%
 			+text-shadow(1px, 1px, 0, black, .1)
-			+box-shadow(1px, 2px, 0, black, .1)
+			box-shadow: 1px 2px 0 rgba(black, .1)
 			+transition(all, 0.1s, ease)
 
 			+media-xs
@@ -1115,7 +1065,7 @@ blockquote
 				margin-bottom: 3px
 			&:hover, &:focus
 				background-color: white
-				border: 2px solid darken($color_background, 15%)
+				border: 2px solid $color_background
 				text-decoration: none
 			&:active
 				background-color: darken($color_background, 25%)
@@ -1132,7 +1082,8 @@ blockquote
 
 			&.edit
 				&:hover
-					background-color: darken($color_success, 20%)
+					background-color: $color_success
+					color: white
 
 			&.delete
 				background-color: $color_brand_secondary
@@ -1144,10 +1095,12 @@ blockquote
 			&.save
 				display: none
 				opacity: 0
-				background-color: darken(saturate($color_success, 30%), 15%)
+				background-color: $color_success
+				color: white
 
 				&:hover
-					background-color: $color_success
+					background-color: lighten($color_success, 5%)
+					color: white
 				&:active
 					background-color: darken($color_success, 20%)
 
@@ -1195,7 +1148,7 @@ blockquote
 				+text-shadow-none
 				&:hover
 					background-color: white
-					color: rgba($color_brand_main, .05)
+					color: $color_brand_main
 				& i
 					position: relative
 					top: 5px
@@ -1206,7 +1159,10 @@ blockquote
 						left: 8px
 
 		& #social-toggle.activato
-			background-color: darken($color_background, 20%)
+			background-color: $color_background
+
+			&:hover
+				background-color: white
 
 .post-view-details-avatar,
 .post-view-comments-avatar
@@ -1217,7 +1173,7 @@ blockquote
 		width: 50px
 		height: 50px
 		display: block
-		background-color: lighten($color_text, 65%)
+		background-color: lighten($color-text, 65%)
 		padding: 0
 		border-radius: 50%
 		+text-shadow-none
@@ -1227,7 +1183,7 @@ blockquote
 		&:after
 			content: '\f118'
 			font-family: 'FontAwesome'
-			color: lighten($color_text, 60%)
+			color: lighten($color-text, 60%)
 			font-size: 3.2em
 			top: -7px
 			position: relative
@@ -1276,7 +1232,7 @@ blockquote
 		&.network_member
 			color: #d91b5c
 		&.cloud_member
-			color: $color_text
+			color: $color-text
 			font-size: 1.2em
 			left: 5px
 
@@ -1291,7 +1247,7 @@ blockquote
 	width: 23px
 	height: 23px
 	left: 42px
-	+box-shadow(2px, 2px, 0, black, .1)
+	box-shadow: 2px 2px 0 rgba(black, .1)
 
 	+media-xs
 		left: 30px
@@ -1331,7 +1287,7 @@ blockquote
 		&.cloud_member
 			font-size: 1.1em
 			left: 4px
-			color: lighten($color_text, 20%)
+			color: lighten($color-text, 20%)
 
 .post-view-details-underlay
 	position: absolute
@@ -1346,9 +1302,9 @@ blockquote
 .post-view-comments
 	padding: 0
 	margin: 0
-	border-top: thin solid lighten($color_text, 65%)
+	border-top: thin solid lighten($color-text, 65%)
 
-	& .title
+	& .comments-title
 		font-family: $font_headings
 		font-weight: lighter
 		padding: 30px 0 15px 15px
@@ -1359,7 +1315,7 @@ blockquote
 		& small
 			font-family: $font_body
 			font-size: 0.8em
-			color: lighten($color_text, 30%)
+			color: lighten($color-text, 30%)
 			margin: 0 10px
 
 .post-comment-reply
@@ -1372,9 +1328,9 @@ blockquote
 	display: block
 	width: 100%
 	background-color: white
-	padding: 15px 30px 20px 15px
+	padding: 20px 30px 20px 15px
 	margin: 0
-	border-top: thin solid lighten($color_text, 65%)
+	border-top: thin solid lighten($color-text, 65%)
 	position: relative
 
 	+media-xs
@@ -1382,7 +1338,7 @@ blockquote
 
 	&:hover
 		& .edit-comment-toggle,
-		& .edit-comment-delete,
+		& .edit-comment-delete-fake,
 		& .post-comment-reply
 			visibility: visible
 
@@ -1394,13 +1350,13 @@ blockquote
 			font-size: 85%
 			position: relative
 			left: -10px
-			color: lighten($color_text, 20%)
+			color: lighten($color-text, 20%)
 
 	&.odd
 		background-color: darken(white, 5%)
 	&.reply
 		padding-left: 80px
-		border-top: thin dashed lighten($color_text, 60%)
+		border-top: thin dashed lighten($color-text, 60%)
 		border-left: thick solid $color_brand_main
 		+media-xs
 			padding-left: 10px
@@ -1419,11 +1375,9 @@ blockquote
 	&.flash
 		+text-shadow-none
 		animation: effect-flash-fadeout 1s ease forwards
-		& .post-view-comments-item-content,
-		& .post-view-comments-item-details
-			margin-left: 15px
-			+media-xs
-				margin-left: -5px
+
+		.author
+			color: $color_brand_main
 
 	& .edit-comment-toggle
 		visibility: hidden
@@ -1434,32 +1388,154 @@ blockquote
 		display: none
 		color: darken(saturate($color_success, 10%), 20%)
 
-	& .edit-comment-delete
+	& .edit-comment-delete-fake
 		visibility: hidden
 		padding-left: 15px
 		+media-xs
 			visibility: visible
+	& .edit-comment-delete
+		display: none
+		padding-left: 15px
+		color: $color-danger
 
 	& .post-view-comments-item-action
 		float: right
 
+.post-view-comments-item, .post-view-comments-submit
+	.comment-reply-field
+		resize: none
+	.comment-edit-field
+		width: 100%
+		border: none
+		padding: 0
+		box-shadow: none
+		&:focus, &:active, &:hover
+			box-shadow: none
 
-div#post-comment-reply-container
-	padding: 20px 20px 60px 90px
-	background-color: darken($color_background, 5%)
-	border-top: 2px dashed white
-	border-bottom: thick solid darken($color_background, 10%)
-	+media-xs
-		padding: 20px 20px 60px 20px
+	.comment-reply-preview
+		display: none
+		width: 85%
+		padding: 25px 15px 1px 15px
+		position: relative
+		background-color: darken(white, 5%)
+		border-top: 2px solid darken(white, 10%)
+		border-bottom-left-radius: 3px
+		border-bottom-right-radius: 3px
 
-#form-comment-reply-submit
-	margin-top: 10px
-	background-color: $color_brand_secondary
-	border: none
-	width: 50%
-	float: right
-	display: block
-	+box-shadow(2px, 2px, 0, black, .1)
+		+text-body
+
+		&:before
+			content: 'Live Preview · Markdown Supported'
+			position: absolute
+			top: 5px
+			right: 15px
+			font-size: .8em
+			color: $color-text-dark-secondary
+			transition: color 150ms ease-in-out
+
+			+media-md
+				visibility: visible
+			+media-sm
+				visibility: hidden
+
+	.comment-form-container
+		display: flex
+		flex-wrap: nowrap
+		align-items: stretch
+		justify-content: center
+		margin-bottom: 0
+
+		&.filled
+			.comment-form-buttons
+				.submit
+					background-color: rgba($color-success, .85)
+					color: white
+					span
+						color: white
+
+				.cancel, .md
+					display: block
+
+		textarea, .form-group .form-control
+			box-shadow: none
+			border: none
+			border-right: 2px solid white
+			border-radius: 0
+			border-top-left-radius: 3px
+			border-bottom-left-radius: 3px
+			width: 85%
+			background-color: white
+
+			&:focus
+				border-right-color: $color-success
+
+		.comment-form-buttons
+			width: 15%
+			min-width: 90px
+			max-height: 60px
+			background-color: white
+			color: $color-success
+			position: relative
+
+			.submit
+				transition: background-color 150ms ease-in-out, color 150ms ease-in-out
+				color: $color-success
+				border: none
+				border-radius: 0
+				border-top-right-radius: 3px
+				border-bottom-right-radius: 3px
+				background-color: transparent
+				position: absolute
+				top: 0
+				left: 0
+				right: 0
+				bottom: 0
+				width: 100%
+				height: 100%
+				font-family: $font-headings
+
+				&:hover
+					background-color: rgba($color-success, .65)
+					color: white
+					span
+						color: white
+
+				i.icon-send
+					padding-right: 7px
+
+				span
+					text-align: center
+					transition: color 150ms ease-in-out
+					display: block
+					font-size: .7em
+					color: rgba($color-success, .7)
+
+				&.sending
+					pointer-events: none
+					cursor: not-allowed
+					opacity: .8
+
+				&.fail
+					background-color: $color-danger
+
+			.cancel
+				display: none
+				font-size: .8em
+				color: rgba($color-text, .7)
+				width: 100%
+				position: absolute
+				bottom: -20px
+				text-align: center
+				cursor: pointer
+
+			.md
+				font-size: .8em
+				display: none
+				width: 100%
+				position: absolute
+				bottom: -55px
+				text-align: center
+
 
 @-webkit-keyframes effect-flash-fadeout
 	0%
@@ -1468,7 +1544,7 @@ div#post-comment-reply-container
 		border-left: thick solid white
 	100%
 		opacity: 1
-		color: $color_text
+		color: $color-text
 		border-left: thick solid $color_brand_secondary
 
 @keyframes effect-flash-fadeout
@@ -1478,7 +1554,7 @@ div#post-comment-reply-container
 		border-left: thick solid white
 	100%
 		opacity: 1
-		color: $color_text
+		color: $color-text
 		border-left: thick solid $color_brand_secondary
 
 .post-view-comments-avatar
@@ -1508,7 +1584,7 @@ div#post-comment-reply-container
 		width: 50px
 		height: 50px
 		display: block
-		background-color: lighten($color_text, 65%)
+		background-color: lighten($color-text, 65%)
 		padding: 0
 		border-radius: 50%
 		+media-xs
@@ -1517,7 +1593,7 @@ div#post-comment-reply-container
 		&:after
 			content: '\f118'
 			font-family: 'FontAwesome'
-			color: lighten($color_text, 60%)
+			color: lighten($color-text, 60%)
 			font-size: 3.2em
 			top: -7px
 			position: relative
@@ -1526,7 +1602,7 @@ div#post-comment-reply-container
 
 .post-view-comments-item-header
 	display: block
-	color: lighten($color_text, 30%)
+	color: lighten($color-text, 30%)
 	margin-bottom: 10px
 
 	+media-xs
@@ -1540,7 +1616,9 @@ div#post-comment-reply-container
 
 .post-view-comments-item-content
 	display: block
-	padding: 0 0 20px 0
+	+text-body
+
+	padding: 0
 
 	+media-xs
 		clear: both
@@ -1557,39 +1635,19 @@ div#post-comment-reply-container
 	& p, & h1, & h2, & blockquote
 		word-break: break-word
 
-	& h1
-		font-size: 2em
-	& h2
-		font-size: 1.6em
 	& pre, & code
 		font-size: .9em
-		padding: 10px
-		margin: 10px 0
-		color: #c7254e
-		background-color: #f9f2f4
-		border: none
-		border-top: thin solid rgba(#c7254e, .1)
-		border-bottom: thin solid rgba(#c7254e, .1)
-		word-break: break-word
 		border-radius: 0
-	& img
-		max-width: 100%
-
-	& .btn.submit
-		width: 50%
-		float: right
-		+media-xs
-			float: none
-			width: 100%
 
 .post-view-comments-item-details
 	display: block
 	clear: both
-	color: lighten($color_text, 30%)
+	color: lighten($color-text, 30%)
 	font-size: 0.9em
+	padding-top: 10px
+
 	+media-xs
 		padding-left: 0
-		padding-top: 10px
 		font-size: 0.8em
 	+media-sm
 		margin-left: 70px
@@ -1599,7 +1657,7 @@ div#post-comment-reply-container
 		margin-left: 70px
 
 	& .author
-		color: lighten($color_text, 20%)
+		color: lighten($color-text, 20%)
 
 	& .flag:hover, & .flag:focus
 		text-decoration: none
@@ -1612,7 +1670,7 @@ div#post-comment-reply-container
 
 .post-view-comments-item-rate
 	padding: 8px
-	color: lighten($color_text, 30%)
+	color: lighten($color-text, 30%)
 	&:hover, &:focus
 		text-decoration: none
 	&:hover.up, &.up.rated
@@ -1626,23 +1684,41 @@ div#post-comment-reply-container
 .post-view-comments-submit
 	display: block
 	width: 100%
-	padding: 15px 15px 25px 15px
+	padding: 20px 15px
 	margin: 0
-
-	& h3
-		font-weight: lighter
-		margin-left: 80px
-		+media-xs
-			margin-left: 0
+	background-color: darken($color_background, 1%)
+	+clearfix
 
 	+media-xs
 		& .post-view-comments-avatar
 			display: none
 
+	&.is_reply
+		padding: 15px 15px 15px 80px
+		background-color: darken($color_background, 2%)
+		border-left: thick solid $color_brand_main
+
+		textarea
+			background-color: white
+
+		+media-xs
+			padding: 20px 20px 60px 20px
+
+		.comment-reply-preview
+			+media-xs
+				width: 81%
+			+media-sm
+				width: 82%
+			+media-md
+				width: 82%
+			+media-lg
+				width: 85%
+
+
 .post-view-comments-empty
 	font-size: 1.2em
 	padding: 0 0 0 15px
-	color: lighten($color_text, 40%)
+	color: lighten($color-text, 40%)
 
 .notification-post-edit,
 .notification-post-saved,
@@ -1670,7 +1746,7 @@ div#post-comment-reply-container
 /* //post-view */
 
 .post-title-url
-	color: lighten($color_text, 25%)
+	color: lighten($color-text, 25%)
 	font-size: 0.6em
 	visibility: hidden
 	display: inline-block
@@ -1685,7 +1761,7 @@ div#post-comment-reply-container
 		left: -1.4em
 		top: 0.4em
 		font-size: 0.8em
-		color: lighten($color_text, 40%)
+		color: lighten($color-text, 40%)
 
 /* post-submit */
 .post-submit-div-submit
@@ -1748,7 +1824,7 @@ div#post-comment-reply-container
 	top: 50%
 	transform: translateY(-50%)
 	left: 25px
-	color: lighten($color_text, 50%)
+	color: lighten($color-text, 50%)
 	font-size: 1.6em
 
 	& img
@@ -1760,7 +1836,7 @@ div#post-comment-reply-container
 	position: absolute
 	top: 50%
 	transform: translateY(-50%)
-	color: lighten($color_text, 40%)
+	color: lighten($color-text, 40%)
 	right: 30px
 	font-size: 1.8em
 
@@ -1916,7 +1992,7 @@ div#post-comment-reply-container
 	margin: 0 0 10px 0
 	padding: 0
 	border: thin solid darken($color_background, 3%)
-	+border-radius(3px)
+	border-radius: 3px
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
 	& .page-view-content
@@ -1928,7 +2004,7 @@ div#post-comment-reply-container
 
 .user-view-index
 	& h4
-		color: lighten($color_text, 30%)
+		color: lighten($color-text, 30%)
 		font-weight: lighter
 
 .user-view-info
@@ -1957,7 +2033,7 @@ div#post-comment-reply-container
 		margin: 15px 0 0 80px
 		padding-left: 60px
 		min-height: 80px
-		+border-radius(3px)
+		border-radius: 3px
 		+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 		+media-xs
 			margin: 15px 0 0 0
@@ -1982,14 +2058,14 @@ div#post-comment-reply-container
 	& .user-view-info-roles
 		margin-top: 5px
 		font-size: 0.9em
-		color: lighten($color_text, 10%)
+		color: lighten($color-text, 10%)
 		+media-xs
 			margin-top: 10px
 
 	& .user-view-info-meta
 		margin: 10px 0
 		font-size: 0.9em
-		color: lighten($color_text, 40%)
+		color: lighten($color-text, 40%)
 
 .user-view
 	& .post-index-item-title
@@ -2029,7 +2105,7 @@ div#post-comment-reply-container
 	background-color: white
 	border: thin solid darken($color_background, 3%)
 	text-align: center
-	+border-radius(3px)
+	border-radius: 3px
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
 	& .user-login-branding,
@@ -2039,7 +2115,7 @@ div#post-comment-reply-container
 
 	& h2
 		text-align: center
-		color: lighten($color_text, 25%)
+		color: lighten($color-text, 25%)
 		padding-bottom: 15px
 		font-weight: lighter
 
@@ -2098,9 +2174,9 @@ div#post-comment-reply-container
 		text-align: center
 		& a
 			cursor: pointer
-			color: lighten($color_text, 45%)
+			color: lighten($color-text, 45%)
 			&:hover
-				color: lighten($color_text, 30%)
+				color: lighten($color-text, 30%)
 
 .user-login-container-uncool,
 .user-register-form
@@ -2148,7 +2224,7 @@ div#post-comment-reply-container
 				top: 2px
 		& .forgot
 			float: right
-			color: lighten($color_text, 30%)
+			color: lighten($color-text, 30%)
 			&:hover
 				color: $color_brand_main
 
@@ -2158,7 +2234,7 @@ div#post-comment-reply-container
 .user-register-container
 	& p
 		font-size: 0.9em
-		color: lighten($color_text, 10%)
+		color: lighten($color-text, 10%)
 		padding: 0 30px
 
 /* User Settings */
@@ -2169,7 +2245,7 @@ div#post-comment-reply-container
 	& img
 		padding: 5px
 		border-radius: 50%
-		+box-shadow(2px, 2px, 0, black, .1)
+		box-shadow: 2px 2px 0 rgba(black, .1)
 	& small
 		display: block
 		margin-top: 10px
@@ -2179,12 +2255,12 @@ div#post-comment-reply-container
 	color: $color_brand_main
 	+user-select-none
 	& h3
-		color: $color_text
+		color: $color-text
 	& i
 		width: 18px
 	& .empty
 		+user-select-none
-		color: lighten($color_text, 40%)
+		color: lighten($color-text, 40%)
 
 /* Footer */
 .page-footer
@@ -2254,22 +2330,21 @@ footer
 	+box-shadow(2px, 2px, 2px, black, .1)
 	& h2
 		margin: 0 0 20px 0
-		color: lighten($color_text, 10%)
+		color: lighten($color-text, 10%)
 		+text-shadow(1px, 1px, 0, black, 0.1)
 
 /* FORMS */
 .form-group .form-control
 	border: 2px solid darken($color_background, 6%)
-	background-color: darken($color_background, 4%)
-	+border-radius(3px)
-	+box-shadow(2px, 2px, 0, black, .1)
+	background-color: darken($color_background, 2%)
+	border-radius: 3px
 	&:focus
 		border-color: $color_brand_main
 
 .input-group
 	border: thin solid darken($color_background, 6%)
-	background-color: darken($color_background, 4%)
-	+border-radius(6px)
+	background-color: darken($color_background, 2%)
+	border-radius: 6px
 
 	& .form-control, & .input-group-addon
 		+box-shadow-none
@@ -2295,8 +2370,8 @@ fieldset
 	min-width: 130px
 	background: white
 	padding: 0
-	+border-radius(0px)
-	+box-shadow(2px, 2px, 0, black, .1)
+	border-radius: 0
+	box-shadow: 2px 2px 0 rgba(black, .1)
 	+transition(border-color, ease, 0.1s)
 
 .dropdown-menu > li > a
@@ -2304,7 +2379,7 @@ fieldset
 	padding-right: 45px
 	font-weight: normal
 	line-height: 1.42857143
-	color: $color_text
+	color: $color-text
 	+transition(border-color, ease, 0.05s)
 
 .dropdown-menu > li > a:hover
@@ -2349,13 +2424,13 @@ fieldset
 	background-color: transparent
 	border: none
 	+box-shadow-none()
-	+border-radius(3px)
+	border-radius: 3px
 
 .popover-title
 	background-color: $color_brand_main
 	color: white
 	font-size: 110%
-	+border-radius(0px)
+	border-radius: 0
 	display: none
 
 .popover-content
@@ -2364,7 +2439,7 @@ fieldset
 	color: white
 	padding: 6px 14px
 	border: thin solid darken($color_brand_main, 3%)
-	+border-radius(3px)
+	border-radius: 3px
 	+text-shadow(1px, 1px, 0, black, 0.2)
 	+box-shadow(1px, 2px, 2px, black, 0.1)
 
@@ -2496,6 +2571,8 @@ fieldset
 
 	+media-xs
 		position: relative
+		max-width: 100%
+		width: 100%
 	+media-sm
 		position: relative
 	+media-md
@@ -2508,7 +2585,7 @@ fieldset
 	display: block
 	background-color: white
 	border: thin solid darken($color_background, 3%)
-	+border-radius(3px)
+	border-radius: 3px
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
 .nav-sidebar p
@@ -2558,7 +2635,7 @@ fieldset
 
 	& p
 		font-size: 0.9em
-		color: lighten($color_text, 20%)
+		color: lighten($color-text, 20%)
 		margin: 0
 		padding: 10px 20px 20px 20px
 		+user-select-none
@@ -2613,7 +2690,7 @@ fieldset
 		top: 5px
 		margin-left: 5px
 		border-radius: 50%
-		+box-shadow(2px, 2px, 0, black, .1)
+		box-shadow: 2px 2px 0 rgba(black, .1)
 		&:hover
 			opacity: .9
 
@@ -2635,7 +2712,7 @@ fieldset
 .nav-sidebar.newcomer
 	text-align: center
 	font-size: 0.9em
-	color: lighten($color_text, 20%)
+	color: lighten($color-text, 20%)
 	padding: 10px 20px 10px 20px
 
 	& p
@@ -2679,7 +2756,7 @@ fieldset
 	width: 80%
 	max-width: 720px
 	min-width: 290px
-	color: $color_text
+	color: $color-text
 	background: $color_background_dialog
 	padding: 0 auto 2em auto
 	position: relative
@@ -2688,7 +2765,7 @@ fieldset
 	border-bottom-left-radius: 3px
 	border-bottom-right-radius: 3px
 
-	+box-shadow(2px, 2px, 0, black, .1)
+	box-shadow: 2px 2px 0 rgba(black, .1)
 	& a
 		color: white
 

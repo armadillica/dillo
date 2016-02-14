@@ -373,53 +373,17 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 								| {% endif %}
 
 
-
 			| {# Posts Comments #}
 			.post-view-comments
 
-				a(name="comments")
-
-				| {% if post.comments %}
-				h3.title
-					| Comments
-					small ({{post.comments_count}})
-
-				| {% for comment in post.comments_first_level %}
-				| 	{{print_comment(comment, loop, post)}}
-				| 	{% for reply in comment.children %}
-				| 		{{print_comment(reply, loop, post, is_reply=True)}}
-				| 	{% endfor %}
-				| {% endfor %}
-
-				| {% else %}
-
-				h3.title.
-					No Comments {% if post.status != 'deleted' %}<small>(yet)</small>{% endif %}
-
-				| {% if post.status != 'deleted' %}
-
-				.post-view-comments-empty.
-					It's your chance. Be the first!
-
-				| {% endif %} <br/>
-
-				| {% endif %}
-
-
 				| {# Submit Comment #}
-
 				| {% if post.status != 'deleted' %}
 				.post-view-comments-submit
 
 					| {% if current_user.is_anonymous() %}
 					h3
 						a(href="{{url_for_security('login')}}") Login to comment
-
-					| {% else %}
-
-					h3 Leave a comment
 					| {% endif %}
-
 
 					| {% if current_user.is_authenticated() %}
 					.post-view-comments-avatar
@@ -463,8 +427,8 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 							| {{ form.hidden_tag() }}
 
-							.form-group.comment-reply-form
-								| {{ form.content(class='form-control comment-reply-field', id='post_comment') }}
+							.comment-form-container.form-group
+								| {{ form.content(class='form-control comment-reply-field', id='post_comment', placeholder="Leave a comment...") }}
 								| {% if form.content.errors %}
 								ul.error
 									| {% for error in form.content.errors %}
@@ -472,18 +436,59 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 									| {% endfor %}
 								| {% endif %}
 
-							| {{ form.parent_id }}
+								| {{ form.parent_id }}
+
+								.comment-form-buttons
+									button#submit-comment.btn.btn-default.submit(
+										type="submit")
+										i.fa.fa-paper-plane.icon-send
+										| Send
+										span.hotkey
+											| (Ctrl+Enter)
+
+									a#cancel-comment.cancel
+										| cancel
+
+									a.md(
+										target="_blank",
+										href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+										| Markdown Cheatsheet
 
 							.comment-reply-preview
 
-							button#submit-post.btn.btn-default.btn-squishy.btn-success.submit(type="submit")
-								i.fa.fa-check
-								|  Submit Comment
 
 						| {% endif %}
 
 					| {% endif %}
 
+
+				a(name="comments")
+
+				| {% if post.comments %}
+				h3.comments-title
+					| Comments
+					small ({{post.comments_count}})
+
+				| {% for comment in post.comments_first_level %}
+				| 	{{print_comment(comment, loop, post)}}
+				| 	{% for reply in comment.children %}
+				| 		{{print_comment(reply, loop, post, is_reply=True)}}
+				| 	{% endfor %}
+				| {% endfor %}
+
+				| {% else %}
+
+				h3.comments-title.
+					No Comments {% if post.status != 'deleted' %}<small>(yet)</small>{% endif %}
+
+				| {% if post.status != 'deleted' %}
+
+				.post-view-comments-empty.
+					It's your chance. Be the first!
+
+				| {% endif %} <br/>
+
+				| {% endif %}
 
 
 	.col-md-3
@@ -496,17 +501,21 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 | {% block footer_scripts %}
 script(type="text/javascript").
 
+	/* Convert markdown on comments  */
 	$( ".post-view-comments-item-text" ).each(function(i) {
 		var text = $(this).text();
 		$(this).html(convert(text));
 	});
+
+	//- var postContent = $(".post-view-content").html();
+	//- $(".post-view-content").html(convert(postContent));
 
 	{% if current_user.is_authenticated() %}
 
 		/* Build the markdown preview when typing in textarea */
 		$(function() {
 			var $textarea = $('.comment-reply-field'),
-					$container = $('.comment-reply-form'),
+					$container = $('.comment-form-container'),
 					$preview = $('.comment-reply-preview');
 
 			// As we type in the textarea
@@ -518,142 +527,164 @@ script(type="text/javascript").
 				// While we are at it, style when empty
 				if ($textarea.val()) {
 					$container.addClass('filled');
+					$preview.show();
 				} else {
 					$container.removeClass('filled');
+					$preview.hide();
 				};
+
+				// Send on ctrl+enter
+				if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
+					$("#form-comment").submit();
+				};
+
+				// Grow as we type
+				field = document.getElementById('post_comment');
+				field.style.height = (field.scrollHeight) + "px";
 
 			}).trigger('keyup');
 		});
 
-		//- CKEDITOR.replace('post_comment', {
-		//- 	customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}',
-		//- });
+		/* Build the markdown preview when typing in textarea */
+		$(function() {
+			var $textarea = $('.comment-edit-field'),
+					$container = $('.comment-form-container'),
+					$preview = $('.comment-reply-preview');
 
-		//- CKEDITOR.disableAutoInline = true;
-		//- CKEDITOR.instances['post_comment'].on('change', function() { CKEDITOR.instances['post_comment'].updateElement() });
+			// As we type in the textarea
+			$textarea.keyup(function(e) {
+				console.log(e);
 
-		var comment_reply_editor, html = '';
+				// Convert markdown
+				$preview.html(convert($textarea.val()));
 
-		var upvote = function(up, down, rate) {
-			$.get(up.attr("href"), function(data){
-				down.removeClass('rated');
-				if (data['rating'] === "True") {
-					up.addClass('rated');
+				// While we are at it, style when empty
+				if ($textarea.val()) {
+					$container.addClass('filled');
+					$preview.show();
 				} else {
-					up.removeClass('rated');
-				}
-				rate.text(data['rating_delta']);
-			});
-		}
+					$container.removeClass('filled');
+					$preview.hide();
+				};
 
-		var downvote = function(up, down, rate) {
-			$.get(down.attr("href"), function(data){
-				up.removeClass('rated');
-				if (data['rating'] === "False") {
-					$(".down").addClass('rated');
-				} else {
-					$(".down").removeClass('rated');
-				}
-				rate.text(data['rating_delta']);
-			});
-		}
+				// Send on ctrl+enter
+				if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
+					$("#form-comment").submit();
+				};
 
-		$(".up").click(function(e) {
-			e.preventDefault();
-			var up = $(this);
-			var rate = $(this).siblings('.rating');
-			var down = $(this).siblings('.down');
-			upvote(up, down, rate);
+				// Grow as we type
+				field = document.getElementById('post_comment');
+				field.style.height = (field.scrollHeight) + "px";
+
+			}).trigger('keyup');
 		});
 
-		$(".down").click(function(e) {
+
+		function cancelComment(){
+			$('.post-view-comments-submit').removeAttr('parent_id').removeClass('is_reply');
+			$('.post-view-comments-submit').detach().insertBefore('.post-view-comments');
+			$('#post_comment').blur();
+			$('#post_comment').val('');
+			$('#post_comment').css('height', 'auto');
+			$('.comment-reply-preview').html('').hide();
+			$('.comment-form-container').removeClass('filled');
+		};
+
+
+		$("#cancel-comment").click(function(e) {
 			e.preventDefault();
-			var up = $(this).siblings('.up');
-			var rate = $(this).siblings('.rating');
-			var down = $(this);
-			downvote(up, down, rate);
+			cancelComment();
 		});
 
-		$(".flag").click(function(e) {
-			e.preventDefault();
-			$(this).toggleClass('flagged');
-			$.get($(this).attr('href'));
-		});
 
+		// Click on reply
 		$(".post-comment-reply").click(function(e) {
 			e.preventDefault();
-			if(comment_reply_editor){
-				//$("#post-comment-reply-container").appendTo($(this));
-				comment_reply_editor.destroy();
-				comment_reply_editor = null;
-				$("#post-comment-reply-container").remove();
-			}
 
 			var comment = $(this).attr('comment');
-			$(this).closest('.post-view-comments-item').after('<div id="post-comment-reply-container" parent_id="'+comment+'"><div id="comment_reply_textarea"></div><span id="form-comment-reply-submit" class="btn btn-default btn-block btn-success"><i class="fa fa-check"></i> Submit Reply</span></div>');
+			var closest = $(this).closest('.post-view-comments-item');
 
-			//- var config = { customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' };
-			//- comment_reply_editor = CKEDITOR.appendTo('comment_reply_textarea', config, html);
-			// use detach
+			$('.post-view-comments-submit').attr('parent_id', comment).addClass('is_reply');
+			$('.post-view-comments-submit').detach().insertAfter(closest);
+			$('#post_comment').focus();
 		});
 
 
-		$(document).on('click','#form-comment-reply-submit',function(e){
-			var parent_id = $("#post-comment-reply-container").attr("parent_id");
-			var comment_reply_content = comment_reply_editor.getData();
-			$('#form-comment-reply-submit').html('<i class="fa fa-spinner fa-spin"></i> Submitting');
-
-			$.post($("#form-comment").attr("action"), {parent_id:parent_id, content:comment_reply_content},function(data){
-				c = print_comment(data['comment'], 'reply ');
-				$("#post-comment-reply-container").before(c);
-				$("#post-comment-reply-container").hide();
-			})
-			.done(function(data){
-				$('#form-comment-reply-submit').css('background-color', '#5cb85c');
-				$('#form-comment-reply-submit').html('<i class="fa fa-check"></i> Success!');
-			})
-			.fail(function(data){
-				$('#form-comment-reply-submit').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
-			});
-		});
-
-
+		/* Comments */
 		var print_comment = function(comment, reply) {
 		if (typeof(reply)==='undefined') reply = '';
 
 		comment =
 		'<div class="post-view-comments-item '+ reply +'flash"> \
-			<div class="row"> \
-				<div class="col-md-1 col-sm-1 col-xs-2">\
-					<div class="post-view-comments-avatar">\
-						<img src="' + comment['gravatar'] + '" class="op">\
-					</div>\
+			<div class="post-view-comments-avatar">\
+				<img src="' + comment['gravatar'] + '" class="op">\
+			</div>\
+			<div class="post-view-comments-item-header">\
+				<span class="author">' + comment['user_name'] + '</span>\
+				· \
+				<span title="23:06 on 14 February, 2016">\
+				' + comment['creation_date'] + '\
+				</span>\
+			</div>\
+			<div id="' + comment['comment_id'] + '" class="post-view-comments-item-content">\
+				<div class="post-view-comments-item-text">\
+					' + convert(comment['content']) + '\
 				</div>\
-				<div class="col-md-11 col-sm-11 col-xs-10">\
-					<div class="post-view-comments-item-text">\
-						' + convert(comment['content']) + '\
-					</div>\
-					<div class="post-view-comments-item-details">\
-						<span>' + comment['creation_date'] + '</span>\
-						<small>by</small> ' + comment['user_name'] + '\
-						<span class="separator"></span>\
-						<a href="' + comment['post_url'] + '#comment-' + comment['comment_id'] + '"><i class="fa fa-link"></i></a>\
-					</div>\
-				</div>\
-			</div> \
+			</div>\
 		</div>';
 		return comment;
 		}
 
 		$("#form-comment").on("submit", function(e) {
 			e.preventDefault();
-			$.post($(this).attr('action'), $(this).serialize(),function(data){
-				$(".post-view-comments-empty").hide();
-				c = print_comment(data['comment']);
-				$(".post-view-comments-submit").before(c);
 
-				// Clear the form
-				$(".comment-reply-field").val('');
+			var form_comment = $(this);
+			var comments_submit = $(".post-view-comments-submit");
+			var is_reply = comments_submit.hasClass('is_reply');
+			var comment_data;
+
+			if (is_reply) {
+				var parent_id = $(".post-view-comments-submit").attr("parent_id");
+				comment_data = {
+					parent_id: $(".post-view-comments-submit").attr("parent_id"),
+					content: $("#post_comment").val()
+				};
+
+			} else {
+				comment_data = $(form_comment).serialize();
+			};
+
+			/* UI */
+			$('#submit-comment').html('<i class="fa fa-spinner fa-spin"></i> Sending');
+			$('.comment-form-buttons .send').addClass('sending');
+
+			$.post($(form_comment).attr('action'), comment_data, function(data){
+				$(".post-view-comments-empty").hide();
+
+				if (is_reply) {
+					c = print_comment(data['comment'], 'reply ');
+					$(comments_submit).before(c);
+				} else {
+					c = print_comment(data['comment']);
+					$('.comments-title').after(c);
+				};
+
+				// Increase counter of comments
+				$('.comments-title small').text(
+					$('.comments-title small').text().replace( /(\d+)/, function(){return arguments[1]*1+1} )
+				);
+
+			})
+			.done(function(data){
+				$('#submit-comment').html('<i class="fa fa-paper-plane icon-send"></i> Send');
+				$('.comment-form-buttons .send').removeClass('sending');
+
+				cancelComment();
+			})
+			.fail(function(data){
+				$('#submit-comment').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
+				$('.comment-form-buttons .send').removeClass('sending');
+				$('.comment-form-buttons .send').addClass('fail');
 			});
 		});
 
@@ -781,15 +812,18 @@ script(type="text/javascript").
 			$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
 
 			var comment_id = $(this).data('comment-id');
+			var comment_text = $('#comment-text-id-' + comment_id + ' .post-view-comments-item-text');
 
-			var ck = CKEDITOR.inline('comment-text-id-' + comment_id,
-							{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
-					);
-			ck.on( 'instanceReady', function( ev ) {
-				var editor = ev.editor;
-				editor.setReadOnly( false );
-			});
+			$(comment_text).replaceWith(
+				'<textarea class="form-control comment-edit-field" id="comment-edit-field">' +
+				$(comment_text).html() +
+				'</textarea>'
+			);
 
+			editField = document.getElementById('comment-edit-field');
+			if (editField.clientHeight < editField.scrollHeight) {
+				$('.comment-edit-field').css('height', editField.scrollHeight + 'px');
+			};
 		});
 
 		{# SAVE COMMENT #}
@@ -799,48 +833,105 @@ script(type="text/javascript").
 			save_button = $(this);
 
 			var comment_id = $(this).data('comment-id');
-			var comment_text_id_tag = 'comment-text-id-' + comment_id;
+			var comment_container = '#' + 'comment-text-id-' + comment_id;
+			var comment_data = $(comment_container + ' textarea').val();
 
-			if (CKEDITOR.instances[comment_text_id_tag]) {
-				CKEDITOR.instances[comment_text_id_tag].destroy();
-			};
-
-			var comment_text_id_pointer = '#' + comment_text_id_tag;
-			$(comment_text_id_pointer).attr('contenteditable', false);
+			$(comment_container).attr('contenteditable', false);
 
 			var params = {
-				content : $(comment_text_id_pointer).html()
+				content : comment_data
 			};
 
 			$.post($(this).attr("href"), params,
 				function(data){
 			})
-				.done(function() {
-					save_button.hide();
-					save_button.prev(".edit-comment-toggle").show();
+			.done(function() {
+				save_button.hide();
+				save_button.prev(".edit-comment-toggle").show();
 
-					$('[class^="notification-post"]').hide();
-					$('.notification-post-saved').show();
-					$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
-				})
-				.fail(function() {
-					$('[class^="notification-post"]').hide();
-					$('.notification-post-fail').show();
-					$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
-				})
-				.always(function() {
-					$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
-					$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
-				});
+				$('[class^="notification-post"]').hide();
+				$('.notification-post-saved').show();
+				$('.notification-post-saved').animate({'top' : '0', 'opacity' : 1});
+
+				$(comment_container).html('<div class="post-view-comments-item-text">' + convert(comment_data) + '</div>');
+			})
+			.fail(function() {
+				$('[class^="notification-post"]').hide();
+				$('.notification-post-fail').show();
+				$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
+			})
+			.always(function() {
+				$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+				$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
+			});
 		});
 
 		{# DELETE COMMENT #}
+		$(".edit-comment-delete-fake").click(function(e) {
+			e.preventDefault();
+			$(this).hide();
+			$(this).next().show();
+		});
+
+
 		$(".edit-comment-delete").click(function(e) {
 			e.preventDefault();
 
 			$.get($(this).attr('href'));
 			$(this).closest('.post-view-comments-item').addClass('hidden');
 			$('[data-parent-id="' + $(this).data('comment-id') + '"]').addClass('hidden');
+
+			// Decrease counter of comments
+			$('.comments-title small').text(
+				$('.comments-title small').text().replace( /(\d+)/, function(){return arguments[1]*1-1} )
+			);
+		});
+
+		/* Voting */
+		var upvote = function(up, down, rate) {
+			$.get(up.attr("href"), function(data){
+				down.removeClass('rated');
+				if (data['rating'] === "True") {
+					up.addClass('rated');
+				} else {
+					up.removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		}
+
+		var downvote = function(up, down, rate) {
+			$.get(down.attr("href"), function(data){
+				up.removeClass('rated');
+				if (data['rating'] === "False") {
+					$(".down").addClass('rated');
+				} else {
+					$(".down").removeClass('rated');
+				}
+				rate.text(data['rating_delta']);
+			});
+		}
+
+		$(".up").click(function(e) {
+			e.preventDefault();
+			var up = $(this);
+			var rate = $(this).siblings('.rating');
+			var down = $(this).siblings('.down');
+			upvote(up, down, rate);
+		});
+
+		$(".down").click(function(e) {
+			e.preventDefault();
+			var up = $(this).siblings('.up');
+			var rate = $(this).siblings('.rating');
+			var down = $(this);
+			downvote(up, down, rate);
+		});
+
+		$(".flag").click(function(e) {
+			e.preventDefault();
+			$(this).toggleClass('flagged');
+			$.get($(this).attr('href'));
 		});
 
 	{% else %}
