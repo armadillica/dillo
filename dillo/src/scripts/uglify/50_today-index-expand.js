@@ -18,7 +18,7 @@ $(document).ready(function() {
 	$('.post-index-item-picture').mousedown(function(e){
 		e.preventDefault();
 
-		image = $(this);
+		var image = $(this);
 
 		$(document).mousemove(function(e){
 			e.preventDefault();

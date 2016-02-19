@@ -2,6 +2,7 @@
 
 // Fetch json
 function getNotifications(){
+
 	$.getJSON( "/notifications/", function( data ) {
 
 		var items = [];
@@ -18,12 +19,12 @@ function getNotifications(){
 
 				// Check if the current item has been read,
 				// so we can style it nicely
-				is_read = no['is_read'] ? 'is_read' : '';
+				var is_read = no['is_read'] ? 'is_read' : '';
 
-				read_info = 'data-id="'+ no['_id'] + '" data-read="' + no['is_read'] + '"';
+				var read_info = 'data-id="'+ no['_id'] + '" data-read="' + no['is_read'] + '"';
 
 				// List item
-				content = '<li class="nc-item ' + is_read +'">';
+				var content = '<li class="nc-item ' + is_read +'">';
 
 					// Avatar linking to username profile
 					content += '<div class="nc-avatar">';
@@ -84,7 +85,7 @@ function getNotifications(){
 				$('#notifications-count').removeAttr('class');
 			};
 		} else {
-			content = '<li class="nc-item nc-item-empty">';
+			var content = '<li class="nc-item nc-item-empty">';
 			content += 'No notifications... yet';
 			content += '</li>';
 
@@ -107,7 +108,7 @@ $(document).click(function() { hideNotifications(); });
 
 // Function to set #notifications flyout height and resize if needed
 function notificationsResize(){
-	height = $(window).height() - 80;
+	var height = $(window).height() - 80;
 
 	if ($('#notifications').height() > height){
 		$('#notifications').css({

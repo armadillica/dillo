@@ -5,6 +5,7 @@
 
 config.py
 
+dillo/application/themes/*
 dillo/application/templates/**/*
 dillo/application/static/css/main.css
 dillo/application/static/js/tutti.min.js
