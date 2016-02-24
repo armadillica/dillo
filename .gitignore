@@ -5,10 +5,10 @@
 
 config.py
 
-dillo/application/themes/*
 dillo/application/templates/**/*
-dillo/application/static/css/main.css
-dillo/application/static/js/tutti.min.js
+dillo/application/themes/dillo/static/css/*
+dillo/application/themes/dillo/static/js/*
+dillo/application/themes/dillo/templates/*
 dillo/application/static/storage/
 node_modules
 .sass-cache/

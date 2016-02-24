@@ -5,7 +5,7 @@ import tweepy
 from flask import Flask
 from flask import session
 from flask import Blueprint
-
+from flask import url_for
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.exc import ProgrammingError
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -36,6 +36,7 @@ oauth = OAuth(app)
 CsrfProtect(app)
 cache = Cache(app)
 toolbar = DebugToolbarExtension(app)
+
 
 registry = bootstrap_basic()
 registry.register('http://monitor.eibriel.com/\S*',
@@ -165,6 +166,13 @@ def inject_submit_post_form():
     form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     #form.post_type_id.data = 1
     return {'submit_post_form': form}
+
+
+@app.context_processor
+def theme_static_processor():
+    def url_for_theme_static(filename):
+        return url_for('theme_static', filename=filename)
+    return {'url_for_theme_static': url_for_theme_static}
 
 
 @app.errorhandler(404)

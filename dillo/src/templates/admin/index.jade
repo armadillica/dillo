@@ -78,6 +78,17 @@ style(type="text/css").
 							| {% endfor %}
 						| {% endif %}
 
+					.form-group
+						| {{ form_settings.theme.label }}
+						| {{ form_settings.theme(class='form-control', style="width: 100%") }}
+
+						| {% if form_settings.theme.errors %}
+						ul.error
+							| {% for error in form_settings.theme.errors %}
+							li {{ error }}
+							| {% endfor %}
+						| {% endif %}
+
 					hr
 
 					p.

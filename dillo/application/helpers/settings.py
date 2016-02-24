@@ -1,4 +1,5 @@
 import os
+import jinja2
 from application import app
 from application import db
 from application.modules.admin.model import Setting
@@ -35,16 +36,24 @@ def load_settings():
         app.config[config_key] = s.value
 
     # Extra update for the logo image path
-    app.config['SETTINGS_LOGO_IMAGE'] = '/static/images/' + app.config['SETTINGS_LOGO_IMAGE']
-    app.config['SETTINGS_FAVICON'] = '/static/images/' + app.config['SETTINGS_FAVICON']
+    app.config['SETTINGS_LOGO_IMAGE'] = '/theme-static/images/' + app.config['SETTINGS_LOGO_IMAGE']
+    app.config['SETTINGS_FAVICON'] = '/theme-static/images/' + app.config['SETTINGS_FAVICON']
 
+    # Enable custom templates (a theme folder should be placed in the 'themes'
+    # folder in the root of the application).
+    theme_path = os.path.join(app.root_path, 'themes',
+        app.config['SETTINGS_THEME'], 'templates')
 
-    # Enable custom templates and static folder (a theme folder should be
-    # placed in the 'themes' folder in the root of the application).
-    if app.config['SETTINGS_THEME'] != 'dillo':
-        root_static = os.path.split(app.static_folder)[0]
-        app.static_folder = os.path.join(root_static, 'themes',
-            app.config['SETTINGS_THEME'], 'static')
-        root_template = os.path.split(app.template_folder)[0]
-        app.template_folder = os.path.join(root_static, 'themes',
-            app.config['SETTINGS_THEME'], 'templates')
+    # Hardcoded parent theme for every other theme (later this can be configured)
+    parent_theme_path = os.path.join(app.root_path, 'themes', 'dillo', 'templates')
+
+    paths_list = [
+        jinja2.FileSystemLoader(theme_path),
+        jinja2.FileSystemLoader(parent_theme_path),
+        app.jinja_loader
+    ]
+
+    # Set up a custom loader, so that Jinja searches for a theme file first in
+    # the current theme dir, and if it fails it searches in the default location.
+    custom_jinja_loader = jinja2.ChoiceLoader(paths_list)
+    app.jinja_loader = custom_jinja_loader

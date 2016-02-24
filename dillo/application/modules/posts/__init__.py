@@ -13,12 +13,9 @@ from flask import jsonify
 from sqlalchemy import desc
 from flask import abort
 from flask import request
-
 from werkzeug.contrib.atom import AtomFeed
-
 from micawber.exceptions import ProviderException
 from micawber.exceptions import ProviderNotFoundException
-
 from flask.ext.security import login_required
 from flask.ext.security import current_user
 
@@ -27,8 +24,6 @@ from application import db
 from application import imgur_client
 from application import registry
 from application import cache
-
-
 from application.modules.posts.model import Category
 from application.modules.posts.model import Post
 from application.modules.posts.model import PostRating

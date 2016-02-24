@@ -10,7 +10,7 @@ var gulp          = require('gulp'),
 
 /* CSS */
 gulp.task('styles', function() {
-    gulp.src('dillo/src/styles/**/*.sass')
+    gulp.src('dillo/src/themes/dillo/styles/**/*.sass')
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sass({
@@ -18,7 +18,7 @@ gulp.task('styles', function() {
             ))
         .pipe(autoprefixer("last 3 version", "safari 5", "ie 8", "ie 9"))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('dillo/application/static/css'))
+        .pipe(gulp.dest('dillo/application/themes/dillo/static/css'))
         .pipe(livereload());
 });
 
@@ -28,18 +28,25 @@ gulp.task('templates', function() {
         .pipe(jade({
             pretty: true
         }))
-        .pipe(gulp.dest('dillo/application/templates/'))
+        .pipe(gulp.dest('dillo/application/templates'))
+        .pipe(livereload());
+    /* Templates for Dillo theme */
+    gulp.src('dillo/src/themes/dillo/templates/**/*.jade')
+        .pipe(jade({
+            pretty: true
+        }))
+        .pipe(gulp.dest('dillo/application/themes/dillo/templates'))
         .pipe(livereload());
 });
 
 /* Scripts */
 gulp.task('scripts', function() {
-    gulp.src('dillo/src/scripts/uglify/**/*.js')
+    gulp.src('dillo/src/themes/dillo/scripts/uglify/**/*.js')
         .pipe(sourcemaps.init())
         .pipe(concat("tutti.min.js"))
         .pipe(uglify())
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest('dillo/application/static/js/'))
+        .pipe(gulp.dest('dillo/application/themes/dillo/static/js'))
         .pipe(livereload());
 });
 
@@ -47,9 +54,10 @@ gulp.task('scripts', function() {
 gulp.task('watch',function() {
     livereload.listen();
 
-    gulp.watch('dillo/src/styles/**/*.sass',['styles']);
+    gulp.watch('dillo/src/themes/dillo/styles/**/*.sass',['styles']);
     gulp.watch('dillo/src/templates/**/*.jade',['templates']);
-    gulp.watch('dillo/src/scripts/uglify/**/*.js',['scripts']);
+    gulp.watch('dillo/src/themes/dillo/templates/**/*.jade',['templates']);
+    gulp.watch('dillo/src/themes/dillo/scripts/uglify/**/*.js',['scripts']);
 });
 
 // Run 'gulp' to build everything at once
