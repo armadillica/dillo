@@ -1,0 +1,263 @@
+/* User View */
+.user-view
+	margin-top: 15px
+
+.user-view-index
+	& h4
+		color: lighten($color-text, 30%)
+		font-weight: lighter
+
+.user-view-info
+	margin: 0 0 15px 0
+	padding: 0 0 20px 0
+	display: inline-block
+	position: relative
+	width: 100%
+	+media-xs
+		margin: 0
+	& h3
+		font-weight: lighter
+		margin: 10px 0 0 140px
+		color: $color_brand_main
+		font-size: 2em
+		+media-xs
+			margin: 10px 0 0 105px
+
+	& h4
+		margin-top: 5px
+		font-weight: lighter
+
+	& .user-view-info-container
+		background-color: white
+		border: thin solid darken($color_background, 3%)
+		margin: 15px 0 0 80px
+		padding-left: 60px
+		min-height: 80px
+		border-radius: 3px
+		+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+		+media-xs
+			margin: 15px 0 0 0
+			padding: 20px 0 0 15px
+
+	& .user-view-info-avatar
+		position: absolute
+		top: 10px
+		left: -5px
+
+		& img
+			padding: 4px
+			background-color: white
+			border-radius: 50%
+			width: 128px
+			height: 128px
+			+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+
+			+media-xs
+				max-width: 100px
+
+	& .user-view-info-roles
+		margin-top: 5px
+		font-size: 0.9em
+		color: lighten($color-text, 10%)
+		+media-xs
+			margin-top: 10px
+
+	& .user-view-info-meta
+		margin: 10px 0
+		font-size: 0.9em
+		color: lighten($color-text, 40%)
+
+.user-view
+	& .post-index-item-title
+		+media-sm
+			padding-left: 140px
+		+media-md
+			padding-left: 140px
+		+media-lg
+			padding-left: 140px
+	& .post-index-item-details
+		+media-sm
+			padding-left: 140px
+		+media-md
+			padding-left: 140px
+		+media-lg
+			padding-left: 140px
+	& .post-index-item-type
+		+media-sm
+			left: 15px
+		+media-md
+			left: 15px
+		+media-lg
+			left: 15px
+
+/* User Login */
+.user-login,
+.user-register,
+.user-settings
+	margin-top: 25px
+	+media-xs
+		margin-top: 15px
+	& h3, & h2
+		font-weight: lighter
+
+.user-login-container,
+.user-register-container
+	background-color: white
+	border: thin solid darken($color_background, 3%)
+	text-align: center
+	border-radius: 3px
+	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
+
+	& .user-login-branding,
+	& .user-register-branding
+		padding-bottom: 20px
+		border-bottom: thin solid darken($color_background, 3%)
+
+	& h2
+		text-align: center
+		color: lighten($color-text, 25%)
+		padding-bottom: 15px
+		font-weight: lighter
+
+	& .user-login-button-oauth
+		display: block
+		width: 80%
+		margin: 10px auto 0 auto
+		padding: 10px 10px 10px 20px
+		text-align: left
+		position: relative
+		background-color: darken($color_background, 2%)
+		border-radius: 8px
+		+text-shadow(1px, 1px, 0, black, 0.2)
+		+box-shadow(1px, 2px, 0, black, 0.1)
+
+		&:hover, &:focus
+			text-decoration: none
+		& i.icon
+			width: 20px
+
+		&.blender-id
+			color: $color_blender-blue
+			background-color: $color_background
+			border: thin solid darken($color_background, 3%)
+			+text-shadow(1px, 1px, 0, white, 0.2)
+			&:hover
+				color: lighten($color_blender-blue, 5%)
+				background-color: lighten($color_background, 5%)
+			& small
+				opacity: 0.8
+				font-size: 0.65em
+				+media-xs
+					display: none
+			& i
+				position: relative
+				right: 4px
+				font-size: 1.1em
+				color: lighten($color_blender-blue, 10%)
+
+		&.google
+			color: white
+			background-color: $color_google
+			&:hover
+				background-color: lighten($color_google, 5%)
+
+		&.facebook
+			color: white
+			background-color: $color_facebook
+			&:hover
+				background-color: lighten($color_facebook, 5%)
+
+	& .user-login-button-others
+		display: block
+		margin: 8px auto 20px auto
+		font-size: 0.75em
+		text-align: center
+		& a
+			cursor: pointer
+			color: lighten($color-text, 45%)
+			&:hover
+				color: lighten($color-text, 30%)
+
+.user-login-container-uncool,
+.user-register-form
+	width: 80%
+	display: inline-block
+	margin: 0 auto
+	& .input-group
+		margin: 0 auto
+	& .input-group+.input-group
+		margin: 10px auto 0 auto
+
+	& .form-control
+		font-size: 1em
+		padding: 20px auto
+
+	& .btn
+		width: 100%
+		margin: 10px auto 0 auto
+
+	& .user-login-back,
+	& .user-register-back
+		font-size: 0.8em
+		margin: 0 auto 14px auto
+		padding: 0
+		color: $color_brand_main
+		cursor: pointer
+		&:hover
+			color: lighten($color_brand_main, 5%)
+	& .user-register-back
+		margin: 10px auto
+
+	& .user-login-extra
+		display: inline-block
+		font-size: 0.75em
+		width: 100%
+		height: 20px
+		margin: 6px auto 0 auto
+		& .remember
+			float: left
+			position: relative
+			top: -6px
+			font-weight: lighter
+			& input
+				position: relative
+				top: 2px
+		& .forgot
+			float: right
+			color: lighten($color-text, 30%)
+			&:hover
+				color: $color_brand_main
+
+.user-login-container-uncool
+	display: none
+
+.user-register-container
+	& p
+		font-size: 0.9em
+		color: lighten($color-text, 10%)
+		padding: 0 30px
+
+/* User Settings */
+.user-settings-avatar
+	margin: 0 auto
+	display: block
+	text-align: center
+	& img
+		padding: 5px
+		border-radius: 50%
+		box-shadow: 2px 2px 0 rgba(black, .1)
+	& small
+		display: block
+		margin-top: 10px
+		font-size: 0.8em
+
+.user-settings-roles
+	color: $color_brand_main
+	user-select: none
+	& h3
+		color: $color-text
+	& i
+		width: 18px
+	& .empty
+		user-select: none
+		color: lighten($color-text, 40%)

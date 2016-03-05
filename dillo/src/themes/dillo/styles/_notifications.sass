@@ -1,0 +1,173 @@
+/* Notifications */
+.flyout
+	display: block
+	font-size: .9em
+	background-color: white
+	border-radius: 3px
+	border: thin solid darken($color_background, 3%)
+	+box-shadow(1px, 2px, 2px, black, 0.2)
+
+	& .flyout-title
+		font-weight: 600
+		display: block
+		padding: 8px 10px 5px 10px
+		font-size: 1.1em
+		float: left
+
+	&.notifications
+		position: absolute
+		right: 90px
+		top: 60px
+		z-index: 9999
+		width: 420px
+		border-top-color: white
+
+
+#notifications
+	display: none
+
+	& #notifications-refresh,
+	& #notifications-markallread
+		float: right
+		color: $color_brand_main
+		cursor: pointer
+		padding: 9px 10px 6px 10px
+
+		&:hover, &:focus
+			color: lighten($color_brand_main, 10%)
+		&:active
+			color: $color_brand_secondary
+
+// The bell icon for notifications on sidebar
+#notifications-toggle
+	cursor: pointer
+	position: relative
+	user-select: none
+
+	+media-xs
+		display: none
+
+	&:hover, &.active
+		color: lighten($color_brand_main, 25%)
+
+	& .flyout-hat
+		width: 0
+		height: 0
+		position: absolute
+		border-style: solid
+		border-width: 0 8px 8px 8px
+		border-color: transparent transparent white transparent
+		bottom: -4px
+		right: 10px
+		visibility: hidden
+
+	&.active
+		& .flyout-hat
+			visibility: visible
+
+	#notifications-count
+		opacity: 0
+		position: absolute
+		top: 4px
+		right: 4px
+		width: 18px
+		height: 18px
+		background-color: $color_brand_secondary
+		border-radius: 50%
+		text-align: center
+		color: white
+		font-size: .7em
+		font-weight: bolder
+		font-family: sans-serif
+		padding: .1em
+		user-select: none
+		border: .2em solid white
+		transform: scale(0)
+		-webkit-transform: scale(0)
+		+transition(transform, 250ms, ease)
+
+
+		&.bloom
+			opacity: 1.0
+			transform: scale(1) !important
+			-webkit-transform: scale(1) !important
+
+#notifications-list
+	list-style-type: none
+	padding: 0 5px
+	margin: 0
+
+	& .nc-item, & .nc-loading
+		position: relative
+		padding: 10px 0
+		border-top: thin solid lighten($color-text, 62%)
+		margin: 0
+		width: 100%
+		display: block
+		clear: both
+
+		&:hover
+			& .nc-read_toggle,
+			& .nc-subscription_toggle
+				visibility: visible
+
+		&.is_read
+			opacity: 0.6
+			color: lighten($color-text, 20%)
+
+		&.nc-item-empty
+			color: lighten($color-text, 20%)
+			text-align: center
+			padding: 24px 0
+			user-select: none
+
+	& .nc-link
+		position: absolute
+		top: 0
+		right: 0
+		bottom: 0
+		background-color: rgba(0,0,0,.1)
+
+	& .nc-avatar
+		float: left
+		width: 10%
+		text-align: center
+
+		& img
+			border-radius: 50%
+			width: 24px
+			height: 24px
+
+	& .nc-text
+		width: 90%
+
+	& .nc-date
+		display: block
+		padding-top: 5px
+		margin-left: 40px
+		font-size: .85em
+		color: lighten($color-text, 20%)
+		& a
+			color: lighten($color-text, 20%)
+			&:hover
+				color: lighten($color-text, 30%)
+
+	& .nc-loading
+		text-align: center
+		font-size: 1.5em
+		color: lighten($color-text, 50%)
+
+	& .nc-read_toggle,
+	& .nc-subscription_toggle
+		visibility: hidden
+		cursor: pointer
+		display: block
+		float: right
+		position: absolute
+		top: 5px
+		right: 5px
+		padding: 5px
+
+	& .nc-subscription_toggle
+		top: 25px
+		right: 4px

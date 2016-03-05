@@ -50,13 +50,6 @@ $screen-md-max: $screen-lg-min - 1
 	-o-box-shadow: none
 	box-shadow: $x $y $blur rgba($color, $alpha) !important
 
-=box-shadow-none
-	-webkit-box-shadow: none !important
-	-moz-box-shadow: none !important
-	-ms-box-shadow: none !important
-	-o-box-shadow: none !important
-	box-shadow: none !important
-
 =text-shadow($x: 1px, $y: 1px, $blur: 3px, $color: $color_text, $alpha: 1)
 	-webkit-text-shadow: $x $y $blur rgba($color, $alpha)
 	-moz-text-shadow: $x $y $blur rgba($color, $alpha)
@@ -78,21 +71,6 @@ $screen-md-max: $screen-lg-min - 1
 	-ms-transition: $prop $time $ease
 	transition: $prop $time $ease
 
-=border-radius($radius: 3px)
-	-webkit-border-radius: $radius !important
-	-moz-border-radius: $radius !important
-	border-radius: $radius !important
-
-=user-select-none
-	-webkit-user-select: none !important
-	-moz-user-select: none !important
-	-ms-user-select: none !important
-	-o-user-select: none !important
-	user-select: none !important
-
-=pointer-events-none
-	-ms-pointer-events: none !important
-	pointer-events: none !important
 
 .vertical-align
 	position: relative
@@ -105,14 +83,14 @@ $screen-md-max: $screen-lg-min - 1
 
 .disabled
 	opacity: 0.65 !important
-	+pointer-events-none
-	+user-select-none
+	pointer-events: none
+	user-select: none
 
 .user-select-none
-	+user-select-none
+	user-select: none
 
 .pointer-events-none
-	+pointer-events-none
+	pointer-events: none
 
 =text-overflow-ellipsis
 	overflow: hidden
