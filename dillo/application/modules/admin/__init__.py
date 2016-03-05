@@ -134,7 +134,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
             footer.value = form_settings.footer.data
             credits = Setting.query.filter_by(name='credits').first()
             credits.value = form_settings.credits.data
-            theme = Settings.query.filter_by(name='theme').first()
+            theme = Setting.query.filter_by(name='theme').first()
             theme.value = form_settings.theme.data
             keywords = Setting.query.filter_by(name='keywords').first()
             keywords.value = form_settings.keywords.data
