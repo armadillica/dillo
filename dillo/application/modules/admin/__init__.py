@@ -96,7 +96,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
     def index(self):
         settings_list = []
         for setting_name in ['logo_alt', 'title', 'tagline', 'title_html',
-            'footer', 'credits', 'keywords', 'twitter_username']:
+            'footer', 'credits', 'keywords', 'twitter_username', 'theme']:
             setting = Setting.query.filter_by(name=setting_name).first()
             settings_list.append((setting_name, setting.value))
         settings_multi_dict = MultiDict(settings_list)
