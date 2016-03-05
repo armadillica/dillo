@@ -26,14 +26,14 @@ gulp.task('styles', function() {
 gulp.task('templates', function() {
     gulp.src('dillo/src/templates/**/*.jade')
         .pipe(jade({
-            pretty: true
+            pretty: false
         }))
         .pipe(gulp.dest('dillo/application/templates'))
         .pipe(livereload());
     /* Templates for Dillo theme */
     gulp.src('dillo/src/themes/dillo/templates/**/*.jade')
         .pipe(jade({
-            pretty: true
+            pretty: false
         }))
         .pipe(gulp.dest('dillo/application/themes/dillo/templates'))
         .pipe(livereload());
