@@ -43,8 +43,10 @@ def theme_static(filename):
         app.config['SETTINGS_THEME'], 'static', filename)
     if not os.path.exists(theme_path_static):
         # Hardcoded parent theme (fallback if not found)
-        father_theme_path_static = os.path.join(app.root_path, 'themes', 'dillo',
+        parent_theme_path_static = os.path.join(app.root_path, 'themes', 'dillo',
             'static', filename)
-        if not os.path.exists(father_theme_path_static):
+        if not os.path.exists(parent_theme_path_static):
             return abort(404)
+        else:
+            return send_file(parent_theme_path_static)
     return send_file(theme_path_static)

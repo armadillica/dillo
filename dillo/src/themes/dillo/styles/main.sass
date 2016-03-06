@@ -3,6 +3,15 @@
 @import config
 @import helpers
 
+@import _notifications
+@import _user
+@import _errors
+
+@import plugins/ckeditor
+@import plugins/cd-dropdown
+@import plugins/swipebox
+@import plugins/js_perfectscrollbar
+
 body
 	font-family: $font_body
 	font-size: $font_size
@@ -65,182 +74,8 @@ blockquote
 	padding: 8px 0
 	font-size: 0.9em
 	margin-bottom: 0
-	+border-radius(0)
+	border-radius: 0
 
-/* Notifications */
-.flyout
-	display: block
-	font-size: .9em
-	background-color: white
-	border-radius: 3px
-	border: thin solid darken($color_background, 3%)
-	+box-shadow(1px, 2px, 2px, black, 0.2)
-
-	& .flyout-title
-		font-weight: 600
-		display: block
-		padding: 8px 10px 5px 10px
-		font-size: 1.1em
-		float: left
-
-	&.notifications
-		position: absolute
-		right: 90px
-		top: 60px
-		z-index: 9999
-		width: 420px
-		border-top-color: white
-
-@import plugins/js_perfectscrollbar
-
-#notifications
-	display: none
-
-	& #notifications-refresh,
-	& #notifications-markallread
-		float: right
-		color: $color_brand_main
-		cursor: pointer
-		padding: 9px 10px 6px 10px
-
-		&:hover, &:focus
-			color: lighten($color_brand_main, 10%)
-		&:active
-			color: $color_brand_secondary
-
-// The bell icon for notifications on sidebar
-#notifications-toggle
-	cursor: pointer
-	position: relative
-	user-select: none
-
-	+media-xs
-		display: none
-
-	&:hover, &.active
-		color: lighten($color_brand_main, 25%)
-
-	& .flyout-hat
-		width: 0
-		height: 0
-		position: absolute
-		border-style: solid
-		border-width: 0 8px 8px 8px
-		border-color: transparent transparent white transparent
-		bottom: -4px
-		right: 10px
-		visibility: hidden
-
-	&.active
-		& .flyout-hat
-			visibility: visible
-
-	#notifications-count
-		opacity: 0
-		position: absolute
-		top: 4px
-		right: 4px
-		width: 18px
-		height: 18px
-		background-color: $color_brand_secondary
-		border-radius: 50%
-		text-align: center
-		color: white
-		font-size: .7em
-		font-weight: bolder
-		font-family: sans-serif
-		padding: .1em
-		user-select: none
-		border: .2em solid white
-		transform: scale(0)
-		-webkit-transform: scale(0)
-		+transition(transform, 250ms, ease)
-
-
-		&.bloom
-			opacity: 1.0
-			transform: scale(1) !important
-			-webkit-transform: scale(1) !important
-
-#notifications-list
-	list-style-type: none
-	padding: 0 5px
-	margin: 0
-
-	& .nc-item, & .nc-loading
-		position: relative
-		padding: 10px 0
-		border-top: thin solid lighten($color-text, 62%)
-		margin: 0
-		width: 100%
-		display: block
-		clear: both
-
-		&:hover
-			& .nc-read_toggle,
-			& .nc-subscription_toggle
-				visibility: visible
-
-		&.is_read
-			opacity: 0.6
-			color: lighten($color-text, 20%)
-
-		&.nc-item-empty
-			color: lighten($color-text, 20%)
-			text-align: center
-			padding: 24px 0
-			user-select: none
-
-	& .nc-link
-		position: absolute
-		top: 0
-		right: 0
-		bottom: 0
-		background-color: rgba(0,0,0,.1)
-
-	& .nc-avatar
-		float: left
-		width: 10%
-		text-align: center
-
-		& img
-			border-radius: 50%
-			width: 24px
-			height: 24px
-
-	& .nc-text
-		width: 90%
-
-	& .nc-date
-		display: block
-		padding-top: 5px
-		margin-left: 40px
-		font-size: .85em
-		color: lighten($color-text, 20%)
-		& a
-			color: lighten($color-text, 20%)
-			&:hover
-				color: lighten($color-text, 30%)
-
-	& .nc-loading
-		text-align: center
-		font-size: 1.5em
-		color: lighten($color-text, 50%)
-
-	& .nc-read_toggle,
-	& .nc-subscription_toggle
-		visibility: hidden
-		cursor: pointer
-		display: block
-		float: right
-		position: absolute
-		top: 5px
-		right: 5px
-		padding: 5px
-
-	& .nc-subscription_toggle
-		top: 25px
-		right: 4px
 
 .post-view-container
 	margin-top: 5px
@@ -463,7 +298,7 @@ blockquote
 
 	& .deleted
 		color: lighten($color-text, 50%)
-		+user-select-none
+		user-select: none
 
 .post-index-item-details-rating
 	display: none
@@ -567,7 +402,7 @@ blockquote
 	margin: 30px auto
 	color: lighten($color-text, 50%)
 	text-align: center
-	+user-select-none
+	user-select: none
 	& h3
 		margin: 30px auto
 
@@ -742,7 +577,7 @@ blockquote
 	text-align: center
 	padding-top: 10px
 	margin: 0 25px 10px 30px
-	+user-select-none
+	user-select: none
 	+media-xs
 		margin: 0 10px 10px 15px
 		float: right
@@ -944,7 +779,7 @@ blockquote
 
 	& .deleted
 		color: lighten(desaturate($color_brand_main, 10%), 30%)
-		+user-select-none
+		user-select: none
 		+text-shadow-none
 
 .post-view-details-meta
@@ -1053,7 +888,7 @@ blockquote
 			position: relative
 			background-color: $color_background
 			border: 2px solid $color_background
-			+user-select-none
+			user-select: none
 			border-radius: 50%
 			+text-shadow(1px, 1px, 0, black, .1)
 			box-shadow: 1px 2px 0 rgba(black, .1)
@@ -1310,7 +1145,7 @@ blockquote
 		padding: 30px 0 15px 15px
 		margin: 0
 		font-size: 1.4em
-		+user-select-none
+		user-select: none
 
 		& small
 			font-family: $font_body
@@ -1998,274 +1833,11 @@ blockquote
 	& .page-view-content
 		padding: 15px
 
-/* User View */
-.user-view
-	margin-top: 15px
-
-.user-view-index
-	& h4
-		color: lighten($color-text, 30%)
-		font-weight: lighter
-
-.user-view-info
-	margin: 0 0 15px 0
-	padding: 0 0 20px 0
-	display: inline-block
-	position: relative
-	width: 100%
-	+media-xs
-		margin: 0
-	& h3
-		font-weight: lighter
-		margin: 10px 0 0 140px
-		color: $color_brand_main
-		font-size: 2em
-		+media-xs
-			margin: 10px 0 0 105px
-
-	& h4
-		margin-top: 5px
-		font-weight: lighter
-
-	& .user-view-info-container
-		background-color: white
-		border: thin solid darken($color_background, 3%)
-		margin: 15px 0 0 80px
-		padding-left: 60px
-		min-height: 80px
-		border-radius: 3px
-		+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
-		+media-xs
-			margin: 15px 0 0 0
-			padding: 20px 0 0 15px
-
-	& .user-view-info-avatar
-		position: absolute
-		top: 10px
-		left: -5px
-
-		& img
-			padding: 4px
-			background-color: white
-			border-radius: 50%
-			width: 128px
-			height: 128px
-			+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
-
-			+media-xs
-				max-width: 100px
-
-	& .user-view-info-roles
-		margin-top: 5px
-		font-size: 0.9em
-		color: lighten($color-text, 10%)
-		+media-xs
-			margin-top: 10px
-
-	& .user-view-info-meta
-		margin: 10px 0
-		font-size: 0.9em
-		color: lighten($color-text, 40%)
-
-.user-view
-	& .post-index-item-title
-		+media-sm
-			padding-left: 140px
-		+media-md
-			padding-left: 140px
-		+media-lg
-			padding-left: 140px
-	& .post-index-item-details
-		+media-sm
-			padding-left: 140px
-		+media-md
-			padding-left: 140px
-		+media-lg
-			padding-left: 140px
-	& .post-index-item-type
-		+media-sm
-			left: 15px
-		+media-md
-			left: 15px
-		+media-lg
-			left: 15px
-
-/* User Login */
-.user-login,
-.user-register,
-.user-settings
-	margin-top: 25px
-	+media-xs
-		margin-top: 15px
-	& h3, & h2
-		font-weight: lighter
-
-.user-login-container,
-.user-register-container
-	background-color: white
-	border: thin solid darken($color_background, 3%)
-	text-align: center
-	border-radius: 3px
-	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
-
-	& .user-login-branding,
-	& .user-register-branding
-		padding-bottom: 20px
-		border-bottom: thin solid darken($color_background, 3%)
-
-	& h2
-		text-align: center
-		color: lighten($color-text, 25%)
-		padding-bottom: 15px
-		font-weight: lighter
-
-	& .user-login-button-oauth
-		display: block
-		width: 80%
-		margin: 10px auto 0 auto
-		padding: 10px 10px 10px 20px
-		text-align: left
-		position: relative
-		background-color: darken($color_background, 2%)
-		+border-radius(8px)
-		+text-shadow(1px, 1px, 0, black, 0.2)
-		+box-shadow(1px, 2px, 0, black, 0.1)
-
-		&:hover, &:focus
-			text-decoration: none
-		& i.icon
-			width: 20px
-
-		&.blender-id
-			color: $color_blender-blue
-			background-color: $color_background
-			border: thin solid darken($color_background, 3%)
-			+text-shadow(1px, 1px, 0, white, 0.2)
-			&:hover
-				color: lighten($color_blender-blue, 5%)
-				background-color: lighten($color_background, 5%)
-			& small
-				opacity: 0.8
-				font-size: 0.65em
-				+media-xs
-					display: none
-			& i
-				position: relative
-				right: 4px
-				font-size: 1.1em
-				color: lighten($color_blender-blue, 10%)
-
-		&.google
-			color: white
-			background-color: $color_google
-			&:hover
-				background-color: lighten($color_google, 5%)
-
-		&.facebook
-			color: white
-			background-color: $color_facebook
-			&:hover
-				background-color: lighten($color_facebook, 5%)
-
-	& .user-login-button-others
-		display: block
-		margin: 8px auto 20px auto
-		font-size: 0.75em
-		text-align: center
-		& a
-			cursor: pointer
-			color: lighten($color-text, 45%)
-			&:hover
-				color: lighten($color-text, 30%)
-
-.user-login-container-uncool,
-.user-register-form
-	width: 80%
-	display: inline-block
-	margin: 0 auto
-	& .input-group
-		margin: 0 auto
-	& .input-group+.input-group
-		margin: 10px auto 0 auto
-
-	& .form-control
-		font-size: 1em
-		padding: 20px auto
-
-	& .btn
-		width: 100%
-		margin: 10px auto 0 auto
-
-	& .user-login-back,
-	& .user-register-back
-		font-size: 0.8em
-		margin: 0 auto 14px auto
-		padding: 0
-		color: $color_brand_main
-		cursor: pointer
-		&:hover
-			color: lighten($color_brand_main, 5%)
-	& .user-register-back
-		margin: 10px auto
-
-	& .user-login-extra
-		display: inline-block
-		font-size: 0.75em
-		width: 100%
-		height: 20px
-		margin: 6px auto 0 auto
-		& .remember
-			float: left
-			position: relative
-			top: -6px
-			font-weight: lighter
-			& input
-				position: relative
-				top: 2px
-		& .forgot
-			float: right
-			color: lighten($color-text, 30%)
-			&:hover
-				color: $color_brand_main
-
-.user-login-container-uncool
-	display: none
-
-.user-register-container
-	& p
-		font-size: 0.9em
-		color: lighten($color-text, 10%)
-		padding: 0 30px
-
-/* User Settings */
-.user-settings-avatar
-	margin: 0 auto
-	display: block
-	text-align: center
-	& img
-		padding: 5px
-		border-radius: 50%
-		box-shadow: 2px 2px 0 rgba(black, .1)
-	& small
-		display: block
-		margin-top: 10px
-		font-size: 0.8em
-
-.user-settings-roles
-	color: $color_brand_main
-	+user-select-none
-	& h3
-		color: $color-text
-	& i
-		width: 18px
-	& .empty
-		+user-select-none
-		color: lighten($color-text, 40%)
 
 /* Footer */
 .page-footer
 	color: desaturate($color_brand_main, 20%)
-	+user-select-none
+	user-select: none
 	& h3
 		font-size: 1.6em
 	& p, & ul
@@ -2286,12 +1858,11 @@ blockquote
 
 
 footer
-	padding-top: 20px
+	padding: 10px 0 15px 0
 	color: lighten(desaturate($color_brand_main, 20%), 20%)
 	font-size: 0.85em
 	text-align: center
-	padding-bottom: 20px
-	+user-select-none
+	user-select: none
 	& a
 		color: lighten(desaturate($color_brand_main, 20%), 20%)
 
@@ -2347,7 +1918,7 @@ footer
 	border-radius: 6px
 
 	& .form-control, & .input-group-addon
-		+box-shadow-none
+		box-shadow: none !important
 		background-color: transparent
 		border: 1px solid transparent
 		&:focus
@@ -2423,7 +1994,7 @@ fieldset
 	font-family: $font_body
 	background-color: transparent
 	border: none
-	+box-shadow-none()
+	box-shadow: none !important()
 	border-radius: 3px
 
 .popover-title
@@ -2483,8 +2054,8 @@ fieldset
 				background-color: transparent
 
 		& span.ellipsis
-			+user-select-none
-			+pointer-events-none
+			user-select: none
+			pointer-events: none
 
 /* badges */
 .badge
@@ -2504,7 +2075,7 @@ fieldset
 	font-weight: bold
 	display: block
 	text-align: center
-	+user-select-none
+	user-select: none
 
 	+media-xs
 		display: none // sad, but for the time being is better to hide it on mobile
@@ -2520,7 +2091,7 @@ fieldset
 
 	&.navbar-submit-disabled
 		background: repeating-linear-gradient(-45deg, $color_brand_main, $color_brand_main 10px, darken($color_brand_main, 5%) 10px, darken($color_brand_main, 5%) 20px)
-		+pointer-events-none
+		pointer-events: none
 		& a
 			padding-left: 0 !important
 
@@ -2622,8 +2193,8 @@ fieldset
 		padding: 10px 0 0 0
 		color: $color_brand_main
 		position: relative
-		+user-select-none
-		+pointer-events-none
+		user-select: none
+		pointer-events: none
 		+text-shadow(1px, 1px, 0, darken($color_background, 1%), 1.0)
 
 		& small
@@ -2638,8 +2209,8 @@ fieldset
 		color: lighten($color-text, 20%)
 		margin: 0
 		padding: 10px 20px 20px 20px
-		+user-select-none
-		+pointer-events-none
+		user-select: none
+		pointer-events: none
 
 .nav-sidebar.navigation
 	display: block
@@ -2701,7 +2272,7 @@ fieldset
 	padding: 0
 	font-size: 0.8em
 	text-align: center
-	+box-shadow-none
+	box-shadow: none !important
 	& p
 		padding: 10px 0
 		margin: 0
@@ -2852,30 +2423,3 @@ fieldset
 		transform: translate3d(0, -100%, 0)
 
 
-/* Errors */
-.error-404
-	background-color: #f65441
-	text-align: center
-	color: white
-	& img
-		margin: 60px auto 10px auto
-	& .error-goback
-		font-size: 0.9em
-		color: white
-		margin: 20px auto
-		& a
-			color: white
-	& h1
-		font-size: 3.4em
-		margin: 0
-		padding: 0
-	& h2
-		font-size: 2.2em
-		margin: 20px 0 0 0
-		padding: 0
-		+media-xs
-			font-size: 1.6em
-
-@import plugins/ckeditor
-@import plugins/cd-dropdown
-@import plugins/swipebox
