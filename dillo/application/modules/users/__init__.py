@@ -113,12 +113,14 @@ def google_login():
     check_oauth_provider(google)
     return google.authorize(callback=url_for('google_authorized', _external=True))
 
+
 @app.route('/oauth/google/logout')
 def google_logout():
     check_oauth_provider(google)
     session.pop('google_token', None)
     session.clear()
     return redirect(url_for('index'))
+
 
 @app.route('/oauth/google/authorized')
 def google_authorized():
@@ -282,11 +284,9 @@ def view(user_id):
         .filter(Post.status != 'deleted')\
         .order_by(desc(Post.creation_date))\
         .all()
-    return render_template('users/view.html',
-        title='user_view',
-        user_string_id=user_string_id,
-        posts=posts,
-        user=user)
+    return render_template('users/view.html', title='user_view',
+                           user_string_id=user_string_id, posts=posts,
+                           user=user)
 
 
 @users.route('/stats')
