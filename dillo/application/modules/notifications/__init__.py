@@ -162,7 +162,6 @@ def notification_parse(notification):
 
 
 @notifications.route('/')
-@login_required
 def index():
     """Get notifications for the current user.
 
@@ -170,13 +169,16 @@ def index():
     - limit: limits the number of notifications
     - format: html or JSON
     """
+    if current_user.is_anonymous():
+        return jsonify(status='fail', data=dict(message='Please register to '
+                                                        'access notifications'))
     limit = request.args.get('limit', 20)
-    notifications = Notification.query\
+    user_notifications = Notification.query\
         .filter(Notification.user_id == current_user.id)\
         .order_by(Notification.id.desc())\
         .limit(limit)
     items = []
-    for notification in notifications:
+    for notification in user_notifications:
         items.append(notification_parse(notification))
 
     return jsonify(items=items)
