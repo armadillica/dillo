@@ -1,11 +1,13 @@
-import hashlib, urllib
 import datetime
+import hashlib
+import urllib
 
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
     UserMixin, RoleMixin
 
 from application import app
 from application import db
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +45,11 @@ class User(db.Model, UserMixin):
     @property
     def string_id(self):
         return str(self.id)
+
+    @property
+    def role_ids(self):
+        return [r.id for r in self.roles]
+
 
     # Required for administrative interface
     def __str__(self):

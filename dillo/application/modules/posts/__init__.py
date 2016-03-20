@@ -1,8 +1,6 @@
 import os
-import json
 import datetime
 import requests
-import shutil
 from PIL import Image
 from werkzeug import secure_filename
 from flask import render_template
@@ -35,6 +33,7 @@ from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import PostForm
 from application.modules.posts.forms import CommentForm
 from application.modules.notifications import notification_subscribe
+from application.modules.users.model import Role
 from application.helpers import encode_id
 from application.helpers import decode_id
 from application.helpers import slugify
@@ -51,8 +50,14 @@ posts = Blueprint('posts', __name__)
 @posts.route('/p/<int:page>')
 def index(page=1):
     categories = Category.query.all()
-    posts = Post.query\
-        .filter_by(status='published')\
+    if current_user.is_authenticated():
+        roles = current_user.role_ids
+    else:
+        roles =
+    posts_list = Post.query\
+        .filter_by(status='published') \
+        .join(Category) \
+        .filter(Category.roles.any(Role.id.in_(roles))) \
         .join(PostRating)\
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=20)
@@ -65,7 +70,7 @@ def index(page=1):
         category_url='', #used for caching index
         user_string_id=user_string_id,
         page=str(page),
-        posts=posts)
+        posts=posts_list)
 
 
 @posts.route('/p/<category>')
@@ -74,7 +79,6 @@ def index_category(category, page=1):
     category = Category.query\
         .filter_by(url=category).first_or_404()
     categories = Category.query.all()
-    #posts = query_posts_category(category.url, page)
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
