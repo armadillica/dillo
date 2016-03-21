@@ -40,6 +40,7 @@ def setup():
         else:
             break
     admin_role = user_datastore.find_or_create_role('admin')
+    world_role = user_datastore.find_or_create_role('world')
     admin = user_datastore.create_user(
         username=admin_username,
         password=encrypt_password(admin_password),

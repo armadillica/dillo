@@ -50,10 +50,9 @@ posts = Blueprint('posts', __name__)
 @posts.route('/p/<int:page>')
 def index(page=1):
     categories = Category.query.all()
+    roles = [Role.query.filter_by(name='world').first()]
     if current_user.is_authenticated():
-        roles = current_user.role_ids
-    else:
-        roles =
+        roles += current_user.role_ids
     posts_list = Post.query\
         .filter_by(status='published') \
         .join(Category) \
