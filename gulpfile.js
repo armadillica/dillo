@@ -16,7 +16,7 @@ gulp.task('styles', function() {
         .pipe(sass({
             outputStyle: 'compressed'}
             ))
-        .pipe(autoprefixer("last 3 version", "safari 5", "ie 8", "ie 9"))
+        .pipe(autoprefixer("last 3 versions", "safari 5", "ie 8", "ie 9"))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('dillo/application/themes/dillo/static/css'))
         .pipe(livereload());
