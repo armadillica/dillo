@@ -2,15 +2,12 @@ import math
 import bleach
 import httplib
 from urlparse import urlparse
-
-from application import app
-from application import redis_client
-
 from flask.ext.security import current_user
 from flask.ext.cache import make_template_fragment_key
+from application import app
+from application import redis_client
+from application.modules.users.model import Role
 
-import micawber
-from micawber.providers import bootstrap_basic
 
 ALPHABET = "bcdfghjklmnpqrstvwxyz0123456789BCDFGHJKLMNPQRSTVWXYZ"
 BASE = len(ALPHABET)
@@ -196,3 +193,9 @@ def delete_redis_cache_post(uuid, user_id=None, all_users=False):
     keys_list = redis_client.keys(key)
     for key in keys_list: redis_client.delete(key)
 
+
+def computed_user_roles():
+    roles = [Role.query.filter_by(name='world').first().id]
+    if current_user.is_authenticated():
+        roles += current_user.role_ids
+    return roles

@@ -41,6 +41,7 @@ from application.helpers import bleach_input
 from application.helpers import check_url
 from application.helpers import delete_redis_cache_keys
 from application.helpers import delete_redis_cache_post
+from application.helpers import computed_user_roles
 from application.helpers.imaging import generate_local_thumbnails
 
 posts = Blueprint('posts', __name__)
@@ -50,9 +51,7 @@ posts = Blueprint('posts', __name__)
 @posts.route('/p/<int:page>')
 def index(page=1):
     categories = Category.query.all()
-    roles = [Role.query.filter_by(name='world').first()]
-    if current_user.is_authenticated():
-        roles += current_user.role_ids
+    roles = computed_user_roles()
     posts_list = Post.query\
         .filter_by(status='published') \
         .join(Category) \
@@ -64,12 +63,12 @@ def index(page=1):
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
     return render_template('posts/index.html',
-        title='index',
-        categories=categories,
-        category_url='', #used for caching index
-        user_string_id=user_string_id,
-        page=str(page),
-        posts=posts_list)
+                           title='index',
+                           categories=categories,
+                           category_url='',  # used for caching index
+                           user_string_id=user_string_id,
+                           page=str(page),
+                           posts=posts_list)
 
 
 @posts.route('/p/<category>')
@@ -78,14 +77,16 @@ def index_category(category, page=1):
     category = Category.query\
         .filter_by(url=category).first_or_404()
     categories = Category.query.all()
+    roles = computed_user_roles()
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
         user_string_id = current_user.string_id
-    posts = Post.query\
+    posts_category = Post.query\
         .filter_by(status='published')\
         .join(Category)\
         .join(PostRating)\
-        .filter(Category.url == category.url)\
+        .filter(Category.url == category.url) \
+        .filter(Category.roles.any(Role.id.in_(roles))) \
         .order_by(desc(PostRating.hot))\
         .paginate(page, per_page=20)\
 
@@ -96,7 +97,7 @@ def index_category(category, page=1):
         category=category,
         user_string_id=user_string_id,
         page=str(page),
-        posts=posts)
+        posts=posts_category)
 
 
 @posts.route('/p/<category>/<uuid>/')
