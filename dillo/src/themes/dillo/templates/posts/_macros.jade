@@ -197,8 +197,15 @@ select#cd-dropdown.cd-select(
 		{% endif %}
 
 	| {% for category in categories %}
-	option(value="{{url_for('posts.index_category', category=category.url)}}")
-		i.fa.fa-rocket {{category.name}}
+	| {% if category.parent_id %}
+	option.children(
+		value="{{url_for('posts.index_category', category=category.url)}}", children)
+		| {{category.name}}
+	| {% else %}
+	option.parent(
+		value="{{url_for('posts.index_category', category=category.url)}}")
+		| {{category.name}}
+	| {% endif %}
 	| {% endfor %}
 
 | {% endmacro %}

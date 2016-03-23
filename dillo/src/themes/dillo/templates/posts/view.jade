@@ -51,12 +51,9 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 				h4.post-view-container-title
 
 					a(href="{{url_for('index')}}") Home
-
 					strong ·
-
-					// XXX TODO CHECK ON THIS
-					a(href="{{url_for('index')}}p/{{post.category.url}}").
-						{{post.category.name}}
+					a(href="{{url_for('posts.index_category', category=post.category.url)}}")
+						| {{post.category.name}}
 
 
 			| {# Categories #}
@@ -667,16 +664,6 @@ script(type="text/javascript").
 				$('.notification-post-edit').show();
 				$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
 
-				if (post_type == 'text') {
-					var ck = CKEDITOR.inline('post-content',
-									{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
-							);
-					ck.on( 'instanceReady', function( ev ) {
-						var editor = ev.editor;
-						editor.setReadOnly( false );
-					});
-				};
-
 				$('#post-view-title').hide();
 				$('#post-edit-title').show();
 
@@ -692,14 +679,6 @@ script(type="text/javascript").
 
 				$('#post-edit-title').hide();
 				$('#post-view-title').show();
-
-				if ( post_type == 'text') {
-					if (CKEDITOR.instances['post-content']) {
-						CKEDITOR.instances['post-content'].destroy();
-					};
-
-					$("#post-content").attr('contenteditable', false);
-				};
 
 				$('#post-view-title a').html($("#post-edit-title textarea").val());
 
