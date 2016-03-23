@@ -91,13 +91,13 @@ def index_category(category, page=1):
         .paginate(page, per_page=20)\
 
     return render_template('posts/index.html',
-        title='index_category',
-        categories=categories,
-        category_url=category.url, #used for caching index
-        category=category,
-        user_string_id=user_string_id,
-        page=str(page),
-        posts=posts_category)
+                           title='index_category',
+                           categories=categories,
+                           category_url=category.url,  # used for caching index
+                           category=category,
+                           user_string_id=user_string_id,
+                           page=str(page),
+                           posts=posts_category)
 
 
 @posts.route('/p/<category>/<uuid>/')
@@ -113,10 +113,9 @@ def view(category, uuid, slug=None):
     # Aggressive redirect if the URL does not have a slug
     if not slug:
         return redirect(url_for('posts.view',
-            category=category,
-            uuid=uuid,
-            slug=post.slug))
-    #post.comments.sort(key=lambda comment: comment.confidence, reverse=True)
+                        category=category,
+                        uuid=uuid,
+                        slug=post.slug))
 
     oembed = None
     # If the content is a link, we try to pass it through micawber to do
@@ -326,7 +325,7 @@ def rate(uuid, rating):
     delete_redis_cache_post(post.uuid)
 
     return jsonify(rating=str(user_post_rating.is_positive),
-        rating_delta=post.rating_delta)
+                   rating_delta=post.rating_delta)
 
 
 @posts.route('/p/<uuid>/flag')
@@ -340,7 +339,7 @@ def flag(uuid):
     # Check if user flagged the post
     if user_post_rating:
         # If the post was previously flagged
-        if user_post_rating.is_flagged == True:
+        if user_post_rating.is_flagged:
             user_post_rating.is_flagged = 0
             post.user.karma.negative += 5
         else:
@@ -420,28 +419,30 @@ def delete(uuid):
 @posts.route('/p/feed/latest.atom')
 @cache.cached(60*5)
 def feed():
-    feed = AtomFeed("{0} - Posts".format(app.config['SETTINGS_TITLE']),
+    latest_feed = AtomFeed("{0} - Posts".format(app.config['SETTINGS_TITLE']),
                     feed_url=request.url, url=request.url_root)
-    posts = Post.query\
+    latest_posts = Post.query\
         .filter_by(status='published')\
         .order_by(desc(Post.creation_date))\
         .limit(15)\
         .all()
-    for post in posts:
+    for post in latest_posts:
         author = ''
         if post.user:
             author = post.user.username
 
         updated = post.edit_date if post.edit_date else post.creation_date
 
-        feed.add(post.title, unicode(post.content),
-                 content_type='html',
-                 author=author,
-                 url=url_for('posts.view',
-                    category=post.category.url,
-                    uuid=post.uuid,
-                    slug=post.slug,
-                    _external=True),
-                 updated=updated,
-                 published=post.creation_date)
-    return feed.get_response()
+        latest_feed.add(
+            post.title, unicode(post.content),
+            content_type='html',
+            author=author,
+            url=url_for(
+                'posts.view',
+                category=post.category.url,
+                uuid=post.uuid,
+                slug=post.slug,
+                _external=True),
+            updated=updated,
+            published=post.creation_date)
+    return latest_feed.get_response()
