@@ -1239,6 +1239,7 @@ blockquote
 .post-view-comments-item, .post-view-comments-submit
 	.comment-reply-field
 		resize: none
+		min-height: 50px
 	.comment-edit-field
 		width: 100%
 		border: none
@@ -1603,6 +1604,9 @@ blockquote
 	display: none
 	padding-bottom: 20px
 
+.post-submit .post-submit-field
+	margin-bottom: 0
+
 .post-submit .form-group .form-control
 	font-size: 1.5em
 	padding: 8px 12px 8px 16px
@@ -1615,6 +1619,17 @@ blockquote
 	&.post-submit-field-title, &.post-submit-field-url,
 	&.post-submit-field-category, &.post-submit-field-content, &.post-submit-field-picture
 		width: 100%
+
+	&.post-submit-field-content
+		padding: 10px 15px 5px 15px
+		min-height: 100px
+		font-size: 1.1em
+		margin-bottom: 0
+		border-radius: 0
+		border:
+			left: none !important
+			bottom: none !important
+			right: none !important
 
 .post-submit-div-title,
 .post-submit-div-category, .post-submit-div-content,
@@ -1815,6 +1830,31 @@ blockquote
 		font-size: 1.8em
 		margin-top: 0
 
+.post-submit-preview
+	border-top: 2px dashed lighten($color-text, 40%) !important
+	padding: 10px 15px 5px 15px
+	background: white
+	border-bottom-left-radius: 3px
+	border-bottom-right-radius: 3px
+
+	+text-body
+
+	font-size: 1.1em
+	line-height: 1.7em
+	margin: 0
+	position: relative
+
+	+media-xs
+		font-size: 1em
+		padding: 10px
+		margin: 10px
+
+.post-submit-preview-meta
+	padding-top: 3px
+	font-size: .9em
+	text-align: right
+	a
+		color: $color_brand_main !important
 
 /* Page View */
 .page-view
@@ -1906,11 +1946,13 @@ footer
 
 /* FORMS */
 .form-group .form-control
-	border: 2px solid darken($color_background, 6%)
+	border: 2px solid darken($color_background, 6%) !important
 	background-color: darken($color_background, 2%)
 	border-radius: 3px
 	&:focus
-		border-color: $color_brand_main
+		border-color: $color_brand_main !important
+		box-shadow: none
+
 
 .input-group
 	border: thin solid darken($color_background, 6%)

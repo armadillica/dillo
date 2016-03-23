@@ -64,13 +64,19 @@ form#submit_post_form(
 
 		.row.post-submit-div-content.post-submit-article
 			.col-md-10.col-md-push-1
-				.form-group
-					| {{ submit_post_form.content(class='form-control post-submit-field-content', id='post_content') }}
+				.form-group.post-submit-field
+					| {{ submit_post_form.content(class='form-control post-submit-field-content', id='post_content', placeholder='Text of your submission') }}
+				.post-submit-preview
+				.post-submit-preview-meta
+					a.md(
+						target="_blank",
+						href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+						| Markdown Cheatsheet
 
 
 		.row.post-submit-div-category
 			.col-md-10.col-md-push-1
-				span Choose a Category
+				span Choose a category
 
 				.form-group
 					| {{ submit_post_form.category_id(class='form-control post-submit-field-category', placeholder='Category') }}

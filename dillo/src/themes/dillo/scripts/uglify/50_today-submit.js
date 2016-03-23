@@ -56,14 +56,29 @@ $(document).ready(function() {
 		dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
 	})();
 
-	// CKEditor Stuff
-	CKEDITOR.replace( 'post_content', {
-		customConfig: '/static/js/ckeditor/config.js',
+
+	/* Build the markdown preview when typing in textarea */
+	$(function() {
+		var $textarea = $('.post-submit-field-content'),
+				$container = $('.post-submit-article'),
+				$preview = $('.post-submit-preview');
+
+		// As we type in the textarea
+		$textarea.keyup(function() {
+
+			// Convert markdown
+			$preview.html(convert($textarea.val()));
+
+			// While we are at it, style when empty
+			if ($textarea.val()) {
+				$preview.show();
+			} else {
+				$preview.hide();
+			};
+
+		}).trigger('keyup');
 	});
 
-	CKEDITOR.instances['post_content'].on('change', function() {
-		CKEDITOR.instances['post_content'].updateElement()
-	});
 
 	// Change type of submission
 	$('.select-change').click(function(){
