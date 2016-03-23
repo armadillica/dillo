@@ -17,7 +17,6 @@ from flask import abort
 
 from flask.ext.security.utils import login_user
 from flask.ext.security.signals import user_registered
-from flask.ext.security import login_required
 from flask.ext.security import current_user
 from flask_oauthlib.client import OAuthException
 

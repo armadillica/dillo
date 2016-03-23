@@ -26,13 +26,11 @@ class User(db.Model, UserMixin):
     login_count = db.Column(db.Integer)
     signup_date = db.Column(db.DateTime(), default=datetime.datetime.now)
 
-
     karma = db.relationship('UserKarma', backref=db.backref('user'), uselist=False)
     roles = db.relationship('Role', secondary='roles_users',
                             backref=db.backref('users', lazy='dynamic'))
 
-
-    def gravatar(self, size=64, consider_settings=True):
+    def gravatar(self, size=64):
         parameters = {'s':str(size), 'd':'mm'}
         return "https://www.gravatar.com/avatar/" + \
             hashlib.md5(self.email.lower()).hexdigest() + \
@@ -49,7 +47,6 @@ class User(db.Model, UserMixin):
     @property
     def role_ids(self):
         return [r.id for r in self.roles]
-
 
     # Required for administrative interface
     def __str__(self):
