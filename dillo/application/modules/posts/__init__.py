@@ -152,7 +152,6 @@ def view(category, uuid, slug=None):
 def submit():
     form = PostForm()
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
-    #form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
     if form.validate_on_submit():
         content = form.content.data
         # If the post is a link (is 1), we cast this because it's coming from
@@ -208,14 +207,14 @@ def submit():
             if imgur_client:
                 image = imgur_client.upload_from_path(filepath, config=None, anon=True)
             else:
-                image = dict(id=None, deletehash=None)
+                image = dict(link=None, deletehash=None)
 
             if app.config['USE_UPLOADS_LOCAL_STORAGE']:
                 # Use the post UUID as a name for the local image.
                 # If Imgur is not available save it in the database with a _ to
                 # imply that the file is available only locally.
-                if not image['id']:
-                    image['id'] = '_' + post.uuid
+                if not image['link']:
+                    image['link'] = '_' + post.uuid
                 image_name = post.uuid + '.jpg'
                 # The root of the local storage path
                 local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
@@ -232,7 +231,7 @@ def submit():
                 im.save(storage_filepath, "JPEG")
                 # Make all the thumbnails
                 generate_local_thumbnails(storage_filepath)
-            post.picture = image['id']
+            post.picture = image['link']
             post.picture_deletehash = image['deletehash']
             os.remove(filepath)
         db.session.commit()

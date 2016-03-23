@@ -75,8 +75,16 @@ class Post(db.Model):
         if self.picture:
             if imgur_client:
                 if not self.picture.startswith('_'):
-                    picture_link = Post.get_picture_link(self.picture)
-                    return picture_link.replace(self.picture, self.picture + size)
+                    # Automatic migration for previous Imgur integration, where
+                    # only the image id was being served. We build the full link
+                    # and save it.
+                    if not self.picture.startswith('http'):
+                        picture_link = Post.get_picture_link(self.picture)
+                        self.picture = picture_link
+                        db.session.commit()
+                    root, ext = os.path.splitext(self.picture)
+                    return "{0}{1}{2}".format(root, size, ext)
+
             if app.config['USE_UPLOADS_LOCAL_STORAGE']:
                 local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
                 local_picture = "{0}_{1}.jpg".format(self.uuid, size)
@@ -97,8 +105,10 @@ class Post(db.Model):
         if self.picture:
             if imgur_client:
                 if not self.picture.startswith('_'):
-                    picture_link = Post.get_picture_link(self.picture)
-                    return picture_link
+                    if not self.picture.startswith('http'):
+                        self.picture = Post.get_picture_link(self.picture)
+                        db.session.commit()
+                    return self.picture
             if app.config['USE_UPLOADS_LOCAL_STORAGE']:
                 local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
                 local_picture = "{0}.jpg".format(self.uuid)
