@@ -1,4 +1,4 @@
-@import font-borg
+@import font-dillo
 @import reset
 @import config
 @import helpers
@@ -530,8 +530,29 @@ blockquote
 	border-radius: 3px
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 
-#post-edit-title
+
+#post-edit-title,
+#post-edit-content
 	display: none
+
+#post-edit-content
+	width: 100%
+	border
+	border-bottom: 1px dashed $color-text-dark-hint
+	margin-bottom: 0
+	padding-bottom: 0
+
+	textarea
+		border: none
+		color: $color-text-dark
+		width: 100%
+		padding: 0
+		margin: 0
+		&:active,
+		&:focus
+			border: none
+			outline: none
+
 
 .post-view-title
 	display: block
@@ -553,6 +574,9 @@ blockquote
 		border: none
 		width: 90%
 		padding: 0
+
+		+media-md
+			width: 80%
 
 
 	& i
@@ -597,7 +621,8 @@ blockquote
 	.down:hover, .down.rated
 		color: $color_downvote
 
-.post-view-content
+.post-view-content,
+#post-edit-preview
 	+text-body
 
 	font-size: 1.1em
@@ -711,7 +736,21 @@ blockquote
 			width: 16px
 			height: 16px
 
+#post-edit-preview
+	display: none
+	color: $color-text-dark-primary
+	position: relative
+	padding-top: 20px
 
+	&:before
+		position: absolute
+		left: 80px
+		top: -17px
+		background-color: white
+		padding: 0 10px
+		content: 'Live Preview'
+		font-size: .7em
+		color: $color-text-dark-secondary
 
 .post-view-content-image
 	text-align: center
@@ -831,11 +870,11 @@ blockquote
 			width: 15px
 			opacity: 0.95
 			+text-shadow-none
-			&.bf-cloud, &.bf-network
+			&.di-blender-cloud, &.di-blender-network
 				position: relative
 				left: 1px
 				font-size: 1.2em
-			&.fa-graduation-cap
+			&.di-graduation-cap
 				font-size: 0.75em
 				position: relative
 				left: 2px
@@ -908,7 +947,7 @@ blockquote
 			& i
 				position: relative
 				top: 6px
-				left: 11px
+				left: 6px
 				+media-xs
 					font-size: 0.9em
 					top: 0px
@@ -986,11 +1025,9 @@ blockquote
 				& i
 					position: relative
 					top: 5px
-					left: 10px
-					&.fa-reddit
-						left: 7px
-					&.fa-envelope-o
-						left: 8px
+					left: 5px
+					&.di-reddit
+						left: 3px
 
 		& #social-toggle.activato
 			background-color: $color_background
@@ -1065,6 +1102,8 @@ blockquote
 		+text-shadow-none
 		&.network_member
 			color: #d91b5c
+			top: 1px
+			left: 2px
 		&.cloud_member
 			color: $color-text
 			font-size: 1.2em
@@ -1081,15 +1120,9 @@ blockquote
 	width: 23px
 	height: 23px
 	left: 42px
-	box-shadow: 2px 2px 0 rgba(black, .1)
 
 	+media-xs
 		left: 30px
-
-	& i
-		font-size: 1.4em
-		left: 4px
-		top: 1px
 
 
 .post-view-comments-avatar-label
@@ -1335,7 +1368,7 @@ blockquote
 					span
 						color: white
 
-				i.icon-send
+				i.di-paper-plane
 					padding-right: 7px
 
 				span
@@ -1830,8 +1863,8 @@ blockquote
 		margin-top: 0
 
 .post-submit-preview
-	border-top: 2px dashed lighten($color-text, 40%) !important
-	padding: 10px 15px 5px 15px
+	border-top: 1px dashed $color-text-dark-hint !important
+	padding: 20px 15px 5px 15px
 	background: white
 	border-bottom-left-radius: 3px
 	border-bottom-right-radius: 3px
@@ -1842,6 +1875,19 @@ blockquote
 	line-height: 1.7em
 	margin: 0
 	position: relative
+
+	color: $color-text-dark-primary
+	position: relative
+
+	&:before
+		position: absolute
+		left: 10px
+		top: -13px
+		background-color: white
+		padding: 0 10px
+		content: 'Live Preview'
+		font-size: .8em
+		color: $color-text-dark-secondary
 
 	+media-xs
 		font-size: 1em
@@ -2257,41 +2303,47 @@ fieldset
 	display: block
 	position: relative
 	text-align: center
-	& nav
+	nav
 		display: inline-block
 		padding: 0
 		width: 100%
-		margin-bottom: -6px
-	& ul
+
+	ul
+		display: flex
 		list-style-type: none
 		margin: 0
 		padding: 0
-		& li
-			float: left
+		height: 40px
+		align-items: center
+		justify-content: space-between
+
+		li
+			margin: 0
 			padding: 0
+
 			&.navbar-submit
 				border-top-left-radius: 3px
 				border-bottom-left-radius: 3px
-				border-right: thin solid darken($color_background, 5%)
 				background-color: $color_brand_main
 				color: white
+				padding: 10px 15px
+
 				& a
 					color: white
 				&:hover
 					background-color: $color_brand_secondary
 					& a
 						color: white
-			&.navbar-logout
-				float: right
-				margin-right: 10px
-			& a
-				display: inline-block
-				padding: 10px 10px 10px 15px
-				&.active
-					color: $color_brand_secondary
 
-			& i
+			&.navbar-notifications i
+				font-size: 1.6em
+			&.navbar-settings i
 				font-size: 1.3em
+			&.navbar-profile i
+				font-size: 1.5em
+			&.navbar-logout i
+				font-size: 1.25em
+				padding-right: 3px
 
 	& .nav-sidebar-avatar
 		display: inline-block
@@ -2299,10 +2351,8 @@ fieldset
 		width: 30px
 		background-size: cover
 		position: relative
-		top: 5px
-		margin-left: 5px
+		top: 2px
 		border-radius: 50%
-		box-shadow: 2px 2px 0 rgba(black, .1)
 		&:hover
 			opacity: .9
 

@@ -68,7 +68,7 @@ meta(property="profile:username", content="{{user.username}}")
 					|  Blender Network Member<br/>
 					| {% endif %}
 					| {% if user.has_role('bfct_trainer') %}
-					i.fa.fa-graduation-cap
+					i.di-graduation-cap
 					|  Blender Foundation Certified Trainer
 					| {% endif %}
 
@@ -124,7 +124,7 @@ meta(property="profile:username", content="{{user.username}}")
 										title="Link",
 										src="http://www.google.com/s2/favicons?domain={{post.content}}")
 									| {% else %}
-									i.fa.fa-file-text-o(title="Text Post")
+									i.di-text(title="Text Post")
 									| {% endif %}
 									|  ·
 
@@ -134,7 +134,7 @@ meta(property="profile:username", content="{{user.username}}")
 
 								| {% if post.comments_count > 0 %}
 								a.post-index-item-details-comments(href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments")
-									i.fa.fa-comment
+									i.di-comments
 									| {{post.comments_count}}
 
 								| ·
@@ -174,9 +174,9 @@ meta(property="profile:username", content="{{user.username}}")
 							style="{% if post.picture %}background: url({{post.thumbnail('s')}}) top left no-repeat{% endif %}")
 							| {% if not post.picture %}
 							| {% if post.post_type.url == 'link' %}
-							i.fa.fa-link
+							i.di-link
 							| {% elif post.post_type.url == 'text' %}
-							i.fa.fa-file-text-o
+							i.di-text
 							| {% endif %}
 							| {% endif %}
 
@@ -209,7 +209,7 @@ meta(property="profile:username", content="{{user.username}}")
 									title="Link",
 									src="http://www.google.com/s2/favicons?domain={{post.content}}")
 								| {% else %}
-								i.fa.fa-file-text-o(title="Text Post")
+								i.di-text(title="Text Post")
 								| {% endif %}
 
 							span.separator
@@ -234,7 +234,7 @@ meta(property="profile:username", content="{{user.username}}")
 								| {% if post.comments_count > 0 %}
 								span.visible-xs
 									| {{post.comments_count}}
-									i.fa.fa-comments-o
+									i.di-comments
 									span.separator
 								| {% endif %}
 
@@ -260,10 +260,10 @@ meta(property="profile:username", content="{{user.username}}")
 
 							| {% if post.picture %}
 							span.post-index-item-picture-collapse(title="Collapse")
-								i.fa.fa-minus-square-o
+								i.di-minus-square-o
 
 							span.post-index-item-picture-expand(title="Expand")
-								i.fa.fa-plus-square-o
+								i.di-plus-square-o
 
 							img.post-index-item-picture(
 								title="Click and drag to resize",

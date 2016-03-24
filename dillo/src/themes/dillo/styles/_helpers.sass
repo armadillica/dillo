@@ -173,3 +173,48 @@ $screen-md-max: $screen-lg-min - 1
 		+media-lg
 			min-height: 476px
 			max-height: 476px
+
+
+=spin
+	animation:
+		name: spin-once
+		duration: .5s
+		delay: 0s
+		fill-mode: forwards
+		iteration-count: infinite
+		timing-function: linear
+
+=spin-once
+	+spin
+	animation:
+		iteration-count: 1
+
+=pulse
+	animation:
+		name: pulse
+		duration: 1s
+		delay: 0s
+		fill-mode: forwards
+		iteration-count: infinite
+
+.spin
+	position: relative
+	+spin
+
+	&:before, &:after
+		+spin
+
+
+@keyframes spin-once
+	from
+		transform: rotate(0deg)
+	to
+		transform: rotate(360deg)
+
+@keyframes pulse
+	0
+		opacity: 1
+	50%
+		opacity: 0
+	100%
+		opacity: 1

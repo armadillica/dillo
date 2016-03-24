@@ -55,18 +55,18 @@ function getNotifications(){
 						// Read Toggle
 						content += '<a href="/notifications/' + no['_id'] + '/read-toggle" class="nc-button nc-read_toggle">';
 							if (no['is_read']){
-								content += '<i title="Mark as Unread" class="fa fa-check-circle-o"></i>';
+								content += '<i title="Mark as Unread" class="di-circle-dot"></i>';
 							} else {
-								content += '<i title="Mark as Read" class="fa fa-circle-o"></i>';
+								content += '<i title="Mark as Read" class="di-circle"></i>';
 							};
 						content += '</a>';
 
 						// Subscription Toggle
 						content += '<a href="/notifications/' + no['_id'] + '/subscription-toggle" class="nc-button nc-subscription_toggle">';
 							if (no['is_subscribed']){
-								content += '<i title="Turn Off Notifications" class="fa fa-toggle-on"></i>';
+								content += '<i title="Turn Off Notifications" class="di-toggle-on"></i>';
 							} else {
-								content += '<i title="Turn On Notifications" class="fa fa-toggle-off"></i>';
+								content += '<i title="Turn On Notifications" class="di-toggle-off"></i>';
 							};
 						content += '</a>';
 
@@ -81,8 +81,10 @@ function getNotifications(){
 				document.title = '(' + unread_ctr + ') ' + page_title;
 				$('#notifications-count').addClass('bloom');
 				$('#notifications-count').text(unread_ctr);
+				$('.navbar-notifications i').removeAttr('class').addClass('di-notifications-active');
 			} else {
 				$('#notifications-count').removeAttr('class');
+				$('.navbar-notifications i').removeAttr('class').addClass('di-notifications-none');
 			};
 		} else {
 			var content = '<li class="nc-item nc-item-empty">';

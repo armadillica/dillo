@@ -27,7 +27,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 
 			| {% elif comment.user.has_role('bfct_trainer') %}
 			div.post-view-comments-avatar-label
-				i.bfct_trainer.fa.fa-graduation-cap(
+				i.bfct_trainer.di-graduation-cap(
 					title="Blender Foundation Certified Trainer")
 
 			| {% elif comment.user.has_role('network_member') %}
@@ -88,7 +88,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			data-trigger="hover",
 			data-placement="bottom",
 			data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
-			i.fa.fa-chevron-up
+			i.di-chevron-up
 
 		| {# Downvote #}
 		a(title="Downvote this comment",
@@ -98,7 +98,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			data-trigger="hover",
 			data-placement="bottom",
 			data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
-			i.fa.fa-chevron-down
+			i.di-chevron-down
 
 		span.separator.hidden-xs
 
@@ -115,7 +115,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 		| {# Permalink #}
 		a(title="Permalink",
 			href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}#comment-{{comment.id}}")
-			i.fa.fa-link
+			i.di-link
 
 
 		| {# Flag #}
@@ -142,14 +142,14 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 				href="{{url_for('comments.edit', comment_id=comment.id)}}",
 				data-comment-id="{{comment.id}}",
 				class="edit-comment-save")
-				i.fa.fa-floppy-o
+				i.di-floppy-o
 				|  Save changes
 
 			| {# Delete #}
 			a(title="Delete comment",
 				href="#",
 				class="edit-comment-delete-fake")
-				i.fa.fa-trash
+				i.di-trash
 			a(title="Delete comment",
 				href="{{url_for('comments.delete', comment_id=comment.id)}}",
 				data-comment-id="{{comment.id}}",
