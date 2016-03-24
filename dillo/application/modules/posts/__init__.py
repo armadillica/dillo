@@ -2,13 +2,12 @@ import os
 import datetime
 import requests
 from PIL import Image
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from flask import render_template
 from flask import Blueprint
 from flask import redirect
 from flask import url_for
 from flask import jsonify
-from flask import request
 from sqlalchemy import desc
 from flask import abort
 from flask import request
@@ -107,9 +106,7 @@ def index_category(category, page=1):
 def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
-    # Check if at least one computed user roles match the post category roles
-    if not [r.id for r in post.category.roles if r.id in computed_user_roles()]:
-        abort(403)
+    post.check_permissions()
     categories = Category.query.all()
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
@@ -268,6 +265,7 @@ def submit():
 def rate(uuid, rating):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    post.check_permissions()
     # Check if post has been rated
     user_post_rating = UserPostRating.query\
         .filter_by(post_id=post.id, user_id=current_user.id).first()
@@ -334,6 +332,7 @@ def rate(uuid, rating):
 def flag(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    post.check_permissions()
     # Get post
     user_post_rating = UserPostRating.query\
         .filter_by(post_id=post.id, user_id=current_user.id).first()
@@ -379,6 +378,7 @@ def flag(uuid):
 def edit(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    post.check_permissions()
     if (post.user.id == current_user.id) or (current_user.has_role('admin')):
         post.title = request.form['title']
         post.status = 'published'
@@ -404,6 +404,7 @@ def edit(uuid):
 def delete(uuid):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    post.check_permissions()
     if (post.user.id == current_user.id) or (current_user.has_role('admin')):
         post.status = 'deleted'
         post.edit_date = datetime.datetime.now()
@@ -420,20 +421,26 @@ def delete(uuid):
 @posts.route('/p/feed/latest.atom')
 @cache.cached(60*5)
 def feed():
-    latest_feed = AtomFeed("{0} - Posts".format(app.config['SETTINGS_TITLE']),
-                    feed_url=request.url, url=request.url_root)
-    latest_posts = Post.query\
-        .filter_by(status='published')\
-        .order_by(desc(Post.creation_date))\
-        .limit(15)\
+    latest_feed = AtomFeed(
+        "{0} - Posts".format(app.config['SETTINGS_TITLE']),
+        feed_url=request.url, url=request.url_root)
+
+    roles = computed_user_roles()
+    latest_posts = Post.query \
+        .filter_by(status='published') \
+        .join(Category) \
+        .filter(Category.roles.any(Role.id.in_(roles))) \
+        .join(PostRating) \
+        .order_by(desc(Post.creation_date)) \
+        .limit(15) \
         .all()
+
     for post in latest_posts:
         author = ''
         if post.user:
             author = post.user.username
 
         updated = post.edit_date if post.edit_date else post.creation_date
-
         latest_feed.add(
             post.title, unicode(post.content),
             content_type='html',

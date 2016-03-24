@@ -1,14 +1,14 @@
 import os
 import datetime
 from flask import url_for
+from flask import abort
 from flask.ext.security import current_user
 from application import app
 from application import db
 from application import imgur_client
 from application import cache
-
-from application.modules.users.model import Role
 from application.helpers import pretty_date
+from application.helpers import computed_user_roles
 from application.helpers.sorting import hot
 from application.helpers.sorting import confidence
 
@@ -40,7 +40,6 @@ class Post(db.Model):
         return unicode(self.title) or u''
 
     @property
-    #@cache.memoize(timeout=60)
     def user_rating(self):
         if current_user.is_authenticated():
             return UserPostRating.query\
@@ -50,7 +49,6 @@ class Post(db.Model):
             return False
 
     @property
-    #@cache.memoize(timeout=60)
     def comments_count(self):
         return Comment.query\
             .filter_by(post_id=self.id)\
@@ -153,6 +151,15 @@ class Post(db.Model):
             if self.picture:
                 return True
         return False
+
+    def check_permissions(self):
+        """Check if at least one computed user roles match the post category
+        roles.
+        """
+        if [r.id for r in self.category.roles if r.id in computed_user_roles()]:
+            return True
+        else:
+            abort(403)
 
 
 categories_roles = db.Table('categories_roles',
