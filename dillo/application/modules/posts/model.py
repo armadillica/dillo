@@ -7,7 +7,7 @@ from application import db
 from application import imgur_client
 from application import cache
 
-from application.modules.users.model import User
+from application.modules.users.model import Role
 from application.helpers import pretty_date
 from application.helpers.sorting import hot
 from application.helpers.sorting import confidence
@@ -16,12 +16,11 @@ from application.helpers.sorting import confidence
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(6))
-    user_id = db.Column(db.Integer(),
-        db.ForeignKey('user.id'), nullable=False)
-    category_id = db.Column(db.Integer(),
-        db.ForeignKey('category.id'), nullable=False)
-    post_type_id = db.Column(db.Integer(),
-        db.ForeignKey('post_type.id'), nullable=False)
+    user_id = db.Column(db.Integer(),db.ForeignKey('user.id'), nullable=False)
+    category_id = db.Column(
+        db.Integer(),db.ForeignKey('category.id'), nullable=False)
+    post_type_id = db.Column(
+        db.Integer(), db.ForeignKey('post_type.id'), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     slug = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)
@@ -76,8 +75,16 @@ class Post(db.Model):
         if self.picture:
             if imgur_client:
                 if not self.picture.startswith('_'):
-                    picture_link = Post.get_picture_link(self.picture)
-                    return picture_link.replace(self.picture, self.picture + size)
+                    # Automatic migration for previous Imgur integration, where
+                    # only the image id was being served. We build the full link
+                    # and save it.
+                    if not self.picture.startswith('http'):
+                        picture_link = Post.get_picture_link(self.picture)
+                        self.picture = picture_link
+                        db.session.commit()
+                    root, ext = os.path.splitext(self.picture)
+                    return "{0}{1}{2}".format(root, size, ext)
+
             if app.config['USE_UPLOADS_LOCAL_STORAGE']:
                 local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
                 local_picture = "{0}_{1}.jpg".format(self.uuid, size)
@@ -98,8 +105,10 @@ class Post(db.Model):
         if self.picture:
             if imgur_client:
                 if not self.picture.startswith('_'):
-                    picture_link = Post.get_picture_link(self.picture)
-                    return picture_link
+                    if not self.picture.startswith('http'):
+                        self.picture = Post.get_picture_link(self.picture)
+                        db.session.commit()
+                    return self.picture
             if app.config['USE_UPLOADS_LOCAL_STORAGE']:
                 local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
                 local_picture = "{0}.jpg".format(self.uuid)
@@ -134,7 +143,6 @@ class Post(db.Model):
         comments = [comment for comment in self.comments if not comment.parent_id]
         comments.sort(key=lambda comment: comment.confidence, reverse=True)
         return comments
-        #self.comments.sort([c for c self.comments if not c.parent_id], key=lambda comment: comment.confidence, reverse=True)
 
     @property
     def is_featured(self):
@@ -147,14 +155,22 @@ class Post(db.Model):
         return False
 
 
+categories_roles = db.Table('categories_roles',
+    db.Column('category_id', db.Integer(), db.ForeignKey('category.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     url = db.Column(db.String(128), nullable=False)
     order = db.Column(db.Integer)
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    parent = db.relationship('Category',
-        remote_side=[id], backref=db.backref('children', order_by=order))
+    parent = db.relationship(
+        'Category', remote_side=[id], backref=db.backref(
+            'children', order_by=order))
+    roles = db.relationship(
+        'Role', secondary=categories_roles, backref='categories')
 
     def __str__(self):
         return str(self.name)
@@ -185,24 +201,23 @@ class Comment(db.Model):
     In general the edit date refers to when the current status was assigned.
     """
     id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer(),
-        db.ForeignKey('post.id'), nullable=False)
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
     uuid = db.Column(db.String(6))
-    user_id = db.Column(db.Integer(),
-        db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.DateTime(), default=datetime.datetime.now)
     edit_date = db.Column(db.DateTime())
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
     status = db.Column(db.String(12), default='published')
-    parent = db.relationship('Comment',
-        remote_side=[id], backref=db.backref('children', order_by=creation_date))
-    user = db.relationship('User',
-        backref=db.backref('comments'))
-    post = db.relationship('Post',
-        backref=db.backref('comments', cascade='all,delete'))
-    rating = db.relationship('CommentRating',
-        cascade='all,delete', uselist=False)
+
+    parent = db.relationship(
+        'Comment', remote_side=[id], backref=db.backref(
+            'children', order_by=creation_date))
+    user = db.relationship('User', backref=db.backref('comments'))
+    post = db.relationship(
+        'Post', backref=db.backref('comments', cascade='all,delete'))
+    rating = db.relationship(
+        'CommentRating', cascade='all,delete', uselist=False)
 
     def __str__(self):
         return str(self.uuid)
@@ -242,10 +257,10 @@ class CommentRating(db.Model):
 
 
 class UserCommentRating(db.Model):
-    user_id = db.Column(db.Integer(),
-        db.ForeignKey('user.id'), primary_key=True)
-    comment_id = db.Column(db.Integer(),
-        db.ForeignKey('comment.id'), primary_key=True)
+    user_id = db.Column(
+        db.Integer(), db.ForeignKey('user.id'), primary_key=True)
+    comment_id = db.Column(
+        db.Integer(), db.ForeignKey('comment.id'), primary_key=True)
     is_positive = db.Column(db.Boolean())
     is_flagged = db.Column(db.Boolean())
 
@@ -268,6 +283,8 @@ class UserPostRating(db.Model):
 class PostProperties(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
-    field_type = db.Column(db.String(18), nullable=False) #tweet_id, #gplus_id, #gallery_image
+    field_type = db.Column(
+        db.String(18), nullable=False)
+    # tweet_id, #gplus_id, #gallery_image
     value = db.Column(db.String(256), nullable=False)
     order = db.Column(db.Integer())

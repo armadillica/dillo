@@ -25,6 +25,7 @@
 	font-family: $font_headings
 	border: thin solid darken($color_background, 3%)
 	border-radius: 3px
+	+text-overflow-ellipsis
 	+box-shadow(1px, 2px, 2px, darken($color_background, 5%), 1.0)
 	+media-xs
 		width: auto
@@ -59,11 +60,12 @@
 	background: transparent
 	color: transparent
 	line-height: 40px
-	padding: 0 0 0 15px
+	padding: 0 10px 0 15px
 	display: block
 	cursor: pointer
 	border: thin solid transparent
 	border-radius: 3px
+	+text-overflow-ellipsis
 
 .cd-dropdown > span,
 .cd-dropdown ul li span

@@ -2,6 +2,7 @@
 .project
 *.pyc
 *.sublime*
+.idea/
 
 config.py
 
@@ -18,3 +19,4 @@ node_modules
 *.rdb
 
 docker/dillo.env
+

@@ -46,14 +46,17 @@
 
 
 						span.user-login-button-others
+							| {% if config.SOCIAL_BLENDER_ID or config.SOCIAL_GOOGLE or config.SOCIAL_FACEBOOK %}
 							a#user-login-button-others-regular
 								| use regular login
-
 							span.separator
+							| {% endif %}
+
 							a(href="{{url_for_security('register')}}")
 								| create account
 
-					.user-login-container-uncool
+					.user-login-container-uncool(
+						style="{% if not config.SOCIAL_BLENDER_ID and not config.SOCIAL_GOOGLE and not config.SOCIAL_FACEBOOK %}display: block{% endif %}")
 
 						form(
 							role="login",
@@ -85,9 +88,11 @@
 										| forgot password?
 
 
+						| {% if config.SOCIAL_BLENDER_ID or config.SOCIAL_GOOGLE or config.SOCIAL_FACEBOOK %}
 						.user-login-back
 							i.fa.fa-angle-double-left
-							|  sign in using Blender ID or others
+							|  sign in using something else
+						| {% endif %}
 
 | {% endblock %}
 

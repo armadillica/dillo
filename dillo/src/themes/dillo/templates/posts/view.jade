@@ -51,12 +51,9 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 				h4.post-view-container-title
 
 					a(href="{{url_for('index')}}") Home
-
 					strong ·
-
-					// XXX TODO CHECK ON THIS
-					a(href="{{url_for('index')}}p/{{post.category.url}}").
-						{{post.category.name}}
+					a(href="{{url_for('posts.index_category', category=post.category.url)}}")
+						| {{post.category.name}}
 
 
 			| {# Categories #}
@@ -126,8 +123,8 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 			| {% endif %}
 
 			| {% else %}
-			#post-content.post-view-content.
-				{{post.content|safe}}
+			#post-content.post-view-content(class="{{post.post_type.url}}")
+				| {{post.content|safe}}
 
 			| {% endif %}
 
@@ -502,21 +499,18 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 script(type="text/javascript").
 
 	/* Convert markdown on comments  */
-	$( ".post-view-comments-item-text" ).each(function(i) {
-		var text = $(this).text();
+	$(".post-view-comments-item-text, #post-content.text:first").each(function(i) {
+		var text = $(this).text().trim();
 		$(this).html(convert(text));
 	});
-
-	//- var postContent = $(".post-view-content").html();
-	//- $(".post-view-content").html(convert(postContent));
 
 	{% if current_user.is_authenticated() %}
 
 		/* Build the markdown preview when typing in textarea */
 		$(function() {
-			var $textarea = $('.comment-reply-field'),
-					$container = $('.comment-form-container'),
-					$preview = $('.comment-reply-preview');
+			var $textarea = $('.comment-reply-field:first, .comment-edit-field:first'),
+					$container = $('.comment-form-container:first'),
+					$preview = $('.comment-reply-preview:first');
 
 			// As we type in the textarea
 			$textarea.keyup(function() {
@@ -544,41 +538,6 @@ script(type="text/javascript").
 
 			}).trigger('keyup');
 		});
-
-		/* Build the markdown preview when typing in textarea */
-		$(function() {
-			var $textarea = $('.comment-edit-field'),
-					$container = $('.comment-form-container'),
-					$preview = $('.comment-reply-preview');
-
-			// As we type in the textarea
-			$textarea.keyup(function(e) {
-				console.log(e);
-
-				// Convert markdown
-				$preview.html(convert($textarea.val()));
-
-				// While we are at it, style when empty
-				if ($textarea.val()) {
-					$container.addClass('filled');
-					$preview.show();
-				} else {
-					$container.removeClass('filled');
-					$preview.hide();
-				};
-
-				// Send on ctrl+enter
-				if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
-					$("#form-comment").submit();
-				};
-
-				// Grow as we type
-				field = document.getElementById('post_comment');
-				field.style.height = (field.scrollHeight) + "px";
-
-			}).trigger('keyup');
-		});
-
 
 		function cancelComment(){
 			$('.post-view-comments-submit').removeAttr('parent_id').removeClass('is_reply');
@@ -705,16 +664,6 @@ script(type="text/javascript").
 				$('.notification-post-edit').show();
 				$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
 
-				if (post_type == 'text') {
-					var ck = CKEDITOR.inline('post-content',
-									{ customConfig: '{{ url_for("static", filename="js/ckeditor/config.js") }}' }
-							);
-					ck.on( 'instanceReady', function( ev ) {
-						var editor = ev.editor;
-						editor.setReadOnly( false );
-					});
-				};
-
 				$('#post-view-title').hide();
 				$('#post-edit-title').show();
 
@@ -730,14 +679,6 @@ script(type="text/javascript").
 
 				$('#post-edit-title').hide();
 				$('#post-view-title').show();
-
-				if ( post_type == 'text') {
-					if (CKEDITOR.instances['post-content']) {
-						CKEDITOR.instances['post-content'].destroy();
-					};
-
-					$("#post-content").attr('contenteditable', false);
-				};
 
 				$('#post-view-title a').html($("#post-edit-title textarea").val());
 

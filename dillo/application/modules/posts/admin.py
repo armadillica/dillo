@@ -1,6 +1,3 @@
-from application import app
-from application import db
-
 from application.modules.posts.model import Post
 from application.modules.posts.model import PostType
 from application.modules.posts.model import Category
@@ -37,6 +34,9 @@ class CommentView(CustomModelView):
 
 
 backend.add_view(PostView(Post, db.session, name='Posts', url='posts'))
-backend.add_view(PostTypeView(PostType, db.session, name='PostType', url='post-types'))
-backend.add_view(CategoryView(Category, db.session, name='Categories', url='categories'))
-backend.add_view(CommentView(Comment, db.session, name='Comments', url='comments'))
+backend.add_view(PostTypeView(PostType, db.session, name='PostType',
+                              url='post-types'))
+backend.add_view(CategoryView(Category, db.session, name='Categories',
+                              url='categories'))
+backend.add_view(CommentView(Comment, db.session, name='Comments',
+                             url='comments'))
