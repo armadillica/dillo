@@ -8,6 +8,7 @@ from flask import Blueprint
 from flask import redirect
 from flask import url_for
 from flask import jsonify
+from flask import request
 from sqlalchemy import desc
 from flask import abort
 from flask import request
@@ -32,6 +33,7 @@ from application.modules.posts.model import CommentRating
 from application.modules.posts.model import UserCommentRating
 from application.modules.posts.forms import PostForm
 from application.modules.posts.forms import CommentForm
+from application.modules.posts.forms import get_post_form
 from application.modules.notifications import notification_subscribe
 from application.modules.users.model import Role
 from application.helpers import encode_id
@@ -105,6 +107,9 @@ def index_category(category, page=1):
 def view(category, uuid, slug=None):
     post_id = decode_id(uuid)
     post = Post.query.get_or_404(post_id)
+    # Check if at least one computed user roles match the post category roles
+    if not [r.id for r in post.category.roles if r.id in computed_user_roles()]:
+        abort(403)
     categories = Category.query.all()
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
@@ -141,125 +146,125 @@ def view(category, uuid, slug=None):
     elif current_user.is_authenticated() and post.user.id == current_user.id:
         current_user.is_owner = True
     return render_template('posts/view.html',
-        title='view',
-        post=post,
-        oembed=oembed,
-        form=form,
-        categories=categories,
-        user_string_id=user_string_id,
-        picture=post.thumbnail('m'))
+                           title='view',
+                           post=post,
+                           oembed=oembed,
+                           form=form,
+                           categories=categories,
+                           user_string_id=user_string_id,
+                           picture=post.thumbnail('m'))
 
 
-@posts.route('/p/submit', methods=['POST'])
+@posts.route('/p/submit', methods=['GET', 'POST'])
 @login_required
 def submit():
-    form = PostForm()
-    form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
-    if form.validate_on_submit():
-        content = form.content.data
-        # If the post is a link (is 1), we cast this because it's coming from
-        # a hidden field
-        post_type_id = int(form.post_type_id.data)
-        if post_type_id == 1:
-            content = form.url.data
-            if not check_url(content):
-                return abort(404)
-        else:
-            # Clean the content
-            content = bleach_input(content)
-        if not content:
-            return abort(400)
-
-        post = Post(
-            user_id=current_user.id,
-            category_id=form.category_id.data,
-            post_type_id=post_type_id,
-            title=form.title.data,
-            slug=slugify(form.title.data),
-            content=content)
-        db.session.add(post)
-        db.session.commit()
-        post.uuid = encode_id(post.id)
-        db.session.commit()
-        post_rating = PostRating(
-            post_id=post.id,
-            positive=0,
-            negative=0
-            )
-        db.session.add(post_rating)
-        post.update_hot()
-        if form.picture.data or form.picture_remote.data:
-            if form.picture.data:
-                # If the user uploads an image from the form
-                filename = secure_filename(form.picture.data.filename)
-                filepath = '/tmp/' + filename
-                form.picture.data.save(filepath)
-            else:
-                # If the url is retrieved via embedly
-                filename = secure_filename(form.picture_remote.data)
-                filepath = '/tmp/' + filename
-                with open(filepath, 'wb') as handle:
-                    response = requests.get(form.picture_remote.data, stream=True)
-                    for block in response.iter_content(1024):
-                        if not block:
-                            break
-                        handle.write(block)
-
-            # In both cases we get the image now saved in temp and upload it
-            # to Imgur
-            if imgur_client:
-                image = imgur_client.upload_from_path(filepath, config=None, anon=True)
-            else:
-                image = dict(link=None, deletehash=None)
-
-            if app.config['USE_UPLOADS_LOCAL_STORAGE']:
-                # Use the post UUID as a name for the local image.
-                # If Imgur is not available save it in the database with a _ to
-                # imply that the file is available only locally.
-                if not image['link']:
-                    image['link'] = '_' + post.uuid
-                image_name = post.uuid + '.jpg'
-                # The root of the local storage path
-                local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
-                # Get the first 2 chars of the image name to make a subfolder
-                storage_folder = os.path.join(local_storage_path, image_name[:2])
-                # Check if the subfolder exists
-                if not os.path.exists(storage_folder):
-                    # Make it if it does not
-                    os.mkdir(storage_folder)
-                # Build the full path to store the image
-                storage_filepath = os.path.join(storage_folder, image_name)
-                # Copy from temp to the storage path
-                im = Image.open(filepath)
-                im.save(storage_filepath, "JPEG")
-                # Make all the thumbnails
-                generate_local_thumbnails(storage_filepath)
-            post.picture = image['link']
-            post.picture_deletehash = image['deletehash']
-            os.remove(filepath)
-        db.session.commit()
-
-        # Subscribe owner to updates for this post (mainly comments)
-        notification_subscribe(current_user.id, 1, post.id)
-
-        # Clear all the caches
-        delete_redis_cache_keys('post_list')
-        delete_redis_cache_keys('post_list', post.category.url)
-
-        return jsonify(
-            post_url=url_for('posts.view',
-            category=post.category.url,
-            uuid=post.uuid,
-            slug=post.slug))
+    form = get_post_form()
+    #allowed_categories = Category.query \
+    #    .filter(Category.roles.any(Role.id.in_(computed_user_roles()))) \
+    #    .all()
+    #print allowed_categories
+    #form.category_id.choices = [(c.id, c.name) for c in allowed_categories]
+    if request.method == 'GET':
+        return 'render submit form'
     else:
-        return abort(400, '{"message" : "form validation error"}')
+        if form.validate_on_submit():
+            content = form.content.data
+            # If the post is a link (is 1), we cast this because it's coming from
+            # a hidden field
+            post_type_id = int(form.post_type_id.data)
+            if post_type_id == 1:
+                content = form.url.data
+                if not check_url(content):
+                    return abort(404)
+            else:
+                # Clean the content
+                content = bleach_input(content)
+            if not content:
+                return abort(400)
 
-    #     return redirect(url_for('posts.view',
-    #         category=post.category.url, uuid=post.uuid))
+            post = Post(
+                user_id=current_user.id,
+                category_id=form.category_id.data,
+                post_type_id=post_type_id,
+                title=form.title.data,
+                slug=slugify(form.title.data),
+                content=content)
+            db.session.add(post)
+            db.session.commit()
+            post.uuid = encode_id(post.id)
+            db.session.commit()
+            post_rating = PostRating(
+                post_id=post.id,
+                positive=0,
+                negative=0
+                )
+            db.session.add(post_rating)
+            post.update_hot()
+            if form.picture.data or form.picture_remote.data:
+                if form.picture.data:
+                    # If the user uploads an image from the form
+                    filename = secure_filename(form.picture.data.filename)
+                    filepath = '/tmp/' + filename
+                    form.picture.data.save(filepath)
+                else:
+                    # If the url is retrieved via embedly
+                    filename = secure_filename(form.picture_remote.data)
+                    filepath = '/tmp/' + filename
+                    with open(filepath, 'wb') as handle:
+                        response = requests.get(form.picture_remote.data, stream=True)
+                        for block in response.iter_content(1024):
+                            if not block:
+                                break
+                            handle.write(block)
 
-    # return render_template('posts/submit.html',
-    #     title='submit',
-    #     form=form)
+                # In both cases we get the image now saved in temp and upload it
+                # to Imgur
+                if imgur_client:
+                    image = imgur_client.upload_from_path(filepath, config=None, anon=True)
+                else:
+                    image = dict(link=None, deletehash=None)
+
+                if app.config['USE_UPLOADS_LOCAL_STORAGE']:
+                    # Use the post UUID as a name for the local image.
+                    # If Imgur is not available save it in the database with a _ to
+                    # imply that the file is available only locally.
+                    if not image['link']:
+                        image['link'] = '_' + post.uuid
+                    image_name = post.uuid + '.jpg'
+                    # The root of the local storage path
+                    local_storage_path = app.config['UPLOADS_LOCAL_STORAGE_PATH']
+                    # Get the first 2 chars of the image name to make a subfolder
+                    storage_folder = os.path.join(local_storage_path, image_name[:2])
+                    # Check if the subfolder exists
+                    if not os.path.exists(storage_folder):
+                        # Make it if it does not
+                        os.mkdir(storage_folder)
+                    # Build the full path to store the image
+                    storage_filepath = os.path.join(storage_folder, image_name)
+                    # Copy from temp to the storage path
+                    im = Image.open(filepath)
+                    im.save(storage_filepath, "JPEG")
+                    # Make all the thumbnails
+                    generate_local_thumbnails(storage_filepath)
+                post.picture = image['link']
+                post.picture_deletehash = image['deletehash']
+                os.remove(filepath)
+            db.session.commit()
+
+            # Subscribe owner to updates for this post (mainly comments)
+            notification_subscribe(current_user.id, 1, post.id)
+
+            # Clear all the caches
+            delete_redis_cache_keys('post_list')
+            delete_redis_cache_keys('post_list', post.category.url)
+
+            return jsonify(
+                post_url=url_for('posts.view',
+                category=post.category.url,
+                uuid=post.uuid,
+                slug=post.slug))
+        else:
+            return abort(400, '{"message" : "form validation error"}')
 
 
 @posts.route('/p/<uuid>/rate/<int:rating>')
