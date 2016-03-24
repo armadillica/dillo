@@ -74,7 +74,8 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		div#submit.dialog
 			.dialog__overlay
 			.dialog__content
-				| {% include 'posts/form.html' %}
+				//- | {% include 'posts/form.html' %}
+				#submit-form
 				button.action.dialog__button-close(data-dialog-close)
 					i.di-cancel
 

@@ -158,25 +158,6 @@ except ProgrammingError:
 
 
 @app.context_processor
-def inject_submit_post_form():
-    # from application.modules.posts.model import Category
-    # from application.modules.users.model import Role
-    # from application.modules.posts.forms import PostForm
-    # from application.modules.posts.model import PostType
-    from application.modules.posts.forms import get_post_form
-    # form = PostForm()
-    # from flask.ext.login import current_user
-    # print current_user
-    # print form.category_id.choices
-    # #form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
-    # form.post_type_id.choices = [(t.id, t.name) for t in PostType.query.all()]
-    # # form.post_type_id.data = 1
-    form = get_post_form()
-    print form.hidden_tag()
-    return {'submit_post_form': form}
-
-
-@app.context_processor
 def theme_static_processor():
     def url_for_theme_static(filename):
         return url_for('theme_static', filename=filename)

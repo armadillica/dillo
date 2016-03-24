@@ -15,11 +15,12 @@ from application.helpers import computed_user_roles
 
 class PostForm(Form):
     category_id = SelectField('Group', coerce=int)
-    post_type_id = SelectField(
-        'Post type id',
-        choices=[(t.id, t.name) for t in PostType.query.all()],
-        widget=HiddenInput
-    )
+    # post_type_id = SelectField(
+    #     'Post type id',
+    #     choices=[(t.id, t.name) for t in PostType.query.all()],
+    #     widget=HiddenInput
+    # )
+    post_type_id = HiddenField('Post type id', validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content')
     url = StringField('URL')
@@ -36,6 +37,6 @@ def get_post_form():
     allowed_categories = Category.query \
         .filter(Category.roles.any(Role.id.in_(computed_user_roles()))) \
         .all()
-    form = PostForm
+    form = PostForm()
     form.category_id.choices = [(c.id, c.name) for c in allowed_categories]
     return form

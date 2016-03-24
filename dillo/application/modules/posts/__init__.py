@@ -159,13 +159,9 @@ def view(category, uuid, slug=None):
 @login_required
 def submit():
     form = get_post_form()
-    #allowed_categories = Category.query \
-    #    .filter(Category.roles.any(Role.id.in_(computed_user_roles()))) \
-    #    .all()
-    #print allowed_categories
-    #form.category_id.choices = [(c.id, c.name) for c in allowed_categories]
     if request.method == 'GET':
-        return 'render submit form'
+        return render_template(
+            'posts/form.html', submit_post_form=form)
     else:
         if form.validate_on_submit():
             content = form.content.data

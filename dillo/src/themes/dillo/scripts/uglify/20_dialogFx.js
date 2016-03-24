@@ -89,14 +89,18 @@
 
 			// OPEN DIALOG
 			classie.add( this.el, 'dialog--open' );
+			$.get('/p/submit', function(data) {
+				$('#submit-form').html(data);
+				// If we still didn't chose the type
+				// of submission, default to link
+				if ( !$('#post_type_id').val() == 1 ){
+					$("#post_type_id").attr("value", "1");
+					$('.post-submit-link').show();
+					$('#url').focus()
 
-			// If we still didn't chose the type
-			// of submission, default to link
-			if ( !$('#post_type_id').val() == 1 ){
-				$("#post_type_id").attr("value", "1");
-				$('.post-submit-link').show();
-				$('#url').focus()
-			};
+				};
+			});
+
 
 			// callback on open
 			this.options.onOpenDialog( this );
@@ -107,4 +111,11 @@
 	// add to global namespace
 	window.DialogFx = DialogFx;
 
+	// Trigger to display dialog containing submit form
+	var dlgtrigger = document.querySelector( '[data-dialog]' );
+	var somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) );
+	var dlg = new DialogFx( somedialog );
+	dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+
 })( window );
+
