@@ -51,7 +51,7 @@
 
 
 								button.btn.btn-default.btn-success.btn-block(type="submit")
-									i.fa.fa-check
+									i.di-check
 									|  Save Changes
 
 						.col-md-6
@@ -62,7 +62,7 @@
 										src="{{current_user.gravatar(size=128)}}"
 										title="Gravatar Profile Picture")
 									small Change Gravatar
-										i.fa.fa-angle-double-right
+										i.di-angle-double-right
 
 								hr
 
@@ -88,7 +88,7 @@
 								br
 								| {% endif %}
 								| {% if current_user.has_role('bfct_trainer') %}
-								i.fa.fa-graduation-cap
+								i.di-graduation-cap
 								| Blender Foundation Certified Trainer
 								| {% endif %}
 								| {% else %}

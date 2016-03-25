@@ -139,7 +139,6 @@ def bleach_input(markup):
 
     output = bleach.clean(markup, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRS,
         styles=ALLOWED_STYLES, strip=False)
-    output = bleach.linkify(output)
 
     return output
 

@@ -33,14 +33,14 @@
 						| {% if config.SOCIAL_GOOGLE %}
 						a.user-login-button-oauth.google(
 							href="{{url_for('google_login')}}")
-							i.icon.fa.fa-google
+							i.icon.di-google
 							| Login with Google
 						| {% endif %}
 
 						| {% if config.SOCIAL_FACEBOOK %}
 						a.user-login-button-oauth.facebook(
 							href="{{url_for('facebook_login')}}")
-							i.icon.fa.fa-facebook
+							i.icon.di-facebook
 							| Login with Facebook
 						| {% endif %}
 
@@ -67,12 +67,12 @@
 							fieldset
 								.input-group
 									span.input-group-addon
-										i.fa.fa-envelope-o.fa-fw
+										i.di-envelope-o.fa-fw
 									| {{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
 
 								.input-group
 									span.input-group-addon
-										i.fa.fa-lock.fa-fw
+										i.di-lock.fa-fw
 									| {{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
 
 								| {{ render_field(login_user_form.next) }}
@@ -90,7 +90,7 @@
 
 						| {% if config.SOCIAL_BLENDER_ID or config.SOCIAL_GOOGLE or config.SOCIAL_FACEBOOK %}
 						.user-login-back
-							i.fa.fa-angle-double-left
+							i.di-angle-double-left
 							|  sign in using something else
 						| {% endif %}
 

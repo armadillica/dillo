@@ -75,14 +75,14 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 				a(class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}",
 					href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
 					title="Upvote, click again to undo")
-					i.fa.fa-angle-up
+					i.di-angle-up
 
 				span.middle.rating {{post.rating_delta}}
 
 				a(title="Downvote, click again to undo",
 					href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
 					class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
-					i.fa.fa-angle-down
+					i.di-angle-down
 
 			| {# Post Title #}
 			#post-view-title.post-view-title
@@ -100,15 +100,15 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 			| {# Notifications #}
 			| {% if current_user.is_owner or current_user.has_role('admin') %}
 			.notification-post-edit
-				i.fa.fa-edit
+				i.di-edit
 				|  You're in edit mode!
 
 			.notification-post-saved
-				i.fa.fa-floppy-o
+				i.di-spinner.spin
 				|  Saving...
 
 			.notification-post-fail
-				i.fa.fa-frown-o.fa-spin
+				i.di-unhappy
 				|  Failed... try again?
 
 			| {% endif %}
@@ -123,8 +123,13 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 			| {% endif %}
 
 			| {% else %}
-			#post-content.post-view-content(class="{{post.post_type.url}}")
+			#post-view-content.post-view-content(class="{{post.post_type.url}}")
 				| {{post.content|safe}}
+
+			#post-edit-content.post-view-content
+				textarea#post-edit-content-area(
+					type="text", rows=4, value="{{post.content}}") {{post.content}}
+			#post-edit-preview
 
 			| {% endif %}
 
@@ -175,21 +180,21 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 								| {% if post.user.has_role('dev_core') %}
 								div.post-view-details-avatar-label
-									i.dev_core.bf-blender(title="Blender Core Developer")
+									i.dev_core.di-blender(title="Blender Core Developer")
 
 								| {% elif post.user.has_role('bfct_trainer') %}
 								div.post-view-details-avatar-label
-									i.bfct_trainer.fa.fa-graduation-cap(
+									i.bfct_trainer.di-graduation-cap(
 										title="Blender Foundation Certified Trainer")
 
 								| {% elif post.user.has_role('network_member') %}
 								div.post-view-details-avatar-label
-									i.network_member.bf-network(
+									i.network_member.di-blender-network(
 										title="Blender Network Member")
 
 								| {% elif post.user.has_role('cloud_member') %}
 								div.post-view-details-avatar-label
-									i.cloud_member.bf-cloud(
+									i.cloud_member.di-blender-cloud(
 										title="Blender Cloud Member")
 
 								| {% endif %}
@@ -213,28 +218,28 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 											title="Share via Email",
 											href="mailto:?subject={{post.title}}&body={{post.title}} on {{ config.SETTINGS_TITLE | safe}} | {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}",
 											target="_blank")
-											i.fa.fa-envelope-o
+											i.di-email
 
 
 										a.pop(
 											title="Share on Reddit",
 											href="http://www.reddit.com/submit?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}",
 											target="_blank")
-											i.fa.fa-reddit
+											i.di-reddit
 
 
 										a.pop(
 											title="Share on Google+",
 											href="https://plus.google.com/share?url={{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}" ,
 											target="_blank")
-											i.fa.fa-google-plus
+											i.di-google-plus
 
 
 										a.pop(
 											title="Share on Facebook",
 											href="https://www.facebook.com/sharer/sharer.php?u={{post.title}}%20{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}}",
 											target="_blank")
-											i.fa.fa-facebook
+											i.di-facebook
 
 
 										| {# XXX - User Setting for Social Networks #}
@@ -242,10 +247,10 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 											title="Share on Twitter",
 											href="https://twitter.com/home?status={{post.title}} @{{ config.SETTINGS_TWITTER_USERNAME }} {{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug, _external=True)}} %23b3d" ,
 											target="_blank")
-											i.fa.fa-twitter
+											i.di-twitter
 
 								span#social-toggle.post-actions-button.social(title="Share")
-									i.fa.fa-share-alt
+									i.di-share
 
 								| {% endif %}
 
@@ -256,10 +261,10 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 								a#edit-post-save.post-actions-button.save(
 									title="Save Changes",
 									href="{{ url_for('posts.edit', uuid=post.uuid) }}")
-									i.fa.fa-save
+									i.di-check
 
 								span#edit-post-toggle.post-actions-button.edit(title="Edit Post")
-									i.fa.fa-pencil
+									i.di-edit
 
 								a.edit-post-delete-widget.post-actions-button.delete(
 									title="Delete Post",
@@ -267,7 +272,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 									span.edit-post-delete-widget-action(link="")
 									span.edit-post-delete-widget-icon
-										i.fa.fa-trash
+										i.di-trash
 									span.edit-post-delete-widget-question ?
 
 								| {% endif %}
@@ -357,7 +362,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 								a(title="Permalink",
 									href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid)}}")
-									i.fa.fa-link
+									i.di-link
 
 
 								| {% if post.status != 'deleted' %}
@@ -397,7 +402,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 							| {% elif current_user.has_role('bfct_trainer') %}
 							div.post-view-comments-avatar-label
-								i.bfct_trainer.fa.fa-graduation-cap(
+								i.bfct_trainer.di-graduation-cap(
 									title="Blender Foundation Certified Trainer")
 
 							| {% elif current_user.has_role('network_member') %}
@@ -438,7 +443,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 								.comment-form-buttons
 									button#submit-comment.btn.btn-default.submit(
 										type="submit")
-										i.fa.fa-paper-plane.icon-send
+										i.di-paper-plane
 										| Send
 										span.hotkey
 											| (Ctrl+Enter)
@@ -499,7 +504,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 script(type="text/javascript").
 
 	/* Convert markdown on comments  */
-	$(".post-view-comments-item-text, #post-content.text:first").each(function(i) {
+	$(".post-view-comments-item-text, #post-view-content.text:first").each(function(i) {
 		var text = $(this).text().trim();
 		$(this).html(convert(text));
 	});
@@ -614,7 +619,7 @@ script(type="text/javascript").
 			};
 
 			/* UI */
-			$('#submit-comment').html('<i class="fa fa-spinner fa-spin"></i> Sending');
+			$('#submit-comment').html('<i class="di-spinner spin"></i> Sending');
 			$('.comment-form-buttons .send').addClass('sending');
 
 			$.post($(form_comment).attr('action'), comment_data, function(data){
@@ -635,13 +640,13 @@ script(type="text/javascript").
 
 			})
 			.done(function(data){
-				$('#submit-comment').html('<i class="fa fa-paper-plane icon-send"></i> Send');
+				$('#submit-comment').html('<i class="di-paper-plane"></i> Send');
 				$('.comment-form-buttons .send').removeClass('sending');
 
 				cancelComment();
 			})
 			.fail(function(data){
-				$('#submit-comment').html('<i class="fa fa-frown-o fa-spin"></i> Houston!');
+				$('#submit-comment').html('<i class="di-unhappy"></i> Houston!');
 				$('.comment-form-buttons .send').removeClass('sending');
 				$('.comment-form-buttons .send').addClass('fail');
 			});
@@ -664,12 +669,42 @@ script(type="text/javascript").
 				$('.notification-post-edit').show();
 				$('.notification-post-edit').animate({'top' : '0', 'opacity' : 1});
 
+				if (post_type == 'text') {
+					$('#post-view-content').hide();
+					$('#post-edit-content').show();
+				};
+
 				$('#post-view-title').hide();
 				$('#post-edit-title').show();
 
 				$(this).fadeOut(50, function(){
 					$("#edit-post-save").css('display', 'inline-block');
 					$("#edit-post-save").animate({'opacity' : 1});
+				});
+
+				// Markdown
+				$(function() {
+					var $textarea = $('#post-edit-content textarea'),
+							$preview = $('#post-edit-preview:first');
+
+					// As we type in the textarea
+					$textarea.keyup(function() {
+
+						// Convert markdown
+						$preview.html(convert($textarea.val()));
+
+						// While we are at it, style when empty
+						if ($textarea.val()) {
+							$preview.show();
+						} else {
+							$preview.hide();
+						};
+
+						// Grow as we type
+						field = document.getElementById('post-edit-content-area');
+						field.style.height = (field.scrollHeight) + "px";
+
+					}).trigger('keyup');
 				});
 			});
 
@@ -679,6 +714,9 @@ script(type="text/javascript").
 
 				$('#post-edit-title').hide();
 				$('#post-view-title').show();
+				$('#post-edit-content').hide();
+				$('#post-edit-preview').hide();
+				$('#post-view-content').show();
 
 				$('#post-view-title a').html($("#post-edit-title textarea").val());
 
@@ -696,9 +734,13 @@ script(type="text/javascript").
 				} else {
 					tosubmit = {
 						title : $("#post-edit-title textarea").val(),
-						content : $("#post-content").html()
+						content : $("#post-edit-content textarea").val()
 					};
 				};
+
+				// Markdown
+				var text = $("#post-edit-content textarea").val();
+				$("#post-view-content").html(convert(text));
 
 				$.post($(this).attr("href"), tosubmit,
 					function(data){
@@ -714,7 +756,7 @@ script(type="text/javascript").
 						$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
 					})
 					.always(function() {
-						$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+						$('.notification-post-saved').html('<i class="di-check"></i> Saved!');
 						$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
 					});
 			});
@@ -802,7 +844,7 @@ script(type="text/javascript").
 				$('.notification-post-fail').animate({'top' : '0', 'opacity' : 1});
 			})
 			.always(function() {
-				$('.notification-post-saved').html('<i class="fa fa-check"></i> Saved!');
+				$('.notification-post-saved').html('<i class="di-check"></i> Saved!');
 				$('.notification-post-saved').delay(2000).animate({'top' : '-25px', 'opacity' : 0})
 			});
 		});

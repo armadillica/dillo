@@ -50,7 +50,7 @@
 							fieldset
 								.input-group
 									span.input-group-addon
-										i.fa.fa-envelope-o
+										i.di-envelope-o
 									| {{ register_user_form.email(class='form-control', placeholder="E-mail") }}
 
 									| {% if register_user_form.email.errors %}
@@ -62,7 +62,7 @@
 
 								.input-group
 									span.input-group-addon
-										i.fa.fa-lock
+										i.di-lock
 									| {{ register_user_form.password(class='form-control', placeholder="Password") }}
 
 									| {% if register_user_form.password.errors %}
@@ -74,7 +74,7 @@
 
 								.input-group
 									span.input-group-addon
-										i.fa.fa-lock
+										i.di-lock
 									| {{ register_user_form.password_confirm(class='form-control', placeholder="Confirm Password") }}
 
 									| {% if register_user_form.password_confirm.errors %}
@@ -90,7 +90,7 @@
 
 						.user-register-back
 							a(href="{{ url_for_security('login') }}")
-								i.fa.fa-angle-double-left
+								i.di-angle-double-left
 								|  back to login
 
 

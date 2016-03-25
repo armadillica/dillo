@@ -70,14 +70,14 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 						a(title="Upvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
 							class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}")
-							i.fa.fa-angle-up
+							i.di-angle-up
 
 						span.middle {{post.rating_delta}}
 
 						a(title="Downvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
 							class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
-							i.fa.fa-angle-down
+							i.di-angle-down
 
 					// Post Title
 					.post-index-item-title
@@ -98,7 +98,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 									title="Link",
 									src="http://www.google.com/s2/favicons?domain={{post.content}}")
 								| {% else %}
-								i.fa.fa-file-text-o(title="Text Post")
+								i.di-text(title="Text Post")
 								| {% endif %}
 								|  ·
 
@@ -108,7 +108,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 							| {% if post.comments_count > 0 %}
 							a.post-index-item-details-comments(href="{{url_for('posts.view', category=post.category.url, uuid=post.uuid, slug=post.slug)}}#comments")
-								i.fa.fa-comment
+								i.di-comments
 								| {{post.comments_count}}
 
 							| ·
@@ -148,16 +148,16 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 						a(title="Upvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='1')}}",
 							class="up{% if post.user_rating and post.user_rating.is_positive %} rated{% endif %}")
-							i.fa.fa-angle-up.hidden-xs
-							i.fa.fa-angle-up.visible-xs
+							i.di-angle-up.hidden-xs
+							i.di-angle-up.visible-xs
 
 						span.middle {{post.rating_delta}}
 
 						a(title="Downvote, click again to undo",
 							href="{{url_for('posts.rate', uuid=post.uuid, rating='0')}}",
 							class="down{% if post.user_rating and not post.user_rating.is_positive %} rated{% endif %}")
-							i.fa.fa-angle-down.hidden-xs
-							i.fa.fa-angle-down.visible-xs
+							i.di-angle-down.hidden-xs
+							i.di-angle-down.visible-xs
 
 
 					// Post Circle Thingie
@@ -167,9 +167,9 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 						style="{% if post.picture %}background: url({{post.thumbnail('s')}}) top left no-repeat{% endif %}")
 						| {% if not post.picture %}
 						| {% if post.post_type.url == 'link' %}
-						i.fa.fa-link
+						i.di-link
 						| {% elif post.post_type.url == 'text' %}
-						i.fa.fa-file-text-o
+						i.di-text
 						| {% endif %}
 						| {% endif %}
 
@@ -202,7 +202,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 								title="Link",
 								src="http://www.google.com/s2/favicons?domain={{post.content}}")
 							| {% else %}
-							i.fa.fa-file-text-o(title="Text Post")
+							i.di-text(title="Text Post")
 							| {% endif %}
 
 						span.separator
@@ -227,7 +227,7 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 							| {% if post.comments_count > 0 %}
 							span.visible-xs
 								| {{post.comments_count}}
-								i.fa.fa-comments-o
+								i.di-chat
 								span.separator
 							| {% endif %}
 
@@ -253,10 +253,10 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 						| {% if post.picture %}
 						span.post-index-item-picture-collapse(title="Collapse")
-							i.fa.fa-minus-square-o
+							i.di-minus-square
 
 						span.post-index-item-picture-expand(title="Expand")
-							i.fa.fa-plus-square-o
+							i.di-plus-square
 
 						img.post-index-item-picture(
 							title="Click and drag to resize",
@@ -288,11 +288,11 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 						| {% if posts.has_prev %}
 						li
 							a(href="{{ url_for('posts.index', page=posts.page-1) }}")
-								i.fa.fa-arrow-left
+								i.di-angle-left
 						| {% else %}
 						li.disabled
 							a
-								i.fa.fa-arrow-left
+								i.di-angle-left
 						| {% endif %}
 
 						| {% for post in posts.iter_pages() %}
@@ -318,11 +318,11 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 						| {% if posts.has_next %}
 						li
 							a(href="{{ url_for('posts.index', page=posts.page+1) }}")
-								i.fa.fa-arrow-right
+								i.di-arrow-right
 						| {% else %}
 						li.disabled
 							a
-								i.fa.fa-arrow-right
+								i.di-arrow-right
 						| {% endif %}
 
 	.col-md-3

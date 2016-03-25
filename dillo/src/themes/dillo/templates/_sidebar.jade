@@ -29,13 +29,13 @@
 				// Rest of the navigation bar
 				| {% if current_user.is_authenticated() %}
 
-				li
+				li.navbar-notifications
 					a#notifications-toggle
-						i.fa.fa-bell
+						i.di-notifications-none
 						span#notifications-count
 						.flyout-hat
 
-				li
+				li.navbar-settings
 					a#popover-settings(
 						href="{{url_for('settings.profile')}}",
 						data-toggle="popover",
@@ -43,9 +43,9 @@
 						data-placement="bottom",
 						data-content="Settings",
 						class="{% if title in ('settings_profile', 'settings_account') %}active{% endif %}")
-						i.fa.fa-cog
+						i.di-cog
 
-				li
+				li.navbar-profile
 					a#popover-profile(
 						href="{{url_for('index')}}u/{{current_user.id}}",
 						data-toggle="popover",
@@ -63,16 +63,13 @@
 						data-placement="bottom",
 						data-content="Log out",
 						class="{% if title in ('settings_profile', 'settings_account') %}active{% endif %}")
-						span.nav-logout-widget-icon
-							i.fa.fa-power-off
-						span.nav-logout-widget-question.
-							?
+						i.di-log-out
 
 				| {% else %}
 
 				li.navbar-login
 					a(href="{{url_for_security('login')}}")
-						i.fa.fa-sign-in
+						i.di-log-in
 						| Sign in
 
 				| {% endif %}
@@ -112,13 +109,13 @@
 	.nav-sidebar.meta
 		p
 			a(href="{{url_for('posts.feed')}}")
-				i.fa.fa-rss
+				i.di-rss
 				|  Feed
 
 			| {% if current_user.has_role('admin') %}
 
 			a(href="{{url_for('admin.index')}}")
-				i.fa.fa-rocket
+				i.di-rocket
 				|  Whoosh!
 
 			| {% endif %}
