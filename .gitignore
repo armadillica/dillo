@@ -2,8 +2,7 @@
 .project
 *.pyc
 *.sublime*
-.idea/
-
+.idea/*
 config.py
 
 dillo/application/templates/**/*
