@@ -70,6 +70,7 @@ def setup():
         db.session.add(post_type)
         db.session.commit()
         print("Added post type {0}".format(t))
+    print('Congrats, Dillo was setup successfully!')
 
 
 @manager.command
