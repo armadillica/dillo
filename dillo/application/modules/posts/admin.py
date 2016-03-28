@@ -21,7 +21,7 @@ class PostTypeView(CustomModelView):
 
 class CategoryView(CustomModelView):
     column_searchable_list = ('name',)
-    column_list = ('name', 'url')
+    column_list = ('name', 'url', 'order')
     form_excluded_columns = ('post',)
 
 
