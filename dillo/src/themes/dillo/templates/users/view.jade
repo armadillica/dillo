@@ -37,7 +37,7 @@ meta(property="profile:username", content="{{user.username}}")
 		.user-view-info
 
 			h3
-				| {% if user.first_name != 'None' %}
+				| {% if user.first_name and user.first_name != 'None' %}
 				| {{user.first_name}} {{user.last_name}}
 				small  ({{user.username}})
 				| {% else %}
