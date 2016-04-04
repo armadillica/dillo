@@ -139,7 +139,7 @@ class CustomAdminIndexView(admin.AdminIndexView):
             keywords = Setting.query.filter_by(name='keywords').first()
             keywords.value = form_settings.keywords.data
             twitter_username = Setting.query.filter_by(name='twitter_username').first()
-            twitter_username = form_settings.twitter_username.data
+            twitter_username.value = form_settings.twitter_username.data
             db.session.commit()
             # Reload the settings
             load_settings()
