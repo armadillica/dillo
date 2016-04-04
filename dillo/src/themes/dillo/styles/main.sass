@@ -1326,7 +1326,7 @@ blockquote
 
 		textarea, .form-group .form-control
 			box-shadow: none
-			border: none
+			border: 2px solid transparent !important
 			border-right: 2px solid white
 			border-radius: 0
 			border-top-left-radius: 3px
@@ -1335,7 +1335,13 @@ blockquote
 			background-color: white
 
 			&:focus
-				border-right-color: $color-success
+				border-right-color: $color-success !important
+
+				&+#parent_id+.comment-form-buttons .submit
+					background-color: $color-success
+					color: white
+					span
+						color: white
 
 		.comment-form-buttons
 			width: 15%
@@ -2310,7 +2316,7 @@ fieldset
 
 		li
 			margin: 0
-			padding: 0
+			padding: 5px
 
 			&.navbar-submit
 				border-top-left-radius: 3px
