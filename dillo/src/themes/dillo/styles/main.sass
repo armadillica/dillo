@@ -2178,7 +2178,6 @@ fieldset
 
 	&.navbar-submit-disabled
 		background: repeating-linear-gradient(-45deg, $color_brand_main, $color_brand_main 10px, darken($color_brand_main, 5%) 10px, darken($color_brand_main, 5%) 20px)
-		pointer-events: none
 		& a
 			padding-left: 0 !important
 
@@ -2213,14 +2212,6 @@ fieldset
 	&:focus .nav-logout-widget-icon
 		color: crimson
 		outline: none !important
-
-.navbar-login
-	font-family: $font_headings
-	& a
-		color: $color_brand_secondary
-	& i
-		margin-right: 2px
-		font-size: 0.9em
 
 /* Sidebar */
 .nav-sidebar-container
@@ -2344,6 +2335,16 @@ fieldset
 			&.navbar-logout i
 				font-size: 1.25em
 				padding-right: 3px
+
+			&.navbar-login
+				margin: 0 auto
+				font-family: $font_headings
+
+				& a
+					color: $color_brand_secondary
+				& i
+					margin-right: 2px
+					font-size: 0.9em
 
 	& .nav-sidebar-avatar
 		display: inline-block

@@ -12,16 +12,12 @@
 
 				| {% else %}
 
-				a(href="{{url_for_security('login')}}")
-					span.navbar-submit-disabled-overlay.popover-submit(
-							data-dialog="submit",
-							data-toggle="popover",
-							data-trigger="hover",
-							data-placement="bottom"
-							data-content="Sign in to Submit")
-
-						li.navbar-submit.navbar-submit-disabled
-							a(href="{{url_for_security('login')}}") Submit
+				li.navbar-submit.navbar-submit-disabled(
+						data-toggle="popover",
+						data-trigger="hover",
+						data-placement="bottom"
+						data-content="Sign in to Submit")
+					a(href="{{url_for_security('login')}}") Submit
 
 				| {% endif %}
 

@@ -9,7 +9,7 @@ function getNotifications(){
 		var unread_ctr = 0;
 
 		// Only if there's actual data
-		if (data['items'][0]){
+		if (data.status != 'fail' && data['items'][0]){
 
 			// Loop through each item
 			$.each(data['items'], function(i, no){

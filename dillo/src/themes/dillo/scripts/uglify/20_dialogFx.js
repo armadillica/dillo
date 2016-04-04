@@ -111,11 +111,14 @@
 	// add to global namespace
 	window.DialogFx = DialogFx;
 
-	// Trigger to display dialog containing submit form
-	var dlgtrigger = document.querySelector( '[data-dialog]' );
-	var somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) );
-	var dlg = new DialogFx( somedialog );
-	dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+	if (document.querySelector( '[data-dialog]' )) {
+		// Trigger to display dialog containing submit form
+		var dlgtrigger = document.querySelector( '[data-dialog]' );
+		var somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) );
+		var dlg = new DialogFx( somedialog );
+
+		dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+	}
 
 })( window );
 
