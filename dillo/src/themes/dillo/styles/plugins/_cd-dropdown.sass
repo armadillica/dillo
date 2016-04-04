@@ -30,6 +30,7 @@
 	+media-xs
 		width: auto
 
+
 .cd-dropdown > span:after
 	content: '\f107'
 	font-family: 'FontAwesome'
@@ -98,9 +99,20 @@
 .cd-active.cd-dropdown > span,
 .cd-active.cd-dropdown ul li span
 	box-shadow: 0 1px 1px rgba(0,0,0,0.1)
-	background-color: lighten($color_background, 3%)
+	background-color: white
 	color: $color_brand_main
 	border: thin solid darken($color_background, 3%)
+
+.cd-active.cd-dropdown ul li.children span
+	padding-left: 20px
+	background-color: lighten($color_background, 3%)
+	border-left: thick solid rgba($color_brand_main, .2)
+	border-top-left-radius: 0
+	border-bottom-left-radius: 0
+
+.cd-active.cd-dropdown ul li.active span
+	color: $color_brand_secondary
+	font-weight: 500
 
 .cd-active.cd-dropdown ul li span
 	-webkit-transition: all 0.0.1s linear 0s

@@ -196,15 +196,17 @@ select#cd-dropdown.cd-select(
 			Categories
 		{% endif %}
 
-	| {% for category in categories %}
-	| {% if category.parent_id %}
-	option.children(
-		value="{{url_for('posts.index_category', category=category.url)}}", children)
-		| {{category.name}}
+	| {% for cat in categories %}
+	| {% if cat.parent_id %}
+	option(
+		value="{{url_for('posts.index_category', category=cat.url)}}", children,
+		class="children{% if cat == category %} active{% endif %}")
+		| {{cat.name}}
 	| {% else %}
-	option.parent(
-		value="{{url_for('posts.index_category', category=category.url)}}")
-		| {{category.name}}
+	option(
+		value="{{url_for('posts.index_category', category=cat.url)}}",
+		class="parent{% if cat == category %} active{% endif %}")
+		| {{cat.name}}
 	| {% endif %}
 	| {% endfor %}
 
