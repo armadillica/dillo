@@ -51,7 +51,9 @@ posts = Blueprint('posts', __name__)
 @posts.route('/p/')
 @posts.route('/p/<int:page>')
 def index(page=1):
-    categories = Category.query.all()
+    categories = Category.query\
+        .order_by(Category.order)\
+        .all()
     roles = computed_user_roles()
     posts_list = Post.query\
         .filter_by(status='published') \
@@ -76,8 +78,11 @@ def index(page=1):
 @posts.route('/p/<category>/<int:page>')
 def index_category(category, page=1):
     category = Category.query\
-        .filter_by(url=category).first_or_404()
-    categories = Category.query.all()
+        .filter_by(url=category)\
+        .first_or_404()
+    categories = Category.query\
+        .order_by(Category.order)\
+        .all()
     roles = computed_user_roles()
     user_string_id = 'ANONYMOUS'
     if current_user.is_authenticated():
