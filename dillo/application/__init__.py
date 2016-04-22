@@ -123,7 +123,7 @@ app.config['UPLOADS_LOCAL_STORAGE_PATH'] = uploads_local_storage_path
 # Configure the Imgur API client
 if app.config.get('IMGUR_CLIENT_ID'):
     imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'],
-                                app.config['IMGUR_CLIENT_SECRET'])
+                               app.config['IMGUR_CLIENT_SECRET'])
 else:
     imgur_client = None
 
@@ -138,8 +138,8 @@ from modules.comments import comments
 from modules.notifications import notifications
 
 
-filemanager = Blueprint('filemanager', __name__, static_folder='static/files')
-app.register_blueprint(filemanager)
+bp_filemanager = Blueprint('bp_filemanager', __name__, static_folder='static/files')
+app.register_blueprint(bp_filemanager)
 app.register_blueprint(settings, url_prefix='/settings')
 app.register_blueprint(posts)
 app.register_blueprint(users, url_prefix='/u')

@@ -37,7 +37,7 @@ def _list_items(view, context, model, name):
 def _list_thumbnail(view, context, model, name):
     if not getattr(model,name):  #model.name only does not work because name is a string
         return ''
-    return Markup('<img src="%s">' % url_for('filemanager.static', filename=form.thumbgen_filename(getattr(model,name))))
+    return Markup('<img src="%s">' % url_for('bp_filemanager.static', filename=form.thumbgen_filename(getattr(model,name))))
 
 
 # Create directory for file fields to use
@@ -63,7 +63,7 @@ image_upload_field = form.ImageUploadField('Image',
                     base_path=file_path,
                     thumbnail_size=(100, 100, True),
                     namegen=prefix_name,
-                    endpoint='filemanager.static')
+                    endpoint='bp_filemanager.static')
 
 
 # Define wtforms widget and field
