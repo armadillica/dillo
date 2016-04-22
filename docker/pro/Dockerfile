@@ -21,6 +21,8 @@ nodejs \
 nodejs-legacy \
 npm
 
+RUN a2enmod rewrite
+
 RUN mkdir -p /data/git \
 && mkdir -p /data/storage \
 && mkdir -p /data/config
