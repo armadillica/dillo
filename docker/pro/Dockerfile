@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Francesco Siddi <francesco@blender.org>
+MAINTAINER Francesco Siddi <francesco@dillo.space>
 
 RUN apt-get update && apt-get install -y \
 python \
@@ -42,7 +42,9 @@ RUN pip install virtualenv \
 ENV PIP_PACKAGES_VERSION 1
 ADD requirements.txt /requirements.txt
 
-RUN . /data/venv/bin/activate && pip install -r /requirements.txt \
+RUN . /data/venv/bin/activate \
+&& pip install --upgrade pip \
+&& pip install -r /requirements.txt \
 && rm /requirements.txt
 
 VOLUME /data/git
