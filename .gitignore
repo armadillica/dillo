@@ -6,6 +6,7 @@
 config.py
 
 dillo/application/templates/**/*
+dillo/application/themes/dillo/static/font/*
 dillo/application/themes/dillo/static/css/*
 dillo/application/themes/dillo/static/js/*
 dillo/application/themes/dillo/templates/*

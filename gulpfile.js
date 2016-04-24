@@ -50,6 +50,12 @@ gulp.task('scripts', function() {
         .pipe(livereload());
 });
 
+/* Copy the font files, except config */
+gulp.task('font', function() {
+    gulp.src('dillo/src/themes/dillo/font/**/*.{eot,svg,ttf,woff,woff2}')
+    .pipe(gulp.dest('dillo/application/themes/dillo/static/font'));
+});
+
 // While developing, run 'gulp watch'
 gulp.task('watch',function() {
     livereload.listen();
@@ -61,4 +67,4 @@ gulp.task('watch',function() {
 });
 
 // Run 'gulp' to build everything at once
-gulp.task('default', ['styles', 'templates', 'scripts']);
+gulp.task('default', ['styles', 'templates', 'scripts', 'font']);
