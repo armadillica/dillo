@@ -37,7 +37,7 @@ blockquote
 	border-left: 5px solid darken($color_background, 5%)
 
 .page-container
-	min-height: 345px /* avoids the fixed sidebar to go over the footer */
+	min-height: 600px /* avoids the fixed sidebar to go over the footer */
 	background-color: $color_background
 	padding-bottom: 25px
 	border-bottom: 6px solid lighten(desaturate($color_brand_main, 20%), 38%)
@@ -898,11 +898,10 @@ blockquote
 	& .flag:hover, & .flag:focus
 		text-decoration: none
 	& .flag:after
-		content: '\f11d'
-		font-family: 'FontAwesome'
+		content: '\e853'
+		font-family: 'font-icons'
 	& .flag.flagged:after
-		content: '\f024'
-		font-family: 'FontAwesome'
+		color: $color_brand_main
 
 	& .post-actions
 		float: right
@@ -1044,27 +1043,23 @@ blockquote
 		width: 50px
 		height: 50px
 		display: block
-		background-color: lighten($color-text, 65%)
+		background-color: $color_background
 		padding: 0
 		border-radius: 50%
+		position: relative
 		+text-shadow-none
 		+media-xs
 			width: 40px
 			height: 40px
 		&:after
-			content: '\f118'
-			font-family: 'FontAwesome'
-			color: lighten($color-text, 60%)
-			font-size: 3.2em
-			top: -7px
-			position: relative
-			+media-xs
-				font-size: 2.8em
+			content: '\e840'
+			font-family: 'font-icons'
+			color: $color-text-dark-secondary
+			font-size: 1.5em
+			+position-absolute-center
 
-.post-view-details-avatar
-	& .post-view-details-avatar-deleted
-		&:after
-			left: 6px
+			+media-xs
+				font-size: 1.1em
 
 .post-view-details-avatar img,
 .post-view-comments-avatar img
@@ -1461,16 +1456,16 @@ blockquote
 		background-color: lighten($color-text, 65%)
 		padding: 0
 		border-radius: 50%
+		position: relative
 		+media-xs
 			width: 40px
 			height: 40px
 		&:after
-			content: '\f118'
-			font-family: 'FontAwesome'
-			color: lighten($color-text, 60%)
-			font-size: 3.2em
-			top: -7px
-			position: relative
+			content: '\e840'
+			font-family: 'font-icons'
+			color: $color-text-dark-secondary
+			font-size: 1.5em
+			+position-absolute-center
 			+media-xs
 				font-size: 2.8em
 
@@ -1536,11 +1531,10 @@ blockquote
 	& .flag:hover, & .flag:focus
 		text-decoration: none
 	& .flag:after
-		content: '\f11d'
-		font-family: 'FontAwesome'
+		content: '\e853'
+		font-family: 'font-icons'
 	& .flag.flagged:after
-		content: '\f024'
-		font-family: 'FontAwesome'
+		color: $color_brand_main
 
 .post-view-comments-item-rate
 	padding: 8px
@@ -1629,8 +1623,8 @@ blockquote
 	left: 18px
 	+text-shadow-none
 	&:before
-		content: '\f08e'
-		font-family: 'FontAwesome'
+		content: '\e807'
+		font-family: 'font-icons'
 		position: absolute
 		left: -1.4em
 		top: 0.4em
@@ -2223,6 +2217,7 @@ fieldset
 .nav-sidebar-container
 	z-index: 99 // stay above categories dropdown
 	max-width: 240px
+	width: 100%
 
 	+media-xs
 		position: relative
@@ -2333,7 +2328,9 @@ fieldset
 						color: white
 
 			&.navbar-notifications i
-				font-size: 1.6em
+				font-size: 1.3em
+				position: relative
+				left: 2px
 			&.navbar-settings i
 				font-size: 1.3em
 			&.navbar-profile i

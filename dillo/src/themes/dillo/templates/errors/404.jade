@@ -18,8 +18,7 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		| {% block og %}{% endblock %}
 
 		// Style sheets
-		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
-		link(href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", rel="stylesheet")
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel="stylesheet")
 		link(href="{{ url_for('static', filename='css/main.css') }}", rel="stylesheet")
 
 		// Fonts
@@ -38,4 +37,4 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 		h2 404 - This page doesn't exist
 		.error-goback
 			a(href="{{url_for('index')}}").
-				<i class="fa fa-angle-left"></i>  back to {{ config.SETTINGS_TITLE | safe}}
+				<i class="di-angle-left"></i>  back to {{ config.SETTINGS_TITLE | safe}}
