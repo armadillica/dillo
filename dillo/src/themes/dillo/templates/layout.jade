@@ -90,11 +90,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 
 		script.
 
-			// Markdown initialization
-			var convert = new Markdown.getSanitizingConverter();
-			Markdown.Extra.init(convert);
-			convert = convert.makeHtml;
-
 			$('#popover-home').popover();
 			$('#cd-dropdown').dropdown( {gutter : 5 } );
 
@@ -116,83 +111,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 					$('#popover-settings').popover();
 					$('#popover-logout').popover();
 				{% endif %}
-
-			{% if current_user.is_authenticated() %}
-
-				$.embedly.defaults.key = '{{config.EMBEDLY_APY_KEY}}';
-				page_title = document.title;
-
-				$('#url').keyup(function(){
-					var url = $('#url').val();
-
-					// We're trying to load the link stuff
-					$('.post-submit-field-loading').html('<i class="fa fa-spin fa fa-spinner"></i>');
-
-					$.embedly.extract(url).progress(function(data){
-
-						$('.post-submit-field-loading').removeClass('error');
-
-						if (data.url == ''){
-							$('.post-submit-field-loading').html('');
-						};
-
-						// Clear the loading
-						if (data.error){
-							$('.post-submit-field-loading').html('');
-							$('.post-submit-field-loading').removeClass('success');
-							$('.post-submit-field-loading').addClass('error');
-							$('.post-submit-field-submit').addClass('disabled');
-						} else {
-							$('.post-submit-field-loading').html('<i class="fa fa-check"></i>');
-							$('.post-submit-field-loading').addClass('success');
-							$('.post-submit-field-submit').removeClass('disabled');
-						};
-
-						if (data.error_code){
-							$('.post-submit-field-loading').html(data.error_code);
-							$('.post-submit-field-loading').addClass('error');
-							$('.post-submit-field-submit').addClass('disabled');
-						} else {
-							$('.post-submit-field-loading').removeClass('error');
-						};
-
-						if (data.favicon_url){
-							$('.post-submit-field-favicon').html('<img src="' + data.favicon_url + '"/>')
-						} else {
-							$('.post-submit-field-favicon').html('<i class="fa fa-globe"></i>')
-						};
-
-						$('.post-submit-div-title').show();
-						$('.post-submit-div-category').show();
-						$('.post-submit-div-picture').show();
-
-						if (data.title) {
-							$('#title').val(data.title);
-						};
-
-						// if (data.images[0]) {
-						if (data.images) {
-
-							$('.picture-remote-container').html('<img src="'+data.images[0].url+'"/>');
-							$('.post-submit-div-picture-remote').css('display', 'block');
-							$('#picture_remote').val(data.images[0].url);
-							$('.post-submit-div-picture').hide();
-
-						};
-
-					$('.post-submit-div-submit').show();
-
-					}); // embedly
-				});
-
-				$('post-submit-div-submit').css('display', 'block');
-
-				$('#dismiss-picture-remote').click(function(){
-					$('#picture_remote').val('');
-					$('.post-submit-div-picture-remote').css('display', 'none');
-					$('.post-submit-div-picture').show();
-				});
-			{% endif %}
 			});
 
 		| {% block footer_scripts %}{% endblock %}

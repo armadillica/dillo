@@ -117,6 +117,89 @@ script.
 		});
 
 
+
+
+		{% if current_user.is_authenticated() %}
+
+		$.embedly.defaults.key = '{{config.EMBEDLY_APY_KEY}}';
+		page_title = document.title;
+
+		$('#url').keyup(function (event) {
+			var url = $('#url').val();
+
+			// We're trying to load the link stuff
+			$('.post-submit-field-loading').html('<i class="fa fa-spin fa fa-spinner"></i>');
+
+			$.embedly.extract(url).progress(function (data) {
+
+				$('.post-submit-field-loading').removeClass('error');
+
+				if (data.url == '') {
+					$('.post-submit-field-loading').html('');
+				}
+				;
+
+				// Clear the loading
+				if (data.error) {
+					$('.post-submit-field-loading').html('');
+					$('.post-submit-field-loading').removeClass('success');
+					$('.post-submit-field-loading').addClass('error');
+					$('.post-submit-field-submit').addClass('disabled');
+				} else {
+					$('.post-submit-field-loading').html('<i class="fa fa-check"></i>');
+					$('.post-submit-field-loading').addClass('success');
+					$('.post-submit-field-submit').removeClass('disabled');
+				}
+				;
+
+				if (data.error_code) {
+					$('.post-submit-field-loading').html(data.error_code);
+					$('.post-submit-field-loading').addClass('error');
+					$('.post-submit-field-submit').addClass('disabled');
+				} else {
+					$('.post-submit-field-loading').removeClass('error');
+				}
+				;
+
+				if (data.favicon_url) {
+					$('.post-submit-field-favicon').html('<img src="' + data.favicon_url + '"/>')
+				} else {
+					$('.post-submit-field-favicon').html('<i class="fa fa-globe"></i>')
+				}
+				;
+
+				$('.post-submit-div-title').show();
+				$('.post-submit-div-category').show();
+				$('.post-submit-div-picture').show();
+
+				if (data.title) {
+					$('#title').val(data.title);
+				}
+				;
+
+				if (data.images && data.images.length > 0) {
+					$('.picture-remote-container').html('<img src="' + data.images[0].url + '"/>');
+					$('.post-submit-div-picture-remote').css('display', 'block');
+					$('#picture_remote').val(data.images[0].url);
+					$('.post-submit-div-picture').hide();
+				}
+				;
+
+				$('.post-submit-div-submit').show();
+
+			}); // embedly
+		});
+
+		$('post-submit-div-submit').css('display', 'block');
+
+		$('#dismiss-picture-remote').click(function () {
+			$('#picture_remote').val('');
+			$('.post-submit-div-picture-remote').css('display', 'none');
+			$('.post-submit-div-picture').show();
+		});
+		{% endif %}
+
+
 		$("#submit_post_form").on("submit", function (e) {
 
 				e.preventDefault();
@@ -155,26 +238,30 @@ script.
 
 
 		/* Build the markdown preview when typing in textarea */
-		$(function() {
-			var $textarea = $('.post-submit-field-content'),
-					$container = $('.post-submit-article'),
-					$preview = $('.post-submit-preview');
 
-			// As we type in the textarea
-			$textarea.keyup(function() {
+		var convert = new Markdown.getSanitizingConverter();
+		Markdown.Extra.init(convert);
+		convert = convert.makeHtml;
 
-				// Convert markdown
-				$preview.html(convert($textarea.val()));
+		var $textarea = $('.post-submit-field-content'),
+				$container = $('.post-submit-article'),
+				$preview = $('.post-submit-preview');
 
-				// While we are at it, style when empty
-				if ($textarea.val()) {
-					$preview.show();
-				} else {
-					$preview.hide();
-				};
+		// As we type in the textarea
+		$textarea.keyup(function(event) {
 
-			}).trigger('keyup');
-		});
+			// Convert markdown
+			$preview.html(convert($textarea.val()));
+
+			// While we are at it, style when empty
+			if ($textarea.val()) {
+				$preview.show();
+			} else {
+				$preview.hide();
+			};
+
+		}).trigger('keyup');
+
 
 
 		// Change type of submission

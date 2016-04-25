@@ -502,6 +502,11 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 | {% block footer_scripts %}
 script(type="text/javascript").
 
+	// Markdown initialization
+	var convert = new Markdown.getSanitizingConverter();
+	Markdown.Extra.init(convert);
+	convert = convert.makeHtml;
+
 	/* Convert markdown on comments  */
 	$(".post-view-comments-item-text, #post-view-content.text:first").each(function(i) {
 		var text = $(this).text().trim();
@@ -517,7 +522,7 @@ script(type="text/javascript").
 					$preview = $('.comment-reply-preview:first');
 
 			// As we type in the textarea
-			$textarea.keyup(function() {
+			$textarea.keyup(function(event) {
 
 				// Convert markdown
 				$preview.html(convert($textarea.val()));
@@ -687,7 +692,7 @@ script(type="text/javascript").
 							$preview = $('#post-edit-preview:first');
 
 					// As we type in the textarea
-					$textarea.keyup(function() {
+					$textarea.keyup(function(event) {
 
 						// Convert markdown
 						$preview.html(convert($textarea.val()));
