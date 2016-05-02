@@ -94,17 +94,6 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 			$('#cd-dropdown').dropdown( {gutter : 5 } );
 
 			$(document).ready(function () {
-				$('.nav-logout-widget').click(function(e){
-					e.preventDefault();
-
-					$('.nav-logout-widget-question').animate({'opacity': 1.0, 'left' : 22}, 300);
-					$('.nav-logout-widget-icon').css('color', 'crimson');
-					$('.nav-logout-widget-icon').animate({'left' : 5}, 250, function(){
-						$('.nav-logout-widget').unbind();
-						$('.nav-logout-widget').attr('href', '{{url_for("logout")}}');
-					});
-				});
-
 				{% if current_user.is_anonymous() %}
 					$('.popover-submit').popover();
 				{% else %}
