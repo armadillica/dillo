@@ -67,12 +67,12 @@
 							fieldset
 								.input-group
 									span.input-group-addon
-										i.di-envelope-o.fa-fw
+										i.di-email
 									| {{ render_login_field_with_errors(login_user_form.email, class='form-control', placeholder="E-mail") }}
 
 								.input-group
 									span.input-group-addon
-										i.di-lock.fa-fw
+										i.di-lock
 									| {{ render_login_field_with_errors(login_user_form.password, class='form-control', placeholder="Password") }}
 
 								| {{ render_field(login_user_form.next) }}
