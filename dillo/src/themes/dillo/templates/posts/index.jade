@@ -287,8 +287,13 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 						| {% if posts.has_prev %}
 						li
+							| {% if category %}
+							a(href="{{ url_for('posts.index_category', category=category.url, page=posts.page-1) }}")
+								i.di-arrow-left
+							| {% else %}
 							a(href="{{ url_for('posts.index', page=posts.page-1) }}")
-								i.di-angle-left
+								i.di-arrow-left
+							| {% endif %}
 						| {% else %}
 						li.disabled
 							a
@@ -301,8 +306,15 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 						| {% if post != posts.page %}
 						li
+							| {% if category %}
+							a(href="{{ url_for('posts.index_category', category=category.url, page=post) }}").
+								{{ post }}
+							| {% else %}
 							a(href="{{ url_for('posts.index', page=post) }}").
 								{{ post }}
+							| {% endif %}
+
+
 						| {% else %}
 						li.active
 							a(href="#") {{ post }}
@@ -317,8 +329,13 @@ meta(property="og:image", content="{{ url_for('static', filename='images/favicon
 
 						| {% if posts.has_next %}
 						li
+							| {% if category %}
+							a(href="{{ url_for('posts.index_category', category=category.url, page=posts.page+1) }}")
+								i.di-arrow-right
+							| {% else %}
 							a(href="{{ url_for('posts.index', page=posts.page+1) }}")
 								i.di-arrow-right
+							| {% endif %}
 						| {% else %}
 						li.disabled
 							a
