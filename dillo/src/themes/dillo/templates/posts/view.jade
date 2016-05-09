@@ -267,7 +267,7 @@ link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.3.0.2/css/sw
 
 								a.edit-post-delete-widget.post-actions-button.delete(
 									title="Delete Post",
-									href="")
+									href="#")
 
 									span.edit-post-delete-widget-action(link="")
 									span.edit-post-delete-widget-icon
@@ -765,15 +765,20 @@ script(type="text/javascript").
 					});
 			});
 
-			$('.edit-post-delete-widget').click(function(e){
+			$('.edit-post-delete-widget').on('click', function(e){
 				e.preventDefault();
-				$('.edit-post-delete-widget-question').animate({'opacity': 1.0, 'left' : 6}, 350);
+
+				$('.edit-post-delete-widget-question').animate({'opacity': 1.0}, 350);
 				$('.edit-post-delete-widget-icon').animate({'left' : -5}, 250, function(){
 				$('.edit-post-delete-widget-action').attr('link', '{{ url_for("posts.delete", uuid=post.uuid) }}');
+
+				$('.edit-post-delete-widget-action').addClass('active');
 				});
 			});
 
 			$('.edit-post-delete-widget-action').click(function(e){
+				e.preventDefault();
+
 				$.post($('.edit-post-delete-widget-action').attr("link"), function(data){
 					$('.edit-post-delete-widget').fadeOut(function(){
 						$('#edit-post-delete-label').toggleClass('hidden');
