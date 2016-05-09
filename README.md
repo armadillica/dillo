@@ -1,4 +1,4 @@
-# Dillo
+# Dillo 1.0
 Welcome to the Dillo codebase! Dillo is a free and open web platform created to
 support crowd-driven content.
 
