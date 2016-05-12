@@ -1,8 +1,8 @@
 import os
 import datetime
 import requests
+import tempfile
 from PIL import Image
-from werkzeug.utils import secure_filename
 from flask import render_template
 from flask import Blueprint
 from flask import redirect
@@ -201,13 +201,11 @@ def submit():
             if form.picture.data or form.picture_remote.data:
                 if form.picture.data:
                     # If the user uploads an image from the form
-                    filename = secure_filename(form.picture.data.filename)
-                    filepath = '/tmp/' + filename
+                    _, filepath = tempfile.mkstemp()
                     form.picture.data.save(filepath)
                 else:
                     # If the url is retrieved via embedly
-                    filename = secure_filename(form.picture_remote.data)
-                    filepath = '/tmp/' + filename
+                    _, filepath = tempfile.mkstemp()
                     with open(filepath, 'wb') as handle:
                         response = requests.get(form.picture_remote.data, stream=True)
                         for block in response.iter_content(1024):
