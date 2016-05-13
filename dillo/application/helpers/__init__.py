@@ -1,6 +1,8 @@
 import math
 import bleach
 import httplib
+import re
+import translitcodec
 from urlparse import urlparse
 from flask.ext.security import current_user
 from flask.ext.cache import make_template_fragment_key
@@ -12,6 +14,7 @@ from application.modules.users.model import Role
 ALPHABET = "bcdfghjklmnpqrstvwxyz0123456789BCDFGHJKLMNPQRSTVWXYZ"
 BASE = len(ALPHABET)
 MAXLEN = 6
+
 
 def encode_id(n):
     pad = MAXLEN - 1
@@ -28,6 +31,7 @@ def encode_id(n):
         if t < 0: break
 
     return "".join(reversed(s))
+
 
 def decode_id(n):
     if len(n) == MAXLEN:
@@ -48,11 +52,8 @@ def decode_id(n):
     else:
         return 0
 
-
-import re
-import translitcodec
-
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+
 
 def slugify(text, delim=u'-'):
     """Generates an ASCII-only slug."""
@@ -90,13 +91,13 @@ def pretty_date(time=False):
         if second_diff < 60:
             return str(second_diff) + " seconds ago"
         if second_diff < 120:
-            return  "a minute ago"
+            return "a minute ago"
         if second_diff < 3600:
-            return str( second_diff / 60 ) + " minutes ago"
+            return str(second_diff / 60) + " minutes ago"
         if second_diff < 7200:
             return "an hour ago"
         if second_diff < 86400:
-            return str( second_diff / 3600 ) + " hours ago"
+            return str(second_diff / 3600) + " hours ago"
     if day_diff == 1:
         return "yesterday"
     if day_diff <= 7:
@@ -146,7 +147,13 @@ def check_url(url):
         conn = httplib.HTTPConnection(p.netloc, timeout=2)
         conn.request('HEAD', p.path)
         resp = conn.getresponse()
-        return resp.status < 400
+        status_code = resp.status
+        if status_code < 400:
+            return True
+        else:
+            conn.request('GET', p.path)
+            resp = conn.getresponse()
+            return resp.status < 400
     except:
         # TODO: this is bad, we should get the real exception
         return False
