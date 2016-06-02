@@ -97,6 +97,8 @@ html(lang="en", prefix="og: http://ogp.me/ns#")
 				{% if current_user.is_anonymous() %}
 					$('.popover-submit').popover();
 				{% else %}
+					page_title = document.title;
+
 					$('#popover-settings').popover();
 					$('#popover-logout').popover();
 				{% endif %}
