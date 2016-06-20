@@ -388,9 +388,9 @@ script.
 			$.get($(this).attr("href"), function(data){
 				up.removeClass('rated');
 				if (data['rating'] === "False") {
-					$(".down").addClass('rated');
+					down.addClass('rated');
 				} else {
-					$(".down").removeClass('rated');
+					down.removeClass('rated');
 				}
 				rate.text(data['rating_delta']);
 			});
