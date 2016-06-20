@@ -16,7 +16,7 @@
 								title="{{ config.SETTINGS_TITLE | safe}}")
 
 						a(href="{{url_for('index')}}")
-							h3 {{ config.SETTINGS_TITLE | safe}}
+							h3 {{ config.SETTINGS_TITLE_HTML | safe}}
 
 
 					h2 welcome
@@ -25,7 +25,7 @@
 						| {% if config.SOCIAL_BLENDER_ID %}
 						a.user-login-button-oauth.blender-id(
 							href="{{url_for('blender_id_login')}}")
-							i.icon.bf-blender
+							i.icon.di-blender
 							| Login with Blender ID
 							small  (recommended)
 						| {% endif %}
@@ -33,7 +33,7 @@
 						| {% if config.SOCIAL_GOOGLE %}
 						a.user-login-button-oauth.google(
 							href="{{url_for('google_login')}}")
-							i.icon.di-google
+							i.icon.di-google-plus
 							| Login with Google
 						| {% endif %}
 
