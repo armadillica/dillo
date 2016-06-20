@@ -88,7 +88,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			data-trigger="hover",
 			data-placement="bottom",
 			data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
-			i.di-chevron-up
+			i.di-angle-up
 
 		| {# Downvote #}
 		a(title="Downvote this comment",
@@ -98,7 +98,7 @@ div(class="post-view-comments-item {% if is_reply %}reply{% endif %} {{ loop.cyc
 			data-trigger="hover",
 			data-placement="bottom",
 			data-content="{% if current_user.is_anonymous() %}Sign in to vote{% endif %}")
-			i.di-chevron-down
+			i.di-angle-down
 
 		span.separator.hidden-xs
 
