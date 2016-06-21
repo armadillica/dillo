@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run setup if installed flag is not found
-if [ ! -e /installed ]; then
+if [ ! -e /data/git/dillo/dillo/config.py ]; then
 	# Generate a basic config.py so that dillo can be started
 	SECURITY_PASSWORD_SALT="$(date +%s | sha256sum | base64 | head -c 32 ; echo)"
 	SECRET_KEY="$(date +%s | sha256sum | base64 | head -c 32 ; echo)"
@@ -17,7 +17,6 @@ if [ ! -e /installed ]; then
 	gulp
 	cd /
 
-	touch /installed
 fi
 
 # Run Apache
