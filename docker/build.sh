@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo $DIR
 
-if [[ $1 == 'pro' || $1 == 'dev' ]]; then
+if [[ $1 == 'pro' || $1 == 'dev' || $1 == 'all' ]]; then
 	# Copy requirements.txt into pro folder
 	cp ../requirements.txt $1/requirements.txt
 	# Build image
