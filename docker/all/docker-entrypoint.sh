@@ -21,7 +21,7 @@ fi
 
 if [ "$DEV" = "true" ]; then
     echo "Running in development mode"
-    . /data/venv/bin/activate && python /data/git/dillo/dillo/manage.py $@
+    . /data/venv/bin/activate && python /data/git/dillo/dillo/manage.py runserver
 else
     # Run Apache
     /usr/sbin/apache2ctl -D FOREGROUND
