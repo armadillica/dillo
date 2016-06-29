@@ -29,9 +29,11 @@ def _list_items(view, context, model, name):
         return ''
     return Markup(
         '<div class="select2-container-multi">'
-            '<ul class="select2-choices" style="border:0;cursor:default;background:none;">%s</ul></div>' % (
-                ''.join( ['<li class="select2-search-choice" style="padding:3px 5px;">'
-                            '<div>'+item.name+'</div></li>' for item in getattr(model,name)] )))
+        '<ul class="select2-choices" '
+        'style="border:0;cursor:default;background:none;">%s</ul>'
+        '</div>' % (''.join(['<li class="select2-search-choice" '
+                              'style="padding:3px 5px;">'
+                              '<div>'+item.name+'</div></li>' for item in getattr(model,name)] )))
 
 
 def _list_thumbnail(view, context, model, name):
@@ -47,6 +49,7 @@ try:
 except OSError:
     pass
 
+
 def prefix_name(obj, file_data):
     # Collect name and extension
     parts = op.splitext(file_data.filename)
@@ -60,10 +63,10 @@ def prefix_name(obj, file_data):
 
 
 image_upload_field = form.ImageUploadField('Image',
-                    base_path=file_path,
-                    thumbnail_size=(100, 100, True),
-                    namegen=prefix_name,
-                    endpoint='bp_filemanager.static')
+                                           base_path=file_path,
+                                           thumbnail_size=(100, 100, True),
+                                           namegen=prefix_name,
+                                           endpoint='bp_filemanager.static')
 
 
 # Define wtforms widget and field
@@ -81,6 +84,7 @@ class CKTextAreaField(fields.TextAreaField):
 class CustomModelView(ModelView):
     def is_accessible(self):
         return login.current_user.has_role('admin')
+
 
 class CustomBaseView(BaseView):
     def is_accessible(self):
