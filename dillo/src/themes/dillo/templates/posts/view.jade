@@ -743,8 +743,10 @@ script(type="text/javascript").
 				};
 
 				// Markdown
-				var text = $("#post-edit-content textarea").val();
-				$("#post-view-content").html(convert(text));
+				if (document.getElementById("post-edit-content textarea") !== null){
+					var text = $("#post-edit-content textarea").val();
+					$("#post-view-content").html(convert(text));
+				}
 
 				$.post($(this).attr("href"), tosubmit,
 					function(data){
