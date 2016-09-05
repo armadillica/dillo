@@ -35,13 +35,16 @@ from application.modules.posts.model import Post
 users = Blueprint('users', __name__)
 
 
-@user_registered.connect_via(app)
-def user_registered_sighandler(sender, **extra):
-    user = extra['user']
+def user_assign_karma(user):
     user_karma = UserKarma(
         user_id=user.id)
     db.session.add(user_karma)
     db.session.commit()
+
+
+@user_registered.connect_via(app)
+def user_registered_sighandler(sender, **extra):
+    user_assign_karma(extra['user'])
 
 
 def check_oauth_provider(provider):
@@ -98,11 +101,8 @@ def user_get_or_create(email, first_name, last_name, service, service_user_id):
             service=service,
             service_user_id=service_user_id)
         db.session.add(user_oauth)
-
-        user_karma = UserKarma(
-            user_id=user.id)
-        db.session.add(user_karma)
         db.session.commit()
+        user_assign_karma(user)
 
     return user
 

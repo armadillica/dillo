@@ -1,3 +1,4 @@
+import logging
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate
 from flask.ext.migrate import MigrateCommand
@@ -9,10 +10,11 @@ from application.modules.posts.model import Category
 from application.modules.posts.model import PostType
 from application.modules.admin.model import Setting
 
-
+log = logging.getLogger(__name__)
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
 
 @manager.command
 def setup():
@@ -86,5 +88,16 @@ def runserver():
         port=PORT,
         host=HOST)
 
+
+@manager.command
+def ensure_user_karma():
+    """Workaround to assign karma to users who were created without."""
+    from application.modules.users.model import User
+    from application.modules.users import user_assign_karma
+
+    for user in User.query.all():
+        if not user.karma:
+            log.info('Assigning karma to user {}'.format(user.id))
+            user_assign_karma(user)
 
 manager.run()
