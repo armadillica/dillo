@@ -3,7 +3,7 @@
 *.pyc
 *.sublime*
 .idea/*
-config.py
+config_local.py
 
 dillo/application/templates/**/*
 dillo/application/themes/dillo/static/font/*
