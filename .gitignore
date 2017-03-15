@@ -5,18 +5,9 @@
 .idea/*
 config_local.py
 
-dillo/application/templates/**/*
-dillo/application/themes/dillo/static/font/*
-dillo/application/themes/dillo/static/css/*
-dillo/application/themes/dillo/static/js/*
-dillo/application/themes/dillo/templates/*
-dillo/application/static/storage/
+dillo/static/css/*
+
 node_modules
 .sass-cache/
 *.css.map
 *.js.map
-
-*.rdb
-
-docker/dillo.env
-

@@ -1,20 +1,22 @@
 doctype html
 html(lang='en')
-  head
-    meta(charset='utf-8')
-    title
-      | {% if self.page_title() %}{% block page_title %}{% endblock %} — {% endif %}Dillo
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    | {% block head %}{% endblock %}
-    link(href='//fonts.googleapis.com/css?family=Roboto:300,400', rel='stylesheet', type='text/css')
-    link(href="{{ url_for('static_pillar', filename='assets/css/vendor/bootstrap.min.css', v=171120161) }}", rel='stylesheet')
-    link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
-    link(href="{{ url_for('static_pillar', filename='assets/css/base.css', v=171120161) }}", rel='stylesheet')
-    link(href="{{ url_for('static_dillo', filename='assets/css/main.css', v=171120161) }}", rel='stylesheet')
-    script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
-    script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.bootstrap-3.3.7.min.js', v=171120161) }}")
-    script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
-    | {% block style %}{% endblock %}
-  body()
-    | {% block body %}{% endblock %}
-    | {% block footer_scripts %}{% endblock %}
+	head
+		meta(charset='utf-8')
+		title
+			| {% if self.page_title() %}{% block page_title %}{% endblock %} — {% endif %}Dillo
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+		| {% block head %}{% endblock %}
+		link(href='//fonts.googleapis.com/css?family=Roboto:300,400', rel='stylesheet', type='text/css')
+		link(href="{{ url_for('static_pillar', filename='assets/css/vendor/bootstrap.min.css', v=171120161) }}", rel='stylesheet')
+		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
+		link(href="{{ url_for('static_pillar', filename='assets/css/base.css', v=171120161) }}", rel='stylesheet')
+		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
+
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.bootstrap-3.3.7.min.js', v=171120161) }}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
+		| {% block style %}{% endblock %}
+	body
+		| {% block body %}{% endblock %}
+		| {% block footer_scripts %}{% endblock %}
