@@ -13,5 +13,5 @@ log = logging.getLogger(__name__)
 def index():
     api = pillar_api()
     from flask import redirect, url_for
-    return redirect(url_for('index'))
+    #return redirect(url_for('index'))
     return render_template('dillo/index.pug')

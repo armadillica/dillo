@@ -64,6 +64,9 @@ class DilloExtension(PillarExtension):
         import os.path
         return os.path.join(os.path.dirname(__file__), 'static')
 
+    def setup_app(self, app):
+        app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
+
 
 def _get_current_dillo():
     """Returns the Dillo extension of the current application."""
