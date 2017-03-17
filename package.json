@@ -1,6 +1,6 @@
 {
 	"name": "dillo",
-	"license": "GPL",
+	"license": "GPL-2.0",
 	"author": "Admadillica",
 	"repository": {
 		"type": "git",
