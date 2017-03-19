@@ -50,8 +50,10 @@ class DilloExtension(PillarExtension):
         """
 
         from . import routes
+        import dillo.posts.routes
         return [
             routes.blueprint,
+            dillo.posts.routes.blueprint
         ]
 
     @property
@@ -65,7 +67,9 @@ class DilloExtension(PillarExtension):
         return os.path.join(os.path.dirname(__file__), 'static')
 
     def setup_app(self, app):
+        from dillo import posts
         app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
+        posts.setup_app(app)
 
 
 def _get_current_dillo():
