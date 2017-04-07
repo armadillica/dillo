@@ -1,6 +1,75 @@
 | {% extends 'dillo/layout.pug' %}
-| {% block bodyattrs %}{{ super() }} data-context='dashboard'{% endblock %}
 | {% block page_title %}Dashboard{% endblock %}
 | {% block body %}
-h1 Dillo
+
+#col_main.listing-list
+	ul
+		li.active
+			a.item-thumbnail(href="")
+				img(src="https://placehold.it/90/ff00aa/ffffff")
+			.item-content
+				.item-rating
+				.item-details
+					a.item-title(href="") NEW: Blender Motion Graphics Training
+					ul
+						li 2 days ago
+						li koro
+						li 81 points
+						li 2 comments
+
+		li
+			a.item-thumbnail(href="")
+				img(src="https://placehold.it/90/22ccff/ffffff")
+			.item-content
+				.item-rating
+				.item-details
+					a.item-title(href="") Blender 2.8 - ¿Qué y por qué? youtu.be
+					ul
+						li 8h ago
+						li koro
+						li 81 points
+						li 3 comments
+
+		li
+			a.item-thumbnail(href="")
+				img(src="https://placehold.it/90/00ffaa/ffffff")
+			.item-content
+				.item-rating
+				.item-details
+					a.item-title(href="") An add-on for re-arranging render layers in the render layers list
+					ul
+						li 8h ago
+						li koro
+						li 81 points
+						li comment
+
+
+#col_right.listing-view
+	.item-media
+		i.pi-play
+
+	.item-title
+		| NEW: Blender Motion Graphics Training
+
+	#item-bar-sec
+		ul
+			li.item-date 7hs ago
+			li.item-author pablovazquez
+			li.item-rating 358
+
+	#item-content.
+		Hello everyone
+		Been long I posted some artwork here.
+		<br/>
+		Decided to sculpt Logan, here is the final version.
+		<br/>
+		Sculpted in Zbrush
+		Hair and Fur done using Blender
+		Rendered with the very awesome Cycles Render Engine
+		<br/>
+		Thanks a lot to everyone who has been supportive to me and making this happen.
+		Visit www.pixel-architect.com for more of my artworks.
+
+	#item-comments
+
 | {% endblock %}

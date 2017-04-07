@@ -1,0 +1,136 @@
+a:hover
+	color: $color-primary
+
+#app-header
+	display: flex
+	flex-direction: column
+
+#header-bar
+	&-pri
+		display: flex
+		align-items: center
+		width: 100%
+		height: $header-bar-pri-size
+		box-shadow: inset 0 -1px 0  $color-background-dark
+		background-color: $color-background-light
+
+		&-user
+			padding: 10px
+			margin-left: auto
+
+.app-branding
+	color: $color-primary
+	font-size: $font-size-large
+	padding: 10px
+	text-decoration: none
+
+.listing-list
+	> ul
+		padding: 0
+		margin: 0
+		list-style: none
+
+		> li
+			margin: 0
+			padding: 0
+			display: flex
+			align-items: center
+			background-color: $color-background-light
+			box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background-dark
+
+			&.active
+				background-color: white
+				box-shadow: 0 1px 0  $color-background-dark, inset -5px 0 0  $color-primary
+
+				.item-title
+					color: $color-primary
+
+			.item-title
+				font-size: 1.2em
+				color: $color-text
+				padding: 0
+
+.listing-view
+	flex: 1
+	height: 100%
+	box-shadow: inset 1px 0 0 $color-background-dark
+	background-color: white
+
+
+/* Listing item */
+.item-content
+
+.item-details
+	display: flex
+	flex-direction: column
+	padding: 5px 15px
+
+	> ul
+		margin: 0
+		padding: 0
+		> li
+			margin: 0
+			padding: 0
+			display: inline-block
+			font-size: $font-size-small
+			padding: 5px
+			color: $color-text-light
+
+			&:first-child
+				padding-left: 0
+
+$item-thumbnail-size: 90px
+.item-thumbnail
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: center
+	width: ($item-thumbnail-size/2)
+	height: ($item-thumbnail-size/2)
+	padding: 5px 25px
+	overflow: hidden
+
+	img
+		display: inline-block
+		position: absolute
+		overflow: hidden
+		width: $item-thumbnail-size
+		height: $item-thumbnail-size
+		border-radius: 50%
+
+.item-media
+	display: flex
+	align-items: center
+	justify-content: center
+	font-size: 3em
+	min-height: 300px
+	background-color: $color-background
+
+.item-title
+	color: $color-primary
+	font:
+		size: 1.6em
+		weight: lighter
+	padding: 10px 15px
+	text-decoration: none
+
+#item-bar-sec
+	display: flex
+	align-items: center
+	font-size: $font-size-small
+	box-shadow: 0 -1px 0 $color-background
+
+	> ul
+		margin: 0
+		padding: 0 10px
+		list-style: none
+		display: flex
+
+		> li
+			padding: 10px 5px
+
+#item-content
+	padding: 15px // XXX
+	font:
+		size: 1.1em
+	line-height: 1.5em
