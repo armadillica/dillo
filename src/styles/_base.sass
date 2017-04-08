@@ -2,7 +2,8 @@ a:hover
 	color: $color-primary
 
 #col_right, #col_main
-	padding-left: 0 !important
+	padding-left: 0 !important // override sidebar offset from Pillar
+	overflow-y: auto
 
 #app-header
 	display: flex
@@ -52,6 +53,7 @@ $item-thumbnail-size: 90px
 	justify-content: center
 	width: $item-thumbnail-size
 	min-width: $item-thumbnail-size
+	max-height: $item-thumbnail-size / 1.4
 	background-color: $color-background-dark
 	overflow: hidden
 
@@ -70,8 +72,8 @@ $item-thumbnail-size: 90px
 .item-rating-box
 	display: flex
 	flex-direction: column
-	width: 35px
-	min-width: 35px
+	width: 40px
+	min-width: 40px
 
 .item-rating
 	text-align: center
@@ -79,17 +81,24 @@ $item-thumbnail-size: 90px
 	align-items: center
 	justify-content: center
 	height: 100%
-	font-size: 1.33em
-	cursor: pointer
+
+	&.up, &.down
+		font-size: 1.33em
+		cursor: pointer
 
 	&.up:hover
 		color: $color-vote-up
 	&.down:hover
 		color: $color-vote-down
 
+	&.value
+		color: $color-text-light
+		font-size: $font-size-small
+
 .item-details
 	display: flex
 	flex-direction: column
+	justify-content: space-around
 	padding: 7px
 	+text-overflow-ellipsis
 
@@ -143,8 +152,11 @@ $item-thumbnail-size: 90px
 		> li
 			padding: 10px 5px
 
-#item-content
-	padding: 15px // XXX
-	font:
-		size: 1.1em
+.item-body
+	padding: 10px 20px
+	font-size: $font-size
 	line-height: 1.5em
+
+#item-comments
+	border-top: thin solid $color-background-dark
+	margin: 10px 20px
