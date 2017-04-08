@@ -1,136 +1,105 @@
 | {% extends 'dillo/layout.pug' %}
 | {% block bodyattrs %}{{ super() }} data-context='dashboard'{% endblock %}
-| {% block page_title %}Search{% endblock %}
-
-| {% block style %}
-link(rel='stylesheet', href='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css')
-link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
-| {% endblock style %}
+| {% block page_title %}Dashboard{% endblock %}
 
 | {% block body %}
-header.row
-  div
-    a.logo(href='./')
-      | Dillo
-  .searchbox-container
-    .input-group
-      input#q.form-control(type='text')
-      span.input-group-btn
-        button.btn.btn-default
-          i.fa.fa-search
-section
-  aside
-    ul.nav.nav-list
-      li
-        a(href='')
-          i.fa.fa-home
-          |  Home
-      li.separator
-    h5
-      i.fa.fa-chevron-right
-      |  Genres
-    #genres
-    h5
-      i.fa.fa-chevron-right
-      |  Ratings
-    #ratings
-  article
-    #stats.text-right.text-muted
-    hr
-    #hits
-    #pagination.text-center
+
+#col_main.listing-list
+	ul#hits
+
+#col_right.listing-view
+
 |{% endblock body %}
 
 | {% block footer_scripts %}
 script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 script.
-  var search = instantsearch({
-    appId: '{{ config.ALGOLIA_USER }}',
-    apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
-    indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
-    urlSync: {}
-  });
+	var search = instantsearch({
+		appId: '{{ config.ALGOLIA_USER }}',
+		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
+		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
+		urlSync: {}
+	});
 
-  search.addWidget(
-    instantsearch.widgets.searchBox({
-      container: '#q'
-    })
-  );
+	search.addWidget(
+		instantsearch.widgets.searchBox({
+			container: '#q'
+		})
+	);
 
-  search.addWidget(
-    instantsearch.widgets.stats({
-      container: '#stats'
-    })
-  );
-  {% raw %}
-  var hitTemplate =
-    '<div class="hit media">' +
-    '<div class="media-left">' +
-    '<div class="media-object" style="background-image: url(\'{{picture}}\');"></div>' +
-    '</div>' +
-    '<div class="media-body">' +
-    '<h4 class="media-heading">{{{_highlightResult.name.value}}} {{#stars}}<span class="ais-star-rating--star{{^.}}__empty{{/.}}"></span>{{/stars}}</h4>' +
-    '<p class="year">{{year}}</p><p class="genre">{{#genre}}<span class="badge">{{.}}</span> {{/genre}}</p>' +
-    '</div>' +
-    '</div>';
 
-  var noResultsTemplate =
-    '<div class="text-center">No results found matching <strong>{{query}}</strong>.</div>';
-  {% endraw %}
-  search.addWidget(
-    instantsearch.widgets.hits({
-      container: '#hits',
-      hitsPerPage: 10,
-      templates: {
-        empty: noResultsTemplate,
-        item: hitTemplate
-      },
-      transformData: function (hit) {
-        hit.stars = [];
-        for (var i = 1; i <= 5; ++i) {
-          hit.stars.push(i <= hit.rating);
-        }
-        return hit;
-      }
-    })
-  );
+	{% raw %}
+	var _hitTemplate =
+		'<div class="hit media">' +
+		'<div class="media-left">' +
+		'<div class="media-object" style="background-image: url(\'{{picture}}\');"></div>' +
+		'</div>' +
+		'<div class="media-body">' +
+		'<h4 class="media-heading">{{{_highlightResult.name.value}}} {{#stars}}<span class="ais-star-rating--star{{^.}}__empty{{/.}}"></span>{{/stars}}</h4>' +
+		'<p class="year">{{year}}</p><p class="genre">{{#genre}}<span class="badge">{{.}}</span> {{/genre}}</p>' +
+		'</div>' +
+		'</div>';
 
-  search.addWidget(
-    instantsearch.widgets.pagination({
-      container: '#pagination',
-      cssClasses: {
-        root: 'pagination',
-        active: 'active'
-      }
-    })
-  );
+	var hitTemplate =
+		'<li class="js-list-item">' +
+			'<a href="" class="item-thumbnail">' +
+				'<img src="{{picture}}">' +
+			'</a>' +
+			'<div class="item-content">' +
+				'<div class="item-rating-box">' +
+					'<div class="item-rating up">' +
+						'<i class="pi-angle-up"></i>' +
+					'</div>' +
+					'<div class="item-rating down">' +
+						'<i class="pi-angle-down"></i>' +
+					'</div>' +
+				'</div>' +
+				'<div class="item-details">' +
+					'<a href="" class="item-title">{{{_highlightResult.name.value}}}</a>' +
+					'<ul>' +
+						'<li>' +
+							'<img title="Link"' +
+									' src="http://www.google.com/s2/favicons?domain=https://www.youtube.com">' +
+						'</li>' +
+						'<li>' +
+							'<a href="">2 days ago</a>' +
+						'</li>' +
+						'<li>{{user.full_name}}</li>' +
+						'<li>81 points</li>' +
+						'<li>' +
+							'<a href="">2 comments</a>' +
+						'</li>' +
+						'<li>youtube.com</li>' +
+					'</ul>' +
+				'</div>' +
+			'</div>' +
+		'</li>';
 
-  search.addWidget(
-    instantsearch.widgets.refinementList({
-      container: '#genres',
-      attributeName: 'genre',
-      operator: 'and',
-      limit: 10,
-      cssClasses: {
-        list: 'nav nav-list',
-        count: 'badge pull-right',
-        active: 'active'
-      }
-    })
-  );
 
-  search.addWidget(
-    instantsearch.widgets.starRating({
-      container: '#ratings',
-      attributeName: 'rating',
-      cssClasses: {
-        list: 'nav',
-        count: 'badge pull-right'
-      }
-    })
-  );
+	var noResultsTemplate =
+		'<div class="text-center">No results found matching <strong>{{query}}</strong>.</div>';
+	{% endraw %}
 
-  search.start();
+	search.addWidget(
+		instantsearch.widgets.hits({
+			container: '#hits',
+			hitsPerPage: 10,
+			templates: {
+				empty: noResultsTemplate,
+				item: hitTemplate
+			},
+			transformData: function (hit) {
+				hit.stars = [];
+				for (var i = 1; i <= 5; ++i) {
+					hit.stars.push(i <= hit.rating);
+				}
+				return hit;
+			}
+		})
+	);
+
+
+	search.start();
 
 
 | {% endblock footer_scripts%}

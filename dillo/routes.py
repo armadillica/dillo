@@ -13,8 +13,11 @@ log = logging.getLogger(__name__)
 @blueprint.route('/')
 def index():
     api = system_util.pillar_api()
-    from flask import redirect, url_for
-    #return redirect(url_for('index'))
     return render_template('dillo/index.pug')
+
+
+@blueprint.route('/search')
+def search():
+    return render_template('dillo/search.pug')
 
 
