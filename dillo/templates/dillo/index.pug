@@ -1,61 +1,97 @@
 | {% extends 'dillo/layout.pug' %}
+| {% block bodyattrs %}{{ super() }} data-context='dashboard'{% endblock %}
 | {% block page_title %}Dashboard{% endblock %}
 | {% block body %}
 
 #col_main.listing-list
 	ul
-		li.active
+		li.js-list-item.active
 			a.item-thumbnail(href="")
-				img(src="https://placehold.it/90/ff00aa/ffffff")
+				img(src="https://placekitten.com/110")
 			.item-content
-				.item-rating
+				.item-rating-box
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.down
+						i.pi-angle-down
 				.item-details
 					a.item-title(href="") NEW: Blender Motion Graphics Training
 					ul
-						li 2 days ago
+						li
+							img(title="Link" src="http://www.google.com/s2/favicons?domain=https://www.youtube.com")
+						li
+							a(href="") 2 days ago
 						li koro
 						li 81 points
-						li 2 comments
+						li
+							a(href="") 2 comments
+						li youtube.com
 
-		li
+		li.js-list-item
 			a.item-thumbnail(href="")
-				img(src="https://placehold.it/90/22ccff/ffffff")
+				img(src="https://placekitten.com/120")
 			.item-content
-				.item-rating
+				.item-rating-box
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.down
+						i.pi-angle-down
 				.item-details
-					a.item-title(href="") Blender 2.8 - ¿Qué y por qué? youtu.be
+					a.item-title(href="") Blender 2.8 - ¿Qué y por qué?
 					ul
-						li 8h ago
+						li
+							img(title="Link" src="http://www.google.com/s2/favicons?domain=http://vimeo.com/")
+						li
+							a(href="") 8h ago
 						li koro
 						li 81 points
-						li 3 comments
+						li
+							a(href="") 3 comments
+						li github.com
 
-		li
+		li.js-list-item
 			a.item-thumbnail(href="")
-				img(src="https://placehold.it/90/00ffaa/ffffff")
+				img(src="https://placekitten.com/90")
 			.item-content
-				.item-rating
+				.item-rating-box
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.down
+						i.pi-angle-down
 				.item-details
 					a.item-title(href="") An add-on for re-arranging render layers in the render layers list
 					ul
-						li 8h ago
+						li
+							img(title="Link" src="http://www.google.com/s2/favicons?domain=https://www.blendernetwork.org")
+						li
+							a(href="") 8h ago
 						li koro
 						li 81 points
-						li comment
+						li
+							a(href="") comment
+						li github.com
 
 
 #col_right.listing-view
 	.item-media
 		i.pi-play
 
-	.item-title
-		| NEW: Blender Motion Graphics Training
-
-	#item-bar-sec
-		ul
-			li.item-date 7hs ago
-			li.item-author pablovazquez
-			li.item-rating 358
+	.item-content
+		.item-rating-box
+			.item-rating.up
+				i.pi-angle-up
+			.item-rating.down
+				i.pi-angle-down
+		.item-details
+			a.item-title(href="") NEW: Blender Motion Graphics Training
+			ul
+				li
+					a(href="") 2 days ago
+				li koro
+				li 81 points
+				li
+					a(href="") 2 comments
+				li youtube.com
 
 	#item-content.
 		Hello everyone

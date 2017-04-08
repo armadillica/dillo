@@ -1,6 +1,9 @@
 a:hover
 	color: $color-primary
 
+#col_right, #col_main
+	padding-left: 0 !important
+
 #app-header
 	display: flex
 	flex-direction: column
@@ -28,15 +31,13 @@ a:hover
 	> ul
 		padding: 0
 		margin: 0
-		list-style: none
 
 		> li
-			margin: 0
-			padding: 0
 			display: flex
-			align-items: center
+			height: 100%
 			background-color: $color-background-light
-			box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background-dark
+			box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background
+			+clearfix
 
 			&.active
 				background-color: white
@@ -45,25 +46,46 @@ a:hover
 				.item-title
 					color: $color-primary
 
-			.item-title
+			a.item-title
 				font-size: 1.2em
 				color: $color-text
-				padding: 0
+				padding: 2px 0
+
+				&:hover
+					color: $color-primary
 
 .listing-view
-	flex: 1
-	height: 100%
 	box-shadow: inset 1px 0 0 $color-background-dark
-	background-color: white
-
 
 /* Listing item */
 .item-content
+	display: flex
+
+.item-rating-box
+	display: flex
+	flex-direction: column
+	width: 35px
+	min-width: 35px
+
+.item-rating
+	text-align: center
+	display: flex
+	align-items: center
+	justify-content: center
+	height: 100%
+	font-size: 1.33em
+	cursor: pointer
+
+	&.up:hover
+		color: $color-vote-up
+	&.down:hover
+		color: $color-vote-down
 
 .item-details
 	display: flex
 	flex-direction: column
-	padding: 5px 15px
+	padding: 7px
+	+text-overflow-ellipsis
 
 	> ul
 		margin: 0
@@ -73,11 +95,32 @@ a:hover
 			padding: 0
 			display: inline-block
 			font-size: $font-size-small
-			padding: 5px
+			padding: 5px 4px
 			color: $color-text-light
+
+			&:before
+				content: '·'
+				font-weight: bolder
+				position: relative
+				left: -6px
+				top: 1px
+				color: $color-text-hint
 
 			&:first-child
 				padding-left: 0
+				&:before
+					content: ''
+					padding: 0
+			a
+				text-decoration: none
+				color: $color-text-light
+				&:hover
+					color: $color-primary
+
+			img
+				display: inline-block
+				vertical-align: middle
+				border-radius: 3px
 
 $item-thumbnail-size: 90px
 .item-thumbnail
@@ -85,44 +128,52 @@ $item-thumbnail-size: 90px
 	display: flex
 	align-items: center
 	justify-content: center
-	width: ($item-thumbnail-size/2)
-	height: ($item-thumbnail-size/2)
-	padding: 5px 25px
+	width: $item-thumbnail-size
+	min-width: $item-thumbnail-size
 	overflow: hidden
 
+	&:hover img
+		transform: scale(1.1)
+
 	img
-		display: inline-block
 		position: absolute
-		overflow: hidden
 		width: $item-thumbnail-size
 		height: $item-thumbnail-size
-		border-radius: 50%
+		transition: transform 150ms ease-in-out
 
 .item-media
 	display: flex
 	align-items: center
 	justify-content: center
 	font-size: 3em
-	min-height: 300px
-	background-color: $color-background
+	min-height: 280px
+	background-color: $color-background-dark
+
+.listing-view
+	.item-content
+		padding: 10px 0
+	.item-title
+		font-size: $font-size-large
+		color: $color-primary
+
+	.item-rating-box
+		min-width: 50px
+
+	.item-details
+		padding: 5px 0
 
 .item-title
-	color: $color-primary
-	font:
-		size: 1.6em
-		weight: lighter
-	padding: 10px 15px
 	text-decoration: none
 
 #item-bar-sec
 	display: flex
 	align-items: center
-	font-size: $font-size-small
 	box-shadow: 0 -1px 0 $color-background
 
 	> ul
+		font-size: $font-size-small
 		margin: 0
-		padding: 0 10px
+		padding: 0
 		list-style: none
 		display: flex
 
