@@ -5,7 +5,7 @@
 | {% block body %}
 
 #col_main.listing-list
-	ul#hits
+	#list-hits
 
 #col_right.listing-view
 
@@ -41,39 +41,41 @@ script.
 		'</div>';
 
 	var hitTemplate =
-		'<li class="js-list-item">' +
-			'<a href="" class="item-thumbnail">' +
-				'<img src="{{picture}}">' +
-			'</a>' +
-			'<div class="item-content">' +
-				'<div class="item-rating-box">' +
-					'<div class="item-rating up">' +
-						'<i class="pi-angle-up"></i>' +
+		'<ul class="list-hits">' +
+			'<li class="js-list-item">' +
+				'<a href="" class="item-thumbnail">' +
+					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}No Picture{{/picture}}' +
+				'</a>' +
+				'<div class="item-content">' +
+					'<div class="item-rating-box">' +
+						'<div class="item-rating up">' +
+							'<i class="pi-angle-up"></i>' +
+						'</div>' +
+						'<div class="item-rating down">' +
+							'<i class="pi-angle-down"></i>' +
+						'</div>' +
 					'</div>' +
-					'<div class="item-rating down">' +
-						'<i class="pi-angle-down"></i>' +
+					'<div class="item-details">' +
+						'<a href="" class="item-title">{{{_highlightResult.name.value}}}</a>' +
+						'<ul>' +
+							'<li>' +
+								'<img title="Link"' +
+										' src="http://www.google.com/s2/favicons?domain=https://www.youtube.com">' +
+							'</li>' +
+							'<li>' +
+								'<a href="">2 days ago</a>' +
+							'</li>' +
+							'<li>{{ user.full_name }}</li>' +
+							'<li>81 points</li>' +
+							'<li>' +
+								'<a href="">2 comments</a>' +
+							'</li>' +
+							'<li>youtube.com</li>' +
+						'</ul>' +
 					'</div>' +
 				'</div>' +
-				'<div class="item-details">' +
-					'<a href="" class="item-title">{{{_highlightResult.name.value}}}</a>' +
-					'<ul>' +
-						'<li>' +
-							'<img title="Link"' +
-									' src="http://www.google.com/s2/favicons?domain=https://www.youtube.com">' +
-						'</li>' +
-						'<li>' +
-							'<a href="">2 days ago</a>' +
-						'</li>' +
-						'<li>{{user.full_name}}</li>' +
-						'<li>81 points</li>' +
-						'<li>' +
-							'<a href="">2 comments</a>' +
-						'</li>' +
-						'<li>youtube.com</li>' +
-					'</ul>' +
-				'</div>' +
-			'</div>' +
-		'</li>';
+			'</li>' +
+		'</ul>';
 
 
 	var noResultsTemplate =
@@ -82,7 +84,7 @@ script.
 
 	search.addWidget(
 		instantsearch.widgets.hits({
-			container: '#hits',
+			container: '#list-hits',
 			hitsPerPage: 10,
 			templates: {
 				empty: noResultsTemplate,
@@ -98,8 +100,6 @@ script.
 		})
 	);
 
-
 	search.start();
 
-
-| {% endblock footer_scripts%}
+| {% endblock footer_scripts %}
