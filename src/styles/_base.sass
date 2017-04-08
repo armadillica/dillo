@@ -28,6 +28,11 @@ a:hover
 	padding: 10px
 	text-decoration: none
 
+.btn
+	+button($color-primary, 2px, false)
+
+	&.submit
+		+button($color-primary, 2px, true)
 
 /* Listing item */
 .item-title
