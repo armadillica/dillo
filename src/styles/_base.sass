@@ -61,6 +61,13 @@ $item-thumbnail-size: 90px
 	&:hover img
 		transform: scale(1.1)
 
+	+media-xs
+		width: 100%
+		max-height: initial
+
+		img
+			width: 100%
+
 	img
 		// position: absolute
 		// min-width: $item-thumbnail-size
@@ -69,19 +76,28 @@ $item-thumbnail-size: 90px
 
 .item-content
 	display: flex
+	align-items: center
+	width: 100%
 
 .item-rating-box
 	display: flex
 	flex-direction: column
+	height: 100%
 	width: 40px
 	min-width: 40px
 
+	+media-xs
+		width: 60px
+		min-width: 60px
+
 .item-rating
-	text-align: center
 	display: flex
 	align-items: center
 	justify-content: center
 	height: 100%
+
+	+media-xs
+		padding: 3px 0
 
 	&.up, &.down
 		font-size: 1.33em
@@ -101,7 +117,6 @@ $item-thumbnail-size: 90px
 	flex-direction: column
 	justify-content: space-around
 	padding: 7px
-	+text-overflow-ellipsis
 
 	> ul
 		margin: 0
@@ -137,21 +152,6 @@ $item-thumbnail-size: 90px
 				display: inline-block
 				vertical-align: middle
 				border-radius: 3px
-
-#item-bar-sec
-	display: flex
-	align-items: center
-	box-shadow: 0 -1px 0 $color-background
-
-	> ul
-		font-size: $font-size-small
-		margin: 0
-		padding: 0
-		list-style: none
-		display: flex
-
-		> li
-			padding: 10px 5px
 
 .item-body
 	padding: 10px 20px

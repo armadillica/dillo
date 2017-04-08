@@ -9,9 +9,18 @@ ul.list-hits
 		box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background
 		+clearfix
 
+		+media-xs
+			flex-direction: column
+			margin: 10px
+			box-shadow: 1px 1px 0  $color-background-dark
+			border-radius: 2px
+
 		&.active
 			background-color: white
 			box-shadow: 0 1px 0  $color-background-dark, inset -5px 0 0  $color-primary
+
+			+media-xs
+				box-shadow: 1px 1px 0  $color-background-dark, 0 -5px 0  $color-primary
 
 			.item-title
 				color: $color-primary
