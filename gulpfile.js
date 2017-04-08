@@ -8,7 +8,7 @@ var livereload   = require('gulp-livereload');
 var plumber      = require('gulp-plumber');
 var rename       = require('gulp-rename');
 var sass         = require('gulp-sass');
-var sourcemaps   = require('gulp-sourcemaps');
+//var sourcemaps   = require('gulp-sourcemaps');
 var uglify       = require('gulp-uglify');
 
 var enabled = {
@@ -23,10 +23,10 @@ gulp.task('styles', function() {
 	gulp
 		.src('src/styles/**/*.sass')
 		.pipe(gulpif(enabled.failCheck, plumber()))
-		.pipe(gulpif(enabled.maps, sourcemaps.init()))
+		//.pipe(gulpif(enabled.maps, sourcemaps.init()))
 		.pipe(sass({outputStyle: 'compressed'}))
 		.pipe(autoprefixer("last 3 versions"))
-		.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
+		//.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
 		.pipe(gulp.dest('dillo/static/css'))
 		.pipe(gulpif(argv.livereload, livereload()));
 });
@@ -37,10 +37,10 @@ gulp.task('scripts', function() {
     gulp.src('src/scripts/*.js')
         .pipe(gulpif(enabled.failCheck, plumber()))
         .pipe(cache('scripting'))
-        .pipe(gulpif(enabled.maps, sourcemaps.init()))
+        //.pipe(gulpif(enabled.maps, sourcemaps.init()))
         .pipe(gulpif(enabled.uglify, uglify()))
         .pipe(rename({suffix: '.min'}))
-        .pipe(gulpif(enabled.maps, sourcemaps.write(".")))
+        //.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
         .pipe(gulp.dest('dillo/static/js/generated/'))
         .pipe(gulpif(argv.livereload, livereload()));
 });
@@ -51,10 +51,10 @@ gulp.task('scripts', function() {
 gulp.task('scripts_tutti', function() {
     gulp.src('src/scripts/tutti/**/*.js')
         .pipe(gulpif(enabled.failCheck, plumber()))
-        .pipe(gulpif(enabled.maps, sourcemaps.init()))
+        //.pipe(gulpif(enabled.maps, sourcemaps.init()))
         .pipe(concat("tutti.min.js"))
         .pipe(gulpif(enabled.uglify, uglify()))
-        .pipe(gulpif(enabled.maps, sourcemaps.write(".")))
+        //.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
         .pipe(gulp.dest('dillo/static/js/generated/'))
         .pipe(gulpif(argv.livereload, livereload()));
 });
