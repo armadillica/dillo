@@ -67,6 +67,11 @@ node_type_post = {
         },
         'hot': {'type': 'float'},
     },
-    'form_schema': {},
+    'form_schema': {
+        'ratings': {'visible': False},
+        'rating_positive': {'visible': False},
+        'rating_negative': {'visible': False},
+        'hot': {'visible': False},
+    },
     'parent': []
 }
