@@ -12,3 +12,4 @@ node_modules
 .sass-cache/
 *.css.map
 *.js.map
+dillo.egg-info/
