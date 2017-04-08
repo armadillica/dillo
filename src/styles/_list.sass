@@ -1,0 +1,40 @@
+ul.list-hits
+	padding: 0
+	margin: 0
+
+	> li
+		display: flex
+		height: 100%
+		background-color: $color-background-light
+		box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background
+		+clearfix
+
+		&.active
+			background-color: white
+			box-shadow: 0 1px 0  $color-background-dark, inset -5px 0 0  $color-primary
+
+			.item-title
+				color: $color-primary
+
+		a.item-title
+			font-size: 1.2em
+			color: $color-text
+			padding: 2px 0
+
+			&:hover
+				color: $color-primary
+
+.listing-view
+	box-shadow: inset 1px 0 0 $color-background-dark
+
+	.item-content
+		padding: 10px 0
+	.item-title
+		font-size: $font-size-large
+		color: $color-primary
+
+	.item-rating-box
+		min-width: 50px
+
+	.item-details
+		padding: 5px 0

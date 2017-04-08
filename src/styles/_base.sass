@@ -27,37 +27,43 @@ a:hover
 	padding: 10px
 	text-decoration: none
 
-.listing-list
-	> ul
-		padding: 0
-		margin: 0
-
-		> li
-			display: flex
-			height: 100%
-			background-color: $color-background-light
-			box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background
-			+clearfix
-
-			&.active
-				background-color: white
-				box-shadow: 0 1px 0  $color-background-dark, inset -5px 0 0  $color-primary
-
-				.item-title
-					color: $color-primary
-
-			a.item-title
-				font-size: 1.2em
-				color: $color-text
-				padding: 2px 0
-
-				&:hover
-					color: $color-primary
-
-.listing-view
-	box-shadow: inset 1px 0 0 $color-background-dark
 
 /* Listing item */
+.item-title
+	text-decoration: none
+
+	em
+		color: $color-secondary
+		font-style: normal
+
+.item-media
+	display: flex
+	align-items: center
+	justify-content: center
+	font-size: 3em
+	min-height: 280px
+	background-color: $color-background-dark
+
+$item-thumbnail-size: 90px
+.item-thumbnail
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: center
+	width: $item-thumbnail-size
+	min-width: $item-thumbnail-size
+	background-color: $color-background-dark
+	overflow: hidden
+
+	&:hover img
+		transform: scale(1.1)
+
+	img
+		// position: absolute
+		// min-width: $item-thumbnail-size
+		// height: $item-thumbnail-size
+		transition: transform 150ms ease-in-out
+
 .item-content
 	display: flex
 
@@ -121,49 +127,6 @@ a:hover
 				display: inline-block
 				vertical-align: middle
 				border-radius: 3px
-
-$item-thumbnail-size: 90px
-.item-thumbnail
-	position: relative
-	display: flex
-	align-items: center
-	justify-content: center
-	width: $item-thumbnail-size
-	min-width: $item-thumbnail-size
-	overflow: hidden
-
-	&:hover img
-		transform: scale(1.1)
-
-	img
-		position: absolute
-		width: $item-thumbnail-size
-		height: $item-thumbnail-size
-		transition: transform 150ms ease-in-out
-
-.item-media
-	display: flex
-	align-items: center
-	justify-content: center
-	font-size: 3em
-	min-height: 280px
-	background-color: $color-background-dark
-
-.listing-view
-	.item-content
-		padding: 10px 0
-	.item-title
-		font-size: $font-size-large
-		color: $color-primary
-
-	.item-rating-box
-		min-width: 50px
-
-	.item-details
-		padding: 5px 0
-
-.item-title
-	text-decoration: none
 
 #item-bar-sec
 	display: flex
