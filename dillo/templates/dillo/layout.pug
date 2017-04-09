@@ -7,7 +7,7 @@ html(lang='en')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
 		| {% block head %}{% endblock %}
-		link(href='//fonts.googleapis.com/css?family=Roboto:300,400', rel='stylesheet', type='text/css')
+		link(href='//fonts.googleapis.com/css?family=Oxygen|Open+Sans', rel='stylesheet', type='text/css')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
 		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
 
@@ -28,7 +28,8 @@ html(lang='en')
 						placeholder="Search Dillo...")
 
 				#header-bar-pri-user
-					| Log in
+					button.btn.submit Submit Post
+					button.btn.sign-in SIGN IN
 
 			#header-bar-sec
 		#app-main

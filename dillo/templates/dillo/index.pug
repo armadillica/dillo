@@ -4,7 +4,7 @@
 | {% block body %}
 
 #col_main.listing-list
-	ul
+	ul.list-hits
 		li.js-list-item.active
 			a.item-thumbnail(href="")
 				img(src="https://placekitten.com/110")
@@ -12,6 +12,7 @@
 				.item-rating-box
 					.item-rating.up
 						i.pi-angle-up
+					.item-rating.value 16
 					.item-rating.down
 						i.pi-angle-down
 				.item-details
@@ -19,10 +20,10 @@
 					ul
 						li
 							img(title="Link" src="http://www.google.com/s2/favicons?domain=https://www.youtube.com")
+						li Tutorials
 						li
 							a(href="") 2 days ago
 						li koro
-						li 81 points
 						li
 							a(href="") 2 comments
 						li youtube.com
@@ -34,6 +35,7 @@
 				.item-rating-box
 					.item-rating.up
 						i.pi-angle-up
+					.item-rating.value 8
 					.item-rating.down
 						i.pi-angle-down
 				.item-details
@@ -41,10 +43,10 @@
 					ul
 						li
 							img(title="Link" src="http://www.google.com/s2/favicons?domain=http://vimeo.com/")
+						li Artwork
 						li
 							a(href="") 8h ago
 						li koro
-						li 81 points
 						li
 							a(href="") 3 comments
 						li github.com
@@ -56,6 +58,7 @@
 				.item-rating-box
 					.item-rating.up
 						i.pi-angle-up
+					.item-rating.value -3
 					.item-rating.down
 						i.pi-angle-down
 				.item-details
@@ -63,10 +66,10 @@
 					ul
 						li
 							img(title="Link" src="http://www.google.com/s2/favicons?domain=https://www.blendernetwork.org")
+						li Community
 						li
 							a(href="") 8h ago
 						li koro
-						li 81 points
 						li
 							a(href="") comment
 						li github.com
@@ -80,25 +83,26 @@
 		.item-rating-box
 			.item-rating.up
 				i.pi-angle-up
+			.item-rating.value 8
 			.item-rating.down
 				i.pi-angle-down
 		.item-details
 			a.item-title(href="") NEW: Blender Motion Graphics Training
 			ul
+				li Tutorials
 				li
 					a(href="") 2 days ago
 				li koro
-				li 81 points
 				li
 					a(href="") 2 comments
 				li youtube.com
 
-	#item-content.
+	.item-body.
 		Hello everyone
 		Been long I posted some artwork here.
 		<br/>
 		Decided to sculpt Logan, here is the final version.
-		<br/>
+		<br/><br/>
 		Sculpted in Zbrush
 		Hair and Fur done using Blender
 		Rendered with the very awesome Cycles Render Engine
@@ -107,5 +111,6 @@
 		Visit www.pixel-architect.com for more of my artworks.
 
 	#item-comments
+		h2 Comments
 
 | {% endblock %}

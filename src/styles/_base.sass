@@ -2,7 +2,8 @@ a:hover
 	color: $color-primary
 
 #col_right, #col_main
-	padding-left: 0 !important
+	padding-left: 0 !important // override sidebar offset from Pillar
+	overflow-y: auto
 
 #app-header
 	display: flex
@@ -27,65 +28,100 @@ a:hover
 	padding: 10px
 	text-decoration: none
 
-.listing-list
-	> ul
-		padding: 0
-		margin: 0
+.btn
+	+button($color-primary, 2px, false)
 
-		> li
-			display: flex
-			height: 100%
-			background-color: $color-background-light
-			box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background
-			+clearfix
-
-			&.active
-				background-color: white
-				box-shadow: 0 1px 0  $color-background-dark, inset -5px 0 0  $color-primary
-
-				.item-title
-					color: $color-primary
-
-			a.item-title
-				font-size: 1.2em
-				color: $color-text
-				padding: 2px 0
-
-				&:hover
-					color: $color-primary
-
-.listing-view
-	box-shadow: inset 1px 0 0 $color-background-dark
+	&.submit
+		+button($color-primary, 2px, true)
 
 /* Listing item */
+.item-title
+	text-decoration: none
+	font-family: $font-headings
+
+	em
+		color: $color-secondary
+		font-style: normal
+
+.item-media
+	display: flex
+	align-items: center
+	justify-content: center
+	font-size: 3em
+	min-height: 280px
+	background-color: $color-background-dark
+
+$item-thumbnail-size: 90px
+.item-thumbnail
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: center
+	width: $item-thumbnail-size
+	min-width: $item-thumbnail-size
+	max-height: $item-thumbnail-size / 1.4
+	background-color: $color-background-dark
+	overflow: hidden
+
+	&:hover img
+		transform: scale(1.1)
+
+	+media-xs
+		width: 100%
+		max-height: initial
+
+		img
+			width: 100%
+
+	img
+		// position: absolute
+		// min-width: $item-thumbnail-size
+		// height: $item-thumbnail-size
+		transition: transform 150ms ease-in-out
+
 .item-content
 	display: flex
+	align-items: center
+	width: 100%
 
 .item-rating-box
 	display: flex
 	flex-direction: column
-	width: 35px
-	min-width: 35px
+	height: 100%
+	width: 40px
+	min-width: 40px
+
+	+media-xs
+		width: 60px
+		min-width: 60px
 
 .item-rating
-	text-align: center
 	display: flex
 	align-items: center
 	justify-content: center
 	height: 100%
-	font-size: 1.33em
-	cursor: pointer
+
+	+media-xs
+		padding: 3px 0
+
+	&.up, &.down
+		font-size: 1.33em
+		cursor: pointer
 
 	&.up:hover
 		color: $color-vote-up
 	&.down:hover
 		color: $color-vote-down
 
+	&.value
+		color: $color-text-light
+		font-size: $font-size-small
+
 .item-details
 	display: flex
 	flex-direction: column
+	justify-content: space-around
 	padding: 7px
-	+text-overflow-ellipsis
 
 	> ul
 		margin: 0
@@ -122,66 +158,11 @@ a:hover
 				vertical-align: middle
 				border-radius: 3px
 
-$item-thumbnail-size: 90px
-.item-thumbnail
-	position: relative
-	display: flex
-	align-items: center
-	justify-content: center
-	width: $item-thumbnail-size
-	min-width: $item-thumbnail-size
-	overflow: hidden
-
-	&:hover img
-		transform: scale(1.1)
-
-	img
-		position: absolute
-		width: $item-thumbnail-size
-		height: $item-thumbnail-size
-		transition: transform 150ms ease-in-out
-
-.item-media
-	display: flex
-	align-items: center
-	justify-content: center
-	font-size: 3em
-	min-height: 280px
-	background-color: $color-background-dark
-
-.listing-view
-	.item-content
-		padding: 10px 0
-	.item-title
-		font-size: $font-size-large
-		color: $color-primary
-
-	.item-rating-box
-		min-width: 50px
-
-	.item-details
-		padding: 5px 0
-
-.item-title
-	text-decoration: none
-
-#item-bar-sec
-	display: flex
-	align-items: center
-	box-shadow: 0 -1px 0 $color-background
-
-	> ul
-		font-size: $font-size-small
-		margin: 0
-		padding: 0
-		list-style: none
-		display: flex
-
-		> li
-			padding: 10px 5px
-
-#item-content
-	padding: 15px // XXX
-	font:
-		size: 1.1em
+.item-body
+	padding: 10px 20px
+	font-size: $font-size
 	line-height: 1.5em
+
+#item-comments
+	border-top: thin solid $color-background-dark
+	margin: 10px 20px

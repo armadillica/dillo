@@ -4,14 +4,10 @@ function containerResizeY(window_height){
 
 	var height = window_height - global_container.offsetTop;
 
-	if (typeof global_container !== "undefined"){
-		$(global_container).css(
-			{
-				'height': height + 'px',
-				'max-height': height + 'px'
-			}
-		);
-	}
+	$('#app-main, #col_main, #col_right').css({
+		'height': height + 'px',
+		'max-height': height + 'px'
+	});
 }
 
 /* UI Stuff */
