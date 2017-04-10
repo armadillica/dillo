@@ -53,7 +53,7 @@ def algolia_index_post_save(node):
         node_ob['description'] = node['description']
     # Hack for instantsearch.js. Because we can't to string comparison in Hogan, we store this case
     # in a boolean.
-    if node['property']['post_type'] == 'link':
+    if node['properties']['post_type'] == 'link':
         node_ob['is_link'] = True
     if 'picture' in node and node['picture']:
         files_collection = current_app.data.driver.db['files']
