@@ -34,6 +34,4 @@ function item_open(item_id){
 			console.log('XHR:', xhr);
 		}
 	});
-
-	console.log(url);
 }
