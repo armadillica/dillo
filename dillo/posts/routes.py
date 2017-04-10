@@ -19,7 +19,7 @@ def create():
 
     post_props = dict(
         project=project,
-        name=' ',
+        name='My Post',
         user=current_user.objectid,
         node_type='dillo_post',
         properties=dict(
