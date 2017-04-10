@@ -14,6 +14,7 @@ html(lang='en')
 		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
 		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
 		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js', v=171120161) }}", async)
+		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}", async)
 
 		| {% block style %}{% endblock %}
 

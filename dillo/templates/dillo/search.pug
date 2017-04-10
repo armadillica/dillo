@@ -66,7 +66,7 @@ script.
 										' src="http://www.google.com/s2/favicons?domain=https://www.youtube.com">' +
 							'</li>' +
 							'<li><a href="">Tutorials</a></li>' +
-							'<li><a href="">2 hours ago</a></li>' +
+							'<li><a href="">{{ created }}</a></li>' +
 							'<li>{{ user.full_name }}</li>' +
 							'<li><a href="">2 comments</a></li>' +
 							'<li>youtube.com</li>' +
@@ -93,7 +93,9 @@ script.
 				hit.stars = [];
 				for (var i = 1; i <= 5; ++i) {
 					hit.stars.push(i <= hit.rating);
-				}
+				};
+				hit.created = moment.unix(hit.created).fromNow();
+
 				return hit;
 			}
 		})
