@@ -47,7 +47,7 @@ script.
 		'<ul class="list-hits">' +
 			'<li class="list-hits-item" data-id="{{ objectID }}">' +
 				'<a href="" class="item-thumbnail js-item-show">' +
-					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}No Picture{{/picture}}' +
+					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
 				'<div class="item-content">' +
 					'<div class="item-rating-box">' +
@@ -55,7 +55,7 @@ script.
 							'<i class="pi-angle-up"></i>' +
 						'</div>' +
 						'<div class="item-rating value">' +
-							'12' +
+							'{{ rating }}' +
 						'</div>' +
 						'<div class="item-rating down">' +
 							'<i class="pi-angle-down"></i>' +
@@ -99,6 +99,8 @@ script.
 				for (var i = 1; i <= 5; ++i) {
 					hit.stars.push(i <= hit.rating);
 				};
+
+				hit.name = twemoji.parse(hit.name);
 				hit.created = moment.unix(hit.created).fromNow();
 				hit.name = twemoji.parse(hit.name);
 
