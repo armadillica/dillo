@@ -68,7 +68,6 @@ class DilloExtension(PillarExtension):
 
     def setup_app(self, app):
         from dillo import posts
-        app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
         posts.setup_app(app)
 
 
