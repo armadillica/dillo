@@ -1,1 +1,31 @@
-p custom dillo_post view template
+.item-media
+	i.pi-play
+
+.item-content
+	.item-rating-box
+		.item-rating.up
+			i.pi-angle-up
+		.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
+		.item-rating.down
+			i.pi-angle-down
+	.item-details
+		a.item-title(href="") {{ node.name }}
+		ul
+			li {{ node.category }}
+			li
+				a(href="") 2 days ago
+			li koro
+			li
+				a(href="") 2 comments
+
+			| {% if node.properties.post_type == 'link' %}
+			li {{ node.description }}
+			| {% endif %}
+
+| {% if node.properties.post_type == 'text' %}
+.item-body.
+	{{ node.description }}
+| {% endif %}
+
+#item-comments
+	h2 Comments

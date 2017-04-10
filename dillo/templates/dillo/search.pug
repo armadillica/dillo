@@ -8,6 +8,9 @@
 	#list-hits
 
 #col_right.listing-view
+	#list-item
+		.welcome
+			h2 Welcome to Dillo
 
 |{% endblock body %}
 
@@ -42,8 +45,8 @@ script.
 
 	var hitTemplate =
 		'<ul class="list-hits">' +
-			'<li class="js-list-item">' +
-				'<a href="" class="item-thumbnail">' +
+			'<li class="list-hits-item" data-id="{{ objectID }}">' +
+				'<a href="" class="item-thumbnail js-item-show">' +
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}No Picture{{/picture}}' +
 				'</a>' +
 				'<div class="item-content">' +
@@ -59,11 +62,13 @@ script.
 						'</div>' +
 					'</div>' +
 					'<div class="item-details">' +
-						'<a href="" class="item-title">{{{ name }}}</a>' +
+						'<a href="" class="item-title js-item-show">{{{ name }}}</a>' +
 						'<ul>' +
 							'<li>' +
+								'<a href="" class="js-item-show">' +
 								'<img title="Link"' +
 										' src="http://www.google.com/s2/favicons?domain=https://www.youtube.com">' +
+								'</a>' +
 							'</li>' +
 							'<li><a href="">Tutorials</a></li>' +
 							'<li><a href="">{{ created }}</a></li>' +
@@ -103,5 +108,18 @@ script.
 	);
 
 	search.start();
+
+	$('body').on('click', '.js-item-show', function(e){
+		e.preventDefault();
+
+		var li = $(this).parents('.list-hits-item');
+		var hit_id = li.attr('data-id');
+
+		/* Unstyle all items on the list and style only the current one */
+		$('.list-hits-item').removeClass('active');
+		li.addClass('active');
+
+		item_open(hit_id);
+	});
 
 | {% endblock footer_scripts %}

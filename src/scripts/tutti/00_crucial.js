@@ -15,9 +15,25 @@ $(window).on("load resize",function(){
 	containerResizeY(window.innerHeight);
 });
 
-/* Dummy code for now to apply active style to items in the list */
-$('.js-list-item a').on('click', function(e){
-	e.preventDefault();
-	$('.js-list-item').removeClass('active');
-	$(this).parents('.js-list-item').addClass('active');
-});
+
+function item_open(item_id){
+
+	if (item_id === undefined) {
+		throw new ReferenceError("item_open(" + item_id + ") called.");
+	}
+
+	var item_url = '/nodes/' + item_id + '/view';
+
+	$.get(item_url, function(item_data) {
+
+		$('#list-item').html(item_data);
+
+	}).fail(function(xhr) {
+		if (console) {
+			console.log('Error fetching item', item_id, 'from', item_url);
+			console.log('XHR:', xhr);
+		}
+	});
+
+	console.log(url);
+}

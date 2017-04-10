@@ -21,7 +21,7 @@ html(lang='en')
 
 	body
 		#app-header
-			#header-bar-pri
+			header#header-bar-pri
 				a.app-branding(href="/") Dillo
 				.wgt-search
 					input(
@@ -30,8 +30,35 @@ html(lang='en')
 						placeholder="Search Dillo...")
 
 				#header-bar-pri-user
-					button.btn.submit Submit Post
-					button.btn.sign-in SIGN IN
+					ul
+						li
+							button.btn.submit SUBMIT POST
+
+						| {% if current_user %}
+						li.nav-notifications
+							a.navbar-item#notifications-toggle(
+								title="Notifications",
+								data-toggle="tooltip",
+								data-placement="bottom")
+								i.pi-notifications-none.nav-notifications-icon
+								span#notifications-count
+									span
+								.flyout-hat
+
+							#notifications.flyout.notifications
+								.flyout-content
+									span.flyout-title Notifications
+									a#notifications-markallread(
+										title="Mark All as Read",
+										href="/notifications/read-all")
+										| Mark All as Read
+
+						li
+							img.user-avatar(src="{{ current_user.gravatar }}")
+						| {% else %}
+						li
+							button.btn.sign-in SIGN IN
+						| {% endif %}
 
 			#header-bar-sec
 		#app-main
