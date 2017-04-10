@@ -33,6 +33,8 @@ def algolia_index_post_save(node):
     users_collection = current_app.data.driver.db['users']
     user = users_collection.find_one({'_id': ObjectId(node['user'])})
 
+    rating = node['properties']['rating_positive'] - node['properties']['rating_negative']
+
     node_ob = {
         'objectID': node['_id'],
         'name': node['name'],
@@ -48,6 +50,7 @@ def algolia_index_post_save(node):
             'full_name': user['full_name']
         },
         'hot': node['properties']['hot'],
+        'rating': rating,
     }
     if 'description' in node and node['description']:
         node_ob['description'] = node['description']
