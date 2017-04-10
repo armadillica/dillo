@@ -66,15 +66,15 @@ script.
 						'<ul>' +
 							'<li>' +
 								'<a href="" class="js-item-show">' +
-								'<img title="Link"' +
-										' src="http://www.google.com/s2/favicons?domain=https://www.youtube.com">' +
+								'{{#is_link}}<img title="Link" src="http://www.google.com/s2/favicons?domain={{ description }}"/>{{/is_link}}' +
+								'{{^is_link}}<i class="pi-document-text"></i>{{/is_link}}' +
 								'</a>' +
 							'</li>' +
 							'<li><a href="">Tutorials</a></li>' +
 							'<li><a href="">{{ created }}</a></li>' +
 							'<li>{{ user.full_name }}</li>' +
 							'<li><a href="">2 comments</a></li>' +
-							'<li>youtube.com</li>' +
+							'{{#is_link}}<li>{{ description }}</li>{{/is_link}}' +
 						'</ul>' +
 					'</div>' +
 				'</div>' +
