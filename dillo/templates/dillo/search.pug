@@ -59,7 +59,7 @@ script.
 						'</div>' +
 					'</div>' +
 					'<div class="item-details">' +
-						'<a href="" class="item-title">{{{_highlightResult.name.value}}}</a>' +
+						'<a href="" class="item-title">{{{ name }}}</a>' +
 						'<ul>' +
 							'<li>' +
 								'<img title="Link"' +
@@ -95,6 +95,7 @@ script.
 					hit.stars.push(i <= hit.rating);
 				};
 				hit.created = moment.unix(hit.created).fromNow();
+				hit.name = twemoji.parse(hit.name);
 
 				return hit;
 			}
