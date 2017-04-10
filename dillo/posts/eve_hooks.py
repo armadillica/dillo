@@ -94,16 +94,6 @@ def before_creating_posts(items):
 
 
 @only_for_post
-def after_creating_post(item):
-    algolia_index_post_save(item)
-
-
-def after_creating_posts(items):
-    for item in items:
-        after_creating_post(item)
-
-
-@only_for_post
 def after_replacing_post(item, original):
     update_hot(item)
     algolia_index_post_save(item)
@@ -112,4 +102,3 @@ def after_replacing_post(item, original):
 def setup_app(app):
     app.on_insert_nodes += before_creating_posts
     app.on_replace_nodes += after_replacing_post
-    app.on_inserted_nodes += after_creating_posts
