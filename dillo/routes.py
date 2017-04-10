@@ -15,9 +15,3 @@ def index():
     api = system_util.pillar_api()
     return render_template('dillo/index.pug')
 
-
-@blueprint.route('/search')
-def search():
-    return render_template('dillo/search.pug')
-
-
