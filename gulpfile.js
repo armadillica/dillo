@@ -4,6 +4,7 @@ var cache        = require('gulp-cached');
 var concat       = require('gulp-concat');
 var gulp         = require('gulp');
 var gulpif       = require('gulp-if');
+var pug          = require('gulp-pug');
 var livereload   = require('gulp-livereload');
 var plumber      = require('gulp-plumber');
 var rename       = require('gulp-rename');
@@ -14,6 +15,7 @@ var uglify       = require('gulp-uglify');
 var enabled = {
 		failCheck: argv.production,
 		maps: argv.production,
+		prettyPug: !argv.production,
 		uglify: argv.production
 };
 
@@ -29,6 +31,19 @@ gulp.task('styles', function() {
 		//.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
 		.pipe(gulp.dest('dillo/static/css'))
 		.pipe(gulpif(argv.livereload, livereload()));
+});
+
+
+/* Templates - Pug */
+gulp.task('templates', function() {
+    gulp.src('src/templates/**/*.pug')
+        .pipe(gulpif(enabled.failCheck, plumber()))
+        .pipe(cache('templating'))
+        .pipe(pug({
+            pretty: enabled.prettyPug
+        }))
+        .pipe(gulp.dest('dillo/templates/'))
+        .pipe(gulpif(argv.livereload, livereload()));
 });
 
 
@@ -60,28 +75,19 @@ gulp.task('scripts_tutti', function() {
 });
 
 
-/* Simple task for reloading the browser */
-gulp.task('reload', function(){
-	gulp
-		.src('dillo/templates/**/*.pug')
-		.pipe(gulpif(argv.livereload, livereload()));
-});
-
-
 // While developing, run 'gulp watch'
 gulp.task('watch',function() {
 	// Only reload the pages if we run with --livereload
 	if (argv.livereload){
 		livereload.listen();
-		// Templates are built via python, we only need to reload the page
-		gulp.watch('dillo/templates/**/*.pug',['reload']);
 	}
 
 	gulp.watch('src/styles/**/*.sass',['styles']);
+	gulp.watch('src/templates/**/*.pug',['templates']);
 	gulp.watch('src/scripts/*.js',['scripts']);
 	gulp.watch('src/scripts/tutti/*.js',['scripts_tutti']);
 });
 
 
 // Run 'gulp' to build everything at once
-gulp.task('default', ['styles', 'scripts', 'scripts_tutti']);
+gulp.task('default', ['styles', 'templates', 'scripts', 'scripts_tutti']);

@@ -14,6 +14,7 @@
 		"gulp-if": "^2.0.2",
 		"gulp-livereload": "~3.8.1",
 		"gulp-plumber": "~1.1.0",
+		"gulp-pug": "~3.2.0",
 		"gulp-rename": "~1.2.2",
 		"gulp-sass": "~3.1.0",
 		"gulp-uglify": "~2.1.0",
