@@ -34,5 +34,5 @@ def create():
 
 @blueprint.route('/p/')
 def index():
-    return render_template('dillo/search.pug')
+    return render_template('dillo/search.html')
 

@@ -13,5 +13,5 @@ log = logging.getLogger(__name__)
 @blueprint.route('/')
 def index():
     api = system_util.pillar_api()
-    return render_template('dillo/index.pug')
+    return render_template('dillo/index.html')
 
