@@ -32,7 +32,7 @@ html(lang='en')
 				#header-bar-pri-user
 					ul
 						li
-							button.btn.submit SUBMIT POST
+							a.btn.submit(href="{{ url_for('posts.create') }}") SUBMIT POST
 
 						| {% if current_user %}
 						li.nav-notifications
