@@ -68,7 +68,10 @@ class DilloExtension(PillarExtension):
 
     def setup_app(self, app):
         from dillo import posts
+        from . import comments
+
         posts.setup_app(app)
+        comments.setup_app(app)
 
 
 def _get_current_dillo():

@@ -28,4 +28,7 @@
 | {% endif %}
 
 #item-comments
-	h2 Comments
+	#comments-embed
+
+script.
+	loadComments("{{ url_for('nodes.comments_for_node', node_id=node['_id']) }}");
