@@ -9,11 +9,12 @@
 		.item-rating.down
 			i.pi-angle-down
 	.item-details
-		a.item-title(href="") {{ node.name }}
+		a#item-title.item-title(href="") {{ node.name }}
 		ul
 			li {{ node.category }}
 			li
-				a(href="") 2 days ago
+				// XXX - Use nicer URL
+				a(href="{{ url_for('nodes.view', node_id=node._id) }}") {{ node._created | pretty_date }}
 			li koro
 			li
 				a(href="") 2 comments
@@ -32,3 +33,8 @@
 
 script.
 	loadComments("{{ url_for('nodes.comments_for_node', node_id=node['_id']) }}");
+
+
+	$('#item-title').html(
+		twemoji.parse('{{ node.name }}')
+	);

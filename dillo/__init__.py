@@ -73,6 +73,29 @@ class DilloExtension(PillarExtension):
         posts.setup_app(app)
         comments.setup_app(app)
 
+    def activities_for_node(self, node_id, max_results=20, page=1):
+
+        api = pillar_api()
+        activities = pillarsdk.Activity.all({
+            'where': {
+                '$or': [
+                    {'object_type': 'node',
+                     'object': node_id},
+                    {'context_object_type': 'node',
+                     'context_object': node_id},
+                ],
+            },
+            'sort': [('_created', -1)],
+            'max_results': max_results,
+            'page': page,
+        }, api=api)
+
+        # Fetch more info for each activity.
+        for act in activities['_items']:
+            act.actor_user = pillar.web.subquery.get_user_info(act.actor_user)
+
+        return activities
+
 
 def _get_current_dillo():
     """Returns the Dillo extension of the current application."""
