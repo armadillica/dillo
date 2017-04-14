@@ -18,6 +18,7 @@ from bson import ObjectId
 from flask import current_app
 from pillar.api.file_storage import generate_link
 from pillar.api.nodes import only_for_node_type_decorator
+from pillar.api.utils.authentication import current_user_id
 from dillo.node_types.post import node_type_post
 from dillo.utils.sorting import hot
 
@@ -102,6 +103,21 @@ def after_replacing_post(item, original):
     algolia_index_post_save(item)
 
 
+@only_for_post
+def enrich(response):
+    response['_is_own'] = response['user'] == current_user_id()
+    response['_current_user_rating'] = None  # tri-state boolean
+    response['_rating'] = response['properties']['rating_positive'] - response['properties']['rating_negative']
+    if current_user_id():
+        if 'ratings' not in response['properties']:
+            return
+        for rating in response['properties']['ratings'] or ():
+            if rating['user'] != current_user_id():
+                continue
+            response['_current_user_rating'] = rating['is_positive']
+
+
 def setup_app(app):
     app.on_insert_nodes += before_creating_posts
     app.on_replace_nodes += after_replacing_post
+    app.on_fetched_item_nodes += enrich

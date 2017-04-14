@@ -1,8 +1,12 @@
 .item-media
 	i.pi-play
 
-.item-content
-	.item-rating-box
+.item-content(
+	id="{{ node._id }}",
+	data-node-id="{{ node._id }}")
+	.item-rating-box(
+		class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
+	)
 		.item-rating.up
 			i.pi-angle-up
 		.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}

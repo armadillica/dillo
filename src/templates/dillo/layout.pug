@@ -35,7 +35,7 @@ html(lang='en')
 						li
 							a.btn.submit(href="{{ url_for('posts.create') }}") SUBMIT POST
 
-						| {% if current_user %}
+						| {% if current_user.is_authenticated %}
 						li.nav-notifications
 							a.navbar-item#notifications-toggle(
 								title="Notifications",

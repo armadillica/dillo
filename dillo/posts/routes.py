@@ -1,9 +1,8 @@
 import logging
 
-from flask import Blueprint, current_app, redirect, render_template, url_for
+from flask import Blueprint, current_app, redirect, render_template, url_for, jsonify
 from werkzeug import exceptions as wz_exceptions
-from flask_login import current_user
-
+from flask_login import current_user, login_required
 from pillarsdk import Project
 from pillarsdk import Activity
 from pillarsdk.nodes import Node
@@ -17,7 +16,6 @@ log = logging.getLogger(__name__)
 
 @blueprint.route('/post')
 def create():
-
     api = system_util.pillar_api()
     log.info('Creating post for user {}'.format(current_user.objectid))
     project = current_app.config['MAIN_PROJECT_ID']
@@ -49,6 +47,36 @@ def index():
         'sort': [('_created', -1)],
         'max_results': 20,
     }, api=api)
+
+@blueprint.route("/p/<post_id>/rate/<operation>", methods=['POST'])
+@login_required
+def post_rate(post_id, operation):
+    """Comment rating function
+
+    :param post_id: the post aid
+    :type post_id: str
+    :param operation: the rating 'revoke', 'upvote', 'downvote'
+    :type operation: string
+
+    """
+
+    if operation not in {'revoke', 'upvote', 'downvote'}:
+        raise wz_exceptions.BadRequest('Invalid operation')
+
+    api = system_util.pillar_api()
+
+    # PATCH the node and return the result.
+    comment = Node({'_id': post_id})
+    result = comment.patch({'op': operation}, api=api)
+    assert result['_status'] == 'OK'
+
+    return jsonify({
+        'status': 'success',
+        'data': {
+            'op': operation,
+            'rating_positive': result.properties.rating_positive,
+            'rating_negative': result.properties.rating_negative,
+        }})
 
     # Fetch more info for each activity.
     for act in activities['_items']:
