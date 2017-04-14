@@ -66,19 +66,19 @@ $(document).on('click','body .item-rating',function(e){
 		// Add/remove styles for rated statuses
 		switch(op) {
 			case 'revoke':
-				parentDiv.removeClass('rated');
+				parentDiv.removeClass('rated positive negative');
 				break;
 			case 'upvote':
-				parentDiv.addClass('rated');
-				parentDiv.addClass('positive');
+				parentDiv.addClass('rated positive');
+				parentDiv.removeClass('negative');
 				break;
 			case 'downvote':
-				parentDiv.addClass('rated');
+				parentDiv.addClass('rated negative');
 				parentDiv.removeClass('positive');
 				break;
 		}
 
 		var rating = data['data']['rating_positive'] - data['data']['rating_negative'];
-		$this.siblings('.comment-rating-value').text(rating);
+		$this.siblings('.item-rating.value').text(rating);
 	});
 });
