@@ -58,7 +58,7 @@ script.
 
 	var hitTemplate =
 		'<ul class="list-hits">' +
-			'<li class="list-hits-item" data-id="{{ objectID }}">' +
+			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}">' +
 				'<a href="" class="item-thumbnail js-item-show">' +
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
@@ -78,16 +78,16 @@ script.
 						'<a href="" class="item-title js-item-show">{{{ name }}}</a>' +
 						'<ul>' +
 							'<li>' +
-								'<a href="" class="js-item-show">' +
-								'{{#is_link}}<img title="Link" src="http://www.google.com/s2/favicons?domain={{ description }}"/>{{/is_link}}' +
+								'<a href="{{ link_url }}" class="js-item-show">' +
+								'{{#is_link}}<img title="Link" src="http://www.google.com/s2/favicons?domain={{ link_url }}"/>{{/is_link}}' +
 								'{{^is_link}}<i class="pi-document-text"></i>{{/is_link}}' +
 								'</a>' +
 							'</li>' +
 							'<li><a href="">Tutorials</a></li>' +
 							'<li><a href="">{{ created }}</a></li>' +
 							'<li>{{ user.full_name }}</li>' +
-							'<li><a href="">2 comments</a></li>' +
-							'{{#is_link}}<li>{{ link }}</li>{{/is_link}}' +
+							'<li><a href="{{ link_url }}">2 comments</a></li>' +
+							'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
 						'</ul>' +
 					'</div>' +
 				'</div>' +
@@ -115,7 +115,8 @@ script.
 
 				hit.created = moment.unix(hit.created).fromNow();
 				hit.name = twemoji.parse(hit.name);
-				hit.link = hit.description.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+				hit.link_url = hit.description;
+				hit.link_short = hit.description.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
 
 				return hit;
 			}
@@ -127,7 +128,7 @@ script.
 	$('body').on('click', '.js-item-show', function(e){
 		e.preventDefault();
 
-		var li = $(this).parents('.list-hits-item');
+		var li = $(this).closest('.list-hits-item');
 		var hit_id = li.attr('data-id');
 
 		/* Unstyle all items on the list and style only the current one */
