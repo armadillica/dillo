@@ -48,6 +48,15 @@ def index():
         'max_results': 20,
     }, api=api)
 
+    # Fetch more info for each activity.
+    for act in activities['_items']:
+        act.actor_user = subquery.get_user_info(act.actor_user)
+
+    return render_template(
+            'dillo/search.html',
+            activities=activities)
+
+
 @blueprint.route("/p/<post_id>/rate/<operation>", methods=['POST'])
 @login_required
 def post_rate(post_id, operation):
@@ -77,11 +86,3 @@ def post_rate(post_id, operation):
             'rating_positive': result.properties.rating_positive,
             'rating_negative': result.properties.rating_negative,
         }})
-
-    # Fetch more info for each activity.
-    for act in activities['_items']:
-        act.actor_user = subquery.get_user_info(act.actor_user)
-
-    return render_template(
-            'dillo/search.html',
-            activities=activities)
