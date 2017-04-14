@@ -15,21 +15,17 @@
 	.item-details
 		a#item-title.item-title(href="") {{ node.name }}
 		ul
-			li {{ node.category }}
-			li
-				// XXX - Use nicer URL
-				a(href="{{ url_for('nodes.view', node_id=node._id) }}") {{ node._created | pretty_date }}
-			li koro
-			li
-				a(href="") 2 comments
+			li {{ node.properties.category | undertitle }}
+			li {{ node._created | pretty_date }}
+			li {{ node.user.full_name }}
 
 			| {% if node.properties.post_type == 'link' %}
 			li {{ node.description }}
 			| {% endif %}
 
 | {% if node.properties.post_type == 'text' %}
-.item-body.
-	{{ node.description }}
+.item-body#item-description
+	| {{ node.description | safe }}
 | {% endif %}
 
 #item-comments
@@ -38,7 +34,12 @@
 script.
 	loadComments("{{ url_for('nodes.comments_for_node', node_id=node['_id']) }}");
 
+	// Markdown initialization
+	var convert = new Markdown.getSanitizingConverter();
+	Markdown.Extra.init(convert);
+	convert = convert.makeHtml;
 
-	$('#item-title').html(
-		twemoji.parse('{{ node.name }}')
-	);
+	// Convert Markdown and emojis for text and title
+	var desc = $('#item-description').text();
+	$('#item-description').html(twemoji.parse(convert(desc)));
+	$('#item-title').html(twemoji.parse('{{ node.name }}'));
