@@ -1,5 +1,5 @@
 | {% extends 'dillo/layout.html' %}
-| {% block bodyattrs %}{{ super() }} data-context='dashboard'{% endblock %}
+| {% block bodyattrs %}{{ super() }} data-context='posts-index'{% endblock %}
 | {% block page_title %}Dashboard{% endblock %}
 
 | {% block body %}
@@ -59,7 +59,7 @@ script.
 	var hitTemplate =
 		'<ul class="list-hits">' +
 			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}">' +
-				'<a href="" class="item-thumbnail js-item-show">' +
+				'<a href="" class="item-thumbnail">' +
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
 				'<div class="item-content">' +
@@ -75,10 +75,10 @@ script.
 						'</div>' +
 					'</div>' +
 					'<div class="item-details">' +
-						'<a href="" class="item-title js-item-show">{{{ name }}}</a>' +
+						'<a href="" class="item-title">{{{ name }}}</a>' +
 						'<ul>' +
 							'<li>' +
-								'<a href="{{ link_url }}" class="js-item-show">' +
+								'<a href="{{ link_url }}">' +
 								'{{#is_link}}<img title="Link" src="http://www.google.com/s2/favicons?domain={{ link_url }}"/>{{/is_link}}' +
 								'{{^is_link}}<i class="pi-document-text"></i>{{/is_link}}' +
 								'</a>' +

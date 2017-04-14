@@ -11,16 +11,9 @@ html(lang='en')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
 		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
 
-		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
-		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
-		script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js', v=171120161) }}")
-		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js', v=171120161) }}", async)
-		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}", async)
-		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3", async)
-
 		| {% block style %}{% endblock %}
 
-	body
+	body({% block bodyattrs %}{%endblock%})
 		#app-header
 			header#header-bar-pri
 				a.app-branding(href="{{ url_for('posts.index') }}") Dillo
@@ -66,5 +59,13 @@ html(lang='en')
 			| {% block body %}{% endblock %}
 
 		#app-overlay
+
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js', v=171120161) }}")
+		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js', v=171120161) }}", async)
+		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}", async)
+		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3", async)
+		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 
 		| {% block footer_scripts %}{% endblock %}

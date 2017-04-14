@@ -181,11 +181,12 @@ $item-thumbnail-size: 90px
 				top: 1px
 				color: $color-text-hint
 
-			&:first-child
+			&:first-child, &:nth-child(2)
 				padding-left: 0
 				&:before
 					content: ''
 					padding: 0
+
 			a
 				text-decoration: none
 				color: $color-text-light
@@ -196,6 +197,12 @@ $item-thumbnail-size: 90px
 				display: inline-block
 				vertical-align: middle
 				border-radius: 3px
+				position: relative
+				top: -2px
+				opacity: .8
+
+				&:hover
+					opacity: 1
 
 .item-body
 	padding: 10px 20px
