@@ -87,7 +87,7 @@ script.
 							'<li><a href="">{{ created }}</a></li>' +
 							'<li>{{ user.full_name }}</li>' +
 							'<li><a href="">2 comments</a></li>' +
-							'{{#is_link}}<li>{{ description }}</li>{{/is_link}}' +
+							'{{#is_link}}<li>{{ link }}</li>{{/is_link}}' +
 						'</ul>' +
 					'</div>' +
 				'</div>' +
@@ -115,6 +115,7 @@ script.
 
 				hit.created = moment.unix(hit.created).fromNow();
 				hit.name = twemoji.parse(hit.name);
+				hit.link = hit.description.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
 
 				return hit;
 			}
