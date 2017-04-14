@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint,render_template
+from flask import Blueprint, render_template, redirect, url_for
 
 from pillar.web import system_util
 
@@ -12,6 +12,5 @@ log = logging.getLogger(__name__)
 
 @blueprint.route('/')
 def index():
-    api = system_util.pillar_api()
-    return render_template('dillo/index.html')
+    return redirect(url_for('posts.index'))
 
