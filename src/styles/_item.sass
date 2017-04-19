@@ -1,0 +1,174 @@
+/* Listing item */
+.item-title
+	text-decoration: none
+	font-family: $font-headings
+
+	em
+		color: $color-secondary
+		font-style: normal
+
+.item-media
+	display: flex
+	align-items: center
+	justify-content: center
+	font-size: 3em
+	min-height: 280px
+	background-color: $color-background-dark
+
+$item-thumbnail-size: 90px
+.item-thumbnail
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: center
+	width: $item-thumbnail-size
+	min-width: $item-thumbnail-size
+	max-height: $item-thumbnail-size / 1.4
+	background-color: $color-background-dark
+	overflow: hidden
+
+	&:hover img
+		transform: scale(1.1)
+
+	+media-xs
+		width: 100%
+		max-height: initial
+
+		img
+			width: 100%
+
+	img
+		// position: absolute
+		// min-width: $item-thumbnail-size
+		// height: $item-thumbnail-size
+		transition: transform 150ms ease-in-out
+
+.item-content
+	display: flex
+	align-items: center
+	width: 100%
+
+.item-rating-box
+	display: flex
+	flex-direction: column
+	height: 100%
+	width: 40px
+	min-width: 40px
+
+	+media-xs
+		width: 60px
+		min-width: 60px
+
+	&.rated.positive .up
+		color: $color-vote-up
+	&.rated.negative .down
+		color: $color-vote-down
+
+.item-rating
+	display: flex
+	align-items: center
+	justify-content: center
+	height: 100%
+
+	+media-xs
+		padding: 3px 0
+
+	&.up, &.down
+		font-size: 1.33em
+		cursor: pointer
+
+	&.up:hover
+		color: $color-vote-up
+	&.down:hover
+		color: $color-vote-down
+
+	&.value
+		color: $color-text-light
+		font-size: $font-size-small
+
+.item-details
+	display: flex
+	flex-direction: column
+	justify-content: space-around
+	padding: 7px
+
+	> ul
+		margin: 0
+		padding: 0
+		> li
+			margin: 0
+			padding: 0
+			display: inline-block
+			font-size: $font-size-small
+			padding: 5px 4px
+			color: $color-text-light
+
+			&:before
+				content: '·'
+				font-weight: bolder
+				position: relative
+				left: -6px
+				top: 1px
+				color: $color-text-hint
+
+			&:first-child, &:nth-child(2)
+				padding-left: 0
+				&:before
+					content: ''
+					padding: 0
+
+			a
+				text-decoration: none
+				color: $color-text-light
+				&:hover
+					color: $color-primary
+
+			img
+				display: inline-block
+				vertical-align: middle
+				border-radius: 3px
+				position: relative
+				top: -2px
+				opacity: .8
+
+				&:hover
+					opacity: 1
+
+.item-body
+	padding: 10px 20px
+	font-size: $font-size
+	line-height: 1.5em
+
+#item-comments
+	margin: 10px 15px
+
+/* Edit */
+.item-edit
+	&-header
+		display: flex
+		align-items: center
+		padding: 10px 15px
+		color: $color-text-lighter
+		background-color: $color-background-darker
+
+		&-action
+			margin-left: auto
+
+	&-form
+		display: flex
+		flex-direction: column
+		padding: 15px
+
+		#input-item-title
+			font-size: $font-size-large
+			margin-bottom: 15px
+			border-bottom: 2px solid $color-primary
+
+		#input-item-description
+			min-height: 150px
+			background-color: $color-background-light
+			padding: 10px
+
+	&-view
+		.item-rating
+			pointer-events: none

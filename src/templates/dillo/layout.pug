@@ -54,18 +54,17 @@ html(lang='en')
 							button.btn.sign-in SIGN IN
 						| {% endif %}
 
-			#header-bar-sec
 		#app-main
-			| {% block body %}{% endblock %}
+			| {% block body %}{% endblock body %}
 
 		#app-overlay
 
 		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
 		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
 		script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js', v=171120161) }}")
-		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js', v=171120161) }}", async)
-		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}", async)
-		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3", async)
+		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js', v=171120161) }}")
+		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}")
+		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3")
 		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 
 		| {% block footer_scripts %}{% endblock %}

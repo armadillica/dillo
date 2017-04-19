@@ -1,0 +1,97 @@
+| {% extends 'dillo/layout.html' %}
+| {% block bodyattrs %}{{ super() }} data-context='post-edit'{% endblock %}
+| {% block page_title %}Edit{% endblock %}
+
+| {% block body %}
+
+#col_main
+	.item-edit-header
+		span Edit Post
+		.item-edit-header-action
+			button.cancel(type="submit") Cancel
+			button.publish(type="submit") Publish
+
+	.item-edit-form
+		input.item-title(
+			id="input-item-title",
+			value="{{ node.name }}",
+			type="text",
+			placeholder="Post Title")
+
+		textarea(
+			id="input-item-description",
+			placeholder="Post Text")
+			| {{ node.description }}
+		a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+			| Markdown Cheatsheet
+
+#col_right.listing-view.item-edit-view
+	.item-media
+		i.pi-play
+
+	.item-content(
+		id="{{ node._id }}",
+		data-node-id="{{ node._id }}")
+		.item-rating-box(
+			class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
+		)
+			.item-rating.up
+				i.pi-angle-up
+			.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
+			.item-rating.down
+				i.pi-angle-down
+		.item-details
+			a#item-title.item-title {{ node.name }}
+			ul
+				li {{ node.properties.category | undertitle }}
+				li {{ node._created | pretty_date }}
+				li {{ node.user.full_name }}
+
+				| {% if node.properties.post_type == 'link' %}
+				li {{ node.description }}
+				| {% endif %}
+
+	| {% if node.properties.post_type == 'text' %}
+	.item-body#item-description
+		| {{ node.description | safe }}
+	| {% endif %}
+| {% endblock body %}
+
+| {% block footer_scripts %}
+script.
+	// Markdown initialization
+	var convert = new Markdown.getSanitizingConverter();
+	Markdown.Extra.init(convert);
+	convert = convert.makeHtml;
+
+	// Convert Markdown and emojis for text and title
+	$(function() {
+		var item_title_input = $('#input-item-title');
+		var item_description_input = $('#input-item-description');
+
+		item_title_input.keyup(function() {
+			$('#item-title').html(
+				twemoji.parse(
+					item_title_input.val()
+				)
+			);
+		}).trigger('keyup');
+
+		item_description_input.keyup(function() {
+			$('#item-description').html(
+				twemoji.parse(
+					convert(
+						item_description_input.val()
+					)
+				)
+			);
+		}).trigger('keyup');
+
+
+		/* Resize textareas */
+		item_description_input
+			.autoResize()
+			.blur();
+	});
+
+| {% endblock footer_scripts %}
