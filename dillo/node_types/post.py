@@ -20,7 +20,7 @@ node_type_post = {
             ],
             'default': 'pending',
         },
-        'aid': {
+        'shortcode': {
             # Alphanumeric ID
             'type': 'string',
             'maxlength': 6,

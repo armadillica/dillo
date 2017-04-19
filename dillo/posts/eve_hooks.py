@@ -21,6 +21,7 @@ from pillar.api.nodes import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
 from dillo.node_types.post import node_type_post
 from dillo.utils.sorting import hot
+from dillo.shortcodes import generate_shortcode
 
 log = logging.getLogger(__name__)
 only_for_post = only_for_node_type_decorator(node_type_post['name'])
@@ -52,6 +53,7 @@ def algolia_index_post_save(node):
         },
         'hot': node['properties']['hot'],
         'rating': rating,
+        'shortcode': node['properties']['shortcode'],
     }
     if 'description' in node and node['description']:
         node_ob['description'] = node['description']
@@ -86,15 +88,16 @@ def update_hot(item):
 
 
 @only_for_post
-def before_creating_post(item):
+def set_defaults(item):
     item['properties']['rating_positive'] = 0
     item['properties']['rating_negative'] = 0
     update_hot(item)
+    item['properties']['shortcode'] = generate_shortcode(item['project'], item['node_type'])
 
 
 def before_creating_posts(items):
     for item in items:
-        before_creating_post(item)
+        set_defaults(item)
 
 
 @only_for_post
