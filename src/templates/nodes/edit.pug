@@ -25,6 +25,21 @@
 		a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
 			| Markdown Cheatsheet
 
+		hr
+
+		| {% for field in form %}
+
+		| {% if field.name == 'csrf_token' %}
+		| {{ field }}
+		| {% elif field.type == 'HiddenField' %}
+		| {{ field }}
+		| {% else %}
+
+		| {{ field.name | undertitle }} {{ field }}
+
+		| {% endif %}
+		| {% endfor %}
+
 #col_right.listing-view.item-edit-view
 	.item-media
 		i.pi-play
