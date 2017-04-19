@@ -15,7 +15,7 @@ import itertools
 import logging
 import datetime
 from bson import ObjectId
-from flask import current_app
+from flask import current_app, abort
 from pillar.api.file_storage import generate_link
 from pillar.api.nodes import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
@@ -52,6 +52,8 @@ def algolia_index_post_save(node):
             'full_name': user['full_name']
         },
         'hot': node['properties']['hot'],
+        'slug': node['properties']['slug'],
+        'category': node['properties']['category'],
         'rating': rating,
         'shortcode': node['properties']['shortcode'],
     }
@@ -65,14 +67,14 @@ def algolia_index_post_save(node):
         files_collection = current_app.data.driver.db['files']
         lookup = {'_id': ObjectId(node['picture'])}
         picture = files_collection.find_one(lookup)
-        if picture['backend'] == 'gcs':
-            variation_t = next((item for item in picture['variations'] \
-                                if item['size'] == 't'), None)
-            if variation_t:
-                node_ob['picture'] = generate_link(picture['backend'],
-                                                   variation_t['file_path'],
-                                                   project_id=str(picture['project']),
-                                                   is_public=True)
+
+        variation_t = next((item for item in picture['variations'] \
+                            if item['size'] == 't'), None)
+        if variation_t:
+            node_ob['picture'] = generate_link(picture['backend'],
+                                               variation_t['file_path'],
+                                               project_id=str(picture['project']),
+                                               is_public=True)
     current_app.algolia_index_nodes.save_object(node_ob)
 
 
@@ -101,7 +103,15 @@ def before_creating_posts(items):
 
 
 @only_for_post
-def after_replacing_post(item, original):
+def before_replacing_post(item, original):
+    status_original = original['properties']['status']
+    status_updated = item['properties']['status']
+    if status_original != 'pending' and status_updated == 'pending':
+        # We do not allow published, unpublished or deleted posts to be set as pending
+        return abort(403)
+    if status_original == 'pending' and status_updated == 'published':
+        # We are publishing the post for the first time
+        pass
     update_hot(item)
     algolia_index_post_save(item)
 
@@ -122,5 +132,5 @@ def enrich(response):
 
 def setup_app(app):
     app.on_insert_nodes += before_creating_posts
-    app.on_replace_nodes += after_replacing_post
+    app.on_replace_nodes += before_replacing_post
     app.on_fetched_item_nodes += enrich
