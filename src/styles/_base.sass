@@ -36,18 +36,23 @@ a:hover
 	text-decoration: none
 
 button, .btn
-	padding-top: 2px
-	padding-bottom: 2px
+	padding-top: 4px
+	padding-bottom: 4px
 
-	+button($color-primary, 2px, false)
+	+button($color-primary, 3px, false)
 	text-decoration: none
+	font-weight: bold
+	font-size: $font-size-small
 
 	&.submit
-		+button($color-primary, 2px, true)
+		+button($color-primary, 3px, true)
+		font-family: $font-headings
 	&.publish
-		+button($color-success, 2px, true)
+		+button($color-success, 3px, true)
+		font-family: $font-headings
 	&.cancel
-		+button($color-text-lighter, 2px, false)
+		+button($color-text-light, 3px, false)
+		font-family: $font-headings
 
 .emoji
 	height: 16px

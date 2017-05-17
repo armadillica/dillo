@@ -148,27 +148,69 @@ $item-thumbnail-size: 90px
 		display: flex
 		align-items: center
 		padding: 10px 15px
-		color: $color-text-lighter
-		background-color: $color-background-darker
 
 		&-action
 			margin-left: auto
 
 	&-form
-		display: flex
-		flex-direction: column
-		padding: 15px
+		form
+			display: flex
+			flex-direction: column
 
-		#input-item-title
-			font-size: $font-size-large
-			margin-bottom: 15px
-			border-bottom: 2px solid $color-primary
+			#input-item-title, #input-item-description
+				margin: 0 10px
 
-		#input-item-description
-			min-height: 150px
-			background-color: $color-background-light
-			padding: 10px
+			#input-item-title
+				font-size: $font-size-large
+				border-bottom: 2px solid $color-primary
+
+			#input-item-description
+				min-height: 150px
+				background-color: $color-background-light
+				padding: 10px
 
 	&-view
 		.item-rating
 			pointer-events: none
+
+	&-tabs
+		list-style-type: none
+		margin: 0
+		padding: 0
+		display: flex
+
+		> li
+			flex: 1
+			padding: 10px 15px
+			background-color: $color-background-dark
+			border-top: 5px solid darken($color-background-dark, 10%)
+			color: darken($color-background-dark, 35%)
+			cursor: pointer
+			user-select: none
+
+			&:hover
+				color: $color-primary
+				border-top: 5px solid rgba($color-secondary, .25)
+
+			span
+				display: block
+				font:
+					size: $font-size-large
+					family: $font-headings
+
+			small
+				font-size: $font-size-small
+
+			&.active
+				background-color: $color-background
+				border-color: $color-secondary
+				color: $color-primary
+				span
+					color: $color-secondary
+
+
+	&-tab
+		display: none
+
+		&.active
+			display: block

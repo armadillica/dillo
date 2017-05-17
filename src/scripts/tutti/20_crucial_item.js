@@ -1,21 +1,4 @@
-var global_container = document.getElementById('app-main');
-
-function containerResizeY(window_height){
-
-	var height = window_height - global_container.offsetTop;
-
-	$('#app-main, #col_main, #col_right').css({
-		'height': height + 'px',
-		'max-height': height + 'px'
-	});
-}
-
-/* UI Stuff */
-$(window).on("load resize",function(){
-	containerResizeY(window.innerHeight);
-});
-
-
+/* Open posts on the side */
 function item_open(item_id){
 
 	if (item_id === undefined) {
@@ -36,7 +19,7 @@ function item_open(item_id){
 	});
 }
 
-/* Rate */
+/* Rate | Vote */
 $(document).on('click','body .item-rating',function(e){
 	e.preventDefault();
 

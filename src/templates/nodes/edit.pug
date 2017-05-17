@@ -5,40 +5,120 @@
 | {% block body %}
 
 #col_main
-	.item-edit-header
-		span Edit Post
-		.item-edit-header-action
-			button.cancel(type="submit") Cancel
-			button.publish(type="submit") Publish
-
 	.item-edit-form
-		input.item-title(
-			id="input-item-title",
-			value="{{ node.name }}",
-			type="text",
-			placeholder="Post Title")
 
-		textarea(
-			id="input-item-description",
-			placeholder="Post Text")
-			| {{ node.description }}
-		a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
-			| Markdown Cheatsheet
+		ul.item-edit-tabs
+			li(
+				class="{% if node.properties.post_type == 'link' %}active{% endif %}",
+				data-post-type='link')
+				span LINK
+				small I want to share a link
+			li(
+				class="{% if node.properties.post_type == 'text' %}active{% endif %}",
+				data-post-type='text')
+				span TEXT
+				small I'll write a nice article
+
+		.item-edit-header
+			.item-edit-header-action
+				button.cancel(type="submit") Cancel
+				button#item-save.publish() Save
+
+		.item-edit-tab(
+			class="link {% if node.properties.post_type == 'link' %}active{% endif %}")
+			form(
+			id="item-edit-form",
+			method="POST",
+			enctype="multipart/form-data",
+			action="{{url_for('nodes.edit', node_id=node._id)}}")
+
+				input.item-title(
+					id="input-item-title",
+					value="{{ node.name }}",
+					type="text",
+					name="name",
+					placeholder="Awesome Post Title")
+
+				textarea(
+					id="input-item-description",
+					placeholder="Paste or type the URL here")
+					| {{ node.properties.content }}
+
+
+				select(
+					id="input-item-category",
+					name="category")
+					option Community
+					option Artwork
+
+				input(
+					id="input-item-file",
+					name="file",
+					type="file")
+
+				select(
+					id="post_type",
+					class="post_type",
+					name="post_type")
+					option(value="link") Link
+					option(value="text") Text
+
+		.item-edit-tab(
+			class="text {% if node.properties.post_type == 'text' %}active{% endif %}")
+			form(
+			id="item-edit-form",
+			method="POST",
+			enctype="multipart/form-data",
+			action="{{ url_for('nodes.edit', node_id=node._id) }}")
+
+				input.item-title(
+					id="input-item-title",
+					value="{{ node.name }}",
+					type="text",
+					placeholder="Post Title")
+
+				textarea(
+					id="input-item-description",
+					placeholder="Witty description of your post.")
+					| {{ node.properties.content }}
+				a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+					| Markdown Cheatsheet
+
+
+				select(
+					id="input-item-category")
+					option Community
+					option Artwork
+
+				input(
+					id="input-item-file",
+					type="file")
+
+				select(
+					id="post_type",
+					class="post_type",
+					name="post_type")
+					option(value="link") Link
+					option(value="text", selected) Text
+
 
 		hr
+		.item-edit-stuff
 
-		| {% for field in form %}
+			| {% for field in form %}
 
-		| {% if field.name == 'csrf_token' %}
-		| {{ field }}
-		| {% elif field.type == 'HiddenField' %}
-		| {{ field }}
-		| {% else %}
+			| {% if field.name == 'csrf_token' %}
+			| {{ field }}
+			| {% elif field.type == 'HiddenField' %}
+			| {{ field }}
+			| {% else %}
 
-		| {{ field.name | undertitle }} {{ field }}
+			| {% if field.name == 'post_type' %}
+			| {{ field.name | undertitle }} {{ field }}
+			| {% endif %}
 
-		| {% endif %}
-		| {% endfor %}
+			| {% endif %}
+			| {% endfor %}
 
 #col_right.listing-view.item-edit-view
 	.item-media
@@ -107,6 +187,25 @@ script.
 		item_description_input
 			.autoResize()
 			.blur();
+	});
+
+	/* Submit changes */
+	$("#item-edit-form").unbind("submit").submit(function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			url: "{{url_for('nodes.edit', node_id=node._id)}}",
+			data: $(this).serialize(),
+			type: 'POST'
+		});
+
+		console.log($(this).serialize());
+	});
+
+	$('#item-save').click(function(e){
+		e.preventDefault();
+		console.log('something');
+		$("#item-edit-form").submit();
 	});
 
 | {% endblock footer_scripts %}
