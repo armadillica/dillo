@@ -91,8 +91,13 @@ def update_hot(item):
 
 @only_for_post
 def set_defaults(item):
+    # TODO: figure out why properties that have a default value in dyn_schema get it. Once this
+    # this happens, we can remove most of the values here and set hot using 0 for default positive
+    # and negative ratings.
     item['properties']['rating_positive'] = 0
     item['properties']['rating_negative'] = 0
+    item['properties']['post_type'] = 'link'
+    item['properties']['status'] = 'pending'
     update_hot(item)
     item['properties']['shortcode'] = generate_shortcode(item['project'], item['node_type'])
 
