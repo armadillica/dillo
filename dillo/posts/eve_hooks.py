@@ -16,9 +16,12 @@ import logging
 import datetime
 from bson import ObjectId
 from flask import current_app, abort
+from micawber.exceptions import ProviderException, ProviderNotFoundException
+from pillar.markdown import markdown
 from pillar.api.file_storage import generate_link
 from pillar.api.nodes import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
+from dillo import current_dillo
 from dillo.node_types.post import node_type_post
 from dillo.utils.sorting import hot
 from dillo.shortcodes import generate_shortcode
@@ -107,6 +110,31 @@ def before_creating_posts(items):
         set_defaults(item)
 
 
+def convert_to_markdown(item):
+    # Convert content from Markdown to HTML.
+    try:
+        content = item['properties']['content']
+    except KeyError:
+        item['properties']['content_html'] = ''
+    else:
+        item['properties']['content_html'] = markdown(content)
+
+
+def generate_oembed(item):
+    # Convert content from Markdown to HTML.
+    try:
+        content = item['properties']['content']
+    except KeyError:
+        item['properties']['content_html'] = ''
+    else:
+        try:
+            oembed = current_dillo.oembed_registry.request(content)
+        except (ProviderNotFoundException, ProviderException):
+            # If the link is not an OEmbed provider, we move fail
+            return abort(403)
+        item['properties']['content_html'] = oembed['html']
+
+
 @only_for_post
 def before_replacing_post(item, original):
     status_original = original['properties']['status']
@@ -117,6 +145,14 @@ def before_replacing_post(item, original):
     if status_original == 'pending' and status_updated == 'published':
         # We are publishing the post for the first time
         pass
+
+    post_handler = {
+        'link': generate_oembed,
+        'text': convert_to_markdown,
+    }
+
+    handler = post_handler[item['properties']['post_type']]
+    handler(item)
     update_hot(item)
     algolia_index_post_save(item)
 

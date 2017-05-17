@@ -2,6 +2,8 @@ import logging
 
 import flask
 from werkzeug.local import LocalProxy
+from micawber.providers import bootstrap_basic
+from micawber.providers import Provider
 from pillar.extension import PillarExtension
 
 EXTENSION_NAME = 'dillo'
@@ -10,6 +12,17 @@ EXTENSION_NAME = 'dillo'
 class DilloExtension(PillarExtension):
     def __init__(self):
         self._log = logging.getLogger('%s.DilloExtension' % __name__)
+
+        self.oembed_registry = bootstrap_basic()
+        self.oembed_registry.register(
+            'https?://sketchfab.com/models/*',
+            Provider('https://sketchfab.com/oembed'))
+        self.oembed_registry.register(
+            'https?://p3d.in/*',
+            Provider('https://p3d.in/oembed'))
+        self.oembed_registry.register(
+            'https?://instagram.com/p/*',
+            Provider('http://api.instagram.com/oembed'))
 
     @property
     def name(self):

@@ -10,6 +10,16 @@ node_type_post = {
             ],
             'default': 'link',
         },
+        # The actual comment content (initially Markdown format)
+        'content': {
+            'type': 'string',
+            'minlength': 5,
+            'required': True,
+        },
+        # The converted-to-HTML content.
+        'content_html': {
+            'type': 'string',
+        },
         'status': {
             'type': 'string',
             'allowed': [
