@@ -118,7 +118,7 @@ script.
 				hit.link_url = hit.description;
 
 				if (hit.description){
-					hit.link_short = hit.description.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+					hit.link_short = shortenUrl(hit.description);
 				}
 
 				return hit;

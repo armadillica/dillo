@@ -20,7 +20,8 @@
 			li {{ node.user.full_name }}
 
 			| {% if node.properties.post_type == 'link' %}
-			li {{ node.description }}
+			li
+				a#item-link-url(href="{{ node.description }}") {{ node.description }}
 			| {% endif %}
 
 | {% if node.properties.post_type == 'text' %}
@@ -43,3 +44,7 @@ script.
 	var desc = $('#item-description').text();
 	$('#item-description').html(twemoji.parse(convert(desc)));
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
+
+	{% if node.properties.post_type == 'link' %}
+		$('#item-link-url').text(shortenUrl('{{ node.description }}'));
+	{% endif%}
