@@ -19,10 +19,16 @@
 			li {{ node._created | pretty_date }}
 			li {{ node.user.full_name }}
 
+			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+			li
+				a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
+			| {% endif %}
+
 			| {% if node.properties.post_type == 'link' %}
 			li
 				a#item-link-url(href="{{ node.description }}") {{ node.description }}
 			| {% endif %}
+
 
 | {% if node.properties.post_type == 'text' %}
 .item-body#item-description
