@@ -58,6 +58,16 @@ html(lang='en')
 			| {% block body %}{% endblock body %}
 
 		#app-overlay
+		#notification-pop(data-url="", data-read-toggle="")
+			.nc-progress
+			a#pop-close(href="#", title="Dismiss")
+				i.pi-cancel
+			.nc-item
+				//- .nc-avatar
+				.nc-text
+					span.nc-date
+						a(href="")
+
 
 		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
 		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")

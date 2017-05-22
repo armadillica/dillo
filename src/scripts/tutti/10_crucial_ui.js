@@ -30,3 +30,14 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 	$(this).addClass('active');
 	$('.item-edit-tab.' + post_type).addClass('active');
 });
+
+function setMessage(xhr){
+	popNotification();
+
+	$('#notification-pop').addClass('code-' + xhr.status);
+
+	// The text in the pop
+	var text = '<span class="nc-author">' + xhr.status + ' ' + xhr.statusText + '</span> ';
+	$('#notification-pop .nc-text').html(text);
+
+}
