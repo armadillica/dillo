@@ -116,7 +116,10 @@ script.
 				hit.created = moment.unix(hit.created).fromNow();
 				hit.name = twemoji.parse(hit.name);
 				hit.link_url = hit.description;
-				hit.link_short = hit.description.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+
+				if (hit.description){
+					hit.link_short = hit.description.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+				}
 
 				return hit;
 			}
