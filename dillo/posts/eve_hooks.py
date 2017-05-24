@@ -121,7 +121,7 @@ def convert_to_markdown(item):
 
 
 def generate_oembed(item):
-    # Convert content from Markdown to HTML.
+    # Generate embed code for links.
     try:
         content = item['properties']['content']
     except KeyError:
@@ -130,7 +130,7 @@ def generate_oembed(item):
         try:
             oembed = current_dillo.oembed_registry.request(content)
         except (ProviderNotFoundException, ProviderException):
-            # If the link is not an OEmbed provider, we move fail
+            # If the link is not an OEmbed provider, we fail
             return abort(403)
         item['properties']['content_html'] = oembed['html']
 

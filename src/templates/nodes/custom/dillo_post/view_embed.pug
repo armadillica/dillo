@@ -39,7 +39,7 @@
 	#comments-embed
 
 script.
-	loadComments("{{ url_for('nodes.comments_for_node', node_id=node['_id']) }}");
+	loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 
 	// Markdown initialization
 	var convert = new Markdown.getSanitizingConverter();
