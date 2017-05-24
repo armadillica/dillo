@@ -69,6 +69,8 @@
 					option(value="link") Link
 					option(value="text") Text
 
+				|	{{ form.csrf_token }}
+
 		//- .item-edit-tab(
 		//- 	class="text {% if node.properties.post_type == 'text' %}active{% endif %}")
 		//- 	form(
