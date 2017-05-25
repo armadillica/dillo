@@ -63,7 +63,7 @@ script.
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
 				'<div class="item-content">' +
-					'<div class="item-rating-box">' +
+					'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
 						'<div class="item-rating up">' +
 							'<i class="pi-angle-up"></i>' +
 						'</div>' +
@@ -99,6 +99,27 @@ script.
 		'<div class="text-center">No results found matching <strong>{{query}}</strong>.</div>';
 	{% endraw %}
 
+
+	function processHit(hit) {
+		hit.is_positive = localStorage.getItem(hit.objectID);
+
+		if (hit.is_positive && hit.is_positive === 'true') {
+			hit.is_positive = 'positive';
+		} else if (hit.is_positive && hit.is_positive === 'false') {
+			hit.is_positive = 'negative';
+		}
+
+		hit.created = moment.unix(hit.created).fromNow();
+		hit.name = twemoji.parse(hit.name);
+		hit.link_url = hit.description;
+
+		if (hit.description) {
+			hit.link_short = shortenUrl(hit.description);
+		}
+		return hit;
+	}
+
+
 	search.addWidget(
 		instantsearch.widgets.hits({
 			container: '#list-hits',
@@ -107,22 +128,7 @@ script.
 				empty: noResultsTemplate,
 				item: hitTemplate
 			},
-			transformData: function (hit) {
-				hit.stars = [];
-				for (var i = 1; i <= 5; ++i) {
-					hit.stars.push(i <= hit.rating);
-				};
-
-				hit.created = moment.unix(hit.created).fromNow();
-				hit.name = twemoji.parse(hit.name);
-				hit.link_url = hit.description;
-
-				if (hit.description){
-					hit.link_short = shortenUrl(hit.description);
-				}
-
-				return hit;
-			}
+			transformData: processHit,
 		})
 	);
 
