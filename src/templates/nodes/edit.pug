@@ -21,55 +21,96 @@
 
 		.item-edit-header
 			.item-edit-header-action
-				a.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
-				a#item-save.publish(
+				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
+				a#item-save.btn.publish(
 					href="javascript:void(0);",
 					title="Save changes")
 					i.pi-check
 					| Save Changes
 
 		.item-edit-tab(
-			class="link {% if node.properties.post_type == 'link' %}active{% endif %}")
+			id="item-edit-tab",
+			class="{{ node.properties.post_type }}")
 			form(
 				id="item-edit-form",
-				class="{{ node.node_type }}",
 				method="POST",
 				enctype="multipart/form-data",
 				action="{{url_for('nodes.edit', node_id=node._id)}}")
 
+				| {{ form.csrf_token }}
+
+				| {% for field in form %}
+
+				| {% if field.name in ['csrf_token', 'status'] or field.type == 'HiddenField' %}
+				| {{ field }}
+				| {% elif field.name == 'name' %}
 				input.item-title(
-					id="input-item-title",
+					id="name",
 					value="{{ node.name }}",
 					type="text",
 					name="name",
 					placeholder="Awesome Post Title")
 
+				| {% elif field.name == 'content' %}
 				textarea(
-					id="input-item-description",
+					id="content",
+					name="content",
 					placeholder="Paste or type the URL here")
 					| {{ node.properties.content }}
 
+				span.content-extra
+					a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+						| Markdown Cheatsheet
 
+				| {% elif field.name == 'category' %}
+				.form-split
+					.split-col
+					.split-col
 				select(
-					id="input-item-category",
+					id="category",
 					name="category")
 					option Community
 					option Artwork
 
-				input(
-					class="fileupload",
-					id="input-item-file",
-					name="file",
-					type="file")
-
+				| {% elif field.name == 'post_type' %}
 				select(
 					id="post_type",
 					class="post_type",
 					name="post_type")
 					option(value="link") Link
-					option(value="text") Text
+					option(value="text",
+						selected="{% if node.properties.post_type == 'text' %}selected{% endif %}") Text
 
-				|	{{ form.csrf_token }}
+				| {% endif %}
+				| {% endfor %}
+
+
+				//- textarea(
+				//- 	name="content",
+				//- 	id="content",
+				//- 	placeholder="Paste or type the URL here")
+				//- 	| {{ node.properties.content }}
+
+				//- select(
+				//- 	id="input-item-category",
+				//- 	name="category")
+				//- 	option Community
+				//- 	option Artwork
+
+				//- input(
+				//- 	class="fileupload",
+				//- 	id="input-item-file",
+				//- 	name="file",
+				//- 	type="file")
+
+				//- select(
+				//- 	id="post_type",
+				//- 	class="post_type",
+				//- 	name="post_type")
+				//- 	option(value="link") Link
+				//- 	option(value="text") Text
+
+				//- |	{{ form.csrf_token }}
 
 		//- .item-edit-tab(
 		//- 	class="text {% if node.properties.post_type == 'text' %}active{% endif %}")
@@ -86,7 +127,7 @@
 		//- 			placeholder="Post Title")
 
 		//- 		textarea(
-		//- 			id="input-item-description",
+		//- 			id="content",
 		//- 			placeholder="Witty description of your post.")
 		//- 			| {{ node.properties.content }}
 		//- 		a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
@@ -109,24 +150,6 @@
 		//- 			option(value="link") Link
 		//- 			option(value="text", selected) Text
 
-
-		//- hr
-		//- .item-edit-stuff
-
-		//- 	| {% for field in form %}
-
-		//- 	| {% if field.name == 'csrf_token' %}
-		//- 	| {{ field }}
-		//- 	| {% elif field.type == 'HiddenField' %}
-		//- 	| {{ field }}
-		//- 	| {% else %}
-
-		//- 	| {% if field.name == 'post_type' %}
-		//- 	| {{ field.name | undertitle }} {{ field }}
-		//- 	| {% endif %}
-
-		//- 	| {% endif %}
-		//- 	| {% endfor %}
 
 
 #col_right.listing-view.item-edit-view
@@ -163,11 +186,11 @@
 | {% endblock body %}
 
 | {% block footer_scripts %}
-script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.widget.min.js') }}")
-script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
-script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
-script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
-script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.widget.min.js') }}")
+//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
+//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
+//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
+//- script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
 script.
 	// Markdown initialization
 	var convert = new Markdown.getSanitizingConverter();
@@ -176,8 +199,8 @@ script.
 
 	// Convert Markdown and emojis for text and title
 	$(function() {
-		var item_title_input = $('#input-item-title');
-		var item_description_input = $('#input-item-description');
+		var item_title_input = $('#item-edit-form #name');
+		var item_description_input = $('#content');
 
 		item_title_input.keyup(function() {
 			$('#item-title').html(
@@ -213,12 +236,24 @@ script.
 
 	$("#item-save").unbind( "click" );
 
+	function uiUpdateOnSave(){
+		var $item_save = $("#item-save");
+
+		$item_save
+			.removeClass('saving')
+			.html('<i class="pi-check"></i> Save Changes');
+
+		if (console){ console.log('saved') };
+	}
+
 	/* Submit changes */
 	$("#item-edit-form").unbind("submit").submit(function(e) {
 		e.preventDefault();
 
 		/* Let us know started saving */
-		$("#item-save").html('<i class="pi-spin spin"></i> Saving...');
+		$("#item-save")
+			.addClass('saving')
+			.html('<i class="pi-spin spin"></i> Saving...');
 
 		$.ajax({
 			url: "{{url_for('nodes.edit', node_id=node._id)}}",
@@ -228,13 +263,14 @@ script.
 		.fail(function(xhr){
 			/* Something went wrong, print it */
 			setMessage(xhr);
+			uiUpdateOnSave();
 		})
 		.done(function(dataHtml){
 			// Disable beforeunolad when submitting a form
 			$(window).off('beforeunload');
 
-			//- location.href = "{{ url_for('nodes.view', node_id=node._id)}}";
-			$("#item-save").html('<i class="pi-check"></i> Save Again');
+			$('#col_right').html(dataHtml);
+			uiUpdateOnSave();
 		});
 	});
 

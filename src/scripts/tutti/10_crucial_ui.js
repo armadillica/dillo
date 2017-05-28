@@ -16,21 +16,6 @@ $(window).on("load resize",function(){
 });
 
 
-/* Post type tab switching */
-$(document).on('click','body ul.item-edit-tabs li',function(e){
-	var post_type = $(this).data('post-type');
-
-	$('.item-edit-tab.' + post_type + ' select.post_type').val(post_type).change();
-	$('.item-edit-tab.' + post_type + ' select.post_type options[value=' + post_type + ']').attr('selected', 'selected');
-
-	// console.log($('.item-edit-tab.' + post_type + ' select.post_type').val());
-
-	$('ul.item-edit-tabs li, .item-edit-tab').removeClass('active');
-
-	$(this).addClass('active');
-	$('.item-edit-tab.' + post_type).addClass('active');
-});
-
 function setMessage(xhr){
 	popNotification();
 

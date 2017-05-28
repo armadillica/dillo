@@ -16,6 +16,8 @@ function item_open(item_id){
 			console.log('Error fetching item', item_id, 'from', item_url);
 			console.log('XHR:', xhr);
 		}
+
+		setMessage(xhr);
 	});
 }
 
@@ -64,8 +66,27 @@ $(document).on('click','body .item-rating',function(e){
 		var rating = data['data']['rating_positive'] - data['data']['rating_negative'];
 		$this.siblings('.item-rating.value').text(rating);
 	})
-	.fail(function(xhr, status, error) {
+	.fail(function(xhr) {
 
 		setMessage(xhr);
 	});
+});
+
+
+/* Post type tab switching */
+$(document).on('click','body ul.item-edit-tabs li',function(e){
+	var post_type = $(this).data('post-type');
+	var $tab = $('#item-edit-tab');
+
+	$('.item-edit-tab select.post_type').val(post_type).change();
+	$('.item-edit-tab select.post_type options[value=' + post_type + ']').attr('selected', 'selected');
+
+	// console.log($('.item-edit-tab.' + post_type + ' select.post_type').val());
+
+	$('ul.item-edit-tabs li').removeClass('active');
+	$(this).addClass('active');
+
+	$tab
+		.removeClass('text link')
+		.addClass(post_type);
 });

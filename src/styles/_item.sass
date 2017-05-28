@@ -147,31 +147,54 @@ $item-thumbnail-size: 90px
 	&-header
 		display: flex
 		align-items: center
-		padding: 10px 15px
+		padding: 20px 10px
 
 		&-action
 			margin-left: auto
+
+			.btn
+				margin-left: 10px
 
 	&-form
 		form
 			display: flex
 			flex-direction: column
 
-			#input-item-title, #input-item-description
+			#name, #content
 				margin: 0 10px
 
-			#input-item-title
+			#name
+				color: $color-primary
 				font-size: $font-size-large
 				border-bottom: 2px solid $color-primary
+				background-color: $color-background-light
+				padding: 10px
 
-			#input-item-description
+			#content
 				min-height: 150px
 				background-color: $color-background-light
 				padding: 10px
 
+			span.content-extra
+				font-size: $font-size-smaller
+				text-align: right
+				padding: 5px 10px
+
+				a
+					color: $color-text-hint
+					&:hover
+						color: $color-primary
+
+
+			#category
+				padding: 10px
+				margin: 10px
+
+			#status, #post_type
+				visibility: hidden
+				display: none
+
 	&-view
-		.item-rating
-			pointer-events: none
 
 	&-tabs
 		list-style-type: none
@@ -208,9 +231,9 @@ $item-thumbnail-size: 90px
 				span
 					color: $color-secondary
 
-
 	&-tab
-		display: none
+		&.link
+			#content
+				visibility: hidden
+				display: none
 
-		&.active
-			display: block
