@@ -28,3 +28,41 @@ def setup_for_dillo(project_url, replace=False):
 
     authentication.force_cli_user()
     dillo.setup.setup_for_dillo(project_url, replace=replace)
+
+
+@manager_dillo.command
+def index_nodes_rebuild():
+    """Clear all nodes, update settings and reindex all posts."""
+
+    from dillo.posts.eve_hooks import algolia_index_post_save
+
+    nodes_index = current_app.algolia_index_nodes
+
+    log.info('Dropping index: {}'.format(nodes_index))
+    nodes_index.clear_index()
+    index_nodes_update_settings()
+
+    db = current_app.db()
+    nodes_dillo_posts = db['nodes'].find({'_deleted': {'$ne': True}})
+
+    log.info('Reindexing all nodes')
+    for post in nodes_dillo_posts:
+        algolia_index_post_save(post)
+
+
+@manager_dillo.command
+def index_nodes_update_settings():
+    """Configure indexing backend as required by the project"""
+    nodes_index = current_app.algolia_index_nodes
+
+    # Automatically creates index if it does not exist
+    nodes_index.set_settings({
+        'searchableAttributes': [
+            'name',
+            'content',
+        ],
+        'customRanking': [
+            'desc(hot)',
+            'desc(created)',
+        ]
+    })
