@@ -26,6 +26,7 @@ def create():
         user=current_user.objectid,
         node_type='dillo_post',
         properties=dict(
+            content='community',
             category='community',)
     )
 
