@@ -61,7 +61,7 @@ def algolia_index_post_save(node):
         'shortcode': node['properties']['shortcode'],
     }
     if 'content' in node['properties'] and node['properties']['content']:
-        node_ob['content'] = node['content']
+        node_ob['content'] = node['properties']['content']
     # Hack for instantsearch.js. Because we can't to string comparison in Hogan, we store this case
     # in a boolean.
     if node['properties']['post_type'] == 'link':
