@@ -6,8 +6,27 @@ function updateRatings() {
 		// console.log('Getting ratings')
 	})
 		.done(function(data) {
+			// Iterate over all local keys
+			for (var i = 0; i < localStorage.length; i++){
+				var key = localStorage.key(i);
+				// Look for all dillo keys
+				if (key.startsWith('dillo_')) {
+					var key_split = key.split('_')[1];
+					// Find a match from the server-provided ratings
+					var rating_value = data.items[key_split]
+					if (rating_value) {
+						// If there is match, update the key
+						localStorage.setItem(key, rating_value);
+						delete data.items[key_split];
+					} else {
+						// Remove the key, since the user removed is vote
+						localStorage.removeItem(key);
+					}
+				}
+			}
 			$.each(data.items, function(index, value) {
-				localStorage.setItem(value[0], value[1]);
+				var key = 'dillo_' + index;
+				localStorage.setItem(key, value);
 			});
 		})
 }

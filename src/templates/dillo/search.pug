@@ -101,7 +101,8 @@ script.
 
 
 	function processHit(hit) {
-		hit.is_positive = localStorage.getItem(hit.objectID);
+		var key = 'dillo_' + hit.objectID;
+		hit.is_positive = localStorage.getItem(key);
 
 		if (hit.is_positive && hit.is_positive === 'true') {
 			hit.is_positive = 'positive';

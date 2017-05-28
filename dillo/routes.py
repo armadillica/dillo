@@ -52,6 +52,6 @@ def get_user_ratings():
         return r
 
     ratings = get_ratings(ObjectId(current_user.objectid))
-    trim_ratings = [(str(r['_id']), r['properties']['ratings']['is_positive']) for r in ratings]
+    trim_ratings = dict((str(r['_id']), r['properties']['ratings']['is_positive']) for r in ratings)
 
     return jsonify(items=trim_ratings)
