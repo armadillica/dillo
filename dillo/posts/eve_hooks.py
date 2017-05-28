@@ -60,8 +60,8 @@ def algolia_index_post_save(node):
         'rating': rating,
         'shortcode': node['properties']['shortcode'],
     }
-    if 'description' in node and node['description']:
-        node_ob['description'] = node['description']
+    if 'content' in node['properties'] and node['properties']['content']:
+        node_ob['content'] = node['content']
     # Hack for instantsearch.js. Because we can't to string comparison in Hogan, we store this case
     # in a boolean.
     if node['properties']['post_type'] == 'link':
@@ -71,7 +71,7 @@ def algolia_index_post_save(node):
         lookup = {'_id': ObjectId(node['picture'])}
         picture = files_collection.find_one(lookup)
 
-        variation_t = next((item for item in picture['variations'] \
+        variation_t = next((item for item in picture['variations']
                             if item['size'] == 't'), None)
         if variation_t:
             node_ob['picture'] = generate_link(picture['backend'],
