@@ -6,6 +6,9 @@ function item_open(item_id){
 	}
 
 	var item_url = '/nodes/' + item_id + '/view';
+	var push_url; // XXX - make me pretty
+
+	if (typeof push_url == 'undefined') push_url = item_url;
 
 	$.get(item_url, function(item_data) {
 
@@ -19,6 +22,19 @@ function item_open(item_id){
 
 		setMessage(xhr);
 	});
+
+	// Determine whether we should push the new state or not.
+	pushState = (typeof pushState !== 'undefined') ? pushState : true;
+	if (!pushState) return;
+
+	// Push the correct URL onto the history.
+	var push_state = {itemId: item_id};
+
+	window.history.pushState(
+		push_state,
+		item_id,
+		push_url
+	);
 }
 
 /* Rate | Vote */

@@ -114,9 +114,11 @@ script.
 		hit.name = twemoji.parse(hit.name);
 		hit.link_url = hit.description;
 
-		if (hit.description) {
-			hit.link_short = shortenUrl(hit.description);
+		if (hit.content) {
+			hit.link_short = shortenUrl(hit.content);
 		}
+
+		console.log(hit)
 		return hit;
 	}
 
