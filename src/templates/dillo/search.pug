@@ -112,13 +112,14 @@ script.
 
 		hit.created = moment.unix(hit.created).fromNow();
 		hit.name = twemoji.parse(hit.name);
-		hit.link_url = hit.description;
 
-		if (hit.content) {
-			hit.link_short = shortenUrl(hit.content);
+		if (hit.is_link) {
+			hit.link_url = hit.content;
+
+			if (hit.content)
+				hit.link_short = shortenUrl(hit.content);
 		}
 
-		console.log(hit)
 		return hit;
 	}
 
