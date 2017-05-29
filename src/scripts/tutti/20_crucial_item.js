@@ -1,14 +1,12 @@
 /* Open posts on the side */
-function item_open(item_id){
-
+function item_open(item_id, hit_url){
 	if (item_id === undefined) {
 		throw new ReferenceError("item_open(" + item_id + ") called.");
 	}
 
 	var item_url = '/nodes/' + item_id + '/view';
-	var push_url; // XXX - make me pretty
 
-	if (typeof push_url == 'undefined') push_url = item_url;
+	//if (typeof push_url == 'undefined') push_url = item_url;
 
 	$.get(item_url, function(item_data) {
 
@@ -23,6 +21,10 @@ function item_open(item_id){
 		setMessage(xhr);
 	});
 
+	if (hit_url === undefined) {
+		return;
+	}
+
 	// Determine whether we should push the new state or not.
 	pushState = (typeof pushState !== 'undefined') ? pushState : true;
 	if (!pushState) return;
@@ -33,7 +35,7 @@ function item_open(item_id){
 	window.history.pushState(
 		push_state,
 		item_id,
-		push_url
+		hit_url
 	);
 }
 

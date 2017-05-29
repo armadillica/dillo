@@ -9,13 +9,16 @@
 
 #col_right.listing-view
 	#list-item
+		| {% if 'post' in col_right %}
+		| Loading {{ col_right['post']['name'] }}
+		| {% elif 'activities' in col_right %}
 		.welcome
 			h2 Welcome to Dillo
 
 			.d-activity
-				| {% if activities['_meta']['total'] %}
+				| {% if col_right['activities']['_meta']['total'] %}
 				ul
-					| {% for act in activities['_items'] %}
+					| {% for act in col_right['activities']['_items'] %}
 					li
 						img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
 						span.date(title="{{ act._created }}") {{ act._created | pretty_date_time }}
@@ -23,7 +26,7 @@
 						span.verb {{ act.verb }}
 					| {% endfor %}
 				| {% endif %}
-
+		| {% endif %}
 
 |{% endblock body %}
 
@@ -58,7 +61,7 @@ script.
 
 	var hitTemplate =
 		'<ul class="list-hits">' +
-			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}">' +
+			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
 				'<a href="" class="item-thumbnail">' +
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
@@ -141,12 +144,15 @@ script.
 
 		var li = $(this).closest('.list-hits-item');
 		var hit_id = li.attr('data-id');
+		var hit_url = li.attr('data-url');
 
 		/* Unstyle all items on the list and style only the current one */
 		$('.list-hits-item').removeClass('active');
 		li.addClass('active');
 
-		item_open(hit_id);
+		item_open(hit_id, hit_url);
 	});
-
+	{% if 'post' in col_right %}
+	item_open('{{col_right['post']['_id']}}');
+	{% endif %}
 | {% endblock footer_scripts %}

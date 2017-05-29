@@ -55,10 +55,10 @@ def index():
 
     return render_template(
             'dillo/search.html',
-            activities=activities)
+            col_right={'activities': activities})
 
 
-@blueprint.route("/p/<post_id>/rate/<operation>", methods=['POST'])
+@blueprint.route("/p/<string(length=24):post_id>/rate/<operation>", methods=['POST'])
 @login_required
 def post_rate(post_id, operation):
     """Comment rating function
@@ -87,3 +87,13 @@ def post_rate(post_id, operation):
             'rating_positive': result.properties.rating_positive,
             'rating_negative': result.properties.rating_negative,
         }})
+
+
+@blueprint.route('/p/<string(length=6):post_shortcode>/')
+@blueprint.route('/p/<string(length=6):post_shortcode>/<slug>')
+def view(post_shortcode, slug=None):
+    api = system_util.pillar_api()
+    post = Node.find_one({'where': {'properties.shortcode': post_shortcode}}, api=api)
+    return render_template(
+        'dillo/search.html',
+        col_right={'post': post})
