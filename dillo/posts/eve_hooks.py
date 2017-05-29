@@ -6,7 +6,7 @@ On post creation:
 
 - set rating
 - calculate hot value
-- set AID
+- set shortcode
 - set slug from title
 
 """
