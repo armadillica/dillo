@@ -27,7 +27,9 @@ function setMessage(xhr){
 }
 
 function shortenUrl(url){
-	url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+
+	if (typeof url !== 'undefined')
+		url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
 
 	return url;
 }

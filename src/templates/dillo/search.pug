@@ -115,9 +115,7 @@ script.
 
 		if (hit.is_link) {
 			hit.link_url = hit.content;
-
-			if (hit.content)
-				hit.link_short = shortenUrl(hit.content);
+			hit.link_short = shortenUrl(hit.content);
 		}
 
 		return hit;
