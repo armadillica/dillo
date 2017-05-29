@@ -40,6 +40,10 @@ def algolia_index_post_save(node):
 
     rating = node['properties']['rating_positive'] - node['properties']['rating_negative']
 
+    nodes_collection = current_app.data.driver.db['nodes']
+    lookup = {'parent': node['_id']}
+    comments_count = nodes_collection.count(lookup)
+
     node_ob = {
         'objectID': node['_id'],
         'name': node['name'],
@@ -59,6 +63,7 @@ def algolia_index_post_save(node):
         'category': node['properties']['category'],
         'rating': rating,
         'shortcode': node['properties']['shortcode'],
+        'comments_count': comments_count,
     }
     if 'content' in node['properties'] and node['properties']['content']:
         node_ob['content'] = node['properties']['content']
