@@ -37,13 +37,6 @@
 				enctype="multipart/form-data",
 				action="{{url_for('nodes.edit', node_id=node._id)}}")
 
-				| {{ form.csrf_token }}
-
-				| {% for field in form %}
-
-				| {% if field.name in ['csrf_token', 'status'] or field.type == 'HiddenField' %}
-				| {{ field }}
-				| {% elif field.name == 'name' %}
 				input.item-title(
 					id="name",
 					value="{{ node.name }}",
@@ -51,28 +44,35 @@
 					name="name",
 					placeholder="Awesome Post Title")
 
-				| {% elif field.name == 'content' %}
-				textarea(
-					id="content",
-					name="content",
-					placeholder="Paste or type the URL here")
-					| {{ node.properties.content }}
-
-				span.content-extra
-					a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
-						| Markdown Cheatsheet
-
-				| {% elif field.name == 'category' %}
-				.form-split
-					.split-col
-					.split-col
 				select(
 					id="category",
 					name="category")
 					option Community
 					option Artwork
+					option Development
 
-				| {% elif field.name == 'post_type' %}
+				.input-content.link
+					input(
+						disabled,
+						name="content",
+						type="text",
+						class="input-field",
+						placeholder="Paste or type the URL here")
+
+				.input-content.text
+					textarea(
+						disabled,
+						name="content",
+						class="input-field",
+						placeholder="Witty post description")
+						| {{ node.properties.content }}
+
+					span.content-extra
+						a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+						| Markdown Cheatsheet
+
+				| {{ form.csrf_token }}
+				| {{ form.status }}
 				select(
 					id="post_type",
 					class="post_type",
@@ -81,75 +81,8 @@
 					option(value="text",
 						selected="{% if node.properties.post_type == 'text' %}selected{% endif %}") Text
 
-				| {% endif %}
-				| {% endfor %}
-
-
-				//- textarea(
-				//- 	name="content",
-				//- 	id="content",
-				//- 	placeholder="Paste or type the URL here")
-				//- 	| {{ node.properties.content }}
-
-				//- select(
-				//- 	id="input-item-category",
-				//- 	name="category")
-				//- 	option Community
-				//- 	option Artwork
-
-				//- input(
-				//- 	class="fileupload",
-				//- 	id="input-item-file",
-				//- 	name="file",
-				//- 	type="file")
-
-				//- select(
-				//- 	id="post_type",
-				//- 	class="post_type",
-				//- 	name="post_type")
-				//- 	option(value="link") Link
-				//- 	option(value="text") Text
-
-				//- |	{{ form.csrf_token }}
-
-		//- .item-edit-tab(
-		//- 	class="text {% if node.properties.post_type == 'text' %}active{% endif %}")
-		//- 	form(
-		//- 	id="item-edit-form",
-		//- 	method="POST",
-		//- 	enctype="multipart/form-data",
-		//- 	action="{{ url_for('nodes.edit', node_id=node._id) }}")
-
-		//- 		input.item-title(
-		//- 			id="input-item-title",
-		//- 			value="{{ node.name }}",
-		//- 			type="text",
-		//- 			placeholder="Post Title")
-
-		//- 		textarea(
-		//- 			id="content",
-		//- 			placeholder="Witty description of your post.")
-		//- 			| {{ node.properties.content }}
-		//- 		a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
-		//- 			| Markdown Cheatsheet
-
-
-		//- 		select(
-		//- 			id="input-item-category")
-		//- 			option Community
-		//- 			option Artwork
-
-		//- 		input(
-		//- 			id="input-item-file",
-		//- 			type="file")
-
-		//- 		select(
-		//- 			id="post_type",
-		//- 			class="post_type",
-		//- 			name="post_type")
-		//- 			option(value="link") Link
-		//- 			option(value="text", selected) Text
-
+				.form-upload-file
+					| {{ form.picture }}
 
 
 #col_right.listing-view.item-edit-view
@@ -186,12 +119,20 @@
 | {% endblock body %}
 
 | {% block footer_scripts %}
-//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.widget.min.js') }}")
-//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
-//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
-//- script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
-//- script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.widget.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
 script.
+	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: ''});
+
+	// On load, enable the proper content
+	var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
+	input_content
+		.prop('disabled', false)
+		.attr('id', 'content');
+
 	// Markdown initialization
 	var convert = new Markdown.getSanitizingConverter();
 	Markdown.Extra.init(convert);
@@ -200,7 +141,7 @@ script.
 	// Convert Markdown and emojis for text and title
 	$(function() {
 		var item_title_input = $('#item-edit-form #name');
-		var item_description_input = $('#content');
+		var item_description_input = document.getElementById('content');
 
 		item_title_input.keyup(function() {
 			$('#item-title').html(
@@ -210,11 +151,11 @@ script.
 			);
 		}).trigger('keyup');
 
-		item_description_input.keyup(function() {
+		$(item_description_input).keyup(function() {
 			$('#item-description').html(
 				twemoji.parse(
 					convert(
-						item_description_input.val()
+						$(item_description_input).val()
 					)
 				)
 			);
@@ -228,7 +169,7 @@ script.
 		});
 
 		/* Resize textareas */
-		item_description_input
+		$(item_description_input)
 			.autoResize()
 			.blur();
 	});

@@ -94,14 +94,21 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 	var post_type = $(this).data('post-type');
 	var $tab = $('#item-edit-tab');
 
+	// Change the post_type select to the appropiate post_type
 	$('.item-edit-tab select.post_type').val(post_type).change();
 	$('.item-edit-tab select.post_type options[value=' + post_type + ']').attr('selected', 'selected');
 
-	// console.log($('.item-edit-tab.' + post_type + ' select.post_type').val());
+	// Enable the 'content' field for the appropriate post_type, disable the other
+	$('.input-content .input-field').prop('disabled', true);
+	$('.input-content.' + post_type + ' .input-field')
+		.prop('disabled', false)
+		.attr('id', 'content');
 
+	// Style the tab
 	$('ul.item-edit-tabs li').removeClass('active');
 	$(this).addClass('active');
 
+	// Add the post_type class to the tab, to show/hide elements
 	$tab
 		.removeClass('text link')
 		.addClass(post_type);
