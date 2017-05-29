@@ -43,7 +43,7 @@ def index_nodes_rebuild():
     index_nodes_update_settings()
 
     db = current_app.db()
-    nodes_dillo_posts = db['nodes'].find({'_deleted': {'$ne': True}})
+    nodes_dillo_posts = db['nodes'].find({'_deleted': {'$ne': True}, 'node_type': 'dillo_post'})
 
     log.info('Reindexing all nodes')
     for post in nodes_dillo_posts:
