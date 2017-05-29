@@ -23,12 +23,9 @@ $item-thumbnail-size: 90px
 	justify-content: center
 	width: $item-thumbnail-size
 	min-width: $item-thumbnail-size
-	max-height: $item-thumbnail-size / 1.4
-	background-color: $color-background-dark
 	overflow: hidden
-
-	&:hover img
-		transform: scale(1.1)
+	border-top-left-radius: 3px
+	border-bottom-left-radius: 3px
 
 	+media-xs
 		width: 100%
@@ -38,10 +35,12 @@ $item-thumbnail-size: 90px
 			width: 100%
 
 	img
-		// position: absolute
-		// min-width: $item-thumbnail-size
-		// height: $item-thumbnail-size
+		position: absolute
+		width: $item-thumbnail-size
+		height: $item-thumbnail-size
 		transition: transform 150ms ease-in-out
+		border-radius: 50%
+		box-shadow: 2px 2px 0 rgba(black, .1)
 
 .item-content
 	display: flex
@@ -184,7 +183,6 @@ $item-thumbnail-size: 90px
 					color: $color-text-hint
 					&:hover
 						color: $color-primary
-
 
 			#category
 				padding: 10px

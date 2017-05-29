@@ -1,3 +1,6 @@
+body
+	background-color: $color-background
+
 a:hover
 	color: $color-primary
 
@@ -15,8 +18,6 @@ a:hover
 		align-items: center
 		width: 100%
 		height: $header-bar-pri-size
-		box-shadow: inset 0 -1px 0  $color-background-dark
-		background-color: $color-background-light
 
 		&-user
 			padding: 10px
@@ -53,6 +54,12 @@ button, .btn
 	&.cancel
 		+button($color-text-light, 3px, false)
 		font-family: $font-headings
+
+select, textarea, input
+	box-shadow: 1px 2px 2px $color-background-dark
+
+	&:focus
+		background-color: white !important
 
 .emoji
 	height: 16px

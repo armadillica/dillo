@@ -1,12 +1,13 @@
 ul.list-hits
-	padding: 0
+	padding: 5px
 	margin: 0
 
 	> li
 		display: flex
 		height: 100%
 		background-color: $color-background-light
-		box-shadow: 0 -1px 0  $color-background, inset -5px 0 0  $color-background
+		border-radius: 3px
+		box-shadow: 1px 2px 2px $color-background-dark
 		+clearfix
 
 		+media-xs
@@ -17,10 +18,10 @@ ul.list-hits
 
 		&.active
 			background-color: white
-			box-shadow: 0 1px 0  $color-background-dark, inset -5px 0 0  $color-primary
+			box-shadow: 1px 2px 2px $color-background-dark, inset -5px 0 0  $color-secondary
 
 			+media-xs
-				box-shadow: 1px 1px 0  $color-background-dark, 0 -5px 0  $color-primary
+				box-shadow: 1px 2px 2px $color-background-dark, 0 -5px 0  $color-secondary
 
 			.item-title
 				color: $color-primary
