@@ -170,9 +170,10 @@ $item-thumbnail-size: 90px
 				padding: 10px
 
 			#content
-				min-height: 150px
-				background-color: $color-background-light
 				padding: 10px
+
+			textarea#content
+				min-height: 150px
 
 			span.content-extra
 				font-size: $font-size-smaller
@@ -202,12 +203,10 @@ $item-thumbnail-size: 90px
 				input, textarea
 					display: none
 					visibility: hidden
+					background-color: $color-background-light
 
-				&.active input, textarea
-					display: block
-					visibility: visible
-
-	&-view
+			.fileupload
+				box-shadow: none
 
 	&-tabs
 		list-style-type: none
@@ -246,7 +245,18 @@ $item-thumbnail-size: 90px
 
 	&-tab
 		&.link
-			.input-content.link input
+			.input-content.link input#content
 				visibility: visible
 				display: block
+			.input-content.text textarea#content,
+			span.content-extra
+				visibility: hidden
+				display: none
 
+		&.text
+			.input-content.text textarea#content
+				visibility: visible
+				display: block
+			.input-content.link input#content
+				visibility: hidden
+				display: none
