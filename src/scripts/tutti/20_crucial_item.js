@@ -98,7 +98,8 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 
 	// Change the post_type select to the appropiate post_type
 	$('.item-edit-tab select.post_type').val(post_type).change();
-	$('.item-edit-tab select.post_type options[value=' + post_type + ']').attr('selected', 'selected');
+	$('.item-edit-tab select.post_type option').removeAttr('selected');
+	$('.item-edit-tab select.post_type option[value="' + post_type + '"]').attr('selected', 'selected');
 
 	// Enable the 'content' field for the appropriate post_type, disable the other
 	$('.input-content .input-field').prop('disabled', true);

@@ -77,8 +77,11 @@
 					id="post_type",
 					class="post_type",
 					name="post_type")
-					option(value="link") Link
-					option(value="text",
+					option(
+						value="link",
+						selected="{% if node.properties.post_type == 'link' %}selected{% endif %}") Link
+					option(
+						value="text",
 						selected="{% if node.properties.post_type == 'text' %}selected{% endif %}") Text
 
 				.form-upload-file
