@@ -47,9 +47,9 @@
 				select(
 					id="category",
 					name="category")
-					option Community
-					option Artwork
-					option Development
+					| {% for option in config['POST_CATEGORIES'] %}
+					option {{ option }}
+					| {% endfor %}
 
 				.input-content.link
 					input(
