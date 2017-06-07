@@ -1,3 +1,4 @@
 # Primary requirements
 -r ../pillar/requirements.txt
 micawber==0.3.4
+python-slugify==1.2.4

@@ -17,6 +17,7 @@ import datetime
 from bson import ObjectId
 from flask import current_app, abort
 from micawber.exceptions import ProviderException, ProviderNotFoundException
+from slugify import slugify
 from pillar.markdown import markdown
 from pillar.api.file_storage import generate_link
 from pillar.api.nodes import only_for_node_type_decorator
@@ -108,6 +109,8 @@ def set_defaults(item):
     item['properties']['status'] = 'pending'
     update_hot(item)
     item['properties']['shortcode'] = generate_shortcode(item['project'], item['node_type'])
+    item['properties']['slug'] = slugify(item['name'], max_length=50)
+    print(item['properties']['slug'])
 
 
 def before_creating_posts(items):
@@ -149,7 +152,8 @@ def before_replacing_post(item, original):
         return abort(403)
     if status_original == 'pending' and status_updated == 'published':
         # We are publishing the post for the first time
-        pass
+        # Update the slug only once before publishing the post
+        item['properties']['slug'] = slugify(item['name'], max_length=50)
 
     post_handler = {
         'link': generate_oembed,
