@@ -78,10 +78,13 @@ node_type_post = {
         'hot': {'type': 'float'},
     },
     'form_schema': {
+        'content_html': {'visible': False},
+        'hot': {'visible': False},
         'ratings': {'visible': False},
         'rating_positive': {'visible': False},
         'rating_negative': {'visible': False},
-        'hot': {'visible': False},
+        'slug': {'visible': False},
+        'shortcode': {'visible': False},
     },
     'parent': []
 }
