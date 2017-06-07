@@ -114,7 +114,9 @@ script.
 		}
 
 		hit.created = moment.unix(hit.created).fromNow();
-		hit.name = twemoji.parse(hit.name);
+		if (hit.name) {
+			hit.name = twemoji.parse(hit.name);
+		}
 
 		if (hit.is_link) {
 			hit.link_url = hit.content;
