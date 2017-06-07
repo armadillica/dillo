@@ -110,7 +110,6 @@ def set_defaults(item):
     update_hot(item)
     item['properties']['shortcode'] = generate_shortcode(item['project'], item['node_type'])
     item['properties']['slug'] = slugify(item['name'], max_length=50)
-    print(item['properties']['slug'])
 
 
 def before_creating_posts(items):
