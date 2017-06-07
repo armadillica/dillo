@@ -22,8 +22,3 @@ function shortenUrl(url){
 
 	return url;
 }
-
-/* Notifications: Toastr Defaults */
-toastr.options.showDuration = 50;
-toastr.options.progressBar = true;
-toastr.options.positionClass = 'toast-bottom-left';
