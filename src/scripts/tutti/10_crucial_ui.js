@@ -15,17 +15,6 @@ $(window).on("load resize",function(){
 	containerResizeY(window.innerHeight);
 });
 
-
-function setMessage(xhr){
-	popNotification();
-
-	$('#notification-pop').addClass('code-' + xhr.status);
-
-	// The text in the pop
-	var text = '<span class="nc-author">' + xhr.status + ' ' + xhr.statusText + '</span> ';
-	$('#notification-pop .nc-text').html(text);
-}
-
 function shortenUrl(url){
 
 	if (typeof url !== 'undefined')
@@ -33,3 +22,8 @@ function shortenUrl(url){
 
 	return url;
 }
+
+/* Notifications: Toastr Defaults */
+toastr.options.showDuration = 50;
+toastr.options.progressBar = true;
+toastr.options.positionClass = 'toast-bottom-left';

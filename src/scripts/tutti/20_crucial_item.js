@@ -18,7 +18,7 @@ function item_open(item_id, hit_url){
 			console.log('XHR:', xhr);
 		}
 
-		setMessage(xhr);
+		toastr.error(xhr.statusText, 'Error ' + xhr.status);
 	});
 
 	if (hit_url === undefined) {
@@ -86,7 +86,7 @@ $(document).on('click','body .item-rating',function(e){
 	})
 	.fail(function(xhr) {
 
-		setMessage(xhr);
+		toastr.error(xhr.statusText, 'Error ' + xhr.status);
 	});
 });
 

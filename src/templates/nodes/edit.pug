@@ -202,8 +202,8 @@ script.
 			type: 'POST'
 		})
 		.fail(function(xhr){
-			/* Something went wrong, print it */
-			setMessage(xhr);
+			/* Something went wrong, notify */
+			toastr.error(xhr.statusText, 'Error ' + xhr.status);
 			uiUpdateOnSave();
 		})
 		.done(function(dataHtml){
@@ -211,6 +211,8 @@ script.
 			$(window).off('beforeunload');
 
 			$('#col_right').html(dataHtml);
+
+			toastr.success('Saved!');
 			uiUpdateOnSave();
 		});
 	});
