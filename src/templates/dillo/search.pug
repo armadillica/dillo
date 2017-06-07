@@ -48,17 +48,6 @@ script.
 
 
 	{% raw %}
-	var _hitTemplate =
-		'<div class="hit media">' +
-		'<div class="media-left">' +
-		'<div class="media-object" style="background-image: url(\'{{picture}}\');"></div>' +
-		'</div>' +
-		'<div class="media-body">' +
-		'<h4 class="media-heading">{{{_highlightResult.name.value}}} {{#stars}}<span class="ais-star-rating--star{{^.}}__empty{{/.}}"></span>{{/stars}}</h4>' +
-		'<p class="year">{{year}}</p><p class="genre">{{#genre}}<span class="badge">{{.}}</span> {{/genre}}</p>' +
-		'</div>' +
-		'</div>';
-
 	var hitTemplate =
 		'<ul class="list-hits">' +
 			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
