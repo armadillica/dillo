@@ -132,14 +132,16 @@ def generate_oembed(item):
     try:
         content = item['properties']['content']
     except KeyError:
+        # TODO investigate under which circumstances this is allowed
         item['properties']['content_html'] = ''
     else:
         try:
             oembed = current_dillo.oembed_registry.request(content)
+            content_html = oembed['html']
         except (ProviderNotFoundException, ProviderException):
             # If the link is not an OEmbed provider, we fail
-            return abort(403)
-        item['properties']['content_html'] = oembed['html']
+            content_html = content
+        item['properties']['content_html'] = content_html
 
 
 @only_for_post
