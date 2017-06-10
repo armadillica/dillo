@@ -19,15 +19,6 @@
 				span TEXT
 				small I'll write a nice article
 
-		.item-edit-header
-			.item-edit-header-action
-				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
-				a#item-save.btn.publish(
-					href="javascript:void(0);",
-					title="Save changes")
-					i.pi-check
-					| Save Changes
-
 		.item-edit-tab(
 			id="item-edit-tab",
 			class="{{ node.properties.post_type }}")
@@ -36,6 +27,15 @@
 				method="POST",
 				enctype="multipart/form-data",
 				action="{{url_for('nodes.edit', node_id=node._id)}}")
+
+				.input-content.link
+					input(
+						disabled,
+						name="content",
+						type="text",
+						class="input-field",
+						placeholder="Paste or type the URL here",
+						value="{{ node.properties.content }}")
 
 				input.item-title(
 					id="name",
@@ -50,16 +50,6 @@
 					| {% for option in config['POST_CATEGORIES'] %}
 					option {{ option }}
 					| {% endfor %}
-
-				.input-content.link
-					input(
-						disabled,
-						name="content",
-						type="text",
-						class="input-field",
-						placeholder="Paste or type the URL here",
-						value="{{ node.properties.content }}")
-
 
 				.input-content.text
 					textarea(
@@ -89,6 +79,15 @@
 				.form-upload-file
 					| {{ form.picture }}
 
+
+		.item-edit-header
+			.item-edit-header-action
+				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
+				a#item-save.btn.publish(
+					href="javascript:void(0);",
+					title="Save changes")
+					i.pi-check
+					| Save Changes
 
 #col_right.listing-view.item-edit-view
 	.item-media
@@ -177,6 +176,8 @@ script.
 		$(item_description_input)
 			.autoResize()
 			.blur();
+
+		input_content.focus();
 	});
 
 

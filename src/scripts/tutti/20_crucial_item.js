@@ -101,13 +101,15 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 	$('.item-edit-tab select.post_type option').removeAttr('selected');
 	$('.item-edit-tab select.post_type option[value="' + post_type + '"]').attr('selected', 'selected');
 
-	// Enable the 'content' field for the appropriate post_type, disable the other
+	// Enable the 'content' field for the appropriate post_type, disable the others
 	$('.input-content .input-field').prop('disabled', true);
-	$('.input-content.' + post_type + ' .input-field')
+
+	var $input_field = $('.input-content.' + post_type + ' .input-field');
+	$input_field
 		.prop('disabled', false)
 		.attr('id', 'content');
 
-	// Style the tab
+	// Style the tab as active
 	$('ul.item-edit-tabs li').removeClass('active');
 	$(this).addClass('active');
 
@@ -115,4 +117,8 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 	$tab
 		.removeClass('text link')
 		.addClass(post_type);
+
+	if (post_type == 'link'){
+		$input_field.focus();
+	}
 });

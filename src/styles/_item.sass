@@ -159,13 +159,8 @@ $item-thumbnail-size: 90px
 			display: flex
 			flex-direction: column
 
-			#name, #content
-				margin: 0 10px
-
 			#name
 				color: $color-primary
-				font-size: $font-size-large
-				border-bottom: 2px solid $color-primary
 				background-color: $color-background-light
 				padding: 10px
 
@@ -196,6 +191,9 @@ $item-thumbnail-size: 90px
 			.form-upload-file
 				padding: 10px 5px
 
+			input, textarea
+				margin: 5px 10px
+
 			.input-content
 				display: flex
 				flex-direction: column
@@ -208,6 +206,7 @@ $item-thumbnail-size: 90px
 			.fileupload
 				box-shadow: none
 
+	/* Tabs for Link/Text */
 	&-tabs
 		list-style-type: none
 		margin: 0
@@ -222,6 +221,7 @@ $item-thumbnail-size: 90px
 			color: darken($color-background-dark, 35%)
 			cursor: pointer
 			user-select: none
+			margin-bottom: 15px
 
 			&:hover
 				color: $color-primary
