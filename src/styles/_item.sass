@@ -25,8 +25,12 @@ $item-thumbnail-size: 90px
 	width: $item-thumbnail-size
 	min-width: $item-thumbnail-size
 	overflow: hidden
+	background-color: $color-background
 	border-top-left-radius: 3px
 	border-bottom-left-radius: 3px
+
+	&.has-thumbnail
+		background-color: transparent
 
 	+media-xs
 		width: 100%
@@ -37,11 +41,12 @@ $item-thumbnail-size: 90px
 
 	img
 		position: absolute
-		width: $item-thumbnail-size
+		width: 100%
 		height: $item-thumbnail-size
 		transition: transform 150ms ease-in-out
 		border-radius: 50%
 		box-shadow: 2px 2px 0 rgba(black, .1)
+		background-color: $color-background
 
 .item-content
 	display: flex

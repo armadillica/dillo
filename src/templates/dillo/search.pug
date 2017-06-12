@@ -51,7 +51,7 @@ script.
 	var hitTemplate =
 		'<ul class="list-hits">' +
 			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-				'<a href="" class="item-thumbnail">' +
+				'<a href="" class="item-thumbnail {{#picture}}has-thumbnail{{/picture}}">' +
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
 				'<div class="item-content">' +
