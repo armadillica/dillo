@@ -17,7 +17,7 @@
 	.item-details
 		a#item-title.item-title(href="") {{ node.name }}
 		ul
-			li {{ node.properties.post_type | undertitle }}
+			li#item-post_type {{ node.properties.post_type | undertitle }}
 			li {{ node.properties.category | undertitle }}
 			li {{ node._created | pretty_date }}
 			li {{ node.user.full_name }}
