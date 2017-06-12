@@ -1,5 +1,7 @@
 .item-media
-	i.pi-play
+	| {% if node.picture %}
+	img(src="{{ node.picture.thumbnail('l', api=api) }}")
+	| {% endif %}
 
 .item-content(
 	id="{{ node._id }}",
