@@ -139,8 +139,8 @@ def generate_oembed(item):
             oembed = current_dillo.oembed_registry.request(content)
             content_html = oembed['html']
         except (ProviderNotFoundException, ProviderException):
-            # If the link is not an OEmbed provider, we fail
-            content_html = content
+            # If the link is not an OEmbed provider, content_html is empty
+            content_html = None
         item['properties']['content_html'] = content_html
 
 
