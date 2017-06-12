@@ -130,7 +130,21 @@ script.
 
 		// Convert Markdown and emojis for text and title
 		var item_title_input = $('#item-edit-form #name');
+		var item_content_input = $('#content');
 		var item_description_input = document.getElementById('content');
+
+		item_content_input.on('keydown', function () {
+			delay(function () {
+				var url = item_content_input.val();
+				$.post("{{ url_for('posts.spoon')}}", {url: url})
+					.done(function (data) {
+						if (data) {
+							console.log(data);
+						}
+				});
+			}, 1000);
+		});
+
 
 		item_title_input.keyup(function() {
 			$('#item-title').html(
@@ -138,7 +152,7 @@ script.
 					item_title_input.val()
 				)
 			);
-		}).trigger('keyup');
+		});
 
 		$(item_description_input).keyup(function() {
 			$('#item-description').html(

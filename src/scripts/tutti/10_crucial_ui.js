@@ -33,3 +33,13 @@ $('.dropdown-toggle').on('click', function(e){
 $(document).click(function() {
 	$('.dropdown-toggle, ul.dropdown-menu').removeClass('active');
 });
+
+
+// Utility for delaying a function call (used to throttle keydown events)
+var delay = (function () {
+	var timer = 0;
+	return function (callback, ms) {
+		clearTimeout(timer);
+		timer = setTimeout(callback, ms);
+	};
+})();
