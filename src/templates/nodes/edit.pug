@@ -191,6 +191,7 @@ script.
 				$(window).off('beforeunload');
 
 				$('#col_right').html(dataHtml);
+				loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 
 				toastr.success('Saved!');
 				uiUpdateOnSave();
