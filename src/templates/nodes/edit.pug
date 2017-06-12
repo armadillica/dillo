@@ -48,7 +48,11 @@
 					id="category",
 					name="category")
 					| {% for option in config['POST_CATEGORIES'] %}
+					| {% if option == node.properties.category %}
+					option(selected) {{ option }}
+					| {% else %}
 					option {{ option }}
+					| {% endif %}
 					| {% endfor %}
 
 				.input-content.text
@@ -69,12 +73,18 @@
 					id="post_type",
 					class="post_type",
 					name="post_type")
-					option(
-						value="link",
-						selected="{% if node.properties.post_type == 'link' %}selected{% endif %}") Link
-					option(
-						value="text",
-						selected="{% if node.properties.post_type == 'text' %}selected{% endif %}") Text
+
+					| {% if node.properties.post_type == 'link' %}
+					option(value="link", selected) Link
+					| {% else %}
+					option(value="link") Link
+					| {% endif %}
+
+					| {% if node.properties.post_type == 'text' %}
+					option(value="text", selected) Text
+					| {% else %}
+					option(value="text") Text
+					| {% endif %}
 
 				.form-upload-file
 					| {{ form.picture }}
