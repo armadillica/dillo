@@ -22,3 +22,14 @@ function shortenUrl(url){
 
 	return url;
 }
+
+$('.dropdown-toggle').on('click', function(e){
+	e.stopPropagation();
+
+	$(this).toggleClass('active');
+	$('ul.dropdown-menu').toggleClass('active');
+});
+
+$(document).click(function() {
+	$('.dropdown-toggle, ul.dropdown-menu').removeClass('active');
+});

@@ -21,14 +21,15 @@ html(lang='en')
 					input(
 						id="q",
 						type="text",
-						placeholder="Search Dillo...")
+						placeholder="Search...")
 
-				#header-bar-pri-user
+				nav.nav-bar#header-bar-pri-user
 					ul
 						li
 							a.btn.submit(href="{{ url_for('posts.create') }}") SUBMIT POST
 
 						| {% if current_user.is_authenticated %}
+
 						li.nav-notifications
 							a.navbar-item#notifications-toggle(
 								title="Notifications",
@@ -47,11 +48,32 @@ html(lang='en')
 										href="/notifications/read-all")
 										| Mark All as Read
 
-						li
-							img.user-avatar(src="{{ current_user.gravatar }}")
+						li.dropdown
+							.dropdown-toggle
+								img.avatar(
+									src="{{ current_user.gravatar }}",
+									alt="Avatar")
+
+								.dropdown-toggle-icon
+									i.pi-angle-down
+
+							ul.dropdown-menu
+								li
+									a(
+										href="{{ url_for('users.settings_profile') }}"
+										title="Settings")
+										i.pi-cog
+										| Settings
+								li
+									a(
+										href="{{ url_for('users.logout') }}")
+										i.pi-log-out(title="Log Out")
+										| Log out
+
 						| {% else %}
 						li
-							button.btn.sign-in SIGN IN
+							a.navbar-item(href="{{ url_for('users.login') }}")
+								| Log in
 						| {% endif %}
 
 		#app-main

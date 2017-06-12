@@ -20,15 +20,7 @@ a:hover
 		height: $header-bar-pri-size
 
 		&-user
-			padding: 10px
 			margin-left: auto
-
-			> ul
-				margin: 0
-				padding: 0
-
-				> li
-					display: inline-block
 
 .app-branding
 	color: $color-primary
@@ -47,19 +39,98 @@ button, .btn
 
 	&.submit
 		+button($color-primary, 3px, true)
-		font-family: $font-headings
 	&.publish
 		+button($color-success, 3px, true)
-		font-family: $font-headings
 	&.cancel
 		+button($color-text-light, 3px, false)
-		font-family: $font-headings
 
 select, textarea, input
 	box-shadow: 1px 2px 2px $color-background-dark
 
 	&:focus
 		background-color: white !important
+
+/* Navigation */
+nav
+	&.nav-bar
+		z-index: 9
+
+		> ul
+			display: flex
+			align-items: center
+			margin: 0
+			padding: 0
+			> li
+				display: inline-flex
+				margin-right: 15px
+
+				&:last-child
+					margin-right: 0
+
+				&.dropdown
+					position: relative
+
+					.dropdown-toggle
+						cursor: pointer
+
+						&:hover
+							img.avatar
+								transform: scale(1.1)
+
+						&.active
+							img.avatar
+								background-color: $color-primary
+
+						img.avatar
+							border-radius: 50%
+							width: 32px
+							height: 32px
+							background-color: $color-background-light
+							padding: 3px
+							margin-right: 10px
+							transition: transform 100ms ease-in-out, background-color 150ms ease-in-out
+
+						.dropdown-toggle-icon
+							position: absolute
+							bottom: 0
+							right: 0
+
+					ul.dropdown-menu
+						display: none
+						visibility: hidden
+						flex-direction: column
+						list-style: none
+						margin: 2px 0 0 0
+						padding: 0
+						position: absolute
+						top: 100%
+						right: 0
+						min-width: 150px
+						border-bottom-left-radius: 3px
+						border-bottom-right-radius: 3px
+
+						li
+							display: flex
+							align-items: center
+							border-bottom: thin solid $color-background
+							a
+								padding: 10px
+								display: flex
+								width: 100%
+								align-items: center
+								text-decoration: none
+								color: $color-text-dark
+
+								&:hover
+									color: $color-primary
+
+								i
+									margin-right: 5px
+
+						&.active
+							display: flex
+							visibility: visible
+
 
 .emoji
 	height: 16px
