@@ -14,6 +14,7 @@
 	background-color: $color-background-dark
 
 	iframe, img
+		width: 100%
 		max-width: 100%
 
 $item-thumbnail-size: 90px
@@ -265,9 +266,26 @@ $item-thumbnail-size: 90px
 
 	&-tab
 		&.link
-			.input-content.link input#content
-				visibility: visible
-				display: block
+			.input-content.link
+				position: relative
+				display: flex
+				justify-content: center
+				overflow: hidden
+
+				input#content
+					visibility: visible
+					display: block
+					padding-left: 32px
+
+				#item-icon
+					position: absolute
+					left: 12px
+					width: 32px
+					height: 32px
+					display: flex
+					align-items: center
+					justify-content: center
+
 			.input-content.text textarea#content,
 			span.content-extra
 				visibility: hidden
@@ -277,6 +295,6 @@ $item-thumbnail-size: 90px
 			.input-content.text textarea#content
 				visibility: visible
 				display: block
-			.input-content.link input#content
+			.input-content.link input#content, #item-icon
 				visibility: hidden
 				display: none

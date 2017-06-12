@@ -36,6 +36,8 @@
 						class="input-field",
 						placeholder="Paste or type the URL here",
 						value="{{ node.properties.content }}")
+					#item-icon
+						img(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 
 				input.item-title(
 					id="name",
@@ -140,6 +142,12 @@ script.
 					.done(function (data) {
 						if (data) {
 							console.log(data);
+
+							$('input#name').val(data.title);
+							$('#item-title').text(twemoji.parse(data.title));
+
+							$('#item-icon img').attr('src', data.favicon);
+							$('#item-media').html(data.oembed);
 						}
 				});
 			}, 1000);

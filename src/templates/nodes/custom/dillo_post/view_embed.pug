@@ -1,6 +1,10 @@
-.item-media
+#item-media.item-media
+	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
+	| {{ node.properties.content_html | safe }}
+	| {% else %}
 	| {% if node.picture %}
 	img(src="{{ node.picture.thumbnail('l', api=api) }}")
+	| {% endif %}
 	| {% endif %}
 
 .item-content(
