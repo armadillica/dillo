@@ -83,9 +83,9 @@ $(document).on('click','body .item-rating',function(e){
 
 		var rating = data['data']['rating_positive'] - data['data']['rating_negative'];
 		$this.siblings('.item-rating.value').text(rating);
+		toastr.info('Voted!');
 	})
 	.fail(function(xhr) {
-
 		toastr.error(xhr.statusText, 'Error ' + xhr.status);
 	});
 });
