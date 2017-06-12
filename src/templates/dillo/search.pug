@@ -50,11 +50,11 @@ script.
 	{% raw %}
 	var hitTemplate =
 		'<ul class="list-hits">' +
-			'<li class="list-hits-item js-item-show" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-				'<a href="" class="item-thumbnail {{#picture}}has-thumbnail{{/picture}}">' +
+			'<li class="list-hits-item" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+				'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
 					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
 				'</a>' +
-				'<div class="item-content">' +
+				'<div class="item-content" data-node-id="{{ objectID }}">' +
 					'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
 						'<div class="item-rating up">' +
 							'<i class="pi-angle-up"></i>' +
@@ -67,7 +67,7 @@ script.
 						'</div>' +
 					'</div>' +
 					'<div class="item-details">' +
-						'<a href="" class="item-title">{{ name }}</a>' +
+						'<a href="" class="item-title js-item-open">{{ name }}</a>' +
 						'<ul>' +
 							'<li>' +
 								'<a href="{{ link_url }}">' +
@@ -76,7 +76,7 @@ script.
 								'</a>' +
 							'</li>' +
 							'<li><a href="">{{ category }}</a></li>' +
-							'<li><a href="">{{ created }}</a></li>' +
+							'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
 							'<li>{{ user.full_name }}</li>' +
 							'<li><a href="{{ link_url }}">{{ comments_count }} comments</a></li>' +
 							'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
@@ -130,8 +130,9 @@ script.
 
 	search.start();
 
-	$('body').on('click', '.js-item-show', function(e){
+	$('body').on('click', '.js-item-open', function(e){
 		e.preventDefault();
+		e.stopPropagation();
 
 		var li = $(this).closest('.list-hits-item');
 		var hit_id = li.attr('data-id');
@@ -143,6 +144,7 @@ script.
 
 		item_open(hit_id, hit_url);
 	});
+
 	{% if 'post' in col_right %}
 	item_open('{{col_right['post']['_id']}}');
 	{% endif %}
