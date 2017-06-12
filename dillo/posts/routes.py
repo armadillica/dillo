@@ -1,6 +1,10 @@
 import logging
 
-from flask import Blueprint, current_app, redirect, render_template, url_for, jsonify
+import requests
+from bs4 import BeautifulSoup
+from micawber.exceptions import ProviderException, ProviderNotFoundException
+from flask import abort, Blueprint, current_app, redirect, render_template, request, url_for, \
+    jsonify
 from werkzeug import exceptions as wz_exceptions
 from flask_login import current_user, login_required
 from pillarsdk import Project
@@ -9,6 +13,8 @@ from pillarsdk.nodes import Node
 
 from pillar.web import subquery
 from pillar.web import system_util
+
+from dillo import current_dillo
 
 blueprint = Blueprint('posts', __name__)
 log = logging.getLogger(__name__)
@@ -97,3 +103,59 @@ def view(post_shortcode, slug=None):
     return render_template(
         'dillo/search.html',
         col_right={'post': post})
+
+
+@blueprint.route('/spoon', methods=['POST'])
+def spoon():
+    """Parse a url and return:
+    - title: the page title
+    - images: an array of max 4 images found on the page
+    - oembed: html code for oembed (if available)
+    """
+
+    url = request.form.get('url')
+
+    if not url:
+        return abort(400)
+
+    parsed_page = {
+        'images': [],
+        'title': '',
+        'favicon': None,
+        'oembed': None,
+    }
+
+    try:
+        r = requests.get(url)
+    except requests.exceptions.MissingSchema as e:
+        log.debug(e)
+        return abort(422)
+
+    if not r.ok:
+        log.debug('Bad return code: %s', r.status_code)
+        return abort(422)
+
+    soup = BeautifulSoup(r.content, 'html5lib')
+
+    # Get the page title
+    if soup.title:
+        parsed_page['title'] = soup.title.string
+
+    # Get the favicon
+    icon_link = soup.find('link', rel='shortcut icon')
+    if icon_link:
+        parsed_page['favicon'] = icon_link['href']
+
+    # Get only the first 4 images
+    images = soup.find_all('img')
+    parsed_page['images'] = [i['src'] for i in images[:4]]
+
+    # Look for oembed
+    try:
+        oembed = current_dillo.oembed_registry.request(r.url)
+        parsed_page['oembed'] = oembed['html']
+        parsed_page['images'] = [oembed['thumbnail_url']]
+    except (ProviderNotFoundException, ProviderException):
+        pass
+
+    return jsonify(parsed_page)
