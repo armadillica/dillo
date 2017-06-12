@@ -90,35 +90,8 @@
 					| Save Changes
 
 #col_right.listing-view.item-edit-view
-	.item-media
-		i.pi-play
+	| {% include 'nodes/custom/dillo_post/view_embed.html' %}
 
-	.item-content(
-		id="{{ node._id }}",
-		data-node-id="{{ node._id }}")
-		.item-rating-box(
-			class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
-		)
-			.item-rating.up
-				i.pi-angle-up
-			.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
-			.item-rating.down
-				i.pi-angle-down
-		.item-details
-			a#item-title.item-title {{ node.name }}
-			ul
-				li {{ node.properties.category | undertitle }}
-				li {{ node._created | pretty_date }}
-				li {{ node.user.full_name }}
-
-				| {% if node.properties.post_type == 'link' %}
-				li {{ node.description }}
-				| {% endif %}
-
-	| {% if node.properties.post_type == 'text' %}
-	.item-body#item-description
-		| {{ node.description | safe }}
-	| {% endif %}
 
 | {% endblock body %}
 
@@ -128,22 +101,24 @@ script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+
 script.
-	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: ''});
+	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: '{{ node._id }}'});
 
-	// On load, enable the proper content
-	var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
-	input_content
-		.prop('disabled', false)
-		.attr('id', 'content');
-
-	// Markdown initialization
-	var convert = new Markdown.getSanitizingConverter();
-	Markdown.Extra.init(convert);
-	convert = convert.makeHtml;
-
-	// Convert Markdown and emojis for text and title
 	$(function() {
+
+		// On load, enable the proper content
+		var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
+		input_content
+			.prop('disabled', false)
+			.attr('id', 'content');
+
+		// Markdown initialization
+		var convert = new Markdown.getSanitizingConverter();
+		Markdown.Extra.init(convert);
+		convert = convert.makeHtml;
+
+		// Convert Markdown and emojis for text and title
 		var item_title_input = $('#item-edit-form #name');
 		var item_description_input = document.getElementById('content');
 
@@ -178,54 +153,54 @@ script.
 			.blur();
 
 		input_content.focus();
-	});
 
+		/* Save Workflow */
+		$("#item-save").unbind( "click" );
 
-	$("#item-save").unbind( "click" );
+		function uiUpdateOnSave(){
+			var $item_save = $("#item-save");
 
-	function uiUpdateOnSave(){
-		var $item_save = $("#item-save");
+			$item_save
+				.removeClass('saving')
+				.html('<i class="pi-check"></i> Save Changes');
 
-		$item_save
-			.removeClass('saving')
-			.html('<i class="pi-check"></i> Save Changes');
+			if (console){ console.log('saved') };
+		}
 
-		if (console){ console.log('saved') };
-	}
+		/* Submit changes */
+		$("#item-edit-form").unbind("submit").submit(function(e) {
+			e.preventDefault();
 
-	/* Submit changes */
-	$("#item-edit-form").unbind("submit").submit(function(e) {
-		e.preventDefault();
+			/* Let us know started saving */
+			$("#item-save")
+				.addClass('saving')
+				.html('<i class="pi-spin spin"></i> Saving...');
 
-		/* Let us know started saving */
-		$("#item-save")
-			.addClass('saving')
-			.html('<i class="pi-spin spin"></i> Saving...');
+			$.ajax({
+				url: "{{url_for('nodes.edit', node_id=node._id)}}",
+				data: $(this).serialize(),
+				type: 'POST'
+			})
+			.fail(function(xhr){
+				/* Something went wrong, notify */
+				toastr.error(xhr.statusText, 'Error ' + xhr.status);
+				uiUpdateOnSave();
+			})
+			.done(function(dataHtml){
+				// Disable beforeunolad when submitting a form
+				$(window).off('beforeunload');
 
-		$.ajax({
-			url: "{{url_for('nodes.edit', node_id=node._id)}}",
-			data: $(this).serialize(),
-			type: 'POST'
-		})
-		.fail(function(xhr){
-			/* Something went wrong, notify */
-			toastr.error(xhr.statusText, 'Error ' + xhr.status);
-			uiUpdateOnSave();
-		})
-		.done(function(dataHtml){
-			// Disable beforeunolad when submitting a form
-			$(window).off('beforeunload');
+				$('#col_right').html(dataHtml);
 
-			$('#col_right').html(dataHtml);
-
-			toastr.success('Saved!');
-			uiUpdateOnSave();
+				toastr.success('Saved!');
+				uiUpdateOnSave();
+			});
 		});
-	});
 
-	$('#item-save').click(function(e){
-		e.preventDefault();
-		$("#item-edit-form").submit();
-	});
+		$('#item-save').click(function(e){
+			e.preventDefault();
+			$("#item-edit-form").submit();
+		});
 
+	});
 | {% endblock footer_scripts %}

@@ -42,24 +42,27 @@
 	#comments-embed
 
 script.
-	loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+	document.addEventListener("DOMContentLoaded", function(event) {
+		loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 
-	// Markdown initialization
-	var convert = new Markdown.getSanitizingConverter();
-	Markdown.Extra.init(convert);
-	convert = convert.makeHtml;
+		// Markdown initialization
+		var convert = new Markdown.getSanitizingConverter();
+		Markdown.Extra.init(convert);
+		convert = convert.makeHtml;
 
-	// Convert Markdown and emojis for text and title
-	var $content = $('#item-description');
-	$content.html(
-		twemoji.parse(
-			convert(
-				$content.text()
+		// Convert Markdown and emojis for text and title
+		var $content = $('#item-description');
+		$content.html(
+			twemoji.parse(
+				convert(
+					$content.text()
+				)
 			)
-		)
-	);
-	$('#item-title').html(twemoji.parse('{{ node.name }}'));
+		);
+		$('#item-title').html(twemoji.parse('{{ node.name }}'));
 
-	{% if node.properties.post_type == 'link' %}
-		$('#item-link-url').text(shortenUrl('{{ node.description }}'));
-	{% endif%}
+		{% if node.properties.post_type == 'link' %}
+			$('#item-link-url').text(shortenUrl('{{ node.description }}'));
+		{% endif%}
+
+	});
