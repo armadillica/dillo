@@ -52,7 +52,13 @@ script.
 		'<ul class="list-hits">' +
 			'<li class="list-hits-item" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
 				'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
-					'{{#picture}}<img src="{{picture}}"/>{{/picture}}{{^picture}}<i class="pi-happy"></i>{{/picture}}' +
+					'{{#picture}}'+
+						'<div class="item-thumbnail-picture">' +
+							'<img src="{{picture}}"/>' +
+						'</div>' +
+					'{{/picture}}{{^picture}}' +
+						'<i class="pi-happy"></i>'+
+					'{{/picture}}'+
 				'</a>' +
 				'<div class="item-content" data-node-id="{{ objectID }}">' +
 					'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
