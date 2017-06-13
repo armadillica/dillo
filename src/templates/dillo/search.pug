@@ -31,8 +31,8 @@
 |{% endblock body %}
 
 | {% block footer_scripts %}
-script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 script.
+
 	var search = instantsearch({
 		appId: '{{ config.ALGOLIA_USER }}',
 		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
@@ -46,11 +46,10 @@ script.
 		})
 	);
 
-
 	{% raw %}
 	var hitTemplate =
 		'<ul class="list-hits">' +
-			'<li class="list-hits-item" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+			'<li class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
 				'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
 					'{{#picture}}'+
 						'<div class="item-thumbnail-picture">' +
@@ -109,9 +108,6 @@ script.
 		}
 
 		hit.created = moment.unix(hit.created).fromNow();
-		if (hit.name) {
-			hit.name = twemoji.parse(hit.name);
-		}
 
 		if (hit.is_link) {
 			hit.link_url = hit.content;
@@ -136,6 +132,12 @@ script.
 
 	search.start();
 
+	var onRenderHandler = function() {
+		twemoji.parse(document.body);
+	}
+
+	search.on('render', onRenderHandler);
+
 	$('body').on('click', '.js-item-open', function(e){
 		e.preventDefault();
 		e.stopPropagation();
@@ -154,4 +156,5 @@ script.
 	{% if 'post' in col_right %}
 	item_open('{{col_right['post']['_id']}}');
 	{% endif %}
+
 | {% endblock footer_scripts %}
