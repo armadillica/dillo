@@ -130,3 +130,12 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 $('select#category').on('change', function(e){
 	$('#item-category').text($(this).val());
 });
+
+
+/* Prompt when leaving a page with an input/textarea modified */
+$('input, textarea').keypress(function () {
+	// Set the beforeunload to warn the user of unsaved changes
+	$(window).on('beforeunload', function () {
+		return 'You have unsaved changes in your post.';
+	});
+});
