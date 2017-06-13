@@ -127,11 +127,13 @@ script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
 
 script.
+
+	// Set Project ID
 	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: '{{ node._id }}'});
 
 	$(function() {
 
-		// On load, enable the proper content
+		// On load, enable the proper fields
 		var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
 		input_content
 			.prop('disabled', false)
@@ -144,8 +146,8 @@ script.
 
 		// Convert Markdown and emojis for text and title
 		var item_title_input = $('#item-edit-form #name');
-		var item_content_input = $('#content');
-		var item_description_input = document.getElementById('content');
+		var item_content_input = document.getElementById('content');
+		var item_content_input = $(item_content_input);
 		var item_icon = $('#item-icon');
 
 		item_content_input.on('keydown', function () {
@@ -193,25 +195,18 @@ script.
 			);
 		});
 
-		$(item_description_input).keyup(function() {
-			$('#item-description').html(
+		$(item_content_input).keyup(function() {
+			$('#item-content').html(
 				twemoji.parse(
 					convert(
-						$(item_description_input).val()
+						$(item_content_input).val()
 					)
 				)
 			);
 		}).trigger('keyup');
 
-		$('input, textarea').keypress(function () {
-			// Set the beforeunload to warn the user of unsaved changes
-			$(window).on('beforeunload', function () {
-				return 'You have unsaved changes in your post.';
-			});
-		});
-
-		/* Resize textareas */
-		$(item_description_input)
+		/* Resize textarea when typing long text */
+		$(item_content_input)
 			.autoResize()
 			.blur();
 

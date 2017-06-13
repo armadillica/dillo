@@ -33,12 +33,12 @@
 
 			| {% if node.properties.post_type == 'link' %}
 			li
-				a#item-link-url(href="{{ node.description }}") {{ node.description }}
+				a#item-link-url(href="{{ node.properties.content }}") {{ node.properties.content }}
 			| {% endif %}
 
 
 | {% if node.properties.post_type == 'text' %}
-.item-body#item-description
+.item-body#item-content
 	| {{ node.properties.content_html | safe }}
 | {% endif %}
 
@@ -46,27 +46,29 @@
 	#comments-embed
 
 script.
-	document.addEventListener("DOMContentLoaded", function(event) {
+	var body = document.getElementsByTagName("body")[0];
+	var context = body.getAttribute('data-context');
+
+	if (context != 'post-edit'){
 		loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+	}
 
-		// Markdown initialization
-		var convert = new Markdown.getSanitizingConverter();
-		Markdown.Extra.init(convert);
-		convert = convert.makeHtml;
+	if (context == 'posts-index'){
+		var onRenderHandler = function() {
+			// Set item on the list as active
+			var item = '#item-{{ node._id }}';
+			$(item).addClass('active');
+		}
 
-		// Convert Markdown and emojis for text and title
-		var $content = $('#item-description');
-		$content.html(
-			twemoji.parse(
-				convert(
-					$content.text()
-				)
-			)
-		);
-		$('#item-title').html(twemoji.parse('{{ node.name }}'));
+		search.on('render', onRenderHandler);
+	}
 
-		{% if node.properties.post_type == 'link' %}
-			$('#item-link-url').text(shortenUrl('{{ node.description }}'));
-		{% endif%}
+	// Parse emojis
+	$('#item-title').html(twemoji.parse('{{ node.name }}'));
 
-	});
+	var item_content = $('#item-content');
+	item_content.html(twemoji.parse(item_content.text()));
+
+	{% if node.properties.post_type == 'link' %}
+		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
+	{% endif %}
