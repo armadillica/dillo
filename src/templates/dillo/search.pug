@@ -10,7 +10,11 @@
 #col_right.listing-view
 	#list-item
 		| {% if 'post' in col_right %}
-		| Loading {{ col_right['post']['name'] }}
+		.item-loading
+			.item-title {{ col_right['post']['name'] }}
+			.item-loading-icon
+				i.pi-spin.spin
+				span Hold tight...
 		| {% elif 'activities' in col_right %}
 		.welcome
 			h2 Welcome to Dillo
@@ -83,7 +87,7 @@ script.
 							'<li><a href="">{{ category }}</a></li>' +
 							'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
 							'<li>{{ user.full_name }}</li>' +
-							'<li><a href="{{ link_url }}">{{ comments_count }} comments</a></li>' +
+							'<li><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
 							'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
 						'</ul>' +
 					'</div>' +
@@ -154,7 +158,7 @@ script.
 	});
 
 	{% if 'post' in col_right %}
-	item_open('{{col_right['post']['_id']}}');
+		item_open('{{col_right['post']['_id']}}');
 	{% endif %}
 
 | {% endblock footer_scripts %}
