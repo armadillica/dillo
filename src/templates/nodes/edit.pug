@@ -131,32 +131,29 @@ script.
 	// Set Project ID
 	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: '{{ node._id }}'});
 
+	// Run on page load
 	$(function() {
 
-		// On load, enable the proper fields
+		// Enable the proper fields
 		var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
 		input_content
 			.prop('disabled', false)
 			.attr('id', 'content');
 
-		// Markdown initialization
-		var convert = new Markdown.getSanitizingConverter();
-		Markdown.Extra.init(convert);
-		convert = convert.makeHtml;
-
-		// Convert Markdown and emojis for text and title
-		var item_title_input = $('#item-edit-form #name');
+		var $item_title_input = $('#item-edit-form #name');
 		var item_content_input = document.getElementById('content');
-		var item_content_input = $(item_content_input);
-		var item_icon = $('#item-icon');
+		var $item_content_input = $(item_content_input);
+		var item_content_output = document.getElementById('item-content');
+		var $item_icon = $('#item-icon');
+		var $item_title = $('#item-title');
 
-		item_content_input.on('keydown', function () {
+		$item_content_input.on('keydown', function () {
 
-			item_icon.html('<i class="pi-spin spin"></i>');
+			$item_icon.html('<i class="pi-spin spin"></i>');
 
 			// Wait a bit before calling the spoon
 			delay(function () {
-				var url = item_content_input.val();
+				var url = $item_content_input.val();
 				$.post("{{ url_for('posts.spoon')}}", {url: url})
 					.done(function (data) {
 						if (data) {
@@ -165,14 +162,14 @@ script.
 							// Set the name
 							if (data.title) {
 								$('input#name').val(data.title);
-								$('#item-title').text(twemoji.parse(data.title));
+								$item_title.text(twemoji.parse(data.title));
 							}
 
 							// Get the favicon
 							if (data.favicon) {
-								item_icon.html('<img src="' + data.favicon + ' "></i>');
+								$item_icon.html('<img src="' + data.favicon + ' "></i>');
 							} else {
-								item_icon.html('<i class="pi-globe"></i>');
+								$item_icon.html('<i class="pi-globe"></i>');
 							}
 
 							// Set the media
@@ -181,44 +178,52 @@ script.
 				})
 					.fail(function(xhr){
 						toastr.info(xhr.statusText, 'Could not retrieve URL info');
-						item_icon.html('<i class="pi-globe"></i>');
+						$item_icon.html('<i class="pi-globe"></i>');
 				});
 			}, 1000);
 		});
 
+		// Convert Markdown and emojis for text and title
+		var convert = new Markdown.getSanitizingConverter();
+		Markdown.Extra.init(convert);
+		convert = convert.makeHtml;
 
-		item_title_input.keyup(function() {
+		$item_title_input.keyup(function() {
 			$('#item-title').html(
 				twemoji.parse(
-					item_title_input.val()
+					$item_title_input.val()
 				)
 			);
 		});
 
-		$(item_content_input).keyup(function() {
-			$('#item-content').html(
-				twemoji.parse(
-					convert(
-						$(item_content_input).val()
+		$('input, textarea').keypress(function () {
+			if ($(this).attr("id") == 'content' && $(post_type).val() == 'text'){
+
+				//- $(item_content_output).html($(this).val());
+				$(item_content_output).html(
+					twemoji.parse(
+						convert(
+							$(this).val()
+						)
 					)
-				)
-			);
-		}).trigger('keyup');
+				);
+			}
+		});
 
 		/* Resize textarea when typing long text */
-		$(item_content_input)
+		$item_content_input
 			.autoResize()
 			.blur();
 
+		// Focus the #content field on load
 		input_content.focus();
 
 		/* Save Workflow */
-		$("#item-save").unbind( "click" );
+		var $item_save_button = $("#item-save");
+		$item_save_button.unbind( "click" );
 
 		function uiUpdateOnSave(){
-			var $item_save = $("#item-save");
-
-			$item_save
+			$item_save_button
 				.removeClass('saving')
 				.html('<i class="pi-check"></i> Save Changes');
 
@@ -230,7 +235,7 @@ script.
 			e.preventDefault();
 
 			/* Let us know started saving */
-			$("#item-save")
+			$item_save_button
 				.addClass('saving')
 				.html('<i class="pi-spin spin"></i> Saving...');
 
@@ -256,7 +261,7 @@ script.
 			});
 		});
 
-		$('#item-save').click(function(e){
+		$item_save_button.click(function(e){
 			e.preventDefault();
 			$("#item-edit-form").submit();
 		});
