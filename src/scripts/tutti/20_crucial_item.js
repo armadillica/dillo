@@ -102,7 +102,9 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 	$('.item-edit-tab select.post_type option[value="' + post_type + '"]').attr('selected', '');
 
 	// Enable the 'content' field for the appropriate post_type, disable the others
-	$('.input-content .input-field').prop('disabled', true);
+	$('.input-content .input-field')
+		.prop('disabled', true)
+		.removeAttr('id');
 
 	var $input_field = $('.input-content.' + post_type + ' .input-field');
 	$input_field
