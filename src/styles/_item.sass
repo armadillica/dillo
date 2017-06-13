@@ -27,8 +27,6 @@ $item-thumbnail-size: 90px
 	min-width: $item-thumbnail-size
 	overflow: hidden
 	background-color: $color-background
-	border-top-left-radius: 3px
-	border-bottom-left-radius: 3px
 	color: $color-text-hint
 
 	&.has-thumbnail
@@ -68,8 +66,8 @@ $item-thumbnail-size: 90px
 	display: flex
 	flex-direction: column
 	height: 100%
-	width: 40px
-	min-width: 40px
+	width: 50px
+	min-width: 50px
 
 	+media-xs
 		width: 60px
@@ -107,7 +105,10 @@ $item-thumbnail-size: 90px
 	flex-direction: column
 	justify-content: space-around
 	flex: 1
-	padding: 7px
+	padding: 7px 0
+
+	+media-xs
+		padding: 7px
 
 	> ul
 		margin: 0
@@ -128,11 +129,10 @@ $item-thumbnail-size: 90px
 				top: 1px
 				color: $color-text-hint
 
-			&:first-child
+			&:first-child, &:nth-child(2)
 				padding-left: 0
 				&:before
 					content: ''
-					padding: 0
 
 			a
 				text-decoration: none
