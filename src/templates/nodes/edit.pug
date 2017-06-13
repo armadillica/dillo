@@ -29,6 +29,7 @@
 				action="{{url_for('nodes.edit', node_id=node._id)}}")
 
 				.input-content.link
+					label(for="content") URL
 					input(
 						disabled,
 						name="content",
@@ -36,28 +37,21 @@
 						class="input-field",
 						placeholder="Paste or type the URL here",
 						value="{{ node.properties.content }}")
-					#item-icon
+					#item-icon.loading
 						img(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 
-				input.item-title(
-					id="name",
-					value="{{ node.name }}",
-					type="text",
-					name="name",
-					placeholder="Awesome Post Title")
+				.input-content.name
+					label(for="name") Title
+					input(
+						id="name",
+						value="{{ node.name }}",
+						type="text",
+						name="name",
+						placeholder="Awesome Post Title")
 
-				select(
-					id="category",
-					name="category")
-					| {% for option in config['POST_CATEGORIES'] %}
-					| {% if option == node.properties.category %}
-					option(selected) {{ option }}
-					| {% else %}
-					option {{ option }}
-					| {% endif %}
-					| {% endfor %}
 
 				.input-content.text
+					label(for="content") Text
 					textarea(
 						disabled,
 						name="content",
@@ -68,6 +62,19 @@
 					span.content-extra
 						a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
 							| Markdown Cheatsheet
+
+				.input-content.category
+					label(for="category") Category
+					select(
+						id="category",
+						name="category")
+						| {% for option in config['POST_CATEGORIES'] %}
+						| {% if option == node.properties.category %}
+						option(selected) {{ option }}
+						| {% else %}
+						option {{ option }}
+						| {% endif %}
+						| {% endfor %}
 
 				| {{ form.csrf_token }}
 				| {{ form.status }}
@@ -100,6 +107,11 @@
 					title="Save changes")
 					i.pi-check
 					| Save Changes
+				a#item-save.btn.publish(
+					href="javascript:void(0);",
+					title="Save changes")
+					i.pi-check
+					| Publish
 
 #col_right.listing-view.item-edit-view
 	| {% include 'nodes/custom/dillo_post/view_embed.html' %}
@@ -134,8 +146,13 @@ script.
 		var item_title_input = $('#item-edit-form #name');
 		var item_content_input = $('#content');
 		var item_description_input = document.getElementById('content');
+		var item_icon = $('#item-icon');
 
 		item_content_input.on('keydown', function () {
+
+			item_icon.html('<i class="pi-spin spin"></i>');
+
+			// Wait a bit before calling the spoon
 			delay(function () {
 				var url = item_content_input.val();
 				$.post("{{ url_for('posts.spoon')}}", {url: url})
@@ -143,12 +160,26 @@ script.
 						if (data) {
 							console.log(data);
 
-							$('input#name').val(data.title);
-							$('#item-title').text(twemoji.parse(data.title));
+							// Set the name
+							if (data.title) {
+								$('input#name').val(data.title);
+								$('#item-title').text(twemoji.parse(data.title));
+							}
 
-							$('#item-icon img').attr('src', data.favicon);
-							$('#item-media').html(data.oembed);
+							// Get the favicon
+							if (data.favicon) {
+								item_icon.html('<img src="' + data.favicon + ' "></i>');
+							} else {
+								item_icon.html('<i class="pi-globe"></i>');
+							}
+
+							// Set the media
+							if (data.oembed) { $('#item-media').html(data.oembed) }
 						}
+				})
+					.fail(function(xhr){
+						toastr.info(xhr.statusText, 'Could not retrieve URL info');
+						item_icon.html('<i class="pi-globe"></i>');
 				});
 			}, 1000);
 		});

@@ -182,7 +182,6 @@ $item-thumbnail-size: 90px
 
 			#name
 				color: $color-primary
-				background-color: $color-background-light
 				padding: 10px
 
 			#content
@@ -203,7 +202,8 @@ $item-thumbnail-size: 90px
 
 			#category
 				padding: 10px
-				margin: 10px
+				margin: 5px 10px
+				background-color: $color-background-lighter
 
 			#status, #post_type
 				visibility: hidden
@@ -214,18 +214,39 @@ $item-thumbnail-size: 90px
 
 			input, textarea
 				margin: 5px 10px
+				background-color: $color-background-lighter
+
+			label
+				padding-top: 10px
+				padding-left: 15px
 
 			.input-content
 				display: flex
 				flex-direction: column
 
 				input, textarea
-					display: none
-					visibility: hidden
-					background-color: $color-background-light
+					background-color: $color-background-lighter
 
 			.fileupload
 				box-shadow: none
+				background-color: $color-background-light
+				padding: 10px
+				margin: 10px 0
+
+			#item-icon
+				position: absolute
+				left: 12px
+				bottom: 8px
+				width: 32px
+				height: 32px
+				display: flex
+				align-items: center
+				justify-content: center
+
+				img
+					max-width: 24px
+					max-height: 24px
+
 
 	/* Tabs for Link/Text */
 	&-tabs
@@ -265,6 +286,8 @@ $item-thumbnail-size: 90px
 					color: $color-secondary
 
 	&-tab
+
+		/* When the Link tab is active, hide/show some elements */
 		&.link
 			.input-content.link
 				position: relative
@@ -275,26 +298,18 @@ $item-thumbnail-size: 90px
 				input#content
 					visibility: visible
 					display: block
-					padding-left: 32px
+					padding-left: 36px
 
-				#item-icon
-					position: absolute
-					left: 12px
-					width: 32px
-					height: 32px
-					display: flex
-					align-items: center
-					justify-content: center
-
-			.input-content.text textarea#content,
+			.input-content.text,
 			span.content-extra
 				visibility: hidden
 				display: none
 
+		/* When the Text tab is active, hide/show some elements */
 		&.text
-			.input-content.text textarea#content
+			.input-content.text
 				visibility: visible
-				display: block
-			.input-content.link input#content, #item-icon
+				display: flex
+			.input-content.link, #item-icon
 				visibility: hidden
 				display: none
