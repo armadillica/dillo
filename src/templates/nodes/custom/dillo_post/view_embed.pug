@@ -1,11 +1,3 @@
-#item-media.item-media
-	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
-	| {{ node.properties.content_html | safe }}
-	| {% else %}
-	| {% if node.picture %}
-	img(src="{{ node.picture.thumbnail('l', api=api) }}")
-	| {% endif %}
-	| {% endif %}
 
 .item-content(
 	id="{{ node._id }}",
@@ -26,21 +18,30 @@
 			li {{ node._created | pretty_date }}
 			li {{ node.user.full_name }}
 
-			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
-			li
-				a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
-			| {% endif %}
-
 			| {% if node.properties.post_type == 'link' %}
 			li
 				a#item-link-url(href="{{ node.properties.content }}") {{ node.properties.content }}
 			| {% endif %}
 
+			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+			li.item-edit
+				a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
+			| {% endif %}
 
-| {% if node.properties.post_type == 'text' %}
+
 .item-body#item-content
+	| {% if node.properties.post_type == 'text' %}
 	| {{ node.properties.content_html | safe }}
-| {% endif %}
+	| {% endif %}
+
+#item-media.item-media
+	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
+	| {{ node.properties.content_html | safe }}
+	| {% else %}
+	| {% if node.picture %}
+	img(src="{{ node.picture.thumbnail('l', api=api) }}")
+	| {% endif %}
+	| {% endif %}
 
 #item-comments
 	#comments-embed
