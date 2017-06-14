@@ -64,15 +64,13 @@ script.
 	var hitTemplate =
 		'<ul class="list-hits">' +
 			'<li class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-				'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
-					'{{#picture}}'+
+				'{{#picture}}'+
+					'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
 						'<div class="item-thumbnail-picture">' +
 							'<img src="{{picture}}"/>' +
 						'</div>' +
-					'{{/picture}}{{^picture}}' +
-						'<i class="pi-happy"></i>'+
-					'{{/picture}}'+
-				'</a>' +
+					'</a>' +
+				'{{/picture}}'+
 				'<div class="item-content" data-node-id="{{ objectID }}">' +
 					'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
 						'<div class="item-rating up">' +
