@@ -10,11 +10,14 @@ node_type_post = {
             ],
             'default': 'link',
         },
-        # The actual comment content (initially Markdown format)
+        # The actual content. This can be a link or Markdown-formatted text. Validation of the text
+        # happens in the posts/eve_hooks.py file and follow the rule:
+        # - if status is draft, no content is allowed
+        # - else, content must be min 5 chars long
+        # TODO: create a custom validator for this behaviour. This requires extending the Validator
+        # class on Pillar (via extensions)
         'content': {
             'type': 'string',
-            'minlength': 5,
-            'required': True,
         },
         # The converted-to-HTML content.
         'content_html': {

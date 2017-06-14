@@ -103,6 +103,7 @@ def set_defaults(item):
     # TODO: figure out why properties that have a default value in dyn_schema get it. Once this
     # this happens, we can remove most of the values here and set hot using 0 for default positive
     # and negative ratings.
+    item['properties']['content'] = ''
     item['properties']['rating_positive'] = 0
     item['properties']['rating_negative'] = 0
     item['properties']['post_type'] = 'link'
@@ -146,15 +147,18 @@ def generate_oembed(item):
 
 @only_for_post
 def before_replacing_post(item, original):
+    if len(item['properties']['content']) < 6:
+        log.debug('Content must be longer than 5 chars')
+        return abort(422)
     status_original = original['properties']['status']
     status_updated = item['properties']['status']
-    if status_original != 'pending' and status_updated == 'pending':
-        # We do not allow published, unpublished or deleted posts to be set as pending
-        return abort(403)
-    if status_original == 'pending' and status_updated == 'published':
-        # We are publishing the post for the first time
-        # Update the slug only once before publishing the post
+    if status_original in {'draft', 'pending'} and status_updated in {'pending', 'published'}:
+        # We are publishing or editing the post for the first time
+        # Update the slug only before the post is published
         item['properties']['slug'] = slugify(item['name'], max_length=50)
+    if status_original not in {'draft', 'pending'} and status_updated == 'pending':
+        # We do not allow published, pending or deleted posts to be set as pending
+        return abort(403)
 
     post_handler = {
         'link': generate_oembed,

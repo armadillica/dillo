@@ -24,16 +24,14 @@ log = logging.getLogger(__name__)
 def create():
     api = system_util.pillar_api()
     log.info('Creating post for user {}'.format(current_user.objectid))
-    project = current_app.config['MAIN_PROJECT_ID']
 
     post_props = dict(
-        project=project,
+        project=current_app.config['MAIN_PROJECT_ID'],
         name='My Post',
         user=current_user.objectid,
         node_type='dillo_post',
         properties=dict(
-            content='community',
-            category='community',)
+            category=current_app.config['POST_CATEGORIES'][0])
     )
 
     post = Node(post_props)
