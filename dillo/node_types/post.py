@@ -20,13 +20,18 @@ node_type_post = {
         'content_html': {
             'type': 'string',
         },
+        # Status follows this order: pending -> draft -> published
+        # - pending: just created
+        # - draft: edited after creation
+        # - published: published from pending or draft
         'status': {
             'type': 'string',
             'allowed': [
+                'pending',
+                'draft',
                 'published',
                 'deleted',
                 'flagged',
-                'pending',
             ],
             'default': 'pending',
         },
