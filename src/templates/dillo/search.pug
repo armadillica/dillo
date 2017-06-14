@@ -39,6 +39,8 @@
 						span.actor {{ act['actor_user']['full_name'] }}
 						span.verb {{ act.verb }}
 					| {% endfor %}
+				| {% else %}
+				p No activity (yet)!
 				| {% endif %}
 		| {% endif %}
 

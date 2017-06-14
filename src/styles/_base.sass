@@ -46,7 +46,7 @@ button, .btn
 		+button($color-text-light, 3px, false)
 
 .btn-group
-	display: flex
+	display: inline-flex
 	position: relative
 	border-radius: 3px
 	color: $color-text
@@ -66,6 +66,7 @@ button, .btn
 		border-bottom-right-radius: 0 !important
 
 		&.dropdown-toggle
+			border-left: none
 			padding: 0 5px
 			border-top-left-radius: 0 !important
 			border-bottom-left-radius: 0 !important
@@ -147,13 +148,14 @@ ul.dropdown-menu
 		display: flex
 		align-items: center
 		border-bottom: thin solid $color-background
-		a
+		a, span
 			padding: 10px
 			display: flex
 			width: 100%
 			align-items: center
 			text-decoration: none
 			color: $color-text-dark
+			cursor: pointer
 
 			&:hover
 				color: $color-primary

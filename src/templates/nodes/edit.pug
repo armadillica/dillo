@@ -100,29 +100,45 @@
 
 
 		.item-edit-header
+			.item-status
+				| Status:
+				span {{ node.properties.status | undertitle }}
 			.item-edit-header-action
+
+				// TODO: Reload just #col_main with posts index
+				| {% if node.properties.status == 'published' %}
 				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
+				| {% else %}
+				a.btn.cancel(href="{{ url_for('posts.index')}}") Cancel
+				| {% endif %}
+
 				| {% if node.properties.status != 'published' %}
 				.btn-group
-					button.item-save-publish.btn(
+					button.item-save-publish.btn.btn-success(
 						data-action="publish",
-						title="Publish post"
-					) Publish
-					button.btn.dropdown-toggle
+						title="Make post publicly available")
+						i.pi-check
+						| Publish!
+
+					button.btn.btn-success.dropdown-toggle
 						i.pi-angle-down
-					ul.dropdown-menu
+					ul.dropdown-menu.right
 						li
-							button.item-save-publish(
+							span.item-save-publish(
 								data-action="save",
-								title="Save"
-							) Save Changes
+								title="Save changes and keep editing")
+								| {% if node.properties.status == 'pending' %}
+								| Save Draft
+								| {% else %}
+								| Save Changes
+								| {% endif %}
+
 				| {% else %}
 				button.item-save-publish.btn(
 					data-action="save",
 					title="Save changes"
 				) Save Changes
 				| {% endif %}
-
 
 
 #col_right.listing-view.item-edit-view
