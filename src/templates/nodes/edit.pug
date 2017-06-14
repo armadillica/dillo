@@ -6,7 +6,7 @@
 
 #col_main
 	.item-edit-form
-
+		| {% if node.properties.status == 'pending' %}
 		ul.item-edit-tabs
 			li(
 				class="{% if node.properties.post_type == 'link' %}active{% endif %}",
@@ -18,7 +18,7 @@
 				data-post-type='text')
 				span TEXT
 				small I'll write a nice article
-
+		| {% endif %}
 		.item-edit-tab(
 			id="item-edit-tab",
 			class="{{ node.properties.post_type }}")
