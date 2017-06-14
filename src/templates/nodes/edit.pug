@@ -138,8 +138,7 @@ script.
 			.attr('id', 'content');
 
 		var $item_title_input = $('#item-edit-form #name');
-		var item_content_input = document.getElementById('content');
-		var $item_content_input = $(item_content_input);
+		var $item_content_input = $('.input-field');
 		var item_content_output = document.getElementById('item-content');
 		var $item_icon = $('#item-icon');
 		var $item_title = $('#item-title');
@@ -147,10 +146,9 @@ script.
 		$item_content_input.on('keydown', function () {
 
 			$item_icon.html('<i class="pi-spin spin"></i>');
-
 			// Wait a bit before calling the spoon
+			var url = $(this).val();
 			delay(function () {
-				var url = $item_content_input.val();
 				$.post("{{ url_for('posts.spoon')}}", {url: url})
 					.done(function (data) {
 						if (data) {
