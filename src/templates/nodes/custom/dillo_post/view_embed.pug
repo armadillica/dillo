@@ -1,50 +1,54 @@
 
-.item-content(
-	id="{{ node._id }}",
-	data-node-id="{{ node._id }}")
-	.item-rating-box(
-		class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
-	)
-		.item-rating.up
-			i.pi-angle-up
-		.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
-		.item-rating.down
-			i.pi-angle-down
-	.item-details
-		a#item-title.item-title(href="") {{ node.name }}
-		ul
-			li#item-post_type {{ node.properties.post_type | undertitle }}
-			li#item-category {{ node.properties.category | undertitle }}
-			li {{ node._created | pretty_date }}
-			li {{ node.user.full_name }}
+.item-view(class="{{ node.properties.post_type }}")
+	.item-content(
+		id="{{ node._id }}",
+		data-node-id="{{ node._id }}")
+		.item-rating-box(
+			class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
+		)
+			.item-rating.up
+				i.pi-angle-up
+			.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
+			.item-rating.down
+				i.pi-angle-down
+		.item-details
+			a#item-title.item-title(href="") {{ node.name }}
+			ul
+				li#item-post_type {{ node.properties.post_type | undertitle }}
+				li#item-category {{ node.properties.category | undertitle }}
+				li {{ node._created | pretty_date }}
+				li {{ node.user.full_name }}
 
-			| {% if node.properties.post_type == 'link' %}
-			li
-				a#item-link-url(href="{{ node.properties.content }}") {{ node.properties.content }}
-			| {% endif %}
-
-			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
-			li.item-edit
-				a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
-			| {% endif %}
+				| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+				li.item-edit
+					a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
+				| {% endif %}
 
 
-.item-body#item-content
-	| {% if node.properties.post_type == 'text' %}
-	| {{ node.properties.content_html | safe }}
-	| {% endif %}
+	.item-body#item-content
+		| {% if node.properties.post_type == 'text' %}
+		| {{ node.properties.content_html | safe }}
+		| {% elif node.properties.post_type == 'link' and not node.properties.content_html %}
+		a(
+			href="{{ node.properties.content }}",
+			target="_blank",
+			title="Visit URL")
+			img(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+			| {{ node.properties.content }}
+		| {% endif %}
 
-#item-media.item-media
-	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
-	| {{ node.properties.content_html | safe }}
-	| {% else %}
-	| {% if node.picture %}
-	img(src="{{ node.picture.thumbnail('l', api=api) }}")
-	| {% endif %}
-	| {% endif %}
 
-#item-comments
-	#comments-embed
+	#item-media.item-media
+		| {% if node.properties.post_type == 'link' and node.properties.content_html %}
+		| {{ node.properties.content_html | safe }}
+		| {% else %}
+		| {% if node.picture %}
+		img(src="{{ node.picture.thumbnail('l', api=api) }}")
+		| {% endif %}
+		| {% endif %}
+
+	#item-comments
+		#comments-embed
 
 script.
 	var body = document.getElementsByTagName("body")[0];
@@ -67,8 +71,10 @@ script.
 	// Parse emojis
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
 
-	var item_content = $('#item-content');
-	item_content.html(twemoji.parse(item_content.text()));
+	{% if node.properties.post_type == 'text' %}
+		var item_content = $('#item-content');
+		item_content.html(twemoji.parse(item_content.text()));
+	{% endif %}
 
 	{% if node.properties.post_type == 'link' %}
 		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));

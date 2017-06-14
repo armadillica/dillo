@@ -11,7 +11,7 @@
 	display: flex
 	align-items: center
 	justify-content: center
-	background-color: $color-background-dark
+	background-color: $color-background-lighter
 
 	iframe
 		width: 100%
@@ -139,7 +139,7 @@ $item-thumbnail-size: 90px
 				top: 1px
 				color: $color-text-hint
 
-			&:first-child, &:nth-child(2)
+			&:first-child
 				padding-left: 0
 				&:before
 					content: ''
@@ -359,3 +359,48 @@ $item-thumbnail-size: 90px
 
 		span
 			padding-left: 5px
+
+
+.item-view
+	.item-body
+		border-top: thin solid $color-background-dark
+
+	&.text
+		.item-body
+			background-color: $color-background-lighter
+			padding: 20px 20px 25px 20px
+
+			img
+				max-width: 100%
+
+			blockquote
+				display: block
+				background-color: $color-background
+				border-left: thick solid $color-background-dark
+				padding: 1px 10px
+				margin: 0
+
+	&.link
+		.item-body
+			background-color: $color-background
+			display: flex
+			align-items: center
+
+			a
+				font-size: $font-size-small
+				line-height: $font-size
+				padding: 10px 20px 13px 20px
+				display: block
+				flex: 1
+				text-decoration: none
+				color: $color-text-dark-primary
+				&:hover
+					text-decoration: underline
+					color: $color-primary
+
+			img
+				margin-right: 15px
+				width: 16px
+				height: 16px
+				position: relative
+				top: 3px
