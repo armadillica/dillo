@@ -26,8 +26,10 @@ function shortenUrl(url){
 $('.dropdown-toggle').on('click', function(e){
 	e.stopPropagation();
 
-	$(this).toggleClass('active');
-	$('ul.dropdown-menu').toggleClass('active');
+	$(this)
+		.toggleClass('active')
+		.siblings('ul.dropdown-menu')
+		.toggleClass('active');
 });
 
 $(document).click(function() {
