@@ -102,19 +102,16 @@
 		.item-edit-header
 			.item-edit-header-action
 				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
-				a#item-save.btn.publish(
-					href="javascript:void(0);",
+				button#item-save.btn.publish(
 					title="Save changes")
 					i.pi-check
 					| Save Changes
-				a#item-save.btn.publish(
-					href="javascript:void(0);",
+				button#item-save.btn.publish(
 					title="Save changes")
 					i.pi-check
 					| Publish
 
 #col_right.listing-view.item-edit-view
-	| {% include 'nodes/custom/dillo_post/view_embed.html' %}
 
 
 | {% endblock body %}
@@ -264,6 +261,11 @@ script.
 		$item_save_button.click(function(e){
 			e.preventDefault();
 			$("#item-edit-form").submit();
+		});
+
+		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
+			$('#col_right').html(dataHtml);
+			loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 		});
 
 	});
