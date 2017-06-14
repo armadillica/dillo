@@ -333,37 +333,10 @@ $item-thumbnail-size: 90px
 
 
 /* Shown when loading a post */
-.item-loading
-	display: flex
-	align-items: center
-	justify-content: flex-start
-	flex-direction: column
-	padding: 15px
-	text-align: center
-
-	&-icon
-		display: flex
-		align-items: center
-		justify-content: center
-		padding: 20px
-		font-size: $font-size-large
-		color: rgba($color-text, .3)
-
-		i
-			font-size: $font-size
-			margin-right: 10px
-
-	.item-title
-		font-size: $font-size-extra-large
-		color: $color-text-hint
-
-		span
-			padding-left: 5px
-
-
 .item-view
 	.item-body
 		border-top: thin solid $color-background-dark
+		border-bottom: thin solid $color-background-dark
 
 	&.text
 		.item-body
@@ -404,3 +377,10 @@ $item-thumbnail-size: 90px
 				height: 16px
 				position: relative
 				top: 3px
+
+	&.loading
+		pointer-events: none
+		opacity: .8
+
+		.item-details > ul li i
+			margin-right: 10px

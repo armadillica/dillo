@@ -10,11 +10,21 @@
 #col_right.listing-view
 	#list-item
 		| {% if 'post' in col_right %}
-		.item-loading
-			.item-title {{ col_right['post']['name'] }}
-			.item-loading-icon
-				i.pi-spin.spin
-				span Hold tight...
+		.item-view.loading
+			.item-content
+				.item-rating-box
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.value &#x221e;
+					.item-rating.down
+						i.pi-angle-down
+				.item-details
+					a#item-title.item-title {{ col_right['post']['name'] }}
+					ul
+						li
+							i.pi-spin.spin
+							span Fetching the goods...
+
 		| {% elif 'activities' in col_right %}
 		.welcome
 			h2 Welcome to Dillo
