@@ -1,6 +1,7 @@
 import logging
 
 import requests
+from re import compile
 from bs4 import BeautifulSoup
 from micawber.exceptions import ProviderException, ProviderNotFoundException
 from flask import abort, Blueprint, current_app, redirect, render_template, request, url_for, \
@@ -144,15 +145,16 @@ def spoon():
     if icon_link:
         parsed_page['favicon'] = icon_link['href']
 
-    # Get only the first 4 images
-    images = soup.find_all('img')
+    # Get only the first 4 images (with an src tag)
+    images = soup.find_all('img', attrs={'src': compile('.')})
     parsed_page['images'] = [i['src'] for i in images[:4]]
 
     # Look for oembed
     try:
         oembed = current_dillo.oembed_registry.request(r.url)
         parsed_page['oembed'] = oembed['html']
-        parsed_page['images'] = [oembed['thumbnail_url']]
+        if 'thumbnail_url' in oembed:
+            parsed_page['images'] = [oembed['thumbnail_url']]
     except (ProviderNotFoundException, ProviderException):
         pass
 
