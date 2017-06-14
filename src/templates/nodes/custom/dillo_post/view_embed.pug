@@ -1,33 +1,34 @@
 
 .item-view(class="{{ node.properties.post_type }}")
-	.item-content(
-		id="{{ node._id }}",
-		data-node-id="{{ node._id }}")
-		.item-rating-box(
-			class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
-		)
-			.item-rating.up
-				i.pi-angle-up
-			.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
-			.item-rating.down
-				i.pi-angle-down
-		.item-details
-			a#item-title.item-title(href="") {{ node.name }}
-			ul
-				li#item-post_type {{ node.properties.post_type | undertitle }}
-				li#item-category {{ node.properties.category | undertitle }}
-				li {{ node._created | pretty_date }}
-				li {{ node.user.full_name }}
+	.item-view-header
+		.item-content(
+			id="{{ node._id }}",
+			data-node-id="{{ node._id }}")
+			.item-rating-box(
+				class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
+			)
+				.item-rating.up
+					i.pi-angle-up
+				.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
+				.item-rating.down
+					i.pi-angle-down
+			.item-details
+				a#item-title.item-title(href="") {{ node.name }}
+				ul
+					li#item-post_type {{ node.properties.post_type | undertitle }}
+					li#item-category {{ node.properties.category | undertitle }}
+					li {{ node._created | pretty_date }}
+					li {{ node.user.full_name }}
 
-				| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
-				li.item-edit
-					a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
-				| {% endif %}
+					| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+					li.item-edit
+						a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
+					| {% endif %}
 
 
 	.item-body#item-content
 		| {% if node.properties.post_type == 'text' %}
-		| {{ node.properties.content_html | safe }}
+		| {{ node.properties.content_html | hide_none | safe }}
 		| {% elif node.properties.post_type == 'link' and not node.properties.content_html %}
 		a(
 			href="{{ node.properties.content }}",

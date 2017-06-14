@@ -52,7 +52,6 @@ $item-thumbnail-size: 90px
 		img
 			height: $item-thumbnail-size
 
-
 .item-content
 	display: flex
 	align-items: center
@@ -164,10 +163,6 @@ $item-thumbnail-size: 90px
 					border: thin solid $color-text-hint
 					padding: 2px 10px
 					border-radius: 3px
-
-.item-body
-	font-size: $font-size
-	line-height: 1.5em
 
 #item-comments
 	margin: 10px 15px
@@ -296,7 +291,6 @@ $item-thumbnail-size: 90px
 					color: $color-secondary
 
 	&-tab
-
 		/* When the Link tab is active, hide/show some elements */
 		&.link
 			.input-content.link
@@ -325,16 +319,21 @@ $item-thumbnail-size: 90px
 				display: none
 
 
-/* Shown when loading a post */
+.item-body
+	font-size: $font-size
+	line-height: 1.5em
+	border-top: thin solid $color-background-dark
+	border-bottom: thin solid $color-background-dark
+
+
 .item-view
-	.item-body
-		border-top: thin solid $color-background-dark
-		border-bottom: thin solid $color-background-dark
+	&-header
+		display: flex
 
 	&.text
 		.item-body
 			background-color: $color-background-lighter
-			padding: 20px 20px 25px 20px
+			padding: 20px
 
 			img
 				max-width: 100%
