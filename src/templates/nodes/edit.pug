@@ -102,14 +102,28 @@
 		.item-edit-header
 			.item-edit-header-action
 				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
-				button#item-save.btn.publish(
-					title="Save changes")
-					i.pi-check
-					| Save Changes
-				button#item-save.btn.publish(
-					title="Save changes")
-					i.pi-check
-					| Publish
+				| {% if node.properties.status != 'published' %}
+				.btn-group
+					button.item-save-publish.btn(
+						data-action="publish",
+						title="Publish post"
+					) Publish
+					button.btn.dropdown-toggle
+						i.pi-angle-down
+					ul.dropdown-menu
+						li
+							button.item-save-publish(
+								data-action="save",
+								title="Save"
+							) Save Changes
+				| {% else %}
+				button.item-save-publish.btn(
+					data-action="save",
+					title="Save changes"
+				) Save Changes
+				| {% endif %}
+
+
 
 #col_right.listing-view.item-edit-view
 
@@ -214,15 +228,52 @@ script.
 		input_content.focus();
 
 		/* Save Workflow */
-		var $item_save_button = $("#item-save");
-		$item_save_button.unbind( "click" );
+		var $item_save_publish_button = $(".item-save-publish");
+		$item_save_publish_button.unbind( "click" );
 
-		function uiUpdateOnSave(){
-			$item_save_button
+
+		function uiUpdateOnSave(btn){
+			btn
 				.removeClass('saving')
 				.html('<i class="pi-check"></i> Save Changes');
 
 			if (console){ console.log('saved') };
+		}
+
+		function setStatusOnSave() {
+			/* Handle post state transitions
+			pending -> draft
+			draft -> draft
+			published -> published
+			*/
+			var $status = $('#status');
+			var status_val = $status.val();
+			switch (status_val) {
+				case 'pending':
+					$status.val('draft');
+					break;
+				case 'draft':
+					$status.val('draft');
+					break;
+				case 'published':
+					$status.val('published');
+			}
+		}
+
+		function setStatusOnPublish() {
+			/* Handle published post state transitions
+			pending -> published
+			draft -> published
+			*/
+			var $status = $('#status');
+			var status_val = $status.val();
+			switch (status_val) {
+				case 'pending':
+					$status.val('published');
+					break;
+				case 'draft':
+					$status.val('published');
+			}
 		}
 
 		/* Submit changes */
@@ -230,7 +281,7 @@ script.
 			e.preventDefault();
 
 			/* Let us know started saving */
-			$item_save_button
+			$item_save_publish_button
 				.addClass('saving')
 				.html('<i class="pi-spin spin"></i> Saving...');
 
@@ -242,7 +293,7 @@ script.
 			.fail(function(xhr){
 				/* Something went wrong, notify */
 				toastr.error(xhr.statusText, 'Error ' + xhr.status);
-				uiUpdateOnSave();
+				uiUpdateOnSave($item_save_publish_button);
 			})
 			.done(function(dataHtml){
 				// Disable beforeunolad when submitting a form
@@ -252,14 +303,20 @@ script.
 				loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 
 				toastr.success('Saved!');
-				uiUpdateOnSave();
+				uiUpdateOnSave($item_save_publish_button);
 			});
 		});
 
-		$item_save_button.click(function(e){
+		$item_save_publish_button.click(function(e){
 			e.preventDefault();
+			if ($(this).data('action') === 'save') {
+				setStatusOnSave();
+			} else if ($(this).data('action') === 'publish') {
+				setStatusOnPublish();
+			}
 			$("#item-edit-form").submit();
 		});
+
 
 		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
 			$('#col_right').html(dataHtml);

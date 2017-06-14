@@ -152,13 +152,23 @@ def before_replacing_post(item, original):
         return abort(422)
     status_original = original['properties']['status']
     status_updated = item['properties']['status']
-    if status_original in {'draft', 'pending'} and status_updated in {'pending', 'published'}:
-        # We are publishing or editing the post for the first time
-        # Update the slug only before the post is published
-        item['properties']['slug'] = slugify(item['name'], max_length=50)
-    if status_original not in {'draft', 'pending'} and status_updated == 'pending':
-        # We do not allow published, pending or deleted posts to be set as pending
-        return abort(403)
+    if status_updated == 'draft':
+        if status_original in {'pending', 'draft'}:
+            pass
+        else:
+            return abort(422)
+    elif status_updated == 'published':
+        if status_original in {'pending', 'draft'}:
+            # We are publishing or editing the post for the first time
+            # Update the slug only before the post is published
+            item['properties']['slug'] = slugify(item['name'], max_length=50)
+        elif status_original == 'published':
+            pass
+        else:
+            return abort(422)
+    else:
+        # Combination of status_updated and status_original is not allowed
+        return abort(422)
 
     post_handler = {
         'link': generate_oembed,
