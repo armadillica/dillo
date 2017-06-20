@@ -158,8 +158,19 @@ script.
 	// Set Project ID
 	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: '{{ node._id }}'});
 
+	// Convert Markdown and emojis for text and title
+	var convert = new Markdown.getSanitizingConverter();
+	Markdown.Extra.init(convert);
+	convert = convert.makeHtml;
+
 	// Run on page load
 	$(function() {
+
+		// Load the content (in the sidebar) for the first time
+		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
+			$('#col_right').html(dataHtml);
+			loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+		});
 
 		// Enable the proper fields
 		var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
@@ -167,19 +178,37 @@ script.
 			.prop('disabled', false)
 			.attr('id', 'content');
 
+		// Focus the #content field on load
+		input_content.focus();
+
 		var $item_title_input = $('#item-edit-form #name');
 		var $item_content_input = $('.input-field');
-		var item_content_output = document.getElementById('item-content');
 		var $item_icon = $('#item-icon');
 		var $item_title = $('#item-title');
 
-		$item_content_input.on('keyup', function () {
-			if ($('#post_type').val() != 'link') return;
+		// Resize textarea when typing long text
+		$item_content_input
+			.autoResize()
+			.blur();
+
+
+		function parseText(content) {
+			$('#item-content').html(
+				twemoji.parse(
+					convert(
+						content
+					)
+				)
+			);
+		}
+
+		function parseLink(content) {
+			if (! ValidURL(content)) return;
 			$item_icon.html('<i class="pi-spin spin"></i>');
 			// Wait a bit before calling the spoon
-			var url = $(this).val();
+
 			delay(function () {
-				$.post("{{ url_for('posts.spoon')}}", {url: url})
+				$.post("{{ url_for('posts.spoon')}}", {url: content})
 					.done(function (data) {
 						if (data) {
 							console.log(data);
@@ -198,20 +227,32 @@ script.
 							}
 
 							// Set the media
-							if (data.oembed) { $('#item-media').html(data.oembed) }
+							if (data.oembed) {
+								$('#item-media').html(data.oembed)
+							}
 						}
-				})
-					.fail(function(xhr){
+					})
+					.fail(function (xhr) {
 						toastr.info(xhr.statusText, 'Could not retrieve URL info');
 						$item_icon.html('<i class="pi-globe"></i>');
-				});
+					});
 			}, 1000);
+		}
+
+		// When we type in the link field or in the textarea, process what we type accordingly
+		$item_content_input.keyup(function () {
+			var content = $(this).val();
+			var post_type = $('#post_type').val();
+			switch (post_type) {
+				case 'link':
+					parseLink(content);
+					break;
+				case 'text':
+					parseText(content);
+					break;
+			}
 		});
 
-		// Convert Markdown and emojis for text and title
-		var convert = new Markdown.getSanitizingConverter();
-		Markdown.Extra.init(convert);
-		convert = convert.makeHtml;
 
 		$item_title_input.keyup(function() {
 			$('#item-title').html(
@@ -221,29 +262,8 @@ script.
 			);
 		});
 
-		$('input, textarea').keypress(function () {
-			if ($(this).attr("id") == 'content' && $(post_type).val() == 'text'){
 
-				//- $(item_content_output).html($(this).val());
-				$(item_content_output).html(
-					twemoji.parse(
-						convert(
-							$(this).val()
-						)
-					)
-				);
-			}
-		});
-
-		/* Resize textarea when typing long text */
-		$item_content_input
-			.autoResize()
-			.blur();
-
-		// Focus the #content field on load
-		input_content.focus();
-
-		/* Save Workflow */
+		// Save Workflow
 		var $item_save_publish_button = $(".item-save-publish");
 		$item_save_publish_button.unbind( "click" );
 
@@ -252,8 +272,6 @@ script.
 			btn
 				.removeClass('saving')
 				.html('<i class="pi-check"></i> Save Changes');
-
-			if (console){ console.log('saved') };
 		}
 
 		function setStatusOnSave() {
@@ -292,11 +310,11 @@ script.
 			}
 		}
 
-		/* Submit changes */
+		// Submit changes
 		$("#item-edit-form").unbind("submit").submit(function(e) {
 			e.preventDefault();
 
-			/* Let us know started saving */
+			// Let us know started saving
 			$item_save_publish_button
 				.addClass('saving')
 				.html('<i class="pi-spin spin"></i> Saving...');
@@ -307,7 +325,7 @@ script.
 				type: 'POST'
 			})
 			.fail(function(xhr){
-				/* Something went wrong, notify */
+				// Something went wrong, notify
 				toastr.error(xhr.statusText, 'Error ' + xhr.status);
 				uiUpdateOnSave($item_save_publish_button);
 			})
@@ -333,11 +351,6 @@ script.
 			$("#item-edit-form").submit();
 		});
 
-
-		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
-			$('#col_right').html(dataHtml);
-			loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
-		});
 
 	});
 | {% endblock footer_scripts %}
