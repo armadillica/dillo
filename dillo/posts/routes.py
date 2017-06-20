@@ -1,7 +1,8 @@
 import logging
-
 import requests
+from urllib.parse import urlparse, urljoin
 from re import compile
+
 from bs4 import BeautifulSoup
 from micawber.exceptions import ProviderException, ProviderNotFoundException
 from flask import abort, Blueprint, current_app, redirect, render_template, request, url_for, \
@@ -141,9 +142,13 @@ def spoon():
         parsed_page['title'] = soup.title.string
 
     # Get the favicon
-    icon_link = soup.find('link', rel='shortcut icon')
+    icon_link = soup.find('link', rel='icon')
     if icon_link:
-        parsed_page['favicon'] = icon_link['href']
+        icon_link_href = icon_link['href']
+        # If the URL is relative
+        if not urlparse(icon_link_href).netloc:
+            icon_link_href = urljoin(r.url, icon_link_href)
+        parsed_page['favicon'] = icon_link_href
 
     # Get only the first 4 images (with an src tag)
     images = soup.find_all('img', attrs={'src': compile('.')})
