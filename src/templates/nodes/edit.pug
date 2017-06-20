@@ -174,7 +174,7 @@ script.
 		var $item_title = $('#item-title');
 
 		$item_content_input.on('keyup', function () {
-
+			if ($('#post_type').val() != 'link') return;
 			$item_icon.html('<i class="pi-spin spin"></i>');
 			// Wait a bit before calling the spoon
 			var url = $(this).val();
