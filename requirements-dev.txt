@@ -1,3 +1,4 @@
+-r requirements.txt
 -r ../pillar-python-sdk/requirements-dev.txt
 -r ../pillar/requirements-dev.txt
 
