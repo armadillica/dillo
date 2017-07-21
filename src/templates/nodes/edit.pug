@@ -112,6 +112,8 @@
 				a.btn.cancel(href="{{ url_for('posts.index')}}") Cancel
 				| {% endif %}
 
+				button.btn#delete Delete
+
 				| {% if node.properties.status != 'published' %}
 				.btn-group
 					button.item-save-publish.btn.btn-success(
@@ -351,6 +353,22 @@ script.
 			$("#item-edit-form").submit();
 		});
 
+		function deleteItem() {
+			var urlNodeDelete = "{{url_for('projects.delete_node')}}";
+			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()},
+				function (data) {
+					// Feedback logic
+				})
+				.done(function () {
+					console.log('delete');
+				})
+				.fail(function (data) {
+				});
+		}
+
+		$('#delete').click(function (e) {
+			deleteItem();
+		});
 
 	});
 | {% endblock footer_scripts %}
