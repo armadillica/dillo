@@ -64,46 +64,45 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<ul class="list-hits">' +
-			'<li class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-				'{{#picture}}'+
-					'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
-						'<div class="item-thumbnail-picture">' +
-							'<img src="{{picture}}"/>' +
-						'</div>' +
-					'</a>' +
-				'{{/picture}}'+
-				'<div class="item-content" data-node-id="{{ objectID }}">' +
-					'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
-						'<div class="item-rating up">' +
-							'<i class="pi-angle-up"></i>' +
-						'</div>' +
-						'<div class="item-rating value">' +
-							'{{ rating }}' +
-						'</div>' +
-						'<div class="item-rating down">' +
-							'<i class="pi-angle-down"></i>' +
-						'</div>' +
+		'<div class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+			'<div class="item-content" data-node-id="{{ objectID }}">' +
+				'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
+					'<div class="item-rating up">' +
+						'<i class="pi-angle-up"></i>' +
 					'</div>' +
-					'<div class="item-details">' +
-						'<a href="" class="item-title js-item-open">{{ name }}</a>' +
-						'<ul>' +
-							'<li>' +
-								'<a href="{{ link_url }}">' +
-								'{{#is_link}}<img title="Link" src="http://www.google.com/s2/favicons?domain={{ link_url }}"/>{{/is_link}}' +
-								'{{^is_link}}<i class="pi-document-text"></i>{{/is_link}}' +
-								'</a>' +
-							'</li>' +
-							'<li><a href="">{{ category }}</a></li>' +
-							'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
-							'<li>{{ user.full_name }}</li>' +
-							'<li><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
-							'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
-						'</ul>' +
+					'<div class="item-rating value">' +
+						'{{ rating }}' +
+					'</div>' +
+					'<div class="item-rating down">' +
+						'<i class="pi-angle-down"></i>' +
 					'</div>' +
 				'</div>' +
-			'</li>' +
-		'</ul>';
+				'<div class="item-details">' +
+					'<a href="" class="item-title js-item-open">{{ name }}</a>' +
+					'<ul>' +
+						'{{#is_link}}' +
+							'<li>' +
+								'<a href="{{ link_url }}">' +
+									'<img title="Link" src="http://www.google.com/s2/favicons?domain={{ link_url }}"/>' +
+								'</a>' +
+							'</li>' +
+						'{{/is_link}}' +
+						'<li><a href="">{{ category }}</a></li>' +
+						'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
+						'<li class="item-author">{{ user.full_name }}</li>' +
+						'<li><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
+						'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
+					'</ul>' +
+				'</div>' +
+			'</div>' +
+			'{{#picture}}'+
+				'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
+					'<div class="item-thumbnail-picture">' +
+						'<img src="{{picture}}"/>' +
+					'</div>' +
+				'</a>' +
+			'{{/picture}}'+
+		'</div>';
 
 
 	var noResultsTemplate =

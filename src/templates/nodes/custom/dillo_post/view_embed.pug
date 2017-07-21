@@ -15,7 +15,6 @@
 			.item-details
 				a#item-title.item-title(href="") {{ node.name }}
 				ul
-					li#item-post_type {{ node.properties.post_type | undertitle }}
 					li#item-category {{ node.properties.category | undertitle }}
 					li {{ node._created | pretty_date }}
 					li {{ node.user.full_name }}
@@ -26,27 +25,38 @@
 					| {% endif %}
 
 
+	| {% if node.properties.post_type == 'text' %}
 	.item-body#item-content
-		| {% if node.properties.post_type == 'text' %}
 		| {{ node.properties.content_html }}
-		| {% elif node.properties.post_type == 'link' and not node.properties.content_html %}
-		a(
+	| {% if node.picture %}
+	.item-media#item-media
+		img(src="{{ node.picture.thumbnail('l', api=api) }}")
+	| {% endif %}
+	| {% endif %}
+
+	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
+	.item-body#item-content
+		//- | {% if node.picture %}
+		//- a.item-thumbnail(
+		//- 	href="{{ node.properties.content }}",
+		//- 	target="_blank",
+		//- 	title="Visit URL")
+		//- 	.item-thumbnail-picture
+		//- 		img(src="{{ node.picture.thumbnail('t', api=api) }}")
+		//- | {% endif %}
+		a.item-link-data(
 			href="{{ node.properties.content }}",
 			target="_blank",
 			title="Visit URL")
-			img(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+			img.favicon(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 			| {{ node.properties.content }}
-		| {% endif %}
+	| {% endif %}
 
-
-	#item-media.item-media
-		| {% if node.properties.post_type == 'link' and node.properties.content_html %}
+	// If it's a link with oembed support
+	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
+	.item-media#item-media
 		| {{ node.properties.content_html | safe }}
-		| {% else %}
-		| {% if node.picture %}
-		img(src="{{ node.picture.thumbnail('l', api=api) }}")
-		| {% endif %}
-		| {% endif %}
+	| {% endif %}
 
 	#item-comments
 		#comments-embed

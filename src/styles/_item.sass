@@ -2,6 +2,7 @@
 .item-title
 	text-decoration: none
 	font-family: $font-headings
+	line-height: 1.5em
 
 	em
 		color: $color-secondary
@@ -21,7 +22,7 @@
 		max-width: 100%
 		max-height: 600px
 
-$item-thumbnail-size: 90px
+$item-thumbnail-size: 100px
 .item-thumbnail
 	position: relative
 	display: flex
@@ -52,6 +53,7 @@ $item-thumbnail-size: 90px
 
 		img
 			height: $item-thumbnail-size
+			object-fit: cover
 
 .item-content
 	display: flex
@@ -140,6 +142,8 @@ $item-thumbnail-size: 90px
 			a
 				text-decoration: none
 				color: $color-text-light
+				white-space: nowrap
+
 				&:hover
 					color: $color-primary
 
@@ -164,6 +168,10 @@ $item-thumbnail-size: 90px
 					border: thin solid $color-text-hint
 					padding: 2px 10px
 					border-radius: 3px
+
+			&.item-author
+				text-overflow: ellipsis
+
 
 #item-comments
 	margin: 10px 15px
@@ -329,7 +337,7 @@ $item-thumbnail-size: 90px
 	line-height: 1.5em
 	border-bottom: thin solid $color-background-dark
 
-
+// Specific tweaks to item view embed when link or text
 .item-view
 	&-header
 		display: flex
@@ -355,11 +363,12 @@ $item-thumbnail-size: 90px
 			background-color: $color-background-light
 			display: flex
 			align-items: center
+			overflow: hidden
 
-			a
+			a.item-link-data
 				font-size: $font-size-small
 				line-height: $font-size
-				padding: 10px 20px 13px 20px
+				padding: 15px
 				display: block
 				flex: 1
 				text-decoration: none
@@ -368,12 +377,17 @@ $item-thumbnail-size: 90px
 					text-decoration: underline
 					color: $color-primary
 
-			img
-				margin-right: 15px
+			img.favicon
+				margin-right: 10px
 				width: 16px
 				height: 16px
 				position: relative
 				top: 3px
+
+			a.item-thumbnail
+				overflow: initial
+				margin-left: 20px
+
 
 	&.loading
 		pointer-events: none

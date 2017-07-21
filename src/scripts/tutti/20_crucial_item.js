@@ -114,7 +114,6 @@ $(document).on('click','body ul.item-edit-tabs li',function(e){
 	// Style the tab as active
 	$('ul.item-edit-tabs li').removeClass('active');
 	$(this).addClass('active');
-	$('#item-post_type').text(post_type);
 
 	// Add the post_type class to the tab, to show/hide elements
 	$tab

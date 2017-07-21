@@ -1,27 +1,26 @@
-ul.list-hits
-	padding: 5px
+#list-hits
 	margin: 0
 
-	> li
+	.list-hits-item
 		display: flex
-		flex-direction: row-reverse
 		height: 100%
-		background-color: $color-background-lighter
-		border-radius: 3px
-		box-shadow: 1px 2px 2px $color-background-dark, inset -5px 0 0  $color-background-dark
+		margin: 5px 10px
 		padding-right: 10px
-		transition: transform 100ms ease-in-out
+		background-color: $color-background-lighter
+		border: thin solid $color-background-dark
+		border-radius: 3px
+		box-shadow: 1px 2px 2px $color-background-dark
+		transition: border-color 150ms ease-in-out
 		+clearfix
 
 		+media-xs
 			flex-direction: column
 			margin: 10px
-			box-shadow: 1px 1px 0  $color-background-dark
 			border-radius: 2px
 
 		&.active
-			box-shadow: 1px 2px 2px $color-background-dark, inset -5px 0 0  $color-secondary
-			position: relative
+			box-shadow: 1px 2px 2px $color-background-dark, inset -3px 0 0  $color-secondary
+			border-color: $color-background-lighter
 
 			+media-xs
 				box-shadow: 1px 2px 2px $color-background-dark, 0 -5px 0  $color-secondary

@@ -95,8 +95,10 @@
 					option(value="text") Text
 					| {% endif %}
 
-				.form-upload-file
-					| {{ form.picture }}
+				.input-content
+					label(for="picture") Thumbnail
+					.form-upload-file
+						| {{ form.picture }}
 
 
 		.item-edit-header
