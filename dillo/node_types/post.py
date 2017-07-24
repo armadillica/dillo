@@ -23,6 +23,10 @@ node_type_post = {
         'content_html': {
             'type': 'string',
         },
+        # URL to an image file that is used to generate the node.picture
+        'picture_url': {
+            'type': 'string',
+        },
         # Status follows this order: pending -> draft -> published
         # - pending: just created
         # - draft: edited after creation

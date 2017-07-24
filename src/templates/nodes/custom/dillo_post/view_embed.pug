@@ -36,14 +36,6 @@
 
 	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
 	.item-body#item-content
-		//- | {% if node.picture %}
-		//- a.item-thumbnail(
-		//- 	href="{{ node.properties.content }}",
-		//- 	target="_blank",
-		//- 	title="Visit URL")
-		//- 	.item-thumbnail-picture
-		//- 		img(src="{{ node.picture.thumbnail('t', api=api) }}")
-		//- | {% endif %}
 		a.item-link-data(
 			href="{{ node.properties.content }}",
 			target="_blank",
@@ -51,6 +43,7 @@
 			img.favicon(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 			| {{ node.properties.content }}
 	| {% endif %}
+
 
 	// If it's a link with oembed support
 	| {% if node.properties.post_type == 'link' and node.properties.content_html %}

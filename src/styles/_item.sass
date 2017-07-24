@@ -1,397 +1,479 @@
-/* Listing item */
+// Listing item
 .item-title
-	text-decoration: none
-	font-family: $font-headings
-	line-height: 1.5em
+  font-family: $font-headings
+  line-height: 1.5em
+  text-decoration: none
 
-	em
-		color: $color-secondary
-		font-style: normal
+  em
+    color: $color-secondary
+    font-style: normal
 
 .item-media
-	display: flex
-	align-items: center
-	justify-content: center
-	background-color: $color-background-light
-	border-bottom: thin solid $color-background-dark
+  align-items: center
+  background-color: $color-background-light
+  border-bottom: thin solid $color-background-dark
+  display: flex
+  justify-content: center
 
-	iframe
-		width: 100%
+  iframe
+    min-height: 400px
+    width: 100%
 
-	iframe, img
-		max-width: 100%
-		max-height: 600px
+  iframe, img
+    max-height: 600px
+    max-width: 100%
+
 
 $item-thumbnail-size: 100px
+
+.item-oembed-images
+  margin: 15px 0
+  visibility: hidden
+
+  &.active
+    display: block
+    visibility: visible
+
+  ul
+    display: flex
+    list-style-type: none
+    margin: 10px
+    padding: 0
+
+    li
+      background-color: $color-background-dark
+      border: 3px solid transparent
+      border-radius: 3px
+      box-shadow: rgba(black, .25) 0px 1px 4px -1px
+      cursor: pointer
+      display: flex
+      flex: 1
+      margin: 0 5px
+      max-width: $item-thumbnail-size
+      padding: 0
+      position: relative
+      transform: scale(.9)
+      transition: border-color 100ms ease-in-out, transform 100ms ease-in-out
+
+      &.active
+        border-color: $color-secondary
+        box-shadow: rgba(black, .25) 0px 1px 4px -1px, 0 0 25px rgba(black, .25)
+        transform: scale(1)
+
+        img
+          opacity: 1
+
+      img
+        max-height: $item-thumbnail-size
+        max-width: 100%
+        min-height: $item-thumbnail-size
+        object-fit: cover
+        opacity: .8
+        user-select: none
+
+
 .item-thumbnail
-	position: relative
-	display: flex
-	align-items: center
-	justify-content: center
-	width: $item-thumbnail-size
-	min-width: $item-thumbnail-size
-	overflow: hidden
+  +media-xs
+    margin: 0
+    max-height: initial
+    width: 100%
 
-	+media-xs
-		width: 100%
-		max-height: initial
-		margin: 0
+    .item-thumbnail-picture
+      width: 100%
 
-		.item-thumbnail-picture
-			width: 100%
+  align-items: center
+  border-bottom-left-radius: 3px
+  border-top-left-radius: 3px
+  display: flex
+  justify-content: center
+  max-width: $item-thumbnail-size
+  min-width: $item-thumbnail-size
+  overflow: hidden
+  position: relative
 
-	.item-thumbnail-picture
-		position: absolute
-		width: 100%
-		transition: transform 150ms ease-in-out
-		border-radius: 50%
-		box-shadow: 2px 2px 0 rgba(black, .1)
-		background-color: $color-background-dark
-		overflow: hidden
-		display: flex
-		justify-content: center
+  &.has-thumbnail
+    background-color: $color-background-light
 
-		img
-			height: $item-thumbnail-size
-			object-fit: cover
+    .item-thumbnail-picture
+      &::before
+        display: none
+
+  &.is-link
+    .item-thumbnail-picture
+      &::before
+        content: '\e870'
+
+  .item-thumbnail-picture
+    align-items: center
+    border-bottom-left-radius: 3px
+    border-top-left-radius: 3px
+    display: flex
+    justify-content: center
+    position: absolute
+
+    &::before
+      +position-center-translate
+      align-items: center
+      border: 2px solid $color-background-dark
+      border-radius: 50%
+      color: $color-text-dark-hint
+      content: '\e861'
+      display: flex
+      font-family: 'pillar-font'
+      font-size: 1.4em
+      height: $item-thumbnail-size / 2
+      justify-content: center
+      width: $item-thumbnail-size / 2
+
+    img
+      height: $item-thumbnail-size
 
 .item-content
-	display: flex
-	align-items: center
-	width: 100%
+  align-items: center
+  display: flex
+  width: 100%
 
 .item-rating-box
-	display: flex
-	flex-direction: column
-	height: 100%
-	width: 45px
-	min-width: 45px
+  +media-xs
+    min-width: 60px
+    width: 60px
 
-	+media-xs
-		width: 60px
-		min-width: 60px
+  display: flex
+  flex-direction: column
+  height: 100%
+  min-width: 45px
+  width: 45px
 
-	&.rated.positive .up
-		color: $color-vote-up
-	&.rated.negative .down
-		color: $color-vote-down
+  &.rated.positive .up
+    color: $color-vote-up
+
+  &.rated.negative .down
+    color: $color-vote-down
 
 .item-rating
-	display: flex
-	align-items: center
-	justify-content: center
-	height: 100%
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 100%
 
-	+media-xs
-		padding: 3px 0
+  +media-xs
+    padding: 3px 0
 
-	&.up, &.down
-		font-size: 1.33em
-		cursor: pointer
+  &.up, &.down
+    font-size: 1.33em
+    cursor: pointer
 
-	&.up:hover
-		color: $color-vote-up
-	&.down:hover
-		color: $color-vote-down
+  &.up:hover
+    color: $color-vote-up
+  &.down:hover
+    color: $color-vote-down
 
-	&.value
-		color: $color-text-light
-		font-size: $font-size-small
+  &.value
+    color: $color-text-light
+    font-size: $font-size-small
 
 .item-details
-	display: flex
-	flex-direction: column
-	justify-content: space-around
-	flex: 1
-	padding: 7px 0
+  display: flex
+  flex-direction: column
+  justify-content: space-around
+  flex: 1
+  padding: 7px 0
 
-	+media-xs
-		padding: 7px
+  +media-xs
+    padding: 7px
 
-	> ul
-		margin: 0
-		padding: 0
-		display: flex
-		align-items: center
+  > ul
+    margin: 0
+    padding: 0
+    display: flex
+    align-items: center
 
-		> li
-			margin: 0
-			padding: 0
-			display: inline-block
-			font-size: $font-size-small
-			padding: 5px 4px
-			color: $color-text-light
+    > li
+      margin: 0
+      padding: 0
+      display: inline-block
+      font-size: $font-size-small
+      padding: 5px 4px
+      color: $color-text-light
 
-			overflow: hidden
-			text-overflow: ellipsis
-			white-space: break-word
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: break-word
 
-			&:before
-				content: '·'
-				font-weight: bolder
-				position: relative
-				left: -6px
-				top: 1px
-				color: $color-text-hint
+      &:before
+        content: '·'
+        font-weight: bolder
+        position: relative
+        left: -6px
+        top: 1px
+        color: $color-text-hint
 
-			&:first-child
-				padding-left: 0
-				&:before
-					content: ''
+      &:first-child
+        padding-left: 0
+        &:before
+          content: ''
 
-			a
-				text-decoration: none
-				color: $color-text-light
-				white-space: nowrap
+      a
+        text-decoration: none
+        color: $color-text-light
+        white-space: nowrap
 
-				&:hover
-					color: $color-primary
+        &:hover
+          color: $color-primary
 
-			img
-				display: inline-block
-				vertical-align: middle
-				border-radius: 3px
-				position: relative
-				top: -2px
-				opacity: .8
+      img
+        display: inline-block
+        vertical-align: middle
+        border-radius: 3px
+        position: relative
+        top: -2px
+        opacity: .8
 
-				&:hover
-					opacity: 1
+        &:hover
+          opacity: 1
 
-			&#item-post_type
-				text-transform: capitalize
+      &#item-post_type
+        text-transform: capitalize
 
-			&.item-edit
-				margin-left: auto
-				padding-right: 15px
-				a
-					border: thin solid $color-text-hint
-					padding: 2px 10px
-					border-radius: 3px
+      &.item-edit
+        margin-left: auto
+        padding-right: 15px
+        a
+          border: thin solid $color-text-hint
+          padding: 2px 10px
+          border-radius: 3px
 
-			&.item-author
-				text-overflow: ellipsis
+      &.item-author
+        text-overflow: ellipsis
+
 
 
 #item-comments
-	margin: 10px 15px
+  margin: 10px 15px
 
 /* Edit */
 .item-edit
-	&-header
-		display: flex
-		align-items: center
-		padding: 20px 10px
+  &-header
+    display: flex
+    align-items: center
+    padding: 20px 10px
 
-		&-action
-			margin-left: auto
+    &-action
+      margin-left: auto
 
-			.btn-group
-				margin-left: 5px
-		.item-status
-			color: $color-text-hint
-			span
-				padding-left: 5px
+      .btn-group
+        margin-left: 5px
+    .item-status
+      color: $color-text-hint
+      span
+        padding-left: 5px
 
-	&-form
-		form
-			display: flex
-			flex-direction: column
+  &-form
+    form
+      display: flex
+      flex-direction: column
 
-			#name
-				color: $color-primary
-				padding: 10px
+      #name
+        color: $color-primary
+        padding: 10px
 
-			#content
-				padding: 10px
+      #content
+        padding: 10px
 
-			textarea#content
-				min-height: 150px
+      textarea#content
+        min-height: 150px
 
-			span.content-extra
-				font-size: $font-size-smaller
-				text-align: right
-				padding: 5px 10px
+      span.content-extra
+        font-size: $font-size-smaller
+        text-align: right
+        padding: 5px 10px
 
-				a
-					color: $color-text-hint
-					&:hover
-						color: $color-primary
+        a
+          color: $color-text-hint
+          &:hover
+            color: $color-primary
 
-			#category
-				padding: 10px
-				margin: 5px 10px
-				background-color: $color-background-lighter
+      #category
+        padding: 10px
+        margin: 5px 10px
+        background-color: $color-background-lighter
 
-			#status, #post_type
-				visibility: hidden
-				display: none
+      #status, #post_type
+        visibility: hidden
+        display: none
 
-			.form-upload-file
-				padding: 10px 5px
+      .form-upload-file
+        padding: 10px 5px
 
-			input, textarea
-				margin: 5px 10px
-				background-color: $color-background-lighter
+      input, textarea
+        margin: 5px 10px
+        background-color: $color-background-lighter
 
-			label
-				padding-top: 10px
-				padding-left: 15px
+      label
+        padding-top: 10px
+        padding-left: 15px
 
-			.input-content
-				display: flex
-				flex-direction: column
+      .input-content
+        display: flex
+        flex-direction: column
 
-				input, textarea
-					background-color: $color-background-lighter
+        input, textarea
+          background-color: $color-background-lighter
 
-			.fileupload
-				box-shadow: none
-				background-color: $color-background-light
-				padding: 10px
-				margin: 10px 0
+        &.item-oembed-images
+          display: none
 
-			#item-icon
-				position: absolute
-				left: 12px
-				bottom: 8px
-				width: 32px
-				height: 32px
-				display: flex
-				align-items: center
-				justify-content: center
+          &.active
+            display: block
+            visibility: visible
 
-				img
-					max-width: 24px
-					max-height: 24px
+      .fileupload
+        box-shadow: none
+        background-color: $color-background-light
+        padding: 10px
+        margin: 10px 0
+
+      #item-icon
+        position: absolute
+        left: 12px
+        bottom: 8px
+        width: 32px
+        height: 32px
+        display: flex
+        align-items: center
+        justify-content: center
+
+        img
+          max-width: 24px
+          max-height: 24px
 
 
-	/* Tabs for Link/Text */
-	&-tabs
-		list-style-type: none
-		margin: 0
-		padding: 0
-		display: flex
+  /* Tabs for Link/Text */
+  &-tabs
+    list-style-type: none
+    margin: 0
+    padding: 0
+    display: flex
 
-		> li
-			flex: 1
-			padding: 10px 15px
-			background-color: $color-background-dark
-			border-top: 5px solid darken($color-background-dark, 10%)
-			color: darken($color-background-dark, 35%)
-			cursor: pointer
-			user-select: none
-			margin-bottom: 15px
+    > li
+      flex: 1
+      padding: 10px 15px
+      background-color: $color-background-dark
+      border-top: 5px solid darken($color-background-dark, 10%)
+      color: darken($color-background-dark, 35%)
+      cursor: pointer
+      user-select: none
+      margin-bottom: 15px
 
-			&:hover
-				color: $color-primary
-				border-top: 5px solid rgba($color-secondary, .25)
+      &:hover
+        color: $color-primary
+        border-top: 5px solid rgba($color-secondary, .25)
 
-			span
-				display: block
-				font:
-					size: $font-size-large
-					family: $font-headings
+      span
+        display: block
+        font:
+          size: $font-size-large
+          family: $font-headings
 
-			small
-				font-size: $font-size-small
+      small
+        font-size: $font-size-small
 
-			&.active
-				background-color: $color-background
-				border-color: $color-secondary
-				color: $color-primary
-				span
-					color: $color-secondary
+      &.active
+        background-color: $color-background
+        border-color: $color-secondary
+        color: $color-primary
+        span
+          color: $color-secondary
 
-	&-tab
-		/* When the Link tab is active, hide/show some elements */
-		&.link
-			.input-content.link
-				position: relative
-				display: flex
-				justify-content: center
-				overflow: hidden
+  &-tab
+    /* When the Link tab is active, hide/show some elements */
+    &.link
+      .input-content.link
+        position: relative
+        display: flex
+        justify-content: center
+        overflow: hidden
 
-				input#content
-					visibility: visible
-					display: block
-					padding-left: 36px
+        input#content
+          visibility: visible
+          display: block
+          padding-left: 36px
 
-			.input-content.text,
-			span.content-extra
-				visibility: hidden
-				display: none
+      .input-content.text,
+      span.content-extra
+        visibility: hidden
+        display: none
 
-		/* When the Text tab is active, hide/show some elements */
-		&.text
-			.input-content.text
-				visibility: visible
-				display: flex
-			.input-content.link, #item-icon
-				visibility: hidden
-				display: none
+    /* When the Text tab is active, hide/show some elements */
+    &.text
+      .input-content.text
+        visibility: visible
+        display: flex
+      .input-content.link, #item-icon
+        visibility: hidden
+        display: none
 
 
 .item-body
-	font-size: $font-size
-	line-height: 1.5em
-	border-bottom: thin solid $color-background-dark
+  font-size: $font-size
+  line-height: 1.5em
+  border-bottom: thin solid $color-background-dark
 
 // Specific tweaks to item view embed when link or text
 .item-view
-	&-header
-		display: flex
+  &-header
+    display: flex
 
-	&.text
-		.item-body
-			background-color: $color-background-lighter
-			padding: 20px
+  &.text
+    .item-body
+      background-color: $color-background-lighter
+      padding: 20px
 
-			img
-				max-width: 100%
+      img
+        max-width: 100%
 
-			blockquote
-				display: block
-				background-color: $color-background
-				border-left: thick solid $color-background-dark
-				padding: 1px 10px
-				margin: 0
+      blockquote
+        display: block
+        background-color: $color-background
+        border-left: thick solid $color-background-dark
+        padding: 1px 10px
+        margin: 0
 
-	&.link
-		.item-body
-			border-top: thin solid $color-background-dark
-			background-color: $color-background-light
-			display: flex
-			align-items: center
-			overflow: hidden
+  &.link
+    .item-body
+      border-top: thin solid $color-background-dark
+      background-color: $color-background-light
+      display: flex
+      align-items: center
+      overflow: hidden
 
-			a.item-link-data
-				font-size: $font-size-small
-				line-height: $font-size
-				padding: 15px
-				display: block
-				flex: 1
-				text-decoration: none
-				color: $color-text-dark-primary
-				&:hover
-					text-decoration: underline
-					color: $color-primary
+      a.item-link-data
+        font-size: $font-size-small
+        line-height: $font-size
+        padding: 15px
+        display: block
+        flex: 1
+        text-decoration: none
+        color: $color-text-dark-primary
+        &:hover
+          text-decoration: underline
+          color: $color-primary
 
-			img.favicon
-				margin-right: 10px
-				width: 16px
-				height: 16px
-				position: relative
-				top: 3px
+      img.favicon
+        margin-right: 10px
+        width: 16px
+        height: 16px
+        position: relative
+        top: 3px
 
-			a.item-thumbnail
-				overflow: initial
-				margin-left: 20px
+      a.item-thumbnail
+        overflow: initial
+        margin-left: 20px
 
 
-	&.loading
-		pointer-events: none
-		opacity: .8
+  &.loading
+    pointer-events: none
+    opacity: .8
 
-		.item-details > ul li i
-			margin-right: 10px
+    .item-details > ul li i
+      margin-right: 10px

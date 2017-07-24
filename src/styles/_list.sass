@@ -1,63 +1,62 @@
 #list-hits
-	margin: 0
+  margin: 0
 
-	.list-hits-item
-		display: flex
-		height: 100%
-		margin: 5px 10px
-		padding-right: 10px
-		background-color: $color-background-lighter
-		border: thin solid $color-background-dark
-		border-radius: 3px
-		box-shadow: 1px 2px 2px $color-background-dark
-		transition: border-color 150ms ease-in-out
-		+clearfix
+  .list-hits-item
+    +clearfix
 
-		+media-xs
-			flex-direction: column
-			margin: 10px
-			border-radius: 2px
+    +media-xs
+      border-radius: 2px
+      flex-direction: column
+      margin: 10px
+    background-color: $color-background-lighter
+    border: thin solid rgba($color-text, .25)
+    border-radius: 3px
+    box-shadow: 1px 2px 2px $color-background-dark
+    display: flex
+    height: 100%
+    margin: 5px 10px 5px 5px
+    padding-right: 10px
+    transition: box-shadow 250ms ease-in-out
 
-		&.active
-			box-shadow: 1px 2px 2px $color-background-dark, inset -3px 0 0  $color-secondary
-			border-color: $color-background-lighter
+    &.active
+      +media-xs
+        box-shadow: 1px 2px 2px $color-background-dark, 0 -5px 0  $color-secondary
+      box-shadow: 1px 2px 2px $color-background-dark, inset -3px 0 0  $color-secondary
 
-			+media-xs
-				box-shadow: 1px 2px 2px $color-background-dark, 0 -5px 0  $color-secondary
+      .item-title
+        color: $color-primary
 
-			.item-title
-				color: $color-primary
+    a.item-title
+      color: $color-text
+      font-size: 1.2em
+      padding: 2px 0
 
-		a.item-title
-			font-size: 1.2em
-			color: $color-text
-			padding: 2px 0
-
-			&:hover
-				color: $color-primary
+      &:hover
+        color: $color-primary
 
 .listing-view
-	box-shadow: inset 1px 0 0 $color-background-dark
+  box-shadow: inset 1px 0 0 $color-background-dark
 
-	.item-content
-		padding: 10px 0
-	.item-title
-		font-size: $font-size-extra-large
-		color: $color-primary
+  .item-content
+    padding: 10px 0
 
-		.emoji
-			width: $font-size-large
-			height: $font-size-large
+  .item-title
+    color: $color-primary
+    font-size: $font-size-extra-large
 
-	.item-rating-box
-		min-width: 50px
+    .emoji
+      height: $font-size-large
+      width: $font-size-large
 
-	.item-details
-		padding: 5px 0
+  .item-rating-box
+    min-width: 50px
 
-	&#col_right
-		background-color: $color-background-lighter
+  .item-details
+    padding: 5px 0
+
+  &#col_right
+    background-color: $color-background-lighter
 
 #list-item
-	height: 100%
-	overflow-x: hidden
+  height: 100%
+  overflow-x: hidden

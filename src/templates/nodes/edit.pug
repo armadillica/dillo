@@ -95,6 +95,11 @@
 					option(value="text") Text
 					| {% endif %}
 
+				| {{ form.picture_url }}
+				.input-content.item-oembed-images
+					label(for="picture_oembed") Thumbnails Available
+					ul#picture_oembed
+
 				.input-content
 					label(for="picture") Thumbnail
 					.form-upload-file
@@ -189,6 +194,7 @@ script.
 		var $item_content_input = $('.input-field');
 		var $item_icon = $('#item-icon');
 		var $item_title = $('#item-title');
+		var $image_oembed = $('.item-oembed-images ul');
 
 		// Resize textarea when typing long text
 		$item_content_input
@@ -233,6 +239,19 @@ script.
 							// Set the media
 							if (data.oembed) {
 								$('#item-media').html(data.oembed)
+							}
+
+							// Get the images
+							if (data.images){
+
+								$image_oembed
+									.empty()
+									.parent().addClass('active');
+
+								data.images.forEach(function(src){
+									var image = '<img src="' + src + '"/>';
+									$image_oembed.append('<li class="o-image">' + image + '</li>');
+								});
 							}
 						}
 					})
@@ -368,8 +387,41 @@ script.
 				});
 		}
 
+		// Delete Post
 		$('#delete').click(function (e) {
 			deleteItem();
+		});
+
+
+		// Set Oembed Image as Thumbnail
+		$(document).on('click', 'body .o-image', function(){
+
+			var $this = $(this);
+			var picture_url = $('#picture_url');
+
+			// Remove active class from other images
+			$this.siblings('li').removeClass('active');
+
+			// Clicking on the already active image to un-set
+			if ($this.hasClass('active')){
+				$this.toggleClass('active');
+				picture_url.val('');
+			} else {
+				$this.addClass('active');
+
+				// Set the picture_url field with the image source path
+				picture_url.val($this.children('img').attr('src'));
+
+				// Visually tell that the custom thumbnail won't be used
+				$('.fileupload').val('');
+				$('.form-upload-progress-bar').css('width', 0);
+			}
+		});
+
+		//
+		$('body').on('file-upload:finished', function(){
+			$('.o-image').removeClass('active');
+			$('#picture_url').val('');
 		});
 
 	});

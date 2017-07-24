@@ -65,6 +65,13 @@ script.
 	{% raw %}
 	var hitTemplate =
 		'<div class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+			'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}} {{#is_link}}is-link{{/is_link}}">' +
+				'<div class="item-thumbnail-picture">' +
+					'{{#picture}}' +
+						'<img src="{{picture}}"/>' +
+					'{{/picture}}' +
+				'</div>' +
+			'</a>' +
 			'<div class="item-content" data-node-id="{{ objectID }}">' +
 				'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
 					'<div class="item-rating up">' +
@@ -95,13 +102,6 @@ script.
 					'</ul>' +
 				'</div>' +
 			'</div>' +
-			'{{#picture}}'+
-				'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}}">' +
-					'<div class="item-thumbnail-picture">' +
-						'<img src="{{picture}}"/>' +
-					'</div>' +
-				'</a>' +
-			'{{/picture}}'+
 		'</div>';
 
 
