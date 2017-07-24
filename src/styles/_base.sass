@@ -9,6 +9,31 @@ a:hover
 	display: flex
 	flex-direction: column
 
+#app-loader
+	background-color: $color-secondary
+	height: 0
+	left: 0
+	position: absolute
+	right: 0
+	top: 0
+	z-index: 2
+
+	visibility: hidden
+	opacity: 0
+	transition: all ease-in-out 50ms
+
+	background: linear-gradient(45deg, $color-primary, $color-secondary, $color-secondary, $color-primary)
+	background-size: 50% 100%
+	-webkit-animation: fLoaderBackground 3s linear infinite
+	-moz-animation: fLoaderBackground 3s linear infinite
+	animation: fLoaderBackground 3s linear infinite
+
+	&.active
+		height: 2px
+		visibility: visible
+		opacity: 1
+
+
 #header-bar
 	&-pri
 		background-color: $color-background-lighter
@@ -272,3 +297,27 @@ h1 .emoji
 
 		.nc-avatar
 			display: none
+
+@-webkit-keyframes fLoaderBackground
+	0%
+		background-position: 0% 0%
+	50%
+		background-position: 100% 0%
+	100%
+		background-position: 0% 0%
+
+@-moz-keyframes fLoaderBackground
+	0%
+		background-position: 0% 0%
+	50%
+		background-position: 100% 0%
+	100%
+		background-position: 200% 0%
+
+@keyframes fLoaderBackground
+	0%
+		background-position: 0% 0%
+	50%
+		background-position: 100% 0%
+	100%
+		background-position: 200% 0%

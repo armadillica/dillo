@@ -15,6 +15,7 @@ html(lang='en')
 
 	body({% block bodyattrs %}{%endblock%})
 		#app-header
+			#app-loader
 			header#header-bar-pri
 				a.app-branding(href="{{ url_for('posts.index') }}") Dillo
 				.wgt-search

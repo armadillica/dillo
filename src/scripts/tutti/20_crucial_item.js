@@ -140,3 +140,12 @@ $('input, textarea').keypress(function () {
 		return 'You have unsaved changes in your post.';
 	});
 });
+
+$(document).ajaxStart(function(){
+	$('#app-loader').addClass('active');
+});
+
+
+$(document).ajaxStop(function(){
+	$('#app-loader').removeClass('active');
+});
