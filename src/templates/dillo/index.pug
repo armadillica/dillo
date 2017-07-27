@@ -1,116 +1,173 @@
 | {% extends 'dillo/layout.html' %}
-| {% block bodyattrs %}{{ super() }} data-context='dashboard'{% endblock %}
+| {% block bodyattrs %}{{ super() }} data-context='posts-index'{% endblock %}
 | {% block page_title %}Dashboard{% endblock %}
+
 | {% block body %}
 
 #col_main.listing-list
-	ul.list-hits
-		li.js-list-item.active
-			a.item-thumbnail(href="")
-				img(src="https://placekitten.com/110")
-			.item-content
-				.item-rating-box
-					.item-rating.up
-						i.pi-angle-up
-					.item-rating.value 16
-					.item-rating.down
-						i.pi-angle-down
-				.item-details
-					a.item-title(href="") NEW: Blender Motion Graphics Training
-					ul
-						li
-							img(title="Link" src="http://www.google.com/s2/favicons?domain=https://www.youtube.com")
-						li Tutorials
-						li
-							a(href="") 2 days ago
-						li koro
-						li
-							a(href="") 2 comments
-						li youtube.com
-
-		li.js-list-item
-			a.item-thumbnail(href="")
-				img(src="https://placekitten.com/120")
-			.item-content
-				.item-rating-box
-					.item-rating.up
-						i.pi-angle-up
-					.item-rating.value 8
-					.item-rating.down
-						i.pi-angle-down
-				.item-details
-					a.item-title(href="") Blender 2.8 - ¿Qué y por qué?
-					ul
-						li
-							img(title="Link" src="http://www.google.com/s2/favicons?domain=http://vimeo.com/")
-						li Artwork
-						li
-							a(href="") 8h ago
-						li koro
-						li
-							a(href="") 3 comments
-						li github.com
-
-		li.js-list-item
-			a.item-thumbnail(href="")
-				img(src="https://placekitten.com/90")
-			.item-content
-				.item-rating-box
-					.item-rating.up
-						i.pi-angle-up
-					.item-rating.value -3
-					.item-rating.down
-						i.pi-angle-down
-				.item-details
-					a.item-title(href="") An add-on for re-arranging render layers in the render layers list
-					ul
-						li
-							img(title="Link" src="http://www.google.com/s2/favicons?domain=https://www.blendernetwork.org")
-						li Community
-						li
-							a(href="") 8h ago
-						li koro
-						li
-							a(href="") comment
-						li github.com
-
+	#list-hits
 
 #col_right.listing-view
-	.item-media
-		i.pi-play
+	#list-item
+		| {% if 'post' in col_right %}
+		.item-view.loading
+			.item-content
+				.item-rating-box
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.value &#x221e;
+					.item-rating.down
+						i.pi-angle-down
+				.item-details
+					a#item-title.item-title {{ col_right['post']['name'] }}
+					ul
+						li
+							i.pi-spin.spin
+							span Fetching the goods...
 
-	.item-content
-		.item-rating-box
-			.item-rating.up
-				i.pi-angle-up
-			.item-rating.value 8
-			.item-rating.down
-				i.pi-angle-down
-		.item-details
-			a.item-title(href="") NEW: Blender Motion Graphics Training
-			ul
-				li Tutorials
-				li
-					a(href="") 2 days ago
-				li koro
-				li
-					a(href="") 2 comments
-				li youtube.com
+		| {% elif 'activities' in col_right %}
+		.welcome
+			h2 Welcome to Dillo
 
-	.item-body.
-		Hello everyone
-		Been long I posted some artwork here.
-		<br/>
-		Decided to sculpt Logan, here is the final version.
-		<br/><br/>
-		Sculpted in Zbrush
-		Hair and Fur done using Blender
-		Rendered with the very awesome Cycles Render Engine
-		<br/>
-		Thanks a lot to everyone who has been supportive to me and making this happen.
-		Visit www.pixel-architect.com for more of my artworks.
+			.d-activity
+				| {% if col_right['activities']['_meta']['total'] %}
+				ul
+					| {% for act in col_right['activities']['_items'] %}
+					li
+						img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
+						span.date(title="{{ act._created }}") {{ act._created | pretty_date_time }}
+						span.actor {{ act['actor_user']['full_name'] }}
+						span.verb {{ act.verb }}
+					| {% endfor %}
+				| {% else %}
+				p No activity (yet)!
+				| {% endif %}
+		| {% endif %}
 
-	#item-comments
-		h2 Comments
+|{% endblock body %}
 
-| {% endblock %}
+| {% block footer_scripts %}
+script.
+
+	var search = instantsearch({
+		appId: '{{ config.ALGOLIA_USER }}',
+		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
+		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
+		urlSync: {}
+	});
+
+	search.addWidget(
+		instantsearch.widgets.searchBox({
+			container: '#q'
+		})
+	);
+
+	{% raw %}
+	var hitTemplate =
+		'<div class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+			'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}} {{#is_link}}is-link{{/is_link}}">' +
+				'<div class="item-thumbnail-picture">' +
+					'{{#picture}}' +
+						'<img src="{{picture}}"/>' +
+					'{{/picture}}' +
+				'</div>' +
+			'</a>' +
+			'<div class="item-content" data-node-id="{{ objectID }}">' +
+				'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
+					'<div class="item-rating up">' +
+						'<i class="pi-angle-up"></i>' +
+					'</div>' +
+					'<div class="item-rating value">' +
+						'{{ rating }}' +
+					'</div>' +
+					'<div class="item-rating down">' +
+						'<i class="pi-angle-down"></i>' +
+					'</div>' +
+				'</div>' +
+				'<div class="item-details">' +
+					'<a href="" class="item-title js-item-open">{{ name }}</a>' +
+					'<ul>' +
+						'{{#is_link}}' +
+							'<li>' +
+								'<a href="{{ link_url }}">' +
+									'<img title="Link" src="http://www.google.com/s2/favicons?domain={{ link_url }}"/>' +
+								'</a>' +
+							'</li>' +
+						'{{/is_link}}' +
+						'<li><a href="">{{ category }}</a></li>' +
+						'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
+						'<li class="item-author">{{ user.full_name }}</li>' +
+						'<li><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
+						'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
+					'</ul>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+
+	var noResultsTemplate =
+		'<div class="text-center">No results found matching <strong>{{query}}</strong>.</div>';
+	{% endraw %}
+
+
+	function processHit(hit) {
+		var key = 'dillo_' + hit.objectID;
+		hit.is_positive = localStorage.getItem(key);
+
+		if (hit.is_positive && hit.is_positive === 'true') {
+			hit.is_positive = 'positive';
+		} else if (hit.is_positive && hit.is_positive === 'false') {
+			hit.is_positive = 'negative';
+		}
+
+		hit.created = moment.unix(hit.created).fromNow();
+
+		if (hit.is_link) {
+			hit.link_url = hit.content;
+			hit.link_short = shortenUrl(hit.content);
+		}
+
+		return hit;
+	}
+
+
+	search.addWidget(
+		instantsearch.widgets.hits({
+			container: '#list-hits',
+			hitsPerPage: 10,
+			templates: {
+				empty: noResultsTemplate,
+				item: hitTemplate
+			},
+			transformData: processHit,
+		})
+	);
+
+	search.start();
+
+	var onRenderHandler = function() {
+		twemoji.parse(document.body);
+	}
+
+	search.on('render', onRenderHandler);
+
+	$('body').on('click', '.js-item-open', function(e){
+		e.preventDefault();
+		e.stopPropagation();
+
+		var li = $(this).closest('.list-hits-item');
+		var hit_id = li.attr('data-id');
+		var hit_url = li.attr('data-url');
+
+		/* Unstyle all items on the list and style only the current one */
+		$('.list-hits-item').removeClass('active');
+		li.addClass('active');
+
+		item_open(hit_id, hit_url);
+	});
+
+	{% if 'post' in col_right %}
+		item_open('{{col_right['post']['_id']}}');
+	{% endif %}
+
+| {% endblock footer_scripts %}

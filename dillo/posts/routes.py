@@ -60,7 +60,7 @@ def index():
         act.actor_user = subquery.get_user_info(act.actor_user)
 
     return render_template(
-            'dillo/search.html',
+            'dillo/index.html',
             col_right={'activities': activities})
 
 
@@ -101,7 +101,7 @@ def view(post_shortcode, slug=None):
     api = system_util.pillar_api()
     post = Node.find_one({'where': {'properties.shortcode': post_shortcode}}, api=api)
     return render_template(
-        'dillo/search.html',
+        'dillo/index.html',
         col_right={'post': post})
 
 
