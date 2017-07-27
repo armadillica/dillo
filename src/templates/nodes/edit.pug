@@ -337,7 +337,7 @@ script.
 		$("#item-edit-form").unbind("submit").submit(function(e) {
 			e.preventDefault();
 
-			// Let us know started saving
+			// Let us know that saving started
 			$item_save_publish_button
 				.addClass('saving')
 				.html('<i class="pi-spin spin"></i> Saving...');
@@ -418,7 +418,7 @@ script.
 			}
 		});
 
-		//
+		// When finished uploading a thumbnail, deselect any oembed image and clear #picture_url
 		$('body').on('file-upload:finished', function(){
 			$('.o-image').removeClass('active');
 			$('#picture_url').val('');

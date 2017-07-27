@@ -73,14 +73,6 @@ $item-thumbnail-size: 100px
 
 
 .item-thumbnail
-  +media-xs
-    margin: 0
-    max-height: initial
-    width: 100%
-
-    .item-thumbnail-picture
-      width: 100%
-
   align-items: center
   border-bottom-left-radius: 3px
   border-top-left-radius: 3px
@@ -92,6 +84,25 @@ $item-thumbnail-size: 100px
   position: relative
 
   &.has-thumbnail
+    +media-xs
+      height: 150px
+      margin: 0
+      max-height: initial
+      max-width: initial
+      width: 100%
+
+      .item-thumbnail-picture
+        display: block
+        height: 100%
+        position: initial
+        width: 100%
+
+        img
+          height: 100%
+          max-height: initial
+          object-fit: cover
+          width: 100%
+
     background-color: $color-background-light
 
     .item-thumbnail-picture

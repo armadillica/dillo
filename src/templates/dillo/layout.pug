@@ -26,10 +26,9 @@ html(lang='en')
 
 				nav.nav-bar#header-bar-pri-user
 					ul
+						| {% if current_user.is_authenticated %}
 						li
 							a.btn.submit(href="{{ url_for('posts.create') }}") SUBMIT POST
-
-						| {% if current_user.is_authenticated %}
 
 						li.nav-notifications
 							a.navbar-item#notifications-toggle(
@@ -73,7 +72,9 @@ html(lang='en')
 
 						| {% else %}
 						li
-							a.navbar-item(href="{{ url_for('users.login') }}")
+							a.btn.submit(href="{{ url_for('users.login') }}") SUBMIT POST
+						li
+							a.navbar-item.login(href="{{ url_for('users.login') }}")
 								| Log in
 						| {% endif %}
 
