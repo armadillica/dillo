@@ -26,6 +26,9 @@ html(lang='en')
 
 				nav.nav-bar#header-bar-pri-user
 					ul
+						li
+							a.toggle-fullscreen
+								i.pi-resize-full
 						| {% if current_user.is_authenticated %}
 						li
 							a.btn.submit(href="{{ url_for('posts.create') }}") SUBMIT POST
@@ -100,5 +103,10 @@ html(lang='en')
 		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}")
 		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3")
 		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
+
+		script.
+			$('a.toggle-fullscreen').on('click', function(){
+				$('#col_right').toggleClass('fullscreen');
+			});
 
 		| {% block footer_scripts %}{% endblock %}
