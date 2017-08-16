@@ -1,0 +1,9 @@
+| {% extends 'dillo/layout.html' %}
+| {% block page_title %}User profile{% endblock %}
+
+| {% block body %}
+#col_main {{user}}
+	| {% for p in posts['_items'] %}
+	| {{p.name}}
+	| {% endfor %}
+| {% endblock body %}

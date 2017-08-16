@@ -64,9 +64,11 @@ class DilloExtension(PillarExtension):
 
         from . import routes
         import dillo.posts.routes
+        import dillo.users.routes
         return [
             routes.blueprint,
-            dillo.posts.routes.blueprint
+            dillo.posts.routes.blueprint,
+            dillo.users.routes.blueprint,
         ]
 
     @property
