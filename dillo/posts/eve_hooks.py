@@ -11,10 +11,15 @@ On post creation:
 
 """
 
-import itertools
-import logging
 import datetime
+import logging
+import mimetypes
+import requests
+import tempfile
+import os.path
+from urllib.parse import urlparse
 from bson import ObjectId
+from werkzeug.datastructures import FileStorage
 from flask import current_app, abort
 from micawber.exceptions import ProviderException, ProviderNotFoundException
 from slugify import slugify
@@ -22,6 +27,7 @@ from pillar.markdown import markdown
 from pillar.api.file_storage import generate_link
 from pillar.api.nodes import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
+from pillar.api.file_storage import upload_and_process
 from dillo import current_dillo
 from dillo.node_types.post import node_type_post
 from dillo.utils.sorting import hot
@@ -183,6 +189,29 @@ def before_replacing_post(item, original):
 
 
 @only_for_post
+def process_picture_oembed(item, original):
+    """If picture_oembed is specified, download the image and populate the picture property."""
+    picture_url = item['properties']['picture_url']
+    if picture_url and 'picture' not in original:
+        # Download file to temp location
+        r = requests.get(picture_url, stream=True)
+        # Throw an error for bad status codes
+        r.raise_for_status()
+        with tempfile.NamedTemporaryFile() as f:
+            for block in r.iter_content(1024):
+                f.write(block)
+            # Parse url to get the filename
+            picture_url_parsed = urlparse(picture_url)
+            filename = os.path.basename(picture_url_parsed.path)
+            mimetype, _ = mimetypes.guess_type(filename, strict=False)
+            fs = FileStorage(stream=f, filename=filename, content_type=mimetype)
+            result = upload_and_process(f, fs, current_app.config['MAIN_PROJECT_ID'])
+            # Update item before saving
+            if result['status'] == 'ok':
+                item['picture'] = ObjectId(result['file_id'])
+
+
+@only_for_post
 def enrich(response):
     response['_is_own'] = response['user'] == current_user_id()
     response['_current_user_rating'] = None  # tri-state boolean
@@ -198,5 +227,6 @@ def enrich(response):
 
 def setup_app(app):
     app.on_insert_nodes += before_creating_posts
+    app.on_replace_nodes += process_picture_oembed
     app.on_replace_nodes += before_replacing_post
     app.on_fetched_item_nodes += enrich
