@@ -64,5 +64,8 @@ def index_nodes_update_settings():
         'customRanking': [
             'desc(hot)',
             'desc(created)',
+        ],
+        'attributesForFaceting': [
+            'searchable(category)',
         ]
     })

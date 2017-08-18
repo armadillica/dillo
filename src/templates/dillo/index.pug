@@ -3,7 +3,7 @@
 | {% block page_title %}Dashboard{% endblock %}
 
 | {% block body %}
-
+#categories
 #col_main.listing-list
 	#list-hits
 
@@ -140,6 +140,17 @@ script.
 				item: hitTemplate
 			},
 			transformData: processHit,
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.menu({
+			container: '#categories',
+			attributeName: 'category',
+			limit: 10,
+			templates: {
+				header: 'Categories'
+			}
 		})
 	);
 
