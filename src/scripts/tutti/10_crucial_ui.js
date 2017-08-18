@@ -23,19 +23,6 @@ function shortenUrl(url){
 	return url;
 }
 
-$('.dropdown-toggle').on('click', function(e){
-	e.stopPropagation();
-
-	$(this)
-		.toggleClass('active')
-		.siblings('ul.dropdown-menu')
-		.toggleClass('active');
-});
-
-$(document).click(function() {
-	$('.dropdown-toggle, ul.dropdown-menu').removeClass('active');
-});
-
 
 // Utility for delaying a function call (used to throttle keydown events)
 var delay = (function () {
@@ -45,3 +32,18 @@ var delay = (function () {
 		timer = setTimeout(callback, ms);
 	};
 })();
+
+
+// Clicking on this class will display the dropdown-menu inside
+$('.wgt-dropdown-toggle').on('click', function(e){
+	e.stopImmediatePropagation();
+
+	$(this)
+		.toggleClass('active')
+		.find('.dropdown-menu')
+		.toggleClass('active');
+});
+
+$(document).click(function() {
+	$('.wgt-dropdown-toggle, .dropdown-menu').removeClass('active');
+});

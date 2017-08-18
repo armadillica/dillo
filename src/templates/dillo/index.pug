@@ -3,7 +3,6 @@
 | {% block page_title %}Dashboard{% endblock %}
 
 | {% block body %}
-#categories
 #col_main.listing-list
 	#list-hits
 
@@ -148,6 +147,14 @@ script.
 			container: '#categories',
 			attributeName: 'category',
 			limit: 10,
+			cssClasses: {
+				root: 'wgt-dropdown-root',
+				header: 'wgt-dropdown-header',
+				body: 'wgt-dropdown-body dropdown-menu',
+				link: 'wgt-dropdown-link',
+				active: 'wgt-dropdown-active',
+				count: 'wgt-dropdown-count',
+			},
 			templates: {
 				header: 'Categories'
 			}

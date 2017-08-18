@@ -24,6 +24,8 @@ html(lang='en')
 						type="text",
 						placeholder="Search...")
 
+				#categories.wgt-dropdown-toggle
+
 				nav.nav-bar#header-bar-pri-user
 					ul
 						li
@@ -51,7 +53,7 @@ html(lang='en')
 										href="/notifications/read-all")
 										| Mark All as Read
 
-						li.dropdown
+						li.dropdown.wgt-dropdown-toggle
 							.dropdown-toggle
 								img.avatar(
 									src="{{ current_user.gravatar }}",
