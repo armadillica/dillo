@@ -36,14 +36,8 @@ var delay = (function () {
 
 // Clicking on this class will display the dropdown-menu inside
 $('.wgt-dropdown-toggle').on('click', function(e){
-	e.stopImmediatePropagation();
-
 	$(this)
 		.toggleClass('active')
 		.find('.dropdown-menu')
 		.toggleClass('active');
-});
-
-$(document).click(function() {
-	$('.wgt-dropdown-toggle, .dropdown-menu').removeClass('active');
 });
