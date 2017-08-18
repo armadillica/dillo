@@ -27,7 +27,7 @@ html(lang='en')
 				nav.nav-bar#header-bar-pri-user
 					ul
 						li
-							a.toggle-fullscreen
+							a.wgt-toggle-fullscreen
 								i.pi-resize-full
 						| {% if current_user.is_authenticated %}
 						li
@@ -105,7 +105,8 @@ html(lang='en')
 		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 
 		script.
-			$('a.toggle-fullscreen').on('click', function(){
+			$('a.wgt-toggle-fullscreen').on('click', function(){
+				$(this).toggleClass('active');
 				$('#col_right').toggleClass('fullscreen');
 			});
 
