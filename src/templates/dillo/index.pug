@@ -96,7 +96,7 @@ script.
 						'{{/is_link}}' +
 						'<li><a href="">{{ category }}</a></li>' +
 						'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
-						'<li class="item-author">{{ user.full_name }}</li>' +
+						'<li class="item-author"><a href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
 						'<li><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
 						'{{#is_link}}<li>{{ link_short }}</li>{{/is_link}}' +
 					'</ul>' +

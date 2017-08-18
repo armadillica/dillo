@@ -57,7 +57,8 @@ def algolia_index_post_save(node):
         'node_type': node['node_type'],
         'user': {
             '_id': user['_id'],
-            'full_name': user['full_name']
+            'full_name': user['full_name'],
+            'username': user['username'],
         },
         'hot': node['properties']['hot'],
         'slug': node['properties']['slug'],
