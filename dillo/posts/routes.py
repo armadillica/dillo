@@ -135,6 +135,9 @@ def spoon():
         log.debug('Bad return code: %s', r.status_code)
         return abort(422)
 
+    o = urlparse(r.url)
+    url_no_query = o.scheme + "://" + o.netloc + o.path
+
     soup = BeautifulSoup(r.content, 'html5lib')
 
     # Get the page title
@@ -147,20 +150,68 @@ def spoon():
         icon_link_href = icon_link['href']
         # If the URL is relative
         if not urlparse(icon_link_href).netloc:
-            icon_link_href = urljoin(r.url, icon_link_href)
+            icon_link_href = urljoin(url_no_query, icon_link_href)
         parsed_page['favicon'] = icon_link_href
 
-    # Get only the first 4 images (with an src tag)
-    images = soup.find_all('img', attrs={'src': compile('.')})
-    parsed_page['images'] = [i['src'] for i in images[:4]]
+    parsed_page['images'] = []
 
     # Look for oembed
     try:
         oembed = current_dillo.oembed_registry.request(r.url)
         parsed_page['oembed'] = oembed['html']
         if 'thumbnail_url' in oembed:
-            parsed_page['images'] = [oembed['thumbnail_url']]
+            validate_append_image(oembed['thumbnail_url'], url_no_query, parsed_page['images'])
+            log.debug('Appending image %s and returning' % oembed['thumbnail_url'])
+            return jsonify(parsed_page)
     except (ProviderNotFoundException, ProviderException):
-        pass
+        log.debug('No Oembed thumbnail found')
+
+    # Get meta Open Graph
+    images_og = soup.find_all('meta', attrs={'property': 'og:image'})
+    for image_og in images_og:
+        validate_append_image(image_og['content'], url_no_query, parsed_page['images'])
+
+    # Get meta Twitter, only if Open Graph is not available
+    image_tw = soup.find('meta', attrs={'name': 'twitter:image'})
+    if image_tw and not images_og:
+        validate_append_image(image_tw['content'], url_no_query, parsed_page['images'])
+
+    # Get all images
+    images = soup.find_all('img', attrs={'src': compile('.')})
+    log.debug('Found %i images' % len(images))
+    for image in images:
+        validate_append_image(image['src'], url_no_query, parsed_page['images'])
+
+    # Last resort, check if the link itself is an image
+    if len(parsed_page['images']) == 0:
+        validate_append_image(r.url, None, parsed_page['images'])
 
     return jsonify(parsed_page)
+
+
+def validate_append_image(image_url, base_url, images_list):
+    """Given an image URL, check its suitability for thumbnailing"""
+    if len(images_list) > 3:
+        return
+
+    if not image_url.startswith('http'):
+        # Strip url from extensions
+        image_url = base_url + image_url
+
+    image_head = requests.head(image_url)
+
+    # Check if header is available
+    try:
+        content_length = int(image_head.headers['content-length'])
+        content_type = image_head.headers['content-type']
+        if content_length > 1024 and content_type.startswith('image'):
+            # If the image is larger than 1KB
+            log.debug('Appending image %s' % image_url)
+            images_list.append(image_url)
+        else:
+            log.debug('Skipping small image %s' % image_url)
+    except KeyError:
+        log.debug('Skipping image %s because of missing content-length header' % image_url)
+
+
+
