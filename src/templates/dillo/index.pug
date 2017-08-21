@@ -6,6 +6,10 @@
 #col_main.listing-list
 	#list-hits
 
+	.listing-list-info
+		#stats
+		#pagination
+
 #col_right.listing-view
 	#list-item
 		| {% if 'post' in col_right %}
@@ -146,7 +150,6 @@ script.
 		instantsearch.widgets.menu({
 			container: '#categories',
 			attributeName: 'category',
-			limit: 10,
 			cssClasses: {
 				root: 'wgt-dropdown-root',
 				header: 'wgt-dropdown-header',
@@ -164,9 +167,33 @@ script.
 	search.addWidget(
 		instantsearch.widgets.pagination({
 			container: '#pagination',
+			cssClasses: {
+				root: 'wgt-pagination-root',
+				link: 'wgt-pagination-link',
+				item: 'wgt-pagination-item',
+				active: 'wgt-pagination-active',
+				disabled: 'wgt-pagination-disabled',
+				first: 'wgt-pagination-first',
+				last: 'wgt-pagination-last',
+			},
 			maxPages: 20,
-			// default is to scroll to 'body', here we disable this behavior
+			padding: 0,
+			labels: {
+				first: '<i class="pi-angle-double-left"></i>',
+				previous: '<i class="pi-angle-left"></i>',
+				next: '<i class="pi-angle-right"></i>',
+				last: '<i class="pi-angle-double-right"></i>'
+			},
 			scrollTo: false
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.stats({
+			container: '#stats',
+			cssClasses: {
+				root: 'wgt-stats-root',
+			}
 		})
 	);
 

@@ -342,6 +342,141 @@ h1 .emoji
     color: $color-secondary
 
 
+$wgt-dropdown-width: 150px
+.wgt-dropdown
+  &-root
+    position: relative
+    margin-left: 15px
+    margin-right: 15px
+
+  &-header
+    align-items: center
+    background-color: $color-background-lighter
+    box-shadow: inset 0 0 0 1px $color-background-dark
+    border-radius: 3px
+    color: $color-primary
+    cursor: pointer
+    display: flex
+    font:
+      family: $font-headings
+      weight: lighter
+    min-width: $wgt-dropdown-width
+    min-height: $widget-min-height
+    padding-left: 10px
+    padding-right: 10px
+    user-select: none
+
+    &:after
+      content: '\e838'
+      font-family: "pillar-font"
+      margin-left: auto
+
+    &:hover
+      color: $color-secondary
+
+  &-body
+    border: thin solid $color-background-dark
+    border-bottom-left-radius: 3px
+    border-bottom-right-radius: 3px
+    box-shadow: 1px 2px 2px $color-background-dark
+    display: none
+    position: absolute
+    top: 100%
+    z-index: 1
+
+    &.active
+      display: block
+
+  &-link
+    background-color: $color-background-light
+    border-top: thin solid $color-background-dark
+    display: flex
+    padding: 10px 10px
+    min-width: $wgt-dropdown-width
+    text-decoration: none
+
+    &:hover
+      background-color: $color-background-lighter
+      color: $color-secondary
+
+  &-active
+    .wgt-dropdown-link
+      background-color: $color-background-lighter
+      color: $color-secondary
+      box-shadow: inset 3px 0 $color-secondary
+
+  &-count
+    margin-left: auto
+    color: $color-text-dark-hint
+
+  &-toggle
+    &.active
+      .wgt-dropdown-header
+        color: $color-secondary
+
+        &:after
+          content: '\e83b'
+
+      img.avatar
+        background-color: $color-primary
+
+
+.wgt-pagination
+  &-root
+    align-items: center
+    display: flex
+    list-style-type: none
+    justify-content: flex-end
+    padding: 0
+    margin: 10px 10px 10px 5px
+
+  &-item
+    align-items: center
+    display: flex
+    height: 100%
+    min-height: $widget-min-height
+
+  &-link
+    background-color: $color-background-lighter
+    border-top: thin solid $color-background-dark
+    border-bottom: thin solid $color-background-dark
+    color: $color-text-dark-secondary
+    display: flex
+    font-size: $font-size-small
+    padding: 5px
+    text-decoration: none
+    user-select: none
+
+    &:hover
+      color: $color-secondary
+
+  &-disabled
+    .wgt-pagination-link
+      color: $color-text-dark-hint
+      background-color: $color-background-light
+
+  &-active
+    display: none
+
+  &-last
+    .wgt-pagination-link
+      border-right: thin solid $color-background-dark
+      border-top-right-radius: 3px
+      border-bottom-right-radius: 3px
+
+  &-first
+    .wgt-pagination-link
+      border-left: thin solid $color-background-dark
+      border-top-left-radius: 3px
+      border-bottom-left-radius: 3px
+
+.wgt-stats
+  &-root
+    padding: 5px
+    font-size: $font-size-small
+    color: $color-text-dark-secondary
+
+// Animations
 @-webkit-keyframes fLoaderBackground
   0%
     background-position: 0% 0%

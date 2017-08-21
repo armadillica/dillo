@@ -71,79 +71,11 @@
   height: 100%
   overflow-x: hidden
 
+.listing-list-info
+  display: flex
+  align-items: center
 
-$wgt-dropdown-width: 150px
-.wgt-dropdown
-  &-root
-    position: relative
-    margin-left: 15px
-    margin-right: 15px
-
-  &-header
-    background-color: $color-background-lighter
-    box-shadow: inset 0 0 0 1px $color-background-dark
-    border-radius: 3px
-    color: $color-primary
-    cursor: pointer
-    font:
-      family: $font-headings
-      weight: lighter
-    min-width: $wgt-dropdown-width
-    padding: 7px 10px
-    user-select: none
-
-    &:after
-      content: '\e838'
-      font-family: "pillar-font"
-      position: absolute
-      top: 8px
-      right: 15px
-
-    &:hover
-      color: $color-secondary
-
-  &-body
-    border: thin solid $color-background-dark
-    border-bottom-left-radius: 3px
-    border-bottom-right-radius: 3px
-    box-shadow: 1px 2px 2px $color-background-dark
-    display: none
-    position: absolute
-    top: 100%
-    z-index: 1
-
-    &.active
-      display: block
-
-  &-link
-    background-color: $color-background-light
-    border-top: thin solid $color-background-dark
-    display: flex
-    padding: 10px 10px
-    min-width: $wgt-dropdown-width
-    text-decoration: none
-
-    &:hover
-      background-color: $color-background-lighter
-      color: $color-secondary
-
-  &-active
-    .wgt-dropdown-link
-      background-color: $color-background-lighter
-      color: $color-secondary
-      box-shadow: inset 3px 0 $color-secondary
-
-  &-count
+  #pagination
     margin-left: auto
-    color: $color-text-dark-hint
-
-  &-toggle
-    &.active
-      .wgt-dropdown-header
-        color: $color-secondary
-
-        &:after
-          content: '\e83b'
-
-      img.avatar
-        background-color: $color-primary
+  #stats
+    margin-right: auto

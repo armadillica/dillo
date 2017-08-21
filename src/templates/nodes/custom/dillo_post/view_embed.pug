@@ -27,7 +27,8 @@
 
 	| {% if node.properties.post_type == 'text' %}
 	.item-body#item-content
-		| {{ node.properties.content_html }}
+		.item-body-text
+			| {{ node.properties.content_html }}
 	| {% if node.picture %}
 	.item-media#item-media
 		img(src="{{ node.picture.thumbnail('l', api=api) }}")
