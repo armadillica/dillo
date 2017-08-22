@@ -54,16 +54,19 @@ a:hover
   opacity: 0
   transition: all ease-in-out 50ms
 
-  background: linear-gradient(45deg, $color-primary, $color-secondary, $color-secondary, $color-primary)
+  background: linear-gradient(45deg, lighten($color-primary, 40%), $color-secondary, $color-secondary, lighten($color-primary, 40%))
   background-size: 50% 100%
-  -webkit-animation: fLoaderBackground 3s linear infinite
-  -moz-animation: fLoaderBackground 3s linear infinite
-  animation: fLoaderBackground 3s linear infinite
+  -webkit-animation: none
+  -moz-animation: none
+  animation: none
 
   &.active
     height: 2px
     visibility: visible
     opacity: 1
+    -webkit-animation: fLoaderBackground 3s linear infinite
+    -moz-animation: fLoaderBackground 3s linear infinite
+    animation: fLoaderBackground 3s linear infinite
 
 
 #header-bar
