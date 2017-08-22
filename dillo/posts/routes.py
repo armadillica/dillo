@@ -8,6 +8,7 @@ from micawber.exceptions import ProviderException, ProviderNotFoundException
 from flask import abort, Blueprint, current_app, redirect, render_template, request, url_for, \
     jsonify
 from werkzeug import exceptions as wz_exceptions
+from werkzeug.contrib.atom import AtomFeed
 from flask_login import current_user, login_required
 from pillarsdk import Project
 from pillarsdk import Activity
@@ -214,4 +215,34 @@ def validate_append_image(image_url, base_url, images_list):
         log.debug('Skipping image %s because of missing content-length header' % image_url)
 
 
+@blueprint.route('/p/feed/latest.atom')
+def feeds_blogs():
+    """Global feed generator for latest blogposts across all projects"""
+    # @current_app.cache.cached(60*5)
+    def render_page():
+        feed = AtomFeed('Dillo - Latest updates',
+                        feed_url=request.url,
+                        url=request.url_root)
+        # Get latest posts
+        api = system_util.pillar_api()
+        latest_posts = Node.all({
+            'where': {'node_type': 'dillo_post', 'properties.status': 'published'},
+            'embedded': {'user': 1},
+            'sort': '-_created',
+            'max_results': '15'
+            }, api=api)
 
+        # Populate the feed
+        for post in latest_posts._items:
+            author = post.user.full_name
+            updated = post._updated if post._updated else post._created
+            url = url_for('posts.view', post_shortcode=post.properties.shortcode)
+            content = post.properties.content[:500]
+            feed.add(post.name, str(content),
+                     content_type='html',
+                     author=author,
+                     url=url,
+                     updated=updated,
+                     published=post._created)
+        return feed.get_response()
+    return render_page()
