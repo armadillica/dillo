@@ -230,6 +230,7 @@ ul.dropdown-menu
   border: none
   border-radius: 3px
   box-shadow: inset 0 0 0 1px $color-background-dark
+  width: 120px
 
 .emoji
   height: 16px
@@ -470,11 +471,56 @@ $wgt-dropdown-width: 150px
       border-top-left-radius: 3px
       border-bottom-left-radius: 3px
 
+
 .wgt-stats
   &-root
-    padding: 5px
+    padding: 5px 10px
+    font-size: $font-size-smaller
+    color: $color-text-dark-secondary
+
+
+.wgt-clear
+  &-root
     font-size: $font-size-small
     color: $color-text-dark-secondary
+    display: inline-block
+    padding: 10px 5px
+
+    &:hover
+      color: $color-secondary
+
+
+.wgt-refined-values
+  &-body > div
+    align-items: center
+    display: flex
+
+    &:hover
+      .wgt-refined-values-link,
+      .wgt-refined-values-clear
+        color: $color-secondary
+
+  &-count
+    display: none
+
+  &-clear
+    color: $color-text-dark-hint
+    font-size: $font-size-small
+    padding-right: 5px
+    position: relative
+    top: 1px
+
+  &-link
+    align-items: center
+    color: $color-primary
+    cursor: pointer
+    display: flex
+    font:
+      family: $font-headings
+      weight: lighter
+    user-select: none
+    text-decoration: none
+
 
 // Animations
 @-webkit-keyframes fLoaderBackground

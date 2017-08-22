@@ -46,6 +46,37 @@
       &:hover
         color: $color-primary
 
+.listing-empty
+  align-items: center
+  bottom: 0
+  color: $color-text-dark-primary
+  cursor: default
+  display: flex
+  font-family: $font-headings
+  font-size: $font-size-small
+  flex-direction: column
+  justify-content: center
+  left: 0
+  position: absolute
+  right: 0
+  text-align: center
+  top: 0
+
+  span.query
+    color: $color-secondary
+    display: block
+    font-size: $font-size-extra-large
+    padding: 0 40px 10px
+
+  .query-clear
+    cursor: pointer
+    color: $color-primary
+    font-size: $font-size-small
+
+    &:hover
+      color: $color-primary
+      text-decoration: underline
+
 .listing-view
   box-shadow: inset 1px 0 0 $color-background-dark
 
@@ -75,7 +106,7 @@
   display: flex
   align-items: center
 
-  #pagination
+  #list-pagination
     margin-left: auto
-  #stats
+  #list-stats
     margin-right: auto

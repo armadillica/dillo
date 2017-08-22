@@ -7,8 +7,8 @@
 	#list-hits
 
 	.listing-list-info
-		#stats
-		#pagination
+		#list-stats
+		#list-pagination
 
 #col_right.listing-view
 	#list-item
@@ -109,7 +109,11 @@ script.
 
 
 	var noResultsTemplate =
-		'<div class="text-center">No results found matching <strong>{{query}}</strong>.</div>';
+		'<div class="listing-empty js-list-clear">' +
+			'nothing found for' +
+			'<span class="query">{{query}}</span>' +
+			'<div class="query-clear">clear</div>' +
+		'</div>';
 	{% endraw %}
 
 
@@ -148,7 +152,7 @@ script.
 
 	search.addWidget(
 		instantsearch.widgets.menu({
-			container: '#categories',
+			container: '#list-categories',
 			attributeName: 'category',
 			cssClasses: {
 				root: 'wgt-dropdown-root',
@@ -166,7 +170,7 @@ script.
 
 	search.addWidget(
 		instantsearch.widgets.pagination({
-			container: '#pagination',
+			container: '#list-pagination',
 			cssClasses: {
 				root: 'wgt-pagination-root',
 				link: 'wgt-pagination-link',
@@ -184,15 +188,33 @@ script.
 				next: '<i class="pi-angle-right"></i>',
 				last: '<i class="pi-angle-double-right"></i>'
 			},
-			scrollTo: false
+			scrollTo: true,
+			autoHideContainer: true
 		})
 	);
 
 	search.addWidget(
 		instantsearch.widgets.stats({
-			container: '#stats',
+			container: '#list-stats',
 			cssClasses: {
 				root: 'wgt-stats-root',
+			},
+			autoHideContainer: true
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.currentRefinedValues({
+			container: '#list-refined-values',
+			clearAll: "before",
+			templates: {
+				clearAll: '<i class="pi-cancel"></i>'
+			},
+			cssClasses: {
+				body: 'wgt-refined-values-body',
+				count: 'wgt-refined-values-count',
+				clearAll: 'wgt-refined-values-clear',
+				link: 'wgt-refined-values-link'
 			}
 		})
 	);
@@ -223,5 +245,9 @@ script.
 	{% if 'post' in col_right %}
 		item_open('{{col_right['post']['_id']}}');
 	{% endif %}
+
+	$('body').on('click', '.js-list-clear', function(e){
+		search.helper.setQuery('').search();
+	});
 
 | {% endblock footer_scripts %}
