@@ -133,18 +133,20 @@ $('select#category').on('change', function(e){
 });
 
 
-/* Prompt when leaving a page with an input/textarea modified */
-$('input, textarea').keypress(function () {
-	// Set the beforeunload to warn the user of unsaved changes
-	$(window).on('beforeunload', function () {
-		return 'You have unsaved changes in your post.';
+/* Prompt when leaving a page with an input/textarea modified in post edit mode */
+if (ProjectUtils.context() == 'post-edit'){
+	$('input, textarea').keypress(function () {
+		// Set the beforeunload to warn the user of unsaved changes
+		$(window).on('beforeunload', function () {
+			return 'You have unsaved changes in your post.';
+		});
 	});
-});
+}
 
+// Loading strip on the top of the page
 $(document).ajaxStart(function(){
 	$('#app-loader').addClass('active');
 });
-
 
 $(document).ajaxStop(function(){
 	$('#app-loader').removeClass('active');
