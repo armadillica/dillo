@@ -1,7 +1,7 @@
 // Listing item
 .item-title
   font-family: $font-headings
-  line-height: 1.5em
+  line-height: 1.4em
   text-decoration: none
 
   em
@@ -263,6 +263,10 @@ $item-thumbnail-size: 100px
   margin: 10px 15px
 
 /* Edit */
+body[data-context="post-edit"]
+  .item-edit
+    display: none
+
 .item-edit
   &-header
     display: flex
@@ -309,7 +313,7 @@ $item-thumbnail-size: 100px
         margin: 5px 10px
         background-color: $color-background-lighter
 
-      #status, #post_type
+      #status, #post_type, #picture_url
         visibility: hidden
         display: none
 
@@ -346,7 +350,7 @@ $item-thumbnail-size: 100px
 
       #item-icon
         position: absolute
-        left: 12px
+        right: 12px
         bottom: 8px
         width: 32px
         height: 32px
@@ -408,7 +412,7 @@ $item-thumbnail-size: 100px
         input#content
           visibility: visible
           display: block
-          padding-left: 36px
+          padding-right: 36px
 
       .input-content.text,
       span.content-extra
