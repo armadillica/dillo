@@ -98,11 +98,11 @@ script.
 							'</li>' +
 						'{{/is_link}}' +
 						'<li>{{ category }}</li>' +
-						'<li class="js-item-open"><a href="">{{ created }}</a></li>' +
+						'<li class="item-date js-item-open"><a href="">{{ created }}</a></li>' +
 						'<li class="item-author"><a href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
-						'<li><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
+						'<li class="item-comments"><a href="{{ link_url }}">{{ comments_count }} <i class="pi-comment"></i></a></li>' +
 						'{{#is_link}}' +
-							'<li><a href="{{ link_url }}" target="_blank">{{ link_short }}</a></li>' +
+							'<li class="item-link"><a href="{{ link_url }}" target="_blank">{{ link_short }}</a></li>' +
 						'{{/is_link}}' +
 					'</ul>' +
 				'</div>' +

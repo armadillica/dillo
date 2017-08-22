@@ -16,6 +16,7 @@
     display: flex
     height: 100%
     margin: 5px 10px 5px 5px
+    overflow: hidden
     padding-right: 10px
     transition: box-shadow 250ms ease-in-out
 
@@ -45,6 +46,18 @@
 
       &:hover
         color: $color-primary
+
+    .item-author
+      +media-sm
+        max-width: 50px
+        white-space: nowrap
+
+    .item-date a
+      white-space: nowrap
+
+    .item-comments i
+      +media-sm
+        display: none
 
 .listing-empty
   align-items: center
