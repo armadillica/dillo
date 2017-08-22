@@ -41,3 +41,102 @@ $('.wgt-dropdown-toggle').on('click', function(e){
 		.find('.dropdown-menu')
 		.toggleClass('active');
 });
+
+
+// Context Workflow
+// Save current context as prev-context and set new one
+function setContext(context_type){
+	ProjectUtils.setProjectAttributes({prevContext: ProjectUtils.context()});
+	ProjectUtils.setProjectAttributes({context: context_type});
+}
+
+// Set previous context as current
+function unsetPreviousContext(){
+
+	var currContext = ProjectUtils.context();
+	var previousContext = $('body').attr('data-prev-context');
+
+	if (previousContext){
+		ProjectUtils.setProjectAttributes({prevContext: currContext });
+		ProjectUtils.setProjectAttributes({context: previousContext });
+	}
+}
+
+
+// Fullscreen Workflow
+function enterFullscreen(){
+	$('a.wgt-toggle-fullscreen').addClass('active');
+	$('#col_right').addClass('fullscreen');
+
+	setContext("post-fullscreen");
+}
+
+function exitFullscreen(){
+	$('a.wgt-toggle-fullscreen').removeClass('active');
+	$('#col_right').removeClass('fullscreen');
+
+	unsetPreviousContext();
+
+	if ($('body').hasClass('posts-index')){
+		setContext("posts-index");
+	} else if ($('body').hasClass('post-edit')) {
+		setContext("post-edit");
+	}
+}
+
+function toggleFullscreen(){
+	if (ProjectUtils.context() == 'post-fullscreen'){
+		exitFullscreen();
+	} else {
+		enterFullscreen();
+	}
+}
+
+$('a.wgt-toggle-fullscreen').on('click', function(){
+	toggleFullscreen();
+});
+
+
+// Submit Dialog Workflow
+function enterSubmit(){
+	$('#app-overlay').addClass('active submit');
+	setContext("post-submit-overlay");
+
+	Mousetrap.unbind('f');
+}
+
+function exitSubmit(){
+	$('#app-overlay').removeAttr('class');
+	unsetPreviousContext();
+
+	initializeShortcuts();
+}
+
+function toggleSubmit(){
+	if (ProjectUtils.context() == 'post-submit-overlay'){
+		exitSubmit();
+	} else {
+		enterSubmit();
+	}
+}
+
+$('a.wgt-toggle-submit').on('click', function(){
+	toggleSubmit();
+});
+
+
+// Initialize Shortcuts
+function initializeShortcuts(){
+	Mousetrap.bind('f', toggleFullscreen);
+	Mousetrap.bind('s', toggleSubmit);
+
+	Mousetrap.bind('esc', function(e) {
+		if (ProjectUtils.context() == 'post-submit-overlay'){
+			exitSubmit();
+		} else if (ProjectUtils.context() == 'post-fullscreen'){
+			exitFullscreen();
+		}
+	});
+}
+
+initializeShortcuts();

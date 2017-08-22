@@ -1,5 +1,6 @@
 | {% extends 'dillo/layout.html' %}
-| {% block bodyattrs %}{{ super() }} data-context='post-edit'{% endblock %}
+| {% set page_name = 'post-edit' %}
+| {% block bodyattrs %}{{ super() }} class="{{ page_name }}" data-context='{{ page_name }}'{% endblock %}
 | {% block page_title %}Edit{% endblock %}
 
 | {% block body %}

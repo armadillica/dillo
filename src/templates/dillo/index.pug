@@ -1,5 +1,6 @@
 | {% extends 'dillo/layout.html' %}
-| {% block bodyattrs %}{{ super() }} data-context='posts-index'{% endblock %}
+| {% set page_name = 'posts-index' %}
+| {% block bodyattrs %}{{ super() }} class='{{ page_name }}' data-context='{{ page_name }}'{% endblock %}
 | {% block page_title %}Dashboard{% endblock %}
 
 | {% block body %}
