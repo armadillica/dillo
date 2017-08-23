@@ -37,7 +37,7 @@ html(lang='en')
 								i.pi-resize-full
 						| {% if current_user.is_authenticated %}
 						li
-							a.btn.submit(href="{{ url_for('posts.create') }}") SUBMIT POST
+							a.btn.submit(href="{{ url_for('posts.create', post_type='link') }}") SUBMIT POST
 
 						li.nav-notifications
 							a.navbar-item#notifications-toggle(

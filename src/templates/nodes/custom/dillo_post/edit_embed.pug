@@ -1,8 +1,3 @@
-| {% extends 'dillo/layout.html' %}
-| {% set page_name = 'post-edit' %}
-| {% block bodyattrs %}{{ super() }} class="{{ page_name }}" data-context='{{ page_name }}'{% endblock %}
-| {% block page_title %}Edit{% endblock %}
-
 | {% block body %}
 
 #col_main
@@ -10,54 +5,54 @@
 		| {% if node.properties.status == 'pending' %}
 		ul.item-edit-tabs
 			li(
-				class="{% if node.properties.post_type == 'link' %}active{% endif %}",
-				data-post-type='link')
+			class="{% if node.properties.post_type == 'link' %}active{% endif %}",
+			data-post-type='link')
 				span LINK
 				small I want to share a link
 			li(
-				class="{% if node.properties.post_type == 'text' %}active{% endif %}",
-				data-post-type='text')
+			class="{% if node.properties.post_type == 'text' %}active{% endif %}",
+			data-post-type='text')
 				span TEXT
 				small I'll write a nice article
 		| {% endif %}
 		.item-edit-tab(
-			id="item-edit-tab",
-			class="{{ node.properties.post_type }}")
+		id="item-edit-tab",
+		class="{{ node.properties.post_type }}")
 			form(
-				id="item-edit-form",
-				method="POST",
-				enctype="multipart/form-data",
-				action="{{url_for('nodes.edit', node_id=node._id)}}")
+			id="item-edit-form",
+			method="POST",
+			enctype="multipart/form-data",
+			action="{{url_for('nodes.edit', node_id=node._id)}}")
 
 				.input-content.link
 					label(for="content") URL
 					input(
-						disabled,
-						name="content",
-						type="text",
-						class="input-field",
-						placeholder="Paste or type the URL here",
-						value="{{ node.properties.content }}")
+					disabled,
+					name="content",
+					type="text",
+					class="input-field",
+					placeholder="Paste or type the URL here",
+					value="{{ node.properties.content }}")
 					#item-icon.loading
 						img(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 
 				.input-content.name
 					label(for="name") Title
 					input(
-						id="name",
-						value="{{ node.name }}",
-						type="text",
-						name="name",
-						placeholder="Awesome Post Title")
+					id="name",
+					value="{{ node.name }}",
+					type="text",
+					name="name",
+					placeholder="Awesome Post Title")
 
 
 				.input-content.text
 					label(for="content") Text
 					textarea(
-						disabled,
-						name="content",
-						class="input-field",
-						placeholder="Witty post description")
+					disabled,
+					name="content",
+					class="input-field",
+					placeholder="Witty post description")
 						| {{ node.properties.content }}
 
 					span.content-extra
@@ -67,8 +62,8 @@
 				.input-content.category
 					label(for="category") Category
 					select(
-						id="category",
-						name="category")
+					id="category",
+					name="category")
 						| {% for option in config['POST_CATEGORIES'] %}
 						| {% if option == node.properties.category %}
 						option(selected) {{ option }}
@@ -80,9 +75,9 @@
 				| {{ form.csrf_token }}
 				| {{ form.status }}
 				select(
-					id="post_type",
-					class="post_type",
-					name="post_type")
+				id="post_type",
+				class="post_type",
+				name="post_type")
 
 					| {% if node.properties.post_type == 'link' %}
 					option(value="link", selected) Link
@@ -125,8 +120,8 @@
 				| {% if node.properties.status != 'published' %}
 				.btn-group
 					button.item-save-publish.btn.btn-success(
-						data-action="publish",
-						title="Make post publicly available")
+					data-action="publish",
+					title="Make post publicly available")
 						i.pi-check
 						| Publish!
 
@@ -135,8 +130,8 @@
 					ul.dropdown-menu.right
 						li
 							span.item-save-publish(
-								data-action="save",
-								title="Save changes and keep editing")
+							data-action="save",
+							title="Save changes and keep editing")
 								| {% if node.properties.status == 'pending' %}
 								| Save Draft
 								| {% else %}
@@ -145,8 +140,8 @@
 
 				| {% else %}
 				button.item-save-publish.btn(
-					data-action="save",
-					title="Save changes"
+				data-action="save",
+				title="Save changes"
 				) Save Changes
 				| {% endif %}
 
@@ -166,7 +161,11 @@ script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js')
 script.
 
 	// Set Project ID
-	ProjectUtils.setProjectAttributes({projectId: "{{project._id}}", isProject: true, nodeId: '{{ node._id }}'});
+	ProjectUtils.setProjectAttributes({
+		projectId: "{{project._id}}",
+		isProject: true,
+		nodeId: '{{ node._id }}'
+	});
 
 	// Convert Markdown and emojis for text and title
 	var convert = new Markdown.getSanitizingConverter();
@@ -174,7 +173,7 @@ script.
 	convert = convert.makeHtml;
 
 	// Run on page load
-	$(function() {
+	$(function () {
 
 		// Load the content (in the sidebar) for the first time
 		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
@@ -214,7 +213,7 @@ script.
 		}
 
 		function parseLink(content) {
-			if (! ValidURL(content)) return;
+			if (!ValidURL(content)) return;
 			$item_icon.html('<i class="pi-spin spin"></i>');
 			// Wait a bit before calling the spoon
 
@@ -243,13 +242,13 @@ script.
 							}
 
 							// Get the images
-							if (data.images){
+							if (data.images) {
 
 								$image_oembed
 									.empty()
 									.parent().addClass('active');
 
-								data.images.forEach(function(src){
+								data.images.forEach(function (src) {
 									var image = '<img src="' + src + '"/>';
 									$image_oembed.append('<li class="o-image">' + image + '</li>');
 								});
@@ -278,7 +277,7 @@ script.
 		});
 
 
-		$item_title_input.keyup(function() {
+		$item_title_input.keyup(function () {
 			$('#item-title').html(
 				twemoji.parse(
 					$item_title_input.val()
@@ -289,10 +288,10 @@ script.
 
 		// Save Workflow
 		var $item_save_publish_button = $(".item-save-publish");
-		$item_save_publish_button.unbind( "click" );
+		$item_save_publish_button.unbind("click");
 
 
-		function uiUpdateOnSave(btn){
+		function uiUpdateOnSave(btn) {
 			btn
 				.removeClass('saving')
 				.html('<i class="pi-check"></i> Save Changes');
@@ -335,7 +334,7 @@ script.
 		}
 
 		// Submit changes
-		$("#item-edit-form").unbind("submit").submit(function(e) {
+		$("#item-edit-form").unbind("submit").submit(function (e) {
 			e.preventDefault();
 
 			// Let us know that saving started
@@ -348,24 +347,24 @@ script.
 				data: $(this).serialize(),
 				type: 'POST'
 			})
-			.fail(function(xhr){
-				// Something went wrong, notify
-				toastr.error(xhr.statusText, 'Error ' + xhr.status);
-				uiUpdateOnSave($item_save_publish_button);
-			})
-			.done(function(dataHtml){
-				// Disable beforeunolad when submitting a form
-				$(window).off('beforeunload');
+				.fail(function (xhr) {
+					// Something went wrong, notify
+					toastr.error(xhr.statusText, 'Error ' + xhr.status);
+					uiUpdateOnSave($item_save_publish_button);
+				})
+				.done(function (dataHtml) {
+					// Disable beforeunolad when submitting a form
+					$(window).off('beforeunload');
 
-				$('#col_right').html(dataHtml);
-				loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+					$('#col_right').html(dataHtml);
+					loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 
-				toastr.success('Saved!');
-				uiUpdateOnSave($item_save_publish_button);
-			});
+					toastr.success('Saved!');
+					uiUpdateOnSave($item_save_publish_button);
+				});
 		});
 
-		$item_save_publish_button.click(function(e){
+		$item_save_publish_button.click(function (e) {
 			e.preventDefault();
 			if ($(this).data('action') === 'save') {
 				setStatusOnSave();
@@ -395,7 +394,7 @@ script.
 
 
 		// Set Oembed Image as Thumbnail
-		$(document).on('click', 'body .o-image', function(){
+		$(document).on('click', 'body .o-image', function () {
 
 			var $this = $(this);
 			var picture_url = $('#picture_url');
@@ -404,7 +403,7 @@ script.
 			$this.siblings('li').removeClass('active');
 
 			// Clicking on the already active image to un-set
-			if ($this.hasClass('active')){
+			if ($this.hasClass('active')) {
 				$this.toggleClass('active');
 				picture_url.val('');
 			} else {
@@ -420,7 +419,7 @@ script.
 		});
 
 		// When finished uploading a thumbnail, deselect any oembed image and clear #picture_url
-		$('body').on('file-upload:finished', function(){
+		$('body').on('file-upload:finished', function () {
 			$('.o-image').removeClass('active');
 			$('#picture_url').val('');
 		});

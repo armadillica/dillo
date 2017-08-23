@@ -99,6 +99,9 @@ $('a.wgt-toggle-fullscreen').on('click', function(){
 
 // Submit Dialog Workflow
 function enterSubmit(){
+	$.get("/post/link?embed=1", function(data) {
+		$('.dialog-box').html(data);
+	});
 	$('#app-overlay').addClass('active submit');
 	setContext("post-submit-overlay");
 

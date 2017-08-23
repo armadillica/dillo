@@ -23,8 +23,8 @@ blueprint = Blueprint('posts', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route('/post')
-def create():
+@blueprint.route('/post/<post_type>')
+def create(post_type: str):
     api = system_util.pillar_api()
     log.info('Creating post for user {}'.format(current_user.objectid))
 
@@ -34,13 +34,14 @@ def create():
         user=current_user.objectid,
         node_type='dillo_post',
         properties=dict(
-            category=current_app.config['POST_CATEGORIES'][0])
+            category=current_app.config['POST_CATEGORIES'][0],
+            post_type=post_type)
     )
 
     post = Node(post_props)
     post.create(api=api)
-
-    return redirect(url_for('nodes.edit', node_id=post._id))
+    embed = request.args.get('embed')
+    return redirect(url_for('nodes.edit', node_id=post._id, embed=embed))
 
 
 @blueprint.route('/p/')
