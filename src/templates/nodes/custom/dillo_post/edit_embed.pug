@@ -115,7 +115,7 @@
 				a.btn.cancel(href="{{ url_for('posts.index')}}") Cancel
 				| {% endif %}
 
-				button.btn#delete Delete
+				button.btn.delete Delete
 
 				| {% if node.properties.status != 'published' %}
 				.btn-group
@@ -139,7 +139,7 @@
 								| {% endif %}
 
 				| {% else %}
-				button.item-save-publish.btn(
+				button.item-save-publish.btn.publish(
 				data-action="save",
 				title="Save changes"
 				) Save Changes
@@ -388,7 +388,31 @@ script.
 		}
 
 		// Delete Post
-		$('#delete').click(function (e) {
+		function deleteItem() {
+			var urlNodeDelete = "{{url_for('projects.delete_node')}}";
+			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()},
+				function (data) {
+					// Feedback logic
+				})
+				.done(function () {
+					toastr.success("Post deleted.<br/>Going back home...");
+
+					// Go back home, wait a bit for Algolia to update the index
+					setTimeout(function(){
+						window.location.replace('/');
+					}, 3000);
+				})
+				.fail(function (data) {
+					toastr.error("Couldn't delete :/");
+				});
+		}
+
+		// The Delete button only shows a confirmation dialog
+		$('.btn.delete').click(function (e) {
+			toastr.warning("Delete Post?<button class='btn delete-confirm'>Yes, Delete</button>");
+		});
+
+		$(document).on('click', 'body .delete-confirm', function(){
 			deleteItem();
 		});
 
