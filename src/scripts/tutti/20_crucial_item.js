@@ -142,12 +142,3 @@ if (ProjectUtils.context() == 'post-edit'){
 		});
 	});
 }
-
-// Loading strip on the top of the page
-$(document).ajaxStart(function(){
-	$('#app-loader').addClass('active');
-});
-
-$(document).ajaxStop(function(){
-	$('#app-loader').removeClass('active');
-});
