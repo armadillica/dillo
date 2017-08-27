@@ -122,6 +122,7 @@ a:hover
 
 .dialog-box
   #col_main
+    background-color: initial
     width: 100%
 
     .item-edit-tab
@@ -157,14 +158,24 @@ button, .btn
   font-weight: bold
   font-size: $font-size-small
 
-  &.submit
-    +button($color-primary, 3px, true)
   &.publish
     +button($color-success, 3px, true)
   &.cancel
     +button($color-text-light, 3px)
   &.delete
     +button($color-danger, 3px)
+
+  &.btn-success
+    +button($color-success, 3px, true)
+  &.btn-info
+    +button($color-info, 3px, true)
+  &.btn-danger
+    +button($color-danger, 3px, true)
+  &.btn-warning
+    +button($color-warning, 3px, true)
+
+  &.btn-submit
+    +button($color-primary-active, 3px, true)
 
 .btn-group
   align-items: center
@@ -178,18 +189,6 @@ button, .btn
     padding-right: 10px
 
   button
-    &.btn-success
-      +button($color-success, 3px, true)
-    &.btn-info
-      +button($color-info, 3px, true)
-    &.btn-danger
-      +button($color-danger, 3px, true)
-    &.btn-warning
-      +button($color-warning, 3px, true)
-
-    &.btn-submit
-      +button(hsl(hue($color-primary), 90%, 45%), 3px, true)
-
     border-top-right-radius: 0 !important
     border-bottom-right-radius: 0 !important
 
@@ -202,14 +201,17 @@ button, .btn
       border-top-right-radius: 3px !important
       border-bottom-right-radius: 3px !important
 
-      i
+      > i
         margin: 0
 
 select, textarea, input
   box-shadow: 1px 2px 2px $color-background-dark
+  border-radius: 3px
 
   &:focus
     background-color: white !important
+    box-shadow: 1px 2px 2px $color-background-dark, inset 0 0 0 1px $color-primary-active
+    border-color: $color-primary-active
 
 /* Navigation */
 nav
@@ -261,18 +263,18 @@ nav
     right: 0
 
 ul.dropdown-menu
+  border-bottom-left-radius: 3px
+  border-bottom-right-radius: 3px
   display: none
-  visibility: hidden
   flex-direction: column
   list-style: none
   margin: 2px 0 0 0
   padding: 0
   position: absolute
-  z-index: 1
   top: 100%
   min-width: 150px
-  border-bottom-left-radius: 3px
-  border-bottom-right-radius: 3px
+  visibility: hidden
+  z-index: 1
 
   &.right
     right: 0
@@ -281,21 +283,24 @@ ul.dropdown-menu
     display: flex
     align-items: center
     border-bottom: thin solid $color-background
+
     a, span
-      padding: 10px
-      display: flex
-      width: 100%
       align-items: center
-      text-decoration: none
-      text-shadow: none
+      display: flex
       color: $color-text-dark
       cursor: pointer
+      font-weight: normal
+      padding: 10px
+      text-decoration: none
+      text-shadow: none
+      width: 100%
 
       &:hover
-        color: $color-primary
+        color: $color-primary-active
 
       i
-        margin-right: 5px
+        display: inline-block
+        margin-right: 10px
 
   &.active
     display: flex

@@ -35,7 +35,7 @@ var delay = (function () {
 
 
 // Clicking on this class will display the dropdown-menu inside
-$('.wgt-dropdown-toggle').on('click', function(e){
+$(document).on('click', 'body .wgt-dropdown-toggle', function(e){
 	$(this)
 		.toggleClass('active')
 		.find('.dropdown-menu')

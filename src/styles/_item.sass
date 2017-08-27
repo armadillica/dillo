@@ -34,6 +34,11 @@ $item-thumbnail-size: 80px
     display: block
     visibility: visible
 
+  &.no-images
+    color: $color-text-dark-primary
+    i
+      padding: 0 5px
+
   ul
     display: flex
     list-style-type: none
@@ -279,6 +284,7 @@ body[data-context="post-edit"]
 
       .btn-group
         margin-left: 5px
+
     .item-status
       color: $color-text-hint
       span

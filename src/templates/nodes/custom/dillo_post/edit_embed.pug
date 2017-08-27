@@ -80,11 +80,11 @@
 
 				| {{ form.picture_url }}
 				.input-content.item-oembed-images
-					label(for="picture_oembed") Thumbnails Available
+					label(for="picture_oembed") Thumbnails from the URL
 					ul#picture_oembed
 
 				.input-content
-					label(for="picture") Thumbnail
+					label(for="picture") Custom Thumbnail
 					.form-upload-file
 						| {{ form.picture }}
 
@@ -101,30 +101,16 @@
 				a.btn.cancel(href="{{ url_for('posts.index')}}") Cancel
 				| {% endif %}
 
+				| {% if node.properties.status != 'pending' %}
 				button.btn.delete Delete
+				| {% endif %}
 
 				| {% if node.properties.status != 'published' %}
-				.btn-group
-					button.item-save-publish.btn.btn-success(
-					data-action="publish",
-					title="Make post publicly available")
-						i.pi-check
-						| Publish!
-
-					button.btn.btn-success.wgt-dropdown-toggle
-						i.pi-angle-down
-
-						ul.dropdown-menu.right
-							li
-								span.item-save-publish(
-								data-action="save",
-								title="Save changes and keep editing")
-									| {% if node.properties.status == 'pending' %}
-									| Save Draft
-									| {% else %}
-									| Save Changes
-									| {% endif %}
-
+				button.item-save-publish.btn.btn-success(
+				data-action="publish",
+				title="Make post publicly available")
+					i.pi-check
+					| Publish!
 				| {% else %}
 				button.item-save-publish.btn.publish(
 				data-action="save",
@@ -162,7 +148,7 @@ script.
 
 		// Load the content (in the sidebar) for the first time
 		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
-			$('#col_right').html(dataHtml);
+			$('#col_right .item-edit-view').html(dataHtml);
 			loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 		});
 
@@ -227,21 +213,35 @@ script.
 							}
 
 							// Get the images
-							if (data.images) {
+							$image_oembed
+								.empty()
+								.parent()
+								.removeClass('active no-images');
+
+							if (data.images && data.images.length > 0) {
 
 								$image_oembed
 									.empty()
-									.parent().addClass('active');
+									.parent()
+									.addClass('active');
 
 								data.images.forEach(function (src) {
 									var image = '<img src="' + src + '"/>';
 									$image_oembed.append('<li class="o-image">' + image + '</li>');
 								});
+							} else {
+								$image_oembed
+									.empty()
+									.html('<i class="pi-unhappy"></i>  \
+												No images found there. \
+												You can set a custom thumbnail though!')
+									.parent()
+									.addClass('active no-images');
 							}
 						}
 					})
 					.fail(function (xhr) {
-						toastr.info(xhr.statusText, 'Could not retrieve URL info');
+						toastr.error(xhr.statusText, 'Could not retrieve URL info');
 						$item_icon.html('<i class="pi-globe"></i>');
 					});
 			}, 1000);
@@ -358,7 +358,7 @@ script.
 						toastr.success('Post saved!');
 
 						// Load the post on the side
-						$('#col_right').html(dataHtml);
+						$('#col_right .item-edit-view').html(dataHtml);
 
 						// Load the comments
 						loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
