@@ -113,7 +113,6 @@ def set_defaults(item):
     item['properties']['content'] = ''
     item['properties']['rating_positive'] = 0
     item['properties']['rating_negative'] = 0
-    item['properties']['post_type'] = 'link'
     item['properties']['status'] = 'pending'
     update_hot(item)
     item['properties']['shortcode'] = generate_shortcode(item['project'], item['node_type'])
