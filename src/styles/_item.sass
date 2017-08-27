@@ -1,7 +1,7 @@
 // Listing item
 .item-title
   font-family: $font-headings
-  line-height: 1.4em
+  line-height: 1.3em
   text-decoration: none
 
   em
@@ -24,7 +24,7 @@
     max-width: 100%
 
 
-$item-thumbnail-size: 100px
+$item-thumbnail-size: 80px
 
 .item-oembed-images
   margin: 15px 0
@@ -113,21 +113,23 @@ $item-thumbnail-size: 100px
     .item-thumbnail-picture
       &::before
         content: '\e870'
+        background-image: linear-gradient(45deg, $color-type-link, lighten($color-type-link, 8%))
 
   .item-thumbnail-picture
     align-items: center
     border-bottom-left-radius: 3px
     border-top-left-radius: 3px
     display: flex
+    height: 100%
     justify-content: center
     position: absolute
 
     &::before
       +position-center-translate
       align-items: center
-      border: 2px solid $color-background-dark
+      background-image: linear-gradient(45deg, $color-type-text, lighten($color-type-text, 8%))
       border-radius: 50%
-      color: $color-text-dark-hint
+      color: white
       content: '\e861'
       display: flex
       font-family: 'pillar-font'
@@ -137,7 +139,7 @@ $item-thumbnail-size: 100px
       width: $item-thumbnail-size / 2
 
     img
-      height: $item-thumbnail-size
+      height: 100%
 
 .item-content
   align-items: center
