@@ -16,14 +16,30 @@
     display: flex
     height: 100%
     margin: 5px 10px 5px 5px
-    overflow: hidden
     padding-right: 10px
+    position: relative
     transition: box-shadow 250ms ease-in-out
+
+    &:after
+      opacity: 0
+      right: -8px
+      transition: opacity 300ms ease-in-out, right 300ms ease-in-out
+      transition-delay: 150ms
 
     &.active
       +media-xs
         box-shadow: 1px 2px 2px $color-background-dark, 0 -5px 0  $color-secondary
       box-shadow: 1px 2px 2px $color-background-dark, inset -3px 0 0  $color-secondary
+
+      &:after
+        content: ''
+        border: 6px solid transparent
+        border-left-color: $color-secondary
+        position: absolute
+        top: 50%
+        transform: translateY(-50%)
+        right: -12px
+        opacity: 1
 
       .item-title
         color: $color-primary

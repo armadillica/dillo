@@ -2,19 +2,6 @@
 
 #col_main
 	.item-edit-form
-		| {% if node.properties.status == 'pending' %}
-		ul.item-edit-tabs
-			li(
-			class="{% if node.properties.post_type == 'link' %}active{% endif %}",
-			data-post-type='link')
-				span LINK
-				small I want to share a link
-			li(
-			class="{% if node.properties.post_type == 'text' %}active{% endif %}",
-			data-post-type='text')
-				span TEXT
-				small I'll write a nice article
-		| {% endif %}
 		.item-edit-tab(
 		id="item-edit-tab",
 		class="{{ node.properties.post_type }}")
@@ -108,9 +95,8 @@
 				span {{ node.properties.status | undertitle }}
 			.item-edit-header-action
 
-				// TODO: Reload just #col_main with posts index
 				| {% if node.properties.status == 'published' %}
-				a.btn.cancel(href="{{ url_for('nodes.view', node_id=node._id)}}") Cancel
+				a.btn.cancel(href="{{ url_for('posts.view', post_shortcode=node.properties.shortcode)}}") Cancel
 				| {% else %}
 				a.btn.cancel(href="{{ url_for('posts.index')}}") Cancel
 				| {% endif %}
@@ -125,18 +111,19 @@
 						i.pi-check
 						| Publish!
 
-					button.btn.btn-success.dropdown-toggle
+					button.btn.btn-success.wgt-dropdown-toggle
 						i.pi-angle-down
-					ul.dropdown-menu.right
-						li
-							span.item-save-publish(
-							data-action="save",
-							title="Save changes and keep editing")
-								| {% if node.properties.status == 'pending' %}
-								| Save Draft
-								| {% else %}
-								| Save Changes
-								| {% endif %}
+
+						ul.dropdown-menu.right
+							li
+								span.item-save-publish(
+								data-action="save",
+								title="Save changes and keep editing")
+									| {% if node.properties.status == 'pending' %}
+									| Save Draft
+									| {% else %}
+									| Save Changes
+									| {% endif %}
 
 				| {% else %}
 				button.item-save-publish.btn.publish(
@@ -145,9 +132,7 @@
 				) Save Changes
 				| {% endif %}
 
-
 #col_right.listing-view.item-edit-view
-
 
 | {% endblock body %}
 
@@ -187,14 +172,14 @@ script.
 			.prop('disabled', false)
 			.attr('id', 'content');
 
-		// Focus the #content field on load
-		input_content.focus();
 
 		var $item_title_input = $('#item-edit-form #name');
 		var $item_content_input = $('.input-field');
 		var $item_icon = $('#item-icon');
 		var $item_title = $('#item-title');
 		var $image_oembed = $('.item-oembed-images ul');
+		var $statusLoad = $('#status');
+		var statusLoad_val = $statusLoad.val();
 
 		// Resize textarea when typing long text
 		$item_content_input
@@ -356,11 +341,29 @@ script.
 					// Disable beforeunolad when submitting a form
 					$(window).off('beforeunload');
 
-					$('#col_right').html(dataHtml);
-					loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
-
-					toastr.success('Saved!');
+					// Update the save button
 					uiUpdateOnSave($item_save_publish_button);
+
+					// If on load the post was not published
+					if (statusLoad_val == 'pending'){
+						toastr.success('Post published.<br/>You\'re a rockstar!');
+
+						// Refresh the list after a bit to let Algolia think about it
+						setTimeout(function(){
+							var post_url = "{{ url_for('posts.view', post_shortcode=node.properties.shortcode) }}";
+							window.location.replace(post_url);
+						}, 3000);
+
+					} else {
+						toastr.success('Post saved!');
+
+						// Load the post on the side
+						$('#col_right').html(dataHtml);
+
+						// Load the comments
+						loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+					}
+
 				});
 		});
 
@@ -395,7 +398,7 @@ script.
 					// Feedback logic
 				})
 				.done(function () {
-					toastr.success("Post deleted.<br/>Going back home...");
+					toastr.info("Post deleted.<br/>Going back home...");
 
 					// Go back home, wait a bit for Algolia to update the index
 					setTimeout(function(){
@@ -447,6 +450,10 @@ script.
 			$('.o-image').removeClass('active');
 			$('#picture_url').val('');
 		});
+
+
+		// Focus the #content field on load
+		input_content.focus();
 
 	});
 | {% endblock footer_scripts %}

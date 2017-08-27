@@ -123,7 +123,7 @@ function toggleSubmit(){
 	}
 }
 
-$('a.wgt-toggle-submit').on('click', function(){
+$('.wgt-toggle-submit').on('click', function(){
 	toggleSubmit();
 });
 

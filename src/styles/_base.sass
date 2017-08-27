@@ -120,6 +120,16 @@ a:hover
   transition: top 500ms ease-out
   width: 100%
 
+.dialog-box
+  #col_main
+    width: 100%
+
+    .item-edit-tab
+      padding: 10px
+
+    .item-edit-header
+      padding: 10px 20px 20px
+
 #header-bar
   &-pri
     background-color: $color-background-lighter
@@ -157,11 +167,15 @@ button, .btn
     +button($color-danger, 3px)
 
 .btn-group
-  display: inline-flex
-  position: relative
+  align-items: center
   border-radius: 3px
   color: $color-text
-  border-radius: 3px
+  display: inline-flex
+  position: relative
+
+  label
+    font-size: 1em
+    padding-right: 10px
 
   button
     &.btn-success
@@ -173,12 +187,16 @@ button, .btn
     &.btn-warning
       +button($color-warning, 3px, true)
 
+    &.btn-submit
+      +button(hsl(hue($color-primary), 90%, 45%), 3px, true)
+
     border-top-right-radius: 0 !important
     border-bottom-right-radius: 0 !important
 
-    &.dropdown-toggle
+    &.wgt-dropdown-toggle
       border-left: none
-      padding: 0 5px
+      padding-left: 5px
+      padding-right: 5px
       border-top-left-radius: 0 !important
       border-bottom-left-radius: 0 !important
       border-top-right-radius: 3px !important
@@ -204,6 +222,7 @@ nav
       margin: 0
       padding: 0
       > li
+        align-items: center
         display: inline-flex
         margin-right: 15px
 
@@ -268,6 +287,7 @@ ul.dropdown-menu
       width: 100%
       align-items: center
       text-decoration: none
+      text-shadow: none
       color: $color-text-dark
       cursor: pointer
 

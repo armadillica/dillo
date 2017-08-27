@@ -13,7 +13,13 @@
 				.item-rating.down
 					i.pi-angle-down
 			.item-details
-				a#item-title.item-title(href="") {{ node.name }}
+				| {% if node.properties.post_type == 'link' %}
+				a#item-title.item-title(
+					href="{{ node.properties.content }}"
+					target="_blank") {{ node.name }}
+				| {% else %}
+				span#item-title.item-title {{ node.name }}
+				| {% endif %}
 				ul
 					li#item-category {{ node.properties.category | undertitle }}
 					li {{ node._created | pretty_date }}

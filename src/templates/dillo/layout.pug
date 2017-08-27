@@ -30,14 +30,27 @@ html(lang='en')
 				nav.nav-bar#header-bar-pri-user
 					ul
 						li
-							a.wgt-toggle-submit
-								i.pi-paper-plane
-						li
 							a.wgt-toggle-fullscreen
 								i.pi-resize-full
 						| {% if current_user.is_authenticated %}
 						li
-							a.btn.submit(href="{{ url_for('posts.create', post_type='link') }}") SUBMIT POST
+							.btn-group
+								button.btn.btn-submit.wgt-toggle-submit(
+								data-action="publish",
+								title="Submit a Link")
+									i.pi-link
+									| Submit Link
+
+								button.btn.btn-submit.wgt-dropdown-toggle
+									i.pi-angle-down
+
+									ul.dropdown-menu.right
+										li
+											a(
+												href="{{ url_for('posts.create', post_type='text') }}",
+												title="Submit a Text post")
+												i.pi-document-text
+												|  Submit Text
 
 						li.nav-notifications
 							a.navbar-item#notifications-toggle(
