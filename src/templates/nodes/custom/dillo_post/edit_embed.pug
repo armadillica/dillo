@@ -148,7 +148,7 @@ script.
 
 		// Load the content (in the sidebar) for the first time
 		$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
-			$('#col_right .item-edit-view').html(dataHtml);
+			$('#col_right').html(dataHtml);
 			loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 		});
 
@@ -358,7 +358,7 @@ script.
 						toastr.success('Post saved!');
 
 						// Load the post on the side
-						$('#col_right .item-edit-view').html(dataHtml);
+						$('#col_right').html(dataHtml);
 
 						// Load the comments
 						loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
