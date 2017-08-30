@@ -15,7 +15,7 @@
     box-shadow: 1px 2px 2px $color-background-dark
     display: flex
     height: 100%
-    margin: 5px 10px 5px 5px
+    margin: 5px 11px 5px 5px
     padding-right: 10px
     position: relative
     transition: box-shadow 250ms ease-in-out
@@ -24,12 +24,13 @@
       opacity: 0
       right: -8px
       transition: opacity 300ms ease-in-out, right 300ms ease-in-out
-      transition-delay: 150ms
+      transition-delay: 50ms
 
     &.active
       +media-xs
         box-shadow: 1px 2px 2px $color-background-dark, 0 -5px 0  $color-secondary
-      box-shadow: 1px 2px 2px $color-background-dark, inset -3px 0 0  $color-secondary
+      box-shadow: 1px 2px 2px $color-background-dark, inset -5px 0 0  $color-secondary
+      background-color: $color-background-lighter
 
       &:after
         content: ''
@@ -42,7 +43,10 @@
         opacity: 1
 
       .item-title
-        color: $color-primary
+        color: $color-secondary
+
+        &:hover
+          color: lighten($color-secondary, 10%)
 
     .item-details
       +media-xs
