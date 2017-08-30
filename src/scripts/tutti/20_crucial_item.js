@@ -142,3 +142,18 @@ if (ProjectUtils.context() == 'post-edit'){
 		});
 	});
 }
+
+$('body').on('click', '.js-item-open', function(e){
+	e.preventDefault();
+	e.stopPropagation();
+
+	var li = $(this).closest('.list-hits-item');
+	var hit_id = li.attr('data-id');
+	var hit_url = li.attr('data-url');
+
+	/* Unstyle all items on the list and style only the current one */
+	$('.list-hits-item').removeClass('active');
+	li.addClass('active');
+
+	item_open(hit_id, hit_url);
+});
