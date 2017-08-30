@@ -11,7 +11,19 @@ html(lang='en')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
 		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
 
-		| {% block og %}{% endblock og %}
+
+		| {# Meta info for Open Graph and Twitter Cards #}
+		meta(property="og:site_name", content="{{ config.SETTINGS_TITLE | safe }}")
+		meta(name="twitter:card" content="summary_large_image")
+		meta(name="twitter:site" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
+		| {% block og %}
+		meta(name="twitter:creator" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
+		meta(name="twitter:title" content="{{ config.SETTINGS_TITLE | safe }}")
+		meta(name="twitter:description" content="{{ config.SETTINGS_TAGLINE }}")
+		meta(property="og:description", content="{{ config.SETTINGS_TAGLINE }}")
+		meta(name="twitter:image" content="{{ config.SETTINGS_LOGO_IMAGE }}")
+		meta(property="og:image", content="{{ config.SETTINGS_LOGO_IMAGE }}")
+		| {% endblock og %}
 
 		| {% block style %}{% endblock style %}
 

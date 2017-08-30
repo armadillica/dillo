@@ -2,6 +2,41 @@
 | {% set page_name = 'posts-index' %}
 | {% block bodyattrs %}{{ super() }} class='{{ page_name }}' data-context='{{ page_name }}'{% endblock %}
 
+| {% block og %}
+| {% if 'post' in col_right %}
+meta(property="og:type", content="article")
+meta(property="og:title", content="{{ col_right['post'].name }} - {{ config.SETTINGS_TITLE | safe }}")
+meta(name="twitter:title" content="{{ col_right['post'].name }} - {{ config.SETTINGS_TITLE | safe }}")
+meta(property="og:url",
+		 content="{{ url_for('posts.view', post_shortcode=col_right['post'].properties.shortcode, _external=True) }}")
+meta(property="article:published_time",
+		 content="{{ col_right['post']._created }}")
+
+| {% if col_right['post'].properties.content %}
+meta(name="twitter:description", content="{{ col_right['post'].properties.content | safe }}")
+meta(property="og:description", content="{{ col_right['post'].properties.content | safe }}")
+| {% endif %}
+
+| {% if col_right['post'].picture %}
+meta(property="og:image", content="{{ col_right['post'].picture.thumbnail('h') }}")
+meta(name="twitter:image", content="{{ col_right['post'].picture.thumbnail('h') }}")
+| {% endif %}
+
+meta(property="article:title", content="{{ col_right['post'].name }}")
+| {% if col_right['post'].user.full_name and col_right['post'].user.full_name != 'None' %}
+meta(property="article:author",
+		 content="{{col_right['post'].user.full_name}}")
+meta(name="twitter:creator",
+		 content="{{col_right['post'].user.full_name}}")
+| {% else %}
+meta(property="article:author",
+		 content="{{ col_right['post'].user }}")
+meta(name="twitter:creator",
+		 content="{{col_right['post'].user.username}}")
+| {% endif %}
+| {% endif %}
+| {% endblock og %}
+
 | {% block body %}
 #col_main.listing-list
 	#list-hits

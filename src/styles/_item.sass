@@ -14,10 +14,20 @@
   border-bottom: thin solid $color-background-dark
   display: flex
   justify-content: center
+  position: relative
 
-  iframe
-    min-height: 400px
-    width: 100%
+  &.oembed
+    padding-bottom: 56.25%
+    padding-top: 35px
+    height: 0
+    overflow: hidden
+
+    iframe
+      height: 100%
+      left: 0
+      position: absolute
+      top: 0
+      width: 100%
 
   iframe, img
     max-height: 600px

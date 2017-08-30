@@ -54,7 +54,7 @@
 
 	// If it's a link with oembed support
 	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
-	.item-media#item-media
+	.item-media.oembed#item-media
 		| {{ node.properties.content_html | safe }}
 	| {% endif %}
 

@@ -16,6 +16,7 @@ from pillarsdk.nodes import Node
 
 from pillar.web import subquery
 from pillar.web import system_util
+from pillar.web.utils import get_file
 
 from dillo import current_dillo
 
@@ -101,7 +102,13 @@ def post_rate(post_id, operation):
 @blueprint.route('/p/<string(length=6):post_shortcode>/<slug>')
 def view(post_shortcode, slug=None):
     api = system_util.pillar_api()
-    post = Node.find_one({'where': {'properties.shortcode': post_shortcode}}, api=api)
+    post = Node.find_one({
+        'where': {'properties.shortcode': post_shortcode},
+        'embedded': {'user': 1}}, api=api)
+
+    if post.picture:
+        post.picture = get_file(post.picture, api=api)
+
     return render_template(
         'dillo/index.html',
         col_right={'post': post})
