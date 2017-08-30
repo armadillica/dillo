@@ -13,7 +13,7 @@ var sass         = require('gulp-sass');
 var uglify       = require('gulp-uglify');
 
 var enabled = {
-		failCheck: argv.production,
+		failCheck: !argv.production,
 		maps: argv.production,
 		prettyPug: !argv.production,
 		uglify: argv.production
