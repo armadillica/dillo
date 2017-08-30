@@ -22,14 +22,12 @@
 				| {% endif %}
 				ul
 					li#item-category {{ node.properties.category | undertitle }}
-					li {{ node._created | pretty_date }}
-					li {{ node.user.full_name }}
-
-					| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
-					li.item-edit
-						a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}") edit post
-					| {% endif %}
-
+					li
+						a(href="{{ url_for('posts.view', post_shortcode=node.properties.shortcode, _external=True) }}")
+							| {{ node._created | pretty_date }}
+					li
+						a(href="/u/{{ node.user.username }}")
+							| {{ node.user.full_name }}
 
 	| {% if node.properties.post_type == 'text' %}
 	.item-body#item-content
@@ -51,12 +49,33 @@
 			| {{ node.properties.content }}
 	| {% endif %}
 
-
-	// If it's a link with oembed support
+	| {# If it's a link with oembed support #}
 	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
 	.item-media.oembed#item-media
 		| {{ node.properties.content_html | safe }}
 	| {% endif %}
+
+	.item-action-panel
+		| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+		.item-action-edit
+			a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
+				| Edit Post
+		| {% endif %}
+
+		.item-action-share
+			a(
+				title="Share on Facebook",
+				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', post_shortcode=node.properties.shortcode, _external=True) }}",
+				target="_blank")
+				i.pi-social-facebook
+				| Share
+
+			a(
+				title="Share on Twitter",
+				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
+				target="_blank")
+				i.pi-social-twitter
+				| Tweet
 
 	#item-comments
 		#comments-embed

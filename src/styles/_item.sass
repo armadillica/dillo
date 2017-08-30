@@ -275,6 +275,30 @@ $item-thumbnail-size: 80px
         text-overflow: ellipsis
 
 
+.item-action
+  &-panel
+    align-items: center
+    display: flex
+    font-size: $font-size-small
+
+  &-share
+    color: $color-text-dark-primary
+    margin-left: auto
+    padding-left: 10px
+    padding-right: 10px
+
+    > a
+      color: $color-text-dark-secondary
+      display: inline-block
+      padding: 10px 5px
+
+      &:hover
+        color: $color-primary
+
+  &-edit
+    a
+      padding: 15px
+      text-decoration: none
 
 #item-comments
   margin: 10px 15px
@@ -456,6 +480,7 @@ body[data-context="post-edit"]
 .item-view
   &-header
     display: flex
+    border-bottom: thin solid $color-background-dark
 
   &.text
     .item-body
