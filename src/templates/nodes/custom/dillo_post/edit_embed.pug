@@ -163,6 +163,7 @@ script.
 		var $item_content_input = $('.input-field');
 		var $item_icon = $('#item-icon');
 		var $item_title = $('#item-title');
+		var $item_picture = $('#picture_url');
 		var $image_oembed = $('.item-oembed-images ul');
 		var $statusLoad = $('#status');
 		var statusLoad_val = $statusLoad.val();
@@ -186,8 +187,8 @@ script.
 		function parseLink(content) {
 			if (!ValidURL(content)) return;
 			$item_icon.html('<i class="pi-spin spin"></i>');
-			// Wait a bit before calling the spoon
 
+			// Wait a bit before calling the spoon
 			delay(function () {
 				$.post("{{ url_for('posts.spoon')}}", {url: content})
 					.done(function (data) {
@@ -218,18 +219,32 @@ script.
 								.parent()
 								.removeClass('active no-images');
 
+							// If there is at least 1 image
 							if (data.images && data.images.length > 0) {
 
+								// Empty the list of images and display (by setting it active)
 								$image_oembed
 									.empty()
 									.parent()
 									.addClass('active');
 
+								// Then append a <li> element with each image in it
 								data.images.forEach(function (src) {
 									var image = '<img src="' + src + '"/>';
 									$image_oembed.append('<li class="o-image">' + image + '</li>');
 								});
+
+								// Use the first image if there's no image set yet
+								if (!$item_picture.val()){
+									// Set the picture_url field
+									$item_picture.val(data.images[0]);
+									// Style the first image on the list as 'active'
+									$image_oembed.find('li:first').addClass('o-image active');
+								}
+
 							} else {
+
+								// When no images found, empty the list and be sad about it
 								$image_oembed
 									.empty()
 									.html('<i class="pi-unhappy"></i>  \
@@ -424,7 +439,6 @@ script.
 		$(document).on('click', 'body .o-image', function () {
 
 			var $this = $(this);
-			var picture_url = $('#picture_url');
 
 			// Remove active class from other images
 			$this.siblings('li').removeClass('active');
@@ -432,12 +446,12 @@ script.
 			// Clicking on the already active image to un-set
 			if ($this.hasClass('active')) {
 				$this.toggleClass('active');
-				picture_url.val('');
+				$item_picture.val('');
 			} else {
 				$this.addClass('active');
 
 				// Set the picture_url field with the image source path
-				picture_url.val($this.children('img').attr('src'));
+				$item_picture.val($this.children('img').attr('src'));
 
 				// Visually tell that the custom thumbnail won't be used
 				$('.fileupload').val('');
@@ -448,7 +462,7 @@ script.
 		// When finished uploading a thumbnail, deselect any oembed image and clear #picture_url
 		$('body').on('file-upload:finished', function () {
 			$('.o-image').removeClass('active');
-			$('#picture_url').val('');
+			$item_picture.val('');
 		});
 
 
