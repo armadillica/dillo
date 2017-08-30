@@ -10,12 +10,11 @@
       padding-right: 0
 
     background-color: $color-background-lighter
-    border: thin solid rgba($color-text, .25)
     border-radius: 3px
     box-shadow: 1px 2px 2px $color-background-dark
     display: flex
     height: 100%
-    margin: 5px 11px 5px 5px
+    margin: 8px 11px 8px 5px
     padding-right: 10px
     position: relative
     transition: box-shadow 250ms ease-in-out
@@ -42,11 +41,19 @@
         right: -12px
         opacity: 1
 
+      .item-thumbnail,
+      .item-favicon img
+        opacity: 1
+
       .item-title
-        color: $color-secondary
+        color: darken($color-secondary, 5%)
 
         &:hover
-          color: lighten($color-secondary, 10%)
+          color: $color-secondary
+
+    .item-thumbnail
+      opacity: .8
+      transition: opacity 250ms ease-in-out
 
     .item-details
       +media-xs
