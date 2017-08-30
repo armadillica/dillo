@@ -1,5 +1,7 @@
 .DS_Store
 .project
+.coverage
+.cache/*
 *.pyc
 *.sublime*
 .idea/*
