@@ -94,7 +94,25 @@ html(lang='en')
 
 						| {% else %}
 						li
-							a.btn.submit(href="{{ url_for('users.login') }}") SUBMIT POST
+							.btn-group
+								a.btn.btn-submit(
+									href="{{ url_for('users.login') }}",
+									data-action="publish",
+									title="Submit a Link")
+									i.pi-link
+									| Submit Link
+
+								button.btn.btn-submit.wgt-dropdown-toggle
+									i.pi-angle-down
+
+									ul.dropdown-menu.right
+										li
+											a(
+												href="{{ url_for('users.login') }}",
+												title="Submit a Text post")
+												i.pi-document-text
+												|  Submit Text
+
 						li
 							a.navbar-item.login(href="{{ url_for('users.login') }}")
 								| Log in
