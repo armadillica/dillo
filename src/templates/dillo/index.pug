@@ -103,7 +103,7 @@ script.
 	{% raw %}
 	var hitTemplate =
 		'<div class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-			'<a href="" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}} {{#is_link}}is-link{{/is_link}}">' +
+			'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-thumbnail js-item-open {{#picture}}has-thumbnail{{/picture}} {{#is_link}}is-link{{/is_link}}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
 						'<img src="{{picture}}"/>' +
@@ -123,7 +123,7 @@ script.
 					'</div>' +
 				'</div>' +
 				'<div class="item-details">' +
-					'<a href="" class="item-title js-item-open">{{ name }}</a>' +
+					'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-title js-item-open">{{ name }}</a>' +
 					'<ul>' +
 						'{{#is_link}}' +
 							'<li class="item-favicon">' +
@@ -263,21 +263,6 @@ script.
 	}
 
 	search.on('render', onRenderHandler);
-
-	$('body').on('click', '.js-item-open', function(e){
-		e.preventDefault();
-		e.stopPropagation();
-
-		var li = $(this).closest('.list-hits-item');
-		var hit_id = li.attr('data-id');
-		var hit_url = li.attr('data-url');
-
-		/* Unstyle all items on the list and style only the current one */
-		$('.list-hits-item').removeClass('active');
-		li.addClass('active');
-
-		item_open(hit_id, hit_url);
-	});
 
 	{% if 'post' in col_right %}
 		item_open('{{col_right['post']['_id']}}');

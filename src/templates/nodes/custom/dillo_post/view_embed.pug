@@ -59,6 +59,7 @@
 		| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
 		.item-action-edit
 			a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
+				i.pi-edit
 				| Edit Post
 		| {% endif %}
 
