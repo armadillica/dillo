@@ -1,4 +1,4 @@
-"""Commandline interface for Pistacchio."""
+"""Commandline interface for Dillo."""
 
 import logging
 

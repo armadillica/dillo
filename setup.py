@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Setup file for the Pistacchio extension."""
+"""Setup file for the Dillo extension."""
 
 import setuptools
 
