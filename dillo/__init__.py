@@ -1,10 +1,14 @@
 import logging
+from functools import lru_cache
 
 import flask
+import pillarsdk
 from werkzeug.local import LocalProxy
 from micawber.providers import bootstrap_basic
 from micawber.providers import Provider
 from pillar.extension import PillarExtension
+from pillar.web.system_util import pillar_api
+from pillar.web.utils import attach_project_pictures
 
 EXTENSION_NAME = 'dillo'
 
@@ -23,6 +27,7 @@ class DilloExtension(PillarExtension):
         self.oembed_registry.register(
             'https?://instagram.com/p/*',
             Provider('http://api.instagram.com/oembed'))
+        self.has_context_processor = True
 
     @property
     def name(self):
@@ -110,6 +115,20 @@ class DilloExtension(PillarExtension):
             act.actor_user = pillar.web.subquery.get_user_info(act.actor_user)
 
         return activities
+
+    def context_processor(self):
+        @lru_cache(maxsize=1)
+        def main_project():
+            """Fetch the current project, including images.
+
+            Because this is a cached function, using a storage solution with expiring links is not
+            supported.
+            """
+            api = pillar_api()
+            project = pillarsdk.Project.find(flask.current_app.config['MAIN_PROJECT_ID'], api=api)
+            attach_project_pictures(project, api)
+            return project
+        return {'project': main_project()}
 
 
 def _get_current_dillo():
