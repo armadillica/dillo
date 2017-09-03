@@ -5,16 +5,13 @@ my_path = dirname(abspath(__file__))
 sys.path.append(my_path)
 
 from pillar import PillarServer
-from attract import AttractExtension
-from flamenco import FlamencoExtension
-from cloud import CloudExtension
+from dillo import DilloExtension
 
-attract = AttractExtension()
-flamenco = FlamencoExtension()
-cloud = CloudExtension()
+dillo = DilloExtension()
 
 application = PillarServer(my_path)
-application.load_extension(attract, '/attract')
-application.load_extension(flamenco, '/flamenco')
-application.load_extension(cloud, None)
+application.load_extension(dillo, None)
 application.process_extensions()
+
+if __name__ == '__main__':
+    application.run(debug=False)
