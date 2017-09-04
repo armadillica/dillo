@@ -18,6 +18,14 @@ def patch_post(node_id, patch):
     assert_is_valid_patch(node_id, patch)
     user_id = authentication.current_user_id()
 
+    nodes_coll = current_app.data.driver.db['nodes']
+    node_user_id = nodes_coll.find_one({'_id': node_id },
+                                       projection={'user': 1})
+
+    # we don't allow the user to down/upvote their own posts.
+    if user_id == node_user_id:
+        return abort(403)
+
     if patch['op'] in COMMENT_VOTING_OPS:
         result, node = vote_comment(user_id, node_id, patch)
         # Fetch the full node for reindexing

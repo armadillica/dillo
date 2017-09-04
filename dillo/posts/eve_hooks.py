@@ -111,7 +111,7 @@ def set_defaults(item):
     # this happens, we can remove most of the values here and set hot using 0 for default positive
     # and negative ratings.
     item['properties']['content'] = ''
-    item['properties']['rating_positive'] = 0
+    item['properties']['rating_positive'] = 1
     item['properties']['rating_negative'] = 0
     item['properties']['status'] = 'pending'
     update_hot(item)
