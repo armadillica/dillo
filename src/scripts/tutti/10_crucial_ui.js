@@ -99,6 +99,11 @@ $('a.wgt-toggle-fullscreen').on('click', function(){
 
 // Submit Dialog Workflow
 function enterSubmit(){
+
+	if (!isAuthenticated()){
+		return window.location.href = '/login';
+	}
+
 	$.get("/post/link?embed=1", function(data) {
 		$('.dialog-box').html(data);
 	});
@@ -153,3 +158,9 @@ $(document).ajaxStart(function(){
 $(document).ajaxStop(function(){
 	$('#app-loader').removeClass('active');
 });
+
+
+// Check for the 'logged-in' class on body
+function isAuthenticated(){
+	return $('body').hasClass('logged-in');
+}

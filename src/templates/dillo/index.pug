@@ -1,6 +1,9 @@
 | {% extends 'dillo/layout.html' %}
 | {% set page_name = 'posts-index' %}
-| {% block bodyattrs %}{{ super() }} class='{{ page_name }}' data-context='{{ page_name }}'{% endblock %}
+| {% block bodyattrs %}
+| {{ super() }}
+| class='{{ page_name }}{% if current_user.is_authenticated %} logged-in{% endif %}' data-context='{{ page_name }}'
+| {% endblock %}
 
 | {% block og %}
 | {% if 'post' in col_right %}

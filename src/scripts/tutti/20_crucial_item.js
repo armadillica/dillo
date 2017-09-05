@@ -49,6 +49,10 @@ $(document).on('click','body .item-rating',function(e){
 	var parentDiv = $this.parent();
 	var rated_positive = parentDiv.hasClass('positive');
 
+	if (!isAuthenticated()){
+		return window.location.href = '/login';
+	}
+
 	if (typeof nodeId === 'undefined') {
 		if (console) console.log('Undefined node ID');
 		return;

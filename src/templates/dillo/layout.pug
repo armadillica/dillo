@@ -138,17 +138,15 @@ html(lang='en')
 		#app-overlay
 			.overlay-background
 			.dialog-box
-				h1 WIP Submission Form
+				| Are you logged in?
 
 		#notification-pop(data-url="", data-read-toggle="")
 			.nc-progress
 			a#pop-close(href="#", title="Dismiss")
 				i.pi-cancel
 			.nc-item
-				//- .nc-avatar
 				.nc-text
-					span.nc-date
-						a(href="")
+					| No Notifications
 
 
 		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
@@ -158,5 +156,15 @@ html(lang='en')
 		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1.min.js', v=171120161) }}")
 		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3")
 		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
+
+		script.
+			$(document).ready(function() {
+				{% if current_user.is_authenticated %}
+					getNotificationsLoop(); // Check for new notifications in the background
+
+					// Resize #notifications and change overflow for scrollbars
+					$(window).on("resize", function() { notificationsResize(); });
+				{% endif %}
+			});
 
 		| {% block footer_scripts %}{% endblock footer_scripts %}
