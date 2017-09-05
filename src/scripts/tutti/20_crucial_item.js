@@ -147,7 +147,16 @@ if (ProjectUtils.context() == 'post-edit'){
 	});
 }
 
+
+// Used on the index to open the post item
 $('body').on('click', '.js-item-open', function(e){
+
+	// If target has 'follow-link' class, follow the link!
+	// Used for <a> pointing to external urls, like post_type link has
+	if ($(e.target).hasClass('follow-link')) {
+		return;
+	}
+
 	e.preventDefault();
 	e.stopPropagation();
 
