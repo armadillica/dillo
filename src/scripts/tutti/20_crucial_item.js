@@ -153,7 +153,7 @@ $('body').on('click', '.js-item-open', function(e){
 
 	// If target has 'follow-link' class, follow the link!
 	// Used for <a> pointing to external urls, like post_type link has
-	if ($(e.target).hasClass('follow-link')) {
+	if ($(e.target).hasClass('js-follow-link')) {
 		return;
 	}
 

@@ -105,8 +105,8 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<div class="list-hits-item js-item-open" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-			'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-thumbnail {{#picture}}has-thumbnail{{/picture}} {{#is_link}}is-link{{/is_link}}">' +
+		'<div class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+			'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}}{{#is_link}} is-link{{/is_link}}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
 						'<img src="{{picture}}"/>' +
@@ -114,7 +114,7 @@ script.
 				'</div>' +
 			'</a>' +
 			'<div class="item-content" data-node-id="{{ objectID }}">' +
-				'<div class="item-rating-box {{#is_positive}} rated {{is_positive}} {{/is_positive}}">' +
+				'<div class="item-rating-box {{#is_positive}}rated {{is_positive}}{{/is_positive}}">' +
 					'<div class="item-rating up">' +
 						'<i class="pi-angle-up"></i>' +
 					'</div>' +
@@ -125,22 +125,22 @@ script.
 						'<i class="pi-angle-down"></i>' +
 					'</div>' +
 				'</div>' +
-				'<div class="item-details">' +
+				'<div class="item-details js-item-open">' +
 					'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-title">{{ name }}</a>' +
 					'<ul>' +
 						'{{#is_link}}' +
 							'<li class="item-favicon">' +
-								'<a class="follow-link" href="{{ link_url }}" target="_blank">' +
+								'<a class="js-follow-link" href="{{ link_url }}" target="_blank">' +
 									'<img title="Link" src="http://www.google.com/s2/favicons?domain={{ link_url }}"/>' +
 								'</a>' +
 							'</li>' +
 						'{{/is_link}}' +
 						'<li>{{ category }}</li>' +
 						'<li class="item-date">{{ created }}</li>' +
-						'<li class="item-author"><a class="follow-link" href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
+						'<li class="item-author"><a class="js-follow-link" href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
 						'<li class="item-comments">{{ comments_count }} <i class="pi-comment"></i></li>' +
 						'{{#is_link}}' +
-							'<li class="item-link"><a class="follow-link" href="{{ link_url }}" target="_blank">{{ link_short }}</a></li>' +
+							'<li class="item-link"><a class="js-follow-link" href="{{ link_url }}" target="_blank">{{ link_short }}</a></li>' +
 						'{{/is_link}}' +
 					'</ul>' +
 				'</div>' +
