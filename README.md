@@ -23,9 +23,9 @@ POST_CATEGORIES = ['Artwork', 'Tutorials', 'Resources', 'Sneak Peek']
 Create an account in their site, and add your Algolia API Keys and setup to the config local
 
 ```
-ALGOLIA_USER="1QFJ16Q4TZ" # Application ID
-ALGOLIA_PUBLIC_KEY="039c5c1d0efe9d25d06c00f55a541963" # Search-Only API Key
-ALGOLIA_API_KEY="1389947be424f13fbecedabb13ef1710" # Admin API Key
+ALGOLIA_USER = '1QFJ16Q4TZ' # Application ID
+ALGOLIA_PUBLIC_KEY = '039c5c1d0efe9d25d06c00f55a541963' # Search-Only API Key
+ALGOLIA_API_KEY = '1389947be424f13fbecedabb13ef1710' # Admin API Key
 ALGOLIA_INDEX_USERS = 'dev_UsersYourName'
 ALGOLIA_INDEX_NODES = 'dev_NodesYourName'
 ```
