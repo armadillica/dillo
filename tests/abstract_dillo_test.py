@@ -24,6 +24,7 @@ class AbstractDilloTest(AbstractPillarTest):
 
     def ensure_project_exists(self, project_overrides=None):
         from dillo.setup import setup_for_dillo
+        from pillar.api.utils.authentication import force_cli_user
 
         project_overrides = dict(
             picture_header=None,
@@ -33,6 +34,7 @@ class AbstractDilloTest(AbstractPillarTest):
         proj_id, project = AbstractPillarTest.ensure_project_exists(self, project_overrides)
 
         with self.app.test_request_context():
+            force_cli_user()
             dillo_project = setup_for_dillo(project['url'], replace=True)
 
         return proj_id, dillo_project
