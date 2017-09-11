@@ -20,6 +20,7 @@
     position: relative
     transition: box-shadow 250ms ease-in-out
 
+    // Triangle on the right
     &:after
       opacity: 0
       right: -8px
@@ -32,6 +33,7 @@
       box-shadow: 1px 2px 2px $color-background-dark, inset -4px 0 0  $color-secondary
       background-color: $color-background-lighter
 
+      // Triangle on the right
       &:after
         content: ''
         border: 6px solid transparent
@@ -51,6 +53,10 @@
 
         &:hover
           color: $color-secondary
+
+    &.is-own
+      .item-rating-box
+        pointer-events: none
 
     .item-thumbnail
       opacity: .8

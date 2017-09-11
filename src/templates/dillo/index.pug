@@ -90,6 +90,9 @@ meta(name="twitter:creator",
 | {% block footer_scripts %}
 script.
 
+	// Check if we're logged in and store it to use later
+	var amAuthenticated = isAuthenticated();
+
 	var search = instantsearch({
 		appId: '{{ config.ALGOLIA_USER }}',
 		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
@@ -105,8 +108,8 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<div class="list-hits-item" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-			'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}}{{#is_link}} is-link{{/is_link}}">' +
+		'<div class="list-hits-item {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
+			'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
 						'<img src="{{picture}}"/>' +
@@ -170,8 +173,15 @@ script.
 		hit.created = moment.unix(hit.created).fromNow();
 
 		if (hit.is_link) {
+			hit.is_link = 'is-link';
 			hit.link_url = hit.content;
 			hit.link_short = shortenUrl(hit.content);
+		}
+
+		if (amAuthenticated) {
+			if (hit.user._id == '{{ current_user.user_id }}'){
+				hit.is_own = 'is-own';
+			}
 		}
 
 		return hit;
