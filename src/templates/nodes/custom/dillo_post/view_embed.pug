@@ -41,12 +41,16 @@
 
 	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
 	.item-body#item-content
+		| {% if node.properties.content %}
 		a.item-link-data(
 			href="{{ node.properties.content }}",
 			target="_blank",
 			title="Visit URL")
 			img.favicon(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 			| {{ node.properties.content }}
+		| {% else %}
+		span.item-link-data There should be content here.
+		| {% endif %}
 	| {% endif %}
 
 	| {# If it's a link with oembed support #}
