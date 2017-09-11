@@ -156,6 +156,7 @@ $item-thumbnail-size: 80px
 
     img
       height: 100%
+      object-fit: cover
 
 .item-content
   align-items: center
@@ -393,18 +394,31 @@ body[data-context="post-edit"]
         margin: 10px 0
 
       #item-icon
+        align-items: center
+        bottom: 8px
+        display: flex
+        justify-content: center
+        height: 32px
         position: absolute
         right: 12px
-        bottom: 8px
         width: 32px
-        height: 32px
-        display: flex
-        align-items: center
-        justify-content: center
+        white-space: nowrap
 
         img
           max-width: 24px
           max-height: 24px
+
+        &.invalid
+          background-color: rgba($color-background-lighter, .8)
+          color: $color-danger
+          cursor: default
+          font-size: .9em
+          padding: 0 10px
+          user-select: none
+          width: auto
+
+        &.success
+          color: $color-success
 
 
   /* Tabs for Link/Text */

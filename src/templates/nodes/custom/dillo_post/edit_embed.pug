@@ -202,9 +202,18 @@ script.
 			);
 		}
 
+
 		function parseLink(content) {
-			if (!ValidURL(content)) return;
-			$item_icon.html('<i class="pi-spin spin"></i>');
+			$item_icon
+				.removeAttr('class').addClass('loading')
+				.html('<i class="pi-spin spin"></i>');
+
+			if (!ValidURL(content)){
+				$item_icon
+					.removeAttr('class').addClass('invalid')
+					.html('Not a valid URL');
+				return;
+			}
 
 			// Wait a bit before calling the spoon
 			delay(function () {
@@ -212,6 +221,9 @@ script.
 					.done(function (data) {
 						if (data) {
 							console.log(data);
+							$item_icon
+								.removeAttr('class').addClass('success')
+								.html('<i class="pi-grin"></i>');
 
 							// Set the name
 							if (data.title) {
@@ -221,9 +233,13 @@ script.
 
 							// Get the favicon
 							if (data.favicon) {
-								$item_icon.html('<img src="' + data.favicon + ' "></i>');
+								$item_icon
+									.removeAttr('class')
+									.html('<img src="' + data.favicon + ' "></i>');
 							} else {
-								$item_icon.html('<i class="pi-globe"></i>');
+								$item_icon
+									.removeAttr('class')
+									.html('<i class="pi-globe"></i>');
 							}
 
 							// Set the media
@@ -279,6 +295,7 @@ script.
 					});
 			}, 1000);
 		}
+
 
 		// When we type in the link field or in the textarea, process what we type accordingly
 		$item_content_input.keyup(function () {
@@ -402,34 +419,26 @@ script.
 
 		$item_save_publish_button.click(function (e) {
 			e.preventDefault();
+
 			if ($(this).data('action') === 'save') {
 				setStatusOnSave();
 			} else if ($(this).data('action') === 'publish') {
 				setStatusOnPublish();
 			}
-			$("#item-edit-form").submit();
+
+			if ($("#item-edit-form")[0].checkValidity()){
+				$("#item-edit-form").submit();
+			} else {
+				toastr.warning('Something seems wrong in the fields...');
+			}
 		});
 
-		function deleteItem() {
-			var urlNodeDelete = "{{url_for('projects.delete_node')}}";
-			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()},
-				function (data) {
-					// Feedback logic
-				})
-				.done(function () {
-					console.log('delete');
-				})
-				.fail(function (data) {
-				});
-		}
 
 		// Delete Post
 		function deleteItem() {
 			var urlNodeDelete = "{{url_for('projects.delete_node')}}";
-			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()},
-				function (data) {
-					// Feedback logic
-				})
+
+			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()})
 				.done(function () {
 					toastr.info("Post deleted.<br/>Going back home...");
 
