@@ -68,7 +68,7 @@ meta(name="twitter:creator",
 
 		| {% elif 'activities' in col_right %}
 		.welcome
-			h2 Welcome to Dillo
+			h2 {{ _('Welcome to Dillo') }}
 
 			.d-activity
 				| {% if col_right['activities']['_meta']['total'] %}
@@ -203,7 +203,7 @@ script.
 				count: 'wgt-dropdown-count',
 			},
 			templates: {
-				header: 'Categories'
+				header: "{{ _('Categories') }}"
 			}
 		})
 	);
