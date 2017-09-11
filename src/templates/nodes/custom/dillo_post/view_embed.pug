@@ -86,8 +86,7 @@
 		#comments-embed
 
 script.
-	var body = document.getElementsByTagName("body")[0];
-	var context = body.getAttribute('data-context');
+	var context = ProjectUtils.context();
 
 	if (context != 'post-edit'){
 		loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
