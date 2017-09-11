@@ -31,7 +31,7 @@ def create(post_type: str):
 
     post_props = dict(
         project=current_app.config['MAIN_PROJECT_ID'],
-        name='My Post',
+        name='Awesome Post Title',
         user=current_user.objectid,
         node_type='dillo_post',
         properties=dict(
