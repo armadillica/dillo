@@ -16,3 +16,5 @@ node_modules
 *.css.map
 *.js.map
 dillo.egg-info/
+
+translations/*/LC_MESSAGES/*.mo
