@@ -55,8 +55,10 @@
           color: $color-secondary
 
     &.is-own
-      .item-rating-box
+      .item-rating-box .item-rating.up,
+      .item-rating-box .item-rating.down
         pointer-events: none
+        color: rgba($color-text-dark-hint, .6)
 
     .item-thumbnail
       opacity: .8
