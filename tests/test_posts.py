@@ -6,17 +6,11 @@ from abstract_dillo_test import AbstractDilloTest
 class NodeOwnerTest(AbstractDilloTest):
     def setUp(self, **kwargs):
         AbstractDilloTest.setUp(self, **kwargs)
-        self.user_id = self.create_user()
+        dillo_user_main_grp = self.ensure_group_exists(
+            'cafef005972666988bef650f', 'dillo_user_main')
+        self.user_id = self.create_user(groups=[dillo_user_main_grp])
         self.create_valid_auth_token(self.user_id, 'token')
-        self.project_id, _ = self.ensure_project_exists(
-            project_overrides={'permissions': {
-                'users': [
-                    {'user': self.user_id,
-                     'methods': ['GET', 'PUT', 'POST', 'DELETE']}
-                ],
-            }}
-        )
-        # self.project_id, _ = self.ensure_project_exists()
+        self.project_id, _ = self.ensure_project_exists()
 
     def test_create_with_explicit_owner(self):
         test_node = {

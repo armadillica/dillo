@@ -29,6 +29,7 @@ class AbstractDilloTest(AbstractPillarTest):
         project_overrides = dict(
             picture_header=None,
             picture_square=None,
+            url='default-project',
             **(project_overrides or {})
         )
         proj_id, project = AbstractPillarTest.ensure_project_exists(self, project_overrides)

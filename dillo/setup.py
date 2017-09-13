@@ -11,7 +11,9 @@ from bson import ObjectId
 from eve.methods.put import put_internal
 from flask import current_app
 
+from pillarsdk import Project
 from pillar.api.utils import node_type_utils
+from pillar.api.projects.utils import abort_with_error
 
 from . import EXTENSION_NAME
 
@@ -57,6 +59,24 @@ def _update_project(project):
         raise RuntimeError("Can't update project %s, issues: %s", project_id, result)
 
 
+def _ensure_user_main_group() -> ObjectId:
+    """Retrieve the dillo_user_main group.
+
+    If the group does not exist, create it.
+
+    Returns the group ObjectId.
+    """
+    grp_collection = current_app.data.driver.db['groups']
+    dillo_user_main_group = grp_collection.find_one({'name': 'dillo_user_main'})
+    if not dillo_user_main_group:
+        dillo_user_main, _, _, status = current_app.post_internal(
+            'groups', {'name': 'dillo_user_main'})
+        if status != 201:
+            log.error('Unable to create dillo_user_main group')
+            return abort_with_error(status)
+    return dillo_user_main_group['_id']
+
+
 def setup_for_dillo(project_url, replace=False):
     """Adds Dillo node types to the project.
 
@@ -87,18 +107,23 @@ def setup_for_dillo(project_url, replace=False):
     node_types = node_type_utils.assign_permissions(project, NODE_TYPES, permission_callback)
     node_type_utils.add_to_project(project, node_types, replace_existing=replace)
 
+    # Add the dillo_user_main group to the dillo_post node type in order to
+    # allow every member to create posts in the project.
+    dillo_user_main_group = _ensure_user_main_group()
+    for nt in project['node_types']:
+        if nt['name'] == 'dillo_post':
+            groups = nt['permissions']['groups']
+            groups.append({
+                'group': dillo_user_main_group,
+                'methods': ['GET', 'PUT', 'POST']
+            })
+
     # Set default extension properties. Be careful not to overwrite any properties that
     # are already there.
     eprops = project.setdefault('extension_props', {})
-    dillo_props = eprops.setdefault(EXTENSION_NAME, {
+    eprops.setdefault(EXTENSION_NAME, {
         'last_used_shortcodes': {},
     })
-
-
-    # Set up task types
-    # task_types = dillo_props.setdefault('task_types', {})
-    # task_types.setdefault(shot.node_type_shot['name'], shot.task_types)
-    # task_types.setdefault(asset.node_type_asset['name'], asset.task_types)
 
     _update_project(project)
 

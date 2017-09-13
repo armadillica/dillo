@@ -127,7 +127,7 @@ class DilloExtension(PillarExtension):
             supported.
             """
             api = pillar_api()
-            project = pillarsdk.Project.find(flask.current_app.config['MAIN_PROJECT_ID'], api=api)
+            project = pillarsdk.Project.find_by_url('default-project', api=api)
             attach_project_pictures(project, api)
             return project
         return {'project': main_project()}

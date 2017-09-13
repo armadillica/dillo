@@ -5,7 +5,8 @@ from abstract_dillo_test import AbstractDilloTest
 class UserTest(AbstractDilloTest):
     def setUp(self, **kwargs):
         super().setUp(**kwargs)
-
+        self.ensure_group_exists(
+            'cafef005972666988bef650f', 'dillo_user_main')
         self.proj_id, self.project = self.ensure_project_exists()
 
     def test_user_page(self):

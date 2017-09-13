@@ -5,8 +5,11 @@ from abstract_dillo_test import AbstractDilloTest
 class SetupForDilloTest(AbstractDilloTest):
     def setUp(self, **kwargs):
         AbstractDilloTest.setUp(self, **kwargs)
-        self.create_user(user_id=ctd.EXAMPLE_PROJECT_OWNER_ID,
-                         groups=[ctd.EXAMPLE_ADMIN_GROUP_ID])
+        self.ensure_group_exists(
+            'cafef005972666988bef650f', 'dillo_user_main')
+        self.user_id = self.create_user(
+            user_id=ctd.EXAMPLE_PROJECT_OWNER_ID,
+            groups=[ctd.EXAMPLE_ADMIN_GROUP_ID])
         self.create_valid_auth_token(ctd.EXAMPLE_PROJECT_OWNER_ID, 'token')
         self.project_id, _ = self.ensure_project_exists()
 
