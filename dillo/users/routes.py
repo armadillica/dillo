@@ -20,7 +20,13 @@ def users_view(username):
     """
     users_coll = current_app.db('users')
     user = users_coll.find_one(
-        {'username': username}, projection={'username': 1, 'full_name': 1, '_created': 1})
+        {'username': username}, projection={
+            'username': 1,
+            'full_name': 1,
+            'extension_props': 1,
+            '_updated': 1,
+            '_created': 1,
+        })
     if user is None:
         return abort(404)
     api = system_util.pillar_api()

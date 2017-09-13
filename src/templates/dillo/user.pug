@@ -2,6 +2,10 @@
 | {% block page_title %}User profile{% endblock %}
 
 | {% block body %}
+
+// {{ user.full_name }}
+// {{ user.extension_props.dillo.karma.positive - user.extension_props.dillo.karma.negative }}
+
 #col_main.listing-list
 	#list-hits
 		| {% for post in posts['_items'] %}
