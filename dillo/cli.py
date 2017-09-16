@@ -9,6 +9,7 @@ from pillar.api.utils import authentication
 from pillar.cli import manager
 
 import dillo.setup
+import dillo.posts.rating
 
 log = logging.getLogger(__name__)
 
@@ -69,3 +70,9 @@ def index_nodes_update_settings():
             'searchable(category)',
         ]
     })
+
+
+@manager_dillo.command
+def reset_users_karma():
+    """Recalculate the users karma"""
+    dillo.posts.rating.rebuild_karma()

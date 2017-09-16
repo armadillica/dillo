@@ -25,10 +25,7 @@ def after_creating_user(user: dict):
     now = datetime.datetime.now(tz=datetime.timezone.utc)
 
     custom_fields = {
-        'karma': {
-            'positive': 0,
-            'negative': 0,
-        },
+        'karma': 0,
     }
 
     log.debug('Recording user custom extension_props for dillo')
