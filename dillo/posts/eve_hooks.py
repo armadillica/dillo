@@ -151,8 +151,17 @@ def generate_oembed(item):
         item['properties']['content_html'] = content_html
 
 
+def check_permissions_edit_dillo_post(original):
+    """Ensure that only the owner of a post can edit it."""
+    cid = current_user_id()
+    if cid != original['user']:
+        log.info('User %s is not allowed to edit dillo_post %s' % (cid, original['_id']))
+        return abort(403)
+
+
 @only_for_post
 def before_replacing_post(item, original):
+    check_permissions_edit_dillo_post(original)
     if len(item['properties']['content']) < 6:
         log.debug('Content must be longer than 5 chars')
         return abort(422)
