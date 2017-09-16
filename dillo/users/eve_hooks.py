@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 """Hooks for user types.
 
 On post creation:
@@ -22,7 +20,6 @@ def after_creating_user(user: dict):
     Expand user data with custom dillo fields
     """
     user_id = user['_id']
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
 
     custom_fields = {
         'karma': 0,
@@ -33,10 +30,9 @@ def after_creating_user(user: dict):
     db_fieldname = f'extension_props.{EXTENSION_NAME}'
     users_collection = current_app.data.driver.db['users']
 
-    new_user = users_collection.find_one_and_update(
+    users_collection.find_one_and_update(
         {'_id': user_id},
         {'$set': {db_fieldname: custom_fields}},
-        {db_fieldname: 1},
     )
 
 
