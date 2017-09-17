@@ -2,20 +2,22 @@
 
 On post creation:
 
+- assign to dillo_user_main
 - set karma
 
 """
 
-import datetime
 import logging
 from flask import current_app
+from pillar.api.users import add_user_to_group
+
 from dillo import EXTENSION_NAME
 
 
 log = logging.getLogger(__name__)
 
 
-def after_creating_user(user: dict):
+def add_extension_props(user: dict):
     """
     Expand user data with custom dillo fields
     """
@@ -36,10 +38,15 @@ def after_creating_user(user: dict):
     )
 
 
-def after_creating_users(users: list):
-    for user in users:
-        after_creating_user(user)
+def assign_to_user_main(user_doc: dict):
+    """Make every user create part of the user_main group."""
+
+    groups_coll = current_app.db().groups
+    group_dillo_user_main = groups_coll.find_one({'name': 'dillo_user_main'})
+    add_user_to_group(user_id=user_doc['_id'], group_id=group_dillo_user_main['_id'])
 
 
-def setup_app(app):
-    app.on_inserted_users += after_creating_users
+def after_creating_users(user_docs: list):
+    for user_doc in user_docs:
+        assign_to_user_main(user_doc)
+        add_extension_props(user_doc)
