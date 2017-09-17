@@ -11,7 +11,6 @@ html(lang='en')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
 		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
 
-
 		| {# Meta info for Open Graph and Twitter Cards #}
 		meta(property="og:site_name", content="{{ config.SETTINGS_TITLE | safe }}")
 		meta(name="twitter:card" content="summary_large_image")
@@ -30,107 +29,128 @@ html(lang='en')
 	body({% block bodyattrs %}{%endblock%})
 		#app-header
 			#app-loader
-			header#header-bar-pri
-				a.app-branding(href="{{ url_for('posts.index') }}") Dillo
-				.wgt-search
-					input(
-						id="q",
-						type="text",
-						placeholder="{{ _('Search...') }}")
 
-				#list-categories.wgt-dropdown-toggle
-				#list-refined-values
+			| {% block header %}
+			.d-header
+				| {% if project.picture_header %}
+				.d-header-background(
+					style="background-image: url({{ project.picture_header.thumbnail('h') }});")
+				| {% endif %}
+				a.d-header-logo(href="{{ url_for('posts.index') }}")
+					| {% if project.picture_square %}
+					img(src="{{ project.picture_square.thumbnail('l') }}")
+					| {% endif %}
 
-				nav.nav-bar#header-bar-pri-user
-					ul
-						li
-							a.wgt-toggle-fullscreen
-								i.pi-resize-full
-						| {% if current_user.is_authenticated %}
-						li
-							.btn-group
-								button.btn.btn-submit.wgt-toggle-submit(
-								data-action="publish",
-								title="{{ _('Submit a Link') }}")
-									i.pi-link
-									| {{ _('Submit Link') }}
+				.d-header-title
+					a.title(href="{{ url_for('posts.index') }}")
+						span {{ project.name }}
 
-								button.btn.btn-submit.wgt-dropdown-toggle
-									i.pi-angle-down
+				.d-header-action
+					nav.nav-bar
+						ul
+							li
+								#list-refined-values
+								#list-categories.wgt-dropdown-toggle
+							li
+								.wgt-search
+									.wgt-search-icon
+										i.pi-search
+									input(
+										id="q",
+										type="text",
+										placeholder="{{ _('Search...') }}")
 
-									ul.dropdown-menu.right
-										li
-											a(
-												href="{{ url_for('posts.create', post_type='text') }}",
-												title="Submit a Text post")
-												i.pi-document-text
-												|  {{ _('Submit Text') }}
-
-						li.nav-notifications
-							a.navbar-item#notifications-toggle(
-								title="Notifications",
-								data-toggle="tooltip",
-								data-placement="bottom")
-								i.pi-notifications-none.nav-notifications-icon
-								span#notifications-count
-									span
-								.flyout-hat
-
-							#notifications.flyout.notifications
-								.flyout-content
-									span.flyout-title Notifications
-									a#notifications-markallread(
-										title="Mark All as Read",
-										href="/notifications/read-all")
-										| {{ _('Mark All as Read') }}
-
-						li.dropdown.wgt-dropdown-toggle
-							.dropdown-toggle
-								img.avatar(
-									src="{{ current_user.gravatar }}",
-									alt="Avatar")
-
-								.dropdown-toggle-icon
-									i.pi-angle-down
-
-							ul.dropdown-menu.right
-								li
-									a(
-										href="{{ url_for('settings.profile') }}"
-										title="Settings")
-										i.pi-cog
-										| {{ _("Settings") }}
-								li
-									a(
-										href="{{ url_for('users.logout') }}")
-										i.pi-log-out(title="Log Out")
-										| {{ _("Log out") }}
-
-						| {% else %}
-						li
-							.btn-group
-								a.btn.btn-submit(
-									href="{{ url_for('users.login') }}",
+							li
+								a.wgt-toggle-fullscreen
+									i.pi-resize-full
+							| {% if current_user.is_authenticated %}
+							li
+								.btn-group
+									button.btn.btn-submit.wgt-toggle-submit(
 									data-action="publish",
-									title="{{ _('Submit a Link')}}")
-									i.pi-link
-									| {{ _('Submit Link') }}
+									title="{{ _('Submit a Link') }}")
+										i.pi-link
+										| {{ _('Submit Link') }}
 
-								button.btn.btn-submit.wgt-dropdown-toggle
-									i.pi-angle-down
+									button.btn.btn-submit.wgt-dropdown-toggle
+										i.pi-angle-down
 
-									ul.dropdown-menu.right
-										li
-											a(
-												href="{{ url_for('users.login') }}",
-												title="Submit a Text post")
-												i.pi-document-text
-												| {{ _('Submit Text') }}
+										ul.dropdown-menu.right
+											li
+												a(
+													href="{{ url_for('posts.create', post_type='text') }}",
+													title="Write a Text post")
+													i.pi-document-text
+													|  {{ _('Write a Post') }}
 
-						li
-							a.navbar-item.login(href="{{ url_for('users.login') }}")
-								| {{ _('Log in') }}
-						| {% endif %}
+							li.nav-notifications
+								a.navbar-item#notifications-toggle(
+									title="Notifications",
+									data-toggle="tooltip",
+									data-placement="bottom")
+									i.pi-notifications-none.nav-notifications-icon
+									span#notifications-count
+										span
+									.flyout-hat
+
+								#notifications.flyout.notifications
+									.flyout-content
+										span.flyout-title Notifications
+										a#notifications-markallread(
+											title="Mark All as Read",
+											href="/notifications/read-all")
+											| {{ _('Mark All as Read') }}
+
+							li.dropdown.wgt-dropdown-toggle
+								.dropdown-toggle
+									img.avatar(
+										src="{{ current_user.gravatar }}",
+										alt="Avatar")
+
+									.dropdown-toggle-icon
+										i.pi-angle-down
+
+								ul.dropdown-menu.right
+									li
+										a(
+											href="{{ url_for('settings.profile') }}"
+											title="Settings")
+											i.pi-cog
+											| {{ _("Settings") }}
+									li
+										a(
+											href="{{ url_for('users.logout') }}")
+											i.pi-log-out(title="Log Out")
+											| {{ _("Log out") }}
+
+							| {% else %}
+							li
+								.btn-group
+									a.btn.btn-submit(
+										href="{{ url_for('users.login') }}",
+										data-action="publish",
+										title="{{ _('Submit a Link')}}")
+										i.pi-link
+										| {{ _('Submit Link') }}
+
+									button.btn.btn-submit.wgt-dropdown-toggle
+										i.pi-angle-down
+
+										ul.dropdown-menu.right
+											li
+												a(
+													href="{{ url_for('users.login') }}",
+													title="Submit a Text post")
+													i.pi-document-text
+													| {{ _('Submit Text') }}
+
+							li
+								a.navbar-item.login(href="{{ url_for('users.login') }}")
+									| {{ _('Log in') }}
+							| {% endif %}
+
+					#list-refined-values
+			| {% endblock header %}
 
 		#app-main
 			| {% block body %}{% endblock body %}

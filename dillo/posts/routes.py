@@ -62,9 +62,18 @@ def index():
     for act in activities['_items']:
         act.actor_user = subquery.get_user_info(act.actor_user)
 
+    project = Project.find_one({'_id': current_app.config['MAIN_PROJECT_ID']}, api=api)
+
+    if project.picture_square:
+        project.picture_square = get_file(project.picture_square, api=api)
+
+    if project.picture_header:
+        project.picture_header = get_file(project.picture_header, api=api)
+
     return render_template(
             'dillo/index.html',
-            col_right={'activities': activities})
+            col_right={'activities': activities},
+            project=project)
 
 
 @blueprint.route("/p/<string(length=24):post_id>/rate/<operation>", methods=['POST'])
