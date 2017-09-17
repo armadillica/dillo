@@ -89,7 +89,7 @@ class DilloExtension(PillarExtension):
     def setup_app(self, app):
         from . import posts
         from . import comments
-        from api import users
+        from dillo.api import users
 
         posts.setup_app(app)
         comments.setup_app(app)
