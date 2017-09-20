@@ -421,43 +421,6 @@ body[data-context="post-edit"]
           color: $color-success
 
 
-  /* Tabs for Link/Text */
-  &-tabs
-    list-style-type: none
-    margin: 0
-    padding: 0
-    display: flex
-
-    > li
-      flex: 1
-      padding: 10px 15px
-      background-color: $color-background-dark
-      border-top: 5px solid darken($color-background-dark, 10%)
-      color: darken($color-background-dark, 35%)
-      cursor: pointer
-      user-select: none
-      margin-bottom: 15px
-
-      &:hover
-        color: $color-primary
-        border-top: 5px solid rgba($color-secondary, .25)
-
-      span
-        display: block
-        font:
-          size: $font-size-large
-          family: $font-headings
-
-      small
-        font-size: $font-size-small
-
-      &.active
-        background-color: $color-background
-        border-color: $color-secondary
-        color: $color-primary
-        span
-          color: $color-secondary
-
   &-tab
     /* When the Link tab is active, hide/show some elements */
     &.link

@@ -39,6 +39,7 @@ function item_open(item_id, hit_url){
 	);
 }
 
+
 /* Rate | Vote */
 $(document).on('click','body .item-rating',function(e){
 	e.preventDefault();
@@ -94,42 +95,6 @@ $(document).on('click','body .item-rating',function(e){
 	});
 });
 
-
-/* Post type tab switching */
-$(document).on('click','body ul.item-edit-tabs li',function(e){
-	var post_type = $(this).data('post-type');
-	var $tab = $('#item-edit-tab');
-
-	// Change the post_type select to the appropiate post_type
-	$('.item-edit-tab select.post_type').val(post_type).change();
-	$('.item-edit-tab select.post_type option').removeAttr('selected');
-	$('.item-edit-tab select.post_type option[value="' + post_type + '"]').attr('selected', '');
-
-	// Enable the 'content' field for the appropriate post_type, disable the others
-	$('.input-content .input-field')
-		.prop('disabled', true)
-		.removeAttr('id');
-
-	var $input_field = $('.input-content.' + post_type + ' .input-field');
-	$input_field
-		.prop('disabled', false)
-		.attr('id', 'content');
-
-	// Style the tab as active
-	$('ul.item-edit-tabs li').removeClass('active');
-	$(this).addClass('active');
-
-	// Add the post_type class to the tab, to show/hide elements
-	$tab
-		.removeClass('text link')
-		.addClass(post_type);
-
-
-	/* Focus the cursor on the 'content' field */
-	if (post_type == 'link'){
-		$input_field.focus();
-	}
-});
 
 /* UI: Update category on edit */
 $('select#category').on('change', function(e){
