@@ -59,15 +59,22 @@
 		| {{ node.properties.content_html | safe }}
 	| {% endif %}
 
-	.item-action-panel
-		| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
-		.item-action-edit
-			a(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
+	.item-info-panel
+		.item-info-op
+			a.op-avatar(href="XXX")
+				img(src="{{ node.user.email | gravatar }}")
+
+			.op-details
+				a.op-name(href="XXX")
+					| {{ node.user.full_name }}
+				.op-karma Karma: 1235
+
+		.item-info-action
+			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 				i.pi-edit
 				| Edit Post
-		| {% endif %}
-
-		.item-action-share
+			| {% endif %}
 			a(
 				title="Share on Facebook",
 				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', post_shortcode=node.properties.shortcode, _external=True) }}",

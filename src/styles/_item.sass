@@ -29,6 +29,10 @@
       top: 0
       width: 100%
 
+    .twitter-tweet
+      position: absolute !important
+      top: 0
+
   iframe, img
     max-height: 600px
     max-width: 100%
@@ -45,7 +49,7 @@ $item-thumbnail-size: 80px
     visibility: visible
 
   &.no-images
-    color: $color-text-dark-primary
+    color: $color-text-light
     i
       padding: 0 5px
 
@@ -249,6 +253,7 @@ $item-thumbnail-size: 80px
 
         &:hover
           color: $color-primary
+          text-decoration: underline
 
       img
         display: inline-block
@@ -264,23 +269,56 @@ $item-thumbnail-size: 80px
       &#item-post_type
         text-transform: capitalize
 
-      &.item-edit
-        margin-left: auto
-        padding-right: 15px
-        a
-          border: thin solid $color-text-hint
-          padding: 2px 10px
-          border-radius: 3px
-
       &.item-author
         text-overflow: ellipsis
 
 
-.item-action
+.item-info
   &-panel
-    align-items: center
+    background-color: $color-background-light
+    border-bottom: thin solid $color-background
     display: flex
+
+  &-op
+    display: flex
+
+    .op-avatar
+      box-shadow: 0 0 0 3px $color-background-lighter
+      border-radius: 50%
+      height: 40px
+      margin: 10px 0 10px 15px
+      max-width: 40px
+      overflow: hidden
+      position: relative
+      transition: box-shadow 150ms ease-in-out
+
+      &:hover
+        box-shadow: 0 0 0 6px $color-background-lighter
+
+      img
+        height: 100%
+        object-fit: cover
+        width: auto
+
+    .op-name
+      color: $color-text-light
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+    .op-karma
+      color: $color-text-light
+      font-size: $font-size-smaller
+
+    .op-details
+      padding: 10px
+
+  &-action
     font-size: $font-size-small
+    margin-left: auto
+    padding-left: 10px
+    padding-right: 10px
 
     a
       color: $color-text-dark-secondary
@@ -289,11 +327,6 @@ $item-thumbnail-size: 80px
 
       &:hover
         color: $color-primary
-
-  &-share
-    margin-left: auto
-    padding-left: 10px
-    padding-right: 10px
 
   &-edit
     padding-left: 10px
@@ -308,7 +341,7 @@ $item-thumbnail-size: 80px
 
 /* Edit */
 body[data-context="post-edit"]
-  .item-action-edit
+  .item-info-edit
     display: none
 
 .item-edit
@@ -483,20 +516,18 @@ body[data-context="post-edit"]
 
   &.link
     .item-body
-      border-top: thin solid $color-background-dark
-      background-color: $color-background-light
-      display: flex
       align-items: center
-      overflow: hidden
+      background-color: $color-background
+      display: flex
 
       .item-link-data
-        font-size: $font-size-small
-        line-height: $font-size
-        padding: 15px
+        color: $color-text
         display: block
         flex: 1
+        font-size: $font-size-small
+        line-height: $font-size
+        padding: 10px 17px 15px
         text-decoration: none
-        color: $color-text-dark-primary
         word-break: break-all
 
         &:hover
@@ -504,11 +535,11 @@ body[data-context="post-edit"]
           color: $color-primary
 
       img.favicon
-        margin-right: 10px
-        width: 16px
         height: 16px
         position: relative
+        margin-right: 10px
         top: 3px
+        width: 16px
 
       a.item-thumbnail
         overflow: initial
