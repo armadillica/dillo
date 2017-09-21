@@ -6,10 +6,16 @@
   background-color: $color-background-dark
 
 ::-webkit-scrollbar-thumb
-  background-color: rgba($color-background-darker, .5)
+  background-color: rgba($color-background-darker, .3)
 
 a:hover
   color: $color-primary
+
+#col_main::-webkit-scrollbar-thumb
+  background-color: transparent
+
+#col_main:hover::-webkit-scrollbar-thumb
+  background-color: rgba($color-background-darker, .3)
 
 #col_right, #col_main
   overflow-y: auto
