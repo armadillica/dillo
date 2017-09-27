@@ -45,14 +45,23 @@ def create(post_type: str):
     return redirect(url_for('nodes.edit', node_id=post._id, embed=embed))
 
 
-@blueprint.route('/p/')
-def index():
+@blueprint.route('/c/')
+@blueprint.route('/c/<community_url>/')
+def index(community_url=None):
     api = system_util.pillar_api()
+
+    project = Project.find_first({'where': {'url': community_url}}, api=api)
+
+    if project.picture_square:
+        project.picture_square = get_file(project.picture_square, api=api)
+
+    if project.picture_header:
+        project.picture_header = get_file(project.picture_header, api=api)
 
     # Fetch all activities for the main project
     activities = Activity.all({
         'where': {
-            'project': current_app.config['MAIN_PROJECT_ID'],
+            'project': project['_id'],
         },
         'sort': [('_created', -1)],
         'max_results': 20,
@@ -61,14 +70,6 @@ def index():
     # Fetch more info for each activity.
     for act in activities['_items']:
         act.actor_user = subquery.get_user_info(act.actor_user)
-
-    project = Project.find_one({'_id': current_app.config['MAIN_PROJECT_ID']}, api=api)
-
-    if project.picture_square:
-        project.picture_square = get_file(project.picture_square, api=api)
-
-    if project.picture_header:
-        project.picture_header = get_file(project.picture_header, api=api)
 
     return render_template(
             'dillo/index.html',

@@ -102,7 +102,18 @@ script.
 		appId: '{{ config.ALGOLIA_USER }}',
 		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
 		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
-		urlSync: {}
+		urlSync: {},
+		searchParameters: {
+			facets: ['project._id']
+		}
+	});
+
+	search.addWidget({
+		init: function (options) {
+			// use options.helper (https://github.com/algolia/algoliasearch-helper-js) to initialize
+			// the search with custom filters & parameters
+			options.helper.addFacetRefinement('project._id', '58c983cb88bef61e6b490040');
+		}
 	});
 
 	search.addWidget(
@@ -167,6 +178,7 @@ script.
 
 
 	function processHit(hit) {
+
 		var key = 'dillo_' + hit.objectID;
 		hit.is_positive = localStorage.getItem(key);
 
@@ -202,7 +214,9 @@ script.
 				empty: noResultsTemplate,
 				item: hitTemplate
 			},
-			transformData: processHit,
+			transformData: {
+				item: processHit,
+			}
 		})
 	);
 
@@ -262,6 +276,8 @@ script.
 	search.addWidget(
 		instantsearch.widgets.currentRefinedValues({
 			container: '#list-refined-values',
+			attributes: [{name: 'category'}],
+			onlyListedAttributes: true,
 			clearAll: "before",
 			templates: {
 				clearAll: '<i class="pi-cancel"></i>'
