@@ -34,18 +34,18 @@ html(lang='en')
 
 			| {% block header %}
 			.d-header
-				| {% if project.picture_header %}
+				| {% if main_project.picture_header %}
 				.d-header-background(
-					style="background-image: url({{ project.picture_header.thumbnail('h') }});")
+					style="background-image: url({{ main_project.picture_header.thumbnail('h') }});")
 				| {% endif %}
 				a.d-header-logo(href="{{ url_for('posts.index') }}")
-					| {% if project.picture_square %}
-					img(src="{{ project.picture_square.thumbnail('l') }}")
+					| {% if main_project.picture_square %}
+					img(src="{{ main_project.picture_square.thumbnail('l') }}")
 					| {% endif %}
 
 				.d-header-title
 					a.title(href="{{ url_for('posts.index') }}")
-						span {{ project.name }}
+						span {{ main_project.name }}
 
 				.d-header-action
 					nav.nav-bar

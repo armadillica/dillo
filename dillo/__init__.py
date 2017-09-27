@@ -123,14 +123,14 @@ class DilloExtension(PillarExtension):
         def main_project():
             """Fetch the current project, including images.
 
-            Because this is a cached function, using a storage solution with expiring links is not
-            supported.
+            Because this is a cached function, using a storage solution with
+            expiring links is not supported.
             """
             api = pillar_api()
             project = pillarsdk.Project.find_by_url('default-project', api=api)
             attach_project_pictures(project, api)
             return project
-        return {'project': main_project()}
+        return {'main_project': main_project()}
 
 
 def _get_current_dillo():
