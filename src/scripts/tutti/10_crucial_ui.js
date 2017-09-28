@@ -136,7 +136,7 @@ $('.wgt-toggle-submit').on('click', function(){
 // Initialize Shortcuts
 function initializeShortcuts(){
 	Mousetrap.bind('f', toggleFullscreen);
-	Mousetrap.bind('s', toggleSubmit);
+	Mousetrap.bind(['s', 'shift+a'], toggleSubmit);
 
 	Mousetrap.bind('esc', function(e) {
 		if (ProjectUtils.context() == 'post-submit-overlay'){
