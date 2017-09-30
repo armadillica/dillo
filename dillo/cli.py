@@ -68,6 +68,7 @@ def index_nodes_update_settings():
         ],
         'attributesForFaceting': [
             'searchable(category)',
+            'project._id',
         ]
     })
 
