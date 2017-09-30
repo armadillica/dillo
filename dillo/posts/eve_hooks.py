@@ -56,7 +56,8 @@ def algolia_index_post_save(node):
         'name': node['name'],
         'project': {
             '_id': project['_id'],
-            'name': project['name']
+            'name': project['name'],
+            'url': project['url'],
         },
         'created': node['_created'],
         'updated': node['_updated'],
