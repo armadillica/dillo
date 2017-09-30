@@ -109,6 +109,8 @@ script.
 		search.on('render', onRenderHandler);
 	}
 
+
+
 	// Parse emojis
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
 
@@ -120,3 +122,7 @@ script.
 	{% if node.properties.post_type == 'link' %}
 		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
 	{% endif %}
+
+	$('body').on('pillar:comments-loaded', function(){
+		twemoji.parse(document.body);
+	});
