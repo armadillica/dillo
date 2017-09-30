@@ -4,7 +4,7 @@ html(lang='en')
 		meta(charset='utf-8')
 		title
 			| {% if self.page_title() %}{% block page_title %}{% endblock %}— {% endif %}
-			| {{ project.name }}
+			| {{ main_project.name }}
 
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
