@@ -108,12 +108,15 @@ def post_rate(post_id, operation):
         }})
 
 
-@blueprint.route('/p/<string(length=6):post_shortcode>/')
-@blueprint.route('/p/<string(length=6):post_shortcode>/<slug>')
-def view(post_shortcode, slug=None):
+@blueprint.route('/c/<community_url>/<string(length=6):post_shortcode>/')
+@blueprint.route('/c/<community_url>/<string(length=6):post_shortcode>/<slug>')
+def view(community_url, post_shortcode, slug=None):
     api = system_util.pillar_api()
+    project = Project.find_by_url(community_url, api=api)
     post = Node.find_one({
-        'where': {'properties.shortcode': post_shortcode},
+        'where': {
+            'project': project['_id'],
+            'properties.shortcode': post_shortcode},
         'embedded': {'user': 1}}, api=api)
 
     if post.picture:
@@ -121,6 +124,7 @@ def view(post_shortcode, slug=None):
 
     return render_template(
         'dillo/index.html',
+        project=project,
         col_right={'post': post})
 
 

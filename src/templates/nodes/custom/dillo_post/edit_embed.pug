@@ -98,7 +98,7 @@
 			.item-edit-header-action
 
 				| {% if node.properties.status == 'published' %}
-				a.btn.cancel(href="{{ url_for('posts.view', post_shortcode=node.properties.shortcode)}}") Cancel
+				a.btn.cancel(href="{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode)}}") Cancel
 				| {% else %}
 				a.btn.cancel.js-cancel-submit(href="{{ url_for('posts.index')}}") Cancel
 				| {% endif %}
@@ -400,7 +400,7 @@ script.
 
 						// Refresh the list after a bit to let Algolia think about it
 						setTimeout(function(){
-							var post_url = "{{ url_for('posts.view', post_shortcode=node.properties.shortcode) }}";
+							var post_url = "{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode) }}";
 							window.location.replace(post_url);
 						}, 3000);
 

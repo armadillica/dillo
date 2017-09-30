@@ -16,9 +16,9 @@ meta(property="og:type", content="article")
 meta(property="og:title", content="{{ col_right['post'].name }} - {{ config.SETTINGS_TITLE | safe }}")
 meta(name="twitter:title" content="{{ col_right['post'].name }} - {{ config.SETTINGS_TITLE | safe }}")
 meta(property="og:url",
-		 content="{{ url_for('posts.view', post_shortcode=col_right['post'].properties.shortcode, _external=True) }}")
+		content="{{ url_for('posts.view', community_url=col_right['post'].project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True) }}")
 meta(property="article:published_time",
-		 content="{{ col_right['post']._created }}")
+		content="{{ col_right['post']._created }}")
 
 | {% if col_right['post'].properties.content %}
 meta(name="twitter:description", content="{{ col_right['post'].properties.content | safe }}")
