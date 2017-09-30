@@ -112,7 +112,7 @@ script.
 		init: function (options) {
 			// use options.helper (https://github.com/algolia/algoliasearch-helper-js) to initialize
 			// the search with custom filters & parameters
-			options.helper.addFacetRefinement('project._id', '58c983cb88bef61e6b490040');
+			options.helper.addFacetRefinement('project._id', '{{ project._id }}');
 		}
 	});
 
