@@ -50,7 +50,13 @@ def create(post_type: str):
 def index(community_url=None):
     api = system_util.pillar_api()
 
+    if not community_url:
+        return redirect(url_for('posts.index',
+                                community_url=current_app.config['DEFAULT_COMMUNITY']))
+
     project = Project.find_first({'where': {'url': community_url}}, api=api)
+    if project is None:
+        return abort(404)
 
     if project.picture_square:
         project.picture_square = get_file(project.picture_square, api=api)
