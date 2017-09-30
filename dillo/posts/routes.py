@@ -24,13 +24,18 @@ blueprint = Blueprint('posts', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route('/post/<post_type>')
-def create(post_type: str):
+@blueprint.route('/c/<community_url>/post/<post_type>')
+def create(community_url: str, post_type: str):
     api = system_util.pillar_api()
+
+    project = Project.find_first({'where': {'url': community_url}}, api=api)
+    if project is None:
+        return abort(404)
+
     log.info('Creating post for user {}'.format(current_user.objectid))
 
     post_props = dict(
-        project=current_app.config['MAIN_PROJECT_ID'],
+        project=project['_id'],
         name='Awesome Post Title',
         user=current_user.objectid,
         node_type='dillo_post',

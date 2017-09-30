@@ -45,6 +45,27 @@ meta(name="twitter:creator",
 | {% endif %}
 | {% endblock og %}
 
+| {% block submit_btn %}
+li
+	.btn-group
+		button.btn.btn-submit.wgt-toggle-submit(
+		data-action="publish",
+		title="{{ _('Submit a Link [Shift+A]')}}")
+			i.pi-link
+			| {{ _('Submit Link') }}
+
+		button.btn.btn-submit.wgt-dropdown-toggle
+			i.pi-angle-down
+
+			ul.dropdown-menu.right
+				li
+					a(
+						href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+						title="Write a Text post")
+						i.pi-document-text
+						|  {{ _('Write a Post') }}
+| {% endblock submit_btn %}
+
 | {% block body %}
 #col_main.listing-list
 	#list-hits
@@ -97,6 +118,8 @@ script.
 
 	// Check if we're logged in and store it to use later
 	var amAuthenticated = isAuthenticated();
+
+	ProjectUtils.setProjectAttributes({projectId: '{{project._id}}', projectUrl: '{{project.url}}'});
 
 	var search = instantsearch({
 		appId: '{{ config.ALGOLIA_USER }}',

@@ -104,7 +104,8 @@ function enterSubmit(){
 		return window.location.href = '/login';
 	}
 
-	$.get("/post/link?embed=1", function(data) {
+	var url = '/c/' + ProjectUtils.projectUrl() + '/post/link?embed=1'
+	$.get(url, function(data) {
 		$('.dialog-box').html(data);
 	});
 	$('#app-overlay').addClass('active submit');

@@ -118,6 +118,8 @@ def set_defaults(item):
     update_hot(item)
     item['properties']['shortcode'] = generate_shortcode(item['project'], item['node_type'])
     item['properties']['slug'] = slugify(item['name'], max_length=50)
+    # Give the current user PUT access. Only he will be able to update the post.
+    item['permissions'] = {'users': [{'user': current_user_id(), 'methods': ['PUT']}]}
 
 
 def before_creating_posts(items):

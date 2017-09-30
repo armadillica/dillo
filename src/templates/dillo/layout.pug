@@ -66,24 +66,7 @@ html(lang='en')
 								a.wgt-toggle-fullscreen
 									i.pi-resize-full
 							| {% if current_user.is_authenticated %}
-							li
-								.btn-group
-									button.btn.btn-submit.wgt-toggle-submit(
-									data-action="publish",
-									title="{{ _('Submit a Link [Shift+A]')}}")
-										i.pi-link
-										| {{ _('Submit Link') }}
-
-									button.btn.btn-submit.wgt-dropdown-toggle
-										i.pi-angle-down
-
-										ul.dropdown-menu.right
-											li
-												a(
-													href="{{ url_for('posts.create', post_type='text') }}",
-													title="Write a Text post")
-													i.pi-document-text
-													|  {{ _('Write a Post') }}
+							| {% block submit_btn %} {% endblock %}
 
 							li.nav-notifications
 								a.navbar-item#notifications-toggle(
