@@ -125,8 +125,8 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<div class="list-hits-item {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="/p/{{ shortcode }}/{{ slug }}">' +
-			'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
+		'<div class="list-hits-item {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
+			'<a href="{{ url }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
 						'<img src="{{picture}}"/>' +
@@ -146,7 +146,7 @@ script.
 					'</div>' +
 				'</div>' +
 				'<div class="item-details js-item-open">' +
-					'<a href="/p/{{ shortcode }}/{{ slug }}" class="item-title">{{ name }}</a>' +
+					'<a href="{{ url }}" class="item-title">{{ name }}</a>' +
 					'<ul>' +
 						'{{#is_link}}' +
 							'<li class="item-favicon">' +
@@ -189,6 +189,7 @@ script.
 		}
 
 		hit.created = moment.unix(hit.created).fromNow();
+		hit.url = '/c/' + hit.project.url + '/' + hit.shortcode + '/' + hit.slug;
 
 		if (hit.is_link) {
 			hit.is_link = 'is-link';
