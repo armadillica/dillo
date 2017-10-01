@@ -47,7 +47,8 @@ def create(community_url: str, post_type: str):
     post = Node(post_props)
     post.create(api=api)
     embed = request.args.get('embed')
-    return redirect(url_for('nodes.edit', node_id=post._id, embed=embed))
+    return redirect(url_for(
+        'nodes.edit', node_id=post._id, embed=embed, _external=True, _scheme=current_app.config['SCHEME']))
 
 
 @blueprint.route('/c/')
