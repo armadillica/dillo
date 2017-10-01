@@ -23,6 +23,7 @@ def users_view(username):
         {'username': username}, projection={
             'username': 1,
             'full_name': 1,
+            'email': 1,
             'extension_props': 1,
             '_updated': 1,
             '_created': 1,

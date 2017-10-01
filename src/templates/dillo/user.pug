@@ -1,11 +1,7 @@
 | {% extends 'dillo/layout.html' %}
-| {% block page_title %}User profile{% endblock %}
+| {% block page_title %}{{ user.full_name }} {% endblock %}
 
 | {% block body %}
-
-// {{ user.full_name }}
-// Karma: {{ user.extension_props.dillo.karma }}
-// {{ _('Last seen') }} {{ user._updated }} - {{ _('Joined') }} {{ user._created }}
 
 #col_main.listing-list
 	#list-hits
@@ -59,7 +55,7 @@
 							a(href="{{ post.properties.content }}", target="_blank")
 								img(
 									title="Link",
-									src="http://www.google.com/s2/favicons?domain={{ post.properties.content }}")
+									src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 						| {% endif %}
 						li {{ post.properties.category }}
 						li.item-date.js-item-open
@@ -87,6 +83,23 @@
 
 #col_right.listing-view
 	#list-item
+		.user-dashboard
+			.user-dashboard-avatar
+				img(src="{{ user.email | gravatar(size=128) }}")
+			.user-dashboard-info
+				.user-dashboard-name
+					| {{ user.full_name }}
+
+				ul.user-dashboard-meta
+					li
+						strong Karma:
+						| {{ user.extension_props.dillo.karma }}
+					li
+						strong {{ _('Last seen') }}:
+						span.date {{ user._updated }}
+					li
+						strong {{ _('Joined') }}:
+						span.date {{ user._created }}
 
 | {% endblock body %}
 
@@ -102,8 +115,8 @@ script.
 		});
 
 		// Parse dates using momentjs
-		$('.item-date a').each(function(e){
-			var $item_date = $('.item-date a').eq(e);
+		$('.item-date a, span.date').each(function(e){
+			var $item_date = $('.item-date a, span.date').eq(e);
 			var text = $item_date.text();
 			$item_date.text(moment(text).fromNow());
 		});
