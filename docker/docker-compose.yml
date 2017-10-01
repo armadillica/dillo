@@ -26,7 +26,7 @@ dillo:
   environment:
    VIRTUAL_HOST: http://blender.community/*,https://blender.community/*,http://www.blender.community/*,https://www.blender.community/*
    VIRTUAL_HOST_WEIGHT: 10
-   FORCE_SSL: "false"
+   FORCE_SSL: "true"
    GZIP_COMPRESSION_TYPE: "text/html text/plain text/css application/javascript"
   volumes:
    # format: HOST:CONTAINER
