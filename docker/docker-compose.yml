@@ -90,7 +90,6 @@ haproxy:
    - TIMEOUT=connect 5s, client 5m, server 10m
   links:
    - dillo
-   - grafista
    - letsencrypt
   volumes:
    - '/data/certs:/certs'
