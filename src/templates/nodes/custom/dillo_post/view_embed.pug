@@ -1,12 +1,15 @@
 
-.item-view(class="{{ node.properties.post_type }}")
+| {% if (current_user.user_id | string) == node.user._id %}
+| {% set is_own = 'is-own' %}
+| {% endif %}
+.item-view(
+	class="{{ node.properties.post_type }} {{ is_own }}")
 	.item-view-header
 		.item-content(
 			id="{{ node._id }}",
 			data-node-id="{{ node._id }}")
 			.item-rating-box(
-				class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
-			)
+				class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
 				.item-rating.up
 					i.pi-angle-up
 				.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
@@ -28,6 +31,7 @@
 					li
 						a(href="/u/{{ node.user.username }}")
 							| {{ node.user.full_name }}
+
 
 	| {% if node.properties.post_type == 'text' %}
 	.item-body#item-content
@@ -108,8 +112,6 @@ script.
 
 		search.on('render', onRenderHandler);
 	}
-
-
 
 	// Parse emojis
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));

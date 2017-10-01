@@ -206,6 +206,7 @@ $item-thumbnail-size: 80px
     color: $color-text-light
     font-size: $font-size-small
 
+
 .item-details
   display: flex
   flex-direction: column
@@ -557,3 +558,9 @@ body[data-context="post-edit"]
     .comment-container,
     .comment-reply-container
       padding: 10px 25px
+
+  &.is-own
+    .item-rating
+      &.up, &.down
+        pointer-events: none
+        color: rgba($color-text-dark-hint, .6)
