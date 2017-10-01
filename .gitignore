@@ -15,6 +15,14 @@ node_modules
 .sass-cache/
 *.css.map
 *.js.map
-dillo.egg-info/
+
+/build
+/.cache
+/*.egg-info/
+/.eggs/
+/dump/
+/google_app*.json
+/docker/2_buildpy/python/
+/docker/4_run/wheelhouse/
 
 translations/*/LC_MESSAGES/*.mo
