@@ -24,7 +24,7 @@ dillo:
   container_name: dillo
   restart: always
   environment:
-   VIRTUAL_HOST: http://blender.community/*,https://blender.community/*
+   VIRTUAL_HOST: http://blender.community/*,https://blender.community/*,http://www.blender.community/*,https://www.blender.community/*
    VIRTUAL_HOST_WEIGHT: 10
    FORCE_SSL: "false"
    GZIP_COMPRESSION_TYPE: "text/html text/plain text/css application/javascript"
