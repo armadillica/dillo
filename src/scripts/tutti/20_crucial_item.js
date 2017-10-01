@@ -4,7 +4,7 @@ function item_open(item_id, hit_url){
 		throw new ReferenceError("item_open(" + item_id + ") called.");
 	}
 
-	var item_url = '/nodes/' + item_id + '/view?embed_project';
+	var item_url = '/nodes/' + item_id + '/view?embed_project=1';
 
 	//if (typeof push_url == 'undefined') push_url = item_url;
 

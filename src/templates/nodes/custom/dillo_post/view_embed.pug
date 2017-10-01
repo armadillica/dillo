@@ -24,6 +24,9 @@
 				span#item-title.item-title {{ node.name }}
 				| {% endif %}
 				ul
+					li
+						a(href="{{ url_for('posts.index') }}")
+							| {{ node.project.name }}
 					li#item-category {{ node.properties.category | undertitle }}
 					li
 						a(href="{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
