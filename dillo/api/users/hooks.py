@@ -18,9 +18,7 @@ log = logging.getLogger(__name__)
 
 
 def add_extension_props(user: dict):
-    """
-    Expand user data with custom dillo fields
-    """
+    """Expand user data with custom dillo fields."""
     user_id = user['_id']
 
     custom_fields = {
