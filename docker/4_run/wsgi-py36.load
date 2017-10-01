@@ -1,0 +1,1 @@
+LoadModule wsgi_module /opt/python/mod-wsgi/mod_wsgi.so
