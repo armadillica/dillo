@@ -71,7 +71,7 @@
 			.op-details
 				a.op-name(href="XXX")
 					| {{ node.user.full_name }}
-				.op-karma Karma: 1235
+				.op-karma Karma: {{ node.user.extension_props.dillo.karma }}
 
 		.item-info-action
 			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
