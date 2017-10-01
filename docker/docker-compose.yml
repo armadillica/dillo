@@ -74,7 +74,7 @@ letsencrypt:
     environment:
         WEBROOT: /data/letsencrypt
         LISTEN: '[::]:80'
-        VIRTUAL_HOST: http://blender.community/.well-known/*
+        VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*
         VIRTUAL_HOST_WEIGHT: 20
     volumes:
         - /data/letsencrypt:/data/letsencrypt
