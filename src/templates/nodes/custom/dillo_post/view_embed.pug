@@ -1,12 +1,15 @@
 
-.item-view(class="{{ node.properties.post_type }}")
+| {% if (current_user.user_id | string) == node.user._id %}
+| {% set is_own = 'is-own' %}
+| {% endif %}
+.item-view(
+	class="{{ node.properties.post_type }} {{ is_own }}")
 	.item-view-header
 		.item-content(
 			id="{{ node._id }}",
 			data-node-id="{{ node._id }}")
 			.item-rating-box(
-				class="{% if node._current_user_rating is not none %}rated{% if node._current_user_rating %} positive{% else %} negative{% endif %}{% endif %}"
-			)
+				class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
 				.item-rating.up
 					i.pi-angle-up
 				.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
@@ -26,8 +29,9 @@
 						a(href="{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 							| {{ node._created | pretty_date }}
 					li
-						a(href="/u/{{ node.user.username }}")
+						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
 							| {{ node.user.full_name }}
+
 
 	| {% if node.properties.post_type == 'text' %}
 	.item-body#item-content
@@ -46,7 +50,7 @@
 			href="{{ node.properties.content }}",
 			target="_blank",
 			title="Visit URL")
-			img.favicon(src="http://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+			img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 			| {{ node.properties.content }}
 		| {% else %}
 		span.item-link-data There should be content here.
@@ -61,13 +65,13 @@
 
 	.item-info-panel
 		.item-info-op
-			a.op-avatar(href="XXX")
+			a.op-avatar(href="{{ url_for('users.users_view', username=node.user.username )}}")
 				img(src="{{ node.user.email | gravatar }}")
 
 			.op-details
-				a.op-name(href="XXX")
+				a.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
 					| {{ node.user.full_name }}
-				.op-karma Karma: 1235
+				.op-karma Karma: {{ node.user.extension_props.dillo.karma }}
 
 		.item-info-action
 			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
@@ -108,8 +112,6 @@ script.
 
 		search.on('render', onRenderHandler);
 	}
-
-
 
 	// Parse emojis
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
