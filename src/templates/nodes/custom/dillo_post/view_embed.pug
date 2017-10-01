@@ -29,7 +29,7 @@
 						a(href="{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 							| {{ node._created | pretty_date }}
 					li
-						a(href="/u/{{ node.user.username }}")
+						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
 							| {{ node.user.full_name }}
 
 
@@ -65,11 +65,11 @@
 
 	.item-info-panel
 		.item-info-op
-			a.op-avatar(href="XXX")
+			a.op-avatar(href="{{ url_for('users.users_view', username=node.user.username )}}")
 				img(src="{{ node.user.email | gravatar }}")
 
 			.op-details
-				a.op-name(href="XXX")
+				a.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
 					| {{ node.user.full_name }}
 				.op-karma Karma: {{ node.user.extension_props.dillo.karma }}
 
