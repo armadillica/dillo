@@ -108,14 +108,15 @@ def setup_for_dillo(project_url, replace=False):
     node_type_utils.add_to_project(project, node_types, replace_existing=replace)
 
     # Add the dillo_user_main group to the dillo_post node type in order to
-    # allow every member to create posts in the project.
+    # allow every member to create posts in the project. Editing of posts (PUT)
+    # is allowed on a per-user basis when creating the actual post.
     dillo_user_main_group = _ensure_user_main_group()
     for nt in project['node_types']:
         if nt['name'] == 'dillo_post':
             groups = nt['permissions']['groups']
             groups.append({
                 'group': dillo_user_main_group,
-                'methods': ['GET', 'PUT', 'POST']
+                'methods': ['GET', 'POST']
             })
 
     # Set default extension properties. Be careful not to overwrite any properties that
