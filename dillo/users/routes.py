@@ -3,6 +3,7 @@ import logging
 from flask import abort, current_app, render_template
 
 from pillarsdk import Node
+from pillarsdk import Project
 from pillar.web.users.routes import blueprint
 from pillar.web import system_util
 from pillar.web.utils import get_file
@@ -40,4 +41,11 @@ def users_view(username):
         if post.picture:
             post.picture = get_file(post.picture, api=api)
 
-    return render_template('dillo/user.html', user=user, posts=posts)
+    main_project_url = current_app.config['DEFAULT_COMMUNITY']
+    project = Project.find_by_url(main_project_url, api=api)
+
+    return render_template(
+            'dillo/user.html',
+            user=user,
+            posts=posts,
+            project=project)
