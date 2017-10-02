@@ -23,32 +23,46 @@
   overflow-y: auto
   padding-left: 0 !important // override sidebar offset from Pillar
 
+  .fullscreen-overlay
+    display: none
+    pointer-events: none
+    visibility: hidden
+
   &.fullscreen
     position: absolute
     width: 100%
+    background-color: rgba($color-background, .8)
+
+    .item-view-close
+      display: block
+
+    .fullscreen-overlay
+      display: initial
+      pointer-events: initial
+      position: fixed
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      visibility: visible
+      z-index: 0
 
     #list-item
       height: auto
       margin: 0 auto
-      max-width: 700px
+      max-width: 780px
       overflow-x: initial
-      padding-top: 35px
+      position: relative
+      z-index: 1
 
       .item-media
         img
           max-width: 110%
 
       .item-view
-        &.text
-          .item-body
-            border-top: thin solid $color-background
-            margin-top: 15px
-
-        &.link
-          .item-body
-            border: thin solid $color-background-dark
-            border-radius: 3px
-            margin-top: 15px
+        box-shadow: 0 0 1px 0 rgba($color-background-darker, .2)
+        box-shadow: 0 0 1px 0 rgba($color-background-darker, .2), 0 0 150px rgba($color-background-darker, .33)
+        transform: translateY(15px)
 
 #col_main
   +media-lg
@@ -59,7 +73,6 @@
   +media-lg
     width: 65%
   background-color: $color-background-dark
-  transition: width 250ms ease-in-out
 
 #app-header
   display: flex

@@ -5,6 +5,8 @@
 .item-view(
 	class="{{ node.properties.post_type }} {{ is_own }}")
 	.item-view-header
+		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
+			i.pi-cancel
 		.item-content(
 			id="{{ node._id }}",
 			data-node-id="{{ node._id }}")
@@ -77,6 +79,8 @@
 				.op-karma Karma: {{ node.user.extension_props.dillo.karma }}
 
 		.item-info-action
+			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
+				i.pi-resize-full
 			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
 			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 				i.pi-edit
@@ -130,3 +134,8 @@ script.
 	{% if node.properties.post_type == 'link' %}
 		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
 	{% endif %}
+
+	// If the parameter ?fs is in the url, go imax!
+	if ('fs' in urlParams){
+		enterFullscreen();
+	}

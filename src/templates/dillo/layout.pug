@@ -63,9 +63,6 @@ html(lang='en')
 										type="text",
 										placeholder="{{ _('Search...') }}")
 
-							li
-								a.wgt-toggle-fullscreen
-									i.pi-resize-full
 							| {% if current_user.is_authenticated %}
 							| {% block submit_btn %} {% endblock %}
 

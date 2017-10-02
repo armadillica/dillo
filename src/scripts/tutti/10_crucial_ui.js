@@ -75,6 +75,10 @@ function exitFullscreen(){
 	$('a.wgt-toggle-fullscreen').removeClass('active');
 	$('#col_right').removeClass('fullscreen');
 
+	// Remove parameters from the url
+	var url = location.href.split("?")[0];
+	window.history.pushState('object', document.title, url);
+
 	unsetPreviousContext();
 
 	if ($('body').hasClass('posts-index')){
@@ -92,7 +96,7 @@ function toggleFullscreen(){
 	}
 }
 
-$('a.wgt-toggle-fullscreen').on('click', function(){
+$(document).on('click', 'body .js-toggle-fullscreen', function(){
 	toggleFullscreen();
 });
 

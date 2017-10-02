@@ -483,14 +483,31 @@ body[data-context="post-edit"]
 
 // Specific tweaks to item view embed when link or text
 .item-view
-  margin: 9px 10px 5px
   background-color: $color-background-lighter
   border-radius: 3px
   box-shadow: 1px 2px 2px $color-background-dark
+  margin: 9px 10px 5px
+  top: 0
+  transition: box-shadow 150ms ease-out, transform 150ms ease-out
 
   &-header
     display: flex
     border-bottom: thin solid $color-background-dark
+
+  &-close
+    color: $color-text-dark-hint
+    display: none
+    font-size: .9em
+    right: 0
+    top: 0
+    position: absolute
+    padding: 8px
+    border-top-right-radius: 3px
+
+    &:hover
+      cursor: pointer
+      background-color: $color-danger
+      color: white
 
   &.text
     .item-body
