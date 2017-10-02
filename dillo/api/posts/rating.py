@@ -7,7 +7,7 @@ from pillar.api.utils import authentication, jsonify
 from pillar.api.nodes.custom import register_patch_handler
 from pillar.api.nodes.custom.comment import vote_comment, assert_is_valid_patch
 
-from dillo.posts.eve_hooks import algolia_index_post_save
+from dillo.api.posts.hooks import algolia_index_post_save
 from dillo import EXTENSION_NAME
 
 log = logging.getLogger(__name__)

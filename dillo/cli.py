@@ -9,7 +9,7 @@ from pillar.api.utils import authentication
 from pillar.cli import manager
 
 import dillo.setup
-import dillo.posts.rating
+import dillo.api.posts.rating
 
 log = logging.getLogger(__name__)
 

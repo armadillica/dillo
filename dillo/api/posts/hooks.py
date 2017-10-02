@@ -236,8 +236,3 @@ def enrich(response):
             response['_current_user_rating'] = rating['is_positive']
 
 
-def setup_app(app):
-    app.on_insert_nodes += before_creating_posts
-    app.on_replace_nodes += process_picture_oembed
-    app.on_replace_nodes += before_replacing_post
-    app.on_fetched_item_nodes += enrich

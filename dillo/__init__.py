@@ -87,8 +87,8 @@ class DilloExtension(PillarExtension):
         return os.path.join(os.path.dirname(__file__), 'static')
 
     def setup_app(self, app):
-        from . import posts
         from . import comments
+        from dillo.api import posts
         from dillo.api import users
 
         posts.setup_app(app)
