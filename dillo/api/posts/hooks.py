@@ -85,11 +85,11 @@ def algolia_index_post_save(node):
         lookup = {'_id': ObjectId(node['picture'])}
         picture = files_collection.find_one(lookup)
 
-        variation_t = next((item for item in picture['variations']
-                            if item['size'] == 't'), None)
-        if variation_t:
+        variation_s = next((item for item in picture['variations']
+                            if item['size'] == 's'), None)
+        if variation_s:
             node_ob['picture'] = generate_link(picture['backend'],
-                                               variation_t['file_path'],
+                                               variation_s['file_path'],
                                                project_id=str(picture['project']),
                                                is_public=True)
     current_app.algolia_index_nodes.save_object(node_ob)
