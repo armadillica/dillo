@@ -19,7 +19,7 @@ fi
 
 DILLO_DIR="$(dirname "$($readlink -f "$0")")"
 if [ ! -d "$DILLO_DIR" ]; then
-    echo "Unable to find Blender Cloud dir '$DILLO_DIR'"
+    echo "Unable to find Dillo  dir '$DILLO_DIR'"
     exit 1
 fi
 
