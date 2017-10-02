@@ -4,7 +4,8 @@ html(lang='en')
 		meta(charset='utf-8')
 		title
 			| {% if self.page_title() %}{% block page_title %}{% endblock %}— {% endif %}
-			| {{ main_project.name }}
+			| {{ project.name }}
+			| {% if project != main_project %} — {{ main_project.name }}{% endif %}
 
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
@@ -34,18 +35,18 @@ html(lang='en')
 
 			| {% block header %}
 			.d-header
-				| {% if main_project.picture_header %}
+				| {% if project.picture_header %}
 				.d-header-background(
-					style="background-image: url({{ main_project.picture_header.thumbnail('h') }});")
+					style="background-image: url({{ project.picture_header.thumbnail('h') }});")
 				| {% endif %}
-				a.d-header-logo(href="{{ url_for('posts.index') }}")
-					| {% if main_project.picture_square %}
-					img(src="{{ main_project.picture_square.thumbnail('l') }}")
+				a.d-header-logo(href="{{ url_for('posts.index', community_url=project.url) }}")
+					| {% if project.picture_square %}
+					img(src="{{ project.picture_square.thumbnail('l') }}")
 					| {% endif %}
 
 				.d-header-title
-					a.title(href="{{ url_for('posts.index') }}")
-						span {{ main_project.name }}
+					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
+						span {{ project.name }}
 
 				.d-header-action
 					nav.nav-bar
