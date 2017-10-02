@@ -116,6 +116,9 @@ script.
 		search.on('render', onRenderHandler);
 	}
 
+	page_title = '{{ node.name }} — {{ main_project.name }}';
+	updateTitle(unread_on_load, page_title);
+
 	// Parse emojis
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
 
@@ -127,7 +130,3 @@ script.
 	{% if node.properties.post_type == 'link' %}
 		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
 	{% endif %}
-
-	$('body').on('pillar:comments-loaded', function(){
-		twemoji.parse(document.body);
-	});
