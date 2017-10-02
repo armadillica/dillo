@@ -169,10 +169,16 @@ html(lang='en')
 		script.
 			$(document).ready(function() {
 				{% if current_user.is_authenticated %}
-					getNotificationsLoop(); // Check for new notifications in the background
 
 					// Resize #notifications and change overflow for scrollbars
 					$(window).on("resize", function() { notificationsResize(); });
+
+					// Check for new notifications in the background
+					getNotificationsLoop();
+
+					$('body').on('pillar:notifications-total-updated', function(e, notifications_total) {
+						updateTitle(notifications_total, page_title);
+					});
 				{% endif %}
 			});
 
