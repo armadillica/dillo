@@ -42,7 +42,3 @@ def activity_after_creating_node(comment):
 def activity_after_creating_nodes(nodes):
     for node in nodes:
         activity_after_creating_node(node)
-
-
-def setup_app(app):
-    app.on_inserted_nodes += activity_after_creating_nodes

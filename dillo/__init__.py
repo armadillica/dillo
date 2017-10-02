@@ -87,11 +87,9 @@ class DilloExtension(PillarExtension):
         return os.path.join(os.path.dirname(__file__), 'static')
 
     def setup_app(self, app):
-        from . import comments
         from dillo import api
 
         api.setup_app(app)
-        comments.setup_app(app)
 
     def activities_for_node(self, node_id, max_results=20, page=1):
 
