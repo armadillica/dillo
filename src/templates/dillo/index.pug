@@ -316,6 +316,7 @@ script.
 
 	var onRenderHandler = function() {
 		twemoji.parse(document.body);
+		updateTitle(unread_on_load, page_title);
 	}
 
 	search.on('render', onRenderHandler);
