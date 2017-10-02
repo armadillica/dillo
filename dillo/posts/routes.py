@@ -17,6 +17,7 @@ from pillarsdk.nodes import Node
 from pillar.web import subquery
 from pillar.web import system_util
 from pillar.web.utils import get_file
+from pillar.web.utils import attach_project_pictures
 
 from dillo import current_dillo
 
@@ -61,14 +62,11 @@ def index(community_url=None):
                                 community_url=current_app.config['DEFAULT_COMMUNITY']))
 
     project = Project.find_first({'where': {'url': community_url}}, api=api)
+
     if project is None:
         return abort(404)
 
-    if project.picture_square:
-        project.picture_square = get_file(project.picture_square, api=api)
-
-    if project.picture_header:
-        project.picture_header = get_file(project.picture_header, api=api)
+    attach_project_pictures(project, api)
 
     # Fetch all activities for the main project
     activities = Activity.all({
@@ -125,6 +123,8 @@ def post_rate(post_id, operation):
 def view(community_url, post_shortcode, slug=None):
     api = system_util.pillar_api()
     project = Project.find_by_url(community_url, api=api)
+    attach_project_pictures(project, api)
+
     post = Node.find_one({
         'where': {
             'project': project['_id'],
