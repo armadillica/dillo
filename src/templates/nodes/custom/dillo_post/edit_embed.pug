@@ -18,13 +18,13 @@
 					name="content",
 					type="url",
 					class="input-field",
-					placeholder="Paste or type the URL here",
+					placeholder="{{ _('Press Ctrl+V or Command+V to paste or type the URL') }}",
 					value="{{ node.properties.content }}")
 					#item-icon.loading
 						img(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
 
 				.input-content.name
-					label(for="name") Title
+					label(for="name") {{ _('Title') }}
 					input(
 					id="name",
 					value="{{ node.name }}",
@@ -34,7 +34,7 @@
 
 
 				.input-content.text
-					label(for="content") Text
+					label(for="content") {{ _('Text') }}
 					textarea(
 					disabled,
 					name="content",
@@ -45,10 +45,10 @@
 
 					span.content-extra
 						a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
-							| Markdown Cheatsheet
+							| {{ _('Markdown Cheatsheet') }}
 
 				.input-content.category
-					label(for="category") Category
+					label(for="category") {{ _('Category') }}
 					select(
 					id="category",
 					name="category")
@@ -69,24 +69,24 @@
 				name="post_type")
 
 					| {% if node.properties.post_type == 'link' %}
-					option(value="link", selected) Link
+					option(value="link", selected) {{ _('Link') }}
 					| {% else %}
-					option(value="link") Link
+					option(value="link") {{ _('Link') }}
 					| {% endif %}
 
 					| {% if node.properties.post_type == 'text' %}
-					option(value="text", selected) Text
+					option(value="text", selected) {{ _('Text') }}
 					| {% else %}
-					option(value="text") Text
+					option(value="text") {{ _('Text') }}
 					| {% endif %}
 
 				| {{ form.picture_url }}
 				.input-content.item-oembed-images
-					label(for="picture_oembed") Thumbnails from the URL
+					label(for="picture_oembed") {{ _('Thumbnails from the URL') }}
 					ul#picture_oembed
 
 				.input-content
-					label(for="picture") Custom Thumbnail
+					label(for="picture") {{ _('Custom Thumbnail') }}
 					.form-upload-file
 						| {{ form.picture }}
 
@@ -98,13 +98,16 @@
 			.item-edit-header-action
 
 				| {% if node.properties.status == 'published' %}
-				a.btn.cancel(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}") Cancel
+				a.btn.cancel(
+					href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}")
+					| {{ _('Cancel') }}
 				| {% else %}
-				a.btn.cancel.js-cancel-submit(href="{{ url_for('posts.index')}}") Cancel
+				a.btn.cancel.js-cancel-submit(href="{{ url_for('posts.index', community_url=project.url)}}")
+					| {{ _('Cancel') }}
 				| {% endif %}
 
 				| {% if node.properties.status != 'pending' %}
-				button.btn.delete Delete
+				button.btn.delete {{ _('Delete') }}
 				| {% endif %}
 
 				| {% if node.properties.status != 'published' %}
@@ -112,12 +115,11 @@
 				data-action="publish",
 				title="Make post publicly available")
 					i.pi-check
-					| Publish!
+					| {{ _('Publish!') }}!
 				| {% else %}
 				button.item-save-publish.btn.publish(
 				data-action="save",
-				title="Save changes"
-				) Save Changes
+				title="{{ _('Save Changes') }}") {{ _('Save Changes') }}
 				| {% endif %}
 
 #col_right.listing-view.item-edit-view
