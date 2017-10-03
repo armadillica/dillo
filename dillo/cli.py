@@ -35,7 +35,7 @@ def setup_for_dillo(project_url, replace=False):
 def index_nodes_rebuild():
     """Clear all nodes, update settings and reindex all posts."""
 
-    from dillo.posts.eve_hooks import algolia_index_post_save
+    from dillo.api.posts.hooks import algolia_index_post_save
 
     nodes_index = current_app.algolia_index_nodes
 
