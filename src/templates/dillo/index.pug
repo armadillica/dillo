@@ -120,6 +120,10 @@ script.
 	// Check if we're logged in and store it to use later
 	var amAuthenticated = isAuthenticated();
 
+	// Save state the first time we load the page
+	// For example, to load the post fullscreen
+	var first_time = true;
+
 	ProjectUtils.setProjectAttributes({projectId: '{{project._id}}', projectUrl: '{{project.url}}'});
 
 	var search = instantsearch({
@@ -324,6 +328,11 @@ script.
 
 	{% if 'post' in col_right %}
 		item_open('{{col_right['post']['_id']}}');
+
+		// When loading the page for the first time, load post fullscreen
+		if (first_time){
+			enterFullscreen();
+		}
 	{% endif %}
 
 	$('body').on('click', '.js-list-clear', function(e){

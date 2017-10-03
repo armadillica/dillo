@@ -1,3 +1,4 @@
+
 /* Open posts on the side */
 function item_open(item_id, hit_url){
 	if (item_id === undefined) {
@@ -134,4 +135,7 @@ $('body').on('click', '.js-item-open', function(e){
 	li.addClass('active');
 
 	item_open(hit_id, hit_url);
+
+	// It's not the first load anymore, utems should open on the side not fullscreen
+	first_time = false;
 });
