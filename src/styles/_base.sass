@@ -202,6 +202,7 @@ button, .btn
 
   &.btn-submit
     +button($color-primary-active, 3px, true)
+    font-size: inherit
 
 .btn-group
   align-items: center
@@ -249,9 +250,11 @@ nav
       align-items: center
       margin: 0
       padding: 0
+
       > li
         align-items: center
         display: inline-flex
+        justify-content: center
         margin-right: 15px
 
         &:last-child
@@ -259,6 +262,7 @@ nav
 
         &.dropdown
           position: relative
+          top: 2px
 
         a.login
           border: thin solid $color-primary
@@ -266,6 +270,21 @@ nav
           margin-right: 15px
           padding: 5px 25px
           text-decoration: none
+
+        &.nav-notifications
+          .navbar-item
+            background-color: $color-background
+            border-radius: 50%
+            padding: 4px
+
+            &.active
+              background-color: $color-primary
+              color: $color-background-lighter
+
+          #notifications-toggle
+            #notifications-count
+              top: 0
+              right: -5px
 
 .dropdown-toggle
   cursor: pointer
@@ -294,7 +313,7 @@ ul.dropdown-menu
   display: none
   flex-direction: column
   list-style: none
-  margin: 2px 0 0 0
+  margin: 10px 0 0 0
   padding: 0
   position: absolute
   top: 100%
@@ -309,6 +328,9 @@ ul.dropdown-menu
     display: flex
     align-items: center
     border-bottom: thin solid $color-background
+
+    &:last-child
+      border: none
 
     a, span
       align-items: center
@@ -388,6 +410,8 @@ h1 .emoji
 
 
 .d-header
+  +media-xs
+    flex-wrap: wrap
   background-color: $color-background-lighter
   box-shadow: 0 1px 3px rgba(black, .1)
   display: flex
