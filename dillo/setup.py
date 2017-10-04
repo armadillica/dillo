@@ -112,7 +112,7 @@ def setup_for_dillo(project_url, replace=False):
     # is allowed on a per-user basis when creating the actual post.
     dillo_user_main_group = _ensure_user_main_group()
     for nt in project['node_types']:
-        if nt['name'] == 'dillo_post':
+        if nt['name'] in {'comments', 'dillo_post'}:
             groups = nt['permissions']['groups']
             groups.append({
                 'group': dillo_user_main_group,
