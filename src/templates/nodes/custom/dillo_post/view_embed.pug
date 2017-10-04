@@ -104,6 +104,7 @@
 		#comments-embed
 
 script.
+
 	var context = ProjectUtils.context();
 
 	if (context != 'post-edit'){
@@ -139,3 +140,5 @@ script.
 	if ('fs' in urlParams){
 		enterFullscreen();
 	}
+
+	ga('send', 'pageview', location.pathname);
