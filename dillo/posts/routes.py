@@ -16,6 +16,7 @@ from pillarsdk.nodes import Node
 
 from pillar.web import subquery
 from pillar.web import system_util
+from pillar.web.nodes.routes import view as view_node
 from pillar.web.utils import get_file
 from pillar.web.utils import attach_project_pictures
 
@@ -23,6 +24,18 @@ from dillo import current_dillo
 
 blueprint = Blueprint('posts', __name__)
 log = logging.getLogger(__name__)
+
+
+@blueprint.route('/nodes/<string(length=24):node_id>/view')
+def view_embed(node_id):
+    api = system_util.pillar_api()
+
+    # Get the project (needed for url building and other post info)
+    node = Node.find(node_id, {'project': {'project': 1, 'user': 1}}, api=api)
+    project_projection = {'project': {'url': 1, 'name': 1}}
+    project = Project.find(node.project, project_projection, api=api)
+
+    return view_node(node_id=node_id, extra_template_args={'project': project})
 
 
 @blueprint.route('/c/<community_url>/post/<post_type>')

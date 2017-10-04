@@ -28,10 +28,10 @@
 				ul
 					li
 						a(href="{{ url_for('posts.index') }}")
-							| {{ node.project.name }}
+							| {{ project.name }}
 					li#item-category {{ node.properties.category | undertitle }}
 					li
-						a(href="{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
+						a(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 							| {{ node._created | pretty_date }}
 					li
 						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
@@ -88,14 +88,14 @@
 			| {% endif %}
 			a(
 				title="Share on Facebook",
-				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
+				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
 				target="_blank")
 				i.pi-social-facebook
 				| Share
 
 			a(
 				title="Share on Twitter",
-				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', community_url=node.project.url, post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
+				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
 				target="_blank")
 				i.pi-social-twitter
 				| Tweet
