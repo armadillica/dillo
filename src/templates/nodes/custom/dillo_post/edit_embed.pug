@@ -159,6 +159,8 @@ script.
 			$(document).on('click', 'body .js-cancel-submit', function(e){
 				e.preventDefault();
 				exitSubmit();
+
+				ga('send', 'event', 'ui', 'dialog-cancel');
 			});
 
 		} else {
@@ -390,6 +392,8 @@ script.
 					// Something went wrong, notify
 					toastr.error(xhr.statusText, 'Error ' + xhr.status);
 					uiUpdateOnSave($item_save_publish_button);
+
+					ga('send', 'event', 'post', 'save-failed', $('#post_type').val() + ' ' + xhr.status + ' ' + xhr.statusText);
 				})
 				.done(function (dataHtml) {
 					// Disable beforeunolad when submitting a form
@@ -401,6 +405,7 @@ script.
 					// If on load the post was not published
 					if (statusLoad_val == 'pending'){
 						toastr.success('Post published.<br/>You\'re a rockstar!');
+						ga('send', 'event', 'post', 'published', $('#post_type').val());
 
 						// Refresh the list after a bit to let Algolia think about it
 						setTimeout(function(){
@@ -416,6 +421,8 @@ script.
 
 						// Load the comments
 						loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+
+						ga('send', 'event', 'post', 'saved', $('#post_type').val());
 					}
 
 				});
@@ -424,9 +431,11 @@ script.
 		$item_save_publish_button.click(function (e) {
 			e.preventDefault();
 
-			if ($(this).data('action') === 'save') {
+			var action = $(this).data('action');
+
+			if (action === 'save') {
 				setStatusOnSave();
-			} else if ($(this).data('action') === 'publish') {
+			} else if (action === 'publish') {
 				setStatusOnPublish();
 			}
 
@@ -445,6 +454,7 @@ script.
 			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()})
 				.done(function () {
 					toastr.info("Post deleted.<br/>Going back home...");
+					ga('send', 'event', 'post', 'deleted');
 
 					// Go back home, wait a bit for Algolia to update the index
 					setTimeout(function(){
@@ -453,6 +463,7 @@ script.
 				})
 				.fail(function (data) {
 					toastr.error("Couldn't delete :/");
+					ga('send', 'event', 'post', 'deleted-fail');
 				});
 		}
 
@@ -495,7 +506,6 @@ script.
 			$('.o-image').removeClass('active');
 			$item_picture.val('');
 		});
-
 
 		// Focus the #content field on load
 		input_content.focus();

@@ -38,11 +38,14 @@ function item_open(item_id, hit_url){
 		item_id,
 		hit_url
 	);
+
+	// It's not the first load anymore, utems should open on the side not fullscreen
+	first_time = false;
 }
 
 
 /* Rate | Vote */
-$(document).on('click','body .item-rating',function(e){
+$(document).on('click','body .item-rating.up, body .item-rating.down',function(e){
 	e.preventDefault();
 
 	var $this = $(this);
@@ -90,9 +93,13 @@ $(document).on('click','body .item-rating',function(e){
 		var rating = data['data']['rating_positive'] - data['data']['rating_negative'];
 		$this.siblings('.item-rating.value').text(rating);
 		toastr.info('Voted!');
+
+		ga('send', 'event', 'vote', op);
 	})
 	.fail(function(xhr) {
 		toastr.error(xhr.statusText, 'Error ' + xhr.status);
+
+		ga('send', 'event', 'vote', 'failed');
 	});
 });
 
@@ -136,6 +143,5 @@ $('body').on('click', '.js-item-open', function(e){
 
 	item_open(hit_id, hit_url);
 
-	// It's not the first load anymore, utems should open on the side not fullscreen
-	first_time = false;
+	ga('send', 'event', 'ui', 'open', $(this).attr('class'));
 });

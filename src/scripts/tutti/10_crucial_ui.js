@@ -94,24 +94,33 @@ function toggleFullscreen(){
 	} else {
 		enterFullscreen();
 	}
+
 }
 
 $(document).on('click', 'body .js-toggle-fullscreen', function(){
 	toggleFullscreen();
+
+	ga('send', 'event', 'ui', 'fullscreen-toggle', $(this).attr('class'));
 });
 
 
 // Submit Dialog Workflow
 function enterSubmit(){
 
+	// If not logged in, don't even bother
 	if (!isAuthenticated()){
+		ga('send', 'event', 'ui', 'dialog-open-not-logged-in');
 		return window.location.href = '/login';
 	}
 
-	var url = '/c/' + ProjectUtils.projectUrl() + '/post/link?embed=1'
+	var url = '/c/' + ProjectUtils.projectUrl() + '/post/link?embed=1';
+
 	$.get(url, function(data) {
 		$('.dialog-box').html(data);
+
+		ga('send', 'event', 'ui', 'dialog-open');
 	});
+
 	$('#app-overlay').addClass('active submit');
 	setContext("post-submit-overlay");
 

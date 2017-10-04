@@ -16,7 +16,6 @@
     display: flex
     height: 100%
     margin: 8px 12px 8px 5px
-    padding-right: 10px
     position: relative
     transition: box-shadow 250ms ease-in-out
 
@@ -65,8 +64,10 @@
       transition: opacity 250ms ease-in-out
 
     .item-details
-      +media-xs
+      ul
+        padding-right: 5px
 
+      +media-xs
         ul
           flex-wrap: wrap
           li
@@ -78,7 +79,7 @@
     a.item-title
       color: $color-text
       font-size: 1.1em
-      padding: 5px 0
+      padding: 8px 10px 5px 0
 
       &:hover
         color: $color-primary
