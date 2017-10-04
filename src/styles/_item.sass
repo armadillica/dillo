@@ -421,12 +421,13 @@ body[data-context="post-edit"]
 
       #item-icon
         align-items: center
-        bottom: 8px
+        bottom: 10px
+        color: $color-background-lighter
         display: flex
         justify-content: center
         height: 32px
         position: absolute
-        right: 12px
+        right: 14px
         width: 32px
         white-space: nowrap
 
@@ -435,10 +436,12 @@ body[data-context="post-edit"]
           max-height: 24px
 
         &.invalid
-          background-color: rgba($color-background-lighter, .8)
-          color: $color-danger
+          background-color: $color-danger
+          border-radius: 3px
+          color: $color-background-lighter
           cursor: default
           font-size: .9em
+          font-weight: bold
           padding: 0 10px
           user-select: none
           width: auto
@@ -451,35 +454,47 @@ body[data-context="post-edit"]
     /* When the Link tab is active, hide/show some elements */
     &.link
       .input-content.link
-        position: relative
         display: flex
         justify-content: center
         overflow: hidden
+        position: relative
 
         input#content
-          visibility: visible
+          color: $color-primary-active
           display: block
+          font-weight: bold
           padding-right: 36px
+          visibility: visible
+
+          &::placeholder
+            color: $color-text-dark-secondary
+
+          &:focus
+            background-color: $color-primary-active !important
+            color: white
+
+            &::placeholder
+              color: rgba($color-background-lighter, .9)
 
       .input-content.text,
       span.content-extra
-        visibility: hidden
         display: none
+        visibility: hidden
 
     /* When the Text tab is active, hide/show some elements */
     &.text
       .input-content.text
-        visibility: visible
         display: flex
+        visibility: visible
       .input-content.link, #item-icon
-        visibility: hidden
         display: none
+        visibility: hidden
 
 
 .item-body
+  border-bottom: thin solid $color-background-dark
   font-size: $font-size
   line-height: 1.5em
-  border-bottom: thin solid $color-background-dark
 
 // Specific tweaks to item view embed when link or text
 .item-view
