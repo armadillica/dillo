@@ -28,6 +28,7 @@ from pillar.api.file_storage import generate_link
 from pillar.api.nodes import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
 from pillar.api.file_storage import upload_and_process
+from pillar.api.activities import activity_subscribe
 from dillo import current_dillo
 from dillo.node_types.post import node_type_post
 from dillo.utils.sorting import hot
@@ -122,7 +123,7 @@ def set_defaults(item):
     item['permissions'] = {'users': [{'user': current_user_id(), 'methods': ['PUT']}]}
 
 
-def before_creating_posts(items):
+def before_inserting_posts(items):
     for item in items:
         set_defaults(item)
 
@@ -236,3 +237,16 @@ def enrich(response):
             response['_current_user_rating'] = rating['is_positive']
 
 
+@only_for_post
+def subscribe_to_activity(item):
+    """Subscribe to activity happening on a post.
+
+    This allows the post author to know when a comment is posted.
+    """
+    log.debug('Subscribing user to post %s activity' % item['_id'])
+    activity_subscribe(item['user'], 'node', item['_id'])
+
+
+def after_inserting_posts(items):
+    for item in items:
+        subscribe_to_activity(item)
