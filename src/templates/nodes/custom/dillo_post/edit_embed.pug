@@ -92,9 +92,11 @@
 
 
 		.item-edit-header
+			| {% if node.properties.status != 'pending' %}
 			.item-status
 				| Status:
 				span {{ node.properties.status | undertitle }}
+			| {% endif %}
 			.item-edit-header-action
 
 				| {% if node.properties.status == 'published' %}
