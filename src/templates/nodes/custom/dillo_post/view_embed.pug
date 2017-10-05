@@ -121,8 +121,8 @@ script.
 		search.on('render', onRenderHandler);
 	}
 
-	page_title = '{{ node.name }} — {{ main_project.name }}';
-	updateTitle(unread_on_load, page_title);
+	var page_title = '{{ node.name }} — {{ main_project.name }}';
+	DocumentTitleAPI.set_page_title(page_title);
 
 	// Parse emojis
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
