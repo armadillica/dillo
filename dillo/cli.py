@@ -80,4 +80,4 @@ def index_nodes_update_settings():
 @manager_dillo.command
 def reset_users_karma():
     """Recalculate the users karma"""
-    dillo.posts.rating.rebuild_karma()
+    dillo.api.posts.rating.rebuild_karma()
