@@ -25,9 +25,9 @@ def add_extension_props(user: dict):
         'karma': 0,
     }
 
-    log.debug('Recording user custom extension_props for dillo')
+    log.debug('Recording user custom extension_props_public for dillo')
 
-    db_fieldname = f'extension_props.{EXTENSION_NAME}'
+    db_fieldname = f'extension_props_public.{EXTENSION_NAME}'
     users_collection = current_app.data.driver.db['users']
 
     users_collection.find_one_and_update(

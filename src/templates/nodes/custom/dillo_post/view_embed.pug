@@ -76,7 +76,7 @@
 			.op-details
 				a.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
 					| {{ node.user.full_name }}
-				.op-karma Karma: {{ node.user.extension_props.dillo.karma }}
+				.op-karma Karma: {{ node.user.extension_props_public.dillo.karma }}
 
 		.item-info-action
 			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")

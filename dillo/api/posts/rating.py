@@ -42,7 +42,7 @@ def patch_post(node_id, patch):
                 })['user']
 
             users_collection = current_app.db()['users']
-            db_fieldname = f'extension_props.{EXTENSION_NAME}.karma'
+            db_fieldname = f'extension_props_public.{EXTENSION_NAME}.karma'
 
             users_collection.find_one_and_update(
                 {'_id': node_user_id},
@@ -69,11 +69,11 @@ def patch_post(node_id, patch):
 def rebuild_karma():
     """Re-calculate users karma
 
-    It also initialize the ['extension_props]['karma'] if needed.
+    It also initialize the ['extension_props_public']['karma'] if needed.
     """
     db = current_app.db()
     users_collection = db['users'].find({'_deleted': {'$ne': True}})
-    db_fieldname = f'extension_props.{EXTENSION_NAME}.karma'
+    db_fieldname = f'extension_props_public.{EXTENSION_NAME}.karma'
 
     for user in users_collection:
         posts_collection = db['nodes'].find({
