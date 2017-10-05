@@ -30,7 +30,7 @@ ALGOLIA_INDEX_USERS = 'dev_UsersYourName'
 ALGOLIA_INDEX_NODES = 'dev_NodesYourName'
 ```
 
-* Follow the instructions to install a [Pillar extension](https://https://pillarframework.org/development/install/).
+* Follow the instructions to install a [Pillar extension](https://pillarframework.org/development/install/).
 * Initialize dillo for your project
 
 ```
