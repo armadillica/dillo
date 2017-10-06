@@ -48,3 +48,14 @@ def after_creating_users(user_docs: list):
     for user_doc in user_docs:
         assign_to_user_main(user_doc)
         add_extension_props(user_doc)
+
+
+def on_replaced_users(user_doc: dict, original: dict):
+    """Reindex all published posts if username has changed."""
+
+    from dillo.celery import algolia_tasks
+    for f in {'username', 'full_name'}:
+        if user_doc[f] != original[f]:
+            log.debug('Reindexing all posts for %s' % user_doc['_id'])
+            algolia_tasks.algolia_index_user_posts.delay(str(user_doc['_id']))
+            return
