@@ -37,10 +37,10 @@ ROOT="$(dirname "$($readlink -f "$0")")"
 cd ${ROOT}
 
 # Check that we're on production branch.
-#if [ $(git rev-parse --abbrev-ref HEAD) != "production" ]; then
-#    echo "You are NOT on the production branch, refusing to deploy." >&2
-#    exit 1
-#fi
+if [ $(git rev-parse --abbrev-ref HEAD) != "production" ]; then
+    echo "You are NOT on the production branch, refusing to deploy." >&2
+    exit 1
+fi
 
 # Check that production branch has been pushed.
 if [ -n "$(git log origin/production..production --oneline)" ]; then
