@@ -5,6 +5,8 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+DEPLOYHOST="$1"
+
 echo -n "Deploying to ${DEPLOYHOST}... "
 
 if ! ping ${DEPLOYHOST} -q -c 1 -W 2 >/dev/null; then
