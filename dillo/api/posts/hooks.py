@@ -12,6 +12,7 @@ On post creation:
 """
 
 import datetime
+import imghdr
 import logging
 import mimetypes
 import requests
@@ -207,8 +208,12 @@ def process_picture_oembed(item, original):
             picture_url_parsed = urlparse(picture_url)
             filename = os.path.basename(picture_url_parsed.path)
             mimetype, _ = mimetypes.guess_type(filename, strict=False)
+            # TODO use python-magic to determine mime type (directly in upload_and_process)
+            if not mimetype:
+                image_type = imghdr.what(f)
+                mimetype = f'image/{image_type}'
             fs = FileStorage(stream=f, filename=filename, content_type=mimetype)
-            result = upload_and_process(f, fs, current_app.config['MAIN_PROJECT_ID'])
+            result = upload_and_process(f, fs, str(item['project']))
             # Update item before saving
             if result['status'] == 'ok':
                 item['picture'] = ObjectId(result['file_id'])
