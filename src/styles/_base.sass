@@ -8,8 +8,17 @@
 ::-webkit-scrollbar-thumb
   background-color: rgba($color-background-darker, .3)
 
+
 // Override Pillar's notifications style
 #notifications
+  +media-xs
+    bottom: 0
+    height: 100%
+    max-height: 100% !important
+    right: 0
+    top: $header-height
+    width: auto
+
   right: 15px
   top: 55px
 
@@ -23,12 +32,25 @@
   overflow-y: auto
   padding-left: 0 !important // override sidebar offset from Pillar
 
+  &.nav-refine-expanded
+    padding-top: 94px !important // hardcoded for now
+
   .fullscreen-overlay
     display: none
     pointer-events: none
     visibility: hidden
 
   &.fullscreen
+    +media-xs
+      background-color: $color-background
+      bottom: 0
+      display: flex
+      left: 0
+      padding-top: $header-height
+      position: fixed
+      right: 0
+      top: 0
+
     position: absolute
     width: 100%
     background-color: rgba($color-background, .7)
@@ -48,6 +70,10 @@
       z-index: 0
 
     #list-item
+      +media-xs
+        width: 100%
+        padding: 0
+
       height: auto
       margin: 0 auto
       max-width: 780px
@@ -60,21 +86,43 @@
         img
           max-width: 110%
 
+      .item-view-header, .item-body
+        +media-xs
+          background-color: $color-background-lighter
+
       .item-view
+        +media-xs
+          background-color: $color-background
+          box-shadow: none
+          transform: none
+
         box-shadow: 0 0 1px 0 rgba($color-background-darker, .2), 1px 1px 5px rgba($color-background-darker, .1), 0 15px 100px rgba($color-background-darker, .2)
         transform: translateX(-35px)
 
 #col_main
+  +media-xs
+    padding-top: $header-height
   +media-lg
     width: 45%
+
   background-color: $color-background-dark
 
 #col_right
+  +media-xs
+    display: none // it's displayed when coupled with .fullscreen
+
   +media-lg
     width: 65%
   background-color: $color-background-dark
 
 #app-header
+  +media-xs
+    left: 0
+    position: fixed
+    right: 0
+    top: 0
+    z-index: 10
+
   display: flex
   flex-direction: column
 
@@ -168,6 +216,9 @@
     .item-edit-header
       padding: 10px 20px 20px
 
+    .btn.preview
+      display: none
+
 .app-branding
   color: $color-primary
   font-size: $font-size-large
@@ -190,6 +241,11 @@ button, .btn
     +button($color-text-light, 3px)
   &.delete
     +button($color-danger, 3px)
+  &.preview
+    display: none
+
+    +media-xs
+      display: block
 
   &.btn-success
     +button($color-success, 3px, true)
@@ -204,12 +260,34 @@ button, .btn
     +button($color-primary-active, 3px, true)
     font-size: inherit
 
+    +media-xs
+      border-radius: 999em
+      height: 50px
+      width: 60px
+
+      > i
+        font-size: $font-size-large
+        margin-right: 0
+      > span
+        display: none
+
 .btn-group
   align-items: center
   border-radius: 3px
   color: $color-text
   display: inline-flex
   position: relative
+
+  &.submit
+    +media-xs
+      border-radius: 999em
+      bottom: 15px
+      box-shadow: 0 0 25px rgba(black, .2)
+      position: fixed
+      right: 20px
+
+      .dropdown-menu
+        top: -125%
 
   label
     font-size: 1em
@@ -220,6 +298,12 @@ button, .btn
     border-bottom-right-radius: 0 !important
 
     &.wgt-dropdown-toggle
+      +media-xs
+        border-top-right-radius: 999em !important
+        border-bottom-right-radius: 999em !important
+        > i
+          display: block
+
       border-left: none
       padding-left: 5px
       padding-right: 5px
@@ -230,6 +314,7 @@ button, .btn
 
       > i
         margin: 0
+
 
 select, textarea, input
   box-shadow: 1px 2px 2px $color-background-dark
@@ -308,6 +393,10 @@ nav
     right: 0
 
 ul.dropdown-menu
+  +media-xs
+    margin: 0
+    top: $header-height - 2
+
   border-bottom-left-radius: 3px
   border-bottom-right-radius: 3px
   display: none
@@ -364,6 +453,8 @@ ul.dropdown-menu
     color: $color-text-dark-primary
 
   input
+    +media-xs
+      width: 100px
     background-color: rgba($color-background, .8)
     padding: 6px 10px
     border: none
@@ -437,7 +528,7 @@ h1 .emoji
     background-image: none
     flex-wrap: wrap
     flex-direction: column
-    height: 100%
+    justify-content: center
 
   background-color: $color-background-lighter
   box-shadow: 0 1px 3px rgba(black, .1)
@@ -461,6 +552,11 @@ h1 .emoji
 
   $header-logo-size: 60px
   &-logo
+    +media-xs
+      height: $header-logo-size / 1.8
+      position: fixed
+      width: $header-logo-size / 1.8
+
     align-items: center
     border-radius: 3px
     display: flex
@@ -475,6 +571,8 @@ h1 .emoji
       max-width: 100%
 
   &-title
+    +media-xs
+      display: none
     display: flex
     flex-direction: column
     justify-content: center
@@ -484,16 +582,7 @@ h1 .emoji
       font-size: $font-size-large
       text-decoration: none
 
-    .summary
-      cursor: default
-      display: inline-block
-      font-size: $font-size-small
-      left: -2px
-      margin-top: 10px
-      position: relative
-
-    .title span,
-    .summary span
+    .title span
       +text-background($color-text-dark, $color-background-lighter, 0, 3px 0)
 
   &-action
@@ -502,6 +591,49 @@ h1 .emoji
     display: flex
     flex-direction: column
     margin-left: auto
+
+    &.refine
+      +media-xs
+        background-color: $color-background-lighter
+        box-shadow: 0 5px 25px rgba(black, .1)
+        display: none
+        left: 0
+        padding: 5px 0
+        position: fixed
+        right: 0
+        top: $header-height
+
+        &.active
+          display: flex
+
+        .wgt-dropdown-root
+          margin: 0
+        .wgt-dropdown-header
+          min-width: auto
+          width: 100%
+
+        nav.nav-bar
+          > ul
+            > li
+              margin: 5px 10px
+              flex: 1
+
+
+  &-toggle-nav
+    font-size: 1.8em
+    color: $color-text-dark-secondary
+    left: 60px
+    padding: 4px 8px
+    position: fixed
+    top: 0
+    z-index: 11
+
+    &.active
+      color: $color-secondary
+
+      > i:before
+        content: '\e84b'
+
 
 /* General style for activities in all places */
 .d-activity

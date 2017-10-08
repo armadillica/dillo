@@ -47,12 +47,12 @@ meta(name="twitter:creator",
 
 | {% block submit_btn %}
 li
-	.btn-group
+	.btn-group.submit
 		button.btn.btn-submit.wgt-toggle-submit(
 		data-action="publish",
 		title="{{ _('Submit a Link [Shift+A]')}}")
 			i.pi-link
-			| {{ _('Submit Link') }}
+			span {{ _('Submit Link') }}
 
 		button.btn.btn-submit.wgt-dropdown-toggle
 			i.pi-angle-down
@@ -333,6 +333,10 @@ script.
 
 	var onRenderHandler = function() {
 		twemoji.parse(document.body);
+
+		if (isMobile()){
+			exitFullscreen();
+		}
 	}
 
 	search.on('render', onRenderHandler);

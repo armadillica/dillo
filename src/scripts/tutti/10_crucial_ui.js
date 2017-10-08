@@ -147,6 +147,22 @@ $('.wgt-toggle-submit').on('click', function(){
 });
 
 
+
+// Navigation on mobile
+function toggleNavRefine(){
+
+	$('.btn-group.submit').toggle();
+
+	$('.d-header-action.refine').toggleClass('active');
+	$('#col_main, #col_right').toggleClass('nav-refine-expanded');
+}
+
+$('.d-header-toggle-nav').on('click', function(){
+	$(this).toggleClass('active');
+	toggleNavRefine();
+});
+
+
 // Initialize Shortcuts
 function initializeShortcuts(){
 	Mousetrap.bind('f', toggleFullscreen);

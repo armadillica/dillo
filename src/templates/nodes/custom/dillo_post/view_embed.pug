@@ -6,7 +6,7 @@
 	class="{{ node.properties.post_type }} {{ is_own }}")
 	.item-view-header
 		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
-			i.pi-cancel
+			i.pi-cancel-circle
 		.item-content(
 			id="{{ node._id }}",
 			data-node-id="{{ node._id }}")
@@ -26,9 +26,6 @@
 				span#item-title.item-title {{ node.name }}
 				| {% endif %}
 				ul
-					li
-						a(href="{{ url_for('posts.index') }}")
-							| {{ project.name }}
 					li#item-category {{ node.properties.category | undertitle }}
 					li
 						a(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
@@ -86,14 +83,14 @@
 				i.pi-edit
 				| Edit Post
 			| {% endif %}
-			a(
+			a.social(
 				title="Share on Facebook",
 				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
 				target="_blank")
 				i.pi-social-facebook
 				| Share
 
-			a(
+			a.social(
 				title="Share on Twitter",
 				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
 				target="_blank")

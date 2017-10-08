@@ -99,6 +99,10 @@
 			| {% endif %}
 			.item-edit-header-action
 
+				| {% if node.properties.status != 'pending' %}
+				button.btn.delete {{ _('Delete') }}
+				| {% endif %}
+
 				| {% if node.properties.status == 'published' %}
 				a.btn.cancel(
 					href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}")
@@ -108,9 +112,7 @@
 					| {{ _('Cancel') }}
 				| {% endif %}
 
-				| {% if node.properties.status != 'pending' %}
-				button.btn.delete {{ _('Delete') }}
-				| {% endif %}
+				button.btn.preview {{ _('Preview') }}
 
 				| {% if node.properties.status != 'published' %}
 				button.item-save-publish.btn.btn-success(
@@ -476,6 +478,10 @@ script.
 			deleteItem();
 		});
 
+		// Preview button to toggle fullscreen when in mobile
+		$('.btn.preview').click(function (e) {
+			enterFullscreen();
+		});
 
 		// Set Oembed Image as Thumbnail
 		$(document).on('click', 'body .o-image', function () {

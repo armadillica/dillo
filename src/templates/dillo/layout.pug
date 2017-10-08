@@ -54,7 +54,7 @@ html(lang='en')
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
 						span {{ project.name }}
 
-				.d-header-action
+				.d-header-action.refine
 					nav.nav-bar
 						ul
 							li
@@ -69,11 +69,17 @@ html(lang='en')
 										type="text",
 										placeholder="{{ _('Search...') }}")
 
+				.d-header-toggle-nav
+					i.pi-menu
+
+				.d-header-action
+					nav.nav-bar
+						ul
 							| {% if current_user.is_authenticated %}
 							| {% block submit_btn %} {% endblock %}
 
 							li.nav-notifications
-								a.navbar-item#notifications-toggle(
+								a.nav-item#notifications-toggle(
 									title="Notifications",
 									data-toggle="tooltip",
 									data-placement="bottom")
@@ -116,13 +122,13 @@ html(lang='en')
 
 							| {% else %}
 							li
-								.btn-group
+								.btn-group.submit
 									a.btn.btn-submit(
 										href="{{ url_for('users.login') }}",
 										data-action="publish",
 										title="{{ _('Submit a Link [Shift+A]')}}")
 										i.pi-link
-										| {{ _('Submit Link') }}
+										span {{ _('Submit Link') }}
 
 									button.btn.btn-submit.wgt-dropdown-toggle
 										i.pi-angle-down
@@ -136,7 +142,7 @@ html(lang='en')
 													| {{ _('Submit Text') }}
 
 							li
-								a.navbar-item.login(href="{{ url_for('users.login') }}")
+								a.nav-item.login(href="{{ url_for('users.login') }}")
 									| {{ _('Log in') }}
 							| {% endif %}
 

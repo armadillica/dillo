@@ -93,6 +93,8 @@ $item-thumbnail-size: 80px
 
 
 .item-thumbnail
+  +media-xs
+    border-radius: 0
   align-items: center
   border-bottom-left-radius: 3px
   border-top-left-radius: 3px
@@ -105,11 +107,7 @@ $item-thumbnail-size: 80px
 
   &.has-thumbnail
     +media-xs
-      height: 150px
       margin: 0
-      max-height: initial
-      max-width: initial
-      width: 100%
 
       .item-thumbnail-picture
         display: block
@@ -137,8 +135,6 @@ $item-thumbnail-size: 80px
 
   .item-thumbnail-picture
     align-items: center
-    border-bottom-left-radius: 3px
-    border-top-left-radius: 3px
     display: flex
     height: 100%
     justify-content: center
@@ -169,8 +165,8 @@ $item-thumbnail-size: 80px
 
 .item-rating-box
   +media-xs
-    min-width: 60px
-    width: 60px
+    min-width: 50px
+    width: 50px
 
   display: flex
   flex-direction: column
@@ -185,15 +181,18 @@ $item-thumbnail-size: 80px
     color: $color-vote-down
 
 .item-rating
+  +media-xs
+    padding: 3px 0
+
   display: flex
   align-items: center
   justify-content: center
   height: 100%
 
-  +media-xs
-    padding: 3px 0
 
   &.up, &.down
+    +media-xs
+      font-size: 1em
     font-size: 1.33em
     cursor: pointer
 
@@ -241,6 +240,8 @@ $item-thumbnail-size: 80px
           content: ''
 
       a
+        +media-xs
+          text-decoration: underline
         text-decoration: none
         color: $color-text-light
 
@@ -249,6 +250,8 @@ $item-thumbnail-size: 80px
           text-decoration: underline
 
       img
+        +media-xs
+          opacity: 1
         display: inline-block
         vertical-align: middle
         border-radius: 3px
@@ -308,6 +311,10 @@ $item-thumbnail-size: 80px
       padding: 10px
 
   &-action
+    +media-xs
+      .social
+        display: none
+
     font-size: $font-size-small
     margin-left: auto
     padding-left: 10px
@@ -335,18 +342,33 @@ body[data-context="post-edit"]
 
 .item-edit
   &-header
+    +media-xs
+      padding-top: 0
     display: flex
     align-items: center
     padding: 20px 10px
 
     &-action
+      +media-xs
+        display: flex
+        flex-direction: column-reverse
+        margin: 0
+        width: 100%
+
+        .btn
+          margin-bottom: 10px
+
       margin-left: auto
 
       .btn-group
         margin-left: 5px
 
     .item-status
+      +media-xs
+        display: none
+
       color: $color-text-hint
+
       span
         padding-left: 5px
 
@@ -494,6 +516,13 @@ body[data-context="post-edit"]
 
 // Specific tweaks to item view embed when link or text
 .item-view
+  +media-xs
+    border-radius: 0
+    box-shadow: none
+    height: 100%
+    margin: 0
+    padding: 0
+
   background-color: $color-background-lighter
   border-radius: 3px
   box-shadow: 1px 2px 2px $color-background-dark
@@ -506,9 +535,12 @@ body[data-context="post-edit"]
     border-bottom: thin solid $color-background-dark
 
   &-close
+    +media-xs
+      padding: 12px
+      font-size: 1.5em
     color: $color-text-dark-hint
     display: none
-    font-size: .9em
+    font-size: 1.3em
     right: 0
     top: 0
     position: absolute
@@ -517,8 +549,11 @@ body[data-context="post-edit"]
 
     &:hover
       cursor: pointer
-      background-color: $color-danger
-      color: white
+      color: $color-danger
+
+  .item-title
+    +media-xs
+      margin-right: 40px // So it doesn't overlap with close button
 
   &.text
     .item-body
@@ -541,6 +576,7 @@ body[data-context="post-edit"]
       display: flex
 
       .item-link-data
+        +media-xs
         color: $color-text
         display: block
         flex: 1
@@ -555,6 +591,9 @@ body[data-context="post-edit"]
           color: $color-primary
 
       img.favicon
+        +media-xs
+          margin-left: 5px
+          margin-right: 10px
         height: 16px
         margin-left: 8px
         margin-right: 24px
@@ -581,6 +620,19 @@ body[data-context="post-edit"]
 
     .comment-container,
     .comment-reply-container
+      +media-xs
+        padding: 10px
+
+        .comment-reply
+          &-form
+            padding-top: 0
+
+          &-meta
+            width: auto
+
+          &-avatar
+            display: none
+
       padding: 10px 10px 10px 25px
 
   &.is-own
