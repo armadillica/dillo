@@ -276,13 +276,10 @@ script.
 									$image_oembed.append('<li class="o-image">' + image + '</li>');
 								});
 
-								// Use the first image if there's no image set yet
-								if (!$item_picture.val()){
-									// Set the picture_url field
-									$item_picture.val(data.images[0]);
-									// Style the first image on the list as 'active'
-									$image_oembed.find('li:first').addClass('o-image active');
-								}
+								// Set the picture_url field
+								$item_picture.attr('value', data.images[0]);
+								// Style the first image on the list as 'active'
+								$image_oembed.find('li:first').addClass('o-image active');
 
 							} else {
 
@@ -494,12 +491,12 @@ script.
 			// Clicking on the already active image to un-set
 			if ($this.hasClass('active')) {
 				$this.toggleClass('active');
-				$item_picture.val('');
+				$item_picture.attr('value', '');
 			} else {
 				$this.addClass('active');
 
 				// Set the picture_url field with the image source path
-				$item_picture.val($this.children('img').attr('src'));
+				$item_picture.attr('value', $this.children('img').attr('src'));
 
 				// Visually tell that the custom thumbnail won't be used
 				$('.fileupload').val('');
@@ -510,7 +507,7 @@ script.
 		// When finished uploading a thumbnail, deselect any oembed image and clear #picture_url
 		$('body').on('file-upload:finished', function () {
 			$('.o-image').removeClass('active');
-			$item_picture.val('');
+			$item_picture.attr('value', '');
 		});
 
 		// Focus the #content field on load
