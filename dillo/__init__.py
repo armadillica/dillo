@@ -10,6 +10,8 @@ from pillar.extension import PillarExtension
 from pillar.web.system_util import pillar_api
 from pillar.web.utils import attach_project_pictures
 
+from dillo.web.nodes import finders
+
 EXTENSION_NAME = 'dillo'
 
 
