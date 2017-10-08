@@ -178,3 +178,7 @@ $(document).ajaxStop(function(){
 function isAuthenticated(){
 	return $('body').hasClass('logged-in');
 }
+
+function isMobile(){
+	return (/Mobi/.test(navigator.userAgent));
+}
