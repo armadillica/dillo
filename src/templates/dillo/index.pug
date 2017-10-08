@@ -100,7 +100,7 @@ li
 				.summary {{ project.summary }}
 
 			.welcome-extra
-				| {{ project.description }}
+				| {{ project.description | markdown }}
 
 			.d-activity
 				.title {{ _('What\'s going on:') }}
