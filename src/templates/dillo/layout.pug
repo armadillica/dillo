@@ -5,26 +5,32 @@ html(lang='en')
 		title
 			| {% if self.page_title() %}{% block page_title %}{% endblock %}— {% endif %}
 			| {{ project.name }}
-			| {% if project != main_project %} — {{ main_project.name }}{% endif %}
-
-		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+			| {% if project._id != main_project._id %} — {{ main_project.name }}{% endif %}
 
 		| {% block head %}{% endblock head %}
 		link(href='//fonts.googleapis.com/css?family=Oxygen|Open+Sans', rel='stylesheet', type='text/css')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
 		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
 
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+		| {% if config['GOOGLE_SITE_VERIFICATION'] %}
+		meta(name="google-site-verification" content="{{ config['GOOGLE_SITE_VERIFICATION'] }}")
+		| {% endif %}
+
 		| {# Meta info for Open Graph and Twitter Cards #}
-		meta(property="og:site_name", content="{{ config.SETTINGS_TITLE | safe }}")
+		meta(property="og:site_name", content="{{ project.name }}")
 		meta(name="twitter:card" content="summary_large_image")
 		meta(name="twitter:site" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
 		| {% block og %}
 		meta(name="twitter:creator" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
-		meta(name="twitter:title" content="{{ config.SETTINGS_TITLE | safe }}")
-		meta(name="twitter:description" content="{{ config.SETTINGS_TAGLINE }}")
-		meta(property="og:description", content="{{ config.SETTINGS_TAGLINE }}")
-		meta(name="twitter:image" content="{{ config.SETTINGS_LOGO_IMAGE }}")
-		meta(property="og:image", content="{{ config.SETTINGS_LOGO_IMAGE }}")
+		meta(name="twitter:title" content="{{ project.name }}")
+		meta(name="twitter:description" content="{{ project.summary }}")
+		meta(property="og:description", content="{{ project.summary }}")
+		| {% if project.picture_header %}
+		meta(name="twitter:image" content="{{ project.picture_header.thumbnail('h') }}")
+		meta(property="og:image", content="{{ project.picture_header.thumbnail('h') }}")
+		| {% endif %}
 		| {% endblock og %}
 
 		| {% block style %}{% endblock style %}
@@ -176,7 +182,6 @@ html(lang='en')
 			});
 
 		| {% block footer_scripts %}{% endblock footer_scripts %}
-
 		script.
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

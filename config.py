@@ -7,3 +7,8 @@ POST_CATEGORIES = ['Artwork', 'Community', 'Development', 'Add-Ons', 'Education'
 
 # Used for redirecting to the default community when visiting /c/
 DEFAULT_COMMUNITY = 'main'
+
+GOOGLE_ANALYTICS_TRACKING_ID = ''
+GOOGLE_SITE_VERIFICATION = ''
+
+SETTINGS_TWITTER_USERNAME = ''
