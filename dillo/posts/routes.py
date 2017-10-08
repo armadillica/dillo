@@ -19,6 +19,7 @@ from pillar.web import system_util
 from pillar.web.nodes.routes import view as view_node
 from pillar.web.utils import get_file
 from pillar.web.utils import attach_project_pictures
+from pillar.web.nodes.routes import url_for_node
 
 from dillo import current_dillo
 
@@ -87,12 +88,13 @@ def index(community_url=None):
             'project': project['_id'],
         },
         'sort': [('_created', -1)],
-        'max_results': 20,
+        'max_results': 15,
     }, api=api)
 
     # Fetch more info for each activity.
     for act in activities['_items']:
         act.actor_user = subquery.get_user_info(act.actor_user)
+        act.link = url_for_node(node_id=act.object)
 
     return render_template(
             'dillo/index.html',

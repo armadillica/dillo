@@ -91,25 +91,37 @@ li
 					ul
 						li
 							i.pi-spin.spin
-							span Fetching the goods...
+							span {{ _('Fetching the goods...') }}
 
 		| {% elif 'activities' in col_right %}
 		.welcome
-			h2 {{ _('Welcome to Dillo') }}
+			.welcome-title
+				.title {{ project.name }}
+				.summary {{ project.summary }}
+
+			.welcome-extra
+				| {{ project.description }}
 
 			.d-activity
+				.title {{ _('What\'s going on:') }}
+
 				| {% if col_right['activities']['_meta']['total'] %}
 				ul
 					| {% for act in col_right['activities']['_items'] %}
+					| {% if act.link %}
 					li
-						img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
-						span.date(title="{{ act._created }}") {{ act._created | pretty_date_time }}
-						span.actor {{ act['actor_user']['full_name'] }}
-						span.verb {{ act.verb }}
+						a(href="{{ act.link }}")
+							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
+							span.date(title="{{ act._created }}") {{ act._created | pretty_date_time }}
+							span.actor {{ act['actor_user']['full_name'] }}
+							span.verb {{ act.verb }}
+					| {% endif %}
 					| {% endfor %}
 				| {% else %}
-				p No activity (yet)!
+				p No activity... yet!
 				| {% endif %}
+
+
 		| {% endif %}
 
 |{% endblock body %}
