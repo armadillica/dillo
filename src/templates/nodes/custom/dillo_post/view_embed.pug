@@ -7,9 +7,11 @@
 	.item-view-header
 		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
 			i.pi-cancel-circle
+
 		.item-content(
 			id="{{ node._id }}",
 			data-node-id="{{ node._id }}")
+
 			.item-rating-box(
 				class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
 				.item-rating.up
@@ -17,6 +19,7 @@
 				.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
 				.item-rating.down
 					i.pi-angle-down
+
 			.item-details
 				| {% if node.properties.post_type == 'link' %}
 				a#item-title.item-title(
@@ -81,21 +84,21 @@
 			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
 			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 				i.pi-edit
-				| Edit Post
+				| {{ _('Edit Post') }}
 			| {% endif %}
 			a.social(
-				title="Share on Facebook",
+				title="{{ _('Share on Facebook') }}",
 				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
 				target="_blank")
 				i.pi-social-facebook
-				| Share
+				| {{ _('Share') }}
 
 			a.social(
-				title="Share on Twitter",
+				title="{{ _('Share on Twitter') }}",
 				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
 				target="_blank")
 				i.pi-social-twitter
-				| Tweet
+				| {{ _('Tweet') }}
 
 	#item-comments
 		#comments-embed

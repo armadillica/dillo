@@ -125,7 +125,6 @@ html(lang='en')
 								.btn-group.submit
 									a.btn.btn-submit(
 										href="{{ url_for('users.login') }}",
-										data-action="publish",
 										title="{{ _('Submit a Link [Shift+A]')}}")
 										i.pi-link
 										span {{ _('Submit Link') }}
@@ -137,9 +136,9 @@ html(lang='en')
 											li
 												a(
 													href="{{ url_for('users.login') }}",
-													title="Submit a Text post")
+													title="{{ _('Write a Post') }}")
 													i.pi-document-text
-													| {{ _('Submit Text') }}
+													|  {{ _('Write a Post') }}
 
 							li
 								a.nav-item.login(href="{{ url_for('users.login') }}")

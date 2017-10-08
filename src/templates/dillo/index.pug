@@ -61,7 +61,7 @@ li
 				li
 					a(
 						href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
-						title="Write a Text post")
+						title="{{ _('Write a Post') }}")
 						i.pi-document-text
 						|  {{ _('Write a Post') }}
 | {% endblock submit_btn %}
@@ -118,7 +118,7 @@ li
 					| {% endif %}
 					| {% endfor %}
 				| {% else %}
-				p No activity... yet!
+				p {{ _('No activity... yet!') }}
 				| {% endif %}
 
 

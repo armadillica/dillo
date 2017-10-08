@@ -12,7 +12,7 @@
 			action="{{url_for('nodes.edit', node_id=node._id)}}")
 
 				.input-content.link
-					label(for="content") URL
+					label(for="content") {{ _('URL') }}
 					input(
 					disabled,
 					name="content",
@@ -30,7 +30,7 @@
 					value="{{ node.name }}",
 					type="text",
 					name="name",
-					placeholder="Awesome Post Title")
+					placeholder="{{ _('Awesome Post Title') }}")
 
 
 				.input-content.text
@@ -40,7 +40,7 @@
 					name="content",
 					class="input-field",
 					minlength="5",
-					placeholder="Witty post description")
+					placeholder="{{ _('Witty post description') }}")
 						| {{ node.properties.content }}
 
 					span.content-extra
@@ -94,7 +94,7 @@
 		.item-edit-header
 			| {% if node.properties.status != 'pending' %}
 			.item-status
-				| Status:
+				| {{ _('Status') }}:
 				span {{ node.properties.status | undertitle }}
 			| {% endif %}
 			.item-edit-header-action
@@ -117,7 +117,7 @@
 				| {% if node.properties.status != 'published' %}
 				button.item-save-publish.btn.btn-success(
 				data-action="publish",
-				title="Make post publicly available")
+				title="{{ _('Make post publicly available!') }}")
 					i.pi-check
 					| {{ _('Publish!') }}!
 				| {% else %}
