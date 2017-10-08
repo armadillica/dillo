@@ -32,9 +32,6 @@
   overflow-y: auto
   padding-left: 0 !important // override sidebar offset from Pillar
 
-  &.nav-refine-expanded
-    padding-top: 94px !important // hardcoded for now
-
   .fullscreen-overlay
     display: none
     pointer-events: none
@@ -46,10 +43,9 @@
       bottom: 0
       display: flex
       left: 0
-      padding-top: $header-height
       position: fixed
       right: 0
-      top: 0
+      top: $header-height
 
     position: absolute
     width: 100%
@@ -101,7 +97,7 @@
 
 #col_main
   +media-xs
-    padding-top: $header-height
+    top: $header-height
   +media-lg
     width: 45%
 
@@ -262,7 +258,7 @@ button, .btn
 
     +media-xs
       border-radius: 999em
-      height: 50px
+      padding: 10px
       width: 60px
 
       > i
@@ -293,7 +289,7 @@ button, .btn
     font-size: 1em
     padding-right: 10px
 
-  button, .btn
+  button, .btn, a.btn
     border-top-right-radius: 0 !important
     border-bottom-right-radius: 0 !important
 
@@ -350,6 +346,8 @@ nav
           top: 2px
 
         a.login
+          +media-xs
+            margin-right: 0
           border: thin solid $color-primary
           border-radius: 3px
           margin-right: 15px
@@ -529,6 +527,7 @@ h1 .emoji
     flex-wrap: wrap
     flex-direction: column
     justify-content: center
+    min-height: $header-height
 
   background-color: $color-background-lighter
   box-shadow: 0 1px 3px rgba(black, .1)
@@ -569,6 +568,11 @@ h1 .emoji
       +position-center-translate
       margin: 0 5px
       max-width: 100%
+
+    &.no-logo
+      background-color: $color-background
+      border-radius: 50%
+      color: $color-background-darker
 
   &-title
     +media-xs
@@ -620,12 +624,18 @@ h1 .emoji
 
 
   &-toggle-nav
-    font-size: 1.8em
+    +media-xs
+      display: block
+      visibility: visible
+
     color: $color-text-dark-secondary
-    left: 60px
+    display: none
+    font-size: 1.8em
+    left: 50px
     padding: 4px 8px
     position: fixed
     top: 0
+    visibility: hidden
     z-index: 11
 
     &.active

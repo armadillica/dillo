@@ -144,7 +144,7 @@ $('body').on('click', '.js-item-open', function(e){
 	item_open(hit_id, hit_url);
 
 	if (isMobile()){
-		enterFullscreen();
+		viewPostMobile();
 	}
 
 	ga('send', 'event', 'ui', 'open', $(this).attr('class'));

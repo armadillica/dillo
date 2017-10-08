@@ -1,14 +1,28 @@
 /* UI Stuff */
 var global_container = document.getElementById('app-main');
 
+// Set the overall height of the page
+// Used by containerResizeY and toggleNavRefine
+function setAppHeight(height){
+
+	if (typeof height !== 'undefined'){
+		$('#app-main, #col_main, #col_right').css({
+			'height': height + 'px',
+			'max-height': height + 'px'
+		});
+	}
+}
+
 function containerResizeY(window_height){
 
 	var height = window_height - global_container.offsetTop;
+	var header_height = $('.d-header').height();
 
-	$('#app-main, #col_main, #col_right').css({
-		'height': height + 'px',
-		'max-height': height + 'px'
-	});
+	if (isMobile()){
+		height = height - header_height;
+	}
+
+	setAppHeight(height);
 }
 
 $(window).on("load resize",function(){
@@ -147,20 +161,42 @@ $('.wgt-toggle-submit').on('click', function(){
 });
 
 
-
-// Navigation on mobile
+// Mobile Navigation
 function toggleNavRefine(){
 
-	$('.btn-group.submit').toggle();
+	var header_height = $('.d-header').height();
+	var col_main = document.getElementById('col_main');
+	var height = window.innerHeight - header_height;
+	var offset = header_height;
 
+	$('.btn-group.submit').toggle();
+	$('.d-header-toggle-nav').toggleClass('active');
 	$('.d-header-action.refine').toggleClass('active');
 	$('#col_main, #col_right').toggleClass('nav-refine-expanded');
+
+
+	if ($('.d-header-action.refine').hasClass('active')){
+		offset = $('.d-header').height() + $('.d-header-action.refine').height() + 12;
+		height = window.innerHeight - col_main.offsetTop;
+	}
+
+	$('#col_main, #col_right').css('top', offset);
+
+	setAppHeight(height);
 }
 
+
 $('.d-header-toggle-nav').on('click', function(){
-	$(this).toggleClass('active');
 	toggleNavRefine();
 });
+
+function viewPostMobile(){
+	enterFullscreen();
+
+	if ($('.d-header-action.refine').hasClass('active')){
+		toggleNavRefine();
+	}
+}
 
 
 // Initialize Shortcuts
