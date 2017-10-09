@@ -572,9 +572,12 @@ h1 .emoji
       max-width: 100%
 
     &.no-logo
-      background-color: $color-background
-      border-radius: 50%
-      color: $color-background-darker
+      i
+        +position-center-translate
+        background-color: $color-background
+        border-radius: 50%
+        color: $color-background-darker
+        padding: 8px
 
   &-title
     +media-xs
