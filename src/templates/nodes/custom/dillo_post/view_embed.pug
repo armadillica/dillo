@@ -31,7 +31,7 @@
 				ul
 					li#item-category {{ node.properties.category | undertitle }}
 					li
-						a(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
+						a.item-date(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 							| {{ node._created | pretty_date }}
 					li
 						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
@@ -124,8 +124,9 @@ script.
 	var page_title = '{{ node.name }} — {{ main_project.name }}';
 	DocumentTitleAPI.set_page_title(page_title);
 
-	// Parse emojis
+	// Parse emojis (very important! :) and date with momentjs (so it gets translations)
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
+	$('a.item-date').text(moment('{{ node._created }}').fromNow());
 
 	{% if node.properties.post_type == 'text' %}
 		var item_content = $('#item-content');
