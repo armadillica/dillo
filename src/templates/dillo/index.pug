@@ -198,7 +198,9 @@ script.
 						'<li>{{ category }}</li>' +
 						'<li class="item-date">{{ created }}</li>' +
 						'<li class="item-author"><a class="js-follow-link" href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
+						'{{#comments_count}}' +
 						'<li class="item-comments">{{ comments_count }} <i class="pi-comment"></i></li>' +
+						'{{/comments_count}}' +
 					'</ul>' +
 				'</div>' +
 			'</div>' +
