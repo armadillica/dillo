@@ -99,6 +99,13 @@ li
 				.title {{ project.name }}
 				.summary {{ project.summary }}
 
+				| {% if config.SETTINGS_TWITTER_USERNAME %}
+				ul.social
+					li
+						a(href="https://twitter.com/{{ config.SETTINGS_TWITTER_USERNAME }}")
+							i.pi-social-twitter
+				| {% endif %}
+
 			.welcome-extra
 				| {{ project.description | markdown }}
 

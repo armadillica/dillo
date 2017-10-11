@@ -494,7 +494,7 @@ h1 .emoji
 
   &-title
     font-size: 1.8em
-    padding: 35px 15px 5px
+    padding: 35px 15px 10px
     text-align: center
 
     .summary
@@ -503,6 +503,21 @@ h1 .emoji
       display: inline-block
       font-size: $font-size
       position: relative
+
+    .social
+      background-color: $color-background-lighter
+      left: 50%
+      list-style-type: none
+      margin: 5px 0 0
+      padding: 0
+      position: absolute
+      transform: translateX(-50%)
+
+      a
+        color: $color-info
+
+        &:hover
+          color: lighten($color-info, 10%)
 
   &-extra
     border-top: thin solid $color-background-dark
