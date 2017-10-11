@@ -6,6 +6,7 @@ from pillarsdk import Node
 from pillarsdk import Project
 from pillar.web.users.routes import blueprint
 from pillar.web import system_util
+from pillar.web.utils import attach_project_pictures
 from pillar.web.utils import get_file
 
 log = logging.getLogger(__name__)
@@ -43,6 +44,8 @@ def users_view(username):
 
     main_project_url = current_app.config['DEFAULT_COMMUNITY']
     project = Project.find_by_url(main_project_url, api=api)
+
+    attach_project_pictures(project, api)
 
     return render_template(
             'dillo/user.html',
