@@ -29,6 +29,10 @@
 				span#item-title.item-title {{ node.name }}
 				| {% endif %}
 				ul
+					li
+						a.item-project(
+							href="{{ url_for('posts.index', community_url=project.url) }}"
+							target="_blank") {{ project.name }}
 					li#item-category {{ node.properties.category | undertitle }}
 					li
 						a.item-date(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
