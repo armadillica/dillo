@@ -141,15 +141,14 @@ $item-thumbnail-size: 80px
     position: absolute
 
     &::before
-      +position-center-translate
       align-items: center
       background-image: linear-gradient(45deg, $color-type-text, lighten($color-type-text, 8%))
       border-radius: 50%
-      color: white
+      color: $color-background-light
       content: '\e861'
       display: flex
       font-family: 'pillar-font'
-      font-size: 1.4em
+      font-size: 1.2em
       height: $item-thumbnail-size / 2
       justify-content: center
       width: $item-thumbnail-size / 2
@@ -222,7 +221,7 @@ $item-thumbnail-size: 80px
       padding: 0
       display: inline-block
       font-size: $font-size-small
-      padding: 5px 4px 8px
+      padding: 5px
       color: $color-text-light
 
       &:before
@@ -614,6 +613,8 @@ body[data-context="post-edit"]
 
 
   .comments-container
+    background-color: $color-background
+
     .comments-list-title
       padding: 10px 25px
 
@@ -633,6 +634,12 @@ body[data-context="post-edit"]
             display: none
 
       padding: 10px 10px 10px 25px
+
+      &.is-first
+        border-color: $color-background-dark
+
+      &.is-reply
+        box-shadow: inset 3px 0 0 $color-background-dark
 
   &.is-own
     .item-rating

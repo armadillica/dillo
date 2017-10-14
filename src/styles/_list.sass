@@ -9,8 +9,7 @@
       margin: 0
       box-shadow: inset 0 1px $color-background-dark
 
-
-    background-color: $color-background-lighter
+    background-color: $color-background-light
     border-radius: 3px
     box-shadow: 1px 2px 2px $color-background-dark
     cursor: pointer
@@ -18,7 +17,10 @@
     height: 100%
     margin: 8px 12px 8px 5px
     position: relative
-    transition: box-shadow 250ms ease-in-out
+    transition: background-color 150ms ease-in-out, box-shadow 250ms ease-in-out
+
+    &:hover
+      background-color: $color-background-lighter
 
     // Triangle on the right
     &:after
@@ -31,10 +33,10 @@
 
     &.active
       +media-xs
-        background-color: $color-background-light
+        background-color: $color-background-lighter
         box-shadow: 1px 2px 2px $color-background-dark, inset 5px 0 0  $color-secondary
-      box-shadow: 1px 2px 2px $color-background-dark, inset -4px 0 0  $color-secondary
       background-color: $color-background-lighter
+      box-shadow: 1px 2px 2px $color-background-dark, inset -4px 0 0  $color-secondary
 
       // Triangle on the right
       &:after
@@ -69,6 +71,7 @@
 
     .item-details
       ul
+        padding-bottom: 3px
         padding-right: 5px
 
       +media-xs
@@ -81,10 +84,13 @@
         font-size: 1em
       color: $color-text
       font-size: 1.1em
-      padding: 8px 10px 5px 0
+      padding: 8px 10px 3px 0
 
       &:hover
         color: $color-primary
+
+    .item-favicon img
+      top: 0
 
     .item-author
       +media-xs
