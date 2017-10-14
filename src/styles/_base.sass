@@ -78,6 +78,9 @@
       z-index: 1
       padding-left: 35px
 
+      .item-title
+        margin-right: 35px
+
       .item-media
         img
           max-width: 110%
@@ -317,7 +320,6 @@ select, textarea, input
   border-radius: 3px
 
   &:focus
-    background-color: white !important
     box-shadow: 1px 2px 2px $color-background-dark, inset 0 0 0 1px $color-primary-active
     border-color: $color-primary-active
 
@@ -448,7 +450,7 @@ ul.dropdown-menu
     position: absolute
     right: 15px
     top: 6px
-    color: $color-text-dark-primary
+    color: $color-text-hint
 
   input
     +media-xs
@@ -463,7 +465,7 @@ ul.dropdown-menu
     margin: 0 10px
 
     &::placeholder
-      color: $color-text-dark-primary
+      color: $color-text-hint
 
 
 .emoji
@@ -485,8 +487,10 @@ h1 .emoji
   vertical-align: middle
 
 .welcome
-  +container-box
   align-items: center
+  background-color: $color-background-light
+  border-radius: 3px
+  box-shadow: 1px 2px 2px rgba(black, .2)
   display: flex
   flex-direction: column
   margin: 8px
@@ -498,7 +502,7 @@ h1 .emoji
     text-align: center
 
     .summary
-      color: $color-text-dark-primary
+      color: $color-text-hint
       cursor: default
       display: inline-block
       font-size: $font-size
@@ -671,7 +675,7 @@ h1 .emoji
   padding: 15px 15px 25px
 
   .title
-    color: $color-text-dark-primary
+    color: $color-text-hint
     padding-bottom: 15px
 
   $activity-highlight-color: #00cc9f
@@ -679,7 +683,7 @@ h1 .emoji
     cursor: default
     margin: 0
     padding: 0
-    color: $color-text-dark-primary
+    color: $color-text-hint
     list-style: none
 
     li
@@ -687,7 +691,7 @@ h1 .emoji
       position: relative
 
       a
-        color: $color-text-dark-primary
+        color: $color-text-hint
         text-decoration: none
 
         &:hover
@@ -763,7 +767,7 @@ $wgt-dropdown-width: 150px
     background-color: $color-background-lighter
     box-shadow: inset 0 0 0 1px $color-background-dark
     border-radius: 3px
-    color: $color-primary
+    color: $color-text
     cursor: pointer
     display: flex
     font:
@@ -862,7 +866,7 @@ $wgt-dropdown-width: 150px
   &-disabled
     .wgt-pagination-link
       color: $color-text-dark-hint
-      background-color: $color-background-light
+      background-color: rgba($color-background-light, .5)
 
   &-active
     display: none

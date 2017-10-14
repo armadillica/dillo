@@ -155,7 +155,6 @@ $item-thumbnail-size: 80px
       width: $item-thumbnail-size / 2
 
     img
-      height: 100%
       object-fit: cover
 
 .item-content
@@ -189,11 +188,11 @@ $item-thumbnail-size: 80px
   justify-content: center
   height: 100%
 
-
   &.up, &.down
     +media-xs
       font-size: 1em
     font-size: 1.33em
+    color: $color-text-hint
     cursor: pointer
 
   &.up:hover
@@ -202,7 +201,7 @@ $item-thumbnail-size: 80px
     color: $color-vote-down
 
   &.value
-    color: $color-text-light
+    color: $color-text
     font-size: $font-size-small
 
 

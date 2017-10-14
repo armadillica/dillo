@@ -10,7 +10,8 @@ html(lang='en')
 		| {% block head %}{% endblock head %}
 		link(href='//fonts.googleapis.com/css?family=Oxygen|Open+Sans', rel='stylesheet', type='text/css')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
-		link(href="{{ url_for('static_dillo', filename='css/main.css', v=171120161) }}", rel='stylesheet')
+		link(href="{{ url_for('static_dillo', filename='css/main.css') }}", rel='stylesheet')
+		link(href="{{ url_for('static_dillo', filename='css/main_dark.css') }}", rel='stylesheet', disabled)
 
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
@@ -74,6 +75,10 @@ html(lang='en')
 										id="q",
 										type="text",
 										placeholder="{{ _('Search...') }}")
+							li
+								button.theme-toggle
+									i.pi-moon
+									| Toggle Theme
 
 				.d-header-toggle-nav
 					i.pi-menu
@@ -182,6 +187,20 @@ html(lang='en')
 		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 
 		script.
+
+			$('.theme-toggle').on('click', function(){
+
+				if ($('body').hasClass('theme-dark')){
+					document.getElementsByTagName("link").item(2).disabled = false;
+					document.getElementsByTagName("link").item(3).disabled = true;
+				} else {
+					document.getElementsByTagName("link").item(3).disabled = false;
+					document.getElementsByTagName("link").item(2).disabled = true;
+				}
+
+				$('body').toggleClass('theme-dark');
+			});
+
 			$(document).ready(function() {
 				{% if current_user.is_authenticated %}
 					// Check for new notifications in the background
