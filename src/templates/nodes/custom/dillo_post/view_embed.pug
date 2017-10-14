@@ -86,19 +86,24 @@
 				i.pi-edit
 				| {{ _('Edit Post') }}
 			| {% endif %}
+
 			a.social(
 				title="{{ _('Share on Facebook') }}",
 				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
 				target="_blank")
 				i.pi-social-facebook
-				| {{ _('Share') }}
 
 			a.social(
 				title="{{ _('Share on Twitter') }}",
 				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
 				target="_blank")
 				i.pi-social-twitter
-				| {{ _('Tweet') }}
+
+			a.social(
+				title="{{ _('Share on Reddit') }}",
+				href="http://www.reddit.com/submit?url={{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
+				target="_blank")
+				i.pi-social-reddit
 
 	#item-comments
 		#comments-embed
