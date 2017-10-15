@@ -131,6 +131,7 @@ class DilloExtension(PillarExtension):
             expiring links is not supported.
             """
 
+            # TODO: switch to get_main_project() from Pillar
             project = pillarsdk.Project.find_by_url('default-project', api=api)
             attach_project_pictures(project, api)
             return project
