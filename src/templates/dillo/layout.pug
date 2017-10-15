@@ -81,10 +81,6 @@ html(lang='en')
 										id="q",
 										type="text",
 										placeholder="{{ _('Search...') }}")
-							li
-								button.btn.theme-toggle
-									i.pi-moon
-									| Theme
 
 				.d-header-toggle-nav
 					i.pi-menu
@@ -126,6 +122,10 @@ html(lang='en')
 
 								ul.dropdown-menu.right
 									li
+										a.theme-toggle
+											i.pi-moon
+											| Night Mode
+									li
 										a(
 											href="{{ url_for('settings.profile') }}"
 											title="Settings")
@@ -134,10 +134,13 @@ html(lang='en')
 									li
 										a(
 											href="{{ url_for('users.logout') }}")
-											i.pi-log-out(title="Log Out")
+											i.pi-off(title="Log Out")
 											| {{ _("Log out") }}
 
 							| {% else %}
+							li
+								a.nav-item.theme-toggle
+									i.pi-moon
 							li
 								.btn-group.submit
 									a.btn.btn-submit(
@@ -194,7 +197,8 @@ html(lang='en')
 
 		script.
 
-			$('.theme-toggle').on('click', function(){
+			$('.theme-toggle').on('click', function(e){
+				e.preventDefault();
 
 				if ($('body').hasClass('theme-dark')){
 					document.getElementsByTagName("link").item(2).disabled = false;
