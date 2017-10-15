@@ -34,15 +34,15 @@
     &.active
       +media-xs
         background-color: $color-background-lighter
-        box-shadow: 1px 2px 2px $color-background-dark, inset 5px 0 0  $color-secondary
+        box-shadow: 1px 2px 2px $color-background-dark, inset 5px 0 0 var(--community-theme-accent, $color-primary)
       background-color: $color-background-lighter
-      box-shadow: 1px 2px 2px $color-background-dark, inset -4px 0 0  $color-secondary
+      box-shadow: 1px 2px 2px $color-background-dark, inset -4px 0 0 var(--community-theme-accent, $color-primary)
 
       // Triangle on the right
       &:after
         content: ''
         border: 6px solid transparent
-        border-left-color: $color-secondary
+        border-left-color: var(--community-theme-accent, $color-primary)
         position: absolute
         top: 50%
         transform: translateY(-50%)
@@ -54,10 +54,7 @@
         opacity: 1
 
       .item-title
-        color: darken($color-secondary, 5%)
-
-        &:hover
-          color: $color-secondary
+        color: var(--community-theme-accent, $color-primary)
 
     &.is-own
       .item-rating-box .item-rating.up,
@@ -79,6 +76,13 @@
           li
             font-size: .8em
 
+      .item-link
+        +media-lg
+          +text-overflow-ellipsis
+          display: block
+
+        display: none
+
     a.item-title
       +media-xs
         font-size: 1em
@@ -87,7 +91,7 @@
       padding: 8px 10px 3px 0
 
       &:hover
-        color: $color-primary
+        color: var(--community-theme-accent, $color-primary)
 
     .item-favicon img
       top: 0
@@ -125,18 +129,18 @@
   top: 0
 
   span.query
-    color: $color-secondary
+    color: var(--community-theme-accent, $color-primary)
     display: block
     font-size: $font-size-extra-large
     padding: 0 40px 10px
 
   .query-clear
     cursor: pointer
-    color: $color-primary
+    color: var(--community-theme-accent, $color-primary)
     font-size: $font-size-small
 
     &:hover
-      color: $color-primary
+      color: var(--community-theme-accent, $color-primary)
       text-decoration: underline
 
 .listing-view
@@ -149,7 +153,7 @@
     +media-xs
       font-size: $font-size * 1.2
 
-    color: $color-primary
+    color: var(--community-theme-accent, $color-primary)
     font-size: $font-size-extra-large
 
     .emoji

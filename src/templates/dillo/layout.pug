@@ -10,6 +10,14 @@ html(lang='en')
 		| {% block head %}{% endblock head %}
 		link(href='//fonts.googleapis.com/css?family=Oxygen|Open+Sans', rel='stylesheet', type='text/css')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
+
+		| {% block style %}
+		style(type="text/css").
+			:root {
+				--community-theme-accent: #00b7bf
+			}
+		| {% endblock style %}
+
 		link(href="{{ url_for('static_dillo', filename='css/main.css') }}", rel='stylesheet')
 		link(href="{{ url_for('static_dillo', filename='css/main_dark.css') }}", rel='stylesheet', disabled)
 
@@ -33,8 +41,6 @@ html(lang='en')
 		meta(property="og:image", content="{{ project.picture_header.thumbnail('h') }}")
 		| {% endif %}
 		| {% endblock og %}
-
-		| {% block style %}{% endblock style %}
 
 	body({% block bodyattrs %}{%endblock%})
 		#app-header
@@ -76,9 +82,9 @@ html(lang='en')
 										type="text",
 										placeholder="{{ _('Search...') }}")
 							li
-								button.theme-toggle
+								button.btn.theme-toggle
 									i.pi-moon
-									| Toggle Theme
+									| Theme
 
 				.d-header-toggle-nav
 					i.pi-menu
@@ -110,7 +116,7 @@ html(lang='en')
 										| {% include '_notifications.html' %}
 
 							li.dropdown.wgt-dropdown-toggle
-								.dropdown-toggle
+								.nav-item.dropdown-toggle
 									img.avatar(
 										src="{{ current_user.gravatar }}",
 										alt="Avatar")

@@ -5,7 +5,7 @@
   text-decoration: none
 
   em
-    color: $color-secondary
+    color: var(--community-theme-accent, $color-primary)
     font-style: normal
 
 .item-media
@@ -75,7 +75,7 @@ $item-thumbnail-size: 80px
       transition: border-color 100ms ease-in-out, transform 100ms ease-in-out
 
       &.active
-        border-color: $color-secondary
+        border-color: var(--community-theme-accent, $color-primary)
         box-shadow: rgba(black, .25) 0px 1px 4px -1px, 0 0 25px rgba(black, .25)
         transform: scale(1)
 
@@ -244,7 +244,7 @@ $item-thumbnail-size: 80px
         color: $color-text-light
 
         &:hover
-          color: $color-primary
+          color: var(--community-theme-accent, $color-primary)
           text-decoration: underline
 
       img
@@ -324,13 +324,13 @@ $item-thumbnail-size: 80px
       padding: 10px 5px
 
       &:hover
-        color: $color-primary
+        color: var(--community-theme-accent, $color-primary)
 
   &-edit
     padding-left: 10px
 
     a
-      color: $color-primary
+      color: var(--community-theme-accent, $color-primary)
 
 
 /* Edit */
@@ -376,7 +376,7 @@ body[data-context="post-edit"]
       flex-direction: column
 
       #name
-        color: $color-primary
+        color: var(--community-theme-accent, $color-primary)
         padding: 10px
 
       #content
@@ -393,7 +393,7 @@ body[data-context="post-edit"]
         a
           color: $color-text-hint
           &:hover
-            color: $color-primary
+            color: var(--community-theme-accent, $color-primary)
 
       #category
         padding: 10px
@@ -486,11 +486,11 @@ body[data-context="post-edit"]
             color: $color-text-dark-secondary
 
           &:focus
-            background-color: $color-primary-active !important
+            background-color: $color-background-darker
             color: white
 
             &::placeholder
-              color: rgba($color-background-lighter, .9)
+              color: rgba($color-text, .6)
 
       .input-content.text,
       span.content-extra
@@ -585,8 +585,8 @@ body[data-context="post-edit"]
         word-break: break-all
 
         &:hover
+          color: var(--community-theme-accent, $color-primary)
           text-decoration: underline
-          color: $color-primary
 
       img.favicon
         +media-xs
@@ -614,6 +614,12 @@ body[data-context="post-edit"]
 
   .comments-container
     background-color: $color-background
+
+    .sign-in a
+      color: var(--community-theme-accent, $color-primary) !important
+
+    .comment-action-reply span
+      color: var(--community-theme-accent, $color-primary)
 
     .comments-list-title
       padding: 10px 25px

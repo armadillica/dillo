@@ -3,11 +3,13 @@
   height: 5px
 
 ::-webkit-scrollbar-track
-  background-color: $color-background-dark
+  background-color: rgba($color-background-darker, .2)
 
 ::-webkit-scrollbar-thumb
-  background-color: rgba($color-background-darker, .3)
+  background-color: var(--community-theme-accent, $color-primary)
 
+a
+  color: var(--community-theme-accent, $color-primary)
 
 // Override Pillar's notifications style
 #notifications
@@ -21,6 +23,10 @@
 
   right: 15px
   top: 55px
+
+
+#col_main::-webkit-scrollbar-track
+  background-color: $color-background-dark
 
 #col_main::-webkit-scrollbar-thumb
   background-color: transparent
@@ -126,7 +132,7 @@
   flex-direction: column
 
 #app-loader
-  background-color: $color-secondary
+  background-color: var(--community-theme-accent, $color-primary)
   height: 0
   left: 0
   position: absolute
@@ -138,7 +144,7 @@
   opacity: 0
   transition: all ease-in-out 50ms
 
-  background: linear-gradient(45deg, lighten($color-primary, 40%), $color-secondary, $color-secondary, lighten($color-primary, 40%))
+  background: linear-gradient(45deg, var(--community-theme-accent, $color-primary), white, white, var(--community-theme-accent, $color-primary))
   background-size: 50% 100%
   -webkit-animation: none
   -moz-animation: none
@@ -185,7 +191,8 @@
 
   &.submit
     .overlay-background
-      background: rgba($color-primary, .8)
+      background: var(--community-theme-accent, $color-primary)
+      opacity: .5
 
     .dialog-box
       top: 0
@@ -219,27 +226,22 @@
       display: none
 
 .app-branding
-  color: $color-primary
+  color: var(--community-theme-accent, $color-primary)
   font-size: $font-size-large
   padding: 10px
   text-decoration: none
 
-button, .btn
-  padding-top: 4px
-  padding-bottom: 4px
-  white-space: nowrap
+.btn
 
-  +button($color-primary, 3px, false)
-  text-decoration: none
-  font-weight: bold
-  font-size: $font-size-small
+  +button-dillo($color-background, 5px, false)
 
   &.publish
-    +button($color-success, 3px, true)
+    +button-dillo($color-success, 5px, true)
   &.cancel
-    +button($color-text-light, 3px)
+    +button-dillo($color-text-light, 5px)
+    margin-right: 10px
   &.delete
-    +button($color-danger, 3px)
+    +button-dillo($color-danger, 5px)
   &.preview
     display: none
 
@@ -247,20 +249,20 @@ button, .btn
       display: block
 
   &.btn-success
-    +button($color-success, 3px, true)
+    +button-dillo($color-success, 5px, true)
   &.btn-info
-    +button($color-info, 3px, true)
+    +button-dillo($color-info, 5px, true)
   &.btn-danger
-    +button($color-danger, 3px, true)
+    +button-dillo($color-danger, 5px, true)
   &.btn-warning
-    +button($color-warning, 3px, true)
+    +button-dillo($color-warning, 5px, true)
 
   &.btn-submit
-    +button($color-primary-active, 3px, true)
+    +button-dillo(var(--community-theme-accent, $color-primary), 5px, true)
     font-size: inherit
 
     +media-xs
-      border-radius: 999em
+      border-radius: 5px
       padding: 10px
       width: 60px
 
@@ -288,6 +290,15 @@ button, .btn
       .dropdown-menu
         top: -125%
 
+    .dropdown-menu
+      background-color: var(--community-theme-accent, $color-primary)
+      border-radius: 5px
+      top: 125%
+
+      a
+        color: white
+        font-weight: bold
+
   label
     font-size: 1em
     padding-right: 10px
@@ -308,20 +319,24 @@ button, .btn
       padding-right: 5px
       border-top-left-radius: 0 !important
       border-bottom-left-radius: 0 !important
-      border-top-right-radius: 3px !important
-      border-bottom-right-radius: 3px !important
+      border-top-right-radius: 5px !important
+      border-bottom-right-radius: 5px !important
 
       > i
         margin: 0
 
 
 select, textarea, input
+  border-radius: 5px
   box-shadow: 1px 2px 2px $color-background-dark
-  border-radius: 3px
 
   &:focus
-    box-shadow: 1px 2px 2px $color-background-dark, inset 0 0 0 1px $color-primary-active
-    border-color: $color-primary-active
+    box-shadow: 1px 2px 2px $color-background-dark, inset 0 0 0 1px var(--community-theme-accent, $color-primary)
+    border-color: var(--community-theme-accent, $color-primary)
+
+  option
+    color: $color-text
+    background-color: $color-background
 
 /* Navigation */
 nav
@@ -350,20 +365,21 @@ nav
         a.login
           +media-xs
             margin-right: 0
-          border: thin solid $color-primary
+          border: thin solid var(--community-theme-accent, $color-primary)
           border-radius: 3px
           margin-right: 15px
           padding: 5px 25px
           text-decoration: none
 
         &.nav-notifications
-          .navbar-item
+          .nav-item
             background-color: $color-background
             border-radius: 50%
+            color: $color-text
             padding: 4px
 
             &.active
-              background-color: $color-primary
+              background-color: var(--community-theme-accent, $color-primary)
               color: $color-background-lighter
 
           #notifications-toggle
@@ -371,12 +387,14 @@ nav
               top: 0
               right: -5px
 
+        .nav-item
+          transition: transform 100ms ease-in-out
+
+          &:hover
+            transform: scale(1.1)
+
 .dropdown-toggle
   cursor: pointer
-
-  &:hover
-    img.avatar
-      transform: scale(1.1)
 
   img.avatar
     border-radius: 50%
@@ -385,7 +403,7 @@ nav
     background-color: $color-background-light
     padding: 3px
     margin-right: 10px
-    transition: transform 100ms ease-in-out, background-color 150ms ease-in-out
+    transition: background-color 150ms ease-in-out
 
   .dropdown-toggle-icon
     position: absolute
@@ -433,7 +451,7 @@ ul.dropdown-menu
       width: 100%
 
       &:hover
-        color: $color-primary-active
+        color: var(--community-theme-accent, $color-primary)
 
       i
         display: inline-block
@@ -455,7 +473,7 @@ ul.dropdown-menu
   input
     +media-xs
       width: 100px
-    background-color: rgba($color-background, .8)
+    background-color: rgba($color-background, .5)
     padding: 6px 10px
     border: none
     border-radius: 3px
@@ -465,7 +483,7 @@ ul.dropdown-menu
     margin: 0 10px
 
     &::placeholder
-      color: $color-text-hint
+      color: $color-text
 
 
 .emoji
@@ -663,7 +681,7 @@ h1 .emoji
     z-index: 11
 
     &.active
-      color: $color-secondary
+      color: var(--community-theme-accent, $color-primary)
 
       > i:before
         content: '\e84b'
@@ -752,7 +770,7 @@ h1 .emoji
   cursor: pointer
 
   &.active
-    color: $color-secondary
+    color: var(--community-theme-accent, $color-primary)
 
 
 $wgt-dropdown-width: 150px
@@ -785,7 +803,7 @@ $wgt-dropdown-width: 150px
       margin-left: auto
 
     &:hover
-      color: $color-secondary
+      color: var(--community-theme-accent, $color-primary)
 
   &-body
     border: thin solid $color-background-dark
@@ -811,12 +829,12 @@ $wgt-dropdown-width: 150px
 
     &:hover
       background-color: $color-background-lighter
-      color: $color-secondary
+      color: var(--community-theme-accent, $color-primary)
 
   &-active
     .wgt-dropdown-link
       background-color: $color-background-lighter
-      color: $color-secondary
+      color: var(--community-theme-accent, $color-primary)
       box-shadow: inset 3px 0 $color-secondary
 
   &-count
@@ -826,13 +844,13 @@ $wgt-dropdown-width: 150px
   &-toggle
     &.active
       .wgt-dropdown-header
-        color: $color-secondary
+        color: var(--community-theme-accent, $color-primary)
 
         &:after
           content: '\e83b'
 
       img.avatar
-        background-color: $color-primary
+        background-color: var(--community-theme-accent, $color-primary)
 
 
 .wgt-pagination
@@ -862,7 +880,7 @@ $wgt-dropdown-width: 150px
     user-select: none
 
     &:hover
-      color: $color-secondary
+      color: var(--community-theme-accent, $color-primary)
 
   &-disabled
     .wgt-pagination-link
@@ -900,7 +918,7 @@ $wgt-dropdown-width: 150px
     padding: 10px 5px
 
     &:hover
-      color: $color-secondary
+      color: var(--community-theme-accent, $color-primary)
 
 
 .wgt-refined-values
@@ -911,13 +929,12 @@ $wgt-dropdown-width: 150px
     &:hover
       .wgt-refined-values-link,
       .wgt-refined-values-clear
-        color: $color-secondary
+        color: var(--community-theme-accent, $color-primary)
 
   &-count
     display: none
 
   &-clear
-    color: $color-text-dark-hint
     font-size: $font-size-small
     padding-right: 5px
     position: relative
@@ -925,7 +942,7 @@ $wgt-dropdown-width: 150px
 
   &-link
     align-items: center
-    color: $color-primary
+    color: var(--community-theme-accent, $color-primary)
     cursor: pointer
     display: flex
     font:
