@@ -13,6 +13,7 @@ function setAppHeight(height){
 	}
 }
 
+
 function containerResizeY(window_height){
 
 	var height = window_height - global_container.offsetTop;
@@ -29,6 +30,8 @@ $(window).on("load resize",function(){
 	containerResizeY(window.innerHeight);
 });
 
+
+// Make URLs shorter, just a cosmetic change
 function shortenUrl(url){
 
 	if (typeof url !== 'undefined')
@@ -159,6 +162,24 @@ function toggleSubmit(){
 $('.wgt-toggle-submit').on('click', function(){
 	toggleSubmit();
 });
+
+
+
+function themeSwap(){
+
+	if ($('body').hasClass('theme-dark')){
+		Cookies.remove('theme');
+		document.getElementsByTagName("link").item(2).disabled = false;
+		document.getElementsByTagName("link").item(3).disabled = true;
+	} else {
+		Cookies.set('theme', 'dark');
+		document.getElementsByTagName("link").item(3).disabled = false;
+		document.getElementsByTagName("link").item(2).disabled = true;
+	}
+
+	$('body').toggleClass('theme-dark');
+}
+
 
 
 // Mobile Navigation

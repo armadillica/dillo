@@ -18,8 +18,8 @@ html(lang='en')
 			}
 		| {% endblock style %}
 
-		link(href="{{ url_for('static_dillo', filename='css/main.css') }}", rel='stylesheet')
-		link(href="{{ url_for('static_dillo', filename='css/main_dark.css') }}", rel='stylesheet', disabled)
+		link(rel='stylesheet', type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
+		link(rel='stylesheet', type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}", disabled)
 
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
@@ -122,9 +122,10 @@ html(lang='en')
 
 								ul.dropdown-menu.right
 									li
-										a.theme-toggle
+										a.theme-toggle(
+											title="{{ _('Turn off the lights') }}")
 											i.pi-moon
-											| Night Mode
+											| {{ _("Night Mode") }}
 									li
 										a(
 											href="{{ url_for('settings.profile') }}"
@@ -200,15 +201,7 @@ html(lang='en')
 			$('.theme-toggle').on('click', function(e){
 				e.preventDefault();
 
-				if ($('body').hasClass('theme-dark')){
-					document.getElementsByTagName("link").item(2).disabled = false;
-					document.getElementsByTagName("link").item(3).disabled = true;
-				} else {
-					document.getElementsByTagName("link").item(3).disabled = false;
-					document.getElementsByTagName("link").item(2).disabled = true;
-				}
-
-				$('body').toggleClass('theme-dark');
+				themeSwap();
 			});
 
 			$(document).ready(function() {
