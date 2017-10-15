@@ -1,4 +1,3 @@
-
 | {% if (current_user.user_id | string) == node.user._id %}
 | {% set is_own = 'is-own' %}
 | {% endif %}
@@ -45,12 +44,19 @@
 	| {% if node.properties.post_type == 'text' %}
 	.item-body#item-content
 		.item-body-text
+			| {% if node.properties.content_html %}
 			| {{ node.properties.content_html }}
+			| {% else %}
+			p {{ _('Write something nice.') }}
+			| {% endif %}
+
+
 	| {% if node.picture %}
 	.item-media#item-media
 		img(src="{{ node.picture.thumbnail('l', api=api) }}")
 	| {% endif %}
 	| {% endif %}
+
 
 	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
 	.item-body#item-content
@@ -66,11 +72,13 @@
 		| {% endif %}
 	| {% endif %}
 
+
 	| {# If it's a link with oembed support #}
 	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
 	.item-media.oembed#item-media
 		| {{ node.properties.content_html | safe }}
 	| {% endif %}
+
 
 	.item-info-panel
 		.item-info-op
@@ -111,6 +119,7 @@
 
 	#item-comments
 		#comments-embed
+
 
 script.
 
