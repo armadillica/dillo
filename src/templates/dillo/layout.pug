@@ -18,8 +18,16 @@ html(lang='en')
 			}
 		| {% endblock style %}
 
-		link(rel='stylesheet', type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
-		link(rel='stylesheet', type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}", disabled)
+		script(src="{{ url_for('static_dillo', filename='js/vendor/js-cookie-2.1.4.min.js', v=171120161) }}")
+
+
+		link(rel='stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
+		link(disabled, rel='alternate stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}")
+
+		script.
+			if (Cookies.get('theme') == 'dark'){
+				document.getElementsByTagName("link").item(3).disabled = false;
+			};
 
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
@@ -140,7 +148,8 @@ html(lang='en')
 
 							| {% else %}
 							li
-								a.nav-item.theme-toggle
+								a.nav-item.theme-toggle(
+									title="{{ _('Turn off the lights') }}")
 									i.pi-moon
 							li
 								.btn-group.submit
@@ -197,13 +206,6 @@ html(lang='en')
 		script(src='https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
 
 		script.
-
-			$('.theme-toggle').on('click', function(e){
-				e.preventDefault();
-
-				themeSwap();
-			});
-
 			$(document).ready(function() {
 				{% if current_user.is_authenticated %}
 					// Check for new notifications in the background

@@ -164,10 +164,10 @@ $('.wgt-toggle-submit').on('click', function(){
 });
 
 
-
+// Swap the theme based on cookies
 function themeSwap(){
 
-	if ($('body').hasClass('theme-dark')){
+	if (Cookies.get('theme') == 'dark'){
 		Cookies.remove('theme');
 		document.getElementsByTagName("link").item(2).disabled = false;
 		document.getElementsByTagName("link").item(3).disabled = true;
@@ -176,10 +176,12 @@ function themeSwap(){
 		document.getElementsByTagName("link").item(3).disabled = false;
 		document.getElementsByTagName("link").item(2).disabled = true;
 	}
-
-	$('body').toggleClass('theme-dark');
 }
 
+$('.theme-toggle').on('click', function(e){
+	e.preventDefault();
+	themeSwap();
+});
 
 
 // Mobile Navigation
