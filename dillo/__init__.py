@@ -121,6 +121,8 @@ class DilloExtension(PillarExtension):
         return activities
 
     def context_processor(self):
+        api = pillar_api()
+
         @lru_cache(maxsize=1)
         def main_project():
             """Fetch the current project, including images.
@@ -128,11 +130,33 @@ class DilloExtension(PillarExtension):
             Because this is a cached function, using a storage solution with
             expiring links is not supported.
             """
-            api = pillar_api()
+
             project = pillarsdk.Project.find_by_url('default-project', api=api)
             attach_project_pictures(project, api)
             return project
-        return {'main_project': main_project()}
+
+        @lru_cache(maxsize=1)
+        def communities():
+            """Fetch all public communities."""
+
+            params = {
+                'where': {
+                    'extension_props.dillo': {'$exists': 1},
+                    'is_private': False,
+                },
+                'projection': {'picture_square': 1}
+            }
+
+            projects = pillarsdk.Project.all(params, api=api)
+            for project in projects['_items']:
+                attach_project_pictures(project, api)
+
+            return projects['_items']
+
+        return {
+            'main_project': main_project(),
+            'communities': communities(),
+        }
 
 
 def _get_current_dillo():
