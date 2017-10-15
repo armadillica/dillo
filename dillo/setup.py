@@ -69,7 +69,7 @@ def _ensure_user_main_group() -> ObjectId:
     grp_collection = current_app.data.driver.db['groups']
     dillo_user_main_group = grp_collection.find_one({'name': 'dillo_user_main'})
     if not dillo_user_main_group:
-        dillo_user_main, _, _, status = current_app.post_internal(
+        dillo_user_main_group, _, _, status = current_app.post_internal(
             'groups', {'name': 'dillo_user_main'})
         if status != 201:
             log.error('Unable to create dillo_user_main group')
