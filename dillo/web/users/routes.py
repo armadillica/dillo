@@ -48,7 +48,7 @@ def users_view(username):
     attach_project_pictures(project, api)
 
     return render_template(
-            'dillo/user.html',
-            user=user,
-            posts=posts,
-            project=project)
+        'dillo/user.html',
+        user=user,
+        posts=posts,
+        project=project)

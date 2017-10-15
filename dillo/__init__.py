@@ -73,13 +73,13 @@ class DilloExtension(PillarExtension):
         :rtype: list of flask.Blueprint objects.
         """
 
-        from . import routes
-        import dillo.posts.routes
-        import dillo.users.routes
+        import dillo.web.main.routes
+        import dillo.web.posts.routes
+        import dillo.web.users.routes
         return [
-            routes.blueprint,
-            dillo.posts.routes.blueprint,
-            dillo.users.routes.blueprint,
+            dillo.web.main.routes.blueprint,
+            dillo.web.posts.routes.blueprint,
+            dillo.web.users.routes.blueprint,
         ]
 
     @property

@@ -97,9 +97,9 @@ def index(community_url=None):
         act.link = url_for_node(node_id=act.object)
 
     return render_template(
-            'dillo/index.html',
-            col_right={'activities': activities},
-            project=project)
+        'dillo/index.html',
+        col_right={'activities': activities},
+        project=project)
 
 
 @blueprint.route("/p/<string(length=24):post_id>/rate/<operation>", methods=['POST'])
