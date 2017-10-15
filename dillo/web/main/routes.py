@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 @blueprint.route('/')
 def index():
-    return redirect(url_for('posts.index'))
+    return redirect(url_for('posts.index_all'))
 
 
 @login_required

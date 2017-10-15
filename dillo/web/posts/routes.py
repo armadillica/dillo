@@ -17,8 +17,9 @@ from pillarsdk.nodes import Node
 from pillar.web import subquery
 from pillar.web import system_util
 from pillar.web.nodes.routes import view as view_node
-from pillar.web.utils import get_file
 from pillar.web.utils import attach_project_pictures
+from pillar.web.utils import get_file
+from pillar.web.utils import get_main_project
 from pillar.web.nodes.routes import url_for_node
 
 from dillo import current_dillo
@@ -67,13 +68,25 @@ def create(community_url: str, post_type: str):
 
 
 @blueprint.route('/c/')
-@blueprint.route('/c/<community_url>/')
-def index(community_url=None):
-    api = system_util.pillar_api()
+def index_all():
+    """Aggregated view of all posts for the public communities.
 
-    if not community_url:
-        return redirect(url_for('posts.index',
-                                community_url=current_app.config['DEFAULT_COMMUNITY']))
+    If a user has a set of favourite communites in its settings, use those
+    instead.
+    """
+    api = system_util.pillar_api()
+    project = get_main_project()
+    attach_project_pictures(project, api)
+
+    return render_template(
+        'dillo/index.html',
+        col_right={'activities': {'_meta': {'total': 0}}},
+        project=project)
+
+
+@blueprint.route('/c/<community_url>/')
+def index(community_url):
+    api = system_util.pillar_api()
 
     project = Project.find_first({'where': {'url': community_url}}, api=api)
 

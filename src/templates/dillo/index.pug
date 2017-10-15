@@ -131,7 +131,7 @@ li
 
 		| {% endif %}
 
-|{% endblock body %}
+| {% endblock body %}
 
 | {% block footer_scripts %}
 script.
@@ -151,7 +151,7 @@ script.
 		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
 		urlSync: {},
 		searchParameters: {
-			facets: ['project._id']
+			disjunctiveFacets: ['project._id']
 		}
 	});
 
@@ -159,7 +159,16 @@ script.
 		init: function (options) {
 			// use options.helper (https://github.com/algolia/algoliasearch-helper-js) to initialize
 			// the search with custom filters & parameters
-			options.helper.addFacetRefinement('project._id', '{{ project._id }}');
+
+			// In case we are loading the index_all endpoint, add all communities to the facets, otherwise
+			// use only the one for the current project.
+			{% if main_project._id == project._id %}
+			{% for c in communities %}
+			options.helper.addDisjunctiveFacetRefinement('project._id', '{{ c._id }}');
+			{% endfor %}
+			{% else %}
+			options.helper.addDisjunctiveFacetRefinement('project._id', '{{ project._id }}');
+			{% endif %}
 		}
 	});
 
