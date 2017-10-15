@@ -64,16 +64,18 @@
 						li.item-author
 							a(href="/u/{{ user.username }}")
 								| {{ user.full_name }}
-						li.item-comments
-							a(href="{{ link_url }}")
-								| # {{ comments_count }}
-								i.pi-comment
 
 						| {% if is_link %}
 						li.item-link
 							a(href="{{ post.properties.content }}", target="_blank")
 								| {{ post.properties.content }}
 						| {% endif %}
+
+						li.item-comments
+							a(href="{{ link_url }}")
+								| # {{ comments_count }}
+								i.pi-comment
+
 
 		| {% endfor %}
 
