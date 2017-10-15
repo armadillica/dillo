@@ -144,7 +144,7 @@ class DilloExtension(PillarExtension):
                     'extension_props.dillo': {'$exists': 1},
                     'is_private': False,
                 },
-                'projection': {'picture_square': 1, 'url': 1, 'name': 1}
+                'projection': {'picture_square': 1, 'url': 1, 'name': 1, 'summary': 1}
             }
 
             projects = pillarsdk.Project.all(params, api=api)
