@@ -262,7 +262,7 @@ a
     font-size: inherit
 
     +media-xs
-      border-radius: 5px
+      border-radius: 999em
       padding: 10px
       width: 60px
 
@@ -556,17 +556,105 @@ h1 .emoji
     margin: 15px auto
     max-width: 600px
 
-.flyout.notifications
+.flyout
+  &.notifications
+    +media-xs
+      bottom: 0
+      box-shadow: none
+      left: 0
+      margin: 0
+      padding: 0
+      position: fixed
+      right: 0
+      top: 0
+    top: 40px
+
+  &.communities
+    +media-xs
+      bottom: 0
+      border: none
+      box-shadow: none
+      left: 0
+      right: 0
+      top: 0
+      width: 100%
+
+    left: 15px
+    position: absolute
+    top: 100%
+    width: 680px
+    max-width: 800px
+
+    .flyout
+      &-title
+        border-bottom: thin solid $color-background-dark
+
+      &-content
+        display: flex
+        flex-direction: column
+
+        ul
+          display: flex
+          flex-wrap: wrap
+          list-style: none
+          margin: 0
+          padding: 0
+
+          li
+            +media-xs
+              width: 100%
+            width: 50%
+
+.d-communities
   +media-xs
-    bottom: 0
-    box-shadow: none
-    left: 0
-    margin: 0
-    padding: 0
+    background-color: $color-background
     position: fixed
+    top: $header-height
+    bottom: 0
+    left: 0
     right: 0
-    top: 0
-  top: 40px
+    overflow-x: hidden
+    overflow-y: auto
+  display: none
+  visibility: hidden
+
+  &.active
+    display: block
+    visibility: visible
+
+  &-item
+    +media-xs
+      border-top: thin solid $color-background-dark
+    align-items: center
+    display: flex
+    padding: 15px
+    text-decoration: none
+
+    &:hover
+      background-color: $color-background-light
+
+      span.title
+        color: $color-primary
+
+    .d-header-logo
+      +media-xs
+        position: relative
+      height: 50px
+      pointer-events: none
+      width: 50px
+
+  &-info
+    display: flex
+    flex-direction: column
+    padding: 0 15px 0 25px
+
+    span.title
+      font-size: 1.3em
+      padding-bottom: 3px
+      color: $color-text
+
+    span.summary
+      color: $color-text
 
 
 .d-header

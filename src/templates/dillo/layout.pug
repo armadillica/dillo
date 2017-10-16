@@ -71,6 +71,30 @@ html(lang='en')
 					i.pi-grin
 				| {% endif %}
 
+				.d-communities
+					.flyout.communities
+						.flyout-hat
+						.flyout-content
+							.flyout-title Explore More Communities
+							ul
+								| {% for community in communities %}
+								li
+									a.d-communities-item(
+										href="{{ url_for('posts.index', community_url=community.url) }}",
+										title="{{ community.name }}")
+										| {% if community.picture_square %}
+										.d-header-logo
+											img(src="{{ community.picture_square.thumbnail('s') }}")
+										| {% else %}
+										.d-header-logo.no-logo
+											i.pi-grin
+										| {% endif %}
+
+										.d-communities-info
+											span.title {{ community.name }}
+											span.summary {{ community.summary }}
+								| {% endfor %}
+
 				.d-header-title
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
 						span {{ project.name }}

@@ -222,6 +222,14 @@ function viewPostMobile(){
 }
 
 
+// Toggle Communities List
+$('.d-header-logo').on('click', function(e){
+	e.preventDefault();
+
+	$('.d-communities').toggleClass('active');
+});
+
+
 // Initialize Shortcuts
 function initializeShortcuts(){
 	Mousetrap.bind('f', toggleFullscreen);
