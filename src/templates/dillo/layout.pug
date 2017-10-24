@@ -75,7 +75,7 @@ html(lang='en')
 					.flyout.communities
 						.flyout-hat
 						.flyout-content
-							.flyout-title Explore More Communities
+							a.flyout-title(href="{{ url_for('posts.index_all') }} ") Explore More Communities
 							ul
 								| {% for community in communities %}
 								li
@@ -84,7 +84,7 @@ html(lang='en')
 										title="{{ community.name }}")
 										| {% if community.picture_square %}
 										.d-header-logo
-											img(src="{{ community.picture_square.thumbnail('s') }}")
+											img(src="{{ community.picture_square.thumbnail('l') }}")
 										| {% else %}
 										.d-header-logo.no-logo
 											i.pi-grin
