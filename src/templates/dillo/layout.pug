@@ -12,7 +12,7 @@ html(lang='en')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
 
 		| {% block style %}
-		| {% if project.extension_props.dillo.community_css %}
+		| {% if project.extension_props.dillo and project.extension_props.dillo.community_css %}
 		style(type="text/css").
 			{{ project.extension_props.dillo.community_css }}
 		| {% endif %}
