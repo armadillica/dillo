@@ -115,7 +115,7 @@ li
 				| {% if col_right['activities']['_meta']['total'] %}
 				ul
 					| {% for act in col_right['activities']['_items'] %}
-					| {% if act.link %}
+					| {% if act.link and act['actor_user']['email'] %}
 					li
 						a(href="{{ act.link }}")
 							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
