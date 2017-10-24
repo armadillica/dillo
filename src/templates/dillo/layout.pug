@@ -208,8 +208,10 @@ html(lang='en')
 		#app-overlay
 			.overlay-background
 			.dialog-box
+				| {% if project.extension_props.dillo %}
 				.dialog-placeholder
 					i.pi-spin.spin
+				| {% endif %}
 
 		#notification-pop(data-url="", data-read-toggle="")
 			.nc-progress

@@ -51,6 +51,7 @@ meta(name="twitter:creator",
 | {% endblock og %}
 
 | {% block submit_btn %}
+| {% if project.extension_props.dillo %}
 li
 	.btn-group.submit
 		button.btn.btn-submit.wgt-toggle-submit(
@@ -69,6 +70,7 @@ li
 						title="{{ _('Write a Post') }}")
 						i.pi-document-text
 						|  {{ _('Write a Post') }}
+| {% endif %}
 | {% endblock submit_btn %}
 
 | {% block body %}
@@ -140,8 +142,6 @@ li
 
 | {% block footer_scripts %}
 script.
-
-	Cookies.getJSON('bcloud_moving_node');
 
 	// Check if we're logged in and store it to use later
 	var amAuthenticated = isAuthenticated();
