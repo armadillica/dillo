@@ -615,7 +615,7 @@ h1 .emoji
           flex-wrap: wrap
           list-style: none
           margin: 0
-          padding: 0
+          padding: 0 3px
 
           li
             +media-xs
@@ -643,12 +643,16 @@ h1 .emoji
     +media-xs
       border-top: thin solid $color-background-dark
     align-items: center
+    background-color: $color-background-light
+    border-radius: 3px
+    box-shadow: 1px 1px 2px rgba(black, .1)
     display: flex
-    padding: 15px
+    padding: 10px
+    margin: 5px
     text-decoration: none
 
     &:hover
-      background-color: $color-background-light
+      background-color: $color-background-lighter
 
       span.title
         color: $color-primary
@@ -675,11 +679,11 @@ h1 .emoji
 
   &-suggest
     width: 100% !important
-    background-color: $color-background-dark
 
     .d-communities-item
-      padding-bottom: 10px
-      padding-top: 10px
+      background: transparent
+      box-shadow: none
+      margin: 0
 
     .d-communities-info
       padding-left: 10px
