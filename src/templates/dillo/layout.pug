@@ -76,7 +76,8 @@ html(lang='en')
 					.flyout.communities
 						.flyout-hat
 						.flyout-content
-							a.flyout-title(href="{{ url_for('posts.index_all') }} ") Explore More Communities
+							a.flyout-title(href="{{ url_for('posts.index_all') }} ")
+								| {{ main_project.name }}
 							ul
 								| {% for community in communities %}
 								li
