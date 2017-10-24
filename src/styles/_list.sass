@@ -49,7 +49,6 @@
         right: -12px
         opacity: 1
 
-      .item-thumbnail,
       .item-favicon img
         opacity: 1
 
@@ -60,11 +59,23 @@
       .item-rating-box .item-rating.up,
       .item-rating-box .item-rating.down
         pointer-events: none
-        color: rgba($color-text-dark-hint, .6)
+        color: rgba($color-text-dark-hint, .4)
 
-    .item-thumbnail
-      opacity: .8
-      transition: opacity 250ms ease-in-out
+    &.is-featured
+      background-color: $color-background-lighter
+
+      &:before
+        background-color: $color-background-lighter
+        border-radius: 50%
+        padding: 5px
+        color: $color-danger
+        content: '\e85e'
+        display: block
+        font-family: 'pillar-font'
+        font-size: 1.2em
+        position: absolute
+        right: 7px
+        top: 5px
 
     .item-details
       ul

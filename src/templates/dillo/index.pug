@@ -188,7 +188,7 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<div class="list-hits-item {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
+		'<div class="list-hits-item {{ is_own }} {{ is_featured }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
 			'<a href="{{ url }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
@@ -259,6 +259,10 @@ script.
 			hit.is_link = 'is-link';
 			hit.link_url = hit.content;
 			hit.link_short = shortenUrl(hit.content);
+		}
+
+		if (hit.rating > 5){
+			hit.is_featured = 'is-featured';
 		}
 
 		if (amAuthenticated) {
