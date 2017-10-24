@@ -122,7 +122,7 @@ $(document).on('click', 'body .js-toggle-fullscreen', function(){
 
 
 // Submit Dialog Workflow
-function enterSubmit(){
+function enterSubmitDialog(){
 
 	// If not logged in, don't even bother
 	if (!isAuthenticated()){
@@ -144,23 +144,23 @@ function enterSubmit(){
 	Mousetrap.unbind('f');
 }
 
-function exitSubmit(){
+function exitSubmitDialog(){
 	$('#app-overlay').removeAttr('class');
 	unsetPreviousContext();
 
 	initializeShortcuts();
 }
 
-function toggleSubmit(){
+function toggleSubmitDialog(){
 	if (ProjectUtils.context() == 'post-submit-overlay'){
-		exitSubmit();
+		exitSubmitDialog();
 	} else {
-		enterSubmit();
+		enterSubmitDialog();
 	}
 }
 
 $('.wgt-toggle-submit').on('click', function(){
-	toggleSubmit();
+	toggleSubmitDialog();
 });
 
 
@@ -233,11 +233,11 @@ $('.d-header-logo').on('click', function(e){
 // Initialize Shortcuts
 function initializeShortcuts(){
 	Mousetrap.bind('f', toggleFullscreen);
-	Mousetrap.bind(['s', 'shift+a'], toggleSubmit);
+	Mousetrap.bind(['s', 'shift+a'], toggleSubmitDialog);
 
 	Mousetrap.bind('esc', function(e) {
 		if (ProjectUtils.context() == 'post-submit-overlay'){
-			exitSubmit();
+			exitSubmitDialog();
 		} else if (ProjectUtils.context() == 'post-fullscreen'){
 			exitFullscreen();
 		}

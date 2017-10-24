@@ -160,7 +160,7 @@ script.
 			// Pressing 'cancel' should just hide the dialog
 			$(document).on('click', 'body .js-cancel-submit', function(e){
 				e.preventDefault();
-				exitSubmit();
+				exitSubmitDialog();
 
 				ga('send', 'event', 'ui', 'dialog-cancel');
 			});
