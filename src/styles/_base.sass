@@ -493,7 +493,7 @@ ul.dropdown-menu
   input
     +media-xs
       width: 100px
-    background-color: rgba($color-background, .5)
+    background-color: $color-background-lighter
     padding: 6px 10px
     border: none
     border-radius: 3px
@@ -503,7 +503,7 @@ ul.dropdown-menu
     margin: 0 10px
 
     &::placeholder
-      color: $color-text
+      color: $color-text-hint
 
 
 .emoji
@@ -673,6 +673,24 @@ h1 .emoji
     span.summary
       color: $color-text
 
+  &-suggest
+    width: 100% !important
+    background-color: $color-background-dark
+
+    .d-communities-item
+      padding-bottom: 10px
+      padding-top: 10px
+
+    .d-communities-info
+      padding-left: 10px
+
+      .title
+        color: $color-text-dark-secondary
+        font-size: $font-size
+
+      .summary
+        color: $color-text-dark-secondary
+        font-size: $font-size-small
 
 .d-header
   +media-xs
@@ -730,20 +748,26 @@ h1 .emoji
         color: $color-text
         padding: 8px
 
+  // .d-header-title
   &-title
     +media-xs
       display: none
     display: flex
     flex-direction: column
     justify-content: center
-    padding-left: 25px
+    padding-left: 35px
 
     .title
+      background-color: var(--community-theme-accent, $color-primary)
+      border-radius: 3px
+      box-shadow: 1px 1px 1px 0 rgba(black, .2)
+      color: white
       font-size: $font-size-large
       text-decoration: none
+      padding: 4px 15px
 
-    .title span
-      +text-background($color-text-dark, $color-background-lighter, 0, 3px 0)
+    // .title span
+      // +text-background($color-text-dark, $color-background-lighter, 0, 3px 0)
 
   &-action
     align-items: center
@@ -998,8 +1022,7 @@ $wgt-dropdown-width: 150px
 
   &-disabled
     .wgt-pagination-link
-      color: $color-text-dark-hint
-      background-color: rgba($color-background-light, .5)
+      opacity: .2
 
   &-active
     display: none
@@ -1038,7 +1061,10 @@ $wgt-dropdown-width: 150px
 .wgt-refined-values
   &-body > div
     align-items: center
+    background-color: $color-background-lighter
+    border-radius: 3px
     display: flex
+    padding: 6px 8px
 
     &:hover
       .wgt-refined-values-link,

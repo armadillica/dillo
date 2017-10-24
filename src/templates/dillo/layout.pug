@@ -96,6 +96,15 @@ html(lang='en')
 											span.title {{ community.name }}
 											span.summary {{ community.summary }}
 								| {% endfor %}
+								li.d-communities-suggest
+									a.d-communities-item(
+										href="mailto:contact@blender.community",
+										title="Build Your Own Community")
+										.d-communities-info
+											span.title Build Your Own Community
+											span.summary.
+												We welcome international users or specialized Blender groups.
+												Tell us why your community belongs here.
 
 				.d-header-title
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")

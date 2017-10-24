@@ -277,6 +277,7 @@ $item-thumbnail-size: 80px
     display: flex
 
     .op-avatar
+      background-color: $color-background-dark
       box-shadow: 0 0 0 3px $color-background-lighter
       border-radius: 50%
       height: 40px
@@ -299,6 +300,7 @@ $item-thumbnail-size: 80px
       text-decoration: none
 
       &:hover
+        color: var(--community-theme-accent, $color-primary)
         text-decoration: underline
 
     .op-karma
@@ -467,7 +469,7 @@ body[data-context="post-edit"]
 
 
   &-tab
-    /* When the Link tab is active, hide/show some elements */
+    /* Hide/show some elements */
     &.link
       .input-content.link
         display: flex
@@ -574,18 +576,16 @@ body[data-context="post-edit"]
       display: flex
 
       .item-link-data
-        +media-xs
-        color: $color-text
+        +text-overflow-ellipsis
+        color: var(--community-theme-accent, $color-primary)
         display: block
         flex: 1
         font-size: $font-size-small
         line-height: $font-size
         padding: 10px 17px 15px
         text-decoration: none
-        word-break: break-all
 
         &:hover
-          color: var(--community-theme-accent, $color-primary)
           text-decoration: underline
 
       img.favicon
