@@ -211,6 +211,18 @@ a
   transition: top 500ms ease-out
   width: 100%
 
+  // In case the form can't be loaded
+  .dialog-placeholder
+    align-items: center
+    color: $color-text-dark-hint
+    display: flex
+    justify-content: center
+    height: 490px
+    font-size: 2em
+
+    i.spin
+      animation-duration: 5s
+
 .dialog-box
   #col_main
     background-color: initial
