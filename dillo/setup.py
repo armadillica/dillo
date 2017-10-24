@@ -124,6 +124,7 @@ def setup_for_dillo(project_url, replace=False):
     eprops = project.setdefault('extension_props', {})
     eprops.setdefault(EXTENSION_NAME, {
         'last_used_shortcodes': {},
+        'community_css': '',
     })
 
     _update_project(project)
