@@ -1,20 +1,25 @@
 | {% extends 'dillo/layout.html' %}
 | {% set page_name = 'posts-index' %}
 
+| {% if main_project._id == project._id %}
+| {% set is_main_project = 'main-project' %}
+| {% endif %}
+
 | {% block page_title %}
 | {{ (col_right['post'].name if 'post' in col_right else 'Home') }}
 | {% endblock page_title %}
 
 | {% block bodyattrs %}
 | {{ super() }}
-| class='{{ page_name }}{% if current_user.is_authenticated %} logged-in{% endif %}' data-context='{{ page_name }}'
+| class='{{ page_name }} {% if current_user.is_authenticated %}logged-in{% endif %} {{ is_main_project }}' data-context='{{ page_name }}'
 | {% endblock bodyattrs %}
 
 | {% block og %}
 | {% if 'post' in col_right %}
+
 meta(property="og:type", content="article")
-meta(property="og:title", content="{{ col_right['post'].name }} - {{ config.SETTINGS_TITLE | safe }}")
-meta(name="twitter:title" content="{{ col_right['post'].name }} - {{ config.SETTINGS_TITLE | safe }}")
+meta(property="og:title", content="{{ col_right['post'].name }} - {{ project.name }}{% if not is_main_project %} — {{ main_project.name }}{% endif %}")
+meta(name="twitter:title" content="{{ col_right['post'].name }} - {{ project.name }}{% if not is_main_project %} — {{ main_project.name }}{% endif %}")
 meta(property="og:url",
 		content="{{ url_for('posts.view', community_url=col_right['post'].project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True) }}")
 meta(property="article:published_time",
@@ -164,7 +169,7 @@ script.
 
 			// In case we are loading the index_all endpoint, add all communities to the facets, otherwise
 			// use only the one for the current project.
-			{% if main_project._id == project._id %}
+			{% if is_main_project %}
 			{% for c in communities %}
 			options.helper.addDisjunctiveFacetRefinement('project._id', '{{ c._id }}');
 			{% endfor %}
