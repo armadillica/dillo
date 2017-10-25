@@ -34,7 +34,7 @@
 							target="_blank") {{ project.name }}
 					li#item-tags
 						| {% for tag in node.properties.tags %}
-						| {{ tag }}
+						| {{ tag }}{{ ", " if not loop.last }}
 						| {% endfor %}
 					li
 						a.item-date(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
