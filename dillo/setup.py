@@ -124,7 +124,17 @@ def setup_for_dillo(project_url, replace=False):
     eprops = project.setdefault('extension_props', {})
     eprops.setdefault(EXTENSION_NAME, {
         'last_used_shortcodes': {},
-        'community_css': '',
+        'community_theme_css': '',
+        # The accent color (can be 'blue' or '#FFBBAA' or 'rgba(1, 1, 1, 1)
+        'community_theme_color': '',
+        # Social media handles for the community
+        'social': {
+            'twitter': '',
+            'youtube': '',
+            'facebook': '',
+        },
+        # A 16:9 image to be used with OpenGraph or others
+        'picture_16_9': None,
     })
 
     _update_project(project)
