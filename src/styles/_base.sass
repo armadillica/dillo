@@ -4,9 +4,11 @@
 
 ::-webkit-scrollbar-track
   background-color: rgba($color-background-darker, .2)
+  border-radius: 999em
 
 ::-webkit-scrollbar-thumb
   background-color: var(--community-theme-accent, $color-primary)
+  border-radius: 999em
 
 a
   color: var(--community-theme-accent, $color-primary)
@@ -31,8 +33,11 @@ a
 #col_main::-webkit-scrollbar-thumb
   background-color: transparent
 
+#col_main:hover::-webkit-scrollbar-track
+  background-color: rgba($color-background-darker, .2)
+
 #col_main:hover::-webkit-scrollbar-thumb
-  background-color: rgba($color-background-darker, .3)
+  background-color: var(--community-theme-accent, $color-primary)
 
 #col_right, #col_main
   overflow-y: auto
@@ -144,7 +149,7 @@ a
   opacity: 0
   transition: all ease-in-out 50ms
 
-  background: linear-gradient(45deg, var(--community-theme-accent, $color-primary), white, white, var(--community-theme-accent, $color-primary))
+  background: linear-gradient(45deg, var(--community-theme-accent, $color-primary), rgba(white, 0), rgba(white, 0), var(--community-theme-accent, $color-primary))
   background-size: 50% 100%
   -webkit-animation: none
   -moz-animation: none
@@ -481,6 +486,9 @@ ul.dropdown-menu
     display: flex
     visibility: visible
 
+.spin
+  animation-duration: 5s
+
 .wgt-search
   position: relative
 
@@ -494,13 +502,13 @@ ul.dropdown-menu
     +media-xs
       width: 100px
     background-color: $color-background-lighter
-    padding: 6px 10px
     border: none
     border-radius: 3px
-    box-shadow: none
-    width: auto
+    box-shadow: inset 0 0 0 1px $color-background-dark
     float: right
     margin: 0 10px
+    padding: 6px 10px
+    width: auto
 
     &::placeholder
       color: $color-text-hint
