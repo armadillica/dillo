@@ -364,11 +364,13 @@ script.
 
 	var onRenderHandler = function() {
 		twemoji.parse(document.body);
+	}
 
+	window.addEventListener('popstate', function(event) {
 		if (isMobile()){
 			exitFullscreen();
 		}
-	}
+	});
 
 	search.on('render', onRenderHandler);
 
