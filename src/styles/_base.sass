@@ -594,17 +594,19 @@ h1 .emoji
     left: 15px
     position: absolute
     top: 100%
-    width: 680px
-    max-width: 800px
 
     .flyout
       &-title
         border-bottom: thin solid $color-background-dark
         color: $color-text-dark
         cursor: pointer
+        font-size: 1.3em
+        font-weight: normal
+        text-decoration: none
 
         &:hover
           color: $color-text-dark-primary
+          text-decoration: underline
 
       &-content
         display: flex
@@ -613,14 +615,11 @@ h1 .emoji
         ul
           display: flex
           flex-wrap: wrap
+          flex-direction: column
           list-style: none
           margin: 0
           padding: 0 3px
 
-          li
-            +media-xs
-              width: 100%
-            width: 50%
 
 .d-communities
   +media-xs
@@ -647,7 +646,7 @@ h1 .emoji
     border-radius: 3px
     box-shadow: 1px 1px 2px rgba(black, .1)
     display: flex
-    padding: 10px
+    padding: 5px 10px
     margin: 5px
     text-decoration: none
 
