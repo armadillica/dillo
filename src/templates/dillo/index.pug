@@ -50,6 +50,30 @@ meta(name="twitter:creator",
 | {% endif %}
 | {% endblock og %}
 
+| {% block style %}
+| {# Build CSS rules for communities with custom theme color #}
+| {% if is_main_project %}
+style(type="text/css").
+	{% for c in communities %}
+		{% if c.extension_props.dillo and c.extension_props.dillo.community_theme_color %}
+		{% set theme_color = c.extension_props.dillo.community_theme_color %}
+
+		.list-hits-item.active.c-{{ c.url }}{
+			box-shadow: 1px 2px 2px rgba(0,0,0,0.1), inset -5px 0 0 {{ theme_color }};
+		}
+		.list-hits-item.active.c-{{ c.url }} .item-title,
+		.list-hits-item.active.c-{{ c.url }}:after,
+		.item-view.c-{{ c.url }} .item-title,
+		.item-view.c-{{ c.url }} a:hover,
+		.item-view.link.c-{{ c.url }} .item-body .item-link-data {
+			border-left-color: {{ theme_color }};
+			color: {{ theme_color }};
+		}
+		{% endif %}
+	{% endfor %}
+| {% endif %}
+| {% endblock style %}
+
 | {% block submit_btn %}
 | {% if submit_menu %}
 li
@@ -201,7 +225,7 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<div class="list-hits-item {{ is_own }} {{ is_featured }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
+		'<div class="list-hits-item c-{{ project.url }} {{ is_own }} {{ is_featured }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
 			'<a href="{{ url }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +

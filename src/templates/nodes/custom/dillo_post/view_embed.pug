@@ -2,7 +2,7 @@
 | {% set is_own = 'is-own' %}
 | {% endif %}
 .item-view(
-	class="{{ node.properties.post_type }} {{ is_own }}")
+	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
 	.item-view-header
 		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
 			i.pi-cancel-circle
