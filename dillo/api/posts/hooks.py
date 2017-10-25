@@ -247,3 +247,9 @@ def subscribe_to_activity(item):
 def after_inserting_posts(items):
     for item in items:
         subscribe_to_activity(item)
+
+
+@only_for_post
+def after_deleting_post(item):
+    from pillar.celery import algolia_tasks
+    algolia_tasks.algolia_index_node_delete.delay(str(item['_id']))
