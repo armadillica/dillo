@@ -5,7 +5,7 @@
   text-decoration: none
 
   em
-    color: var(--community-theme-accent, $color-primary)
+    color: var(--community-theme-color, $color-primary)
     font-style: normal
 
 .item-media
@@ -75,7 +75,7 @@ $item-thumbnail-size: 80px
       transition: border-color 100ms ease-in-out, transform 100ms ease-in-out
 
       &.active
-        border-color: var(--community-theme-accent, $color-primary)
+        border-color: var(--community-theme-color, $color-primary)
         box-shadow: rgba(black, .25) 0px 1px 4px -1px, 0 0 25px rgba(black, .25)
         transform: scale(1)
 
@@ -244,7 +244,7 @@ $item-thumbnail-size: 80px
         color: $color-text-light
 
         &:hover
-          color: var(--community-theme-accent, $color-primary)
+          color: var(--community-theme-color, $color-primary)
           text-decoration: underline
 
       img
@@ -300,7 +300,7 @@ $item-thumbnail-size: 80px
       text-decoration: none
 
       &:hover
-        color: var(--community-theme-accent, $color-primary)
+        color: var(--community-theme-color, $color-primary)
         text-decoration: underline
 
     .op-karma
@@ -326,13 +326,13 @@ $item-thumbnail-size: 80px
       padding: 10px 5px
 
       &:hover
-        color: var(--community-theme-accent, $color-primary)
+        color: var(--community-theme-color, $color-primary)
 
   &-edit
     padding-left: 10px
 
     a
-      color: var(--community-theme-accent, $color-primary)
+      color: var(--community-theme-color, $color-primary)
 
 
 /* Edit */
@@ -378,7 +378,7 @@ body[data-context="post-edit"]
       flex-direction: column
 
       #name
-        color: var(--community-theme-accent, $color-primary)
+        color: var(--community-theme-color, $color-primary)
         padding: 10px
 
       #content
@@ -395,7 +395,7 @@ body[data-context="post-edit"]
         a
           color: $color-text-hint
           &:hover
-            color: var(--community-theme-accent, $color-primary)
+            color: var(--community-theme-color, $color-primary)
 
       #category
         padding: 10px
@@ -577,7 +577,7 @@ body[data-context="post-edit"]
 
       .item-link-data
         +text-overflow-ellipsis
-        color: var(--community-theme-accent, $color-primary)
+        color: var(--community-theme-color, $color-primary)
         display: block
         flex: 1
         font-size: $font-size-small
@@ -616,10 +616,10 @@ body[data-context="post-edit"]
     background-color: $color-background-light
 
     .sign-in a
-      color: var(--community-theme-accent, $color-primary) !important
+      color: var(--community-theme-color, $color-primary) !important
 
     .comment-action-reply span
-      color: var(--community-theme-accent, $color-primary)
+      color: var(--community-theme-color, $color-primary)
 
     .comments-list-title
       padding: 10px 25px

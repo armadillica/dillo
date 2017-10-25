@@ -1,131 +1,131 @@
 #list-hits
   margin: 0
 
-  .list-hits-item
-    +clearfix
+.list-hits-item
+  +clearfix
+  +media-xs
+    border-radius: 0
+    flex-direction: row-reverse
+    margin: 0
+    box-shadow: inset 0 1px $color-background-dark
+
+  background-color: $color-background-light
+  border-radius: 3px
+  box-shadow: 1px 2px 2px rgba(black, .1)
+  cursor: pointer
+  display: flex
+  height: 100%
+  margin: 8px 12px 8px 5px
+  position: relative
+  transition: background-color 150ms ease-in-out, box-shadow 250ms ease-in-out
+
+  &:hover
+    background-color: $color-background-lighter
+
+  // Triangle on the right
+  &:after
     +media-xs
-      border-radius: 0
-      flex-direction: row-reverse
-      margin: 0
-      box-shadow: inset 0 1px $color-background-dark
+      display: none
+    opacity: 0
+    right: -8px
+    transition: opacity 300ms ease-in-out, right 300ms ease-in-out
+    transition-delay: 50ms
 
-    background-color: $color-background-light
-    border-radius: 3px
-    box-shadow: 1px 2px 2px $color-background-dark
-    cursor: pointer
-    display: flex
-    height: 100%
-    margin: 8px 12px 8px 5px
-    position: relative
-    transition: background-color 150ms ease-in-out, box-shadow 250ms ease-in-out
-
-    &:hover
+  &.active
+    +media-xs
       background-color: $color-background-lighter
+      box-shadow: 1px 2px 2px rgba(black, .1), inset 5px 0 0 var(--community-theme-color, $color-primary)
+    background-color: $color-background-lighter
+    box-shadow: 1px 2px 2px rgba(black, .1), inset -5px 0 0 var(--community-theme-color, $color-primary)
 
     // Triangle on the right
     &:after
-      +media-xs
-        display: none
-      opacity: 0
-      right: -8px
-      transition: opacity 300ms ease-in-out, right 300ms ease-in-out
-      transition-delay: 50ms
-
-    &.active
-      +media-xs
-        background-color: $color-background-lighter
-        box-shadow: 1px 2px 2px $color-background-dark, inset 5px 0 0 var(--community-theme-accent, $color-primary)
-      background-color: $color-background-lighter
-      box-shadow: 1px 2px 2px $color-background-dark, inset -4px 0 0 var(--community-theme-accent, $color-primary)
-
-      // Triangle on the right
-      &:after
-        content: ''
-        border: 6px solid transparent
-        border-left-color: var(--community-theme-accent, $color-primary)
-        position: absolute
-        top: 50%
-        transform: translateY(-50%)
-        right: -12px
-        opacity: 1
-
-      .item-favicon img
-        opacity: 1
-
-      .item-title
-        color: var(--community-theme-accent, $color-primary)
-
-    &.is-own
-      .item-rating-box .item-rating.up,
-      .item-rating-box .item-rating.down
-        pointer-events: none
-        color: rgba($color-text-dark-hint, .4)
-
-    &.is-featured
-      background-color: $color-background-lighter
-
-      &:before
-        align-items: center
-        background-color: $color-background-lighter
-        border-radius: 50%
-        color: $color-danger
-        content: '\e85e'
-        display: flex
-        font-family: 'pillar-font'
-        font-size: 1.2em
-        height: 22px
-        justify-content: center
-        position: absolute
-        right: 7px
-        top: 5px
-        width: 22px
-        z-index: 1
-
-    .item-details
-      ul
-        padding-bottom: 3px
-        padding-right: 5px
-
-      +media-xs
-        ul
-          li
-            font-size: .8em
-
-      .item-link
-        +media-lg
-          +text-overflow-ellipsis
-          display: block
-
-        display: none
-
-    a.item-title
-      +media-xs
-        font-size: 1em
-      color: $color-text
-      font-size: 1.1em
-      padding: 8px 10px 3px 0
-
-      &:hover
-        color: var(--community-theme-accent, $color-primary)
+      content: ''
+      border: 6px solid transparent
+      border-left-color: var(--community-theme-color, $color-primary)
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      right: -12px
+      opacity: 1
 
     .item-favicon img
-      top: 0
+      opacity: 1
 
-    .item-author
-      +media-xs
-        display: none
-      +media-sm
-        max-width: 50px
-        white-space: nowrap
+    .item-title
+      color: var(--community-theme-color, $color-primary)
 
-    .item-date a
+  &.is-own
+    .item-rating-box .item-rating.up,
+    .item-rating-box .item-rating.down
+      pointer-events: none
+      color: rgba($color-text-dark-hint, .4)
+
+  &.is-featured
+    background-color: $color-background-lighter
+
+    &:before
+      align-items: center
+      background-color: $color-background-lighter
+      border-radius: 50%
+      color: $color-danger
+      content: '\e85e'
+      display: flex
+      font-family: 'pillar-font'
+      font-size: 1.2em
+      height: 22px
+      justify-content: center
+      position: absolute
+      right: 7px
+      top: 5px
+      width: 22px
+      z-index: 1
+
+  .item-details
+    ul
+      padding-bottom: 3px
+      padding-right: 5px
+
+    +media-xs
+      ul
+        li
+          font-size: .8em
+
+    .item-link
+      +media-lg
+        +text-overflow-ellipsis
+        display: block
+
+      display: none
+
+  a.item-title
+    +media-xs
+      font-size: 1em
+    color: $color-text
+    font-size: 1.1em
+    padding: 8px 10px 3px 0
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+  .item-favicon img
+    top: 0
+
+  .item-author
+    +media-xs
+      display: none
+    +media-sm
+      max-width: 50px
       white-space: nowrap
 
-    .item-comments
-      margin-left: auto
+  .item-date a
+    white-space: nowrap
 
-      &:before
-        display: none
+  .item-comments
+    margin-left: auto
+
+    &:before
+      display: none
 
 .listing-empty
   align-items: center
@@ -144,18 +144,18 @@
   top: 0
 
   span.query
-    color: var(--community-theme-accent, $color-primary)
+    color: var(--community-theme-color, $color-primary)
     display: block
     font-size: $font-size-extra-large
     padding: 0 40px 10px
 
   .query-clear
     cursor: pointer
-    color: var(--community-theme-accent, $color-primary)
+    color: var(--community-theme-color, $color-primary)
     font-size: $font-size-small
 
     &:hover
-      color: var(--community-theme-accent, $color-primary)
+      color: var(--community-theme-color, $color-primary)
       text-decoration: underline
 
 .listing-view
@@ -168,7 +168,7 @@
     +media-xs
       font-size: $font-size * 1.2
 
-    color: var(--community-theme-accent, $color-primary)
+    color: var(--community-theme-color, $color-primary)
     font-size: $font-size-extra-large
 
     .emoji
