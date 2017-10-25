@@ -567,6 +567,10 @@ h1 .emoji
     a
       text-decoration: none
 
+    a.beta
+      top: -10px
+      position: relative
+
     .summary
       cursor: default
       display: inline-block
@@ -619,15 +623,18 @@ h1 .emoji
     .flyout
       &-title
         border-bottom: thin solid $color-background-dark
-        color: $color-text-dark
         cursor: pointer
+        display: flex
         font-size: 1.3em
         font-weight: normal
-        text-decoration: none
 
-        &:hover
-          color: $color-text-dark-primary
-          text-decoration: underline
+        a.title
+          color: $color-text-dark
+          text-decoration: none
+
+          &:hover
+            color: $color-text-dark-primary
+            text-decoration: underline
 
       &-content
         display: flex
@@ -641,7 +648,16 @@ h1 .emoji
           margin: 0
           padding: 0 3px
 
+// Temporary, hopefully.
+a.beta
+  color: $color-danger
+  font-weight: bold
+  font-size: $font-size-smaller
+  margin-left: 7px
+  text-decoration: none
 
+
+// Communities list flyout
 .d-communities
   +media-xs
     background-color: $color-background

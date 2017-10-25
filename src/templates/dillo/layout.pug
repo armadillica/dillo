@@ -84,8 +84,10 @@ html(lang='en')
 					.flyout.communities
 						.flyout-hat
 						.flyout-content
-							a.flyout-title(href="{{ url_for('posts.index_all') }} ")
-								| {{ main_project.name }}
+							.flyout-title
+								a.title(href="{{ url_for('posts.index_all') }} ") {{ main_project.name }}
+								a.beta(href="/") BETA
+
 							ul
 								| {% for community in communities %}
 								li
@@ -104,6 +106,7 @@ html(lang='en')
 											span.title {{ community.name }}
 											span.summary {{ community.summary }}
 								| {% endfor %}
+
 								li.d-communities-suggest
 									a.d-communities-item(
 										href="mailto:contact@blender.community",
