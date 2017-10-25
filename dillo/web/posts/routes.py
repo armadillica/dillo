@@ -51,13 +51,16 @@ def create(community_url: str, post_type: str):
 
     log.info('Creating post for user {}'.format(current_user.objectid))
 
+    dillo_post_node_type = project.get_node_type('dillo_post')
+    dillo_post_tags_default = dillo_post_node_type['dyn_schema']['tags']['schema']['default']
+
     post_props = dict(
         project=project['_id'],
         name='Awesome Post Title',
         user=current_user.objectid,
         node_type='dillo_post',
         properties=dict(
-            category=current_app.config['POST_CATEGORIES'][0],
+            tags=[dillo_post_tags_default, ],
             post_type=post_type)
     )
 

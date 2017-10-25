@@ -50,10 +50,18 @@ node_type_post = {
         'slug': {
             'type': 'string',
         },
-        'category': {
-            # Categories are defined on the project level
-            'type': 'string',
-            'required': True
+        'tags': {
+            # Tags are defined per project, here is a sample
+            'type': 'list',
+            'schema': {
+                'type': 'string',
+                'allowed': [
+                    'Artwork',
+                    'Community',
+                    'Development',
+                ],
+                'default': 'Artwork',
+            }
         },
         # Total count of positive ratings (updated at every rating action)
         'rating_positive': {

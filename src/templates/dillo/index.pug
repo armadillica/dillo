@@ -328,8 +328,8 @@ script.
 
 	search.addWidget(
 		instantsearch.widgets.menu({
-			container: '#list-categories',
-			attributeName: 'category',
+			container: '#list-tags',
+			attributeName: 'tags',
 			cssClasses: {
 				root: 'wgt-dropdown-root',
 				header: 'wgt-dropdown-header',
@@ -339,7 +339,7 @@ script.
 				count: 'wgt-dropdown-count',
 			},
 			templates: {
-				header: "{{ _('Categories') }}"
+				header: "{{ _('Tags') }}"
 			}
 		})
 	);
@@ -382,7 +382,7 @@ script.
 	search.addWidget(
 		instantsearch.widgets.currentRefinedValues({
 			container: '#list-refined-values',
-			attributes: [{name: 'category'}],
+			attributes: [{name: 'tags'}],
 			onlyListedAttributes: true,
 			clearAll: "before",
 			templates: {

@@ -57,7 +57,7 @@
 									title="Link",
 									src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 						| {% endif %}
-						li {{ post.properties.category }}
+						li {{ post.properties.tags }}
 						li.item-date.js-item-open
 								a(href="{{ post_url }}")
 									| {{ post._created }}

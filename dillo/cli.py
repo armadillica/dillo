@@ -71,7 +71,7 @@ def index_nodes_update_settings():
             'desc(created)',
         ],
         'attributesForFaceting': [
-            'searchable(category)',
+            'searchable(tags)',
             'project._id',
         ]
     })

@@ -1,3 +1,4 @@
+| {% from '_macros/_node_edit_form.html' import render_field %}
 | {% block body %}
 
 #col_main
@@ -47,18 +48,12 @@
 						a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
 							| {{ _('Markdown Cheatsheet') }}
 
-				.input-content.category
-					label(for="category") {{ _('Category') }}
-					select(
-					id="category",
-					name="category")
-						| {% for option in config['POST_CATEGORIES'] %}
-						| {% if option == node.properties.category %}
-						option(selected) {{ option }}
-						| {% else %}
-						option {{ option }}
-						| {% endif %}
-						| {% endfor %}
+
+				| {% for field in form %}
+				| {% if field.name == 'tags' %}
+				| {{ render_field(field, field.name) }}
+				| {% endif %}
+				| {% endfor %}
 
 				| {{ form.csrf_token }}
 				| {{ form.status }}

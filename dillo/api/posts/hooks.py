@@ -71,7 +71,7 @@ def algolia_index_post_save(node):
         },
         'hot': node['properties']['hot'],
         'slug': node['properties']['slug'],
-        'category': node['properties']['category'],
+        'tags': node['properties']['tags'],
         'rating': rating,
         'shortcode': node['properties']['shortcode'],
         'comments_count': comments_count,
