@@ -93,10 +93,12 @@
 		.item-info-action
 			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
 				i.pi-resize-full
-			| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
+			| {% if current_user.is_authenticated %}
+			| {% if (node.user._id == current_user.objectid) or current_user.has_cap('admin') %}
 			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 				i.pi-edit
 				| {{ _('Edit Post') }}
+			| {% endif %}
 			| {% endif %}
 
 			a.social(
