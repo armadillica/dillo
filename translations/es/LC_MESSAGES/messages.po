@@ -1,0 +1,200 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-10-10 01:21+0200\n"
+"PO-Revision-Date: 2017-10-10 01:34+0200\n"
+"Last-Translator: \n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"X-Generator: Poedit 2.0.1\n"
+
+#: src/templates/dillo/index.pug:53 src/templates/dillo/layout.pug:134
+msgid "Submit a Link [Shift+A]"
+msgstr "Enviar Enlace [Shift+A]"
+
+#: src/templates/dillo/index.pug:55 src/templates/dillo/layout.pug:136
+msgid "Submit Link"
+msgstr "Enviar Enlace"
+
+#: src/templates/dillo/index.pug:64 src/templates/dillo/index.pug:66
+#: src/templates/dillo/layout.pug:145 src/templates/dillo/layout.pug:147
+msgid "Write a Post"
+msgstr "Escribir Artículo"
+
+#: src/templates/dillo/index.pug:94
+msgid "Fetching the goods..."
+msgstr "Recibiendo información..."
+
+#: src/templates/dillo/index.pug:106
+msgid "What's going on"
+msgstr "Qué anda pasando"
+
+#: src/templates/dillo/index.pug:121
+msgid "No activity... yet!"
+msgstr "Sin actividad... ¡aún!"
+
+#: src/templates/dillo/index.pug:274
+msgid "Categories"
+msgstr "Categorías"
+
+#: src/templates/dillo/layout.pug:76
+msgid "Search..."
+msgstr "Buscar..."
+
+#: src/templates/dillo/layout.pug:103
+msgid "Mark All as Read"
+msgstr "Marcar Todo Como Leído"
+
+#: src/templates/dillo/layout.pug:122
+msgid "Settings"
+msgstr "Preferencias"
+
+#: src/templates/dillo/layout.pug:127
+msgid "Log out"
+msgstr "Salir"
+
+#: src/templates/dillo/layout.pug:151
+msgid "Log in"
+msgstr "Iniciar Sesión"
+
+#: src/templates/dillo/layout.pug:163
+msgid "Are you logged in?"
+msgstr "¿Iniciaste sesión?"
+
+#: src/templates/dillo/layout.pug:171
+msgid "No Notifications"
+msgstr "Sin Notificaciones"
+
+#: src/templates/dillo/user.pug:98
+msgid "Last seen"
+msgstr "Visto"
+
+#: src/templates/dillo/user.pug:101
+msgid "Joined"
+msgstr "Unido"
+
+#: src/templates/errors/404_embed.pug:7
+msgid "Not Found"
+msgstr "No encontrado"
+
+#: src/templates/errors/404_embed.pug:10
+msgid "Something wrong? Let us know on Twitter"
+msgstr "¿Algo mal? Cuéntanos en Twitter"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:15
+msgid "URL"
+msgstr "Enlace"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:21
+msgid "Press Ctrl+V or Command+V to paste or type the URL"
+msgstr "Presiona Ctrl+V o Command+V para pegar o escribe la URL"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:27
+msgid "Title"
+msgstr "Título"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:33
+msgid "Awesome Post Title"
+msgstr "Mi Gran Post"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:37
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:78
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:80
+msgid "Text"
+msgstr "Texto"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:43
+msgid "Witty post description"
+msgstr "Descripción interesante"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:48
+msgid "Markdown Cheatsheet"
+msgstr "Referencia de Markdown"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:51
+msgid "Category"
+msgstr "Categoría"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:72
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:74
+msgid "Link"
+msgstr "Enlace"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:85
+msgid "Thumbnails from the URL"
+msgstr "Imágenes de la URL"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:89
+msgid "Custom Thumbnail"
+msgstr "Imágen Personalizada"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:97
+msgid "Status"
+msgstr "Estado"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:103
+msgid "Delete"
+msgstr "Eliminar"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:109
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:112
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:115
+msgid "Preview"
+msgstr "Previsualizar"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:120
+msgid "Make post publicly available!"
+msgstr "Publicar tu entrada"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:122
+msgid "Publish!"
+msgstr "¡Publicar!"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:126
+msgid "Save Changes"
+msgstr "Guardar Cambios"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:8
+msgid "Close Fullscreen"
+msgstr "Salir de Pantalla Completa"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:82
+msgid "Toggle Fullscreen"
+msgstr "Cambiar Pantalla Completa"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:87
+msgid "Edit Post"
+msgstr "Editar Entrada"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:90
+msgid "Share on Facebook"
+msgstr "Compartir en Facebook"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:94
+msgid "Share"
+msgstr "Compartir"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:97
+msgid "Share on Twitter"
+msgstr "Compartir en Twitter"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:101
+msgid "Tweet"
+msgstr "Twitear"
+
+#~ msgid "What's going on:"
+#~ msgstr "Qué anda pasando"
