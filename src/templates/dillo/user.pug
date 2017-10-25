@@ -57,10 +57,16 @@
 									title="Link",
 									src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 						| {% endif %}
-						li {{ post.properties.tags }}
+
+						li.
+							{% for tag in post.properties.tags %}
+								{{ tag }}{{ ", " if not loop.last }}
+							{% endfor %}
+
 						li.item-date.js-item-open
 								a(href="{{ post_url }}")
 									| {{ post._created }}
+
 						li.item-author
 							a(href="/u/{{ user.username }}")
 								| {{ user.full_name }}
@@ -70,12 +76,6 @@
 							a(href="{{ post.properties.content }}", target="_blank")
 								| {{ post.properties.content }}
 						| {% endif %}
-
-						li.item-comments
-							a(href="{{ link_url }}")
-								| # {{ comments_count }}
-								i.pi-comment
-
 
 		| {% endfor %}
 
