@@ -23,6 +23,7 @@ from pillar.web.utils import get_main_project
 from pillar.web.nodes.routes import url_for_node
 
 from dillo import current_dillo
+from dillo.web.posts.utils import project_submit_menu
 
 blueprint = Blueprint('posts', __name__)
 log = logging.getLogger(__name__)
@@ -112,7 +113,8 @@ def index(community_url):
     return render_template(
         'dillo/index.html',
         col_right={'activities': activities},
-        project=project)
+        project=project,
+        submit_menu=project_submit_menu(project))
 
 
 @blueprint.route("/p/<string(length=24):post_id>/rate/<operation>", methods=['POST'])
@@ -165,6 +167,7 @@ def view(community_url, post_shortcode, slug=None):
     return render_template(
         'dillo/index.html',
         project=project,
+        submit_menu=project_submit_menu(project),
         col_right={'post': post})
 
 
