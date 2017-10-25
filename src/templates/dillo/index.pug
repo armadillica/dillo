@@ -139,16 +139,29 @@ li
 
 		| {% elif 'activities' in col_right %}
 		.welcome
-			.welcome-title
-				.title {{ project.name }}
-				.summary {{ project.summary }}
-
-				| {% if config.SETTINGS_TWITTER_USERNAME %}
-				ul.social
-					li
-						a(href="https://twitter.com/{{ config.SETTINGS_TWITTER_USERNAME }}")
-							i.pi-social-twitter
+			.welcome-info
+				| {% if project.picture_square %}
+				.welcome-logo
+					a(
+						href="{{ url_for('posts.index', community_url=project.url) }}")
+						img(src="{{ project.picture_square.thumbnail('l') }}")
 				| {% endif %}
+
+				.welcome-title
+					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
+						| {{ project.name }}
+					.summary {{ project.summary }}
+
+					| {% if project.extension_props.dillo %}
+
+					| {% if project.extension_props.dillo.social %}
+					ul.social
+						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
+						li
+							a(class="pi-social-{{ name }}", href="{{ val }}")
+						| {% endfor %}
+					| {% endif %}
+					| {% endif %}
 
 			.welcome-extra
 				| {{ project.description | markdown }}

@@ -544,37 +544,48 @@ h1 .emoji
   margin: 8px
   padding: 0 25px
 
+  &-info
+    align-items: center
+    display: flex
+    justify-content: center
+    padding: 20px
+
+  &-logo
+    max-height: 90px
+    max-width: 90px
+    margin-right: 20px
+
+    img
+      width: 100%
+
   &-title
-    font-size: 1.8em
-    padding: 35px 15px 10px
+    display: flex
+    flex-direction: column
+    font-size: 1.7em
     position: relative
-    text-align: center
+
+    a
+      text-decoration: none
 
     .summary
-      color: $color-text-hint
       cursor: default
       display: inline-block
       font-size: $font-size
       position: relative
 
     .social
-      background-color: $color-background-light
-      left: 50%
+      display: flex
+      font-size: .8em
       list-style-type: none
-      margin: 5px 0 0
-      padding: 0
-      position: absolute
-      transform: translateX(-50%)
+      margin: 0
+      padding: 10px 0 0
 
       a
-        color: $color-info
-
-        &:hover
-          color: lighten($color-info, 10%)
+        background-color: $color-background-light
+        margin-right: 5px
 
   &-extra
-    border-top: thin solid $color-background-dark
-    padding: 15px 15px 25px
+    padding: 0 15px 15px
     margin: 15px auto
     max-width: 600px
 
