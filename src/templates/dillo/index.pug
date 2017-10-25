@@ -51,15 +51,26 @@ meta(name="twitter:creator",
 | {% endblock og %}
 
 | {% block submit_btn %}
-| {% if project.extension_props.dillo %}
+| {% if submit_menu %}
 li
-	.btn-group.submit
+	.submit(class="{% if submit_menu['allowed'] %}btn-group{% endif %}")
+		| {% if submit_menu['default'] == 'text' %}
+		a.btn.btn-submit(
+			href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+			title="{{ _('Write a Post') }}")
+			i.pi-document-text
+			span {{ _('Write a Post') }}
+
+		| {% elif submit_menu['default'] == 'link' %}
 		button.btn.btn-submit.wgt-toggle-submit(
-		data-action="publish",
-		title="{{ _('Submit a Link [Shift+A]')}}")
+			data-action="publish",
+			title="{{ _('Submit a Link [Shift+A]')}}")
 			i.pi-link
 			span {{ _('Submit Link') }}
+		| {% endif %}
 
+		| {# TODO: To be replaced with an interation over allowed post_type #}
+		| {% if submit_menu['allowed'] %}
 		button.btn.btn-submit.wgt-dropdown-toggle
 			i.pi-angle-down
 
@@ -70,6 +81,8 @@ li
 						title="{{ _('Write a Post') }}")
 						i.pi-document-text
 						|  {{ _('Write a Post') }}
+		| {% endif %}
+
 | {% endif %}
 | {% endblock submit_btn %}
 
