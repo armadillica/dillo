@@ -110,12 +110,11 @@ html(lang='en')
 								li.d-communities-suggest
 									a.d-communities-item(
 										href="mailto:contact@blender.community",
-										title="Build Your Own Community")
+										title="{{ _('Build Your Own Community') }}")
 										.d-communities-info
-											span.title Build Your Own Community
+											span.title {{ _('Build Your Own Community') }}
 											span.summary.
-												We welcome international users or specialized Blender groups.
-												#[br] Tell us why your community belongs here.
+												{{ _('We welcome international users or specialized Blender groups.Tell us why your community belongs here.') }}
 
 				.d-header-title
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
@@ -157,9 +156,9 @@ html(lang='en')
 
 								#notifications.flyout.notifications
 									.flyout-content
-										span.flyout-title Notifications
+										span.flyout-title {{ _('Notifications') }}
 										a#notifications-markallread(
-											title="Mark All as Read",
+											title="{{ _('Mark All as Read') }}",
 											href="/notifications/read-all")
 											| {{ _('Mark All as Read') }}
 

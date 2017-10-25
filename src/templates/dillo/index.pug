@@ -166,7 +166,9 @@ li
 					ul.social
 						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
 						li
-							a(class="pi-social-{{ name }}", href="{{ val }}")
+							a(class="pi-social-{{ name }}",
+								title="{{ name }}",
+								href="{{ val }}")
 						| {% endfor %}
 					| {% endif %}
 					| {% endif %}
