@@ -612,11 +612,13 @@ h1 .emoji
       border: none
       box-shadow: none
       left: 0
+      max-width: 100%
       right: 0
       top: 0
       width: 100%
 
     left: 15px
+    max-width: 500px
     position: absolute
     top: 100%
 
@@ -796,6 +798,7 @@ a.beta
     flex-direction: column
     justify-content: center
     padding-left: 35px
+    position: relative
 
     .title
       background-color: var(--community-theme-color, $color-primary)
@@ -806,8 +809,14 @@ a.beta
       text-decoration: none
       padding: 4px 15px
 
-    // .title span
-      // +text-background($color-text-dark, $color-background-lighter, 0, 3px 0)
+    a.beta
+      background-color: $color-danger
+      border-radius: 3px
+      color: white
+      padding: 1px 4px
+      position: absolute
+      right: -25px
+      top: 20px
 
   &-action
     align-items: center

@@ -119,6 +119,7 @@ html(lang='en')
 				.d-header-title
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
 						span {{ project.name }}
+					a.beta(href="/") BETA
 
 				.d-header-action.refine
 					nav.nav-bar
