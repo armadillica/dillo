@@ -195,7 +195,7 @@ def before_replacing_post(item, original):
 @only_for_post
 def process_picture_oembed(item, original):
     """If picture_oembed is specified, download the image and populate the picture property."""
-    picture_url = item['properties']['picture_url']
+    picture_url = item['properties'].get('picture_url')
     if picture_url:
         # Download file to temp location
         r = requests.get(picture_url, stream=True)
