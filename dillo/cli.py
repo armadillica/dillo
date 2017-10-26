@@ -56,6 +56,36 @@ def index_nodes_rebuild():
 
 
 @manager_dillo.command
+def process_posts(community_name):
+    """Manually trigger pre-update hooks."""
+    from flask import g
+    from pillar.auth import UserClass
+    from dillo.api.posts.hooks import process_picture_oembed, before_replacing_post
+    from dillo.setup import _get_project
+    project = _get_project(community_name)
+
+    nodes_collection = current_app.db()['nodes']
+    user_collection = current_app.db()['users']
+    nc = nodes_collection.find({
+        'node_type': 'dillo_post',
+        'properties.status': 'published',
+        'project': project['_id'],
+    })
+
+    for n in nc:
+        # Log in as doc user
+        user_doc = user_collection.find_one({'_id': n['user']})
+        u = UserClass.construct(user_doc['_id'], user_doc)
+        g.current_user = u
+
+        n_id = n['_id']
+        print(f'Processing node {n_id}')
+        process_picture_oembed(n, n)
+        before_replacing_post(n, n)
+        nodes_collection.find_one_and_replace({'_id': n_id}, n)
+
+
+@manager_dillo.command
 def index_nodes_update_settings():
     """Configure indexing backend as required by the project"""
     nodes_index = current_app.algolia_index_nodes
