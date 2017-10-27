@@ -26,8 +26,8 @@ meta(property="article:published_time",
 		content="{{ col_right['post']._created }}")
 
 | {% if col_right['post'].properties.content %}
-meta(name="twitter:description", content="{{ col_right['post'].properties.content | safe }}")
-meta(property="og:description", content="{{ col_right['post'].properties.content | safe }}")
+meta(name="twitter:description", content="{{ col_right['post'].properties.content | safe | striptags }}")
+meta(property="og:description", content="{{ col_right['post'].properties.content | safe | striptags }}")
 | {% endif %}
 
 | {% if col_right['post'].picture %}
