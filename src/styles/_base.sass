@@ -677,6 +677,48 @@ a.beta
     display: block
     visibility: visible
 
+  &-list
+    border-top: thin solid $color-background-dark
+    font-size: .9em
+    padding: 5px 5px 15px
+    position: relative
+
+    span.d-communities-title
+      background-color: $color-background-light
+      color: $color-text-dark-secondary
+      left: 50%
+      padding: 0 15px
+      position: absolute
+      top: -10px
+      transform: translateX(-50%)
+
+    .d-header-logo
+      max-width: 40px
+
+    .d-communities-info
+      padding-left: 15px
+
+    > ul
+      display: flex
+      flex-wrap: wrap
+      // flex-direction: column
+      list-style: none
+      margin: 0
+      padding: 0 3px
+
+      > li
+        +media-sm
+          width: 100%
+        width: 50%
+
+        > a
+          box-shadow: none
+
+          &:hover
+            background-color: initial
+
+
+
   &-item
     +media-xs
       border-top: thin solid $color-background-dark

@@ -176,6 +176,14 @@ li
 			.welcome-extra
 				| {{ project.description | markdown }}
 
+			| {% if is_main_project %}
+			.d-communities-list
+				span.d-communities-title {{ _('COMMUNITIES') }}
+
+				| {% from 'dillo/_macros/_communities.html' import communities_list %}
+				| {{ communities_list(communities) }}
+
+			| {% else %}
 			.d-activity
 				.title {{ _('What\'s going on') }}:
 
@@ -194,6 +202,7 @@ li
 				| {% else %}
 				p {{ _('No activity... yet!') }}
 				| {% endif %}
+			| {% endif %}
 
 		| {% endif %}
 

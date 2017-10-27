@@ -88,33 +88,8 @@ html(lang='en')
 								a.title(href="{{ url_for('posts.index_all') }} ") {{ main_project.name }}
 								a.beta(href="/") BETA
 
-							ul
-								| {% for community in communities %}
-								li
-									a.d-communities-item(
-										href="{{ url_for('posts.index', community_url=community.url) }}",
-										title="{{ community.name }}")
-										| {% if community.picture_square %}
-										.d-header-logo
-											img(src="{{ community.picture_square.thumbnail('l') }}")
-										| {% else %}
-										.d-header-logo.no-logo
-											i.pi-grin
-										| {% endif %}
-
-										.d-communities-info
-											span.title {{ community.name }}
-											span.summary {{ community.summary }}
-								| {% endfor %}
-
-								li.d-communities-suggest
-									a.d-communities-item(
-										href="mailto:contact@blender.community",
-										title="{{ _('Build Your Own Community') }}")
-										.d-communities-info
-											span.title {{ _('Build Your Own Community') }}
-											span.summary.
-												{{ _('We welcome international users or specialized Blender groups.Tell us why your community belongs here.') }}
+							| {% from 'dillo/_macros/_communities.html' import communities_list %}
+							| {{ communities_list(communities) }}
 
 				.d-header-title
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
