@@ -89,6 +89,6 @@ echo
 echo "*** SYNCING DILLO_TEMPLATES ***"
 rsync -avh $DILLO_TEMPLATES root@${DEPLOYHOST}:/data/git/dillo/dillo/templates/ --delete-after
 
-#echo "*** SYNCING DILLO_TRANSLATIONS ***"
+echo "*** SYNCING DILLO_TRANSLATIONS ***"
 # Exclude .po files since they are versioned by Git
-#rsync -avh $DILLO_TRANSLATIONS --exclude '*.po' root@${DEPLOYHOST}:/data/git/dillo/
+rsync -avh $DILLO_TRANSLATIONS --exclude '*.po' root@${DEPLOYHOST}:/data/git/dillo/translations/
