@@ -29,19 +29,15 @@
 				| {% endif %}
 				ul
 					li
-						a.item-project(
-							href="{{ url_for('posts.index', community_url=project.url) }}"
-							target="_blank") {{ project.name }}
+						a.item-project(href="{{ url_for('posts.index', community_url=project.url) }}")
+							| {{ project.name }}
+					li
+						a.item-date(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
+							| {{ node._created | pretty_date }}
 					li#item-tags
 						| {% for tag in node.properties.tags %}
 						| {{ tag }}{{ ", " if not loop.last }}
 						| {% endfor %}
-					li
-						a.item-date(href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
-							| {{ node._created | pretty_date }}
-					li
-						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
-							| {{ node.user.full_name }}
 
 
 	| {% if node.properties.post_type == 'text' %}
