@@ -49,13 +49,7 @@
 			p {{ _('Write something nice.') }}
 			| {% endif %}
 
-
-	| {% if node.picture %}
-	.item-media#item-media
-		img(src="{{ node.picture.thumbnail('l', api=api) }}")
 	| {% endif %}
-	| {% endif %}
-
 
 	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
 	.item-body#item-content
@@ -76,6 +70,11 @@
 	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
 	.item-media.oembed#item-media
 		| {{ node.properties.content_html | safe }}
+	| {% else %}
+	| {% if node.picture %}
+	.item-media#item-media
+		img(src="{{ node.picture.thumbnail('l', api=api) }}")
+	| {% endif %}
 	| {% endif %}
 
 
