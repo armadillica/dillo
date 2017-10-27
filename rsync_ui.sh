@@ -25,6 +25,7 @@ fi
 
 DILLO_ASSETS="$DILLO_DIR/dillo/static/"
 DILLO_TEMPLATES="$DILLO_DIR/dillo/templates/"
+DILLO_TRANSLATIONS="$DILLO_DIR/translations/"
 
 if [ ! -d "$DILLO_ASSETS" ]; then
     echo "Unable to find assets dir $DILLO_ASSETS"
@@ -87,3 +88,7 @@ rsync -avh $DILLO_ASSETS --exclude js/vendor/ root@${DEPLOYHOST}:/data/git/dillo
 echo
 echo "*** SYNCING DILLO_TEMPLATES ***"
 rsync -avh $DILLO_TEMPLATES root@${DEPLOYHOST}:/data/git/dillo/dillo/templates/ --delete-after
+
+#echo "*** SYNCING DILLO_TRANSLATIONS ***"
+# Exclude .po files since they are versioned by Git
+#rsync -avh $DILLO_TRANSLATIONS --exclude '*.po' root@${DEPLOYHOST}:/data/git/dillo/
