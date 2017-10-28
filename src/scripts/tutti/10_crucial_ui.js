@@ -130,6 +130,15 @@ function enterSubmitDialog(){
 		return window.location.href = '/login';
 	}
 
+	appOverlayClear();
+
+	$('#app-overlay')
+		.addClass('active submit')
+		.html('\
+			<div class="overlay-background"></div>\
+			<div class="dialog-box"></div>\
+		');
+
 	var url = '/c/' + ProjectUtils.projectUrl() + '/post/link?embed=1';
 
 	$.get(url, function(data) {
@@ -138,14 +147,13 @@ function enterSubmitDialog(){
 		ga('send', 'event', 'ui', 'dialog-open');
 	});
 
-	$('#app-overlay').addClass('active submit');
 	setContext("post-submit-overlay");
 
 	Mousetrap.unbind('f');
 }
 
 function exitSubmitDialog(){
-	$('#app-overlay').removeAttr('class');
+	appOverlayClear();
 	unsetPreviousContext();
 
 	initializeShortcuts();
@@ -161,6 +169,20 @@ function toggleSubmitDialog(){
 
 $('.wgt-toggle-submit').on('click', function(){
 	toggleSubmitDialog();
+});
+
+
+// UI Helpers
+function appOverlayClear(){
+	$('#app-overlay')
+		.removeAttr('class')
+		.html('');
+}
+
+$('#app-overlay').on('click', function(){
+	if ($(this).hasClass('preview')){
+		appOverlayClear();
+	}
 });
 
 

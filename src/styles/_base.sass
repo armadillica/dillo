@@ -87,10 +87,10 @@ a
       overflow-x: initial
       position: relative
       z-index: 1
-      padding-left: 35px
+      padding-left: 70px
 
       .item-title
-        margin-right: 35px
+        margin-right: 70px
 
       .item-media
         img
@@ -181,12 +181,12 @@ a
 
   .overlay-background
     bottom: 0
-    transition: opacity 500ms ease-out
-    position: fixed
-    top: 0
     left: 0
-    right: 0
     opacity: 0
+    position: fixed
+    right: 0
+    top: 0
+    transition: opacity 500ms ease-out, background-color 150ms ease-out
 
   &.active
     opacity: 1
@@ -195,6 +195,19 @@ a
 
     .overlay-background
       opacity: 1
+
+  &.preview
+    pointer-events: auto
+
+    .overlay-background
+      display: flex
+      align-items: center
+      justify-content: center
+      opacity: 1
+
+    img
+      max-height: 90%
+      max-width: 90%
 
   &.submit
     .overlay-background
@@ -306,10 +319,10 @@ a
       position: fixed
       right: 10px
 
-      .dropdown-menu
-        top: -125%
-
     .dropdown-menu
+      +media-xs
+        top: -100%
+
       background-color: var(--community-theme-color, $color-primary)
       border-radius: 5px
       top: 125%

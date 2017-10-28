@@ -72,8 +72,11 @@
 		| {{ node.properties.content_html | safe }}
 	| {% else %}
 	| {% if node.picture %}
-	.item-media#item-media
-		img(src="{{ node.picture.thumbnail('l', api=api) }}")
+	a.item-media#item-media(
+		href="{{ node.picture.thumbnail('h', api=api)}} ")
+		img(
+			src="{{ node.picture.thumbnail('l', api=api) }}",
+			data-adaptive-background)
 	| {% endif %}
 	| {% endif %}
 
@@ -120,7 +123,6 @@
 	#item-comments
 		#comments-embed
 
-
 script.
 
 	var context = ProjectUtils.context();
@@ -159,5 +161,32 @@ script.
 	if ('fs' in urlParams){
 		enterFullscreen();
 	}
+
+	// Color the parent container of the item-media thumbnail
+	$.adaptiveBackground.run();
+
+	// Expand the images thumbnail
+	$('.item-media').on('click', function(e){
+		e.preventDefault();
+
+		// Get the url of the item-media
+		var url = $(this).attr('href');
+
+		appOverlayClear();
+		$('#app-overlay')
+			.addClass('active preview')
+			.html('\
+				<div class="overlay-background">\
+					<img src="' + url + '" data-adaptive-background="2" />\
+				</div>\
+			');
+
+		// Color the background of the overlay
+		var options  = {
+			selector: '[data-adaptive-background="2"]',
+			transparent: '0.8'
+		};
+		$.adaptiveBackground.run(options);
+	});
 
 	ga('send', 'pageview', location.pathname);
