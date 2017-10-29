@@ -397,10 +397,23 @@ body[data-context="post-edit"]
           &:hover
             color: var(--community-theme-color, $color-primary)
 
-      #category
-        padding: 10px
-        margin: 5px 10px
-        background-color: $color-background-lighter
+      .tags
+        label
+          padding-bottom: 5px
+          padding-left: 0
+          display: block
+
+        .select2-container
+          background-color: $color-background-lighter
+          border-radius: 3px
+          box-shadow: none
+
+          .select2-selection__choice
+            background-color: $color-background
+
+          .select2-selection
+            border: none
+            box-shadow: 1px 2px 2px $color-background-dark
 
       #status, #post_type, #picture_url
         visibility: hidden
