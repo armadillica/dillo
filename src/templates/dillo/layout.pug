@@ -161,6 +161,14 @@ html(lang='en')
 											title="Settings")
 											i.pi-cog
 											| {{ _("Settings") }}
+									| {% if current_user.has_cap('admin') %}
+									li
+										a(
+											href="{{ url_for('projects.edit', project_url=project.url) }}"
+											title="{{ _('Community Settings') }}")
+											i.pi-whoosh
+											| {{ _("Community Settings") }}
+									| {% endif %}
 									li
 										a(
 											href="{{ url_for('users.logout') }}")
