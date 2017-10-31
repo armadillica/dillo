@@ -13,6 +13,10 @@
 a
   color: var(--community-theme-color, $color-primary)
 
+body[data-context='post-fullscreen']
+  #col_main
+    background: $color-background
+
 // Override Pillar's notifications style
 #notifications
   +media-xs
@@ -58,9 +62,9 @@ a
       right: 0
       top: $header-height
 
+    background-color: rgba($color-background, .8)
     position: absolute
     width: 100%
-    background-color: rgba($color-background, .7)
 
     .item-view-close
       display: block
@@ -314,6 +318,11 @@ a
       position: fixed
       right: 10px
 
+    transition: transform 100ms ease-in-out
+
+    &:hover
+      transform: scale(1.05)
+
     .dropdown-menu
       +media-xs
         top: -100%
@@ -381,6 +390,7 @@ nav
         display: inline-flex
         justify-content: center
         margin-right: 15px
+        white-space: nowrap
 
         &:last-child
           margin-right: 0

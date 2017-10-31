@@ -257,7 +257,7 @@ script.
 
 	{% raw %}
 	var hitTemplate =
-		'<div class="list-hits-item c-{{ project.url }} {{ is_own }} {{ is_featured }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
+		'<div class="list-hits-item c-{{ project.url }} {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
 			'<a href="{{ url }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
@@ -296,6 +296,9 @@ script.
 						'<li class="item-comments">{{ comments_count }} <i class="pi-comment"></i></li>' +
 						'{{/comments_count}}' +
 					'</ul>' +
+					'{{#is_featured}}' +
+						'<span class="is-featured" title="Popular Post"><i class="pi-fire"></i></span>' +
+					'{{/is_featured}}' +
 				'</div>' +
 			'</div>' +
 		'</div>';

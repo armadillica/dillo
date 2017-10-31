@@ -22,6 +22,9 @@
   &:hover
     background-color: $color-background-lighter
 
+    .is-featured
+      background-color: $color-background-lighter
+
   // Triangle on the right
   &:after
     +media-xs
@@ -49,10 +52,6 @@
       right: -12px
       opacity: 1
 
-    &.is-featured
-      &:before
-        background-color: $color-background-lighter
-
     .item-favicon img
       opacity: 1
 
@@ -64,24 +63,6 @@
     .item-rating-box .item-rating.down
       pointer-events: none
       color: rgba($color-text-dark-hint, .4)
-
-  &.is-featured
-    &:before
-      align-items: center
-      background-color: $color-background-light
-      border-radius: 50%
-      color: $color-danger
-      content: '\e85e'
-      display: flex
-      font-family: 'pillar-font'
-      font-size: 1.2em
-      height: 22px
-      justify-content: center
-      position: absolute
-      right: 7px
-      top: 5px
-      width: 22px
-      z-index: 1
 
   .item-details
     ul
@@ -128,6 +109,20 @@
 
     &:before
       display: none
+
+.is-featured
+  align-items: center
+  background-color: $color-background-light
+  border-radius: 50%
+  color: $color-danger
+  display: flex
+  font-size: 1.2em
+  height: 22px
+  justify-content: center
+  position: absolute
+  right: 7px
+  top: 5px
+  width: 22px
 
 .listing-empty
   align-items: center
