@@ -429,6 +429,7 @@ body[data-context="post-edit"]
         background-color: $color-background-lighter
 
       label
+        color: $color-text
         padding-top: 10px
         padding-left: 15px
 
@@ -455,7 +456,7 @@ body[data-context="post-edit"]
       #item-icon
         align-items: center
         bottom: 10px
-        color: $color-background-lighter
+        color: rgba($color-text, .8)
         display: flex
         justify-content: center
         height: 32px
@@ -668,6 +669,7 @@ body[data-context="post-edit"]
         pointer-events: none
         color: rgba($color-text-dark-hint, .6)
 
+// Big spinner in item-view
 .item-loading
   color: rgba($color-background-darker, .1)
   font-size: 4em
