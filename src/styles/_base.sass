@@ -14,8 +14,8 @@ a
   color: var(--community-theme-color, $color-primary)
 
 body[data-context='post-fullscreen']
-  #col_main
-    background: $color-background
+  .d-header-background
+    opacity: .33
 
 // Override Pillar's notifications style
 #notifications
@@ -44,6 +44,7 @@ body[data-context='post-fullscreen']
   background-color: var(--community-theme-color, $color-primary)
 
 #col_right, #col_main
+  background-color: transparent
   overflow-y: auto
   padding-left: 0 !important // override sidebar offset from Pillar
 
@@ -116,15 +117,12 @@ body[data-context='post-fullscreen']
   +media-lg
     width: 45%
 
-  background-color: $color-background-dark
-
 #col_right
   +media-xs
     display: none // it's displayed when coupled with .fullscreen
 
   +media-lg
     width: 65%
-  background-color: $color-background-dark
 
 #app-header
   +media-xs
@@ -797,13 +795,12 @@ a.beta
 .d-header
   +media-xs
     background-image: none
+    box-shadow: 0 1px 3px rgba(black, .1)
     flex-wrap: wrap
     flex-direction: column
     justify-content: center
     min-height: $header-height
 
-  background-color: $color-background-lighter
-  box-shadow: 0 1px 3px rgba(black, .1)
   display: flex
   padding: 0 10px
   position: relative
@@ -814,13 +811,24 @@ a.beta
       visibility: hidden
     background-color: $color-background-dark
     background-size: cover
-    height: 100%
+    height: 150px
     left: 0
     position: absolute
     right: 0
     top: 0
     width: 100%
-    z-index: -1
+    z-index: -2
+
+    &:after
+      position: absolute
+      top: 0
+      right: 0
+      left: 0
+      bottom: 0
+      width: 100%
+      content: ' '
+      background-image: linear-gradient(transparent 52px, $color-background 100%)
+
 
   $header-logo-size: 60px
   &-logo
@@ -879,13 +887,22 @@ a.beta
       top: 20px
 
   &-action
+    +media-xs
+      margin-left: auto
     align-items: center
     justify-content: center
     display: flex
     flex-direction: column
-    margin-left: auto
 
     &.refine
+      margin-left: auto
+
+      nav.nav-bar
+        margin-right: 10px
+
+        > ul > li
+          margin-right: 0
+
       +media-xs
         background-color: $color-background-lighter
         box-shadow: 0 5px 25px rgba(black, .1)

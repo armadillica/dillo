@@ -64,11 +64,11 @@ html(lang='en')
 			#app-loader
 
 			| {% block header %}
+			| {% if project.picture_header %}
+			.d-header-background(
+				style="background-image: url({{ project.picture_header.thumbnail('h') }});")
+			| {% endif %}
 			.d-header
-				| {% if project.picture_header %}
-				.d-header-background(
-					style="background-image: url({{ project.picture_header.thumbnail('h') }});")
-				| {% endif %}
 
 				| {% if project.picture_square %}
 				a.d-header-logo(
