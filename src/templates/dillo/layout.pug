@@ -3,7 +3,7 @@ html(lang='en')
 	head
 		meta(charset='utf-8')
 		title
-			| {% if self.page_title() %}{% block page_title %}{% endblock %}— {% endif %}
+			| {% if self.page_title() %}{% block page_title %}{% endblock %}{% endif %}
 			| {{ project.name }}
 			| {% if project._id != main_project._id %} — {{ main_project.name }}{% endif %}
 

@@ -6,7 +6,7 @@
 | {% endif %}
 
 | {% block page_title %}
-| {{ (col_right['post'].name if 'post' in col_right else 'Home') }}
+| {{ (col_right['post'].name if 'post' in col_right) }}
 | {% endblock page_title %}
 
 | {% block bodyattrs %}
