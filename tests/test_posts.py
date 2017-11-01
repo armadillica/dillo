@@ -19,7 +19,7 @@ class NodeOwnerTest(AbstractDilloTest):
             'name': 'test with user',
             'user': self.user_id,
             'properties': {
-                'tags': ['Fün']
+                'tags': ['Artwork']
             },
         }
 
