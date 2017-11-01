@@ -1,4 +1,3 @@
-import logging_config
 from abstract_dillo_test import AbstractDilloTest
 
 
@@ -28,3 +27,4 @@ class UserTest(AbstractDilloTest):
             force_cli_user()
             create_local_user('harry@hogwarts.edu', 'password')
         self.get('/u/harry')
+

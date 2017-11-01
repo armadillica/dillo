@@ -28,12 +28,25 @@ def hot(ups, downs, date):
     weight the first votes higher than the rest.
     The first 10 upvotes have the same weight as the next 100 upvotes which
     have the same weight as the next 1000, etc.
+
+    Dillo authors: we modified the formula to give more weight to negative
+    votes when the post is not controversial.
     """
+
     s = score(ups, downs)
     order = log(max(abs(s), 1), 10)
     sign = 1 if s > 0 else -1 if s < 0 else 0
     seconds = epoch_seconds(date) - 1134028003
-    return round(sign * order + seconds / 45000, 7)
+    base_hot = round(sign * order + seconds / 45000, 7)
+
+    if downs > 1:
+        rating_delta = 100 * (downs - ups) / downs
+        if rating_delta < 25:
+            # The post is controversial
+            return base_hot
+        base_hot = base_hot - (downs * 6)
+
+    return base_hot
 
 
 def _confidence(ups, downs):
