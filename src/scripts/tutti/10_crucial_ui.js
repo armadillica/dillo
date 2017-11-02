@@ -103,6 +103,10 @@ function exitFullscreen(){
 	} else if ($('body').hasClass('post-edit')) {
 		setContext("post-edit");
 	}
+
+	if (isMobile()){
+		$('#list-item').empty();
+	}
 }
 
 function toggleFullscreen(){
