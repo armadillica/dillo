@@ -37,7 +37,15 @@ html(lang='en')
 				document.getElementsByTagName("link").item(3).disabled = false;
 			};
 
+		| {% block favicon %}
+		| {% if not is_main_project and project.picture_square %}
+		| {# TODO: Use custom image for favicon #}
+		link(rel="icon", type="image/png", href="{{ project.picture_square.thumbnail('l') }}")
+		| {% else %}
 		link(rel="icon", type="image/png", href="{{ url_for('static_dillo', filename='images/favicon.png', v=2112015) }}")
+		| {% endif %}
+		| {% endblock favicon %}
+
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
 		| {% if config['GOOGLE_SITE_VERIFICATION'] %}
