@@ -86,7 +86,7 @@ html(lang='en')
 						.flyout-content
 							.flyout-title
 								a.title(href="{{ url_for('posts.index_all') }} ") {{ main_project.name }}
-								a.beta(href="/") BETA
+								a.beta(href="https://blender.community/c/today/sWbbbc/announcing-blender-community") BETA
 
 							| {% from 'dillo/_macros/_communities.html' import communities_list %}
 							| {{ communities_list(communities) }}
@@ -94,7 +94,7 @@ html(lang='en')
 				.d-header-title
 					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
 						span {{ project.name }}
-					a.beta(href="/") BETA
+					a.beta(href="https://blender.community/c/today/sWbbbc/announcing-blender-community") BETA
 
 				.d-header-action.refine
 					nav.nav-bar
