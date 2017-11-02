@@ -485,6 +485,19 @@ body[data-context="post-edit"]
 
 
   &-tab
+    +media-xs
+      border-radius: 0
+      box-shadow: none
+      height: 100%
+      margin: 0
+      padding: 0
+
+    background-color: $color-background
+    border-radius: 3px
+    margin: 9px 10px 5px
+    top: 0
+    transition: box-shadow 150ms ease-out, transform 150ms ease-out
+
     /* Hide/show some elements */
     &.link
       .input-content.link
@@ -527,8 +540,9 @@ body[data-context="post-edit"]
 
 .item-body
   border-bottom: thin solid $color-background-dark
-  font-size: $font-size
+  font-size: 16px
   line-height: 1.5em
+
 
 // Specific tweaks to item view embed when link or text
 .item-view
@@ -573,11 +587,22 @@ body[data-context="post-edit"]
 
   &.text
     .item-body
+      +list-bullets
+      +media-lg
+        padding: 20px 65px
+
       background-color: $color-background-lighter
       padding: 20px
 
       img
         max-width: 100%
+
+      h1
+        line-height: 1.2em
+
+      h2
+        margin-top: 35px
+        margin-bottom: 10px
 
       blockquote
         display: block
