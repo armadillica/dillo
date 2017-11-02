@@ -16,23 +16,6 @@
   justify-content: center
   position: relative
 
-  &.oembed
-    padding-bottom: 56.25%
-    padding-top: 35px
-    height: 0
-    overflow: hidden
-
-    iframe
-      height: 100%
-      left: 0
-      position: absolute
-      top: 0
-      width: 100%
-
-    .twitter-tweet
-      position: absolute !important
-      top: 0
-
   iframe, img
     max-height: 600px
     max-width: 100%
@@ -472,9 +455,9 @@ body[data-context="post-edit"]
           max-height: 24px
 
         &.invalid
-          background-color: $color-danger
-          border-radius: 3px
-          color: $color-background-lighter
+          background-color: $color-background-light
+          border-left: 2px solid $color-danger
+          color: $color-danger
           cursor: default
           font-size: .9em
           font-weight: bold
@@ -509,7 +492,6 @@ body[data-context="post-edit"]
         position: relative
 
         input#content
-          color: $color-primary-active
           display: block
           font-weight: bold
           padding-right: 36px
@@ -519,8 +501,7 @@ body[data-context="post-edit"]
             color: $color-text-dark-secondary
 
           &:focus
-            background-color: $color-background-darker
-            color: white
+            background-color: rgba($color-primary, .1)
 
             &::placeholder
               color: rgba($color-text, .6)
