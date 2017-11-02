@@ -62,3 +62,14 @@
 		@if $filled
 			background: rgba($color-text-dark-hint, .1)
 			text-shadow: none
+
+
+=button-simple
+  background-color: $color-background-light
+  border: thin solid $color-background-dark
+  box-shadow: 0 1px 1px rgba(black, .1)
+  color: $color-text
+  transition: color 100ms ease-in-out, transform 100ms ease-in-out
+
+  &:hover
+    color: var(--community-theme-color, $color-primary)

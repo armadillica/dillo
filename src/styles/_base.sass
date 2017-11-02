@@ -327,7 +327,7 @@ body[data-context='post-fullscreen']
 
       background-color: var(--community-theme-color, $color-primary)
       border-radius: 5px
-      top: 125%
+      top: 110%
 
       a
         color: white
@@ -400,17 +400,12 @@ nav
         a.login
           +media-xs
             margin-right: 0
-          background-color: $color-background-light
-          border: 2px solid $color-background
+          +button-simple
           border-radius: 3px
-          box-shadow: 1px 1px 2px rgba(black, .2)
           font-weight: bold
           margin-right: 15px
           padding: 5px 25px
           text-decoration: none
-
-          &:hover
-            color: var(--community-theme-color, $color-primary)
 
         &.nav-notifications
           .nav-item
@@ -435,9 +430,8 @@ nav
             transform: scale(1.1)
 
           &.theme-toggle
-            background-color: $color-background
+            +button-simple
             border-radius: 50%
-            color: $color-text
             cursor: pointer
             padding: 8px
 
