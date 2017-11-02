@@ -1,11 +1,9 @@
+img.error-image(src="{{ url_for('static_dillo', filename='images/error_404.jpg') }}")
 
-#error-container
-	img.error-image(src="{{ url_for('static_dillo', filename='images/error_404.jpg') }}")
+.error-info(style="padding: 25px")
+	.error-info-title
+		h2 404 {{ _('Not Found') }}
 
-	.error-info
-		.error-info-title
-			| 404 {{ _('Not Found') }}
-
-		.error-info-content
-			| {{ _('Something wrong? Let us know on Twitter') }}
-			| <a href="https://twitter.com/Blender_Cloud">@BlenderToday</a>
+	.error-info-content
+		p {{ _('Something wrong? Let us know') }}.
+		p contact at blender dot community
