@@ -14,6 +14,8 @@ a
   color: var(--community-theme-color, $color-primary)
 
 body[data-context='post-fullscreen']
+  .d-header
+    box-shadow: 0 0 15px 5px $color-background-dark
   .d-header-background
     opacity: .33
 
@@ -101,6 +103,9 @@ body[data-context='post-fullscreen']
       .item-view-header
         +media-xs
           background-color: $color-background-lighter
+
+      .item-body
+        font-size: 16px
 
       .item-view
         +media-xs
@@ -815,6 +820,7 @@ a.beta
     position: absolute
     right: 0
     top: 0
+    transition: opacity 150ms ease-in-out
     width: 100%
     z-index: -2
 
