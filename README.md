@@ -1,90 +1,57 @@
-# Dillo 1.0
-Welcome to the Dillo codebase! Dillo is a free and open web platform created to
-support crowd-driven content.
+Dillo 2.0
+==========
 
-Originally developed for the news website [Blender.Today](http://blender.today),
-it is now available as an unbranded site for anyone to power their own community!
+This branch holds the work in progress on Dillo 2.0, now an extension of [Pillar](https://pillarframework.org/) framework.
 
-We warmly welcome feedback, suggestions and pull requests.
+Main features to expect in Dillo 2.0:
+* Built-in search
+* Multi-language support
+* Fast. (not that 1.0 was slow, but this is like, crazy fast)
 
+Besides all the bells and whistles, the new Dillo is an extension of the Pillar framework. Pillar is developed and maintained by the Blender Animation Studio, powering services such as [Blender Cloud](https://cloud.blender.org/), [Attract](https://cloud.blender.org/attract), and [Flamenco](https://www.flamenco.io/). Meaning that all the core features (comments, authentication, and so on) will have support and fixes much faster than when Dillo was a stand-alone application, leaving time to develop more Dillo specific features!
 
-## Quick install with Docker
-Keep in mind that the current installation instructions are valid only for testing.
-A production docker image will be available soon. In order to use the docker
-image you need [Docker](https://www.docker.com/).
+## Installation
 
-Once installed, you can simply run:
-
+* Make a config local and add your categories to it:
 ```
-docker run --entrypoint="bash" -ti --name dillo_dev -p 5000:5000 \
--v <YOUR_DILLO_CHECKOUT_PATH>:/data/git/dillo armadillica/dillo_dev
+# This list generate the selection menu when creating or editing a post.
+POST_CATEGORIES = ['Artwork', 'Tutorials', 'Resources', 'Sneak Peek']
 ```
 
-This will download the `dillo_dev` image on your system and log you into the
-container. At that point you should run:
+* Setup [Algolia](https://www.algolia.com):
+
+Create an account in their site, and add your Algolia API Keys and setup to the config local
 
 ```
-./setup.sh
+ALGOLIA_USER = '1QFJ16Q4TZ' # Application ID
+ALGOLIA_PUBLIC_KEY = '039c5c1d0efe9d25d06c00f55a541963' # Search-Only API Key
+ALGOLIA_API_KEY = '1389947be424f13fbecedabb13ef1710' # Admin API Key
+ALGOLIA_INDEX_USERS = 'dev_UsersYourName'
+ALGOLIA_INDEX_NODES = 'dev_NodesYourName'
 ```
 
-and follow the instructions. Once the procedure is complete, run:
+* Follow the instructions to install a [Pillar extension](https://pillarframework.org/development/install/).
+* Initialize dillo for your project
 
 ```
-./manage.sh runserver
+python manage.py dillo setup_for_dillo default-project
 ```
 
-At this point Dillo is running and you can see it in your web browser.
+* Create a new post, to populate the Algolia database
+* Add the new created categories to your Algolia account:
+    * Go to `Dashboard` → `Indices` → `Display` → `Faceting`
+    * Select the indice `dev_NodesYourName`
+    * `Add an Attribute` →  `"category"`
+    * Make it searchable and save it
 
+Credits:
+* [Francesco Siddi](https://twitter.com/fsiddi) - Back-end (Dillo & Pillar)
+* [Pablo Vazquez](https://twitter.com/PabloVazquez_) - Front-end
+* [Dalai Felinto](https://twitter.com/dfelinto) - Multi-Language support
+* [Sybren A. Stüvel](https://twitter.com/sastuvel) - Back-end (Pillar)
 
-## Development installation
-Dillo is a Flask application, and follows most of the typical install conventions.
-At this moment we don't provide specific instructions for online deployment, since
-our main focus is to create a Docker file and Docker image for easy installs.
+----
+For version 1.0 [check out master](https://github.com/armadillica/dillo).
+See it in action [on Blender.Today](http://blender.today).
 
-### Dependencies
-- MySQL (on Linux make sure you have `libmysqlclient-dev`)
-- Python 2.7 (on Linux make sure you have `python-dev`)
-- virtualenv
-- Nodejs (in particular we use `npm`)
-
-### Flask in the virtualenvironment
-```
-mkdir ~/venvs
-virtualenv ~/venvs/dillo
-. ~/venvs/dillo/bin activate
-pip install -r requirements.txt
-```
-
-### Gulp
-```
-npm install -g gulp
-npm install
-gulp
-```
-
-### Database
-Set up a MySQL database where you will install dillo. No schema is needed, just
-the database.
-
-### Config
-The `config.py.sample` must be duplicated into a `config.py`, and edited with
-proper values.
-
-### Manage
-Before running the site for the first time, run the following
-```
-. ~/venvs/dillo/bin/activate && python manage.py db upgrade
-```
-
-```
-. ~/venvs/dillo/bin/activate && python manage.py setup
-```
-
-Once the setup is complete, the site can be started with:
-
-```
-. ~/venvs/dillo/bin/activate && python manage.py runserver
-```
-
-If you find any issues feel free to report them in the issue tracker. Thanks!
-Dillo is licensed as [GPL2](https://www.gnu.org/licenses/gpl-2.0.txt).
+Follow us [@dillospace](https://twitter.com/dillospace)

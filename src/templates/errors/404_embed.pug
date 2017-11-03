@@ -1,0 +1,17 @@
+a(href="{{ url_for('posts.index_all') }}")
+	img.error-image(src="{{ url_for('static_dillo', filename='images/error_404.jpg') }}")
+
+.error-info(style="padding: 25px")
+	.error-info-title
+		h2 404 {{ _('Not Found') }}
+
+	.error-info-content
+		// TODO: Use actual contact information
+		p.
+			{{ _('Something wrong? Let us know') }}.
+			#[br] contact at blender dot community
+
+	hr
+
+	.error-info-content
+		| Back to #[a(href="{{ url_for('posts.index_all') }}") {{ main_project.name }}]

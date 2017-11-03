@@ -1,0 +1,1252 @@
+::-webkit-scrollbar
+  width: 5px
+  height: 5px
+
+::-webkit-scrollbar-track
+  background-color: rgba($color-background-darker, .2)
+  border-radius: 999em
+
+::-webkit-scrollbar-thumb
+  background-color: var(--community-theme-color, $color-primary)
+  border-radius: 999em
+
+a
+  color: var(--community-theme-color, $color-primary)
+
+h1
+  font-size: 1.8em
+
+body[data-context='post-fullscreen']
+  .d-header
+    box-shadow: 0 0 15px 5px $color-background-dark
+  .d-header-background
+    opacity: .33
+
+// Override Pillar's notifications style
+#notifications
+  +media-xs
+    bottom: 0
+    height: 100%
+    max-height: 100% !important
+    right: 0
+    top: $header-height
+    width: auto
+
+  right: 15px
+  top: 55px
+
+
+#col_main::-webkit-scrollbar-track
+  background-color: transparent
+
+#col_main::-webkit-scrollbar-thumb
+  background-color: transparent
+
+#col_main:hover::-webkit-scrollbar-track
+  background-color: rgba($color-background-darker, .2)
+
+#col_main:hover::-webkit-scrollbar-thumb
+  background-color: var(--community-theme-color, $color-primary)
+
+#col_right, #col_main
+  background-color: transparent
+  overflow-y: auto
+  padding-left: 0 !important // override sidebar offset from Pillar
+
+  .fullscreen-overlay
+    display: none
+    pointer-events: none
+    visibility: hidden
+
+  &.fullscreen
+    +media-xs
+      background-color: $color-background
+      bottom: 0
+      display: flex
+      left: 0
+      position: fixed
+      right: 0
+      top: $header-height
+
+    background-color: rgba($color-background, .8)
+    position: absolute
+    width: 100%
+
+    .item-view-close
+      display: block
+
+    .fullscreen-overlay
+      display: initial
+      pointer-events: initial
+      position: fixed
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      visibility: visible
+      z-index: 0
+
+    #list-item
+      +media-xs
+        width: 100%
+        padding: 0
+
+      height: auto
+      margin: 0 auto
+      max-width: 840px
+      overflow-x: initial
+      position: relative
+      z-index: 1
+      padding-left: 70px
+
+      .item-title
+        margin-right: 70px
+
+      .item-body,
+      .item-view-header
+        +media-xs
+          background-color: $color-background-lighter
+
+      .item-body
+        font-size: 16px
+
+      .item-view
+        +media-xs
+          background-color: $color-background
+          box-shadow: none
+          transform: none
+
+        box-shadow: 0 0 1px 0 rgba($color-background-darker, .2), 1px 1px 5px rgba($color-background-darker, .1), 0 15px 100px rgba($color-background-darker, .2)
+        transform: translateX(-35px)
+
+#col_main
+  +media-xs
+    top: $header-height
+  +media-lg
+    width: 45%
+
+#col_right
+  +media-xs
+    display: none // it's displayed when coupled with .fullscreen
+
+  +media-lg
+    width: 65%
+
+#app-header
+  +media-xs
+    left: 0
+    position: fixed
+    right: 0
+    top: 0
+    z-index: 10
+
+  display: flex
+  flex-direction: column
+
+#app-loader
+  background-color: var(--community-theme-color, $color-primary)
+  height: 0
+  left: 0
+  position: absolute
+  right: 0
+  top: 0
+  z-index: 99
+
+  visibility: hidden
+  opacity: 0
+  transition: all ease-in-out 50ms
+
+  background: linear-gradient(45deg, var(--community-theme-color, $color-primary), rgba(white, 0), rgba(white, 0), var(--community-theme-color, $color-primary))
+  background-size: 50% 100%
+  -webkit-animation: none
+  -moz-animation: none
+  animation: none
+
+  &.active
+    height: 2px
+    visibility: visible
+    opacity: 1
+    -webkit-animation: fLoaderBackground 3s linear infinite
+    -moz-animation: fLoaderBackground 3s linear infinite
+    animation: fLoaderBackground 3s linear infinite
+
+#app-overlay
+  align-items: center
+  justify-content: center
+  bottom: 0
+  display: flex
+  left: 0
+  opacity: 0
+  pointer-events: none
+  position: fixed
+  right: 0
+  top: 0
+  visibility: hidden
+  z-index: 9
+
+  .overlay-background
+    bottom: 0
+    left: 0
+    opacity: 0
+    position: fixed
+    right: 0
+    top: 0
+    transition: opacity 500ms ease-out, background-color 150ms ease-out
+
+  &.active
+    opacity: 1
+    pointer-events: initial
+    visibility: visible
+
+    .overlay-background
+      opacity: 1
+
+  &.preview
+    pointer-events: auto
+
+    .overlay-background
+      display: flex
+      align-items: center
+      justify-content: center
+      opacity: 1
+
+    img
+      max-height: 90%
+      max-width: 90%
+
+  &.submit
+    .overlay-background
+      background: var(--community-theme-color, $color-primary)
+      opacity: .5
+
+    .dialog-box
+      top: 0
+
+.dialog-box
+  align-self: flex-start
+  background: $color-background
+  border-bottom-left-radius: 3px
+  border-bottom-right-radius: 3px
+  box-shadow: 2px 2px 0 rgba(black, .1)
+  display: flex
+  flex-direction: column
+  max-width: 720px
+  position: relative
+  top: -50%
+  transition: top 500ms ease-out
+  width: 100%
+
+  // In case the form can't be loaded
+  .dialog-placeholder
+    align-items: center
+    color: $color-text-dark-hint
+    display: flex
+    justify-content: center
+    height: 490px
+    font-size: 2em
+
+    i.spin
+      animation-duration: 5s
+
+.dialog-box
+  #col_main
+    background-color: initial
+    width: 100%
+
+    .item-edit-tab
+      background-color: transparent
+
+    .item-edit-header
+      padding: 10px 20px 20px
+
+    .btn.preview
+      display: none
+
+.app-branding
+  color: var(--community-theme-color, $color-primary)
+  font-size: $font-size-large
+  padding: 10px
+  text-decoration: none
+
+.btn
+
+  +button-dillo($color-background, 5px, false)
+
+  &.publish
+    +button-dillo($color-success, 5px, true)
+  &.cancel
+    +button-dillo($color-text-light, 5px)
+    margin-right: 10px
+  &.delete
+    +button-dillo($color-danger, 5px)
+  &.preview
+    display: none
+
+    +media-xs
+      display: block
+
+  &.btn-success
+    +button-dillo($color-success, 5px, true)
+  &.btn-info
+    +button-dillo($color-info, 5px, true)
+  &.btn-danger
+    +button-dillo($color-danger, 5px, true)
+  &.btn-warning
+    +button-dillo($color-warning, 5px, true)
+
+  &.btn-submit
+    +button-dillo(var(--community-theme-color, $color-primary), 5px, true)
+    font-size: inherit
+
+    +media-xs
+      border-radius: 999em
+      padding: 10px
+      width: 60px
+
+      > i
+        font-size: $font-size-large
+        margin-right: 0
+      > span
+        display: none
+
+.btn-group
+  align-items: center
+  border-radius: 3px
+  color: $color-text
+  display: inline-flex
+  position: relative
+
+  &.submit
+    +media-xs
+      border-radius: 999em
+      bottom: 15px
+      box-shadow: 0 0 25px rgba(black, .2)
+      position: fixed
+      right: 10px
+
+    transition: transform 100ms ease-in-out
+
+    &:hover
+      transform: scale(1.05)
+
+    .dropdown-menu
+      +media-xs
+        top: -100%
+
+      background-color: var(--community-theme-color, $color-primary)
+      border-radius: 5px
+      top: 110%
+
+      a
+        color: white
+        font-weight: bold
+
+  label
+    font-size: 1em
+    padding-right: 10px
+
+  button, .btn, a.btn
+    border-top-right-radius: 0 !important
+    border-bottom-right-radius: 0 !important
+
+    &.wgt-dropdown-toggle
+      +media-xs
+        border-top-right-radius: 999em !important
+        border-bottom-right-radius: 999em !important
+        > i
+          display: block
+
+      border-left: none
+      padding-left: 5px
+      padding-right: 5px
+      border-top-left-radius: 0 !important
+      border-bottom-left-radius: 0 !important
+      border-top-right-radius: 5px !important
+      border-bottom-right-radius: 5px !important
+
+      > i
+        margin: 0
+
+
+select, textarea, input
+  border-radius: 5px
+  box-shadow: 1px 2px 2px $color-background-dark
+
+  &:focus
+    box-shadow: 1px 2px 2px $color-background-dark, inset 0 0 0 1px var(--community-theme-color, $color-primary)
+    border-color: var(--community-theme-color, $color-primary)
+
+  option
+    color: $color-text
+    background-color: $color-background
+
+/* Navigation */
+nav
+  &.nav-bar
+    z-index: 9
+
+    > ul
+      display: flex
+      align-items: center
+      margin: 0
+      padding: 0
+
+      > li
+        align-items: center
+        display: inline-flex
+        justify-content: center
+        margin-right: 15px
+        white-space: nowrap
+
+        &:last-child
+          margin-right: 0
+
+        &.dropdown
+          position: relative
+          top: 2px
+
+        a.login
+          +media-xs
+            margin-right: 0
+          +button-simple
+          border-radius: 3px
+          font-weight: bold
+          margin-right: 15px
+          padding: 5px 25px
+          text-decoration: none
+
+        &.nav-notifications
+          .nav-item
+            +button-simple
+            border-radius: 50%
+            padding: 4px
+
+            &.active
+              background-color: var(--community-theme-color, $color-primary)
+              color: $color-background-lighter
+
+          #notifications-toggle
+            #notifications-count
+              top: 0
+              right: -5px
+
+        .nav-item
+          transition: transform 100ms ease-in-out
+
+          &:hover
+            transform: scale(1.1)
+
+          &.theme-toggle
+            +button-simple
+            border-radius: 50%
+            cursor: pointer
+            padding: 8px
+
+
+.dropdown-toggle
+  cursor: pointer
+
+  img.avatar
+    border-radius: 50%
+    width: 32px
+    height: 32px
+    background-color: $color-background-light
+    padding: 3px
+    margin-right: 10px
+    transition: background-color 150ms ease-in-out
+
+  .dropdown-toggle-icon
+    position: absolute
+    bottom: 0
+    right: 0
+
+ul.dropdown-menu
+  +media-xs
+    margin: 0
+    top: $header-height - 2
+
+  border-bottom-left-radius: 3px
+  border-bottom-right-radius: 3px
+  display: none
+  flex-direction: column
+  list-style: none
+  margin: 0
+  padding: 0
+  position: absolute
+  top: 100%
+  min-width: 150px
+  visibility: hidden
+  z-index: 1
+
+  &.right
+    right: 0
+
+  li
+    display: flex
+    align-items: center
+    border-bottom: thin solid $color-background
+
+    &:last-child
+      border: none
+
+    a, span
+      align-items: center
+      display: flex
+      color: $color-text-dark
+      cursor: pointer
+      font-weight: normal
+      padding: 10px
+      text-decoration: none
+      text-shadow: none
+      width: 100%
+
+      &:hover
+        color: var(--community-theme-color, $color-primary)
+
+      i
+        display: inline-block
+        margin-right: 10px
+
+  &.active
+    display: flex
+    visibility: visible
+
+.spin
+  animation-duration: 5s
+
+.wgt-search
+  position: relative
+
+  .wgt-search-icon
+    position: absolute
+    right: 15px
+    top: 6px
+    color: $color-text-hint
+
+  input
+    +media-xs
+      width: 100px
+    background-color: $color-background-lighter
+    border: none
+    border-radius: 3px
+    box-shadow: inset 0 0 0 1px $color-background-dark
+    float: right
+    margin: 0 10px
+    padding: 6px 10px
+    width: auto
+
+    &::placeholder
+      color: $color-text-hint
+
+
+.emoji
+  height: 16px
+  width: 16px
+  vertical-align: middle
+  padding: 0 1px
+
+h1 .emoji
+  width: 32px
+  height: 32px
+
+.user-avatar
+  width: 28px
+  height: 28px
+  margin: 0
+  padding: 0
+  border-radius: 50%
+  vertical-align: middle
+
+.welcome
+  align-items: center
+  background-color: $color-background-light
+  border-radius: 3px
+  box-shadow: 1px 2px 2px rgba(black, .2)
+  display: flex
+  flex-direction: column
+  margin: 8px
+  padding: 0 25px
+
+  &-info
+    align-items: center
+    display: flex
+    justify-content: center
+    padding: 20px
+
+  &-logo
+    max-height: 90px
+    max-width: 90px
+    margin-right: 20px
+
+    img
+      width: 100%
+
+  &-title
+    display: flex
+    flex-direction: column
+    font-size: 1.7em
+    position: relative
+
+    a
+      text-decoration: none
+
+    a.beta
+      top: -10px
+      position: relative
+
+    .summary
+      cursor: default
+      display: inline-block
+      font-size: $font-size
+      position: relative
+
+    .social
+      display: flex
+      font-size: .8em
+      list-style-type: none
+      margin: 0
+      padding: 10px 0 0
+
+      a
+        background-color: $color-background-light
+        margin-right: 5px
+
+  &-extra
+    padding: 0 15px 15px
+    margin: 15px auto
+    max-width: 600px
+
+.flyout
+  &.notifications
+    +media-xs
+      bottom: 0
+      box-shadow: none
+      left: 0
+      margin: 0
+      padding: 0
+      position: fixed
+      right: 0
+      top: 0
+    top: 40px
+
+  &.communities
+    +media-xs
+      bottom: 0
+      border: none
+      box-shadow: none
+      left: 0
+      max-width: 100%
+      right: 0
+      top: 0
+      width: 100%
+
+    left: 15px
+    max-width: 500px
+    position: absolute
+    top: 100%
+
+    .flyout
+      &-title
+        border-bottom: thin solid $color-background-dark
+        cursor: pointer
+        display: flex
+        font-size: 1.3em
+        font-weight: normal
+
+        a.title
+          color: $color-text-dark
+          text-decoration: none
+
+          &:hover
+            color: $color-text-dark-primary
+            text-decoration: underline
+
+      &-content
+        display: flex
+        flex-direction: column
+
+        ul
+          display: flex
+          flex-wrap: wrap
+          flex-direction: column
+          list-style: none
+          margin: 0
+          padding: 0 3px
+
+// Temporary, hopefully.
+a.beta
+  color: $color-danger
+  font-weight: bold
+  font-size: $font-size-smaller
+  margin-left: 7px
+  text-decoration: none
+
+
+// Communities list flyout
+.d-communities
+  +media-xs
+    background-color: $color-background
+    position: fixed
+    top: $header-height
+    bottom: 0
+    left: 0
+    right: 0
+    overflow-x: hidden
+    overflow-y: auto
+  display: none
+  visibility: hidden
+
+  &.active
+    display: block
+    visibility: visible
+
+  &-list
+    border-top: thin solid $color-background-dark
+    font-size: .9em
+    padding: 5px 5px 15px
+    position: relative
+
+    span.d-communities-title
+      background-color: $color-background-light
+      color: $color-text-dark-secondary
+      left: 50%
+      padding: 0 15px
+      position: absolute
+      top: -10px
+      transform: translateX(-50%)
+
+    .d-header-logo
+      max-width: 40px
+
+    .d-communities-info
+      padding-left: 15px
+
+    > ul
+      display: flex
+      flex-wrap: wrap
+      // flex-direction: column
+      list-style: none
+      margin: 0
+      padding: 0 3px
+
+      > li
+        +media-sm
+          width: 100%
+        width: 50%
+
+        > a
+          box-shadow: none
+
+          &:hover
+            background-color: initial
+
+
+
+  &-item
+    +media-xs
+      border-top: thin solid $color-background-dark
+    align-items: center
+    background-color: $color-background-light
+    border-radius: 3px
+    box-shadow: 1px 1px 2px rgba(black, .1)
+    display: flex
+    padding: 5px 10px
+    margin: 5px
+    text-decoration: none
+
+    &:hover
+      background-color: $color-background-lighter
+
+      span.title
+        color: $color-primary
+
+    .d-header-logo
+      +media-xs
+        position: relative
+      height: 50px
+      pointer-events: none
+      width: 50px
+
+  &-info
+    display: flex
+    flex-direction: column
+    padding: 0 15px 0 25px
+
+    span.title
+      font-size: 1.3em
+      padding-bottom: 3px
+      color: $color-text
+
+    span.summary
+      color: $color-text
+
+  &-suggest
+    width: 100% !important
+
+    .d-communities-item
+      background: transparent
+      box-shadow: none
+      margin: 0
+
+    .d-communities-info
+      padding-left: 10px
+
+      .title
+        color: $color-text-dark-secondary
+        font-size: $font-size
+
+      .summary
+        color: $color-text-dark-secondary
+        font-size: $font-size-small
+
+.d-header
+  +media-xs
+    background-image: none
+    box-shadow: 0 1px 3px rgba(black, .1)
+    flex-wrap: wrap
+    flex-direction: column
+    justify-content: center
+    min-height: $header-height
+
+  display: flex
+  padding: 0 10px
+  position: relative
+  z-index: 2
+
+  &-background
+    +media-xs
+      visibility: hidden
+    background-color: $color-background-dark
+    background-size: cover
+    height: 150px
+    left: 0
+    position: absolute
+    right: 0
+    top: 0
+    transition: opacity 150ms ease-in-out
+    width: 100%
+    z-index: -2
+
+    &:after
+      position: absolute
+      top: 0
+      right: 0
+      left: 0
+      bottom: 0
+      width: 100%
+      content: ' '
+      background-image: linear-gradient(transparent 52px, $color-background 100%)
+
+
+  $header-logo-size: 60px
+  &-logo
+    +media-xs
+      height: $header-logo-size / 1.8
+      position: fixed
+      width: $header-logo-size / 1.8
+
+    align-items: center
+    border-radius: 3px
+    display: flex
+    justify-content: center
+    height: $header-logo-size
+    position: relative
+    width: $header-logo-size
+
+    img
+      +position-center-translate
+      margin: 0 5px
+      max-width: 100%
+
+    &.no-logo
+      i
+        +position-center-translate
+        background-color: $color-background
+        border-radius: 50%
+        color: $color-text
+        padding: 8px
+
+  // .d-header-title
+  &-title
+    +media-xs
+      display: none
+    display: flex
+    flex-direction: column
+    justify-content: center
+    padding-left: 35px
+    position: relative
+
+    .title
+      background-color: var(--community-theme-color, $color-primary)
+      border-radius: 3px
+      box-shadow: 1px 1px 1px 0 rgba(black, .2)
+      color: white
+      font-size: $font-size-large
+      text-decoration: none
+      padding: 4px 15px
+
+    a.beta
+      background-color: $color-danger
+      border-radius: 3px
+      color: white
+      padding: 1px 4px
+      position: absolute
+      right: -25px
+      top: 20px
+
+  &-action
+    +media-xs
+      margin-left: auto
+    align-items: center
+    justify-content: center
+    display: flex
+    flex-direction: column
+
+    &.refine
+      margin-left: auto
+
+      nav.nav-bar
+        margin-right: 10px
+
+        > ul > li
+          margin-right: 0
+
+      +media-xs
+        background-color: $color-background-lighter
+        box-shadow: 0 5px 25px rgba(black, .1)
+        display: none
+        left: 0
+        padding: 5px 0
+        position: fixed
+        right: 0
+        top: $header-height
+
+        &.active
+          display: flex
+
+        .wgt-dropdown-root
+          margin: 0
+        .wgt-dropdown-header
+          min-width: auto
+          width: 100%
+
+        nav.nav-bar
+          > ul
+            > li
+              margin: 5px 10px
+              flex: 1
+
+
+  &-toggle-nav
+    +media-xs
+      display: block
+      visibility: visible
+
+    color: $color-text-dark-secondary
+    display: none
+    font-size: 1.8em
+    left: 50px
+    padding: 4px 8px
+    position: fixed
+    top: 0
+    visibility: hidden
+    z-index: 11
+
+    &.active
+      color: var(--community-theme-color, $color-primary)
+
+      > i:before
+        content: '\e84b'
+
+
+/* General style for activities in all places */
+.d-activity
+  border-top: thin solid $color-background-dark
+  padding: 15px 15px 25px
+
+  .title
+    color: $color-text-hint
+    padding-bottom: 15px
+
+  $activity-highlight-color: #00cc9f
+  ul
+    cursor: default
+    margin: 0
+    padding: 0
+    color: $color-text-hint
+    list-style: none
+
+    li
+      padding: 2px 5px 7px 25px
+      position: relative
+
+      a
+        color: $color-text-hint
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+      span.date
+        color: darken($activity-highlight-color, 5%)
+
+      /* Left Dot */
+      &:after
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        width: 18px
+        height: 18px
+        background-color: $activity-highlight-color
+        border: thin solid $activity-highlight-color
+
+      /* Left Line */
+      &:before
+        content: ''
+        display: block
+        position: absolute
+        top: 10px
+        left: 9px
+        width: 2px
+        height: 100%
+        background-color: $activity-highlight-color
+        transition: all 250ms ease-in-out
+
+      &:last-child
+        &:before
+          background-color: transparent
+
+    span.actor
+      padding: 0 5px
+      color: $color-text-dark
+
+    img.actor-avatar
+      width: 18px
+      height: 18px
+      position: absolute
+      top: 1px
+      left: 1px
+      z-index: 1
+
+
+#notification-pop
+  &.code-403, &.code-422
+    background-color: $color-danger
+
+    .nc-avatar
+      display: none
+
+
+.wgt-toggle-fullscreen
+  cursor: pointer
+
+  &.active
+    color: var(--community-theme-color, $color-primary)
+
+
+$wgt-dropdown-width: 150px
+.wgt-dropdown
+  &-root
+    position: relative
+    margin-left: 15px
+    margin-right: 15px
+
+  &-header
+    align-items: center
+    background-color: $color-background-lighter
+    box-shadow: inset 0 0 0 1px $color-background-dark
+    border-radius: 3px
+    color: $color-text
+    cursor: pointer
+    display: flex
+    font:
+      family: $font-headings
+      weight: lighter
+    min-width: $wgt-dropdown-width
+    min-height: $widget-min-height
+    padding-left: 10px
+    padding-right: 10px
+    user-select: none
+
+    &:after
+      content: '\e838'
+      font-family: "pillar-font"
+      margin-left: auto
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+  &-body
+    border: thin solid $color-background-dark
+    border-bottom-left-radius: 3px
+    border-bottom-right-radius: 3px
+    box-shadow: 1px 2px 2px $color-background-dark
+    display: none
+    position: absolute
+    top: 100%
+    z-index: 1
+
+    &.active
+      display: block
+
+  &-link
+    background-color: $color-background-light
+    border-top: thin solid $color-background-dark
+    color: $color-text
+    display: flex
+    padding: 10px 10px
+    min-width: $wgt-dropdown-width
+    text-decoration: none
+
+    &:hover
+      background-color: $color-background-lighter
+      color: var(--community-theme-color, $color-primary)
+
+  &-active
+    .wgt-dropdown-link
+      background-color: $color-background-lighter
+      color: var(--community-theme-color, $color-primary)
+      box-shadow: inset 3px 0 $color-secondary
+
+  &-count
+    margin-left: auto
+    color: $color-text-dark-hint
+
+  &-toggle
+    &.active
+      .wgt-dropdown-header
+        color: var(--community-theme-color, $color-primary)
+
+        &:after
+          content: '\e83b'
+
+      img.avatar
+        background-color: var(--community-theme-color, $color-primary)
+
+
+.wgt-pagination
+  &-root
+    align-items: center
+    display: flex
+    list-style-type: none
+    justify-content: flex-end
+    padding: 0
+    margin: 10px 10px 10px 5px
+
+  &-item
+    align-items: center
+    display: flex
+    height: 100%
+    min-height: $widget-min-height
+
+  &-link
+    background-color: $color-background-lighter
+    border-top: thin solid $color-background-dark
+    border-bottom: thin solid $color-background-dark
+    color: $color-text-dark-secondary
+    display: flex
+    font-size: $font-size-small
+    padding: 5px
+    text-decoration: none
+    user-select: none
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+  &-disabled
+    .wgt-pagination-link
+      opacity: .2
+
+  &-active
+    display: none
+
+  &-last
+    .wgt-pagination-link
+      border-right: thin solid $color-background-dark
+      border-top-right-radius: 3px
+      border-bottom-right-radius: 3px
+
+  &-first
+    .wgt-pagination-link
+      border-left: thin solid $color-background-dark
+      border-top-left-radius: 3px
+      border-bottom-left-radius: 3px
+
+
+.wgt-stats
+  &-root
+    padding: 5px 10px
+    font-size: $font-size-smaller
+    color: $color-text-dark-secondary
+
+
+.wgt-clear
+  &-root
+    font-size: $font-size-small
+    color: $color-text-dark-secondary
+    display: inline-block
+    padding: 10px 5px
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+
+.wgt-refined-values
+  &-body > div
+    align-items: center
+    background-color: $color-background-lighter
+    border-radius: 3px
+    display: flex
+    padding: 6px 8px
+
+    &:hover
+      .wgt-refined-values-link,
+      .wgt-refined-values-clear
+        color: var(--community-theme-color, $color-primary)
+
+  &-count
+    display: none
+
+  &-clear
+    font-size: $font-size-small
+    padding-right: 5px
+    position: relative
+    top: 1px
+
+  &-link
+    align-items: center
+    color: var(--community-theme-color, $color-primary)
+    cursor: pointer
+    display: flex
+    font:
+      family: $font-headings
+      weight: lighter
+    user-select: none
+    text-decoration: none
+
+
+// Animations
+@-webkit-keyframes fLoaderBackground
+  0%
+    background-position: 0% 0%
+  50%
+    background-position: 100% 0%
+  100%
+    background-position: 0% 0%
+
+@-moz-keyframes fLoaderBackground
+  0%
+    background-position: 0% 0%
+  50%
+    background-position: 100% 0%
+  100%
+    background-position: 200% 0%
+
+@keyframes fLoaderBackground
+  0%
+    background-position: 0% 0%
+  50%
+    background-position: 100% 0%
+  100%
+    background-position: 200% 0%

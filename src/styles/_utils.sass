@@ -1,0 +1,75 @@
+@mixin button-dillo($mixin-color, $roundness, $filled: false)
+	align-items: center
+	border-radius: $roundness
+	box-shadow: 1px 1px 1px 0 rgba(black, .2)
+	display: inline-flex
+	font:
+		family: $font-body
+		weight: bold
+	justify-content: center
+
+	text-decoration: none
+	white-space: nowrap
+
+	@if $filled
+		background-color: $mixin-color
+		border: 2px solid $mixin-color
+		color: white
+		text-shadow: 1px 1px 0 rgba(black, .15)
+	@else
+		background-color: transparent
+		border: 2px solid $mixin-color
+		color: $mixin-color
+
+	transition: color 350ms ease-out, border 150ms ease-in-out, opacity 150ms ease-in-out, background-color 150ms ease-in-out
+
+	&:hover
+		cursor: pointer
+		text-decoration: none
+
+		@if $filled
+			background-color: $mixin-color
+			color: white
+			border-color: $mixin-color
+		@else
+			background-color: rgba($mixin-color, .1)
+			color: $mixin-color
+			border-color: $mixin-color
+
+	&:active
+		outline: none
+		border-color: $mixin-color
+		background-color: $mixin-color
+		color: white
+
+	i
+		margin-right: 8px
+
+	small
+		font-size: .6em
+
+	&:disabled
+		cursor: not-allowed
+		color: $color-text-dark-secondary
+		border-color: $color-text-dark-hint
+
+		&:hover
+			@if $filled
+				background: rgba($color-text-dark-hint, .2)
+			@else
+				background-color: rgba($color-text-dark-hint, .1)
+
+		@if $filled
+			background: rgba($color-text-dark-hint, .1)
+			text-shadow: none
+
+
+=button-simple
+  background-color: $color-background-light
+  border: thin solid $color-background-dark
+  box-shadow: 0 1px 1px rgba(black, .1)
+  color: $color-text
+  transition: color 100ms ease-in-out, transform 100ms ease-in-out
+
+  &:hover
+    color: var(--community-theme-color, $color-primary)

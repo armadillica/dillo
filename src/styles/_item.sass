@@ -1,0 +1,701 @@
+// Listing item
+.item-title
+  font-family: $font-headings
+  line-height: 1.3em
+  text-decoration: none
+
+  em
+    color: var(--community-theme-color, $color-primary)
+    font-style: normal
+
+.item-media
+  align-items: center
+  background-color: black
+  border-bottom: thin solid $color-background-dark
+  display: flex
+  justify-content: center
+  position: relative
+
+  iframe, img
+    max-height: 600px
+    max-width: 100%
+
+
+$item-thumbnail-size: 80px
+
+.item-oembed-images
+  margin: 15px 0
+  visibility: hidden
+
+  &.active
+    display: block
+    visibility: visible
+
+  &.no-images
+    color: $color-text-light
+    i
+      padding: 0 5px
+
+  ul
+    display: flex
+    list-style-type: none
+    margin: 10px
+    padding: 0
+
+    li
+      background-color: $color-background-dark
+      border: 3px solid transparent
+      border-radius: 3px
+      box-shadow: rgba(black, .25) 0px 1px 4px -1px
+      cursor: pointer
+      display: flex
+      flex: 1
+      margin: 0 5px
+      max-width: $item-thumbnail-size
+      padding: 0
+      position: relative
+      transform: scale(.9)
+      transition: border-color 100ms ease-in-out, transform 100ms ease-in-out
+
+      &.active
+        border-color: var(--community-theme-color, $color-primary)
+        box-shadow: rgba(black, .25) 0px 1px 4px -1px, 0 0 25px rgba(black, .25)
+        transform: scale(1)
+
+        img
+          opacity: 1
+
+      img
+        margin: 0 auto
+        max-height: $item-thumbnail-size
+        max-width: 100%
+        min-height: $item-thumbnail-size
+        object-fit: cover
+        opacity: .8
+        user-select: none
+
+
+.item-thumbnail
+  +media-xs
+    border-radius: 0
+  align-items: center
+  border-bottom-left-radius: 3px
+  border-top-left-radius: 3px
+  display: flex
+  justify-content: center
+  max-width: $item-thumbnail-size
+  min-width: $item-thumbnail-size
+  overflow: hidden
+  position: relative
+
+  &.has-thumbnail
+    +media-xs
+      margin: 0
+
+      .item-thumbnail-picture
+        display: block
+        height: 100%
+        position: initial
+        width: 100%
+
+        img
+          height: 100%
+          max-height: initial
+          object-fit: cover
+          width: 100%
+
+    background-color: $color-background-light
+
+    .item-thumbnail-picture
+      &::before
+        display: none
+
+  &.is-link
+    .item-thumbnail-picture
+      &::before
+        content: '\e870'
+        background-image: linear-gradient(45deg, $color-type-link, lighten($color-type-link, 8%))
+
+  .item-thumbnail-picture
+    align-items: center
+    bottom: 0
+    display: flex
+    height: 100%
+    justify-content: center
+    position: absolute
+    top: 0
+
+    &::before
+      align-items: center
+      background-image: linear-gradient(45deg, $color-type-text, lighten($color-type-text, 8%))
+      border-radius: 50%
+      color: $color-background-light
+      content: '\e861'
+      display: flex
+      font-family: 'pillar-font'
+      font-size: 1.2em
+      height: $item-thumbnail-size / 2
+      justify-content: center
+      width: $item-thumbnail-size / 2
+
+    img
+      object-fit: cover
+
+.item-content
+  align-items: center
+  display: flex
+  width: 100%
+
+.item-rating-box
+  +media-xs
+    min-width: 50px
+    width: 50px
+
+  display: flex
+  flex-direction: column
+  height: 100%
+  min-width: 45px
+  width: 45px
+
+  &.rated.positive .up
+    color: $color-vote-up
+
+  &.rated.negative .down
+    color: $color-vote-down
+
+.item-rating
+  +media-xs
+    padding: 3px 0
+
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 100%
+
+  &.up, &.down
+    +media-xs
+      font-size: 1em
+    font-size: 1.33em
+    color: $color-text-hint
+    cursor: pointer
+
+  &.up:hover
+    color: $color-vote-up
+  &.down:hover
+    color: $color-vote-down
+
+  &.value
+    color: $color-text
+    font-size: $font-size-small
+
+
+.item-details
+  display: flex
+  flex-direction: column
+  justify-content: space-around
+  flex: 1
+
+  > ul
+    margin: 0
+    padding: 0
+    display: flex
+    align-items: center
+
+    > li
+      margin: 0
+      padding: 0
+      display: inline-block
+      font-size: $font-size-small
+      padding: 5px
+      color: $color-text-light
+
+      &:before
+        content: '·'
+        font-weight: bolder
+        position: relative
+        left: -6px
+        top: 1px
+        color: $color-text-hint
+
+      &:first-child
+        padding-left: 0
+        &:before
+          content: ''
+
+      a
+        +media-xs
+          text-decoration: underline
+        text-decoration: none
+        color: $color-text-light
+
+        &:hover
+          color: var(--community-theme-color, $color-primary)
+          text-decoration: underline
+
+      img
+        +media-xs
+          opacity: 1
+        display: inline-block
+        vertical-align: middle
+        border-radius: 3px
+        position: relative
+        top: -2px
+        opacity: .8
+
+        &:hover
+          opacity: 1
+
+      &#item-post_type
+        text-transform: capitalize
+
+      &.item-author
+        text-overflow: ellipsis
+
+
+.item-info
+  &-panel
+    background-color: $color-background-light
+    border-bottom: thin solid $color-background
+    display: flex
+
+  &-op
+    display: flex
+
+    .op-avatar
+      background-color: $color-background-dark
+      box-shadow: 0 0 0 3px $color-background-lighter
+      border-radius: 50%
+      height: 40px
+      margin: 10px 0 10px 15px
+      max-width: 40px
+      overflow: hidden
+      position: relative
+      transition: box-shadow 150ms ease-in-out
+
+      &:hover
+        box-shadow: 0 0 0 6px $color-background-lighter
+
+      img
+        height: 100%
+        object-fit: cover
+        width: auto
+
+    .op-name
+      color: $color-text-light
+      text-decoration: none
+
+      &:hover
+        color: var(--community-theme-color, $color-primary)
+        text-decoration: underline
+
+    .op-karma
+      color: $color-text-light
+      font-size: $font-size-smaller
+
+    .op-details
+      padding: 10px
+
+  &-action
+    +media-xs
+      .social
+        display: none
+
+    font-size: $font-size-small
+    margin-left: auto
+    padding-left: 10px
+    padding-right: 10px
+
+    a
+      color: $color-text-dark-secondary
+      display: inline-block
+      padding: 10px 5px
+
+      &:hover
+        color: var(--community-theme-color, $color-primary)
+
+  &-edit
+    padding-left: 10px
+
+    a
+      color: var(--community-theme-color, $color-primary)
+
+
+/* Edit */
+body[data-context="post-edit"]
+  .item-info-edit
+    display: none
+
+.item-edit
+  &-header
+    +media-xs
+      padding-top: 0
+    display: flex
+    align-items: center
+    padding: 20px 10px
+
+    &-action
+      +media-xs
+        display: flex
+        flex-direction: column-reverse
+        margin: 0
+        width: 100%
+
+        .btn
+          margin-bottom: 10px
+
+      margin-left: auto
+
+      .btn-group
+        margin-left: 5px
+
+    .item-status
+      +media-xs
+        display: none
+
+      color: $color-text-hint
+
+      span
+        padding-left: 5px
+
+  &-form
+    form
+      display: flex
+      flex-direction: column
+
+      #name
+        color: var(--community-theme-color, $color-primary)
+        padding: 10px
+
+      #content
+        padding: 10px
+
+      textarea#content
+        min-height: 150px
+
+      span.content-extra
+        font-size: $font-size-smaller
+        text-align: right
+        padding: 5px 10px
+
+        a
+          color: $color-text-hint
+          &:hover
+            color: var(--community-theme-color, $color-primary)
+
+      .tags
+        padding: 10px
+
+        label
+          padding-bottom: 5px
+          padding-left: 5px
+          display: block
+
+        .select2-container
+          background-color: $color-background-lighter
+          border-radius: 5px
+          box-shadow: none
+
+          .select2-selection__choice
+            background-color: $color-background
+
+          .select2-selection
+            border: none
+            box-shadow: 1px 2px 2px $color-background-dark
+
+      #status, #post_type, #picture_url
+        visibility: hidden
+        display: none
+
+      .form-upload-file
+        padding: 10px 5px
+
+      input, textarea
+        margin: 5px 10px
+        background-color: $color-background-lighter
+
+      label
+        color: $color-text
+        padding-top: 10px
+        padding-left: 15px
+
+      .input-content
+        display: flex
+        flex-direction: column
+
+        input, textarea
+          background-color: $color-background-lighter
+
+        &.item-oembed-images
+          display: none
+
+          &.active
+            display: block
+            visibility: visible
+
+      .fileupload
+        box-shadow: none
+        background-color: $color-background-light
+        padding: 10px
+        margin: 10px 0
+
+      #item-icon
+        align-items: center
+        bottom: 10px
+        color: rgba($color-text, .8)
+        display: flex
+        justify-content: center
+        height: 32px
+        position: absolute
+        right: 14px
+        width: 32px
+        white-space: nowrap
+
+        img
+          max-width: 24px
+          max-height: 24px
+
+        &.invalid
+          background-color: $color-background-light
+          border-left: 2px solid $color-danger
+          color: $color-danger
+          cursor: default
+          font-size: .9em
+          font-weight: bold
+          padding: 0 10px
+          user-select: none
+          width: auto
+
+        &.success
+          color: $color-success
+
+
+  &-tab
+    +media-xs
+      border-radius: 0
+      box-shadow: none
+      height: 100%
+      margin: 0
+      padding: 0
+
+    background-color: $color-background
+    border-radius: 3px
+    margin: 9px 10px 5px
+    top: 0
+    transition: box-shadow 150ms ease-out, transform 150ms ease-out
+
+    /* Hide/show some elements */
+    &.link
+      .input-content.link
+        display: flex
+        justify-content: center
+        overflow: hidden
+        position: relative
+
+        input#content
+          display: block
+          font-weight: bold
+          padding-right: 36px
+          visibility: visible
+
+          &::placeholder
+            color: $color-text-dark-secondary
+
+          &:focus
+            background-color: rgba($color-primary, .1)
+
+            &::placeholder
+              color: rgba($color-text, .6)
+
+      .input-content.text,
+      span.content-extra
+        display: none
+        visibility: hidden
+
+    /* When the Text tab is active, hide/show some elements */
+    &.text
+      .input-content.text
+        display: flex
+        visibility: visible
+      .input-content.link, #item-icon
+        display: none
+        visibility: hidden
+
+
+.item-body
+  +media-sm
+    font-size: 14px
+  +media-md
+    font-size: 14px
+  +media-lg
+    font-size: 16px
+
+  border-bottom: thin solid $color-background-dark
+  color: $color-text-strong
+  font-size: 16px
+  line-height: 1.5em
+
+
+// Specific tweaks to item view embed when link or text
+.item-view
+  +media-xs
+    border-radius: 0
+    box-shadow: none
+    height: 100%
+    margin: 0
+    padding: 0
+
+  background-color: $color-background-lighter
+  border-radius: 3px
+  box-shadow: 1px 2px 2px $color-background-dark
+  margin: 9px 10px 5px
+  top: 0
+  transition: box-shadow 150ms ease-out, transform 150ms ease-out
+
+  &-header
+    display: flex
+    border-bottom: thin solid $color-background-dark
+
+  &-close
+    +media-xs
+      padding: 12px
+      font-size: 1.5em
+    color: $color-text-dark-hint
+    display: none
+    font-size: 1.3em
+    right: 0
+    top: 0
+    position: absolute
+    padding: 8px
+    border-top-right-radius: 3px
+
+    &:hover
+      cursor: pointer
+      color: $color-danger
+
+  .item-title
+    +media-xs
+      margin-right: 40px // So it doesn't overlap with close button
+
+  &.text
+    .item-body
+      +list-bullets
+      +media-lg
+        padding: 20px 65px
+
+      background-color: $color-background-lighter
+      padding: 20px
+
+      img
+        max-width: 100%
+
+      h1
+        line-height: 1.2em
+
+      h2
+        margin-top: 35px
+        margin-bottom: 10px
+
+      blockquote
+        display: block
+        background-color: $color-background
+        border-left: thick solid $color-background-dark
+        padding: 1px 10px
+        margin: 0
+
+  &.link
+    .item-body
+      align-items: center
+      display: flex
+
+      .item-link-data
+        +text-overflow-ellipsis
+        color: var(--community-theme-color, $color-primary)
+        display: block
+        flex: 1
+        font-size: $font-size-small
+        line-height: $font-size
+        padding: 10px 17px 15px
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+      img.favicon
+        +media-xs
+          margin-left: 5px
+          margin-right: 10px
+        height: 16px
+        margin-left: 8px
+        margin-right: 24px
+        position: relative
+        top: 3px
+        width: 16px
+
+      a.item-thumbnail
+        overflow: initial
+        margin-left: 20px
+
+
+  &.loading
+    pointer-events: none
+    opacity: .8
+
+    .item-details > ul li i
+      margin-right: 10px
+
+
+  .comments-container
+    background-color: $color-background-light
+
+    .sign-in a
+      color: var(--community-theme-color, $color-primary) !important
+
+    .comment-action-reply span
+      color: var(--community-theme-color, $color-primary)
+
+    .comments-list-title
+      padding: 10px 25px
+
+    .comment-container,
+    .comment-reply-container
+      +media-xs
+        padding: 10px
+
+        .comment-reply
+          &-form
+            padding-top: 0
+
+          &-meta
+            width: auto
+
+          &-avatar
+            display: none
+
+      padding: 10px 10px 10px 25px
+
+      a
+        color: $color-text !important
+
+        &:hover
+          color: var(--community-theme-color, $color-primary) !important
+
+      &.is-first
+        border-color: $color-background-dark
+
+      &.is-reply
+        box-shadow: inset 3px 0 0 $color-background-dark
+
+  &.is-own
+    .item-rating
+      &.up, &.down
+        pointer-events: none
+        color: rgba($color-text-dark-hint, .6)
+
+// Big spinner in item-view
+.item-loading
+  color: rgba($color-background-darker, .1)
+  font-size: 4em
+  left: 50%
+  position: absolute
+  top: 50%
+  transform: translate(-50%, -50%)

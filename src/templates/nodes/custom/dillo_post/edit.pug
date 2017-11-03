@@ -1,0 +1,12 @@
+| {% extends 'dillo/layout.html' %}
+| {% set page_name = 'post-edit' %}
+
+| {% block bodyattrs %}
+| {{ super() }}
+| class='{{ page_name }}{% if current_user.is_authenticated %} logged-in{% endif %}' data-context='{{ page_name }}'
+| {% endblock %}
+
+| {% block page_title %}Edit{% endblock %}
+
+// Using a Jinja include statement does not provide the desired results
+include edit_embed.pug

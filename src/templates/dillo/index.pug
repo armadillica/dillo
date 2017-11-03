@@ -1,0 +1,462 @@
+| {% extends 'dillo/layout.html' %}
+| {% set page_name = 'posts-index' %}
+
+| {% if main_project._id == project._id %}
+| {% set is_main_project = 'main-project' %}
+| {% endif %}
+
+| {% block page_title %}
+| {{ (col_right['post'].name if 'post' in col_right) }}
+| {% endblock page_title %}
+
+| {% block bodyattrs %}
+| {{ super() }}
+| class='{{ page_name }} {% if current_user.is_authenticated %}logged-in{% endif %} {{ is_main_project }}' data-context='{{ page_name }}'
+| {% endblock bodyattrs %}
+
+| {% block og %}
+| {% if 'post' in col_right %}
+
+meta(property="og:type", content="article")
+meta(property="og:title", content="{{ col_right['post'].name }} - {{ project.name }}{% if not is_main_project %} — {{ main_project.name }}{% endif %}")
+meta(name="twitter:title" content="{{ col_right['post'].name }} - {{ project.name }}{% if not is_main_project %} — {{ main_project.name }}{% endif %}")
+meta(property="og:url",
+		content="{{ url_for('posts.view', community_url=col_right['post'].project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True) }}")
+meta(property="article:published_time",
+		content="{{ col_right['post']._created }}")
+
+| {% if col_right['post'].properties.content %}
+meta(name="twitter:description", content="{{ col_right['post'].properties.content | safe | striptags }}")
+meta(property="og:description", content="{{ col_right['post'].properties.content | safe | striptags }}")
+| {% endif %}
+
+| {% if col_right['post'].picture %}
+meta(property="og:image", content="{{ col_right['post'].picture.thumbnail('h') }}")
+meta(name="twitter:image", content="{{ col_right['post'].picture.thumbnail('h') }}")
+| {% endif %}
+
+meta(property="article:title", content="{{ col_right['post'].name }}")
+| {% if col_right['post'].user.full_name and col_right['post'].user.full_name != 'None' %}
+meta(property="article:author",
+		 content="{{col_right['post'].user.full_name}}")
+meta(name="twitter:creator",
+		 content="{{col_right['post'].user.full_name}}")
+| {% else %}
+meta(property="article:author",
+		 content="{{ col_right['post'].user }}")
+meta(name="twitter:creator",
+		 content="{{col_right['post'].user.username}}")
+| {% endif %}
+| {% endif %}
+| {% endblock og %}
+
+| {% block style %}
+| {# Build CSS rules for communities with custom theme color #}
+| {% if is_main_project %}
+style(type="text/css").
+	{% for c in communities %}
+		{% if c.extension_props.dillo and c.extension_props.dillo.community_theme_color %}
+		{% set theme_color = c.extension_props.dillo.community_theme_color %}
+
+		.list-hits-item.active.c-{{ c.url }}{
+			box-shadow: 1px 2px 2px rgba(0,0,0,0.1), inset -5px 0 0 {{ theme_color }};
+		}
+		.list-hits-item.active.c-{{ c.url }} .item-title,
+		.list-hits-item.active.c-{{ c.url }}:after,
+		.item-view.c-{{ c.url }} .item-title,
+		.item-view.c-{{ c.url }} a:hover,
+		.item-view.link.c-{{ c.url }} .item-body .item-link-data {
+			border-left-color: {{ theme_color }};
+			color: {{ theme_color }};
+		}
+		{% endif %}
+	{% endfor %}
+| {% endif %}
+| {% endblock style %}
+
+| {% block submit_btn %}
+| {% if submit_menu %}
+li
+	.submit(class="{% if submit_menu['allowed'] %}btn-group{% endif %}")
+		| {% if submit_menu['default'] == 'text' %}
+		a.btn.btn-submit(
+			href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+			title="{{ _('Write a Post') }}")
+			i.pi-document-text
+			span {{ _('Write a Post') }}
+
+		| {% elif submit_menu['default'] == 'link' %}
+		button.btn.btn-submit.wgt-toggle-submit(
+			data-action="publish",
+			title="{{ _('Submit a Link [Shift+A]')}}")
+			i.pi-link
+			span {{ _('Submit Link') }}
+		| {% endif %}
+
+		| {# TODO: To be replaced with an interation over allowed post_type #}
+		| {% if submit_menu['allowed'] %}
+		button.btn.btn-submit.wgt-dropdown-toggle
+			i.pi-angle-down
+
+			ul.dropdown-menu.right
+				li
+					a(
+						href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+						title="{{ _('Write a Post') }}")
+						i.pi-document-text
+						|  {{ _('Write a Post') }}
+		| {% endif %}
+
+| {% endif %}
+| {% endblock submit_btn %}
+
+| {% block body %}
+#col_main.listing-list
+	#list-hits
+
+	.listing-list-info
+		a.list-search-provider(
+			href="https://www.algolia.com/",
+			title="Search by Algolia")
+			svg(viewbox='0 0 95 95', xmlns='http://www.w3.org/2000/svg')
+				path(d='M0 12.37C0 5.54 5.532 0 12.367 0h69.31c6.831 0 12.368 5.533 12.368 12.37v69.331c0 6.832-5.532 12.371-12.367 12.371h-69.31C5.536 94.072 0 88.539 0 81.702V12.37zm48.125 11.405c-14.671 0-26.58 11.898-26.58 26.588 0 14.69 11.895 26.588 26.58 26.588 14.685 0 26.58-11.912 26.58-26.602S62.81 23.775 48.125 23.775zm0 45.307c-10.343 0-18.727-8.386-18.727-18.733 0-10.346 8.384-18.732 18.727-18.732 10.344 0 18.727 8.386 18.727 18.732 0 10.347-8.383 18.733-18.727 18.733zm0-33.6v13.955c0 .408.436.68.803.49L61.3 43.501a.548.548 0 0 0 .217-.762c-2.572-4.506-7.335-7.596-12.834-7.8a.549.549 0 0 0-.558.544zM30.76 25.246l-1.62-1.62a4.082 4.082 0 0 0-5.77 0l-1.933 1.933a4.085 4.085 0 0 0 0 5.773l1.606 1.606c.245.245.64.204.844-.068a30.572 30.572 0 0 1 3.116-3.662 29.723 29.723 0 0 1 3.689-3.131c.272-.19.3-.6.068-.83zm26.063-4.234v-3.226a4.078 4.078 0 0 0-4.083-4.084h-9.5a4.078 4.078 0 0 0-4.083 4.084v3.308c0 .368.354.626.708.531a29.562 29.562 0 0 1 8.275-1.157c2.722 0 5.403.367 7.989 1.075a.55.55 0 0 0 .694-.53z',
+					fill-rule='evenodd')
+		#list-stats
+		#list-pagination
+
+#col_right.listing-view
+	.fullscreen-overlay.js-toggle-fullscreen
+	#list-item
+		| {% if 'post' in col_right %}
+		.item-view.loading
+			.item-content
+				.item-rating-box
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.value &#x221e;
+					.item-rating.down
+						i.pi-angle-down
+				.item-details
+					a#item-title.item-title {{ col_right['post']['name'] }}
+					ul
+						li
+							i.pi-spin.spin
+							span {{ _('Fetching the goods...') }}
+
+		| {% elif 'activities' in col_right %}
+		.welcome
+			.welcome-info
+				| {% if project.picture_square %}
+				.welcome-logo
+					a(
+						href="{{ url_for('posts.index', community_url=project.url) }}")
+						img(src="{{ project.picture_square.thumbnail('l') }}")
+				| {% endif %}
+
+				.welcome-title
+					.title
+						a(href="{{ url_for('posts.index', community_url=project.url) }}")
+							| {{ project.name }}
+						a.beta(href="https://blender.community/c/today/sWbbbc/announcing-blender-community") BETA
+					.summary {{ project.summary }}
+
+					| {% if project.extension_props.dillo %}
+
+					| {% if project.extension_props.dillo.social %}
+					ul.social
+						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
+						li
+							a(class="pi-social-{{ name }}",
+								title="{{ name }}",
+								href="{{ val }}")
+						| {% endfor %}
+					| {% endif %}
+					| {% endif %}
+
+			.welcome-extra
+				| {{ project.description | markdown }}
+
+			| {% if is_main_project %}
+			.d-communities-list
+				span.d-communities-title {{ _('COMMUNITIES') }}
+
+				| {% from 'dillo/_macros/_communities.html' import communities_list %}
+				| {{ communities_list(communities) }}
+
+			| {% else %}
+			.d-activity
+				.title {{ _('What\'s going on') }}:
+
+				| {% if col_right['activities']['_meta']['total'] %}
+				ul
+					| {% for act in col_right['activities']['_items'] %}
+					| {% if act.link and act['actor_user']['email'] %}
+					li
+						a(href="{{ act.link }}")
+							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
+							span.date(title="{{ act._created }}") {{ act._created | pretty_date }}
+							span.actor {{ act['actor_user']['full_name'] }}
+							span.verb {{ act.verb }}
+					| {% endif %}
+					| {% endfor %}
+				| {% else %}
+				p {{ _('No activity... yet!') }}
+				| {% endif %}
+			| {% endif %}
+
+		| {% endif %}
+
+
+| {% endblock body %}
+
+| {% block footer_scripts %}
+script.
+
+	// Check if we're logged in and store it to use later
+	var amAuthenticated = isAuthenticated();
+
+	// Save state the first time we load the page
+	// For example, to load the post fullscreen
+	var first_time = true;
+
+	ProjectUtils.setProjectAttributes({projectId: '{{project._id}}', projectUrl: '{{project.url}}'});
+
+	var search = instantsearch({
+		appId: '{{ config.ALGOLIA_USER }}',
+		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
+		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
+		urlSync: {},
+		searchParameters: {
+			disjunctiveFacets: ['project._id']
+		}
+	});
+
+	search.addWidget({
+		init: function (options) {
+			// use options.helper (https://github.com/algolia/algoliasearch-helper-js) to initialize
+			// the search with custom filters & parameters
+
+			// In case we are loading the index_all endpoint, add all communities to the facets, otherwise
+			// use only the one for the current project.
+			{% if is_main_project %}
+			{% for c in communities %}
+			options.helper.addDisjunctiveFacetRefinement('project._id', '{{ c._id }}');
+			{% endfor %}
+			{% else %}
+			options.helper.addDisjunctiveFacetRefinement('project._id', '{{ project._id }}');
+			{% endif %}
+		}
+	});
+
+	search.addWidget(
+		instantsearch.widgets.searchBox({
+			container: '#q',
+			autofocus: false
+		})
+	);
+
+	{% raw %}
+	var hitTemplate =
+		'<div class="list-hits-item c-{{ project.url }} {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
+			'<a href="{{ url }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
+				'<div class="item-thumbnail-picture">' +
+					'{{#picture}}' +
+						'<img src="{{picture}}"/>' +
+					'{{/picture}}' +
+				'</div>' +
+			'</a>' +
+			'<div class="item-content" data-node-id="{{ objectID }}">' +
+				'<div class="item-rating-box {{#is_positive}}rated {{is_positive}}{{/is_positive}}">' +
+					'<div class="item-rating up">' +
+						'<i class="pi-angle-up"></i>' +
+					'</div>' +
+					'<div class="item-rating value">' +
+						'{{ rating }}' +
+					'</div>' +
+					'<div class="item-rating down">' +
+						'<i class="pi-angle-down"></i>' +
+					'</div>' +
+				'</div>' +
+				'<div class="item-details">' +
+					'<a href="{{ url }}" class="item-title js-item-open">{{ name }}</a>' +
+					'<ul class="item-meta js-item-open">' +
+						'{{#is_link}}' +
+							'<li class="item-favicon">' +
+								'<a class="js-follow-link" href="{{ link_url }}" target="_blank">' +
+									'<img title="Link" src="https://www.google.com/s2/favicons?domain={{ link_url }}"/>' +
+								'</a>' +
+							'</li>' +
+						'{{/is_link}}' +
+						'<li>' +
+							'<a class="js-follow-link" href="/c/{{ project.url }}">{{ project.name }}</a>' +
+						'</li>' +
+						'<li class="item-date">{{ created }}</li>' +
+						'<li class="item-author"><a class="js-follow-link" href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
+						'{{#comments_count}}' +
+						'<li class="item-comments">{{ comments_count }} <i class="pi-comment"></i></li>' +
+						'{{/comments_count}}' +
+					'</ul>' +
+					'{{#is_featured}}' +
+						'<span class="is-featured" title="Popular Post"><i class="pi-fire"></i></span>' +
+					'{{/is_featured}}' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+
+	var noResultsTemplate =
+		'<div class="listing-empty js-list-clear">' +
+			'nothing found for' +
+			'<span class="query">{{query}}</span>' +
+			'<div class="query-clear">clear</div>' +
+		'</div>';
+	{% endraw %}
+
+
+	function processHit(hit) {
+
+		var key = 'dillo_' + hit.objectID;
+		hit.is_positive = localStorage.getItem(key);
+
+		if (hit.is_positive && hit.is_positive === 'true') {
+			hit.is_positive = 'positive';
+		} else if (hit.is_positive && hit.is_positive === 'false') {
+			hit.is_positive = 'negative';
+		}
+
+		hit.created = moment.unix(hit.created).fromNow();
+		hit.url = '/c/' + hit.project.url + '/' + hit.shortcode + '/' + hit.slug;
+
+		if (hit.is_link) {
+			hit.is_link = 'is-link';
+			hit.link_url = hit.content;
+			hit.link_short = shortenUrl(hit.content);
+		}
+
+		if (hit.rating > 5){
+			hit.is_featured = 'is-featured';
+		}
+
+		if (amAuthenticated) {
+			if (hit.user._id == '{{ current_user.user_id }}'){
+				hit.is_own = 'is-own';
+			}
+		}
+
+		return hit;
+	}
+
+
+	search.addWidget(
+		instantsearch.widgets.hits({
+			container: '#list-hits',
+			hitsPerPage: 20,
+			templates: {
+				empty: noResultsTemplate,
+				item: hitTemplate
+			},
+			transformData: {
+				item: processHit,
+			}
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.menu({
+			container: '#list-tags',
+			attributeName: 'tags',
+			cssClasses: {
+				root: 'wgt-dropdown-root',
+				header: 'wgt-dropdown-header',
+				body: 'wgt-dropdown-body dropdown-menu',
+				link: 'wgt-dropdown-link',
+				active: 'wgt-dropdown-active',
+				count: 'wgt-dropdown-count',
+			},
+			templates: {
+				header: "{{ _('Tags') }}"
+			}
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.pagination({
+			container: '#list-pagination',
+			cssClasses: {
+				root: 'wgt-pagination-root',
+				link: 'wgt-pagination-link',
+				item: 'wgt-pagination-item',
+				active: 'wgt-pagination-active',
+				disabled: 'wgt-pagination-disabled',
+				first: 'wgt-pagination-first',
+				last: 'wgt-pagination-last',
+			},
+			maxPages: 20,
+			padding: 0,
+			labels: {
+				first: '<i class="pi-angle-double-left"></i>',
+				previous: '<i class="pi-angle-left"></i>',
+				next: '<i class="pi-angle-right"></i>',
+				last: '<i class="pi-angle-double-right"></i>'
+			},
+			scrollTo: true,
+			autoHideContainer: true
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.stats({
+			container: '#list-stats',
+			cssClasses: {
+				root: 'wgt-stats-root',
+			},
+			autoHideContainer: true
+		})
+	);
+
+	search.addWidget(
+		instantsearch.widgets.currentRefinedValues({
+			container: '#list-refined-values',
+			attributes: [{name: 'tags'}],
+			onlyListedAttributes: true,
+			clearAll: "before",
+			templates: {
+				clearAll: '<i class="pi-cancel"></i>'
+			},
+			cssClasses: {
+				body: 'wgt-refined-values-body',
+				count: 'wgt-refined-values-count',
+				clearAll: 'wgt-refined-values-clear',
+				link: 'wgt-refined-values-link'
+			}
+		})
+	);
+
+	search.start();
+
+	var onRenderHandler = function() {
+		twemoji.parse(document.body);
+	}
+
+	window.addEventListener('popstate', function(event) {
+		if (isMobile()){
+			exitFullscreen();
+		}
+	});
+
+	search.on('render', onRenderHandler);
+
+	{% if 'post' in col_right %}
+		item_open('{{col_right['post']['_id']}}');
+
+		// When loading the page for the first time, load post fullscreen
+		if (first_time){
+			enterFullscreen();
+		}
+	{% endif %}
+
+	$('body').on('click', '.js-list-clear', function(e){
+		search.helper.setQuery('').search();
+	});
+
+| {% endblock footer_scripts %}

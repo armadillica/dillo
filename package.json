@@ -1,21 +1,23 @@
 {
-  "name": "dillo",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/armadillica/dillo.git"
-  },
-  "author": "Blender.Today",
-  "license": "GPL",
-  "devDependencies": {
-    "gulp": "~3.9.1",
-    "gulp-sass": "~2.2.0",
-    "gulp-autoprefixer": "~2.3.1",
-    "gulp-jade": "~1.1.0",
-    "gulp-sourcemaps": "~1.6.0",
-    "gulp-uglify": "~1.5.3",
-    "gulp-plumber": "~1.1.0",
-    "gulp-livereload": "~3.8.1",
-    "gulp-concat": "~2.6.0"
-  }
+	"name": "dillo",
+	"license": "GPL-2.0",
+	"author": "Admadillica",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/armadillica/dillo.git"
+	},
+	"devDependencies": {
+		"gulp": "~3.9.1",
+		"gulp-autoprefixer": "~2.3.1",
+		"gulp-cached": "~1.1.1",
+		"gulp-concat": "~2.6.1",
+		"gulp-if": "^2.0.2",
+		"gulp-livereload": "~3.8.1",
+		"gulp-plumber": "~1.1.0",
+		"gulp-pug": "~3.2.0",
+		"gulp-rename": "~1.2.2",
+		"gulp-sass": "~3.1.0",
+		"gulp-uglify": "~2.1.0",
+		"minimist": "^1.2.0"
+	}
 }

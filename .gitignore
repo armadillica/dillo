@@ -1,22 +1,28 @@
 .DS_Store
 .project
+.coverage
+.cache/*
 *.pyc
 *.sublime*
 .idea/*
-config.py
+config_local.py
 
-dillo/application/templates/**/*
-dillo/application/themes/dillo/static/font/*
-dillo/application/themes/dillo/static/css/*
-dillo/application/themes/dillo/static/js/*
-dillo/application/themes/dillo/templates/*
-dillo/application/static/storage/
+dillo/static/css/*
+dillo/templates/*
+dillo/static/js/generated/*.min.js
+
 node_modules
 .sass-cache/
 *.css.map
 *.js.map
 
-*.rdb
+/build
+/.cache
+/*.egg-info/
+/.eggs/
+/dump/
+/google_app*.json
+/docker/2_buildpy/python/
+/docker/4_run/wheelhouse/
 
-docker/dillo.env
-
+translations/*/LC_MESSAGES/*.mo

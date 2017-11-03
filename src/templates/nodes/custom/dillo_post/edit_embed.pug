@@ -1,0 +1,515 @@
+| {% from '_macros/_node_edit_form.html' import render_field %}
+| {% block body %}
+
+#col_main
+	.item-edit-form
+		.item-edit-tab(
+			class="{{ node.properties.post_type }}")
+
+			form(
+			id="item-edit-form",
+			method="POST",
+			enctype="multipart/form-data",
+			action="{{url_for('nodes.edit', node_id=node._id)}}")
+
+				.input-content.link
+					label(for="content") {{ _('URL') }}
+					input(
+					disabled,
+					name="content",
+					type="url",
+					class="input-field",
+					placeholder="{{ _('Press Ctrl+V or Command+V to paste or type the URL') }}",
+					value="{{ node.properties.content }}")
+					#item-icon.loading
+						img(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+
+				.input-content.name
+					label(for="name") {{ _('Title') }}
+					input(
+					id="name",
+					value="{{ node.name }}",
+					type="text",
+					name="name",
+					placeholder="{{ _('Awesome Post Title') }}")
+
+
+				.input-content.text
+					label(for="content") {{ _('Text') }}
+					textarea(
+					disabled,
+					name="content",
+					class="input-field",
+					minlength="5",
+					placeholder="{{ _('Witty post description') }}")
+						| {{ node.properties.content }}
+
+					span.content-extra
+						a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet")
+							| {{ _('Markdown Cheatsheet') }}
+
+
+				| {% for field in form %}
+				| {% if field.name == 'tags' %}
+				| {{ render_field(field, field.name) }}
+				| {% endif %}
+				| {% endfor %}
+
+				| {{ form.csrf_token }}
+				| {{ form.status }}
+
+				select(
+				id="post_type",
+				class="post_type",
+				name="post_type")
+
+					| {% if node.properties.post_type == 'link' %}
+					option(value="link", selected) {{ _('Link') }}
+					| {% else %}
+					option(value="link") {{ _('Link') }}
+					| {% endif %}
+
+					| {% if node.properties.post_type == 'text' %}
+					option(value="text", selected) {{ _('Text') }}
+					| {% else %}
+					option(value="text") {{ _('Text') }}
+					| {% endif %}
+
+				| {{ form.picture_url }}
+				.input-content.item-oembed-images
+					label(for="picture_oembed") {{ _('Thumbnails from the URL') }}
+					ul#picture_oembed
+
+				.input-content
+					label(for="picture") {{ _('Custom Thumbnail') }}
+					.form-upload-file
+						| {{ form.picture }}
+
+
+		.item-edit-header
+			| {% if node.properties.status != 'pending' %}
+			.item-status
+				| {{ _('Status') }}:
+				span {{ node.properties.status | undertitle }}
+			| {% endif %}
+			.item-edit-header-action
+
+				| {% if node.properties.status != 'pending' %}
+				button.btn.delete {{ _('Delete') }}
+				| {% endif %}
+
+				| {% if node.properties.status == 'published' %}
+				a.btn.cancel(
+					href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}")
+					| {{ _('Cancel') }}
+				| {% else %}
+				a.btn.cancel.js-cancel-submit(href="{{ url_for('posts.index', community_url=project.url)}}")
+					| {{ _('Cancel') }}
+				| {% endif %}
+
+				button.btn.preview {{ _('Preview') }}
+
+				| {% if node.properties.status != 'published' %}
+				button.item-save-publish.btn.btn-success(
+				data-action="publish",
+				title="{{ _('Make post publicly available!') }}")
+					i.pi-check
+					| {{ _('Publish') }}
+				| {% else %}
+				button.item-save-publish.btn.publish(
+				data-action="save",
+				title="{{ _('Save Changes') }}") {{ _('Save Changes') }}
+				| {% endif %}
+
+#col_right.listing-view.item-edit-view
+
+| {% endblock body %}
+
+| {% block footer_scripts %}
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.widget.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+
+script.
+
+	// Set Project ID
+	ProjectUtils.setProjectAttributes({
+		projectId: "{{project._id}}",
+		isProject: true,
+		nodeId: '{{ node._id }}'
+	});
+
+	// Convert Markdown and emojis for text and title
+	var convert = new Markdown.getSanitizingConverter();
+	Markdown.Extra.init(convert);
+	convert = convert.makeHtml;
+
+	// Run on page load
+	$(function () {
+
+		// If we are using quick submit
+		if (ProjectUtils.context() == 'post-submit-overlay'){
+
+			// Pressing 'cancel' should just hide the dialog
+			$(document).on('click', 'body .js-cancel-submit', function(e){
+				e.preventDefault();
+				exitSubmitDialog();
+
+				ga('send', 'event', 'ui', 'dialog-cancel');
+			});
+
+		} else {
+			// If we are not in quick submit, means we are posting a text post or editing an existing item
+
+			// Load the post view_embed on the side
+			$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
+				$('#col_right').html(dataHtml);
+
+				loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+			});
+		}
+
+		// Enable the proper fields on load
+		var input_content = $('.input-content.' + '{{ node.properties.post_type }}' + ' .input-field');
+		input_content
+			.prop('disabled', false)
+			.prop('required', true)
+			.attr('id', 'content');
+
+
+		var $item_title_input = $('#item-edit-form #name');
+		var $item_content_input = $('.input-field');
+		var $item_icon = $('#item-icon');
+		var $item_title = $('#item-title');
+		var $item_picture = $('#picture_url');
+		var $image_oembed = $('.item-oembed-images ul');
+		var $statusLoad = $('#status');
+		var statusLoad_val = $statusLoad.val();
+
+
+		// Resize textarea when typing long text
+		$item_content_input
+			.autoResize()
+			.blur();
+
+
+		function parseText(content) {
+			$('#item-content').html(
+				twemoji.parse(
+					convert(
+						content
+					)
+				)
+			);
+		}
+
+
+		function parseLink(content) {
+			$item_icon
+				.removeAttr('class').addClass('loading')
+				.html('<i class="pi-spin spin"></i>');
+
+			if (!ValidURL(content)){
+				$item_icon
+					.removeAttr('class').addClass('invalid')
+					.html('Not a valid URL');
+				return;
+			}
+
+			// Wait a bit before calling the spoon
+			delay(function () {
+				$.post("{{ url_for('posts.spoon')}}", {url: content})
+					.done(function (data) {
+						if (data) {
+							console.log(data);
+							$item_icon
+								.removeAttr('class').addClass('success')
+								.html('<i class="pi-grin"></i>');
+
+							// Set the name
+							if (data.title) {
+								$('input#name').val(data.title);
+								$item_title.text(twemoji.parse(data.title));
+							}
+
+							// Get the favicon
+							if (data.favicon) {
+								$item_icon
+									.removeAttr('class')
+									.html('<img src="' + data.favicon + ' "></i>');
+							} else {
+								$item_icon
+									.removeAttr('class')
+									.html('<i class="pi-globe"></i>');
+							}
+
+							// Set the media
+							if (data.oembed) {
+								$('#item-media').html(data.oembed)
+							}
+
+							// Get the images
+							$image_oembed
+								.empty()
+								.parent()
+								.removeClass('active no-images');
+
+							// If there is at least 1 image
+							if (data.images && data.images.length > 0) {
+
+								// Empty the list of images and display (by setting it active)
+								$image_oembed
+									.empty()
+									.parent()
+									.addClass('active');
+
+								// Then append a <li> element with each image in it
+								data.images.forEach(function (src) {
+									var image = '<img src="' + src + '"/>';
+									$image_oembed.append('<li class="o-image">' + image + '</li>');
+								});
+
+								// Set the picture_url field
+								$item_picture.attr('value', data.images[0]);
+								// Style the first image on the list as 'active'
+								$image_oembed.find('li:first').addClass('o-image active');
+
+							} else {
+
+								// When no images found, empty the list and be sad about it
+								$image_oembed
+									.empty()
+									.html('<i class="pi-unhappy"></i>  \
+												No images found there. \
+												You can set a custom thumbnail though!')
+									.parent()
+									.addClass('active no-images');
+							}
+						}
+					})
+					.fail(function (xhr) {
+						toastr.error(xhr.statusText, 'Could not retrieve URL info');
+						$item_icon.html('<i class="pi-globe"></i>');
+					});
+			}, 1000);
+		}
+
+
+		// When we type in the link field or in the textarea, process what we type accordingly
+		$item_content_input.keyup(function () {
+			var content = $(this).val();
+			var post_type = $('#post_type').val();
+			switch (post_type) {
+				case 'link':
+					parseLink(content);
+					break;
+				case 'text':
+					parseText(content);
+					break;
+			}
+		});
+
+
+		$item_title_input.keyup(function () {
+			$('#item-title').html(
+				twemoji.parse(
+					$item_title_input.val()
+				)
+			);
+		});
+
+
+		// Save workflow
+		var $item_save_publish_button = $(".item-save-publish");
+		$item_save_publish_button.unbind("click");
+
+
+		function uiUpdateOnSave(btn) {
+			btn
+				.removeClass('saving')
+				.html('<i class="pi-check"></i> Save Changes');
+		}
+
+		function setStatusOnSave() {
+			/* Handle post state transitions
+			pending -> draft
+			draft -> draft
+			published -> published
+			*/
+			var $status = $('#status');
+			var status_val = $status.val();
+			switch (status_val) {
+				case 'pending':
+					$status.val('draft');
+					break;
+				case 'draft':
+					$status.val('draft');
+					break;
+				case 'published':
+					$status.val('published');
+			}
+		}
+
+		function setStatusOnPublish() {
+			/* Handle published post state transitions
+			pending -> published
+			draft -> published
+			*/
+			var $status = $('#status');
+			var status_val = $status.val();
+			switch (status_val) {
+				case 'pending':
+					$status.val('published');
+					break;
+				case 'draft':
+					$status.val('published');
+			}
+		}
+
+		// Submit changes
+		$("#item-edit-form").unbind("submit").submit(function (e) {
+			e.preventDefault();
+
+			// Let us know that saving started
+			$item_save_publish_button
+				.addClass('saving')
+				.html('<i class="pi-spin spin"></i> Saving...');
+
+			$.ajax({
+				url: "{{url_for('nodes.edit', node_id=node._id)}}",
+				data: $(this).serialize(),
+				type: 'POST'
+			})
+				.fail(function (xhr) {
+					// Something went wrong, notify
+					toastr.error(xhr.statusText, 'Error ' + xhr.status);
+					uiUpdateOnSave($item_save_publish_button);
+
+					ga('send', 'event', 'post', 'save-failed', $('#post_type').val() + ' ' + xhr.status + ' ' + xhr.statusText);
+				})
+				.done(function (dataHtml) {
+					// Disable beforeunolad when submitting a form
+					$(window).off('beforeunload');
+
+					// Update the save button
+					uiUpdateOnSave($item_save_publish_button);
+
+					// If on load the post was not published
+					if (statusLoad_val == 'pending'){
+						toastr.success('Post published.<br/>You\'re a rockstar!');
+						ga('send', 'event', 'post', 'published', $('#post_type').val());
+
+						// Refresh the list after a bit to let Algolia think about it
+						setTimeout(function(){
+							var post_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode) }}";
+							window.location.replace(post_url);
+						}, 3000);
+
+					} else {
+						toastr.success('Post saved!');
+
+						// Load the post on the side
+						$('#col_right').html(dataHtml);
+
+						// Load the comments
+						loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+
+						ga('send', 'event', 'post', 'saved', $('#post_type').val());
+					}
+
+				});
+		});
+
+		$item_save_publish_button.click(function (e) {
+			e.preventDefault();
+
+			var action = $(this).data('action');
+
+			if (action === 'save') {
+				setStatusOnSave();
+			} else if (action === 'publish') {
+				setStatusOnPublish();
+			}
+
+			if ($("#item-edit-form")[0].checkValidity()){
+				$("#item-edit-form").submit();
+			} else {
+				toastr.warning('Something seems wrong in the fields...');
+			}
+		});
+
+
+		// Delete Post
+		function deleteItem() {
+			var urlNodeDelete = "{{url_for('projects.delete_node')}}";
+
+			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()})
+				.done(function () {
+					toastr.info("Post deleted.<br/>Going back home...");
+					ga('send', 'event', 'post', 'deleted');
+
+					// Go back home, wait a bit for Algolia to update the index
+					setTimeout(function(){
+						window.location.replace('/');
+					}, 3000);
+				})
+				.fail(function (data) {
+					toastr.error("Couldn't delete :/");
+					ga('send', 'event', 'post', 'deleted-fail');
+				});
+		}
+
+		// The Delete button only shows a confirmation dialog
+		$('.btn.delete').click(function (e) {
+			toastr.warning("Delete Post?<button class='btn delete-confirm'>Yes, Delete</button>");
+		});
+
+		$(document).on('click', 'body .delete-confirm', function(){
+			deleteItem();
+		});
+
+		// Preview button to toggle fullscreen when in mobile
+		$('.btn.preview').click(function (e) {
+			enterFullscreen();
+		});
+
+		// Set Oembed Image as Thumbnail
+		$(document).on('click', 'body .o-image', function () {
+
+			var $this = $(this);
+
+			// Remove active class from other images
+			$this.siblings('li').removeClass('active');
+
+			// Clicking on the already active image to un-set
+			if ($this.hasClass('active')) {
+				$this.toggleClass('active');
+				$item_picture.attr('value', '');
+			} else {
+				$this.addClass('active');
+
+				// Set the picture_url field with the image source path
+				$item_picture.attr('value', $this.children('img').attr('src'));
+
+				// Visually tell that the custom thumbnail won't be used
+				$('.fileupload').val('');
+				$('.form-upload-progress-bar').css('width', 0);
+			}
+		});
+
+		// When finished uploading a thumbnail, deselect any oembed image and clear #picture_url
+		$('body').on('file-upload:finished', function () {
+			$('.o-image').removeClass('active');
+			$item_picture.attr('value', '');
+		});
+
+		// Focus the #content field on load
+		input_content.focus();
+
+
+		$("#tags").select2();
+
+	});
+| {% endblock footer_scripts %}

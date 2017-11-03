@@ -1,0 +1,130 @@
+| {% extends 'dillo/layout.html' %}
+| {% block page_title %}{{ user.full_name }} {% endblock %}
+
+| {% block body %}
+
+#col_main.listing-list
+	#list-hits
+		| {% for post in posts['_items'] %}
+
+		| {% if post.properties.post_type == 'link' %}
+		| {% set is_link = true %}
+		| {% endif %}
+
+		| {% if post.properties.rating_positive or post.properties.rating_negative %}
+		| {% set is_positive = 'negative' %}
+		| {% if post.properties.rating_positive %}
+		| {% set is_positive = 'positive' %}
+		| {% endif %}
+		| {% endif %}
+
+		| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
+		| {% set post_url = '/p/' + post.properties.shortcode  + '/' + post.properties.slug %}
+
+		.list-hits-item(
+			id="item-{{ post._id }}",
+			data-id="{{ post._id }}",
+			data-url="/p/{{ post.properties.shortcode }}/{{ post.properties.slug }}")
+			a(
+				href="{{ post_url }}",
+				class="item-thumbnail js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
+				.item-thumbnail-picture
+					| {% if post.picture %}
+					img(src="{{ post.picture.thumbnail('m') }}")
+					ea
+					| {% endif %}
+
+			.item-content(data-node-id="{{ post._id }}")
+				div(class="item-rating-box {% if is_positive %} rated {{is_positive}} {% endif %}")
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.value
+						| {{ rating }}
+
+					.item-rating.down
+						i.pi-angle-down
+
+				.item-details
+					a(
+						href="{{ post_url }}",
+						class="item-title js-item-open")
+							| {{ post.name }}
+					ul
+						| {% if is_link %}
+						li.item-favicon
+							a(href="{{ post.properties.content }}", target="_blank")
+								img(
+									title="Link",
+									src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
+						| {% endif %}
+
+						li.
+							{% for tag in post.properties.tags %}
+								{{ tag }}{{ ", " if not loop.last }}
+							{% endfor %}
+
+						li.item-date.js-item-open
+								a(href="{{ post_url }}")
+									| {{ post._created }}
+
+						li.item-author
+							a(href="/u/{{ user.username }}")
+								| {{ user.full_name }}
+
+						| {% if is_link %}
+						li.item-link
+							a(href="{{ post.properties.content }}", target="_blank")
+								| {{ post.properties.content }}
+						| {% endif %}
+
+		| {% endfor %}
+
+	.listing-list-info
+		#list-stats
+		#list-pagination
+
+#col_right.listing-view
+	#list-item
+		.user-dashboard
+			.user-dashboard-avatar
+				img(src="{{ user.email | gravatar(size=128) }}")
+			.user-dashboard-info
+				.user-dashboard-name
+					| {{ user.full_name }}
+
+				ul.user-dashboard-meta
+					li
+						strong Karma:
+						| {{ user.extension_props_public.dillo.karma }}
+					li
+						strong {{ _('Last seen') }}:
+						span.date {{ user._updated }}
+					li
+						strong {{ _('Joined') }}:
+						span.date {{ user._created }}
+
+| {% endblock body %}
+
+| {% block footer_scripts %}
+script.
+
+	$(document).ready(function(){
+		// Parse URLs and shorten them
+		$('.item-link').each(function(e){
+			var $item_date = $('.item-link').eq(e);
+			var text = $item_date.text();
+			$item_date.text(shortenUrl(text));
+		});
+
+		// Parse dates using momentjs
+		$('.item-date a, span.date').each(function(e){
+			var $item_date = $('.item-date a, span.date').eq(e);
+			var text = $item_date.text();
+			$item_date.text(moment(text).fromNow());
+		});
+
+		twemoji.parse(document.body);
+
+	});
+
+| {% endblock footer_scripts %}

@@ -1,17 +1,11 @@
 #!/usr/bin/env bash
 
+set -xe
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo $DIR
+cd $DIR/3_buildwheels
+bash build.sh
 
-if [[ $1 == 'pro' || $1 == 'dev' || $1 == 'all' ]]; then
-	# Copy requirements.txt into pro folder
-	cp ../requirements.txt $1/requirements.txt
-	# Build image
-	docker build -t armadillica/dillo_$1 $1
-	# Remove requirements.txt
-	rm $1/requirements.txt
-
-else
-	echo "POS. Your options are 'pro' or 'dev'"
-fi
+cd $DIR/4_run
+bash build.sh

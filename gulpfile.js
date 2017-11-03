@@ -1,70 +1,93 @@
-var gulp          = require('gulp'),
-    plumber       = require('gulp-plumber'),
-    sass          = require('gulp-sass'),
-    sourcemaps    = require('gulp-sourcemaps'),
-    autoprefixer  = require('gulp-autoprefixer'),
-    jade          = require('gulp-jade'),
-    uglify        = require('gulp-uglify'),
-    concat        = require('gulp-concat'),
-    livereload    = require('gulp-livereload');
+var argv         = require('minimist')(process.argv.slice(2));
+var autoprefixer = require('gulp-autoprefixer');
+var cache        = require('gulp-cached');
+var concat       = require('gulp-concat');
+var gulp         = require('gulp');
+var gulpif       = require('gulp-if');
+var pug          = require('gulp-pug');
+var livereload   = require('gulp-livereload');
+var plumber      = require('gulp-plumber');
+var rename       = require('gulp-rename');
+var sass         = require('gulp-sass');
+//var sourcemaps   = require('gulp-sourcemaps');
+var uglify       = require('gulp-uglify');
+
+var enabled = {
+		failCheck: !argv.production,
+		maps: argv.production,
+		prettyPug: !argv.production,
+		uglify: argv.production
+};
+
 
 /* CSS */
 gulp.task('styles', function() {
-    gulp.src('dillo/src/themes/dillo/styles/**/*.sass')
-        .pipe(plumber())
-        .pipe(sourcemaps.init())
-        .pipe(sass({
-            outputStyle: 'compressed'}
-            ))
-        .pipe(autoprefixer("last 3 versions", "safari 5", "ie 8", "ie 9"))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('dillo/application/themes/dillo/static/css'))
-        .pipe(livereload());
+	gulp
+		.src('src/styles/**/*.sass')
+		.pipe(gulpif(enabled.failCheck, plumber()))
+		//.pipe(gulpif(enabled.maps, sourcemaps.init()))
+		.pipe(sass({outputStyle: 'compressed'}))
+		.pipe(autoprefixer("last 3 versions"))
+		//.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
+		.pipe(gulp.dest('dillo/static/css'))
+		.pipe(gulpif(argv.livereload, livereload()));
 });
 
-/* Templates - Jade */
+
+/* Templates - Pug */
 gulp.task('templates', function() {
-    gulp.src('dillo/src/templates/**/*.jade')
-        .pipe(jade({
-            pretty: false
+    gulp.src('src/templates/**/*.pug')
+        .pipe(gulpif(enabled.failCheck, plumber()))
+        .pipe(cache('templating'))
+        .pipe(pug({
+            pretty: enabled.prettyPug
         }))
-        .pipe(gulp.dest('dillo/application/templates'))
-        .pipe(livereload());
-    /* Templates for Dillo theme */
-    gulp.src('dillo/src/themes/dillo/templates/**/*.jade')
-        .pipe(jade({
-            pretty: false
-        }))
-        .pipe(gulp.dest('dillo/application/themes/dillo/templates'))
-        .pipe(livereload());
+        .pipe(gulp.dest('dillo/templates/'))
+        .pipe(gulpif(argv.livereload, livereload()));
 });
 
-/* Scripts */
+
+/* Individually uglified scripts */
 gulp.task('scripts', function() {
-    gulp.src('dillo/src/themes/dillo/scripts/uglify/**/*.js')
-        .pipe(sourcemaps.init())
-        .pipe(concat("tutti.min.js"))
-        .pipe(uglify())
-        .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest('dillo/application/themes/dillo/static/js'))
-        .pipe(livereload());
+    gulp.src('src/scripts/*.js')
+        .pipe(gulpif(enabled.failCheck, plumber()))
+        .pipe(cache('scripting'))
+        //.pipe(gulpif(enabled.maps, sourcemaps.init()))
+        .pipe(gulpif(enabled.uglify, uglify()))
+        .pipe(rename({suffix: '.min'}))
+        //.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
+        .pipe(gulp.dest('dillo/static/js/generated/'))
+        .pipe(gulpif(argv.livereload, livereload()));
 });
 
-/* Copy the font files, except config */
-gulp.task('font', function() {
-    gulp.src('dillo/src/themes/dillo/font/**/*.{eot,svg,ttf,woff,woff2}')
-    .pipe(gulp.dest('dillo/application/themes/dillo/static/font'));
+
+/* Collection of scripts in src/scripts/tutti/ to merge into tutti.min.js */
+/* Since it's always loaded, it's only for functions that we want site-wide */
+gulp.task('scripts_tutti', function() {
+    gulp.src('src/scripts/tutti/**/*.js')
+        .pipe(gulpif(enabled.failCheck, plumber()))
+        //.pipe(gulpif(enabled.maps, sourcemaps.init()))
+        .pipe(concat("tutti.min.js"))
+        .pipe(gulpif(enabled.uglify, uglify()))
+        //.pipe(gulpif(enabled.maps, sourcemaps.write(".")))
+        .pipe(gulp.dest('dillo/static/js/generated/'))
+        .pipe(gulpif(argv.livereload, livereload()));
 });
+
 
 // While developing, run 'gulp watch'
 gulp.task('watch',function() {
-    livereload.listen();
+	// Only reload the pages if we run with --livereload
+	if (argv.livereload){
+		livereload.listen();
+	}
 
-    gulp.watch('dillo/src/themes/dillo/styles/**/*.sass',['styles']);
-    gulp.watch('dillo/src/templates/**/*.jade',['templates']);
-    gulp.watch('dillo/src/themes/dillo/templates/**/*.jade',['templates']);
-    gulp.watch('dillo/src/themes/dillo/scripts/uglify/**/*.js',['scripts']);
+	gulp.watch('src/styles/**/*.sass',['styles']);
+	gulp.watch('src/templates/**/*.pug',['templates']);
+	gulp.watch('src/scripts/*.js',['scripts']);
+	gulp.watch('src/scripts/tutti/*.js',['scripts_tutti']);
 });
 
+
 // Run 'gulp' to build everything at once
-gulp.task('default', ['styles', 'templates', 'scripts', 'font']);
+gulp.task('default', ['styles', 'templates', 'scripts', 'scripts_tutti']);

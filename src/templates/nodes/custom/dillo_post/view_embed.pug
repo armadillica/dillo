@@ -1,0 +1,194 @@
+| {% if (current_user.user_id | string) == node.user._id %}
+| {% set is_own = 'is-own' %}
+| {% endif %}
+.item-view(
+	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
+	.item-view-header
+		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
+			i.pi-cancel-circle
+
+		.item-content(
+			id="{{ node._id }}",
+			data-node-id="{{ node._id }}")
+
+			.item-rating-box(
+				class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
+				.item-rating.up
+					i.pi-angle-up
+				.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
+				.item-rating.down
+					i.pi-angle-down
+
+			.item-details
+				| {% if node.properties.post_type == 'link' %}
+				a#item-title.item-title(
+					href="{{ node.properties.content }}"
+					target="_blank") {{ node.name }}
+				| {% else %}
+				span#item-title.item-title {{ node.name }}
+				| {% endif %}
+				ul
+					li
+						a.item-project(href="{{ url_for('posts.index', community_url=project.url) }}")
+							| {{ project.name }}
+					li
+						a.item-date(
+							title="{{ node._created }}",
+							href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
+							| {{ node._created | pretty_date }}
+					li#item-tags
+						| {% for tag in node.properties.tags %}
+						| {{ tag }}{{ ", " if not loop.last }}
+						| {% endfor %}
+
+
+	| {% if node.properties.post_type == 'text' %}
+	.item-body#item-content
+		.item-body-text
+			| {% if node.properties.content_html %}
+			| {{ node.properties.content_html }}
+			| {% else %}
+			p {{ _('Write something nice.') }}
+			| {% endif %}
+
+	| {% endif %}
+
+	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
+	.item-body#item-content
+		| {% if node.properties.content %}
+		a.item-link-data(
+			href="{{ node.properties.content }}",
+			target="_blank",
+			title="Visit URL")
+			img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+			| {{ node.properties.content }}
+		| {% else %}
+		span.item-link-data There should be content here.
+		| {% endif %}
+	| {% endif %}
+
+
+	| {# If it's a link with oembed support #}
+	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
+	.item-media.oembed#item-media
+		| {{ node.properties.content_html | safe }}
+	| {% else %}
+	| {% if node.picture %}
+	a.item-media#item-media(
+		href="{{ node.picture.thumbnail('h', api=api)}} ")
+		img(
+			src="{{ node.picture.thumbnail('l', api=api) }}",
+			data-adaptive-background)
+	| {% endif %}
+	| {% endif %}
+
+
+	.item-info-panel
+		.item-info-op
+			a.op-avatar(href="{{ url_for('users.users_view', username=node.user.username )}}")
+				img(src="{{ node.user.email | gravatar }}")
+
+			.op-details
+				a.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
+					| {{ node.user.full_name }}
+				.op-karma Karma: {{ node.user.extension_props_public.dillo.karma }}
+
+		.item-info-action
+			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
+				i.pi-resize-full
+			| {% if current_user.is_authenticated %}
+			| {% if (node.user._id == current_user.objectid) or current_user.has_cap('admin') %}
+			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
+				i.pi-edit
+				| {{ _('Edit Post') }}
+			| {% endif %}
+			| {% endif %}
+
+			a.social(
+				title="{{ _('Share on Facebook') }}",
+				href="https://www.facebook.com/sharer/sharer.php?u={{ node.name }}%20{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
+				target="_blank")
+				i.pi-social-facebook
+
+			a.social(
+				title="{{ _('Share on Twitter') }}",
+				href="https://twitter.com/home?status={{ node.name }} @{{ config.SETTINGS_TWITTER_USERNAME }} {{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }} %23b3d" ,
+				target="_blank")
+				i.pi-social-twitter
+
+			a.social(
+				title="{{ _('Share on Reddit') }}",
+				href="http://www.reddit.com/submit?url={{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
+				target="_blank")
+				i.pi-social-reddit
+
+	#item-comments
+		#comments-embed
+
+script.
+
+	var context = ProjectUtils.context();
+
+	if (context != 'post-edit'){
+		loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+	}
+
+	if (context == 'posts-index'){
+		var onRenderHandler = function() {
+			// Set item on the list as active
+			var item = '#item-{{ node._id }}';
+			$(item).addClass('active');
+		}
+
+		search.on('render', onRenderHandler);
+	}
+
+	var page_title = '{{ node.name | striptags | safe }} — {{ main_project.name | striptags | safe }}';
+	DocumentTitleAPI.set_page_title(page_title);
+
+	// Parse emojis (very important! :) and date with momentjs (so it gets translations)
+	$('#item-title').html(twemoji.parse('{{ node.name }}'));
+	$('a.item-date').text(moment('{{ node._created }}').fromNow());
+
+	{% if node.properties.post_type == 'text' %}
+		var item_content = $('#item-content');
+		item_content.html(twemoji.parse(item_content.text()));
+	{% endif %}
+
+	{% if node.properties.post_type == 'link' %}
+		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
+	{% endif %}
+
+	// If the parameter ?fs is in the url, go imax!
+	if ('fs' in urlParams){
+		enterFullscreen();
+	}
+
+	// Color the parent container of the item-media thumbnail
+	$.adaptiveBackground.run();
+
+	// Expand the images thumbnail
+	$('.item-media').on('click', function(e){
+		e.preventDefault();
+
+		// Get the url of the item-media
+		var url = $(this).attr('href');
+
+		appOverlayClear();
+		$('#app-overlay')
+			.addClass('active preview')
+			.html('\
+				<div class="overlay-background">\
+					<img src="' + url + '" data-adaptive-background="2" />\
+				</div>\
+			');
+
+		// Color the background of the overlay
+		var options  = {
+			selector: '[data-adaptive-background="2"]',
+			transparent: '0.8'
+		};
+		$.adaptiveBackground.run(options);
+	});
+
+	ga('send', 'pageview', location.pathname);
