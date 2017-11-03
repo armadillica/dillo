@@ -450,13 +450,13 @@ script.
 					toastr.info("Post deleted.<br/>Going back home...");
 					ga('send', 'event', 'post', 'deleted');
 
-					// Go back home, wait a bit for Algolia to update the index
+					// Go back home, first wait a bit for Algolia to update the index
 					setTimeout(function(){
 						window.location.replace('/');
 					}, 3000);
 				})
-				.fail(function (data) {
-					toastr.error("Couldn't delete :/");
+				.fail(function(xhr) {
+					toastr.error(xhr.statusText, "Couldn't delete. This shouldn't happen, please report it");
 					ga('send', 'event', 'post', 'deleted-fail');
 				});
 		}
@@ -505,10 +505,10 @@ script.
 			$item_picture.attr('value', '');
 		});
 
-		// Focus the #content field on load
+		// UI: Focus the #content field on load
 		input_content.focus();
 
-
+		// Initialize the tags picker
 		$("#tags").select2();
 
 	});
