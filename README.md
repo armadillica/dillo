@@ -1,9 +1,9 @@
 Dillo 2.0
 ==========
 
-This branch holds the work in progress on Dillo 2.0, now an extension of [Pillar](https://pillarframework.org/) framework.
+Dillo 2.0 is an extension of the [Pillar](https://pillarframework.org/) framework.
 
-Main features to expect in Dillo 2.0:
+Main features in Dillo 2.0:
 * Built-in search
 * Multi-language support
 * Fast. (not that 1.0 was slow, but this is like, crazy fast)
@@ -51,7 +51,6 @@ Credits:
 * [Sybren A. Stüvel](https://twitter.com/sastuvel) - Back-end (Pillar)
 
 ----
-For version 1.0 [check out master](https://github.com/armadillica/dillo).
-See it in action [on Blender.Today](http://blender.today).
+See it in action [on Blender.Today](https://blender.today).
 
 Follow us [@dillospace](https://twitter.com/dillospace)
