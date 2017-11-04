@@ -188,27 +188,23 @@
   overflow-x: hidden
 
 .listing-list-info
+  +media-xs
+    padding-right: 0
+    padding-bottom: 10px
   display: flex
   align-items: center
   justify-content: center
-
-  #list-pagination
-    +media-xs
-      margin-left: initial
-      margin-right: auto
-    margin-left: auto
+  padding-right: 12px
+  padding-top: 8px
 
   #list-stats
     +media-xs
-      display: none
-    margin-right: auto
+      margin-left: 0
+      margin-right: auto
+    margin-left: auto
 
   .list-search-provider
-    +media-xs
-      display: none
-    margin-left: 5px
-    margin-top: 3px
-    height: 100%
+    margin: 3px auto 0 5px
     width: 20px
 
     svg

@@ -1061,10 +1061,10 @@ $wgt-dropdown-width: 150px
 
   &-header
     align-items: center
-    background-color: $color-background-lighter
-    box-shadow: inset 0 0 0 1px $color-background-dark
+    background-color: $color-background-light
+    box-shadow: 1px 1px 2px rgba(black, .2)
+    border: none
     border-radius: 3px
-    color: $color-text
     cursor: pointer
     display: flex
     font:
@@ -1131,6 +1131,21 @@ $wgt-dropdown-width: 150px
       img.avatar
         background-color: var(--community-theme-color, $color-primary)
 
+#list-sort-by
+  margin-left: 10px
+
+  .wgt-dropdown-header
+    background-color: $color-background-lighter
+    border: thin solid $color-background
+    color: $color-text-dark-secondary
+    min-height: initial
+    min-width: auto
+    padding-bottom: 4px
+    padding-top: 4px
+
+    &:focus
+      border-color: transparent
+
 
 .wgt-pagination
   &-root
@@ -1139,7 +1154,8 @@ $wgt-dropdown-width: 150px
     list-style-type: none
     justify-content: flex-end
     padding: 0
-    margin: 10px 10px 10px 5px
+    margin: 8px 12px 0px 5px
+    margin: 0
 
   &-item
     align-items: center
@@ -1149,8 +1165,8 @@ $wgt-dropdown-width: 150px
 
   &-link
     background-color: $color-background-lighter
-    border-top: thin solid $color-background-dark
-    border-bottom: thin solid $color-background-dark
+    border-top: thin solid $color-background
+    border-bottom: thin solid $color-background
     color: $color-text-dark-secondary
     display: flex
     font-size: $font-size-small
@@ -1163,29 +1179,29 @@ $wgt-dropdown-width: 150px
 
   &-disabled
     .wgt-pagination-link
-      opacity: .2
+      opacity: .3
 
   &-active
     display: none
 
   &-last
     .wgt-pagination-link
-      border-right: thin solid $color-background-dark
+      border-right: thin solid $color-background
       border-top-right-radius: 3px
       border-bottom-right-radius: 3px
 
   &-first
     .wgt-pagination-link
-      border-left: thin solid $color-background-dark
+      border-left: thin solid $color-background
       border-top-left-radius: 3px
       border-bottom-left-radius: 3px
 
 
 .wgt-stats
   &-root
-    padding: 5px 10px
+    color: rgba($color-text, .8)
     font-size: $font-size-smaller
-    color: $color-text-dark-secondary
+    padding: 5px 10px
 
 
 .wgt-clear
