@@ -569,6 +569,27 @@ body[data-context="post-edit"]
   line-height: 1.5em
 
 
+.item-commenting-on
+  +media-xs
+    padding-left: 10px
+  background-color: $color-background
+  color: rgba($color-text, .7)
+  display: none
+  font-size: $font-size-small
+  padding: 10px 25px 0 60px
+
+  span
+    +text-overflow-ellipsis
+    display: inline-block
+    max-width: 500px
+
+  strong
+    color: $color-text
+
+body.main-project
+  .item-commenting-on
+    display: flex
+
 // Specific tweaks to item view embed when link or text
 .item-view
   +media-xs
