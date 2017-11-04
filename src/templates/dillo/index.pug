@@ -292,6 +292,9 @@ script.
 						'</li>' +
 						'<li class="item-date">{{ created }}</li>' +
 						'<li class="item-author"><a class="js-follow-link" href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
+						'{{#tags}}' +
+						'<li class="item-tags">{{ tags }}</li>' +
+						'{{/tags}}' +
 						'{{#comments_count}}' +
 						'<li class="item-comments">{{ comments_count }} <i class="pi-comment"></i></li>' +
 						'{{/comments_count}}' +
@@ -330,13 +333,19 @@ script.
 		if (hit.is_link) {
 			hit.is_link = 'is-link';
 			hit.link_url = hit.content;
-			hit.link_short = shortenUrl(hit.content);
 		}
 
+		// Show only the first tag
+		if (hit.tags){
+			hit.tags = hit.tags[0];
+		}
+
+		// Mark as popular post if more than x rating
 		if (hit.rating > 5){
 			hit.is_featured = 'is-featured';
 		}
 
+		// Mark own posts
 		if (amAuthenticated) {
 			if (hit.user._id == '{{ current_user.user_id }}'){
 				hit.is_own = 'is-own';
