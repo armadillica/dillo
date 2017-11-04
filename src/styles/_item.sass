@@ -569,27 +569,6 @@ body[data-context="post-edit"]
   line-height: 1.5em
 
 
-.item-commenting-on
-  +media-xs
-    padding-left: 10px
-  background-color: $color-background
-  color: rgba($color-text, .7)
-  display: none
-  font-size: $font-size-small
-  padding: 10px 25px 0 60px
-
-  span
-    +text-overflow-ellipsis
-    display: inline-block
-    max-width: 500px
-
-  strong
-    color: $color-text
-
-body.main-project
-  .item-commenting-on
-    display: flex
-
 // Specific tweaks to item view embed when link or text
 .item-view
   +media-xs
@@ -746,6 +725,15 @@ body.main-project
         pointer-events: none
         color: rgba($color-text-dark-hint, .6)
 
+
+.item-link-container
+  display: flex
+  flex-direction: column
+
+  &.is-embed
+    flex-direction: column-reverse
+
+
 // Big spinner in item-view
 .item-loading
   color: rgba($color-background-darker, .1)
@@ -754,3 +742,26 @@ body.main-project
   position: absolute
   top: 50%
   transform: translate(-50%, -50%)
+
+
+// Shown only when we are in main-project
+.item-commenting-on
+  +media-xs
+    padding-left: 10px
+  background-color: $color-background
+  color: rgba($color-text, .7)
+  display: none
+  font-size: $font-size-small
+  padding: 10px 25px 0 60px
+
+  span
+    +text-overflow-ellipsis
+    display: inline-block
+    max-width: 500px
+
+  strong
+    color: $color-text
+
+body.main-project
+  .item-commenting-on
+    display: flex

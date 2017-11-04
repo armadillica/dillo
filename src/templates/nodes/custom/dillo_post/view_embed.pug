@@ -1,6 +1,15 @@
 | {% if (current_user.user_id | string) == node.user._id %}
 | {% set is_own = 'is-own' %}
 | {% endif %}
+
+| {% if (node.properties.post_type == 'link') %}
+| {% set is_link = 'is-link' %}
+| {% endif %}
+
+| {% if node.properties.content_html %}
+| {% set is_html = 'is-html' %}
+| {% endif %}
+
 .item-view(
 	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
 	.item-view-header
@@ -20,7 +29,7 @@
 					i.pi-angle-down
 
 			.item-details
-				| {% if node.properties.post_type == 'link' %}
+				| {% if is_link %}
 				a#item-title.item-title(
 					href="{{ node.properties.content }}"
 					target="_blank") {{ node.name }}
@@ -42,46 +51,47 @@
 						| {% endfor %}
 
 
-	| {% if node.properties.post_type == 'text' %}
+	| {% if not is_link %}
 	.item-body#item-content
 		.item-body-text
-			| {% if node.properties.content_html %}
+			| {% if is_html %}
 			| {{ node.properties.content_html }}
 			| {% else %}
 			p {{ _('Write something nice.') }}
 			| {% endif %}
-
 	| {% endif %}
 
-	| {% if node.properties.post_type == 'link' and not node.properties.content_html %}
-	.item-body#item-content
-		| {% if node.properties.content %}
-		a.item-link-data(
-			href="{{ node.properties.content }}",
-			target="_blank",
-			title="Visit URL")
-			img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
-			| {{ node.properties.content }}
-		| {% else %}
-		span.item-link-data There should be content here.
+
+	| {% if is_link %}
+	.item-link-container(
+		class="{% if is_html %}is-embed{% endif %}")
+		.item-body#item-content
+			| {% if node.properties.content %}
+			a.item-link-data(
+				href="{{ node.properties.content }}",
+				target="_blank",
+				title="Visit URL")
+				img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+				| {{ node.properties.content }}
+			| {% else %}
+			span.item-link-data There should be content here.
+			| {% endif %}
+
+		| {# If it's a link with oembed support #}
+		| {% if is_html %}
+		.item-media.oembed#item-media
+			| {{ node.properties.content_html | safe }}
 		| {% endif %}
 	| {% endif %}
 
-
-	| {# If it's a link with oembed support #}
-	| {% if node.properties.post_type == 'link' and node.properties.content_html %}
-	.item-media.oembed#item-media
-		| {{ node.properties.content_html | safe }}
-	| {% else %}
-	| {% if node.picture %}
+	| {# If the post is type link, only show if there is no oembed #}
+	| {% if (node.picture and not is_link) or (node.picture and (is_link and not is_html)) %}
 	a.item-media#item-media(
 		href="{{ node.picture.thumbnail('h', api=api)}} ")
 		img(
 			src="{{ node.picture.thumbnail('l', api=api) }}",
 			data-adaptive-background)
 	| {% endif %}
-	| {% endif %}
-
 
 	.item-info-panel
 		.item-info-op
@@ -152,13 +162,13 @@ script.
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
 	$('a.item-date').text(moment('{{ node._created }}').fromNow());
 
-	{% if node.properties.post_type == 'text' %}
-		var item_content = $('#item-content');
-		item_content.html(twemoji.parse(item_content.text()));
+	{% if is_link %}
+		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
 	{% endif %}
 
-	{% if node.properties.post_type == 'link' %}
-		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
+	{% if not is_link %}
+		var item_content = $('#item-content');
+		item_content.html(twemoji.parse(item_content.text()));
 	{% endif %}
 
 	// If the parameter ?fs is in the url, go imax!
