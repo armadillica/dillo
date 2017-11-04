@@ -6,6 +6,10 @@
 		.item-edit-tab(
 			class="{{ node.properties.post_type }}")
 
+			.item-edit-bar.top
+				span.title {{ _("Posting on") }} #[strong {{ project.name }}]
+				a.all(href="{{ url_for('posts.index_all') }}") {{ _("All Communities") }}
+
 			form(
 			id="item-edit-form",
 			method="POST",
@@ -86,13 +90,13 @@
 						| {{ form.picture }}
 
 
-		.item-edit-header
+		.item-edit-bar
 			| {% if node.properties.status != 'pending' %}
 			.item-status
 				| {{ _('Status') }}:
 				span {{ node.properties.status | undertitle }}
 			| {% endif %}
-			.item-edit-header-action
+			.item-edit-bar-action
 
 				| {% if node.properties.status != 'pending' %}
 				button.btn.delete {{ _('Delete') }}

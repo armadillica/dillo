@@ -191,7 +191,7 @@ body[data-context='post-fullscreen']
     position: fixed
     right: 0
     top: 0
-    transition: opacity 500ms ease-out, background-color 150ms ease-out
+    transition: opacity 500ms ease-out, background-color 500ms ease-out
 
   &.active
     opacity: 1
@@ -199,14 +199,15 @@ body[data-context='post-fullscreen']
     visibility: visible
 
     .overlay-background
+      background-color: rgba($color-background-darker, .8)
       opacity: 1
 
   &.preview
     pointer-events: auto
 
     .overlay-background
-      display: flex
       align-items: center
+      display: flex
       justify-content: center
       opacity: 1
 
@@ -255,9 +256,15 @@ body[data-context='post-fullscreen']
 
     .item-edit-tab
       background-color: transparent
+      margin: 0
 
-    .item-edit-header
+    .item-edit-bar
       padding: 10px 20px 20px
+
+      &.top
+        display: flex
+        margin: 0
+        padding: 17px 25px 10px
 
     .btn.preview
       display: none

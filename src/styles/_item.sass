@@ -30,7 +30,7 @@
     max-height: 640px
     overflow-y: auto
 
-$item-thumbnail-size: 80px
+$item-thumbnail-size: 90px
 
 .item-oembed-images
   margin: 15px 0
@@ -52,6 +52,8 @@ $item-thumbnail-size: 80px
     padding: 0
 
     li
+      +media-xs
+        max-width: $item-thumbnail-size / 1.2
       background-color: $color-background-dark
       border: 3px solid transparent
       border-radius: 3px
@@ -75,6 +77,9 @@ $item-thumbnail-size: 80px
           opacity: 1
 
       img
+        +media-xs
+          min-height: $item-thumbnail-size / 1.2
+          max-height: $item-thumbnail-size / 1.2
         margin: 0 auto
         max-height: $item-thumbnail-size
         max-width: 100%
@@ -87,6 +92,9 @@ $item-thumbnail-size: 80px
 .item-thumbnail
   +media-xs
     border-radius: 0
+    min-width: $item-thumbnail-size / 1.2
+    max-width: $item-thumbnail-size / 1.2
+
   align-items: center
   border-bottom-left-radius: 3px
   border-top-left-radius: 3px
@@ -335,12 +343,24 @@ body[data-context="post-edit"]
     display: none
 
 .item-edit
-  &-header
+  &-bar
     +media-xs
       padding-top: 0
-    display: flex
     align-items: center
-    padding: 20px 10px
+    display: flex
+    padding: 0 30px 10px
+
+    &.top
+      align-items: center
+      box-shadow: inset 0 4px 0 var(--community-theme-color, $color-primary)
+      color: rgba($color-text, .8)
+      display: none // display on .dialog-box, see _base.sass
+
+      strong
+        color: $color-text
+
+      a.all
+        margin-left: auto
 
     &-action
       +media-xs
@@ -370,6 +390,7 @@ body[data-context="post-edit"]
     form
       display: flex
       flex-direction: column
+      padding: 0 10px
 
       #name
         color: var(--community-theme-color, $color-primary)
@@ -416,7 +437,11 @@ body[data-context="post-edit"]
         display: none
 
       .form-upload-file
-        padding: 10px 5px
+        margin-bottom: 0
+        padding: 0 10px
+
+        .form-upload-file
+          padding: 0
 
       input, textarea
         margin: 5px 10px
