@@ -7,92 +7,93 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-10-26 19:56-0200\n"
-"PO-Revision-Date: 2017-10-26 19:53-0200\n"
+"POT-Creation-Date: 2017-11-05 15:21-0200\n"
+"PO-Revision-Date: 2017-11-05 15:28-0200\n"
 "Last-Translator: \n"
 "Language: pt\n"
 "Language-Team: pt <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+"X-Generator: Poedit 2.0.1\n"
 
 #: src/templates/dillo/index.pug:84 src/templates/dillo/index.pug:86
 #: src/templates/dillo/index.pug:105 src/templates/dillo/index.pug:107
-#: src/templates/dillo/layout.pug:214 src/templates/dillo/layout.pug:216
+#: src/templates/dillo/layout.pug:206 src/templates/dillo/layout.pug:208
 msgid "Write a Post"
 msgstr "Escrever Artigo"
 
-#: src/templates/dillo/index.pug:91 src/templates/dillo/layout.pug:203
+#: src/templates/dillo/index.pug:91 src/templates/dillo/layout.pug:195
 msgid "Submit a Link [Shift+A]"
 msgstr "Enviar um Link [Shift+A]"
 
-#: src/templates/dillo/index.pug:93 src/templates/dillo/layout.pug:205
+#: src/templates/dillo/index.pug:93 src/templates/dillo/layout.pug:197
 msgid "Submit Link"
 msgstr "Enviar Link"
 
-#: src/templates/dillo/index.pug:144
+#: src/templates/dillo/index.pug:119
+msgid "Sort by"
+msgstr "Ordenar por"
+
+#: src/templates/dillo/index.pug:148
 msgid "Fetching the goods..."
 msgstr "Carregando as informações..."
 
-#: src/templates/dillo/index.pug:180
+#: src/templates/dillo/index.pug:185
+msgid "COMMUNITIES"
+msgstr "COMUNIDADES"
+
+#: src/templates/dillo/index.pug:192
 msgid "What's going on"
 msgstr "Últimas novidades"
 
-#: src/templates/dillo/index.pug:195
+#: src/templates/dillo/index.pug:207
 msgid "No activity... yet!"
 msgstr "Nada ... por enquanto!"
 
-#: src/templates/dillo/index.pug:365
+#: src/templates/dillo/index.pug:390
 msgid "Tags"
 msgstr "Tags"
 
-#: src/templates/dillo/layout.pug:113 src/templates/dillo/layout.pug:115
-msgid "Build Your Own Community"
-msgstr "Traga sua comunidade para cá"
-
-#: src/templates/dillo/layout.pug:117
-msgid ""
-"We welcome international users or specialized Blender groups.Tell us why "
-"your community belongs here."
-msgstr ""
-"Estamos de braços abertos a comunidades internacionais ou especializadas."
-" Nos diga porque a sua comunidade deveria estar aqui."
-
-#: src/templates/dillo/layout.pug:136
+#: src/templates/dillo/layout.pug:120
 msgid "Search..."
 msgstr "Busque..."
 
-#: src/templates/dillo/layout.pug:159
+#: src/templates/dillo/layout.pug:143
 msgid "Notifications"
 msgstr "Avisos"
 
-#: src/templates/dillo/layout.pug:161 src/templates/dillo/layout.pug:163
+#: src/templates/dillo/layout.pug:145 src/templates/dillo/layout.pug:147
 msgid "Mark All as Read"
 msgstr "Marcar Tudo Como Lido"
 
-#: src/templates/dillo/layout.pug:179 src/templates/dillo/layout.pug:197
+#: src/templates/dillo/layout.pug:163 src/templates/dillo/layout.pug:189
 msgid "Turn off the lights"
 msgstr "Apague as luzes"
 
-#: src/templates/dillo/layout.pug:181
+#: src/templates/dillo/layout.pug:165
 msgid "Night Mode"
 msgstr "Modo Noturno"
 
-#: src/templates/dillo/layout.pug:187
+#: src/templates/dillo/layout.pug:171
 msgid "Settings"
 msgstr "Configurações"
 
-#: src/templates/dillo/layout.pug:192
+#: src/templates/dillo/layout.pug:176 src/templates/dillo/layout.pug:178
+msgid "Community Settings"
+msgstr "Configurações da Comunidade"
+
+#: src/templates/dillo/layout.pug:184
 msgid "Log out"
 msgstr "Sair"
 
-#: src/templates/dillo/layout.pug:220
+#: src/templates/dillo/layout.pug:212
 msgid "Log in"
 msgstr "Entrar"
 
-#: src/templates/dillo/layout.pug:243
+#: src/templates/dillo/layout.pug:235
 msgid "No Notifications"
 msgstr "Sem Notificações"
 
@@ -104,113 +105,138 @@ msgstr "Última visita"
 msgid "Joined"
 msgstr "Entrou"
 
-#: src/templates/errors/404_embed.pug:7
+#: src/templates/dillo/macros/_communities.pug:24
+#: src/templates/dillo/macros/_communities.pug:26
+msgid "Build Your Own Community"
+msgstr "Traga sua comunidade para cá"
+
+#: src/templates/dillo/macros/_communities.pug:28
+msgid ""
+"We welcome international users or specialized Blender groups.Tell us why "
+"your community belongs here."
+msgstr ""
+"Estamos de braços abertos a comunidades internacionais ou "
+"especializadas. Nos diga porque a sua comunidade deveria estar aqui."
+
+#: src/templates/errors/404_embed.pug:6
 msgid "Not Found"
 msgstr "Não Encontrado"
 
-#: src/templates/errors/404_embed.pug:10
-msgid "Something wrong? Let us know on Twitter"
+#: src/templates/errors/404_embed.pug:11
+msgid "Something wrong? Let us know"
 msgstr "Algo errado? Nos avise via Twitter"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:16
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:10
+msgid "Posting on"
+msgstr "Postando"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:11
+msgid "All Communities"
+msgstr "Todas Comunidades"
+
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:20
 msgid "URL"
 msgstr "URL"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:22
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:26
 msgid "Press Ctrl+V or Command+V to paste or type the URL"
 msgstr "Cole com Ctrl+V ou Command+V ou escreva a URL"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:28
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:32
 msgid "Title"
 msgstr "Título"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:34
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:38
 msgid "Awesome Post Title"
 msgstr "Um Título Íncrivel Para o Artigo"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:38
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:73
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:75
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:42
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:77
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:79
 msgid "Text"
 msgstr "Texto"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:44
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:48
 msgid "Witty post description"
 msgstr "Descrição do artigo completa e impressionante"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:49
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:53
 msgid "Markdown Cheatsheet"
 msgstr "Dicas para formatação com Markdown"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:67
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:69
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:71
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:73
 msgid "Link"
 msgstr "Link"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:80
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:84
 msgid "Thumbnails from the URL"
 msgstr "Imagens do URL"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:84
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:88
 msgid "Custom Thumbnail"
 msgstr "Imagem Customizada"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:92
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:96
 msgid "Status"
 msgstr "Status"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:98
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:102
 msgid "Delete"
 msgstr "Deletar"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:104
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:107
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:108
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:111
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:110
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:114
 msgid "Preview"
 msgstr "Amostra"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:115
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:119
 msgid "Make post publicly available!"
 msgstr "Disponibilizar o artigo publicamente!"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:117
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:121
 msgid "Publish"
 msgstr "Publicar"
 
-#: src/templates/nodes/custom/dillo_post/edit_embed.pug:121
+#: src/templates/nodes/custom/dillo_post/edit_embed.pug:125
 msgid "Save Changes"
 msgstr "Salvar Mudanças"
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:7
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:16
 msgid "Close Fullscreen"
 msgstr "Fechar Tela Cheia"
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:53
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:60
 msgid "Write something nice."
 msgstr "Escreva algo bem legal."
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:97
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:107
 msgid "Toggle Fullscreen"
 msgstr "Alternar Tela Cheia"
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:103
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:113
 msgid "Edit Post"
 msgstr "Editar Artigo"
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:108
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:118
 msgid "Share on Facebook"
 msgstr "Compartilhar no Facebook"
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:114
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:124
 msgid "Share on Twitter"
 msgstr "Compartilhar no Twitter"
 
-#: src/templates/nodes/custom/dillo_post/view_embed.pug:120
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:130
 msgid "Share on Reddit"
 msgstr "Compartilhar no Reddit"
+
+#: src/templates/nodes/custom/dillo_post/view_embed.pug:137
+msgid "Leave a comment on"
+msgstr "Deixe um comentário em"
 
 #~ msgid "Welcome to Dillo"
 #~ msgstr "Bem-Vindo ao Dillo"
@@ -242,3 +268,5 @@ msgstr "Compartilhar no Reddit"
 #~ msgid "Tweet"
 #~ msgstr "Twitar"
 
+#~ msgid "Something wrong? Let us know on Twitter"
+#~ msgstr "Algo errado? Nos avise via Twitter"
