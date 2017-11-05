@@ -96,7 +96,7 @@ html(lang='en')
 								a.title(href="{{ url_for('posts.index_all') }} ") {{ main_project.name }}
 								a.beta(href="https://blender.community/c/today/sWbbbc/announcing-blender-community") BETA
 
-							| {% from 'dillo/_macros/_communities.html' import communities_list %}
+							| {% from 'dillo/macros/_communities.html' import communities_list %}
 							| {{ communities_list(communities) }}
 
 				.d-header-title

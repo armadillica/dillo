@@ -184,7 +184,7 @@ li
 			.d-communities-list
 				span.d-communities-title {{ _('COMMUNITIES') }}
 
-				| {% from 'dillo/_macros/_communities.html' import communities_list %}
+				| {% from 'dillo/macros/_communities.html' import communities_list %}
 				| {{ communities_list(communities) }}
 
 			| {% else %}
