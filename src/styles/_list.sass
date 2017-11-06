@@ -74,6 +74,9 @@
         li
           font-size: .8em
 
+    li
+      font-size: $font-size-smaller
+
     .item-link
       +media-lg
         +text-overflow-ellipsis
@@ -98,7 +101,8 @@
     +media-xs
       display: none
     +media-sm
-      max-width: 50px
+      max-width: 80px
+      overflow: hidden
       white-space: nowrap
 
   .item-date a
