@@ -37,8 +37,8 @@
 				span#item-title.item-title {{ node.name }}
 				| {% endif %}
 				ul
-					li
-						a.item-project(href="{{ url_for('posts.index', community_url=project.url) }}")
+					li.item-community
+						a(href="{{ url_for('posts.index', community_url=project.url) }}")
 							| {{ project.name }}
 					li
 						a.item-date(

@@ -75,7 +75,10 @@
           font-size: .8em
 
     li
-      font-size: $font-size-smaller
+      font-size: 11px
+
+    .item-community
+      display: none
 
     .item-link
       +media-lg
@@ -105,8 +108,9 @@
       overflow: hidden
       white-space: nowrap
 
-  .item-date a
-    white-space: nowrap
+  .item-date
+    +media-sm
+      display: none
 
   .item-comments
     margin-left: auto
