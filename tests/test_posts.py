@@ -7,9 +7,9 @@ from abstract_dillo_test import AbstractDilloTest
 class NodeOwnerTest(AbstractDilloTest):
     def setUp(self, **kwargs):
         AbstractDilloTest.setUp(self, **kwargs)
-        dillo_user_main_grp = self.ensure_group_exists(
+        self.dillo_user_main_grp = self.ensure_group_exists(
             'cafef005972666988bef650f', 'dillo_user_main')
-        self.user_id = self.create_user(groups=[dillo_user_main_grp])
+        self.user_id = self.create_user(groups=[self.dillo_user_main_grp])
         self.create_valid_auth_token(self.user_id, 'token')
         self.project_id, _ = self.ensure_project_exists()
 
@@ -47,6 +47,28 @@ class NodeOwnerTest(AbstractDilloTest):
         resp = self.get(f"/api/nodes/{created['_id']}", auth_token='token')
         json_node = resp.get_json()
         self.assertEqual(str(self.user_id), json_node['user'])
+        return json_node
+
+    def test_delete_with_explicit_owner(self):
+        test_node = copy.deepcopy(self.test_node)
+        node_doc = self._test_user(test_node)
+        # Is DELETE allowed?
+        self.assertIn('DELETE', node_doc['allowed_methods'])
+        # Delete the post
+        self.delete(f"/api/nodes/{node_doc['_id']}", headers={'If-Match': node_doc['_etag']},
+                    auth_token='token', expected_status=204)
+
+    def test_delete_with_other_user(self):
+        """Other users should not be able to delete a post."""
+        other_user_id = self.create_user(
+            user_id='cafef005972666988bef6500',
+            groups=[self.dillo_user_main_grp])
+        self.create_valid_auth_token(other_user_id, 'other_token')
+        test_node = copy.deepcopy(self.test_node)
+        node_doc = self._test_user(test_node)
+        # Do not allow post deletion
+        self.delete(f"/api/nodes/{node_doc['_id']}", headers={'If-Match': node_doc['_etag']},
+                    auth_token='other_token', expected_status=403)
 
 
 class TestSorting(AbstractDilloTest):
