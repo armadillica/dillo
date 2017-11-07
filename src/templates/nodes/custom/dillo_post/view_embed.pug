@@ -203,4 +203,9 @@ script.
 		$.adaptiveBackground.run(options);
 	});
 
+	$('body').on('pillar:comments-loaded', function(){
+		var itemComments = document.getElementById('item-comments');
+		twemoji.parse(itemComments);
+	});
+
 	ga('send', 'pageview', location.pathname);
