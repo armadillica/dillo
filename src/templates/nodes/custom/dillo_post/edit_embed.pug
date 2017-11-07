@@ -333,7 +333,8 @@ script.
 		function uiUpdateOnSave(btn) {
 			btn
 				.removeClass('saving')
-				.html('<i class="pi-check"></i> Save Changes');
+				.html("<i class='pi-check'></i> {{ _('Save Changes') }}");
+			console.log(btn);
 		}
 
 		function setStatusOnSave() {
@@ -379,7 +380,7 @@ script.
 			// Let us know that saving started
 			$item_save_publish_button
 				.addClass('saving')
-				.html('<i class="pi-spin spin"></i> Saving...');
+				.html("<i class='pi-spin spin'></i> {{ _('Saving...') }}");
 
 			$.ajax({
 				url: "{{url_for('nodes.edit', node_id=node._id)}}",
@@ -402,7 +403,7 @@ script.
 
 					// If on load the post was not published
 					if (statusLoad_val == 'pending'){
-						toastr.success('Post published.<br/>You\'re a rockstar!');
+						toastr.success("{{ _('You\'re a rockstar!') }}", "{{ _('Post published') }}");
 						ga('send', 'event', 'post', 'published', $('#post_type').val());
 
 						// Refresh the list after a bit to let Algolia think about it
@@ -412,7 +413,7 @@ script.
 						}, 3000);
 
 					} else {
-						toastr.success('Post saved!');
+						toastr.success("{{ _('Post saved!') }}");
 
 						// Load the post on the side
 						$('#col_right').html(dataHtml);
@@ -440,7 +441,7 @@ script.
 			if ($("#item-edit-form")[0].checkValidity()){
 				$("#item-edit-form").submit();
 			} else {
-				toastr.warning('Something seems wrong in the fields...');
+				toastr.warning("{{ _('Something seems wrong in the fields...') }}");
 			}
 		});
 
@@ -451,7 +452,7 @@ script.
 
 			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()})
 				.done(function () {
-					toastr.info("Post deleted.<br/>Going back home...");
+					toastr.info("{{ _('Going back home...') }}", "{{ _('Post deleted') }}");
 					ga('send', 'event', 'post', 'deleted');
 
 					// Go back home, first wait a bit for Algolia to update the index

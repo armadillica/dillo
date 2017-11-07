@@ -22,10 +22,10 @@
 
 			.item-rating-box(
 				class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
-				.item-rating.up
+				.item-rating.up(title="{{ _('Upvote this post') }}")
 					i.pi-angle-up
-				.item-rating.value {{ node.properties.rating_positive - node.properties.rating_negative }}
-				.item-rating.down
+				.item-rating.value(title="{{ _('Post Rating') }}") {{ node.properties.rating_positive - node.properties.rating_negative }}
+				.item-rating.down(title="{{ _('Downvote this post') }}")
 					i.pi-angle-down
 
 			.item-details

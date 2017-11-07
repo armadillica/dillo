@@ -272,13 +272,13 @@ script.
 			'</a>' +
 			'<div class="item-content" data-node-id="{{ objectID }}">' +
 				'<div class="item-rating-box {{#is_positive}}rated {{is_positive}}{{/is_positive}}">' +
-					'<div class="item-rating up">' +
+					'<div class="item-rating up" title="Upvote this post">' +
 						'<i class="pi-angle-up"></i>' +
 					'</div>' +
-					'<div class="item-rating value">' +
+					'<div class="item-rating value" title="Post Rating">' +
 						'{{ rating }}' +
 					'</div>' +
-					'<div class="item-rating down">' +
+					'<div class="item-rating down" title="Downvote this post">' +
 						'<i class="pi-angle-down"></i>' +
 					'</div>' +
 				'</div>' +
@@ -466,8 +466,8 @@ script.
 		instantsearch.widgets.sortBySelector({
 			container: '#list-sort-by',
 			indices: [
-				{name: '{{ config.ALGOLIA_INDEX_NODES }}', label: 'Hot'},
-				{name: '{{ config.ALGOLIA_INDEX_NODES_SORTED_RECENT }}', label: 'Recent'}
+				{name: '{{ config.ALGOLIA_INDEX_NODES }}', label: "{{ _('Hot') }}"},
+				{name: '{{ config.ALGOLIA_INDEX_NODES_SORTED_RECENT }}', label: "{{ _('Recent') }}"}
 			],
 			cssClasses: {
 				root: 'wgt-dropdown-header'
@@ -491,7 +491,7 @@ script.
 	search.on('render', onRenderHandler);
 
 	{% if 'post' in col_right %}
-		item_open('{{col_right['post']['_id']}}');
+		item_open("{{col_right['post']['_id']}}");
 
 		// When loading the page for the first time, load post fullscreen
 		if (first_time){
