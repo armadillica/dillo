@@ -58,6 +58,10 @@ style(type="text/css").
 		{% if c.extension_props.dillo and c.extension_props.dillo.community_theme_color %}
 		{% set theme_color = c.extension_props.dillo.community_theme_color %}
 
+		.list-hits-item.c-{{ c.url }}:hover .item-title,
+		.list-hits-item.c-{{ c.url }} a:hover {
+			color: {{ theme_color }};
+		}
 		.list-hits-item.active.c-{{ c.url }}{
 			box-shadow: 1px 2px 2px rgba(0,0,0,0.1), inset -5px 0 0 {{ theme_color }};
 		}

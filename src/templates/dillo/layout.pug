@@ -5,7 +5,7 @@ html(lang='en')
 		title
 			| {% if self.page_title() %}{% block page_title %}{% endblock %}{% endif %}
 			| {{ project.name }}
-			| {% if project._id != main_project._id %} — {{ main_project.name }}{% endif %}
+			| {% if not is_main_project %} — {{ main_project.name }}{% endif %}
 
 		| {% block head %}{% endblock head %}
 		link(href='//fonts.googleapis.com/css?family=Oxygen|Open+Sans:400,600', rel='stylesheet', type='text/css')
