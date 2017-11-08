@@ -514,7 +514,7 @@ script.
 		input_content.focus();
 
 		// Initialize the tags picker
-		$("#tags").select2();
+		$("#tags").select2({placeholder: "{{ _('Assign tags to your post') }}"});
 
 	});
 | {% endblock footer_scripts %}
