@@ -10,17 +10,16 @@ from flask import abort, Blueprint, current_app, redirect, render_template, requ
 from werkzeug import exceptions as wz_exceptions
 from werkzeug.contrib.atom import AtomFeed
 from flask_login import current_user, login_required
-from pillarsdk import Project
-from pillarsdk import Activity
-from pillarsdk.nodes import Node
+from pillarsdk import Project, Node, Activity, User
+from pillarsdk.exceptions import ResourceNotFound, ForbiddenAccess
 
 from pillar.web import subquery
 from pillar.web import system_util
-from pillar.web.nodes.routes import view as view_node
 from pillar.web.utils import attach_project_pictures
 from pillar.web.utils import get_file
 from pillar.web.utils import get_main_project
 from pillar.web.nodes.routes import url_for_node
+from pillar.web.nodes import attachments
 
 from dillo import current_dillo
 from dillo.web.posts.utils import project_submit_menu
@@ -33,12 +32,36 @@ log = logging.getLogger(__name__)
 def view_embed(node_id):
     api = system_util.pillar_api()
 
-    # Get the project (needed for url building and other post info)
-    node = Node.find(node_id, {'project': {'project': 1, 'user': 1}}, api=api)
+    # Get node, we'll embed linked objects later.
+    try:
+        node = Node.find(node_id, api=api)
+    except ResourceNotFound:
+        return render_template('errors/404_embed.html')
+    except ForbiddenAccess:
+        return render_template('errors/403_embed.html')
+
     project_projection = {'project': {'url': 1, 'name': 1}}
     project = Project.find(node.project, project_projection, api=api)
 
-    return view_node(node_id=node_id, extra_template_args={'project': project})
+    node.picture = get_file(node.picture, api=api)
+    node.user = node.user and User.find(node.user, api=api)
+
+    write_access = 'PUT' in (node.allowed_methods or set())
+
+    if 'content_html' in node['properties']:
+        node['properties']['content_html'] = attachments.render_attachments(
+            node, node['properties']['content_html'])
+
+    extra_template_args = {'project': project}
+
+    return render_template(
+        'nodes/custom/dillo_post/view_embed.html',
+        node_id=node._id,
+        node=node,
+        write_access=write_access,
+        api=api,
+        **extra_template_args)
+
 
 
 @blueprint.route('/c/<community_url>/post/<post_type>')
@@ -166,6 +189,9 @@ def view(community_url, post_shortcode, slug=None):
 
     if post.picture:
         post.picture = get_file(post.picture, api=api)
+
+    post['properties']['content_html'] = attachments.render_attachments(
+        post, post['properties']['content_html'])
 
     return render_template(
         'dillo/index.html',

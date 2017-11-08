@@ -56,6 +56,14 @@
 				| {% for field in form %}
 				| {% if field.name == 'tags' %}
 				| {{ render_field(field, field.name) }}
+				| {% elif field.name == 'attachments' %}
+				| {% if node.properties.post_type == 'text' %}
+				#attachments-actions
+					.btn.btn-info#attachments-action-add
+						i.pi-plus
+						| Add New Attachment
+				| {{ render_field(field, field.name) }}
+				| {% endif %} {# post_type #}
 				| {% endif %}
 				| {% endfor %}
 
@@ -323,6 +331,25 @@ script.
 				)
 			);
 		});
+
+		// Attachment workflow
+		$('body').unbind('click')
+			.on('click', '.js-append-attachment', function (e) {
+				e.preventDefault();
+
+				// Append widget @[slug-name] to the post's description
+				// Note: Duplicate from file_upload.js, modified to target the 'content' element
+				var slug = $(this).parent().find("input[id*='slug']").val();
+				var widget = '@[' + slug + ']\n';
+
+				if (slug) {
+					document.getElementById('content').value += widget;
+					toastr.success('Attachment appended to content');
+				} else {
+					toastr.error('Slug is empty, upload something first');
+				}
+			})
+		;
 
 
 		// Save workflow

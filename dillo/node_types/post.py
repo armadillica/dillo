@@ -1,3 +1,5 @@
+from pillar.api.node_types import attachments_embedded_schema
+
 node_type_post = {
     'name': 'dillo_post',
     'description': 'Dillo post type',
@@ -96,6 +98,7 @@ node_type_post = {
             }
         },
         'hot': {'type': 'float'},
+        'attachments': attachments_embedded_schema,
     },
     'form_schema': {
         'content_html': {'visible': False},
