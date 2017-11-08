@@ -5,7 +5,7 @@
 	class="{% if is_reply %}is-reply{% else %}is-first{% endif %}")
 
 	a.comment-avatar(
-		href="/u/{{ comment._user.username }}",
+		href="{{ url_for('users.users_view', username=comment._user.username) }}",
 		title="{{ _('View profile') }}")
 		img(src="{{ comment._user.email | gravatar }}")
 
@@ -13,7 +13,7 @@
 		.comment-body
 			p.comment-author
 				a(
-					href="/u/{{ comment._user.username }}",
+					href="{{ url_for('users.users_view', username=comment._user.username) }}",
 					title="{{ _('View profile') }}") {{ comment._user.full_name }}
 
 			span {{comment.properties.content_html | safe }}

@@ -169,6 +169,12 @@ html(lang='en')
 											| {{ _("Night Mode") }}
 									li
 										a(
+											href="{{ url_for('users.users_view', username=current_user.username) }}"
+											title="Profile")
+											i.pi-vcard
+											| {{ _("Profile") }}
+									li
+										a(
 											href="{{ url_for('settings.profile') }}"
 											title="Settings")
 											i.pi-cog
