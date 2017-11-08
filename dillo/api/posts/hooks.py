@@ -159,7 +159,7 @@ def generate_oembed(item):
 @only_for_post
 def before_replacing_post(item, original):
     if len(item['properties']['content']) < 6:
-        log.debug('Content must be longer than 5 chars')
+        log.debug('Content must be longer than 7 chars')
         return abort(422)
     status_original = original['properties']['status']
     status_updated = item['properties']['status']
@@ -167,6 +167,7 @@ def before_replacing_post(item, original):
         if status_original in {'pending', 'draft'}:
             pass
         else:
+            log.debug('Published posts can not be unpublished')
             return abort(422)
     elif status_updated == 'published':
         if status_original in {'pending', 'draft'}:
@@ -179,6 +180,8 @@ def before_replacing_post(item, original):
             return abort(422)
     else:
         # Combination of status_updated and status_original is not allowed
+        log.debug('The following status transition is not allowed: %s -> %s' % (
+            status_original, status_updated))
         return abort(422)
 
     post_handler = {
