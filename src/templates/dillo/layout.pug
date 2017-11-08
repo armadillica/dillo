@@ -80,8 +80,9 @@ html(lang='en')
 
 				| {% if project.picture_square %}
 				a.d-header-logo(
-					href="{{ url_for('posts.index', community_url=project.url) }}")
-					img(src="{{ project.picture_square.thumbnail('l') }}")
+					href="{{ url_for('posts.index', community_url=project.url) }}",
+					title="{{ _('All Communities') }}")
+					img(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
 				| {% else %}
 				a.d-header-logo.no-logo(
 					href="{{ url_for('posts.index', community_url=project.url) }}")
@@ -156,7 +157,7 @@ html(lang='en')
 								.nav-item.dropdown-toggle
 									img.avatar(
 										src="{{ current_user.gravatar }}",
-										alt="Avatar")
+										alt="{{ _('Avatar') }}")
 
 									.dropdown-toggle-icon
 										i.pi-angle-down
@@ -166,32 +167,32 @@ html(lang='en')
 										a.theme-toggle(
 											title="{{ _('Turn off the lights') }}")
 											i.pi-moon
-											| {{ _("Night Mode") }}
+											| {{ _('Night Mode') }}
 									li
 										a(
 											href="{{ url_for('users.users_view', username=current_user.username) }}"
-											title="Profile")
+											title="{{ _('Profile') }}")
 											i.pi-vcard
-											| {{ _("Profile") }}
+											| {{ _('Profile') }}
 									li
 										a(
 											href="{{ url_for('settings.profile') }}"
-											title="Settings")
+											title="{{ _('Settings') }}")
 											i.pi-cog
-											| {{ _("Settings") }}
+											| {{ _('Settings') }}
 									| {% if current_user.has_cap('admin') %}
 									li
 										a(
 											href="{{ url_for('projects.edit', project_url=project.url) }}"
 											title="{{ _('Community Settings') }}")
 											i.pi-whoosh
-											| {{ _("Community Settings") }}
+											| {{ _('Community Settings') }}
 									| {% endif %}
 									li
 										a(
 											href="{{ url_for('users.logout') }}")
-											i.pi-off(title="Log Out")
-											| {{ _("Log out") }}
+											i.pi-off(title="{{ _('Log out') }}")
+											| {{ _('Log out') }}
 
 							| {% else %}
 							li
@@ -221,8 +222,6 @@ html(lang='en')
 								a.nav-item.login(href="{{ url_for('users.login') }}")
 									| {{ _('Log in') }}
 							| {% endif %}
-
-					#list-refined-values
 			| {% endblock header %}
 
 		#app-main

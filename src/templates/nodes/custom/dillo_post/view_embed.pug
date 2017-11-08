@@ -74,7 +74,7 @@
 				href="{{ node.properties.content }}",
 				target="_blank",
 				title="Visit URL")
-				img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}")
+				img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}", alt="Favicon")
 				| {{ node.properties.content }}
 			| {% else %}
 			span.item-link-data There should be content here.
@@ -93,13 +93,14 @@
 		href="{{ node.picture.thumbnail('h', api=api)}} ")
 		img(
 			src="{{ node.picture.thumbnail('l', api=api) }}",
+			alt="{{ _('Thumbnail') }}",
 			data-adaptive-background)
 	| {% endif %}
 
 	.item-info-panel
 		.item-info-op
 			a.op-avatar(href="{{ url_for('users.users_view', username=node.user.username )}}")
-				img(src="{{ node.user.email | gravatar }}")
+				img(src="{{ node.user.email | gravatar }}", alt="{{ _('Avatar') }}")
 
 			.op-details
 				a.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")

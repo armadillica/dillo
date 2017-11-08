@@ -7,7 +7,7 @@
 	a.comment-avatar(
 		href="{{ url_for('users.users_view', username=comment._user.username) }}",
 		title="{{ _('View profile') }}")
-		img(src="{{ comment._user.email | gravatar }}")
+		img(src="{{ comment._user.email | gravatar }}", alt="{{ _('Avatar') }}")
 
 	.comment-content
 		.comment-body

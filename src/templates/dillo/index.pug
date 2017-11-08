@@ -159,7 +159,7 @@ li
 				.welcome-logo
 					a(
 						href="{{ url_for('posts.index', community_url=project.url) }}")
-						img(src="{{ project.picture_square.thumbnail('l') }}")
+						img(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
 				| {% endif %}
 
 				.welcome-title
@@ -176,7 +176,7 @@ li
 						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
 						li
 							a(class="pi-social-{{ name }}",
-								title="{{ name }}",
+								title="{{ name | undertitle }}",
 								href="{{ val }}")
 						| {% endfor %}
 					| {% endif %}
@@ -202,7 +202,7 @@ li
 					| {% if act.link and act['actor_user']['email'] %}
 					li
 						a(href="{{ act.link }}")
-							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}")
+							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}", alt="{{ _('Avatar') }}")
 							span.date(title="{{ act._created }}") {{ act._created | pretty_date }}
 							span.actor {{ act['actor_user']['full_name'] }}
 							span.verb {{ act.verb }}
@@ -270,7 +270,7 @@ script.
 			'<a href="{{ url }}" class="item-thumbnail js-item-open{{#picture}} has-thumbnail{{/picture}} {{ is_link }}">' +
 				'<div class="item-thumbnail-picture">' +
 					'{{#picture}}' +
-						'<img src="{{picture}}"/>' +
+						'<img src="{{picture}}" alt="Thumbnail" />' +
 					'{{/picture}}' +
 				'</div>' +
 			'</a>' +
@@ -292,7 +292,7 @@ script.
 						'{{#is_link}}' +
 							'<li class="item-favicon">' +
 								'<a class="js-follow-link" href="{{ link_url }}" target="_blank">' +
-									'<img title="Link" src="https://www.google.com/s2/favicons?domain={{ link_url }}"/>' +
+									'<img title="Link" src="https://www.google.com/s2/favicons?domain={{ link_url }}" alt="Favicon" />' +
 								'</a>' +
 							'</li>' +
 						'{{/is_link}}' +

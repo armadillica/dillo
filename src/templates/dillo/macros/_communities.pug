@@ -7,7 +7,7 @@ ul
 			title="{{ community.name }}")
 			| {% if community.picture_square %}
 			.d-header-logo
-				img(src="{{ community.picture_square.thumbnail('l') }}")
+				img(src="{{ community.picture_square.thumbnail('l') }}", alt="{{ community.name }} logo")
 			| {% else %}
 			.d-header-logo.no-logo
 				i.pi-grin
