@@ -1,0 +1,56 @@
+| {%- macro render_comment(comment, is_reply) -%}
+.comment-container(
+	id="{{ comment._id }}",
+	data-node-id="{{ comment._id }}",
+	class="{% if is_reply %}is-reply{% else %}is-first{% endif %}")
+
+	a.comment-avatar(
+		href="/u/{{ comment._user.username }}",
+		title="{{ _('View profile') }}")
+		img(src="{{ comment._user.email | gravatar }}")
+
+	.comment-content
+		.comment-body
+			p.comment-author
+				a(
+					href="/u/{{ comment._user.username }}",
+					title="{{ _('View profile') }}") {{ comment._user.full_name }}
+
+			span {{comment.properties.content_html | safe }}
+
+		// TODO: Markdown preview when editing
+
+		.comment-meta
+			.comment-rating(
+				class="{% if comment._current_user_rating is not none %}rated{% if comment._current_user_rating %} positive{% endif %}{% endif %}")
+				.comment-rating-value(title="{{ _('Number of likes') }}") {{ comment._rating }}
+
+				| {% if not comment._is_own %}
+				.comment-action-rating.up(title="{{ _('Like comment') }}")
+				| {% endif %}
+
+			.comment-action-reply(title="{{ _('Reply to this comment') }}")
+				span {{ _("Reply") }}
+
+			| {% if comment._is_own %}
+			.comment-action-edit
+				span.edit_mode(title="{{ _('Edit comment') }}")
+					| {{ _("Edit") }}
+				span.edit_save(title="{{ _('Save comment') }}")
+					i.pi-check
+					| {{ _("Save Changes") }}
+				span.edit_cancel(title="{{ _('Cancel changes') }}")
+					i.pi-cancel
+					| {{ _("Cancel") }}
+			| {% endif %}
+
+			.comment-time(title='{{ comment._created }}')
+				| {{ comment._created | pretty_date_time }}
+				| {% if comment._created != comment._updated %}
+				span(title="{{ _('edited') }} {{ comment._updated | pretty_date_time }}") *
+				| {% endif %}
+
+| {% for reply in comment['_replies']['_items'] %}
+| {{ render_comment(reply, True) }}
+| {% endfor %}
+| {%- endmacro -%}

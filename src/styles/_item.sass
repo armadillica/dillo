@@ -697,6 +697,13 @@ body[data-context="post-edit"]
     .comments-list-title
       padding: 10px 25px
 
+    .comment-avatar
+      img
+        transition: transform 100ms ease-in-out
+
+        &:hover
+          transform: scale(1.1)
+
     .comment-container,
     .comment-reply-container
       +media-xs
