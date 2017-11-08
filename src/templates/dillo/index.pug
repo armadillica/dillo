@@ -296,9 +296,11 @@ script.
 								'</a>' +
 							'</li>' +
 						'{{/is_link}}' +
+						'{{#is_main_project}}' +
 						'<li class="item-community">' +
 							'<a class="js-follow-link" href="/c/{{ project.url }}">{{ project.name }}</a>' +
 						'</li>' +
+						'{{/is_main_project}}' +
 						'<li class="item-date">{{ created }}</li>' +
 						'<li class="item-author"><a class="js-follow-link" href="/u/{{ user.username }}">{{ user.full_name }}</a></li>' +
 						'{{#tags}}' +
@@ -360,6 +362,10 @@ script.
 				hit.is_own = 'is-own';
 			}
 		}
+
+		{% if is_main_project %}
+			hit.is_main_project = 'main-project';
+		{% endif %}
 
 		return hit;
 	}
