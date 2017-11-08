@@ -45,10 +45,13 @@
 							title="{{ node._created }}",
 							href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 							| {{ node._created | pretty_date }}
+
+					| {% if node.properties.tags %}
 					li#item-tags
 						| {% for tag in node.properties.tags %}
 						| {{ tag }}{{ ", " if not loop.last }}
 						| {% endfor %}
+					| {% endif %}
 
 
 	| {% if not is_link %}
