@@ -28,6 +28,7 @@ ALGOLIA_PUBLIC_KEY = '039c5c1d0efe9d25d06c00f55a541963' # Search-Only API Key
 ALGOLIA_API_KEY = '1389947be424f13fbecedabb13ef1710' # Admin API Key
 ALGOLIA_INDEX_USERS = 'dev_UsersYourName'
 ALGOLIA_INDEX_NODES = 'dev_NodesYourName'
+ALGOLIA_INDEX_NODES_SORTED_RECENT = 'dev_RecentYourName'
 ```
 
 * Follow the instructions to install a [Pillar extension](https://pillarframework.org/development/install/).
