@@ -180,7 +180,7 @@ script.
 	$.adaptiveBackground.run();
 
 	// Expand the images thumbnail
-	$('.item-media').on('click', function(e){
+	$('.item-media').off('click').on('click', function(e){
 		e.preventDefault();
 
 		// Get the url of the item-media
@@ -203,7 +203,9 @@ script.
 		$.adaptiveBackground.run(options);
 	});
 
-	$('body').on('pillar:comments-loaded', function(){
+	$('body')
+		.off('pillar:comments-loaded')
+		.on('pillar:comments-loaded', function(){
 		var itemComments = document.getElementById('item-comments');
 		twemoji.parse(itemComments);
 	});
