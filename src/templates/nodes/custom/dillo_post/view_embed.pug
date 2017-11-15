@@ -92,7 +92,7 @@
 
 	| {# If the post is type link, only show if there is no oembed #}
 	| {% if (node.picture and not is_link) or (node.picture and (is_link and not is_html)) %}
-	a.item-media#item-media(
+	a.item-media#item-media.js-item-thumbnail(
 		href="{{ node.picture.thumbnail('h', api=api)}} ")
 		img(
 			src="{{ node.picture.thumbnail('l', api=api) }}",
@@ -187,27 +187,47 @@ script.
 	$.adaptiveBackground.run();
 
 	// Expand the images thumbnail
-	$('.item-media').off('click').on('click', function(e){
+	$('.js-item-thumbnail').off('click').on('click', function(e){
 		e.preventDefault();
 
-		// Get the url of the item-media
-		var url = $(this).attr('href');
-
 		appOverlayClear();
-		$('#app-overlay')
+
+		var $appOverlay = $('#app-overlay');
+
+		// Bring the overlay and add an indication we're loading the image
+		$appOverlay
 			.addClass('active preview')
 			.html('\
 				<div class="overlay-background">\
-					<img src="' + url + '" data-adaptive-background="2" />\
+					<i class="pi-spin spin"></i>\
 				</div>\
 			');
 
-		// Color the background of the overlay
-		var options  = {
-			selector: '[data-adaptive-background="2"]',
-			transparent: '0.8'
-		};
-		$.adaptiveBackground.run(options);
+		// Get the url of the item-media
+		var imageUrl = $(this).attr('href');
+
+		// Load the image first
+		var itemImage = new Image();
+		itemImage.src = imageUrl;
+
+		// Once it loaded, display it
+		itemImage.addEventListener('load', function(){
+			$appOverlay
+				.html('\
+					<div class="overlay-background">\
+						<img src="' + imageUrl + '" data-adaptive-background="2" />\
+					</div>\
+				');
+
+			// Color the background of the overlay
+			var abOptions  = {
+				selector: '[data-adaptive-background="2"]',
+				transparent: '0.8'
+			};
+
+			$.adaptiveBackground.run(abOptions);
+		});
+
 	});
 
 	$('body')
