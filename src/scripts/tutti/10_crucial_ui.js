@@ -198,7 +198,7 @@ function themeSwap(){
 		document.getElementsByTagName("link").item(2).disabled = false;
 		document.getElementsByTagName("link").item(3).disabled = true;
 	} else {
-		Cookies.set('theme', 'dark');
+		Cookies.set('theme', 'dark', { expires: 365 });
 		document.getElementsByTagName("link").item(3).disabled = false;
 		document.getElementsByTagName("link").item(2).disabled = true;
 	}
