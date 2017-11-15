@@ -7,9 +7,10 @@ function item_open(item_id, hit_url){
 
 	var item_url = '/nodes/' + item_id + '/view';
 
-	$('#list-item').html('\
+	$('#list-item .item-body')
+		.html('\
 			<div class="item-loading"><i class="pi-spin spin"></i></div>\
-	');
+		');
 
 	//if (typeof push_url == 'undefined') push_url = item_url;
 

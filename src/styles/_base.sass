@@ -91,7 +91,6 @@ body[data-context='post-fullscreen']
         width: 100%
         padding: 0
 
-      height: auto
       margin: 0 auto
       max-width: 840px
       overflow-x: initial
@@ -439,6 +438,7 @@ nav
 
         .nav-item
           transition: transform 100ms ease-in-out
+          will-change: transform
 
           &:hover
             transform: scale(1.1)
