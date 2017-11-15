@@ -19,12 +19,12 @@
 		| {% endif %}
 
 		| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
-		| {% set post_url = '/p/' + post.properties.shortcode  + '/' + post.properties.slug %}
+		| {% set post_url = url_for('posts.view', community_url=project.url, post_shortcode=post.properties.shortcode) %}
 
 		.list-hits-item(
 			id="item-{{ post._id }}",
 			data-id="{{ post._id }}",
-			data-url="/p/{{ post.properties.shortcode }}/{{ post.properties.slug }}")
+			data-url="{{ post_url }}")
 			a(
 				href="{{ post_url }}",
 				class="item-thumbnail js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
@@ -58,24 +58,19 @@
 									src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 						| {% endif %}
 
-						li.
-							{% for tag in post.properties.tags %}
-								{{ tag }}{{ ", " if not loop.last }}
-							{% endfor %}
 
 						li.item-date.js-item-open
 								a(href="{{ post_url }}")
 									| {{ post._created }}
 
 						li.item-author
-							a(href="/u/{{ user.username }}")
+							a(href="{{ url_for('users.users_view', username=user.username )}}")
 								| {{ user.full_name }}
 
-						| {% if is_link %}
-						li.item-link
-							a(href="{{ post.properties.content }}", target="_blank")
-								| {{ post.properties.content }}
-						| {% endif %}
+						li.
+							{% for tag in post.properties.tags %}
+								{{ tag }}{{ ", " if not loop.last }}
+							{% endfor %}
 
 		| {% endfor %}
 
@@ -109,12 +104,6 @@
 script.
 
 	$(document).ready(function(){
-		// Parse URLs and shorten them
-		$('.item-link').each(function(e){
-			var $item_date = $('.item-link').eq(e);
-			var text = $item_date.text();
-			$item_date.text(shortenUrl(text));
-		});
 
 		// Parse dates using momentjs
 		$('.item-date a, span.date').each(function(e){
@@ -124,7 +113,6 @@ script.
 		});
 
 		twemoji.parse(document.body);
-
 	});
 
 | {% endblock footer_scripts %}
