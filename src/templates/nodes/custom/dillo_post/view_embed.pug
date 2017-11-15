@@ -40,6 +40,9 @@
 					li.item-community
 						a(href="{{ url_for('posts.index', community_url=project.url) }}")
 							| {{ project.name }}
+					li.item-author
+						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
+							| {{ node.user.full_name }}
 					li
 						a.item-date(
 							title="{{ node._created }}",
