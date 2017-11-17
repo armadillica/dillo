@@ -266,6 +266,10 @@ script.
 		})
 	);
 
+	var upvote_post_text = {{ _('Upvote this post')|tojson|safe }}
+	var post_rating_text = {{ _('Post Rating')|tojson|safe }}
+	var downvote_post_text = {{ _('Downvote this post')|tojson|safe }}
+
 	{% raw %}
 	var hitTemplate =
 		'<div class="list-hits-item c-{{ project.url }} {{ is_own }}" id="item-{{ objectID }}" data-id="{{ objectID }}" data-url="{{ url }}">' +
@@ -278,13 +282,13 @@ script.
 			'</a>' +
 			'<div class="item-content" data-node-id="{{ objectID }}">' +
 				'<div class="item-rating-box {{#is_positive}}rated {{is_positive}}{{/is_positive}}">' +
-					'<div class="item-rating up" title="Upvote this post">' +
+					'<div class="item-rating up" title="' + upvote_post_text + '">' +
 						'<i class="pi-angle-up"></i>' +
 					'</div>' +
-					'<div class="item-rating value" title="Post Rating">' +
+					'<div class="item-rating value" title="' + post_rating_text + '">' +
 						'{{ rating }}' +
 					'</div>' +
-					'<div class="item-rating down" title="Downvote this post">' +
+					'<div class="item-rating down" title="' + downvote_post_text + '">' +
 						'<i class="pi-angle-down"></i>' +
 					'</div>' +
 				'</div>' +
