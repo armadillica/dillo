@@ -39,6 +39,28 @@ log = logging.getLogger(__name__)
 only_for_post = only_for_node_type_decorator(node_type_post['name'])
 
 
+def post_count_comments(post_id: ObjectId):
+    """Count the number of comments and replies for a certain post."""
+    nodes_coll = current_app.db('nodes')
+    aggr = nodes_coll.aggregate([
+        {'$match': {'parent': post_id, 'properties.status': 'published'}},
+        {'$lookup': {
+            'from': 'nodes',
+            'localField': '_id',
+            'foreignField': 'parent',
+            'as': 'comment_doc'}},
+        {'$project': {'count': {'$add': [1, {'$size': 'comment_doc'}]}}},
+        {'$group': {'_id': None, 'total': {'$sum': '$count'}}}
+    ])
+
+    try:
+        total_size = list(aggr)[0]['total']
+    except KeyError:
+        total_size = 0
+
+    return total_size
+
+
 def algolia_index_post_save(node):
 
     projects_collection = current_app.data.driver.db['projects']
@@ -49,9 +71,7 @@ def algolia_index_post_save(node):
 
     rating = node['properties']['rating_positive'] - node['properties']['rating_negative']
 
-    nodes_collection = current_app.data.driver.db['nodes']
-    lookup = {'parent': node['_id']}
-    comments_count = nodes_collection.count(lookup)
+    comments_count = post_count_comments(node['_id'])
 
     node_ob = {
         'objectID': node['_id'],
