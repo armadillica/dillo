@@ -330,7 +330,7 @@ def feeds_blogs():
         for post in latest_posts._items:
             author = post.user.full_name
             updated = post._updated if post._updated else post._created
-            url = url_for('posts.view', post_shortcode=post.properties.shortcode)
+            url = url_for('posts.view', post_shortcode=post.properties.shortcode, community_url=post.project)
             content = post.properties.content[:500]
             feed.add(post.name, str(content),
                      content_type='html',
