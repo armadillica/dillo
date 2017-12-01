@@ -10,6 +10,7 @@ from flask import abort, Blueprint, current_app, redirect, render_template, requ
 from werkzeug import exceptions as wz_exceptions
 from werkzeug.contrib.atom import AtomFeed
 from flask_login import current_user, login_required
+from flask_babel import gettext as _
 from pillarsdk import Project, Node, Activity, User
 from pillarsdk.exceptions import ResourceNotFound, ForbiddenAccess
 
@@ -355,7 +356,7 @@ def feeds_blog(community_url):
         api = system_util.pillar_api()
         project = Project.find_first({'where': {'url': community_url}}, api=api)
 
-        feed = AtomFeed(project.name + ' - Latest updates',
+        feed = AtomFeed(project.name + ' - ' + _('Latest updates'),
                         feed_url=request.url,
                         url=request.url_root)
 
