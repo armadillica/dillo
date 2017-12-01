@@ -351,14 +351,14 @@ def feeds_blog(community_url):
     """Project feed generator for latest blogposts across a single project"""
     # @current_app.cache.cached(60*5)
     def render_page():
-        feed = AtomFeed('Dillo - Latest updates',
+        # Get latest posts
+        api = system_util.pillar_api()
+        project = Project.find_first({'where': {'url': community_url}}, api=api)
+
+        feed = AtomFeed(project.name + ' - Latest updates',
                         feed_url=request.url,
                         url=request.url_root)
 
-        # Get latest posts
-        api = system_util.pillar_api()
-
-        project = Project.find_first({'where': {'url': community_url}}, api=api)
         latest_posts = Node.all({
             'where': {'node_type': 'dillo_post', 'properties.status': 'published', 'project': project['_id']},
             'embedded': {'user': 1},
