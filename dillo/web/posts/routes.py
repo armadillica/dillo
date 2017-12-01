@@ -325,7 +325,7 @@ def populate_feed(feed: AtomFeed, latest_posts):
                  published=post._created)
 
 
-@blueprint.route('/p/feed/latest.atom')
+@blueprint.route('/c/feed/latest.atom')
 def feed_all_communities():
     """Global feed generator for latest blogposts across all projects"""
     # @current_app.cache.cached(60*5)
@@ -347,7 +347,7 @@ def feed_all_communities():
     return render_page()
 
 
-@blueprint.route('/p/feed/<community_url>/latest.atom')
+@blueprint.route('/c/<community_url>/feed/latest.atom')
 def feed_community(community_url):
     """Project feed generator for latest blogposts across a single project"""
     # @current_app.cache.cached(60*5)
