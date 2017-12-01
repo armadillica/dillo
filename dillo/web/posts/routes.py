@@ -309,6 +309,21 @@ def validate_append_image(image_url, base_url, images_list):
         log.debug('Skipping image %s because of missing content-length header' % image_url)
 
 
+def populate_feed(feed: AtomFeed, latest_posts):
+    """Populate the feed with the provided data"""
+    for post in latest_posts._items:
+        author = post.user.full_name
+        updated = post._updated if post._updated else post._created
+        url = url_for('posts.view', post_shortcode=post.properties.shortcode, community_url=post.project)
+        content = post.properties.content[:500]
+        feed.add(post.name, str(content),
+                 content_type='html',
+                 author=author,
+                 url=url,
+                 updated=updated,
+                 published=post._created)
+
+
 @blueprint.route('/p/feed/latest.atom')
 def feeds_blogs():
     """Global feed generator for latest blogposts across all projects"""
@@ -326,17 +341,31 @@ def feeds_blogs():
             'max_results': '15'
             }, api=api)
 
-        # Populate the feed
-        for post in latest_posts._items:
-            author = post.user.full_name
-            updated = post._updated if post._updated else post._created
-            url = url_for('posts.view', post_shortcode=post.properties.shortcode, community_url=post.project)
-            content = post.properties.content[:500]
-            feed.add(post.name, str(content),
-                     content_type='html',
-                     author=author,
-                     url=url,
-                     updated=updated,
-                     published=post._created)
+        populate_feed(feed, latest_posts)
+        return feed.get_response()
+    return render_page()
+
+
+@blueprint.route('/p/feeds/<community_url>/latest.atom')
+def feeds_blog(community_url):
+    """Project feed generator for latest blogposts across a single project"""
+    # @current_app.cache.cached(60*5)
+    def render_page():
+        feed = AtomFeed('Dillo - Latest updates',
+                        feed_url=request.url,
+                        url=request.url_root)
+
+        # Get latest posts
+        api = system_util.pillar_api()
+
+        project = Project.find_first({'where': {'url': community_url}}, api=api)
+        latest_posts = Node.all({
+            'where': {'node_type': 'dillo_post', 'properties.status': 'published', 'project': project['_id']},
+            'embedded': {'user': 1},
+            'sort': '-_created',
+            'max_results': '15'
+            }, api=api)
+
+        populate_feed(feed, latest_posts)
         return feed.get_response()
     return render_page()
