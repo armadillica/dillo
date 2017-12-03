@@ -2,6 +2,7 @@ import logging
 
 from flask import abort, current_app, render_template
 
+from bson.objectid import ObjectId
 from pillarsdk import Node
 from pillarsdk import Project
 from pillar.web.users.routes import blueprint
@@ -33,18 +34,26 @@ def users_view(username):
     if user is None:
         return abort(404)
     api = system_util.pillar_api()
-    posts = Node.all({
-        'where': {'user': str(user['_id']), 'node_type': 'dillo_post', 'properties.status': 'published'},
-        'sort': '-_created',
-    }, api=api)
+    nodes_coll = current_app.db('nodes')
 
-    for post in posts['_items']:
-        if post.picture:
-            post.picture = get_file(post.picture, api=api)
+    pipeline = [
+        {'$match': {'user': ObjectId(user['_id']), 'node_type': 'dillo_post', 'properties.status': 'published'}},
+        {'$lookup': {
+            'from': 'projects',
+            'localField': 'project',
+            'foreignField': '_id',
+            'as': 'project'}},
+        {'$sort': {'_created': -1}},
+    ]
+
+    posts = list(nodes_coll.aggregate(pipeline=pipeline))
+
+    for post in posts:
+        if post['picture']:
+            post['picture'] = get_file(post['picture'], api=api)
 
     main_project_url = current_app.config['DEFAULT_COMMUNITY']
     project = Project.find_by_url(main_project_url, api=api)
-
     attach_project_pictures(project, api)
 
     return render_template(
