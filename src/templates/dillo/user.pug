@@ -59,7 +59,7 @@
 						| {% endif %}
 
 
-						li.item-date.js-item-open
+						li.item-date.js-item-open.js-convert-date
 								a(href="{{ post_url }}")
 									| {{ post._created }}
 
@@ -82,7 +82,7 @@
 	#list-item
 		.welcome
 			.user-dashboard
-				.user-dashboard-avatar
+				a.user-dashboard-avatar(href="{{ url_for('users.users_view', username=user.username )}}")
 					img(src="{{ user.email | gravatar(size=128) }}")
 				.user-dashboard-info
 					.user-dashboard-name
@@ -94,10 +94,10 @@
 							| {{ user.extension_props_public.dillo.karma }}
 						li
 							strong {{ _('Last seen') }}:
-							span.date {{ user._updated }}
+							span.date.js-convert-date {{ user._updated }}
 						li
 							strong {{ _('Joined') }}:
-							span.date {{ user._created }}
+							span.date.js-convert-date {{ user._created }}
 
 			.d-activity
 				| {% if col_right['activities']['_meta']['total'] %}
@@ -124,8 +124,8 @@ script.
 	$(document).ready(function(){
 
 		// Parse dates using momentjs
-		$('.item-date a, span.date').each(function(e){
-			var $item_date = $('.item-date a').eq(e);
+		$('.js-convert-date').each(function(e){
+			var $item_date = $('.js-convert-date').eq(e);
 			var text = $item_date.text();
 			$item_date.text(moment(text).fromNow());
 		});
