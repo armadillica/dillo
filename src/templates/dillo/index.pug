@@ -92,19 +92,20 @@ li
 		| {% elif submit_menu['default'] == 'link' %}
 		button.btn.btn-submit.wgt-toggle-submit(
 			data-action="publish",
-			title="{{ _('Submit a Link [Shift+A]')}}")
+			title="{{ _('Submit a Link [Shift+A]')}}",
+			class="{% if not submit_menu['allowed'] %}solo{% endif %}")
 			i.pi-link
 			span {{ _('Submit Link') }}
 		| {% endif %}
 
 		| {# TODO: To be replaced with an interation over allowed post_type #}
 		| {% if submit_menu['allowed'] %}
-		button.btn.btn-submit.wgt-dropdown-toggle
+		span.btn.btn-submit.wgt-dropdown-toggle
 			i.pi-angle-down
 
 			ul.dropdown-menu.right
 				li
-					a(
+					a.btn.btn-submit.post(
 						href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
 						title="{{ _('Write a Post') }}")
 						i.pi-document-text

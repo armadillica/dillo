@@ -277,7 +277,6 @@ body[data-context='post-fullscreen']
   text-decoration: none
 
 .btn
-
   +button-dillo($color-background, 5px, false)
 
   &.publish
@@ -304,8 +303,6 @@ body[data-context='post-fullscreen']
 
   &.btn-submit
     +button-dillo(var(--community-theme-color, $color-primary), 5px, true)
-    font-size: inherit
-
     +media-xs
       border-radius: 999em
       padding: 10px
@@ -314,8 +311,20 @@ body[data-context='post-fullscreen']
       > i
         font-size: $font-size-large
         margin-right: 0
+
       > span
         display: none
+
+    font-size: inherit
+
+    &:hover
+      +media-xs
+        border-radius: 999em
+        padding: 10px
+      +button-dillo(lighten($color-primary, 5%), 5px, true)
+
+    &.post
+      border-radius: 5px !important
 
 .btn-group
   align-items: center
@@ -331,11 +340,6 @@ body[data-context='post-fullscreen']
       box-shadow: 0 0 25px rgba(black, .2)
       position: fixed
       right: 10px
-
-    transition: transform 100ms ease-in-out
-
-    &:hover
-      transform: scale(1.05)
 
     .dropdown-menu
       +media-xs
@@ -354,8 +358,13 @@ body[data-context='post-fullscreen']
     padding-right: 10px
 
   button, .btn, a.btn
-    border-top-right-radius: 0 !important
-    border-bottom-right-radius: 0 !important
+    &:first-child
+      border-top-right-radius: 0
+      border-bottom-right-radius: 0
+
+    &.solo
+      border-radius: 5px
+      padding-right: 20px
 
     &.wgt-dropdown-toggle
       +media-xs
@@ -374,6 +383,14 @@ body[data-context='post-fullscreen']
 
       > i
         margin: 0
+
+      .btn
+        +media-xs
+          box-shadow: none
+          width: auto
+        padding-top: 5px
+        padding-bottom: 5px
+
 
 
 select, textarea, input

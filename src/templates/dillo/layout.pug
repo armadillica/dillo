@@ -207,12 +207,12 @@ html(lang='en')
 										i.pi-link
 										span {{ _('Submit Link') }}
 
-									button.btn.btn-submit.wgt-dropdown-toggle
+									span.btn.btn-submit.wgt-dropdown-toggle
 										i.pi-angle-down
 
 										ul.dropdown-menu.right
 											li
-												a(
+												a.btn.btn-submit.post(
 													href="{{ url_for('users.login') }}",
 													title="{{ _('Write a Post') }}")
 													i.pi-document-text
