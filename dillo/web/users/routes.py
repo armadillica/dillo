@@ -3,11 +3,13 @@ import logging
 from flask import abort, current_app, render_template
 
 from pillarsdk import Node
-from pillarsdk import Project
+from pillarsdk import Project, Activity
 from pillar.web.users.routes import blueprint
+from pillar.web import subquery
 from pillar.web import system_util
 from pillar.web.utils import attach_project_pictures
 from pillar.web.utils import get_file
+from pillar.web.nodes.routes import url_for_node
 
 log = logging.getLogger(__name__)
 
@@ -47,8 +49,24 @@ def users_view(username):
 
     attach_project_pictures(project, api)
 
+    # Fetch all comments activity for the user
+    activities = Activity.all({
+        'where': {
+            'actor_user': str(user['_id']),
+            'node_type': 'comment'
+        },
+        'sort': [('_created', -1)],
+        'max_results': 15,
+    }, api=api)
+
+    # Fetch more info for each activity.
+    for act in activities['_items']:
+        act.actor_user = subquery.get_user_info(act.actor_user)
+        act.link = url_for_node(node_id=act.object)
+
     return render_template(
         'dillo/user.html',
+        col_right={'activities': activities},
         user=user,
         posts=posts,
         project=project)

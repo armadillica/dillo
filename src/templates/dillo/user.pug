@@ -80,23 +80,41 @@
 
 #col_right.listing-view
 	#list-item
-		.user-dashboard
-			.user-dashboard-avatar
-				img(src="{{ user.email | gravatar(size=128) }}")
-			.user-dashboard-info
-				.user-dashboard-name
-					| {{ user.full_name }}
+		.welcome
+			.user-dashboard
+				.user-dashboard-avatar
+					img(src="{{ user.email | gravatar(size=128) }}")
+				.user-dashboard-info
+					.user-dashboard-name
+						| {{ user.full_name }}
 
-				ul.user-dashboard-meta
+					ul.user-dashboard-meta
+						li
+							strong Karma:
+							| {{ user.extension_props_public.dillo.karma }}
+						li
+							strong {{ _('Last seen') }}:
+							span.date {{ user._updated }}
+						li
+							strong {{ _('Joined') }}:
+							span.date {{ user._created }}
+
+			.d-activity
+				| {% if col_right['activities']['_meta']['total'] %}
+				ul
+					| {% for act in col_right['activities']['_items'] %}
+					| {% if act.link and act['actor_user']['email'] %}
 					li
-						strong Karma:
-						| {{ user.extension_props_public.dillo.karma }}
-					li
-						strong {{ _('Last seen') }}:
-						span.date {{ user._updated }}
-					li
-						strong {{ _('Joined') }}:
-						span.date {{ user._created }}
+						a(href="{{ act.link }}")
+							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}", alt="{{ _('Avatar') }}")
+							span.date(title="{{ act._created }}") {{ act._created | pretty_date }}
+							span.actor {{ act['actor_user']['full_name'] }}
+							span.verb {{ act.verb }}
+					| {% endif %}
+					| {% endfor %}
+				| {% else %}
+				p {{ _('No activity... yet!') }}
+				| {% endif %}
 
 | {% endblock body %}
 
@@ -107,7 +125,7 @@ script.
 
 		// Parse dates using momentjs
 		$('.item-date a, span.date').each(function(e){
-			var $item_date = $('.item-date a, span.date').eq(e);
+			var $item_date = $('.item-date a').eq(e);
 			var text = $item_date.text();
 			$item_date.text(moment(text).fromNow());
 		});
