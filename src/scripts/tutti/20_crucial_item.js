@@ -80,23 +80,32 @@ $(document).on('click','body .item-rating.up, body .item-rating.down',function(e
 	$.post("/p/" + nodeId + "/rate/" + op)
 	.done(function(data){
 
-		// Add/remove styles for rated statuses
-		switch(op) {
-			case 'revoke':
-				parentDiv.removeClass('rated positive negative');
-				break;
-			case 'upvote':
-				parentDiv.addClass('rated positive');
-				parentDiv.removeClass('negative');
-				break;
-			case 'downvote':
-				parentDiv.addClass('rated negative');
-				parentDiv.removeClass('positive');
-				break;
-		}
-
 		var rating = data['data']['rating_positive'] - data['data']['rating_negative'];
-		$this.siblings('.item-rating.value').text(rating);
+
+		// UI updates for the item on the list and the one in view_embed
+		$('#item-' + nodeId + ', #' + nodeId).each(function(i) {
+
+			// Update rating number
+			$(this).find('.item-rating.value').text(rating);
+
+			parentDiv = $(this).find('.item-rating-box');
+
+			// Add/remove styles for rated statuses
+			switch(op) {
+				case 'revoke':
+					parentDiv.removeClass('rated positive negative');
+					break;
+				case 'upvote':
+					parentDiv.addClass('rated positive');
+					parentDiv.removeClass('negative');
+					break;
+				case 'downvote':
+					parentDiv.addClass('rated negative');
+					parentDiv.removeClass('positive');
+					break;
+			}
+		});
+
 		toastr.info('Voted!');
 
 		ga('send', 'event', 'vote', op);
