@@ -1,5 +1,11 @@
 | {% extends 'dillo/layout.html' %}
 | {% block page_title %}{{ user.full_name }} {% endblock %}
+| {% set page_name = 'posts-index' %}
+
+| {% block bodyattrs %}
+| {{ super() }}
+| class='{{ page_name }} {% if current_user.is_authenticated %}logged-in{% endif %}' data-context='{{ page_name }}'
+| {% endblock bodyattrs %}
 
 | {% block body %}
 
@@ -22,6 +28,7 @@
 		| {% set post_url = url_for('posts.view', community_url=project.url, post_shortcode=post.properties.shortcode) %}
 
 		.list-hits-item(
+			class="{% if post.user == (current_user.user_id | string) %}is-own{% endif %}",
 			id="item-{{ post._id }}",
 			data-id="{{ post._id }}",
 			data-url="{{ post_url }}")
