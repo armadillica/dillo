@@ -10,6 +10,11 @@ html(lang='en')
 		| {% block head %}{% endblock head %}
 		link(href='//fonts.googleapis.com/css?family=Oxygen|Open+Sans:400,600', rel='stylesheet', type='text/css')
 		link(href="{{ url_for('static_pillar', filename='assets/css/font-pillar.css', v=171120161) }}", rel='stylesheet')
+		| {% if is_main_project %}
+		link(rel='alternate', title="Atom", type="application/atom+xml" href="{{ url_for('posts.feed_all_communities') }}")
+		| {% else %}
+		link(rel='alternate', title="Atom", type="application/atom+xml" href="{{ url_for('posts.feed_community', community_url=project.url) }}")
+		| {% endif %}
 
 		| {% if project.extension_props.dillo %}
 		style(type="text/css").
