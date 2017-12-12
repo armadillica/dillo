@@ -19,7 +19,7 @@
 		| {% endif %}
 
 		| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
-		| {% set post_url = url_for('posts.view', community_url=post.project[0]['url'], post_shortcode=post.properties.shortcode) %}
+		| {% set post_url = url_for('posts.view', community_url=post.project.url, post_shortcode=post.properties.shortcode) %}
 
 		.list-hits-item(
 			id="item-{{ post._id }}",

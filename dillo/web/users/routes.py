@@ -37,19 +37,30 @@ def users_view(username):
     nodes_coll = current_app.db('nodes')
 
     pipeline = [
-        {'$match': {'user': ObjectId(user['_id']), 'node_type': 'dillo_post', 'properties.status': 'published'}},
+        {'$match': {
+            'user': ObjectId(user['_id']),
+            'node_type': 'dillo_post',
+            'properties.status': 'published'}},
         {'$lookup': {
             'from': 'projects',
             'localField': 'project',
             'foreignField': '_id',
             'as': 'project'}},
-        {'$sort': {'_created': -1}},
+        {'$project': {
+            'name': 1,
+            'properties': 1,
+            'user': 1,
+            'picture': 1,
+            '_created': 1,
+            'project': {'$arrayElementAt': ['$project', 0]}
+        }},
+        {'$sort': {'_created': -1}}
     ]
 
     posts = list(nodes_coll.aggregate(pipeline=pipeline))
 
     for post in posts:
-        if post['picture']:
+        if post.get('picture'):
             post['picture'] = get_file(post['picture'], api=api)
 
     main_project_url = current_app.config['DEFAULT_COMMUNITY']
