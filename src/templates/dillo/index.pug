@@ -170,7 +170,7 @@ li
 						a(href="{{ url_for('posts.index', community_url=project.url) }}")
 							| {{ project.name }}
 						a.beta(href="https://blender.community/c/today/sWbbbc/announcing-blender-community") BETA
-					.summary {{ project.summary }}
+					.summary {{ _( project.summary ) }}
 
 					| {% if project.extension_props.dillo %}
 
