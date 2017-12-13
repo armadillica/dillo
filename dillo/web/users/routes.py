@@ -52,7 +52,7 @@ def users_view(username):
             'user': 1,
             'picture': 1,
             '_created': 1,
-            'project': {'$arrayElementAt': ['$project', 0]}
+            'project': {'$arrayElemAt': ['$project', 0]}
         }},
         {'$sort': {'_created': -1}}
     ]
