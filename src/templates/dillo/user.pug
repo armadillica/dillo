@@ -11,7 +11,7 @@
 
 #col_main.listing-list
 	#list-hits
-		| {% for post in posts['_items'] %}
+		| {% for post in posts %}
 
 		| {% if post.properties.post_type == 'link' %}
 		| {% set is_link = true %}
@@ -25,7 +25,7 @@
 		| {% endif %}
 
 		| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
-		| {% set post_url = url_for('posts.view', community_url=project.url, post_shortcode=post.properties.shortcode) %}
+		| {% set post_url = url_for('posts.view', community_url=post.project.url, post_shortcode=post.properties.shortcode) %}
 
 		.list-hits-item(
 			class="{% if post.user == (current_user.user_id | string) %}is-own{% endif %}",
