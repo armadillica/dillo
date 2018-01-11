@@ -49,12 +49,14 @@ def post_count_comments(post_id: ObjectId):
             'localField': '_id',
             'foreignField': 'parent',
             'as': 'comment_doc'}},
-        {'$project': {'count': {'$add': [1, {'$size': 'comment_doc'}]}}},
+        {'$project': {'count': {'$add': [1, {'$size': '$comment_doc'}]}}},
         {'$group': {'_id': None, 'total': {'$sum': '$count'}}}
     ])
 
     try:
         total_size = list(aggr)[0]['total']
+    except IndexError:
+        total_size = 0
     except KeyError:
         total_size = 0
 
