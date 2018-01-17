@@ -135,7 +135,12 @@ def index(community_url):
     # Fetch more info for each activity.
     for act in activities['_items']:
         act.actor_user = subquery.get_user_info(act.actor_user)
-        act.link = url_for_node(node_id=act.object)
+        try:
+            act.link = url_for_node(node_id=act.object)
+        except ValueError:
+            # If the node was delete, we get ValueError exception.
+            # By setting act.link to '', it does not get displayed in the list.
+            act.link = ''
 
     return render_template(
         'dillo/index.html',
