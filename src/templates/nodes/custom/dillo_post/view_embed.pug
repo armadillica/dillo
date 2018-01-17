@@ -147,6 +147,15 @@
 script.
 
 	var context = ProjectUtils.context();
+	var search = instantsearch({
+		appId: '{{ config.ALGOLIA_USER }}',
+		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
+		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
+		urlSync: {},
+		searchParameters: {
+			disjunctiveFacets: ['project._id']
+		}
+	});
 
 	if (context != 'post-edit'){
 		loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
