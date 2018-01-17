@@ -195,12 +195,12 @@ function themeSwap(){
 
 	if (Cookies.get('theme') == 'dark'){
 		Cookies.remove('theme');
-		document.getElementsByTagName("link").item(2).disabled = false;
-		document.getElementsByTagName("link").item(3).disabled = true;
+		document.getElementsByTagName("link").item(3).disabled = false;
+		document.getElementsByTagName("link").item(4).disabled = true;
 	} else {
 		Cookies.set('theme', 'dark', { expires: 365 });
-		document.getElementsByTagName("link").item(3).disabled = false;
-		document.getElementsByTagName("link").item(2).disabled = true;
+		document.getElementsByTagName("link").item(4).disabled = false;
+		document.getElementsByTagName("link").item(3).disabled = true;
 	}
 }
 
