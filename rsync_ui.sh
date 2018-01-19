@@ -63,7 +63,7 @@ cd $PILLAR_DIR
 
 echo
 echo "*** GULPA GULPA PILLAR ***"
-./gulp --production
+./gulp
 
 echo
 echo "*** SYNCING PILLAR_ASSETS ***"
