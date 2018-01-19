@@ -1,0 +1,6 @@
+| {% extends "nodes/custom/comment/list_embed_base.html" %}
+| {% block can_not_post_comment %}
+.comment-reply-form
+	.comment-reply-field.sign-in
+		a(href="{{ url_for('users.login') }}") {{ _('Log in to comment') }}
+| {% endblock can_not_post_comment%}
