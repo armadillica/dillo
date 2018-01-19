@@ -58,3 +58,14 @@ var urlParams;
 	while (match = search.exec(query))
 		urlParams[decode(match[1])] = decode(match[2]);
 })();
+
+
+/*
+ * XXX Quick hack to silence the error when getting typeahead
+ * Typeahead is a library used by global search in Pillar.
+ * Since Dillo uses instantsearch, not global, we don't need it.
+ * But silly Pillar doesn't know yet, a proper fix will come later.
+*/
+(function ($) {
+	$.fn.typeahead = function() {};
+}(jQuery));
