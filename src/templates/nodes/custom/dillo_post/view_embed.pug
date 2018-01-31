@@ -171,7 +171,7 @@ script.
 		search.on('render', onRenderHandler);
 	}
 
-	var page_title = '{{ node.name | striptags | safe }} — {{ main_project.name | striptags | safe }}';
+	var page_title = '{{ node.name | striptags }} — {{ main_project.name | striptags }}';
 	DocumentTitleAPI.set_page_title(page_title);
 
 	// Parse emojis (very important! :) and date with momentjs (so it gets translations)
