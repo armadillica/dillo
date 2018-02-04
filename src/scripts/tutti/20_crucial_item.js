@@ -36,17 +36,36 @@ function item_open(item_id, hit_url){
 	if (!pushState) return;
 
 	// Push the correct URL onto the history.
-	var push_state = {itemId: item_id};
+	var push_state = {nodeId: item_id, url: hit_url};
+	var push_url = hit_url;
 
 	window.history.pushState(
-		push_state,
-		item_id,
-		hit_url
+			push_state,
+			'Node ' + item_id, // TODO: use sensible title
+			hit_url
 	);
 
 	// It's not the first load anymore, utems should open on the side not fullscreen
 	first_time = false;
 }
+
+
+window.onpopstate = function(event) {
+	var state = event.state;
+
+	if (state == null) {
+		// Go back to the community
+		// TODO: Use real url
+		if ($('body').hasClass('main-project')){
+			return window.location.href = '/c/';
+		} else {
+			return window.location.href = '/c/' + ProjectUtils.projectUrl();
+		}
+	}
+
+	// Go back to a post
+	item_open(state.nodeId, state.url)
+};
 
 
 /* Rate | Vote */

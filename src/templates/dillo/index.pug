@@ -237,7 +237,6 @@ script.
 		appId: '{{ config.ALGOLIA_USER }}',
 		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
 		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
-		urlSync: {},
 		searchParameters: {
 			disjunctiveFacets: ['project._id']
 		}
@@ -507,8 +506,11 @@ script.
 
 	search.on('render', onRenderHandler);
 
+
 	{% if 'post' in col_right %}
-		item_open("{{col_right['post']['_id']}}");
+		var item_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True) }}";
+
+		item_open("{{col_right['post']['_id']}}", item_url);
 
 		// When loading the page for the first time, load post fullscreen
 		if (first_time){
