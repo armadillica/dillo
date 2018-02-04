@@ -37,9 +37,11 @@ html(lang='en')
 		link(rel='stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
 		link(disabled, rel='alternate stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}")
 
+		| {# Theme loading: swap CSS on load, check crucial_ui.js for the swapping logic #}
 		script.
 			if (Cookies.get('theme') == 'dark'){
-				document.getElementsByTagName("link").item(3).disabled = false;
+				document.getElementsByTagName("link").item(4).disabled = false;
+				document.getElementsByTagName("link").item(3).disabled = true;
 			};
 
 		| {% block favicon %}

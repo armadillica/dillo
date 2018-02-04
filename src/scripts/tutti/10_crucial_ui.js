@@ -189,21 +189,33 @@ $('#app-overlay').on('click', function(){
 	}
 });
 
-
-// Swap the theme based on cookies
+/*
+ * Swap the theme based on cookies
+ * Swapping also happens on load, check layout.pug head
+*/
 function themeSwap(){
 
 	if (Cookies.get('theme') == 'dark'){
-		Cookies.remove('theme');
+
+		// Enable/disable CSS links, marking dark as disabled and the default as enabled
 		document.getElementsByTagName("link").item(3).disabled = false;
 		document.getElementsByTagName("link").item(4).disabled = true;
+
+		// If cookie exists, delete it so next time it loads the light theme
+		Cookies.remove('theme');
+
 	} else {
-		Cookies.set('theme', 'dark', { expires: 365 });
+
+		// Enable/disable CSS links, marking default as disabled and dark as enabled
 		document.getElementsByTagName("link").item(4).disabled = false;
 		document.getElementsByTagName("link").item(3).disabled = true;
+
+		// If a cookie for the dark theme doesn't exist, create it and save it for a year
+		Cookies.set('theme', 'dark', { expires: 365 });
 	}
 }
 
+// Theme toggle button
 $('.theme-toggle').on('click', function(e){
 	e.preventDefault();
 	themeSwap();
