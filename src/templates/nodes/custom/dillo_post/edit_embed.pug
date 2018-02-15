@@ -206,15 +206,27 @@ script.
 			.autoResize()
 			.blur();
 
+		function replaceContentPreview(data) {
+			$('#item-content').html(twemoji.parse(data));
+		}
 
 		function parseText(content) {
-			$('#item-content').html(
-				twemoji.parse(
-					convert(
-						content
-					)
-				)
-			);
+			var crsf_token = document.getElementById("csrf_token").value;
+			// var content = document.getElementById("content").value;
+			$.ajax({
+				url: "{{ url_for('nodes.preview_markdown')}}",
+				type: 'post',
+				data: {content: content,},
+				headers: {"X-CSRFToken": crsf_token},
+				dataType: 'json'
+			})
+			.done(function (data) {
+				replaceContentPreview(data.content);
+			})
+			.fail(function (err) {
+				toastr.error(xhrErrorResponseMessage(err), 'Parsing failed');
+			});
+
 		}
 
 
