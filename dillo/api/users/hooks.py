@@ -23,6 +23,7 @@ def add_extension_props(user: dict):
 
     custom_fields = {
         'karma': 0,
+        'links': [],
     }
 
     log.debug('Recording user custom extension_props_public for dillo')

@@ -76,6 +76,7 @@ class DilloExtension(PillarExtension):
         import dillo.web.main.routes
         import dillo.web.posts.routes
         import dillo.web.users.routes
+        import dillo.web.settings.routes
         return [
             dillo.web.main.routes.blueprint,
             dillo.web.posts.routes.blueprint,
@@ -94,7 +95,6 @@ class DilloExtension(PillarExtension):
 
     def setup_app(self, app):
         from dillo import api
-
         api.setup_app(app)
 
     def activities_for_node(self, node_id, max_results=20, page=1):

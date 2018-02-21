@@ -1,3 +1,11 @@
 | {% extends 'users/settings/base.html' %}
+| {% block settings_sidebar_menu %}
+| {{ super() }}
+a(class="{% if title == 'links' %}active{% endif %}",
+	href="{{ url_for('settings.links') }}")
+	li
+		i.pi-vcard
+		| Links
+| {% endblock settings_sidebar_menu %}
 | {% block settings_sidebar_menu_bottom %}
 | {% endblock settings_sidebar_menu_bottom %}

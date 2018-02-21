@@ -64,7 +64,6 @@ def view_embed(node_id):
         **extra_template_args)
 
 
-
 @blueprint.route('/c/<community_url>/post/<post_type>')
 def create(community_url: str, post_type: str):
     api = system_util.pillar_api()
