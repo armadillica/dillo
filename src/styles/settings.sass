@@ -1,15 +1,14 @@
 // First load Pillar's config as fallback, then Dillo's
 @import ../../../pillar/src/styles/_config
 @import _config_global
-
-// TODO: Use gulp to append this and compile the dark version
-@import _config_dark
+@import _config
 
 @import ../../../pillar/src/styles/_utils
 @import _utils
 
 // Not cool. It has too many Blender Cloud stuff, needs splitting.
 @import ../../../pillar/src/styles/base
+@import ../../../pillar/src/styles/_user
 
 @import ../../../pillar/src/styles/plugins/_js_select2
 
@@ -18,3 +17,5 @@
 @import _list
 @import _user
 @import _error
+
+@import _settings_base
