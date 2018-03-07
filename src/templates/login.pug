@@ -1,0 +1,34 @@
+| {% extends 'layout.html' %}
+| {% block stylesheets %}
+link(rel='stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/settings.css') }}")
+link(disabled, rel='alternate stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/settings_dark.css') }}")
+| {% endblock stylesheets %}
+
+| {% block page_title %}Login{% endblock %}
+
+| {% block body %}
+
+.login-container
+	.login-box
+		.login-title Welcome!
+
+		.login-info
+			| What would you like to login with?
+
+		.login-providers
+			| {% for login_provider, login_provider_conf in config['OAUTH_CREDENTIALS'].items() if config['OAUTH_CREDENTIALS'].get(login_provider) %}
+
+			| 	{% set login_provider_name = login_provider | undertitle %}
+
+			| 	{% if 'name' in login_provider_conf %}
+			| 	{% set login_provider_name = login_provider_conf['name'] %}
+			| 	{% endif %}
+
+			a(class="{{login_provider}} login-provider-button",
+				title="Login using {{ login_provider_name }}",
+				href="{{url_for('users.oauth_authorize', provider=login_provider)}}")
+				| {{ login_provider_name }}
+
+			| 	{% endfor %}
+
+| {% endblock body %}
