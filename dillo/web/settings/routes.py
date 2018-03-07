@@ -1,11 +1,12 @@
 import logging
-import json
+import bson
 from flask import render_template, flash
 from flask_login import login_required, current_user
 from pillarsdk import User, exceptions as sdk_exceptions
 from pillar.web import system_util
 from pillar.web.settings import blueprint as blueprint_settings
 from dillo.web.settings.forms import LinksListForm
+from dillo.api.users import update_links
 
 log = logging.getLogger(__name__)
 
@@ -26,28 +27,27 @@ def links():
             user_links.append({
                 'name': f.data['name'],
                 'url': f.data['url']})
-        user['extension_props_public']['dillo']['links'] = user_links
         # Update user properties
-        try:
-            user.update(api=api)
-        except sdk_exceptions.ResourceInvalid as e:
-            message = json.loads(e.content)
-            flash(message)
+        update_links(bson.ObjectId(current_user.objectid), user_links)
+
         flash("Profile updated", 'success')
+        # Clear the list entries before populating it with the new links
+        form.links.entries = []
 
-    # Read user properties
-    if 'links' in user['extension_props_public']['dillo']:
-        links = user['extension_props_public']['dillo']['links']
+        for link in user_links:
+            form.links.append_entry(link)
+
+    # If the form fails to validate, do not update any field
+    elif form.errors:
+            for e, v in form.errors.items():
+                log.debug("Error validating field %s" % e)
     else:
-        links = [{'name': None, 'url': None}]
-
-    # Clear the list entries before populating it with the new links
-    form.links.entries = []
-
-    for link in links:
-        form.links.append_entry(link)
-
-    for e, v in form.errors.items():
-        log.debug("Error validating field %s" % e)
+        # Read user properties
+        if 'links' in user['extension_props_public']['dillo']:
+            links = user['extension_props_public']['dillo']['links']
+        else:
+            links = [{'name': None, 'url': None}]
+        for link in links:
+            form.links.append_entry(link)
 
     return render_template('users/settings/links.html', form=form, title='emails')
