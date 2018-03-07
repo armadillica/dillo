@@ -3,6 +3,9 @@ html(lang='en')
 	head
 		meta(charset='utf-8')
 		title
+			| {% if not project %}
+			| {% set project = main_project %}
+			| {% endif %}
 			| {% if self.page_title() %}{% block page_title %}{% endblock %}{% endif %}
 			| {{ project.name }}
 			| {% if not is_main_project %} — {{ main_project.name }}{% endif %}
@@ -34,8 +37,10 @@ html(lang='en')
 		script(src="{{ url_for('static_dillo', filename='js/vendor/js-cookie-2.1.4.min.js', v=171120161) }}")
 
 
+		| {% block stylesheets %}
 		link(rel='stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
 		link(disabled, rel='alternate stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}")
+		| {% endblock stylesheets %}
 
 		| {# Theme loading: swap CSS on load, check crucial_ui.js for the swapping logic #}
 		script.
@@ -43,6 +48,7 @@ html(lang='en')
 				document.getElementsByTagName("link").item(4).disabled = false;
 				document.getElementsByTagName("link").item(3).disabled = true;
 			};
+
 
 		| {% block favicon %}
 		| {% if not is_main_project and project.picture_square %}
