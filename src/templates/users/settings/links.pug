@@ -1,32 +1,41 @@
 | {% extends 'users/settings/page.html' %}
+
 | {% block settings_page_title %}{{ _("Links") }}{% endblock %}
 | {% block settings_page_content %}
 .settings-form
 	form#settings-form(method='POST', action="{{url_for('settings.links')}}")
 		| {{ form.csrf_token }}
-		div(data-toggle="fieldset" id="link-fieldset")
-			button(
+		.fieldset-container(data-toggle="fieldset" id="link-fieldset")
+			button.btn.btn-success(
 				type="button",
 				data-toggle="fieldset-add-row",
 				data-target="#link-fieldset"
-			) +
+			)
+				| #[i.pi-plus] {{ _("Add Link") }}
 
 			| {% for link in form.links %}
-			div(data-toggle="fieldset-entry")
-				| {{ link.form.name }}
-				| {{ link.form.url }}
+			.fieldset-item(data-toggle="fieldset-entry")
+				| {{ link.form.name(placeholder="Label") }}
+				| {{ link.form.url(placeholder="URL") }}
 				| {{ link.csrf_token }}
-				button(
+				button.btn.btn-danger(
 					type="button",
 					data-toggle="fieldset-remove-row",
 					id="phone-{{loop.index0}}-remove"
-				) X
+				)
+					i.pi-trash
 			| {% endfor %}
+
+			hr
+
 			.buttons
-				button.btn.btn-default.button-submit(type='submit')
+				button.btn.btn-info(type='submit')
 					i.pi-check
 					| {{ _("Save Changes") }}
 
+| {% endblock %}
+
+| {% block footer_scripts %}
 script.
 
 	$(function () {
@@ -57,6 +66,4 @@ script.
 			});
 		});
 	});
-| {% endblock %}
-
-
+| {% endblock footer_scripts %}
