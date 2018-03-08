@@ -14,16 +14,35 @@
 				| #[i.pi-plus] {{ _("Add Link") }}
 
 			| {% for link in form.links %}
-			.fieldset-item(data-toggle="fieldset-entry")
-				| {{ link.form.name(placeholder="Label") }}
-				| {{ link.form.url(placeholder="URL") }}
+			.fieldset-row(data-toggle="fieldset-entry")
+				.fieldset-field
+					| {{ link.form.name(placeholder="Label") }}
+
+					| {% if 'name' in link.form.errors %}
+					| {% for error in link.form.errors['name'] %}
+					.fieldset-row-error {{ error }}
+					| {% endfor %}
+					| {% endif %}
+
+				.fieldset-field
+					| {{ link.form.url(placeholder="URL") }}
+
+					| {% if 'url' in link.form.errors %}
+					| {% for error in link.form.errors['url'] %}
+					.fieldset-row-error {{ error }}
+					| {% endfor %}
+					| {% endif %}
+
 				| {{ link.csrf_token }}
-				button.btn.btn-danger(
-					type="button",
-					data-toggle="fieldset-remove-row",
-					id="phone-{{loop.index0}}-remove"
-				)
-					i.pi-trash
+
+				.fieldset-field-action
+					button.btn.btn-danger(
+						type="button",
+						data-toggle="fieldset-remove-row",
+						id="phone-{{loop.index0}}-remove"
+					)
+						i.pi-trash
+
 			| {% endfor %}
 
 			hr
@@ -47,6 +66,7 @@ script.
 				var target = $($(this).data("target"))
 				var oldrow = target.find("div[data-toggle=fieldset-entry]:last");
 				var row = oldrow.clone(true, true);
+
 				var elem_id = row.find(":input")[0].id;
 				var elem_num = parseInt(elem_id.replace(/.*-(\d{1,4})-.*/m, '$1')) + 1;
 				row.attr('data-id', elem_num);
@@ -54,7 +74,11 @@ script.
 					var id = $(this).attr('id').replace('-' + (elem_num - 1) + '-', '-' + (elem_num) + '-');
 					$(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
 				});
+
 				oldrow.after(row);
+
+				// Clean error fields in new rows
+				row.find('.fieldset-row-error').remove();
 			});
 
 			//Remove row
