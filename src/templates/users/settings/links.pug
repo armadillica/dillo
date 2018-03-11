@@ -40,7 +40,9 @@ p {{ _("Display custom links (your website, social media links, etc, on your pro
 					button.btn.btn-danger(
 						type="button",
 						data-toggle="fieldset-remove-row",
-						id="phone-{{loop.index0}}-remove"
+						id="link-{{loop.index0}}-remove",
+						{# We add the CSS property here because $this.show does not work otherwise #}
+						style="display:none;"
 					)
 						i.pi-trash
 
@@ -68,6 +70,10 @@ script.
 			var rows_count = $div_target.find("div[data-toggle=fieldset-entry]").length;
 			var max_entries = $this.data("max_entries");
 
+			// Count rows update add and delete buttons
+			if (rows_count >= max_entries) $btn_add_row.hide();
+			if (rows_count > 1) $btn_remove_row.show();
+
 			// Add new entry
 			$btn_add_row.click(function () {
 
@@ -88,20 +94,20 @@ script.
 				// Clean error fields in new rows
 				row.find('.fieldset-row-error').remove();
 
-				// Count rows and remove button if we reach the allowed limit
+				// Count rows update add and delete buttons
 				if (rows_count >= max_entries) $btn_add_row.hide();
+				if (rows_count > 1) $this.find("button[data-toggle=fieldset-remove-row]").show();
 
 			});
 
 			//Remove row
 			$btn_remove_row.click(function () {
-				if ($this.find("div[data-toggle=fieldset-entry]").length > 1) {
-					var thisRow = $(this).closest("div[data-toggle=fieldset-entry]");
-					thisRow.remove();
-					rows_count --;
-					// Count rows and remove button if we reach the allowed limit
-					if (rows_count < max_entries) $btn_add_row.show();
-				}
+				var thisRow = $(this).closest("div[data-toggle=fieldset-entry]");
+				thisRow.remove();
+				rows_count--;
+				// Count rows update add and delete buttons
+				if (rows_count < max_entries) $btn_add_row.show();
+				if (rows_count === 1) $this.find("button[data-toggle=fieldset-remove-row]").hide();
 			});
 		});
 	});

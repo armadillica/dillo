@@ -1,6 +1,6 @@
 import logging
 import bson
-from flask import render_template, flash
+from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
 from pillarsdk import User, exceptions as sdk_exceptions
 from pillar.web import system_util
@@ -34,16 +34,28 @@ def links():
         # Clear the list entries before populating it with the new links
         form.links.entries = []
 
+        # If we deleted all links (can only happen via direct POST request)
+        if len(user_links) == 0:
+            user_links = [{'name': None, 'url': None}]
+
         for link in user_links:
             form.links.append_entry(link)
 
     # If the form fails to validate, do not update any field
     elif form.errors:
-            for e, v in form.errors.items():
-                log.debug("Error validating field %s" % e)
+        # Handle the specific case of when we have the last link in the list.
+        # In this case we will ignore the errors and assign an empty link.
+        if 'links' in form.errors and (len(form.errors['links']) == 1):
+            errors = form.errors['links'][0]
+            if 'name' in errors and 'url' in errors:
+                update_links(bson.ObjectId(current_user.objectid), [{'name': None, 'url': None}])
+                return redirect(url_for('settings.links'))
+        for e, v in form.errors.items():
+            log.debug("Error validating field %s" % e)
     else:
         # Read user properties
-        if 'links' in user['extension_props_public']['dillo']:
+        if 'links' in user['extension_props_public']['dillo'] and \
+                len(user['extension_props_public']['dillo']['links']) > 0:
             links = user['extension_props_public']['dillo']['links']
         else:
             links = [{'name': None, 'url': None}]
