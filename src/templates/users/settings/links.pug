@@ -17,7 +17,7 @@ p {{ _("Display custom links (your website, social media links, etc, on your pro
 
 			.fieldset-row
 				.fieldset-field
-					label {{ _("Label") }}
+					label {{ _("Title") }}
 				.fieldset-field
 					label {{ _("URL") }}
 				.fieldset-field-action(style="width: 40px")
@@ -25,7 +25,7 @@ p {{ _("Display custom links (your website, social media links, etc, on your pro
 			| {% for link in form.links %}
 			.fieldset-row(data-toggle="fieldset-entry")
 				.fieldset-field
-					| {{ link.form.name(placeholder="Label") }}
+					| {{ link.form.name(placeholder="Title") }}
 
 					| {% if 'name' in link.form.errors %}
 					| {% for error in link.form.errors['name'] %}
