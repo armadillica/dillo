@@ -45,7 +45,7 @@ def links():
     elif form.errors:
         # Handle the specific case of when we have the last link in the list.
         # In this case we will ignore the errors and assign an empty link.
-        if 'links' in form.errors and (len(form.errors['links']) == 1):
+        if 'links' in form.errors and len(form.links) == 1:
             errors = form.errors['links'][0]
             if 'name' in errors and 'url' in errors:
                 update_links(bson.ObjectId(current_user.objectid), [{'name': None, 'url': None}])
