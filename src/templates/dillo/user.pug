@@ -91,11 +91,26 @@
 			.user-dashboard
 				a.user-dashboard-avatar(href="{{ url_for('users.users_view', username=user.username )}}")
 					img(src="{{ user.email | gravatar(size=128) }}")
+
 				.user-dashboard-info
 					.user-dashboard-name
 						| {{ user.full_name }}
+					a.user-dashboard-username(href="{{ url_for('users.users_view', username=user.username )}}")
+						| @{{ user.username }}
 
-					ul.user-dashboard-meta
+					| {% if user.extension_props_public.dillo.links %}
+					.user-dashboard-links
+						ul
+							| {% for link in user.extension_props_public.dillo.links %}
+							li
+								a(href="{{ link.url }}", target="_blank")
+									img.favicon(src="https://www.google.com/s2/favicons?domain={{ link.url }}", alt="Favicon")
+									| {{ link.name }}
+							| {% endfor %}
+					| {% endif %}
+
+				.user-dashboard-meta
+					ul
 						li
 							strong Karma:
 							| {{ user.extension_props_public.dillo.karma }}
@@ -105,6 +120,8 @@
 						li
 							strong {{ _('Joined') }}:
 							span.date.js-convert-date {{ user._created }}
+
+
 
 			.d-activity
 				| {% if col_right['activities']['_meta']['total'] %}
