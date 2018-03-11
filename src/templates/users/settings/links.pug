@@ -2,14 +2,15 @@
 
 | {% block settings_page_title %}{{ _("Links") }}{% endblock %}
 | {% block settings_page_content %}
+p {{ _("Display custom links (your website, social media links, etc, on your profile.") }}
 .settings-form
 	form#settings-form(method='POST', action="{{url_for('settings.links')}}")
 		| {{ form.csrf_token }}
-		.fieldset-container(data-toggle="fieldset" id="link-fieldset")
+		.fieldset-container(data-toggle="fieldset" data-max_entries="{{ form.links.max_entries }}", id="link-fieldset")
 			button.btn.btn-success(
 				type="button",
 				data-toggle="fieldset-add-row",
-				data-target="#link-fieldset"
+				data-target="#link-fieldset",
 			)
 				| #[i.pi-plus] {{ _("Add Link") }}
 
@@ -60,11 +61,17 @@ script.
 	$(function () {
 		$("div[data-toggle=fieldset]").each(function () {
 			var $this = $(this);
+			var $btn_add_row = $this.find("button[data-toggle=fieldset-add-row]");
+			var $btn_remove_row = $this.find("button[data-toggle=fieldset-remove-row]");
+			var $div_target = $($btn_add_row.data("target"));
+			// Get the initial count of rows, which is then increased or decreased on add or remove
+			var rows_count = $div_target.find("div[data-toggle=fieldset-entry]").length;
+			var max_entries = $this.data("max_entries");
 
-			//Add new entry
-			$this.find("button[data-toggle=fieldset-add-row]").click(function () {
-				var target = $($(this).data("target"))
-				var oldrow = target.find("div[data-toggle=fieldset-entry]:last");
+			// Add new entry
+			$btn_add_row.click(function () {
+
+				var oldrow = $div_target.find("div[data-toggle=fieldset-entry]:last");
 				var row = oldrow.clone(true, true);
 
 				var elem_id = row.find(":input")[0].id;
@@ -76,16 +83,24 @@ script.
 				});
 
 				oldrow.after(row);
+				rows_count ++;
 
 				// Clean error fields in new rows
 				row.find('.fieldset-row-error').remove();
+
+				// Count rows and remove button if we reach the allowed limit
+				if (rows_count >= max_entries) $btn_add_row.hide();
+
 			});
 
 			//Remove row
-			$this.find("button[data-toggle=fieldset-remove-row]").click(function () {
+			$btn_remove_row.click(function () {
 				if ($this.find("div[data-toggle=fieldset-entry]").length > 1) {
 					var thisRow = $(this).closest("div[data-toggle=fieldset-entry]");
 					thisRow.remove();
+					rows_count --;
+					// Count rows and remove button if we reach the allowed limit
+					if (rows_count < max_entries) $btn_add_row.show();
 				}
 			});
 		});
