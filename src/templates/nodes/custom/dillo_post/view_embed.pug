@@ -102,13 +102,29 @@
 
 	.item-info-panel
 		.item-info-op
-			a.op-avatar(href="{{ url_for('users.users_view', username=node.user.username )}}")
+			a.op-avatar(
+				href="{{ url_for('users.users_view', username=node.user.username )}}",
+				title="{{ node.user.full_name }}")
 				img(src="{{ node.user.email | gravatar }}", alt="{{ _('Avatar') }}")
 
 			.op-details
-				a.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
-					| {{ node.user.full_name }}
-				.op-karma Karma: {{ node.user.extension_props_public.dillo.karma }}
+				.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
+					a(href="{{ url_for('users.users_view', username=node.user.username )}}")
+						| {{ node.user.full_name }}
+
+					span.op-karma(title="Karma")
+						| ({{ node.user.extension_props_public.dillo.karma }})
+
+				.op-meta
+					| {% if node.user.extension_props_public.dillo.links %}
+					.op-links
+						ul
+							| {% for link in node.user.extension_props_public.dillo.links %}
+							li
+								a(href="{{ link.url }}", target="_blank", title="{{ link.name }}")
+									img.favicon(src="https://www.google.com/s2/favicons?domain={{ link.url }}", alt="Favicon")
+							| {% endfor %}
+					| {% endif %}
 
 		.item-info-action
 			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")

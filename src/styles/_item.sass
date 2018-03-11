@@ -308,16 +308,39 @@ $item-thumbnail-size: 90px
         width: auto
 
     .op-name
-      color: $color-text-light
-      text-decoration: none
+      a
+        color: $color-text-light
+        text-decoration: none
 
-      &:hover
-        color: var(--community-theme-color, $color-primary)
-        text-decoration: underline
+        &:hover
+          color: var(--community-theme-color, $color-primary)
+          text-decoration: underline
+
+    .op-meta
+      align-items: center
+      display: flex
+
+      img
+        opacity: .5
+        transition: opacity 150ms ease-in-out
+        vertical-align: middle
+
+        &:hover
+          opacity: 1
+
+      ul
+        list-style: none
+        display: flex
+        padding: 0
+        margin: 0
+
+      a
+        display: block
+        padding: 3px
 
     .op-karma
-      color: $color-text-light
-      font-size: $font-size-smaller
+      color: $color-text-dark-hint
+      margin-left: 5px
 
     .op-details
       padding: 10px
