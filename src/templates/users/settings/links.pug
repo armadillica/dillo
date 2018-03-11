@@ -13,6 +13,14 @@ p {{ _("Display custom links (your website, social media links, etc, on your pro
 				data-target="#link-fieldset",
 			)
 				| #[i.pi-plus] {{ _("Add Link") }}
+			span.fieldset-notice {{ _("Maximum") }} #[span.max 5] {{ _("links") }}
+
+			.fieldset-row
+				.fieldset-field
+					label {{ _("Label") }}
+				.fieldset-field
+					label {{ _("URL") }}
+				.fieldset-field-action(style="width: 40px")
 
 			| {% for link in form.links %}
 			.fieldset-row(data-toggle="fieldset-entry")
@@ -69,9 +77,10 @@ script.
 			// Get the initial count of rows, which is then increased or decreased on add or remove
 			var rows_count = $div_target.find("div[data-toggle=fieldset-entry]").length;
 			var max_entries = $this.data("max_entries");
+			$div_target.find('span.fieldset-notice span.max').text(max_entries);
 
 			// Count rows update add and delete buttons
-			if (rows_count >= max_entries) $btn_add_row.hide();
+			if (rows_count >= max_entries) $btn_add_row.addClass('disabled').next('span.fieldset-notice').show();
 			if (rows_count > 1) $btn_remove_row.show();
 
 			// Add new entry
@@ -95,7 +104,7 @@ script.
 				row.find('.fieldset-row-error').remove();
 
 				// Count rows update add and delete buttons
-				if (rows_count >= max_entries) $btn_add_row.hide();
+				if (rows_count >= max_entries) $btn_add_row.addClass('disabled').next('span.fieldset-notice').show();
 				if (rows_count > 1) $this.find("button[data-toggle=fieldset-remove-row]").show();
 
 			});
@@ -106,7 +115,7 @@ script.
 				thisRow.remove();
 				rows_count--;
 				// Count rows update add and delete buttons
-				if (rows_count < max_entries) $btn_add_row.show();
+				if (rows_count < max_entries) $btn_add_row.removeClass('disabled').next('span.fieldset-notice').hide();;
 				if (rows_count === 1) $this.find("button[data-toggle=fieldset-remove-row]").hide();
 			});
 		});
