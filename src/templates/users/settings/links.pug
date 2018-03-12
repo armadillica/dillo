@@ -65,6 +65,14 @@ p {{ _("Display custom links (your website, social media links, etc, on your pro
 
 | {% block footer_scripts %}
 script.
+	{% with messages = get_flashed_messages(with_categories = true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+				toastr.success('{{ message }}');
+			{% endfor %}
+		{% endif %}
+	{%endwith %}
+
 
 	$(function () {
 		$("div[data-toggle=fieldset]").each(function () {

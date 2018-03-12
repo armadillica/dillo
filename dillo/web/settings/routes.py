@@ -30,7 +30,7 @@ def links():
         # Update user properties
         update_links(bson.ObjectId(current_user.objectid), user_links)
 
-        flash("Profile updated", 'success')
+        flash('Profile updated!', 'success')
         # Clear the list entries before populating it with the new links
         form.links.entries = []
 
