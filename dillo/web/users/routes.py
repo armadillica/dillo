@@ -82,7 +82,11 @@ def users_view(username):
     # Fetch more info for each activity.
     for act in activities['_items']:
         act.actor_user = subquery.get_user_info(act.actor_user)
-        act.link = url_for_node(node_id=act.object)
+        try:
+            act.link = url_for_node(node_id=act.object)
+        except ValueError:
+            # TODO: properly handle the case when the activity object has been deleted
+            continue
 
     return render_template(
         'dillo/user.html',
