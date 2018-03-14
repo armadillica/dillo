@@ -1,0 +1,42 @@
+| {% extends 'users/settings/page.html' %}
+| {% block settings_page_title %}{{ _("Profile") }}{% endblock %}
+| {% block settings_page_content %}
+form#settings-form(
+	method='POST',
+	action="{{url_for('settings.profile')}}")
+	.settings-form
+		.left
+			.fieldset-container
+				.fieldset-row
+					.fieldset-field
+						| {{ form.username.label }}
+						| {{ form.username(size=20) }}
+						| {% if form.username.errors %}
+						| {% for error in form.username.errors %}
+						.fieldset-row-error {{ error|e }}
+						| {% endfor %}
+						| {% endif %}
+
+				.fieldset-row.disabled
+					.fieldset-field
+						label {{ _("Full Name") }}
+						span {{ current_user.full_name }}
+
+				.fieldset-row.disabled
+					.fieldset-field
+						label {{ _("E-mail") }}
+						span {{ current_user.email }}
+
+				.fieldset
+					| Change your profile details at #[a(href="https://www.blender.org/id/settings/profile") Blender ID].
+
+		.right
+			.settings-avatar
+				a(href="https://gravatar.com/")
+					img(src="{{ current_user.gravatar }}")
+					span {{ _("Change Gravatar") }}
+
+	button.btn.btn-info(type='submit')
+		i.pi-check
+		| {{ _("Save Changes") }}
+| {% endblock %}
