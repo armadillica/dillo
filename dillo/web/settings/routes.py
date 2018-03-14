@@ -34,10 +34,6 @@ def links():
         # Clear the list entries before populating it with the new links
         form.links.entries = []
 
-        # If we deleted all links (can only happen via direct POST request)
-        if len(user_links) == 0:
-            user_links = [{'name': None, 'url': None}]
-
         for link in user_links:
             form.links.append_entry(link)
 
@@ -58,7 +54,7 @@ def links():
                 len(user['extension_props_public']['dillo']['links']) > 0:
             links = user['extension_props_public']['dillo']['links']
         else:
-            links = [{'name': None, 'url': None}]
+            links = []
         for link in links:
             form.links.append_entry(link)
 
