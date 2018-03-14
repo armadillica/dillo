@@ -507,7 +507,7 @@ script.
 
 	{% if 'post' in col_right %}
 
-		var item_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True) }}";
+		var item_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True, _scheme=config['PREFERRED_URL_SCHEME']) }}";
 
 		if (location.hash){
 			item_url += location.hash;
