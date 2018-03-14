@@ -223,7 +223,6 @@ li
 
 | {% block footer_scripts %}
 script.
-
 	// Check if we're logged in and store it to use later
 	var amAuthenticated = isAuthenticated();
 
@@ -376,7 +375,6 @@ script.
 		return hit;
 	}
 
-
 	search.addWidget(
 		instantsearch.widgets.hits({
 			container: '#list-hits',
@@ -494,6 +492,7 @@ script.
 
 	search.start();
 
+
 	var onRenderHandler = function() {
 		twemoji.parse(document.body);
 	}
@@ -506,9 +505,13 @@ script.
 
 	search.on('render', onRenderHandler);
 
-
 	{% if 'post' in col_right %}
+
 		var item_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True) }}";
+
+		if (location.hash){
+			item_url += location.hash;
+		};
 
 		item_open("{{col_right['post']['_id']}}", item_url);
 
