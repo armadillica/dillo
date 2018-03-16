@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, url_for, jsonify
+from flask import Blueprint, redirect, url_for, jsonify, render_template
 from flask_login import login_required, current_user
 from bson import ObjectId
 
@@ -55,3 +55,8 @@ def get_user_ratings():
     trim_ratings = dict((str(r['_id']), r['properties']['ratings']['is_positive']) for r in ratings)
 
     return jsonify(items=trim_ratings)
+
+
+@blueprint.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
