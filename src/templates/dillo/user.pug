@@ -98,29 +98,31 @@
 					a.user-dashboard-username(href="{{ url_for('users.users_view', username=user.username )}}")
 						| @{{ user.username }}
 
-					| {% if user.extension_props_public.dillo.links %}
-					.user-dashboard-links
-						ul
-							| {% for link in user.extension_props_public.dillo.links %}
-							li
-								a(href="{{ link.url }}", target="_blank")
-									img.favicon(src="https://www.google.com/s2/favicons?domain={{ link.url }}", alt="Favicon")
-									| {{ link.name }}
-							| {% endfor %}
-					| {% endif %}
+					.user-dashboard-info-extra
+						| {% if user.extension_props_public.dillo.links %}
+						.user-dashboard-links
+							ul
+								| {% for link in user.extension_props_public.dillo.links %}
+								li
+									a(href="{{ link.url }}", target="_blank")
+										img.favicon(src="https://www.google.com/s2/favicons?domain={{ link.url }}", alt="Favicon")
+										| {{ link.name }}
+								| {% endfor %}
+						| {% endif %}
 
-				.user-dashboard-meta
-					ul
-						li
-							strong Karma:
-							| {{ user.extension_props_public.dillo.karma }}
-						li
-							strong {{ _('Last seen') }}:
-							span.date.js-convert-date {{ user._updated }}
-						li
-							strong {{ _('Joined') }}:
-							span.date.js-convert-date {{ user._created }}
+						.user-dashboard-meta
+							ul
+								li
+									| {{ _('Joined') }} #[span.date.js-convert-date {{ user._created }}]
+								li
+									| {{ _('Last seen') }} #[span.date.js-convert-date {{ user._updated }}]
+								li
+									| {{ user.extension_props_public.dillo.karma }} Karma
 
+								| {% if current_user and current_user.user_id == user._id %}
+								a.user-dashboard-edit(href="{{ url_for('settings.profile') }}")
+									| {{ _("Edit profile") }}
+								| {% endif %}
 
 
 			.d-activity
