@@ -143,6 +143,7 @@ script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+script(src="{{ url_for('static_dillo', filename='js/vendor/jquery.typewatch.js') }}")
 
 script.
 
@@ -322,8 +323,8 @@ script.
 
 
 		// When we type in the link field or in the textarea, process what we type accordingly
-		$item_content_input.keyup(function () {
-			var content = $(this).val();
+
+		function parseContent(content) {
 			var post_type = $('#post_type').val();
 			switch (post_type) {
 				case 'link':
@@ -333,7 +334,17 @@ script.
 					parseText(content);
 					break;
 			}
-		});
+		}
+
+		var options = {
+			callback: parseContent,
+			wait: 750,
+			highlight: false,
+			allowSubmit: false,
+			captureLength: 2
+		}
+
+		$item_content_input.typeWatch(options);
 
 
 		$item_title_input.keyup(function () {
