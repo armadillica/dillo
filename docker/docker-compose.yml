@@ -1,95 +1,112 @@
-mongo:
-  image: mongo:3.4.2
-  container_name: mongo
-  restart: always
-  volumes:
-   - /data/storage/db:/data/db
-   - /data/storage/db-bak:/data/db-bak # for backing up stuff etc.
-  ports:
-   - "127.0.0.1:27017:27017"
-redis:
-  image: redis:3.2.8
-  container_name: redis
-  restart: always
-  ports:
-   - "127.0.0.1:6379:6379"
-rabbit:
-    image: rabbitmq:3.6.10
-    container_name: rabbit
+version: '3.4'
+services:
+  mongo:
+    image: mongo:3.4.2
+    container_name: mongo
+    restart: always
+    volumes:
+      - /data/storage/db:/data/db
+      - /data/storage/db-bak:/data/db-bak # for backing up stuff etc.
+    ports:
+      - "127.0.0.1:27017:27017"
+  redis:
+    image: redis:3.2.8
+    container_name: redis
     restart: always
     ports:
+      - "127.0.0.1:6379:6379"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "20"
+  rabbit:
+      image: rabbitmq:3.6.10
+      container_name: rabbit
+      restart: always
+      ports:
         - "127.0.0.1:5672:5672"
-dillo:
-  image: armadillica/dillo:latest
-  container_name: dillo
-  restart: always
-  environment:
-   VIRTUAL_HOST: http://blender.community/*,https://blender.community/*,http://www.blender.community/*,https://www.blender.community/*
-   VIRTUAL_HOST_WEIGHT: 10
-   FORCE_SSL: "true"
-   GZIP_COMPRESSION_TYPE: "text/html text/plain text/css application/javascript"
-  volumes:
-   # format: HOST:CONTAINER
-   - /data/git:/data/git:ro
-   - /data/config:/data/config:ro
-   - /data/storage/pillar:/data/storage/pillar
-   - /data/log:/var/log
-  links:
-   - mongo
-   - redis
-   - rabbit
-celery_worker:
-  image: armadillica/dillo:latest
-  entrypoint: /celery-worker.sh
-  container_name: celery_worker
-  restart: always
-  volumes:
-   # format: HOST:CONTAINER
-   - /data/git:/data/git:ro
-   - /data/config:/data/config:ro
-   - /data/storage/pillar:/data/storage/pillar
-   - /data/log:/var/log
-  links:
-   - mongo
-   - redis
-   - rabbit
-celery_beat:
-  image: armadillica/dillo:latest
-  entrypoint: /celery-beat.sh
-  container_name: celery_beat
-  restart: always
-  volumes:
-   # format: HOST:CONTAINER
-   - /data/git:/data/git:ro
-   - /data/storage/pillar:/data/storage/pillar
-   - /data/log:/var/log
-  links:
-   - mongo
-   - redis
-   - rabbit
-letsencrypt:
-    image: armadillica/picohttp:latest
-    container_name: letsencrypt
+      logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "20"
+  dillo:
+    image: armadillica/dillo:latest
+    container_name: dillo
     restart: always
     environment:
-        WEBROOT: /data/letsencrypt
-        LISTEN: '[::]:80'
-        VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*
-        VIRTUAL_HOST_WEIGHT: 20
+     VIRTUAL_HOST: http://blender.community/*,https://blender.community/*,http://www.blender.community/*,https://www.blender.community/*
+     VIRTUAL_HOST_WEIGHT: 10
+     FORCE_SSL: "true"
+     GZIP_COMPRESSION_TYPE: "text/html text/plain text/css application/javascript"
+     PILLAR_CONFIG: /data/config/config_secrets.py
     volumes:
-        - /data/letsencrypt:/data/letsencrypt
-haproxy:
-  image: dockercloud/haproxy:1.5.3
-  container_name: haproxy
-  restart: always
-  ports:
-   - "443:443"
-   - "80:80"
-  environment:
-   - CERT_FOLDER=/certs/
-   - TIMEOUT=connect 5s, client 5m, server 10m
-  links:
-   - dillo
-   - letsencrypt
-  volumes:
-   - '/data/certs:/certs'
+     # format: HOST:CONTAINER
+     - /data/config:/data/config:ro
+     - /data/storage/pillar:/data/storage/pillar
+     - /data/log:/var/log
+    depends_on:
+     - mongo
+     - redis
+     - rabbit
+  celery_worker:
+    image: armadillica/dillo:latest
+    entrypoint: /celery-worker.sh
+    container_name: celery_worker
+    restart: always
+    environment:
+      PILLAR_CONFIG: /data/config/config_secrets.py
+    volumes:
+     # format: HOST:CONTAINER
+     - /data/config:/data/config:ro
+     - /data/storage/pillar:/data/storage/pillar
+     - /data/log:/var/log
+    depends_on:
+     - mongo
+     - redis
+     - rabbit
+  celery_beat:
+    image: armadillica/dillo:latest
+    entrypoint: /celery-beat.sh
+    container_name: celery_beat
+    restart: always
+    environment:
+      PILLAR_CONFIG: /data/config/config_secrets.py
+    volumes:
+     # format: HOST:CONTAINER
+     - /data/git:/data/git:ro
+     - /data/storage/pillar:/data/storage/pillar
+     - /data/log:/var/log
+    depends_on:
+     - mongo
+     - redis
+     - rabbit
+     - celery_worker
+  letsencrypt:
+      image: armadillica/picohttp:latest
+      container_name: letsencrypt
+      restart: always
+      environment:
+          WEBROOT: /data/letsencrypt
+          LISTEN: '[::]:80'
+          VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*
+          VIRTUAL_HOST_WEIGHT: 30
+      volumes:
+          - /data/letsencrypt:/data/letsencrypt
+  haproxy:
+    image: dockercloud/haproxy:1.5.3
+    container_name: haproxy
+    restart: always
+    ports:
+     - "443:443"
+     - "80:80"
+    environment:
+     - CERT_FOLDER=/certs/
+     - TIMEOUT=connect 5s, client 5m, server 10m
+    depends_on:
+     - dillo
+     - letsencrypt
+    volumes:
+     - '/data/certs:/certs'
+     - /var/run/docker.sock:/var/run/docker.sock

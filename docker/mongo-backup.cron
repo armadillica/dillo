@@ -1,0 +1,5 @@
+# Change to suit your needs, then place in /etc/cron.d/mongo-backup
+# (so remove the .cron from the name)
+
+MAILTO=yourname@youraddress.org
+30 5 * * * root /root/docker/mongo-backup.sh

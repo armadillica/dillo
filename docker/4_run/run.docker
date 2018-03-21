@@ -27,7 +27,6 @@ RUN mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR
 ADD wheelhouse /data/wheelhouse
 RUN pip3 install --no-index --find-links=/data/wheelhouse -r /data/wheelhouse/requirements.txt
 
-VOLUME /data/git
 VOLUME /data/config
 VOLUME /data/storage
 VOLUME /var/log
@@ -42,6 +41,7 @@ RUN a2enmod rewrite && a2enmod wsgi-py36
 
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD apache-logrotate.conf /etc/logrotate.d/apache2
 ADD *.sh /
 
 # Remove some empty top-level directories we won't use anyway.
@@ -52,3 +52,7 @@ RUN rmdir /media /home 2>/dev/null || true
 ADD bash_history /root/.bash_history
 
 ENTRYPOINT /docker-entrypoint.sh
+
+# Add the most-changing files as last step for faster rebuilds.
+ADD config_local.py /data/git/blender-cloud/
+ADD deploy /data/git
