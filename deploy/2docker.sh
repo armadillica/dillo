@@ -87,7 +87,7 @@ function git_clone() {
 
 git_clone pillar-python-sdk master $SDK_DIR
 git_clone pillar $DEPLOY_BRANCH $PILLAR_DIR
-git_clone blender-cloud $DEPLOY_BRANCH $ROOT
+git_clone dillo $DEPLOY_BRANCH $ROOT
 
 # Gulp everywhere
 GULP=$ROOT/node_modules/.bin/gulp

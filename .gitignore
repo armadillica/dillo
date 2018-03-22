@@ -10,6 +10,7 @@ config_local.py
 dillo/static/css/*
 dillo/templates/*
 dillo/static/js/generated/*.min.js
+docker/4_run/deploy/*
 
 node_modules
 .sass-cache/
