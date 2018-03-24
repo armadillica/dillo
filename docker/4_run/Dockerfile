@@ -36,12 +36,12 @@ ENV USE_X_SENDFILE True
 EXPOSE 80
 EXPOSE 5000
 
-ADD wsgi-py36.* /etc/apache2/mods-available/
+ADD apache/wsgi-py36.* /etc/apache2/mods-available/
 RUN a2enmod rewrite && a2enmod wsgi-py36
 
-ADD apache2.conf /etc/apache2/apache2.conf
-ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
-ADD apache-logrotate.conf /etc/logrotate.d/apache2
+ADD apache/apache2.conf /etc/apache2/apache2.conf
+ADD apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD apache/logrotate.conf /etc/logrotate.d/apache2
 ADD *.sh /
 
 # Remove some empty top-level directories we won't use anyway.
@@ -54,5 +54,9 @@ ADD bash_history /root/.bash_history
 ENTRYPOINT /docker-entrypoint.sh
 
 # Add the most-changing files as last step for faster rebuilds.
-ADD config_local.py /data/git/blender-cloud/
+ADD config_local.py /data/git/dillo/
 ADD deploy /data/git
+RUN python3 -c "import re, secrets; \
+f = open('/data/git/dillo/config_local.py', 'a'); \
+h = re.sub(r'[_.~-]', '', secrets.token_urlsafe())[:8]; \
+print(f'STATIC_FILE_HASH = {h!r}', file=f)"

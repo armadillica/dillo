@@ -34,7 +34,7 @@ html(lang='en')
 
 		| {% block style %}{% endblock style %}
 
-		script(src="{{ url_for('static_dillo', filename='js/vendor/js-cookie-2.1.4.min.js', v=171120161) }}")
+		script(src="{{ url_for('static_dillo', filename='js/vendor/js-cookie-2.1.4.min.js') }}")
 
 
 		| {% block stylesheets %}
@@ -55,7 +55,7 @@ html(lang='en')
 		| {# TODO: Use custom image for favicon #}
 		link(rel="icon", type="image/png", href="{{ project.picture_square.thumbnail('l') }}")
 		| {% else %}
-		link(rel="icon", type="image/png", href="{{ url_for('static_dillo', filename='images/favicon.png', v=2112015) }}")
+		link(rel="icon", type="image/png", href="{{ url_for('static_dillo', filename='images/favicon.png') }}")
 		| {% endif %}
 		| {% endblock favicon %}
 
@@ -257,11 +257,11 @@ html(lang='en')
 					| {{ _('No Notifications') }}
 
 
-		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js', v=171120161)}}")
-		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js', v=171120161) }}")
-		script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js', v=171120161) }}")
-		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js', v=171120161) }}")
-		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1-with-locales.min.js', v=171120161) }}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery-3.1.0.min.js')}}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/tutti.min.js') }}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js') }}")
+		script(src="{{ url_for('static_dillo', filename='js/generated/tutti.min.js') }}")
+		script(src="{{ url_for('static_dillo', filename='js/vendor/moment-2.18.1-with-locales.min.js') }}")
 		script.
 			moment.locale("{{ g.get('locale', 'en_US') }}");
 		script(src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2.3")
