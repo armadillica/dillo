@@ -20,7 +20,7 @@ case $1 in
         DEPLOYHOST="$1"
         ;;
     *)
-        echo "Use $0 cloud{nr}|cloud.blender.org" >&2
+        echo "Use $0 hostname" >&2
         exit 1
 esac
 SSH_OPTS="-o ClearAllForwardings=yes -o PermitLocalCommand=no"
@@ -56,15 +56,9 @@ set -e
 cd $REMOTE_DOCKER_COMPOSE_DIR
 docker pull $DOCKER_IMAGE
 docker-compose up -d
-
-echo
-echo "==================================================================="
-echo "Clearing front page from Redis cache."
-docker exec redis redis-cli DEL pwview//
 EOT
 
 # Notify Sentry of this new deploy.
-# See https://sentry.io/blender-institute/blender-cloud/settings/release-tracking/
 # and https://docs.sentry.io/api/releases/post-organization-releases/
 # and https://sentry.io/api/
 echo
