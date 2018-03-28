@@ -16,7 +16,7 @@
 					href="{{ url_for('users.users_view', username=comment._user.username) }}",
 					title="{{ _('View profile') }}") {{ comment._user.full_name }}
 
-			span {{comment.properties.content_html | safe }}
+			span {{ comment.properties | markdowned('content') }}
 
 		// TODO: Markdown preview when editing
 
