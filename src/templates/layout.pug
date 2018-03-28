@@ -279,6 +279,9 @@ html(lang='en')
 			});
 
 		| {% block footer_scripts %}{% endblock footer_scripts %}
+
+		| {% if current_user.is_authenticated %}
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.typewatch-3.0.0.min.js') }}")
 		script.
 			// When sending an AJAX request, always add the X-CSRFToken header to it.
 			var csrf_token = "{{ csrf_token() }}";
@@ -289,6 +292,8 @@ html(lang='en')
 					}
 				}
 			});
+		| {% endif %}
+
 		script.
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
