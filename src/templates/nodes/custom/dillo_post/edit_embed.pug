@@ -143,6 +143,7 @@ script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js') }}")
 script(src="{{ url_for('static_dillo', filename='js/vendor/jquery.typewatch.js') }}")
 
 script.
@@ -248,7 +249,7 @@ script.
 				$.post("{{ url_for('posts.spoon')}}", {url: content})
 					.done(function (data) {
 						if (data) {
-							console.log(data);
+							//- console.log(data);
 							$item_icon
 								.removeAttr('class').addClass('success')
 								.html('<i class="pi-grin"></i>');
@@ -384,7 +385,6 @@ script.
 			btn
 				.removeClass('saving')
 				.html("<i class='pi-check'></i> {{ _('Save Changes') }}");
-			console.log(btn);
 		}
 
 		function setStatusOnSave() {
