@@ -15,14 +15,14 @@ REMOTE_SECRET_CONFIG_DIR="/data/config"
 REMOTE_DOCKER_COMPOSE_DIR="/root/docker"
 
 #################################################################################
-case $1 in
-    cloud*)
-        DEPLOYHOST="$1"
-        ;;
-    *)
-        echo "Use $0 hostname" >&2
-        exit 1
-esac
+if [ -z "$1" ]
+  then
+    echo "Specify hostname"
+    exit 1
+fi
+
+DEPLOYHOST="$1"
+
 SSH_OPTS="-o ClearAllForwardings=yes -o PermitLocalCommand=no"
 SSH="ssh $SSH_OPTS $DEPLOYHOST"
 SCP="scp $SSH_OPTS"
