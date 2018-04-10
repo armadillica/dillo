@@ -102,6 +102,7 @@ services:
      - "443:443"
      - "80:80"
     environment:
+     - ADDITIONAL_SERVICES=docker:dillo,docker:letsencrypt
      - CERT_FOLDER=/certs/
      - TIMEOUT=connect 5s, client 5m, server 10m
     depends_on:
