@@ -75,7 +75,7 @@ services:
       PILLAR_CONFIG: /data/config/config_secrets.py
     volumes:
      # format: HOST:CONTAINER
-     - /data/git:/data/git:ro
+     - /data/config:/data/config:ro
      - /data/storage/pillar:/data/storage/pillar
      - /data/log:/var/log
     depends_on:
