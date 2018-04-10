@@ -27,10 +27,10 @@ services:
       ports:
         - "127.0.0.1:5672:5672"
       logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "20"
+        driver: "json-file"
+        options:
+          max-size: "200k"
+          max-file: "20"
   dillo:
     image: armadillica/dillo:latest
     container_name: dillo
