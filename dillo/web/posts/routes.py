@@ -49,10 +49,6 @@ def view_embed(node_id):
 
     write_access = 'PUT' in (node.allowed_methods or set())
 
-    if 'content_html' in node['properties']:
-        node['properties']['content_html'] = attachments.render_attachments(
-            node, node['properties']['content_html'])
-
     extra_template_args = {'project': project}
 
     return render_template(
@@ -194,10 +190,6 @@ def view(community_url, post_shortcode, slug=None):
 
     if post.picture:
         post.picture = get_file(post.picture, api=api)
-
-    if 'content_html' in post['properties']:
-        post['properties']['content_html'] = attachments.render_attachments(
-            post, post['properties']['content_html'])
 
     return render_template(
         'dillo/index.html',
