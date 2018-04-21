@@ -282,6 +282,7 @@ html(lang='en')
 
 		| {% if current_user.is_authenticated %}
 		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.typewatch-3.0.0.min.js') }}")
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/clipboard.min.js')}}")
 		script.
 			// When sending an AJAX request, always add the X-CSRFToken header to it.
 			var csrf_token = "{{ csrf_token() }}";
