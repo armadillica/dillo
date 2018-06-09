@@ -87,24 +87,62 @@ def process_posts(community_name):
 
 @manager_dillo.command
 def index_nodes_update_settings():
+    import copy
     """Configure indexing backend as required by the project"""
     nodes_index = current_app.algolia_index_nodes
 
-    # Automatically creates index if it does not exist
-    nodes_index.set_settings({
+    # Create name for 'created' replica
+    index_name = f"{nodes_index.index_name}" \
+                 f"{current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']['created']}"
+
+    nodes_index_by_created_desc = nodes_index.client.init_index(index_name)
+
+    # Create name for 'rating' replica
+    index_name = f"{nodes_index.index_name}" \
+                 f"{current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']['rating']}"
+
+    nodes_index_by_rating_desc = nodes_index.client.init_index(index_name)
+
+    shared_settings = {
         'searchableAttributes': [
             'name',
             'content',
         ],
+        'attributesForFaceting': [
+            'searchable(tags)',
+            'project._id',
+        ],
+    }
+
+    # Automatically creates index if it does not exist
+    index_settings = copy.deepcopy(shared_settings)
+    index_settings.update({
         'customRanking': [
             'desc(hot)',
             'desc(created)',
         ],
-        'attributesForFaceting': [
-            'searchable(tags)',
-            'project._id',
-        ]
+        'replicas': [
+            nodes_index_by_created_desc.index_name,
+            nodes_index_by_rating_desc.index_name,
+        ]})
+
+    nodes_index.set_settings(index_settings)
+
+    index_settings = copy.deepcopy(shared_settings)
+    index_settings.update({
+        'customRanking': [
+            'desc(created)',
+        ],
     })
+    nodes_index_by_created_desc.set_settings(index_settings)
+
+    index_settings = copy.deepcopy(shared_settings)
+    index_settings.update({
+        'customRanking': [
+            'desc(rating)',
+        ],
+    })
+    nodes_index_by_rating_desc.set_settings(index_settings)
 
 
 @manager_dillo.command

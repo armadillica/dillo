@@ -481,7 +481,8 @@ script.
 			container: '#list-sort-by',
 			indices: [
 				{name: '{{ config.ALGOLIA_INDEX_NODES }}', label: "{{ _('Hot') }}"},
-				{name: '{{ config.ALGOLIA_INDEX_NODES_SORTED_RECENT }}', label: "{{ _('Recent') }}"}
+				{name: '{{ config.ALGOLIA_INDEX_NODES }}{{config.ALGOLIA_INDEX_NODES_REPLICAS["created"]}}', label: "{{ _('Recent') }}"},
+				{name: '{{ config.ALGOLIA_INDEX_NODES }}{{config.ALGOLIA_INDEX_NODES_REPLICAS["rating"]}}', label: "{{ _('Rating') }}"},
 			],
 			cssClasses: {
 				root: 'wgt-dropdown-header'

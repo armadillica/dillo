@@ -12,3 +12,8 @@ GOOGLE_ANALYTICS_TRACKING_ID = ''
 GOOGLE_SITE_VERIFICATION = ''
 
 SETTINGS_TWITTER_USERNAME = ''
+
+ALGOLIA_INDEX_NODES_REPLICAS = {
+    'created': '_by_created_desc',
+    'rating': '_by_rating_desc',
+}
