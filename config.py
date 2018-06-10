@@ -13,7 +13,7 @@ GOOGLE_SITE_VERIFICATION = ''
 
 SETTINGS_TWITTER_USERNAME = ''
 
-ALGOLIA_INDEX_NODES_REPLICAS = [
-    {'sort_key': 'created', 'extension': '_by_created_desc'},
-    {'sort_key': 'rating', 'extension': '_by_rating_desc'}
-]
+ALGOLIA_INDEX_NODES_REPLICAS = {
+    'created': '_by_created_desc',
+    'rating': '_by_rating_desc',
+}

@@ -93,8 +93,8 @@ def index_nodes_update_settings():
     nodex_index_replicas = current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']
 
     # Create index name by combining the base Nodes index with the replica extension
-    for replica in nodex_index_replicas:
-        replica['index_name'] = f"{nodes_index.index_name}{replica['extension']}"
+    for k, v in nodex_index_replicas.items():
+        nodex_index_replicas[k] = f"{nodes_index.index_name}{v}"
 
     shared_settings = {
         'searchableAttributes': [
@@ -114,19 +114,19 @@ def index_nodes_update_settings():
             'desc(hot)',
             'desc(created)',
         ],
-        'replicas': [replica['index_name'] for replica in nodex_index_replicas]
+        'replicas': [v for k, v in nodex_index_replicas.items()]
         })
     nodes_index.set_settings(index_settings)
 
-    for replica in nodex_index_replicas:
+    for k, v in nodex_index_replicas.items():
         replica_settings = copy.deepcopy(shared_settings)
         replica_settings.update({
             'customRanking': [
-                f"desc({replica['sort_key']})",
+                f"desc({k})",
             ],
         })
 
-        index_nodes_replica = nodes_index.client.init_index(replica['index_name'])
+        index_nodes_replica = nodes_index.client.init_index(v)
         index_nodes_replica.set_settings(replica_settings)
 
 
