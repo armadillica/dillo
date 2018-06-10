@@ -42,7 +42,8 @@ def users_view(username):
         {'$match': {
             'user': ObjectId(user['_id']),
             'node_type': 'dillo_post',
-            'properties.status': 'published'}},
+            'properties.status': 'published',
+            '_deleted': False}},
         {'$lookup': {
             'from': 'projects',
             'localField': 'project',
