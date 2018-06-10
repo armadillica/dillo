@@ -90,18 +90,11 @@ def index_nodes_update_settings():
     import copy
     """Configure indexing backend as required by the project"""
     nodes_index = current_app.algolia_index_nodes
+    nodex_index_replicas = current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']
 
-    # Create name for 'created' replica
-    index_name = f"{nodes_index.index_name}" \
-                 f"{current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']['created']}"
-
-    nodes_index_by_created_desc = nodes_index.client.init_index(index_name)
-
-    # Create name for 'rating' replica
-    index_name = f"{nodes_index.index_name}" \
-                 f"{current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']['rating']}"
-
-    nodes_index_by_rating_desc = nodes_index.client.init_index(index_name)
+    # Create index name by combining the base Nodes index with the replica extension
+    for replica in nodex_index_replicas:
+        replica['index_name'] = f"{nodes_index.index_name}{replica['extension']}"
 
     shared_settings = {
         'searchableAttributes': [
@@ -121,28 +114,20 @@ def index_nodes_update_settings():
             'desc(hot)',
             'desc(created)',
         ],
-        'replicas': [
-            nodes_index_by_created_desc.index_name,
-            nodes_index_by_rating_desc.index_name,
-        ]})
-
+        'replicas': [replica['index_name'] for replica in nodex_index_replicas]
+        })
     nodes_index.set_settings(index_settings)
 
-    index_settings = copy.deepcopy(shared_settings)
-    index_settings.update({
-        'customRanking': [
-            'desc(created)',
-        ],
-    })
-    nodes_index_by_created_desc.set_settings(index_settings)
+    for replica in nodex_index_replicas:
+        replica_settings = copy.deepcopy(shared_settings)
+        replica_settings.update({
+            'customRanking': [
+                f"desc({replica['sort_key']})",
+            ],
+        })
 
-    index_settings = copy.deepcopy(shared_settings)
-    index_settings.update({
-        'customRanking': [
-            'desc(rating)',
-        ],
-    })
-    nodes_index_by_rating_desc.set_settings(index_settings)
+        index_nodes_replica = nodes_index.client.init_index(replica['index_name'])
+        index_nodes_replica.set_settings(replica_settings)
 
 
 @manager_dillo.command
