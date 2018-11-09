@@ -143,7 +143,6 @@ script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
-script(src="{{ url_for('static_pillar', filename='assets/js/markdown.min.js') }}")
 
 script.
 
@@ -154,10 +153,6 @@ script.
 		nodeId: '{{ node._id }}'
 	});
 
-	// Convert Markdown and emojis for text and title
-	var convert = new Markdown.getSanitizingConverter();
-	Markdown.Extra.init(convert);
-	convert = convert.makeHtml;
 
 	// Run on page load
 	$(function () {
