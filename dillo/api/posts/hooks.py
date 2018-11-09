@@ -276,5 +276,5 @@ def after_inserting_posts(items):
 
 @only_for_post
 def after_deleting_post(item):
-    from pillar.celery import algolia_indexing
+    from pillar.api.search import algolia_indexing
     algolia_indexing.index_node_delete(str(item['_id']))
