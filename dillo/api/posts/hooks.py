@@ -26,7 +26,7 @@ from micawber.exceptions import ProviderException, ProviderNotFoundException
 from slugify import slugify
 from pillar.markdown import markdown
 from pillar.api.file_storage import generate_link
-from pillar.api.nodes import only_for_node_type_decorator
+from pillar.api.nodes.eve_hooks import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
 from pillar.api.file_storage import upload_and_process
 from pillar.api.activities import activity_subscribe

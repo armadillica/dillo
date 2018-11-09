@@ -2,7 +2,7 @@ import logging
 
 import flask
 
-from pillar.api.nodes import only_for_node_type_decorator
+from pillar.api.nodes.eve_hooks import only_for_node_type_decorator
 import pillar.api.activities
 import pillar.api.utils.authentication
 
