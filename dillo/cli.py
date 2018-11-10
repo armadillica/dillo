@@ -151,21 +151,22 @@ def reset_users_karma():
 
 
 @manager_dillo.command
-def attach_post_additional_properties(project_url):
+def attach_post_additional_properties():
     """If POST_ADDITIONAL_PROPERTIES exists, extend dillo_post node type."""
 
     if not current_app.config['POST_ADDITIONAL_PROPERTIES']:
         log.info('No POST_ADDITIONAL_PROPERTIES was defined')
         return
     # Create a dict with the additional properties ready to be appended to the doc
-    additional_properties = {}
+    db = current_app.db()
     for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
+        additional_properties = {}
         doc_key = f'node_types.$.dyn_schema.{k}'
         additional_properties[doc_key] = v['schema']
-    db = current_app.db()
-    u = db['projects'].update_one({
-        'node_types.name': 'dillo_post',
-        '_deleted': {'$ne': True},
-        'url': project_url},
-        {'$set': additional_properties})
-    log.info('Updated %s document' % u.modified_count)
+        for project_url in v['projects']:
+            u = db['projects'].update_one({
+                'node_types.name': 'dillo_post',
+                '_deleted': {'$ne': True},
+                'url': project_url},
+                {'$set': additional_properties})
+            log.info('Updated %s document' % u.modified_count)

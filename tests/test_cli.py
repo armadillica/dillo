@@ -30,7 +30,7 @@ class TestAdditionalProps(AbstractDilloTest):
                                          if nt['name'] == 'dillo_post'), None)
             dillo_post_node_type_original = copy.deepcopy(dillo_post_node_type)
             # Try to attach an empty POST_ADDITIONAL_PROPERTIES to default-project
-            attach_post_additional_properties(project_url)
+            attach_post_additional_properties()
             # Query for the project once more, since it might have updated
             project = proj_coll.find_one({'_id': self.project_id})
             dillo_post_node_type = next((nt for nt in project['node_types']
@@ -55,7 +55,8 @@ class TestAdditionalProps(AbstractDilloTest):
                     'searchable': True,
                     'faceting': 'searchable'
                 },
-                'projects': ['today']
+                'projects': ['default-project'],
+                'label': 'Dev. Status',
             }
         }
         self.app.config['POST_ADDITIONAL_PROPERTIES'] = post_additional_properties
