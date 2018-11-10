@@ -11,6 +11,7 @@ dillo/static/css/*
 dillo/templates/*
 dillo/static/js/generated/*.min.js
 docker/4_run/deploy/*
+docs/site
 
 node_modules
 .sass-cache/
