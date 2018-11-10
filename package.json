@@ -1,7 +1,7 @@
 {
 	"name": "dillo",
 	"license": "GPL-2.0",
-	"author": "Admadillica",
+	"author": "Armadillica",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/armadillica/dillo.git"
