@@ -30,4 +30,23 @@ ALGOLIA_INDEX_NODES_REPLICAS = {
 # Using this feature requires Mongo 3.6 (for data migration actually). If you are
 # using an older version and you upgrade, you will be required to run
 # db.adminCommand( { setFeatureCompatibilityVersion: "3.6" } ).
+
+# Here is an example:
+
+# POST_ADDITIONAL_PROPERTIES = {
+#     'status_dev': {
+#         'schema':  {
+#             'type': 'string',
+#             'default': 'Unknown',
+#             'allowed': ['Unknown', 'In Development']
+#         },
+#         'indexing': {
+#             'searchable': True,
+#             'faceting': 'searchable'
+#         },
+#         'projects': ['rcs'],
+#         'label': 'Dev. Status',
+#     }
+# }
+
 POST_ADDITIONAL_PROPERTIES = {}
