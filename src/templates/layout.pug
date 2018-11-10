@@ -127,6 +127,12 @@ html(lang='en')
 							li
 								#list-refined-values
 								#list-tags.wgt-dropdown-toggle
+								//- Add POST_ADDITIONAL_PROPERTIES filters here
+								| {% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
+								| {% if project.url in v['projects'] %}
+								.wgt-dropdown-toggle(id="list-{{ k }}")
+								| {% endif %}
+								| {% endfor %}
 							li
 								.wgt-search
 									.wgt-search-icon

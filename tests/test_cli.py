@@ -46,9 +46,16 @@ class TestAdditionalProps(AbstractDilloTest):
     def test_add_props(self):
         post_additional_properties = {
             'status_dev': {
-                'type': 'string',
-                'default': 'Unknown',
-                'allowed': ['Unknown', 'In Development']
+                'schema':  {
+                    'type': 'string',
+                    'default': 'Unknown',
+                    'allowed': ['Unknown', 'In Development']
+                },
+                'indexing': {
+                    'searchable': True,
+                    'faceting': 'searchable'
+                },
+                'projects': ['today']
             }
         }
         self.app.config['POST_ADDITIONAL_PROPERTIES'] = post_additional_properties

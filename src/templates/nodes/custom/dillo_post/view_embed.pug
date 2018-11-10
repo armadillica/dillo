@@ -55,6 +55,16 @@
 						| {{ tag }}{{ ", " if not loop.last }}
 						| {% endfor %}
 					| {% endif %}
+					//- Add POST_ADDITIONAL_PROPERTIES filters here
+					| {% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
+					//- If the dillo_post dyn_schema in this project supports this
+					| {% if project.url in v['projects'] %}
+					| {% if k in node.properties %}
+					li(id="list-{{ k }}")
+						| {{ v['label'] }}: {{ node.properties[k] }}
+					| {% endif %}
+					| {% endif %}
+					| {% endfor %}
 
 
 	| {% if not is_link %}

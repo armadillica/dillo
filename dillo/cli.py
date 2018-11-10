@@ -107,6 +107,20 @@ def index_nodes_update_settings():
         ],
     }
 
+    # Configure indexing for additional properties
+    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
+        indexing_settings = v.get('indexing')
+        if not indexing_settings:
+            continue
+        if 'searchable' in indexing_settings and indexing_settings['searchable']:
+            shared_settings['searchableAttributes'].append(k)
+        if 'faceting' in indexing_settings:
+            if indexing_settings['faceting'] == 'searchable':
+                searchable_str = f'searchable({k})'
+            else:
+                searchable_str = k
+            shared_settings['attributesForFaceting'].append(searchable_str)
+
     # Automatically creates index if it does not exist
     index_settings = copy.deepcopy(shared_settings)
     index_settings.update({
@@ -147,7 +161,7 @@ def attach_post_additional_properties(project_url):
     additional_properties = {}
     for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
         doc_key = f'node_types.$.dyn_schema.{k}'
-        additional_properties[doc_key] = v
+        additional_properties[doc_key] = v['schema']
     db = current_app.db()
     u = db['projects'].update_one({
         'node_types.name': 'dillo_post',

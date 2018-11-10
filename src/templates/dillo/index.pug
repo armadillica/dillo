@@ -407,6 +407,30 @@ script.
 		})
 	);
 
+	// Add POST_ADDITIONAL_PROPERTIES filters here
+	{% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
+	// Add the widget only if it's associated with the project
+	{% if project.url in v['projects'] %}
+	search.addWidget(
+		instantsearch.widgets.menu({
+			container: '#list-{{ k }}',
+			attributeName: '{{ k }}',
+			cssClasses: {
+				root: 'wgt-dropdown-root',
+				header: 'wgt-dropdown-header',
+				body: 'wgt-dropdown-body dropdown-menu',
+				link: 'wgt-dropdown-link',
+				active: 'wgt-dropdown-active',
+				count: 'wgt-dropdown-count'
+			},
+			templates: {
+				header: "{{ v['label'] }}"
+			}
+		})
+	);
+	{% endif %}
+	{% endfor %}
+
 	var paginationCSSClasses = {
 				root: 'wgt-pagination-root',
 				link: 'wgt-pagination-link',
