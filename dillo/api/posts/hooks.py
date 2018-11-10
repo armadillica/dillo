@@ -100,8 +100,8 @@ def algolia_index_post_save(node):
     }
     if 'content' in node['properties'] and node['properties']['content']:
         node_ob['content'] = node['properties']['content']
-    # Hack for instantsearch.js. Because we can't to string comparison in Hogan, we store this case
-    # in a boolean.
+    # Hack for instantsearch.js. Because we can't do string comparison in Hogan,
+    # we store this case in a boolean.
     if node['properties']['post_type'] == 'link':
         node_ob['is_link'] = True
     if 'picture' in node and node['picture']:
