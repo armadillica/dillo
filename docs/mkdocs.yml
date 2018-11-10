@@ -4,7 +4,20 @@ site_description: 'Dillo extension for the Pillar framweork'
 site_url: 'https://gitlab.com/armadillica/dillo'
 
 # Documentation and theme
-theme: 'material'
+theme:
+  name: 'material'
+  palette:
+    primary: 'red'
+    accent: 'red'
+  logo:
+    icon: 'comment'
+
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/armadillica/dillo'
+    - type: 'twitter'
+      link: 'https://twitter.com/dillospace'
 
 # Copyright
 copyright: 'Copyright (c) Armadillica – CC-BY-SA 4.0 Int.'
