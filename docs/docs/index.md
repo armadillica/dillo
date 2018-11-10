@@ -1,22 +1,6 @@
-# Pistacchio - Pillar Sample Extension
+# Dillo Development Docs
 
-This is a *vanilla* extension of the Pillar framework. Pistacchio works as a 
-standalone application to illustrate how to expand Pillar for new extensions.
-Please note that extentions can not expose endpoints outside of their scope (in
-the case of this application, the '/pistacchio' endpoint) and should be
-initialized within a pillar-based application.
-
-If you are interested in adding different endpoints, like for example '/about',
-you should simply create an application, not an extension. To learn more about
-pillar-based applications and extensions, please check out the Pillar docs.
-
-## Features
-
-* Basic Pillar extension
-* Unit testing
-* Documentation
-
-## How to set it up
+## How to set it up (FIXME)
 
 ```bash
 git clone git://git.blender.org/pillar-server.git
@@ -34,7 +18,7 @@ pip install -r requirements.txt
 python manage.py setup setup_db email@example.com
 ```
 
-## How to run it
+## How to run it (FIXME)
 
 ```bash
 python manage.py runserver
@@ -42,7 +26,7 @@ python manage.py runserver
 
 Now open a web-browser of your preference and visit:
 ```text
-http://127.0.0.1:5000/pistacchio
+http://dillo.local:5000/
 ```
 
 ## Project layout
@@ -70,3 +54,16 @@ http://127.0.0.1:5000/pistacchio
     tests/                  # Unit testing
         ...                 # Proper test files
 
+## Indexing
+Explain how we use the Nodes index from the config, but perform indexing in our own hook.
+Mention that we extend the indexing process by defining index replicas for returning sorted
+results.
+
+## Post Categories
+See config
+
+## Tags
+To be introduced and documented
+
+## Post Additional Props
+See config.py
