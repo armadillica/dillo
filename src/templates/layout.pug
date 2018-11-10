@@ -36,15 +36,14 @@ html(lang='en')
 
 		script(src="{{ url_for('static_dillo', filename='js/vendor/js-cookie-2.1.4.min.js') }}")
 
-
 		| {% block stylesheets %}
-		link(rel='stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
-		link(disabled, rel='alternate stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}")
+		link(rel='stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}")
+		link(disabled, rel='alternate stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
 		| {% endblock stylesheets %}
 
 		| {# Theme loading: swap CSS on load, check crucial_ui.js for the swapping logic #}
 		script.
-			if (Cookies.get('theme') == 'dark'){
+			if (Cookies.get('theme') == 'light'){
 				document.getElementsByTagName("link").item(4).disabled = false;
 				document.getElementsByTagName("link").item(3).disabled = true;
 			};
@@ -178,9 +177,9 @@ html(lang='en')
 								ul.dropdown-menu.dropdown-menu-right
 									li
 										a.theme-toggle(
-											title="{{ _('Turn off the lights') }}")
+											title="{{ _('Toggle between dark and light themes') }}")
 											i.pi-moon
-											| {{ _('Night Mode') }}
+											| {{ _('Toggle Theme') }}
 									li
 										a(
 											href="{{ url_for('users.users_view', username=current_user.username) }}"
