@@ -48,7 +48,11 @@ Configure your nodes index with:
 python manage.py dillo  index_nodes_update_settings
 ```
 
-Credits:
+## Developer Documentation
+Live docs on [dillo.space/docs](https://dillo.space/docs).
+To build and deploy docs, check out `docs/publish.sh`.
+
+## Credits
 * [Francesco Siddi](https://twitter.com/fsiddi) - Back-end (Dillo & Pillar)
 * [Pablo Vazquez](https://twitter.com/PabloVazquez_) - Front-end
 * [Dalai Felinto](https://twitter.com/dfelinto) - Multi-Language support
