@@ -158,7 +158,7 @@ script.
 	$(function () {
 
 		// If we are using quick submit
-		if (ProjectUtils.context() == 'post-submit-overlay'){
+		if (ProjectUtils.context() === 'post-submit-overlay'){
 
 			// Pressing 'cancel' should just hide the dialog
 			$(document).on('click', 'body .js-cancel-submit', function(e){
