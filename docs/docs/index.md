@@ -59,15 +59,14 @@ Explain how we use the Nodes index from the config, but perform indexing in our 
 Mention that we extend the indexing process by defining index replicas for returning sorted
 results.
 
-## Tags
+## Tags (TODO)
 See config
 
 ## Post Additional Properties
-This feature allows the support of 'custom' properties within a dillo_post node type.
+This feature allows the support of 'custom' properties within a dillo_post Node Type.
 We define a `POST_ADDITIONAL_PROPERTIES` dict in `config_local.py` and Dillo takes care
 of the rest. For example:
 
-    
     POST_ADDITIONAL_PROPERTIES = {
         'status_dev': {
             'schema':  {
@@ -84,9 +83,27 @@ of the rest. For example:
         }
     }
 
-In this case `status_dev` is the key added to `dyn_schema` of `dillo_post`. 
-`indexing` extend the indexing settings when running `index_nodes_update_settings`.
-`projects` defines in which projects we should apply this.
-`label` is the UI representation of the key.
+In this case: 
 
-Run `attach_post_additional_properties` to apply this.
+* `status_dev` is the key added to `dyn_schema` of `dillo_post`
+* `indexing` extends the indexing settings when running `index_nodes_update_settings`
+* `projects` defines to which project we should apply this additional properties
+* `label` is the UI representation of the key
+
+Additional properties should be applied as follows:
+
+* Define the additional properties in `POST_ADDITIONAL_PROPERTIES`
+* `./manage.py dillo attach_post_additional_properties`
+* `./manage.py dillo index_nodes_update_settings`
+
+### Integration details
+
+There are a few places where additional properties are handled:
+
+* `index.pug`, where we dynamically add Instant Search widgets
+* `dillo/api/posts/hooks.py`, where we define the indexing behaviour
+* `cli.py`, where we configure the Nodes index
+
+Additional Properties should be displayed only in the context where we expect them to
+be. For this reason, the main posts index (which aggregates posts from all projects)
+does not feature them as filters.
