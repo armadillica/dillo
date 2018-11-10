@@ -64,6 +64,10 @@
 						| Add New Attachment
 				| {{ render_field(field, field.name) }}
 				| {% endif %} {# post_type #}
+				// Display any additional props that we want to support (for example RCS).
+					See config.py to learn more about POST_ADDITIONAL_PROPERTIES.
+				| {% elif field.name in config['POST_ADDITIONAL_PROPERTIES']%}
+				| {{ render_field(field, field.name) }}
 				| {% endif %}
 				| {% endfor %}
 

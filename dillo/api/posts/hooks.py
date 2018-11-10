@@ -116,6 +116,11 @@ def algolia_index_post_save(node):
                                                variation_s['file_path'],
                                                project_id=str(picture['project']),
                                                is_public=True)
+
+    # Try to index additional props (see config.py for more info).
+    for key in current_app.config['POST_ADDITIONAL_PROPERTIES']:
+        if key in node['properties']:
+            node_ob[key] = node['properties'][key]
     current_app.algolia_index_nodes.save_object(node_ob)
 
 
