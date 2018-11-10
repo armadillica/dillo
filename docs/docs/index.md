@@ -90,6 +90,9 @@ In this case:
 * `projects` defines to which project we should apply this additional properties
 * `label` is the UI representation of the key
 
+
+### Usage
+
 Additional properties should be applied as follows:
 
 * Define the additional properties in `POST_ADDITIONAL_PROPERTIES`
