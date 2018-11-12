@@ -4,11 +4,15 @@
 form#settings-form(
 	method='POST',
 	action="{{url_for('settings.profile')}}")
+	// - TODO(fsiddi) In this form CSRF token is required, although the original
+		UserProfileForm does not require it.
+	input(type="hidden", name="csrf_token", value="{{ csrf_token() }}")
 	.settings-form
 		.left
 			.fieldset-container
 				.fieldset-row
 					.fieldset-field
+						|
 						| {{ form.username.label }}
 						| {{ form.username(size=20) }}
 						| {% if form.username.errors %}
@@ -17,15 +21,25 @@ form#settings-form(
 						| {% endfor %}
 						| {% endif %}
 
-				.fieldset-row.disabled
+				.fieldset-row
 					.fieldset-field
-						label {{ _("Full Name") }}
-						span {{ current_user.full_name }}
+						| {{ form.full_name.label }}
+						| {{ form.full_name }}
+						| {% if form.full_name.errors %}
+						| {% for error in form.full_name.errors %}
+						.fieldset-row-error {{ error|e }}
+						| {% endfor %}
+						| {% endif %}
 
-				.fieldset-row.disabled
+				.fieldset-row
 					.fieldset-field
-						label {{ _("E-mail") }}
-						span {{ current_user.email }}
+						| {{ form.email.label }}
+						| {{ form.email }}
+						| {% if form.email.errors %}
+						| {% for error in form.email.errors %}
+						.fieldset-row-error {{ error|e }}
+						| {% endfor %}
+						| {% endif %}
 
 				.fieldset
 					| Change your profile details at #[a(href="https://www.blender.org/id/settings/profile") Blender ID].

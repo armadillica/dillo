@@ -81,6 +81,7 @@ class DilloExtension(PillarExtension):
             dillo.web.main.routes.blueprint,
             dillo.web.posts.routes.blueprint,
             dillo.web.users.routes.blueprint,
+            dillo.web.settings.routes.blueprint_settings_dillo,
         ]
 
     @property

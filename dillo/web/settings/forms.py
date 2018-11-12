@@ -1,7 +1,9 @@
 import wtforms
-from wtforms.validators import URL, DataRequired
+from wtforms.validators import URL, DataRequired, Email
 from flask_wtf import Form
-from flask_wtf.html5 import URLField
+from flask_wtf.html5 import URLField, EmailField
+
+from pillar.web.users import forms
 
 
 class LinkForm(wtforms.Form):
@@ -11,3 +13,8 @@ class LinkForm(wtforms.Form):
 
 class LinksListForm(Form):
     links = wtforms.FieldList(wtforms.FormField(LinkForm), max_entries=5)
+
+
+class UserProfileForm(forms.UserProfileForm):
+    full_name = wtforms.StringField('Full Name', validators=[DataRequired()])
+    email = EmailField(validators=[DataRequired(), Email()])
