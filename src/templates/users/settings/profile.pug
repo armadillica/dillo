@@ -1,56 +1,70 @@
+// - Override Pillar Template
 | {% extends 'users/settings/page.html' %}
 | {% block settings_page_title %}{{ _("Profile") }}{% endblock %}
+
+| {% block css %}
+| {{ super() }}
+//- TODO(Pablo): properly style badges, and move the styling to one of the SASS files.
+	Also, see the same file in Pillar.
+style.
+	ul.blender-id-badges {
+		padding-left: 0;
+		list-style-type: none;
+		display: flex;
+	}
+
+	ul.blender-id-badges > li {
+		margin: 0;
+		padding: 0;
+	}
+
+	ul.blender-id-badges > li a {
+		display: block;
+		padding: 0.4em;
+	}
+| {% endblock %}
+
 | {% block settings_page_content %}
-form#settings-form(
-	method='POST',
-	action="{{url_for('settings.profile')}}")
-	// - TODO(fsiddi) In this form CSRF token is required, although the original
-		UserProfileForm does not require it.
-	input(type="hidden", name="csrf_token", value="{{ csrf_token() }}")
-	.settings-form
-		.left
-			.fieldset-container
-				.fieldset-row
-					.fieldset-field
-						|
-						| {{ form.username.label }}
-						| {{ form.username(size=20) }}
-						| {% if form.username.errors %}
-						| {% for error in form.username.errors %}
-						.fieldset-row-error {{ error|e }}
-						| {% endfor %}
-						| {% endif %}
+.settings-form
+	form#settings-form(
+		method='POST',
+		action="{{url_for('settings.profile')}}")
+		// - TODO(fsiddi) In this form CSRF token is required, although the original
+			UserProfileForm does not require it.
+		input(type="hidden", name="csrf_token", value="{{ csrf_token() }}")
 
-				.fieldset-row
-					.fieldset-field
-						| {{ form.full_name.label }}
-						| {{ form.full_name }}
-						| {% if form.full_name.errors %}
-						| {% for error in form.full_name.errors %}
-						.fieldset-row-error {{ error|e }}
-						| {% endfor %}
-						| {% endif %}
+		.pb-3
+			.form-group
+				| {{ form.username.label }}
+				| {{ form.username(size=20, class='form-control') }}
+				| {% if form.username.errors %}
+				| {% for error in form.username.errors %}{{ error|e }}{% endfor %}
+				| {% endif %}
+			.form-group
+				| {{ form.full_name.label }}
+				| {{ form.full_name(size=20, class='form-control') }}
+				| {% if form.full_name.errors %}
+				| {% for error in form.full_name.errors %}{{ error|e }}{% endfor %}
+				| {% endif %}
+			.form-group
+				| {{ form.email.label }}
+				| {{ form.email(size=20, class='form-control') }}
+				| {% if form.email.errors %}
+				| {% for error in form.email.errors %}{{ error|e }}{% endfor %}
+				| {% endif %}
 
-				.fieldset-row
-					.fieldset-field
-						| {{ form.email.label }}
-						| {{ form.email }}
-						| {% if form.email.errors %}
-						| {% for error in form.email.errors %}
-						.fieldset-row-error {{ error|e }}
-						| {% endfor %}
-						| {% endif %}
-
-				.fieldset
-					| Change your profile details at #[a(href="https://www.blender.org/id/settings/profile") Blender ID].
-
-		.right
-			.settings-avatar
-				a(href="https://gravatar.com/")
-					img(src="{{ current_user.gravatar }}")
-					span {{ _("Change Gravatar") }}
-
-	button.btn.btn-info(type='submit')
-		i.pi-check
-		| {{ _("Save Changes") }}
+				| {% if current_user.badges_html %}
+				.form-group
+					p Your Blender ID badges:
+					| {{ current_user.badges_html|safe }}
+					p.hint-text Note that updates to these badges may take a few minutes to be visible here.
+				| {% endif %}
+		.py-3
+			a(href="https://gravatar.com/")
+				img.rounded-circle(src="{{ current_user.gravatar }}")
+				span.p-3 {{ _("Change Gravatar") }}
+		.py-3
+			button.btn.btn-outline-success.px-5.button-submit(type='submit')
+				i.pi-check.pr-2
+				| {{ _("Save Changes") }}
 | {% endblock %}
