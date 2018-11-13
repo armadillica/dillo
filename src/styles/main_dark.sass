@@ -16,15 +16,42 @@ $body-bg: $color-background
 $body-color: $color-text
 $dropdown-bg: $color-background
 
+$light: $color-background
+
 // Bootstrap components.
 @import "../../../pillar/node_modules/bootstrap/scss/utilities"
 @import "../../../pillar/node_modules/bootstrap/scss/root"
 @import "../../../pillar/node_modules/bootstrap/scss/reboot"
 
+@import "../../../pillar/node_modules/bootstrap/scss/grid"
+@import "../../../pillar/node_modules/bootstrap/scss/forms"
 @import "../../../pillar/node_modules/bootstrap/scss/buttons"
 @import "../../../pillar/node_modules/bootstrap/scss/dropdown"
 @import "../../../pillar/node_modules/bootstrap/scss/button-group"
 @import "../../../pillar/node_modules/bootstrap/scss/input-group"
+
+
+@import "../../../pillar/node_modules/bootstrap/scss/type"
+@import "../../../pillar/node_modules/bootstrap/scss/images"
+
+@import "../../../pillar/node_modules/bootstrap/scss/grid"
+@import "../../../pillar/node_modules/bootstrap/scss/tables"
+@import "../../../pillar/node_modules/bootstrap/scss/transitions"
+@import "../../../pillar/node_modules/bootstrap/scss/custom-forms"
+
+@import "../../../pillar/node_modules/bootstrap/scss/nav"
+@import "../../../pillar/node_modules/bootstrap/scss/navbar"
+
+@import "../../../pillar/node_modules/bootstrap/scss/card"
+@import "../../../pillar/node_modules/bootstrap/scss/breadcrumb"
+@import "../../../pillar/node_modules/bootstrap/scss/pagination"
+@import "../../../pillar/node_modules/bootstrap/scss/badge"
+@import "../../../pillar/node_modules/bootstrap/scss/list-group"
+@import "../../../pillar/node_modules/bootstrap/scss/close"
+@import "../../../pillar/node_modules/bootstrap/scss/modal"
+@import "../../../pillar/node_modules/bootstrap/scss/tooltip"
+@import "../../../pillar/node_modules/bootstrap/scss/popover"
+
 
 // Pillar utilities first, then Dillo's.
 @import '../../../pillar/src/styles/_utils'
@@ -35,6 +62,8 @@ $dropdown-bg: $color-background
 @import '../../../pillar/src/styles/notifications'
 @import '../../../pillar/src/styles/comments'
 @import '../../../pillar/src/styles/error'
+
+@import '../../../pillar/src/styles/user'
 
 @import '../../../pillar/src/styles/components/base'
 @import '../../../pillar/src/styles/components/alerts'
@@ -61,3 +90,5 @@ $dropdown-bg: $color-background
 @import _list
 @import _user
 @import _error
+
+@import _settings_base
