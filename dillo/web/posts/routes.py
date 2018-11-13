@@ -87,7 +87,8 @@ def create(community_url: str, post_type: str):
     post.create(api=api)
     embed = request.args.get('embed')
     return redirect(url_for(
-        'nodes.edit', node_id=post._id, embed=embed, _external=True, _scheme=current_app.config['SCHEME']))
+        'nodes.edit', node_id=post._id, embed=embed, _external=True,
+        _scheme=current_app.config['SCHEME']))
 
 
 @blueprint.route('/c/')
@@ -308,11 +309,15 @@ def validate_append_image(image_url, base_url, images_list):
 
 
 def populate_feed(feed: AtomFeed, latest_posts):
-    """Populate the feed with the provided data"""
+    """Populate the feed with the provided data."""
     for post in latest_posts._items:
+        api = system_util.pillar_api()
         author = post.user.full_name
         updated = post._updated if post._updated else post._created
-        url = url_for('posts.view', post_shortcode=post.properties.shortcode, community_url=post.project)
+        project_projection = {'project': {'url': 1}}
+        project = Project.find(post.project, project_projection, api=api)
+        url = url_for('posts.view', post_shortcode=post.properties.shortcode,
+                      community_url=project.url)
         content = post.properties.content[:500]
         feed.add(post.name, str(content),
                  content_type='html',
@@ -324,10 +329,11 @@ def populate_feed(feed: AtomFeed, latest_posts):
 
 @blueprint.route('/c/feed/latest.atom')
 def feed_all_communities():
-    """Global feed generator for latest blogposts across all projects"""
+    """Global feed generator for latest posts across all projects."""
     # @current_app.cache.cached(60*5)
     def render_page():
-        feed = AtomFeed('Dillo - Latest updates',
+        project = get_main_project()
+        feed = AtomFeed(f'{project.name} - Latest updates',
                         feed_url=request.url,
                         url=request.url_root)
         # Get latest posts
@@ -346,7 +352,7 @@ def feed_all_communities():
 
 @blueprint.route('/c/<community_url>/feed/latest.atom')
 def feed_community(community_url):
-    """Project feed generator for latest blogposts across a single project"""
+    """Project feed generator for latest blogposts across a single Project."""
     # @current_app.cache.cached(60*5)
     def render_page():
         # Get latest posts
@@ -358,7 +364,8 @@ def feed_community(community_url):
                         url=request.url_root)
 
         latest_posts = Node.all({
-            'where': {'node_type': 'dillo_post', 'properties.status': 'published', 'project': project['_id']},
+            'where': {'node_type': 'dillo_post', 'properties.status': 'published',
+                      'project': project['_id']},
             'embedded': {'user': 1},
             'sort': '-_created',
             'max_results': '15'
