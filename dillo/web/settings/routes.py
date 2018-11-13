@@ -69,8 +69,7 @@ def links():
 @blueprint_settings_dillo.route('/settings/profile', methods=['GET', 'POST'])
 @login_required
 def profile_dillo():
-    """Profile view and edit page. This is a temporary implementation.
-    """
+    """Override Pillar profile page."""
     api = system_util.pillar_api()
     user = User.find(current_user.objectid, api=api)
 
