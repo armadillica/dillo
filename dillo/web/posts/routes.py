@@ -358,6 +358,8 @@ def feed_community(community_url):
         # Get latest posts
         api = system_util.pillar_api()
         project = Project.find_first({'where': {'url': community_url}}, api=api)
+        if not project:
+            abort(404)
 
         feed = AtomFeed(project.name + ' - ' + _('Latest updates'),
                         feed_url=request.url,
