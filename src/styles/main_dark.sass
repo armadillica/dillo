@@ -16,8 +16,6 @@ $body-bg: $color-background
 $body-color: $color-text
 $dropdown-bg: $color-background
 
-$light: $color-background
-
 // Bootstrap components.
 @import "../../../pillar/node_modules/bootstrap/scss/utilities"
 @import "../../../pillar/node_modules/bootstrap/scss/root"
@@ -52,6 +50,8 @@ $light: $color-background
 @import "../../../pillar/node_modules/bootstrap/scss/tooltip"
 @import "../../../pillar/node_modules/bootstrap/scss/popover"
 
+.bg-light
+	background-color: $color-background-light !important
 
 // Pillar utilities first, then Dillo's.
 @import '../../../pillar/src/styles/_utils'
