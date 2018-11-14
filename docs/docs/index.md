@@ -1,21 +1,50 @@
 # Dillo Development Docs
 
-## How to set it up (FIXME)
+## Installation
 
 ```bash
-git clone git://git.blender.org/pillar-server.git
-cd pillar-server
-pip install -e .
-pip install -r requirements.txt
-# setup pillar-server
-# refer to pillar-server documentation
-cd ..
-git clone git://git.blender.org/pillar-pistacchio.git pistacchio
-cd pistacchio
-# Install any local requirements
-pip install -r requirements.txt
-# Initialize the project with a default project and email address
-python manage.py setup setup_db email@example.com
+git clone git://git.blender.org/pillar.git
+git clone git://git.blender.org/pillar-python-sdk.git
+git clone git@github.com:armadillica/dillo.git
+cd dillo
+pip install -r requirements-dev.txt
+```
+
+Make a config local and add your categories to it:
+```
+# This list generate the selection menu when creating or editing a post.
+POST_CATEGORIES = ['Artwork', 'Tutorials', 'Resources', 'Sneak Peek']
+```
+
+Setup [Algolia](https://www.algolia.com):
+
+Create an account in their site, and add your Algolia API Keys and setup to the `config_local.py
+
+```
+ALGOLIA_USER = '1QFJ16Q4TZ' # Application ID
+ALGOLIA_PUBLIC_KEY = '039c5c1d0efe9d25d06c00f55a541963' # Search-Only API Key
+ALGOLIA_API_KEY = '1389947be424f13fbecedabb13ef1710' # Admin API Key
+ALGOLIA_INDEX_USERS = 'dev_UsersYourName'
+ALGOLIA_INDEX_NODES = 'dev_NodesYourName'
+```
+
+Create the default project, which will be the host for various communities.
+
+```
+python manage.py dillo setup_db <admin_email>
+```
+
+Create a project and initialize it as a community
+TODO check how to create a new project.
+
+```
+python manage.py dillo setup_for_dillo today
+```
+
+Configure your nodes index with:
+
+```
+python manage.py dillo index_nodes_update_settings
 ```
 
 ## How to run it (FIXME)
