@@ -12,16 +12,18 @@ node_type_post = {
             ],
             'default': 'link',
         },
-        # The actual content. This can be a link or Markdown-formatted text. Validation of the text
-        # happens in the posts/eve_hooks.py file and follow the rule:
+        # The actual content of a post. This can be a link or Markdown-formatted text.
+        # Validation of the text happens in the posts/eve_hooks.py file and follows the rule:
         # - if status is draft, no content is allowed
         # - else, content must be min 5 chars long
-        # TODO: create a custom validator for this behaviour. This requires extending the Validator
-        # class on Pillar (via extensions)
+        # We do not use the 'markdown' Pillar validator because of the specific processing
+        # of the value of post_type.
         'content': {
             'type': 'string',
         },
         # The converted-to-HTML content.
+        # TODO(fsiddi) rename to _content_html
+        # This is not essential, but would be nice to do at some point.
         'content_html': {
             'type': 'string',
         },

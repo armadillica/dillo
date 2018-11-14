@@ -157,7 +157,7 @@ def before_inserting_posts(items):
 
 
 def convert_to_markdown(item):
-    # Convert content from Markdown to HTML.
+    """Convert content from Markdown to HTML."""
     try:
         content = item['properties']['content']
     except KeyError:
