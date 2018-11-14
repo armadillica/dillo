@@ -19,6 +19,18 @@ manager.add_command("dillo", manager_dillo)
 
 
 @manager_dillo.command
+def setup_db(admin_email):
+    """Extends Pillar setup_db."""
+    from pillar.cli.setup import setup_db as pillar_setup_db
+    # Define the dillo_user_main group, which is automatically assigned
+    # after every user creation.
+    g = {'name': 'dillo_user_main'}
+    current_app.post_internal('groups', g)
+    # Execute the default user creation
+    pillar_setup_db(admin_email)
+
+
+@manager_dillo.command
 @manager_dillo.option('-r', '--replace', dest='replace', action='store_true', default=False)
 def setup_for_dillo(project_url, replace=False):
     """Adds Dillo node types to the project.
