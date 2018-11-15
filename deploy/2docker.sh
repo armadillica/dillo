@@ -95,8 +95,22 @@ if [ ! -e $GULP -o gulpfile.js -nt $GULP ]; then
     npm install
     touch $GULP  # installer doesn't always touch this after a build, so we do.
 fi
-$GULP --cwd $DEPLOYDIR/pillar --production
-$GULP --cwd $DEPLOYDIR/dillo --production
+
+# List of projects
+declare -a proj=("pillar" "dillo")
+
+# Run ./gulp for every project
+for i in "${proj[@]}"
+do
+    pushd $DEPLOYDIR/$i; ./gulp --production; popd;
+done
+
+# Remove node_modules (only after all projects with interdependencies have been built)
+for i in "${proj[@]}"
+do
+    pushd $DEPLOYDIR/$i; rm -r node_modules; popd;
+done
+
 
 echo
 echo "==================================================================="
