@@ -662,8 +662,15 @@ body[data-context="post-edit"]
         padding: 20px 65px
 
       +node-details-description
-
       padding: 20px
+
+      // Override Pillar's +node-details-description.
+      // TODO(Pablo) add a variable in Pillar so we don't have to do this.
+      a:not([class])
+        color: var(--community-theme-color, $color-primary)
+
+        &:hover
+          color: $color-text
 
   &.link
     .item-body
