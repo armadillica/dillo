@@ -404,11 +404,12 @@ body[data-context='post-fullscreen']
 
 select, textarea, input
   border-radius: 5px
-  box-shadow: 1px 2px 2px $color-background-dark
+  border-style: solid
+  border-width: 2px
 
   &:focus
-    box-shadow: 1px 2px 2px $color-background-dark, inset 0 0 0 1px var(--community-theme-color, $color-primary)
     border-color: var(--community-theme-color, $color-primary)
+    outline: none
 
   option
     color: $color-text

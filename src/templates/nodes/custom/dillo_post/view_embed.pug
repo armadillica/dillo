@@ -83,7 +83,8 @@
 		class="{% if is_html %}is-embed{% endif %}")
 		.item-body#item-content
 			| {% if node.properties.content %}
-			a.item-link-data(
+			a.d-block.p-3(
+				class="item-link-data",
 				href="{{ node.properties.content }}",
 				target="_blank",
 				title="Visit URL")
@@ -95,14 +96,16 @@
 
 		| {# If it's a link with oembed support #}
 		| {% if is_html %}
-		.item-media.oembed#item-media
+		#item-media.d-flex.justify-content-center.position-relative(
+			class="item-media oembed")
 			| {{ node.properties.content_html | safe }}
 		| {% endif %}
 	| {% endif %}
 
 	| {# If the post is type link, only show if there is no oembed #}
 	| {% if (node.picture and not is_link) or (node.picture and (is_link and not is_html)) %}
-	a.item-media#item-media.js-item-thumbnail(
+	a#item-media.d-flex.justify-content-center.position-relative(
+		class="item-media js-item-thumbnail",
 		href="{{ node.picture.thumbnail('h', api=api)}} ")
 		img(
 			src="{{ node.picture.thumbnail('l', api=api) }}",

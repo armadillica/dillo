@@ -1,4 +1,4 @@
-// Listing item
+// Listing item.
 .item-title
   line-height: 1.3em
   transition: color 100ms ease-in-out
@@ -6,6 +6,7 @@
   &:hover
     text-decoration: none
 
+  // Text highlighted when searching.
   em
     color: var(--community-theme-color, $color-primary)
     font-style: normal
@@ -14,9 +15,6 @@
   align-items: center
   background-color: black
   border-bottom: thin solid $color-background-dark
-  display: flex
-  justify-content: center
-  position: relative
 
   iframe, img, video
     max-height: 600px
@@ -426,11 +424,7 @@ body[data-context="post-edit"]
       flex-direction: column
       padding: 0 10px
 
-      #name
-        color: var(--community-theme-color, $color-primary)
-        padding: 10px
-
-      #content
+      #name, #content
         padding: 10px
 
       textarea#content
@@ -680,11 +674,9 @@ body[data-context="post-edit"]
       .item-link-data
         +text-overflow-ellipsis
         color: var(--community-theme-color, $color-primary)
-        display: block
         flex: 1
         font-size: $font-size-small
         line-height: $font-size
-        padding: 10px 17px 15px
         text-decoration: none
 
         &:hover
@@ -716,6 +708,7 @@ body[data-context="post-edit"]
 
   .comments-container
     background-color: $color-background-light
+    max-width: unset // Pillar sets a max-width in pixels.
 
     .sign-in a
       color: var(--community-theme-color, $color-primary) !important
