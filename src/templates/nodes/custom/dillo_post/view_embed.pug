@@ -217,7 +217,7 @@ script.
 	{% endif %}
 
 	// If the parameter ?fs is in the url, go imax!
-	if ('fs' in urlParams){
+	if ('fs' in urlParams || isMobile()){
 		enterFullscreen();
 	}
 
