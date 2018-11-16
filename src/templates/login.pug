@@ -1,7 +1,7 @@
 | {% extends 'layout.html' %}
 | {% block stylesheets %}
-link(rel='stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/settings.css') }}")
-link(disabled, rel='alternate stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/settings_dark.css') }}")
+link(rel='stylesheet', title="dark", type="text/css", href="{{ url_for('static_dillo', filename='css/main_dark.css') }}")
+link(disabled, rel='alternate stylesheet', title="light", type="text/css", href="{{ url_for('static_dillo', filename='css/main.css') }}")
 | {% endblock stylesheets %}
 
 | {% block page_title %}Login{% endblock %}
