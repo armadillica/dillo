@@ -177,10 +177,12 @@ li
 					| {% if project.extension_props.dillo.social %}
 					ul.social
 						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
+						| {% if val %}
 						li
 							a(class="pi-social-{{ name }}",
 								title="{{ name | undertitle }}",
 								href="{{ val }}")
+						| {% endif %}
 						| {% endfor %}
 					| {% endif %}
 					| {% endif %}
