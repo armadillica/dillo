@@ -123,7 +123,7 @@ html(lang='en')
 
 				.d-header-action.refine
 					nav.nav-bar
-						ul
+						ul.list-unstyled.d-flex.align-items-center.m-0
 							li
 								#list-refined-values
 								#list-tags.wgt-dropdown-toggle
@@ -147,12 +147,12 @@ html(lang='en')
 
 				.d-header-action
 					nav.nav-bar
-						ul
+						ul.list-unstyled.d-flex.align-items-center.m-0
 							| {% if current_user.is_authenticated %}
 							| {% block submit_btn %} {% endblock %}
 
 							li.nav-notifications
-								a.nav-item#notifications-toggle(
+								a#notifications-toggle.nav-item.rounded-circle(
 									title="{{ _('Notifications') }}",
 									data-toggle="tooltip",
 									data-placement="bottom")
@@ -173,7 +173,7 @@ html(lang='en')
 
 							li.dropdown.wgt-dropdown-toggle
 								.nav-item.dropdown-toggle
-									img.avatar(
+									img.avatar.rounded-circle(
 										src="{{ current_user.gravatar }}",
 										alt="{{ _('Avatar') }}")
 
