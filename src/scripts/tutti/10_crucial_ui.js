@@ -195,7 +195,7 @@ $('#app-overlay').on('click', function(){
 */
 function themeSwap(){
 
-	if (Cookies.get('theme') == 'dark'){
+	if (Cookies.get('theme') == 'light'){
 
 		// Enable/disable CSS links, marking dark as disabled and the default as enabled
 		document.getElementsByTagName("link").item(3).disabled = false;
@@ -211,7 +211,7 @@ function themeSwap(){
 		document.getElementsByTagName("link").item(3).disabled = true;
 
 		// If a cookie for the dark theme doesn't exist, create it and save it for a year
-		Cookies.set('theme', 'dark', { expires: 365 });
+		Cookies.set('theme', 'light', { expires: 365 });
 	}
 }
 
