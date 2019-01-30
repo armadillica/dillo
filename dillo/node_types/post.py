@@ -110,6 +110,7 @@ node_type_post = {
         'rating_negative': {'visible': False},
         'slug': {'visible': False},
         'shortcode': {'visible': False},
+        'attachments': {'visible': False},
     },
     'parent': []
 }

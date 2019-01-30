@@ -171,7 +171,10 @@
 	#item-comments
 		.item-commenting-on.py-3
 			span {{ _("Leave a comment on") }} #[strong {{ project.name }} - {{ node.name }}]
-		#comments-embed
+		.col-sm-12
+			comments-tree#comments-embed(
+				parent-id="{{ node._id }}"
+				)
 
 script.
 
@@ -187,7 +190,7 @@ script.
 	});
 
 	if (context != 'post-edit'){
-		loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
+		new Vue({el: '#comments-embed'});
 	}
 
 	if (context == 'posts-index'){

@@ -178,8 +178,6 @@ script.
 			// Load the post view_embed on the side
 			$.get("{{ url_for('nodes.view', node_id=node._id) }}", function (dataHtml) {
 				$('#col_right').html(dataHtml);
-
-				loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 			});
 		}
 
@@ -465,9 +463,6 @@ script.
 
 						// Load the post on the side
 						$('#col_right').html(dataHtml);
-
-						// Load the comments
-						loadComments("{{ url_for('nodes.comments_for_node', node_id=node._id) }}");
 
 						ga('send', 'event', 'post', 'saved', $('#post_type').val());
 					}
