@@ -101,8 +101,8 @@ $item-thumbnail-size: 90px
     max-width: $item-thumbnail-size / 1.2
 
   align-items: center
-  border-bottom-left-radius: 3px
-  border-top-left-radius: 3px
+  border-bottom-right-radius: 3px
+  border-top-right-radius: 3px
   display: flex
   justify-content: center
   max-width: $item-thumbnail-size
@@ -110,6 +110,7 @@ $item-thumbnail-size: 90px
   min-height: 70px
   overflow: hidden
   position: relative
+  transition: margin-right 150ms ease-in
 
   &.has-thumbnail
     +media-xs
