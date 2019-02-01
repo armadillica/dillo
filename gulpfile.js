@@ -22,6 +22,9 @@ var enabled = {
 		uglify: argv.production
 };
 
+var source = {
+		pillar: '../pillar/'
+};
 
 /* Stylesheets */
 gulp.task('styles', function(done) {
@@ -89,8 +92,19 @@ gulp.task('watch',function(done) {
 		livereload.listen();
 	}
 
-	gulp.watch('src/styles/**/*.sass',gulp.series('styles'));
-	gulp.watch('src/templates/**/*.pug',gulp.series('templates'));
+	let watchStyles = [
+		'src/styles/**/*.sass',
+		source.pillar + 'src/styles/**/*.sass',
+	];
+
+	let watchTemplates = [
+		'src/templates/**/*.pug',
+		source.pillar + 'src/templates/**/*.pug',
+	];
+
+	gulp.watch(watchStyles, gulp.series('styles'));
+	gulp.watch(watchTemplates, gulp.series('templates'));
+
 	gulp.watch('src/scripts/*.js',gulp.series('scripts'));
 	gulp.watch('src/scripts/tutti/*.js',gulp.series('scripts_tutti'));
 	done();
