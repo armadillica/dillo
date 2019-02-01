@@ -171,7 +171,7 @@
 	#item-comments
 		.item-commenting-on.py-3
 			span {{ _("Leave a comment on") }} #[strong {{ project.name }} - {{ node.name }}]
-		.col-sm-12
+		.comments-container
 			comments-tree#comments-embed(
 				parent-id="{{ node._id }}"
 				)
