@@ -1,0 +1,224 @@
+| {% extends 'layout.html' %}
+| {% set page_name = 'posts-index' %}
+
+| {% if main_project._id == project._id %}
+| {% set is_main_project = 'main-project' %}
+| {% endif %}
+
+| {% block page_title %}
+| {{ (col_right['post'].name if 'post' in col_right) }}
+| {% endblock page_title %}
+
+| {% block bodyattrs %}
+| {{ super() }}
+| class='{{ page_name }} {% if current_user.is_authenticated %}logged-in{% endif %} {{ is_main_project }}' data-context='{{ page_name }}'
+| {% endblock bodyattrs %}
+
+
+| {% block submit_btn %}
+| {% if submit_menu %}
+li
+	.submit(class="{% if submit_menu['allowed'] %}btn-group{% endif %}")
+		| {% if submit_menu['default'] == 'text' %}
+		a.btn.btn-submit(
+		href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+		title="{{ _('Write a Post') }}")
+			i.pi-document-text
+			span {{ _('Write a Post') }}
+
+		| {% elif submit_menu['default'] == 'link' %}
+		button.btn.btn-submit.wgt-toggle-submit(
+		data-action="publish",
+		title="{{ _('Submit a Link [Shift+A]')}}",
+		class="{% if not submit_menu['allowed'] %}solo{% endif %}")
+			i.pi-link
+			span {{ _('Submit Link') }}
+		| {% endif %}
+
+		| {# TODO: To be replaced with an iteration over allowed post_type #}
+		| {% if submit_menu['allowed'] %}
+		span.btn.btn-submit.wgt-dropdown-toggle
+			i.pi-angle-down
+
+			ul.dropdown-menu.dropdown-menu-right
+				li
+					a.btn.btn-submit.post(
+					href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+					title="{{ _('Write a Post') }}")
+						i.pi-document-text
+						|  {{ _('Write a Post') }}
+		| {% endif %}
+
+| {% endif %}
+| {% endblock submit_btn %}
+
+
+| {% block body %}
+#col_main.listing-list
+
+	.listing-list-info
+		#list-sort-by(title="{{ _('Sort by') }}")
+		#list-pagination
+
+	#list-hits
+		| {% for post in posts %}
+
+		| {% if post.properties.post_type == 'link' %}
+		| {% set is_link = true %}
+		| {% endif %}
+
+		| {% if post.properties.rating_positive or post.properties.rating_negative %}
+		| {% set is_positive = 'negative' %}
+		| {% if post.properties.rating_positive %}
+		| {% set is_positive = 'positive' %}
+		| {% endif %}
+		| {% endif %}
+
+		| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
+		| {% set post_url = url_for('posts.view', community_url=post.project.url, post_shortcode=post.properties.shortcode) %}
+
+		.list-hits-item(
+		class="{% if post.user == (current_user.user_id | string) %}is-own{% endif %}",
+		id="item-{{ post._id }}",
+		data-id="{{ post._id }}",
+		data-url="{{ post_url }}")
+			a(
+			href="{{ post_url }}",
+			class="item-thumbnail js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
+				.item-thumbnail-picture
+					| {% if post.picture %}
+					img(src="{{ post.picture.thumbnail('m') }}")
+					ea
+					| {% endif %}
+
+			.item-content(data-node-id="{{ post._id }}")
+				div(class="item-rating-box {% if is_positive %} rated {{is_positive}} {% endif %}")
+					.item-rating.up
+						i.pi-angle-up
+					.item-rating.value
+						| {{ rating }}
+
+					.item-rating.down
+						i.pi-angle-down
+
+				.item-details
+					a(
+					href="{{ post_url }}",
+					class="item-title js-item-open")
+						| {{ post.name }}
+					ul
+						| {% if is_link %}
+						li.item-favicon
+							a(href="{{ post.properties.content }}", target="_blank")
+								img(
+								title="Link",
+								src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
+						| {% endif %}
+
+
+						li.item-date.js-item-open.js-convert-date
+							a(href="{{ post_url }}")
+								| {{ post._created }}
+
+						li.item-author
+							a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
+
+						li.
+							{% for tag in post.properties.tags %}
+								{{ tag }}{{ ", " if not loop.last }}
+							{% endfor %}
+
+		| {% endfor %}
+
+	.listing-list-info
+		#list-stats
+		#list-pagination-bottom
+
+#col_right.listing-view
+	.fullscreen-overlay.js-toggle-fullscreen
+	#list-item
+		| {% if 'post' in col_right %}
+		.item-view.loading
+			.item-view-header
+				.item-content
+					.item-rating-box
+						.item-rating.up
+							i.pi-angle-up
+						.item-rating.value &#x221e;
+						.item-rating.down
+							i.pi-angle-down
+					.item-details
+						a#item-title.item-title {{ col_right['post']['name'] }}
+						ul
+							li
+								i.pi-spin.spin
+								span {{ _('Fetching the goods...') }}
+			.item-body
+
+		| {% elif 'activities' in col_right %}
+		.welcome
+			.welcome-info
+				| {% if project.picture_square %}
+				.welcome-logo
+					a(
+					href="{{ url_for('posts.index', community_url=project.url) }}")
+						img(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
+				| {% endif %}
+
+				.welcome-title
+					.title
+						a(href="{{ url_for('posts.index', community_url=project.url) }}")
+							| {{ project.name }}
+						a.beta(href="https://blender.community/c/today/sWbbbc/announcing-blender-community") BETA
+					.summary {{ project.summary }}
+
+					| {% if project.extension_props.dillo %}
+
+					| {% if project.extension_props.dillo.social %}
+					ul.social
+						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
+						| {% if val %}
+						li
+							a(class="pi-social-{{ name }}",
+							title="{{ name | undertitle }}",
+							href="{{ val }}")
+						| {% endif %}
+						| {% endfor %}
+					| {% endif %}
+					| {% endif %}
+
+			.welcome-extra
+				| {{ project.description | markdown }}
+
+			| {% if is_main_project %}
+			.d-communities-list
+				span.d-communities-title {{ _('COMMUNITIES') }}
+
+				| {% from 'dillo/macros/_communities.html' import communities_list %}
+				| {{ communities_list(communities) }}
+
+			| {% else %}
+			.d-activity
+				.title {{ _('What\'s going on') }}:
+
+				| {% if col_right['activities']['_meta']['total'] %}
+				ul
+					| {% for act in col_right['activities']['_items'] %}
+					| {% if act.link and act['actor_user']['email'] %}
+					li
+						a(href="{{ act.link }}")
+							img.actor-avatar(src="{{ act['actor_user']['email'] | gravatar }}", alt="{{ _('Avatar') }}")
+							span.date(title="{{ act._created }}") {{ act._created | pretty_date }}
+							span.actor {{ act['actor_user']['full_name'] }}
+							span.verb {{ act.verb }}
+					| {% endif %}
+					| {% endfor %}
+				| {% else %}
+				p {{ _('No activity... yet!') }}
+				| {% endif %}
+			| {% endif %}
+
+		| {% endif %}
+
+
+| {% endblock body %}

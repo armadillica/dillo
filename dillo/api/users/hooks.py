@@ -21,19 +21,20 @@ def add_extension_props(user: dict):
     """Expand user data with custom dillo fields."""
     user_id = user['_id']
 
-    custom_fields = {
+    extension_props_public = {
         'karma': 0,
         'links': [],
+        'followed_communities': [],
     }
 
     log.debug('Recording user custom extension_props_public for dillo')
 
-    db_fieldname = f'extension_props_public.{EXTENSION_NAME}'
+    db_fieldname_public = f'extension_props_public.{EXTENSION_NAME}'
     users_collection = current_app.data.driver.db['users']
 
     users_collection.find_one_and_update(
         {'_id': user_id},
-        {'$set': {db_fieldname: custom_fields}},
+        {'$set': {db_fieldname_public: extension_props_public}},
     )
 
 

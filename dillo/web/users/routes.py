@@ -3,7 +3,6 @@ import logging
 from flask import abort, current_app, render_template
 
 from bson.objectid import ObjectId
-from pillarsdk import Node
 from pillarsdk import Project, Activity
 from pillar.web.users.routes import blueprint
 from pillar.web import subquery
@@ -44,18 +43,20 @@ def users_view(username):
             'node_type': 'dillo_post',
             'properties.status': 'published',
             '_deleted': False}},
+        {'$limit': current_app.config['PAGINATION_DEFAULT_POSTS']},
         {'$lookup': {
             'from': 'projects',
             'localField': 'project',
             'foreignField': '_id',
             'as': 'project'}},
+        {'$unwind': '$project'},
         {'$project': {
             'name': 1,
             'properties': 1,
             'user': 1,
             'picture': 1,
             '_created': 1,
-            'project': {'$arrayElemAt': ['$project', 0]}
+            'project.url': '$project.url'
         }},
         {'$sort': {'_created': -1}}
     ]

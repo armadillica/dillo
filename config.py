@@ -8,10 +8,18 @@ POST_CATEGORIES = ['Artwork', 'Community', 'Development', 'Add-Ons', 'Education'
 # Used for redirecting to the default community when visiting /c/
 DEFAULT_COMMUNITY = 'main'
 
+# List of the communities whose posts should be displayed in the homepage
+# when browsing anonymously, or if the user did not follow any community
+DEFAULT_FOLLOWED_COMMUNITY_IDS = []
+
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 GOOGLE_SITE_VERIFICATION = ''
 
 SETTINGS_TWITTER_USERNAME = ''
+
+# Since we can't override PAGINATION_DEFAULT from Eve
+PAGINATION_DEFAULT_POSTS = 15
+
 
 ALGOLIA_INDEX_NODES_REPLICAS = {
     'created': '_by_created_desc',

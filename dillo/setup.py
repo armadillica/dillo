@@ -113,7 +113,8 @@ def setup_for_dillo(project_url, replace=False):
     dillo_user_main_group = _ensure_user_main_group()
     for nt in project['node_types']:
         if nt['name'] in {'comment', 'dillo_post'}:
-            groups = nt['permissions']['groups']
+            permissions = nt.get('permissions', {})
+            groups = permissions.get('groups', [])
             groups.append({
                 'group': dillo_user_main_group,
                 'methods': ['GET', 'POST']
