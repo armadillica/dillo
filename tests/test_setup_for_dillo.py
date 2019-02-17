@@ -30,7 +30,7 @@ class SetupForDilloTest(AbstractDilloTest):
 
         url = '/api/projects/%s' % self.project_id
         resp = self.get(url)
-        proj = resp.json()
+        proj = resp.json
 
         put_proj = pillar.api.utils.remove_private_keys(proj)
 
