@@ -50,6 +50,8 @@ def validate_query_parms(request):
         'hot': 'properties.hot',
         'top': 'properties.rating_postive'
     }
+
+    # The default sorting key is -hot (hot descending)
     sorting_key = request.args.get('sorting', '-hot')
 
     # Set default sorting order (ascending)
@@ -86,17 +88,17 @@ def add_communities_filter(pipeline):
     elif current_user.is_authenticated:
         users_coll = current_app.db('users')
         followed_communities_key = f'extension_props_public.{EXTENSION_NAME}.followed_communities'
-        # TODO(fsiddi) understand how to project into a shorter key instead of followed_communities
+        # TODO(fsiddi) project into a shorter key instead of followed_communities
         followed = users_coll.find_one({
             '_id': current_user.user_id,
             followed_communities_key: {'$exists': True, '$ne': []}
         }, {followed_communities_key: 1})
-        # If current user is following communities filter them
+        # If current user is following communities, use them as filter
         if followed:
             fcl = followed['extension_props_public'][EXTENSION_NAME]['followed_communities']
             communities = [c for c in fcl]
             pipeline[0]['$match']['project'] = {'$in': communities}
-        # Else, try to use default communities
+        # Otherwise, try to use default communities
         elif default_followed_community_ids:
             pipeline[0]['$match']['project'] = {'$in': default_followed_community_ids}
 
