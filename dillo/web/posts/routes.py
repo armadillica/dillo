@@ -20,7 +20,6 @@ from pillar.web.utils import attach_project_pictures
 from pillar.web.utils import get_file
 from pillar.web.utils import get_main_project
 from pillar.web.nodes.routes import url_for_node
-from pillar.web.nodes import attachments
 
 from dillo import current_dillo
 from dillo.web.posts.utils import project_submit_menu
