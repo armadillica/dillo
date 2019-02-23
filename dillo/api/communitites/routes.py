@@ -56,14 +56,14 @@ def follow(project_id: str):
         get('followed_communities')
 
     # Check if the user already follows the community
-    if followed_communities and project_id in followed_communities:
+    if followed_communities and community['_id'] in followed_communities:
         log.debug('User already follows community %s' % community['url'])
         return abort(403)
 
     followed_communities_key = f'extension_props_public.{EXTENSION_NAME}.followed_communities'
     users_coll.update_one(
         {'_id': current_user.user_id},
-        {'$addToSet': {followed_communities_key: project_id}})
+        {'$addToSet': {followed_communities_key: community['_id']}})
 
     return jsonify({'_status': 'OK'})
 
@@ -88,14 +88,14 @@ def unfollow(project_id: str):
         return abort(400)
 
     # Check if the user already does not follow the community
-    if followed_communities and project_id not in followed_communities:
+    if followed_communities and community['_id'] not in followed_communities:
         log.debug('User does not follow community %s' % community['url'])
         return abort(403)
 
     followed_communities_key = f'extension_props_public.{EXTENSION_NAME}.followed_communities'
     users_coll.update_one(
         {'_id': current_user.user_id},
-        {'$pull': {followed_communities_key: project_id}})
+        {'$pull': {followed_communities_key: community['_id']}})
 
     log.debug('Community %s successfully unfollowed' % community['name'])
     return jsonify({'_status': 'OK',
