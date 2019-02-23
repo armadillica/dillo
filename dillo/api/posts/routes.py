@@ -12,8 +12,6 @@ log = logging.getLogger(__name__)
 
 blueprint_api = Blueprint('posts_api', __name__)
 
-POSTS_MAX_RESULTS = 15
-
 
 def validate_query_parms(request):
     """Given a request, prepare the query params for get_post().
@@ -113,12 +111,13 @@ def get_posts():
     - page
     - sorting (hot, top, new)
 
-    We limit the amount of results to 15 (POSTS_MAX_RESULTS) per request.
+    We limit the amount of results to 15 (config PAGINATION_DEFAULT_POSTS) per request.
     """
 
     # Validate query parameters and define sorting and pagination
     page, sorting = validate_query_parms(flask.request)
-    skip = POSTS_MAX_RESULTS * (page - 1)
+    pagination_default = current_app.config['PAGINATION_DEFAULT_POSTS']
+    skip = pagination_default * (page - 1)
 
     pipeline = [
         # Find all Dillo posts that are published and not deleted
@@ -137,19 +136,28 @@ def get_posts():
             'metadata': [{'$count': 'total'}, {'$addFields': {'page': page}}],
             'data': [
                 {'$skip': skip},
-                {'$limit': POSTS_MAX_RESULTS},
+                {'$limit': pagination_default},
+                # Aggregate the project
                 {'$lookup': {
                     'from': 'projects',
                     'localField': 'project',
                     'foreignField': '_id',
                     'as': 'project'}},
+                {'$unwind': '$project'},
+                # Aggregate the user
+                {'$lookup': {
+                    'from': 'users',
+                    'localField': 'user',
+                    'foreignField': '_id',
+                    'as': 'user'}},
+                {'$unwind': '$user'},
                 {'$project': {
                     'name': 1,
                     'properties': 1,
-                    'user': 1,
                     'picture': 1,
                     '_created': 1,
-                    'project': {'$arrayElemAt': ['$project', 0]}
+                    'project': '$project.url',
+                    'user': '$user.username'
                 }},
             ]
         }},

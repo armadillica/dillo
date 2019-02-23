@@ -17,6 +17,10 @@ GOOGLE_SITE_VERIFICATION = ''
 
 SETTINGS_TWITTER_USERNAME = ''
 
+# Since we can't override PAGINATION_DEFAULT from Eve
+PAGINATION_DEFAULT_POSTS = 15
+
+
 ALGOLIA_INDEX_NODES_REPLICAS = {
     'created': '_by_created_desc',
     'rating': '_by_rating_desc',

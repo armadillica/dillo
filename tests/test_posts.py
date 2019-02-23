@@ -240,8 +240,6 @@ class TestPostsListing(AbstractDilloTest):
             self.assertEqual(6, r.json['metadata'][0]['total'])
 
     def test_pagination(self):
-        from dillo.api.posts.routes import POSTS_MAX_RESULTS
-
         self.create_posts(self.user_id, 'tina-token', amount_per_project=10)
 
         with self.app.app_context():
@@ -251,10 +249,12 @@ class TestPostsListing(AbstractDilloTest):
             metadata = r.json['metadata'][0]
             data = r.json['data']
 
-            # Ensure that the first page, with POSTS_MAX_RESULTS elements is being retrieved
+            # Ensure that the first page, with PAGINATION_DEFAULT_POSTS elements
+            # is being retrieved
+            pagination_default = self.app.config['PAGINATION_DEFAULT_POSTS']
             self.assertEqual(30, metadata['total'])
             self.assertEqual(1, metadata['page'])
-            self.assertEqual(POSTS_MAX_RESULTS, len(data))
+            self.assertEqual(pagination_default, len(data))
 
             # Query for for all posts, page 2 /api/posts?page=2
             url = flask.url_for('posts_api.get_posts', page=2)
@@ -263,7 +263,7 @@ class TestPostsListing(AbstractDilloTest):
             data = r.json['data']
 
             self.assertEqual(2, metadata['page'])
-            self.assertEqual(POSTS_MAX_RESULTS, len(data))
+            self.assertEqual(pagination_default, len(data))
 
     def test_sorting_hot(self):
         with self.app.app_context():

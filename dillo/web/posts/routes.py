@@ -102,9 +102,19 @@ def index_all():
     project = get_main_project()
     attach_project_pictures(project, api)
 
+    # Query API for followed communities
+    posts_request = api.http_call('/api/posts/', 'GET')
+    posts = posts_request['data']
+
+    # Attach pictures
+    for post in posts:
+        if post.get('picture'):
+            post['picture'] = get_file(post['picture'], api=api)
+
     return render_template(
-        'dillo/index.html',
+        'dillo/index_followed.html',
         col_right={'activities': {'_meta': {'total': 0}}},
+        posts=posts,
         project=project)
 
 
