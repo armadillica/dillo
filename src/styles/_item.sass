@@ -719,11 +719,15 @@ body[data-context="post-edit"]
     background-color: $color-background-light
     max-width: unset // Pillar sets a max-width in pixels.
 
-    .sign-in a
+    a, .sign-in a
       color: var(--community-theme-color, $color-primary) !important
 
+    .comment-action span,
     .comment-action-reply span
       color: var(--community-theme-color, $color-primary)
+
+      &:hover
+        color: $color-text !important
 
     .comments-list-title
       padding: 10px 25px
