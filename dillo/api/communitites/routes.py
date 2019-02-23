@@ -1,20 +1,21 @@
 import logging
 
-from flask import current_app, abort, jsonify
+from flask import Blueprint, current_app, abort, jsonify
 
 from pillar.api.utils.authorization import require_login
-from pillar.api.users.routes import blueprint_api
 from pillar.api.utils import str2id
 from pillar.auth import current_user
 
 from dillo import EXTENSION_NAME
 
+
 log = logging.getLogger(__name__)
+blueprint_api = Blueprint('communitites_api', __name__)
 
 
 @blueprint_api.route('/follow/<string(length=24):project_id>', methods=['POST'])
 @require_login()
-def follow_community(project_id: str):
+def follow(project_id: str):
     """Add the community to followed_communities."""
 
     project_id = str2id(project_id)

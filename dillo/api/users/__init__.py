@@ -2,7 +2,6 @@ import logging
 import bson
 from flask import current_app
 from . import hooks
-from . import routes  # Extend Pillar user API routes
 
 log = logging.getLogger(__name__)
 

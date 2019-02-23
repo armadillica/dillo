@@ -34,7 +34,7 @@ class UserTest(AbstractDilloTest):
 
     def test_follow_community_happy(self):
         self.create_valid_auth_token(self.local_user_id)
-        r = self.post(f'/api/users/follow/{self.proj_id}', expected_status=200,
+        r = self.post(f'/api/communities/follow/{self.proj_id}', expected_status=200,
                       auth_token='token').get_json()
         self.assertEqual('OK', r['_status'])
 
@@ -43,8 +43,8 @@ class UserTest(AbstractDilloTest):
         self.assertIn(self.proj_id, db_user['extension_props_public'][EXTENSION_NAME]['followed_communities'])
 
     def test_follow_community_non_authenticated(self):
-        self.post(f'/api/users/follow/{self.proj_id}', expected_status=403)
+        self.post(f'/api/communities/follow/{self.proj_id}', expected_status=403)
 
     def test_follow_community_non_existing_or_deleted(self):
-        self.post(f'/api/users/follow/invalid_url', expected_status=404)
+        self.post(f'/api/communities/follow/invalid_url', expected_status=404)
         # TODO(fsiddi) create and delete a project, ensure it's not possible to follow it
