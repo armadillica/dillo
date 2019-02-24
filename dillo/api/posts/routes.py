@@ -163,6 +163,6 @@ def get_posts():
     posts_cursor = list(nodes_coll.aggregate(pipeline=pipeline))
 
     return jsonify({
-        'metadata': posts_cursor[0]['metadata'],
+        'metadata': posts_cursor[0]['metadata'][0],  # Only the first element from the list
         'data': posts_cursor[0]['data'],
     })

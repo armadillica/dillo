@@ -111,9 +111,17 @@ def posts_list():
     for post in posts:
         if post.get('picture'):
             post['picture'] = get_file(post['picture'], api=api)
+
+    # Check if we are at the last page
+    is_last_page = False
+    if len(posts) < current_app.config['PAGINATION_DEFAULT_POSTS']:
+        is_last_page = True
+
     return render_template(
         'dillo/posts_list.html',
         posts=posts,
+        metadata=posts_request['metadata'],
+        is_last_page=is_last_page,
     )
 
 
