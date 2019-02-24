@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 blueprint_api = Blueprint('posts_api', __name__)
 
 
-def validate_query_parms(request):
+def validate_query_string(request):
     """Given a request, prepare the query params for get_post().
 
     Looks for query arguments 'page' and 'sorting'.
@@ -42,23 +42,15 @@ def validate_query_parms(request):
             '_status': 'ERR',
             'message': 'The argument "page" should be an positive int.'}), 400))
 
-    # Handle sorting (new, hot, top)
+    # Handle sorting (new, hot, top) with hardcoded order
     sorting_options = {
-        'new': '_created',
-        'hot': 'properties.hot',
-        'top': 'properties.rating_postive'
+        'new': {'_created': -1},
+        'hot': {'properties.hot': -1},
+        'top': {'properties.rating_postive': -1}
     }
 
-    # The default sorting key is -hot (hot descending)
-    sorting_key = request.args.get('sorting', '-hot')
-
-    # Set default sorting order (ascending)
-    sorting_order = 1
-
-    # Check if sorting is descending
-    if sorting_key.startswith('-'):
-        sorting_key = sorting_key[1:]
-        sorting_order = -1
+    # The default sorting key is hot (hot descending)
+    sorting_key = request.args.get('sorting', 'hot')
 
     # Ensure that sorting key is valid
     if sorting_key not in sorting_options:
@@ -66,7 +58,7 @@ def validate_query_parms(request):
             '_status': 'ERR',
             'message': 'The argument "sorting" should be "new", "hot" or "top".'}), 400))
 
-    sorting = {sorting_options[sorting_key]: sorting_order}
+    sorting = sorting_options[sorting_key]
 
     return page, sorting
 
@@ -115,7 +107,7 @@ def get_posts():
     """
 
     # Validate query parameters and define sorting and pagination
-    page, sorting = validate_query_parms(flask.request)
+    page, sorting = validate_query_string(flask.request)
     pagination_default = current_app.config['PAGINATION_DEFAULT_POSTS']
     skip = pagination_default * (page - 1)
 

@@ -1,0 +1,68 @@
+| {% for post in posts %}
+
+	| {% if post.properties.post_type == 'link' %}
+	| {% set is_link = true %}
+	| {% endif %}
+
+	| {% if post.properties.rating_positive or post.properties.rating_negative %}
+	| {% set is_positive = 'negative' %}
+	| {% if post.properties.rating_positive %}
+	| {% set is_positive = 'positive' %}
+	| {% endif %}
+	| {% endif %}
+
+	| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
+	| {% set post_url = url_for('posts.view', community_url=post.project.url, post_shortcode=post.properties.shortcode) %}
+
+	.list-hits-item(
+	class="{% if post.user == (current_user.user_id | string) %}is-own{% endif %}",
+	id="item-{{ post._id }}",
+	data-id="{{ post._id }}",
+	data-url="{{ post_url }}")
+		a(
+		href="{{ post_url }}",
+		class="item-thumbnail js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
+			.item-thumbnail-picture
+				| {% if post.picture %}
+				img(src="{{ post.picture.thumbnail('m') }}")
+				ea
+				| {% endif %}
+
+		.item-content(data-node-id="{{ post._id }}")
+			div(class="item-rating-box {% if is_positive %} rated {{is_positive}} {% endif %}")
+				.item-rating.up
+					i.pi-angle-up
+				.item-rating.value
+					| {{ rating }}
+
+				.item-rating.down
+					i.pi-angle-down
+
+			.item-details
+				a(
+				href="{{ post_url }}",
+				class="item-title js-item-open")
+					| {{ post.name }}
+				ul
+					| {% if is_link %}
+					li.item-favicon
+						a(href="{{ post.properties.content }}", target="_blank")
+							img(
+							title="Link",
+							src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
+					| {% endif %}
+
+
+					li.item-date.js-item-open.js-convert-date
+						a(href="{{ post_url }}")
+							| {{ post._created }}
+
+					li.item-author
+						a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
+
+					li.
+						{% for tag in post.properties.tags %}
+							{{ tag }}{{ ", " if not loop.last }}
+						{% endfor %}
+
+| {% endfor %}
