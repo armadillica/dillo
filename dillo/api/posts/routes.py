@@ -46,7 +46,7 @@ def validate_query_string(request):
     sorting_options = {
         'new': {'_created': -1},
         'hot': {'properties.hot': -1},
-        'top': {'properties.rating_postive': -1}
+        'top': {'properties.rating_positive': -1}
     }
 
     # The default sorting key is hot (hot descending)
