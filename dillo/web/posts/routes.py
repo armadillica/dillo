@@ -128,7 +128,17 @@ def index(community_url):
 
     attach_project_pictures(project, api)
 
-    # Fetch all activities for the main project
+    # Community is not followed by default
+    community_is_followed = False
+
+    # Check if community is followed
+    if current_user.is_authenticated:
+        user = User.find(current_user.objectid, api=api)
+        if 'followed_communities' in user['extension_props_public']['dillo'] \
+                and project['_id'] in user['extension_props_public']['dillo']['followed_communities']:
+            community_is_followed = True
+
+    # Fetch all activities for the project
     activities = Activity.all({
         'where': {
             'project': project['_id'],
@@ -151,7 +161,8 @@ def index(community_url):
         'dillo/index.html',
         col_right={'activities': activities},
         project=project,
-        submit_menu=project_submit_menu(project))
+        submit_menu=project_submit_menu(project),
+        community_is_followed=community_is_followed,)
 
 
 @blueprint.route("/p/<string(length=24):post_id>/rate/<operation>", methods=['POST'])
