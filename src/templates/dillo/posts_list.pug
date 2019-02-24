@@ -66,3 +66,10 @@
 					{% endfor %}
 
 | {% endfor %}
+
+| {% if not is_last_page %}
+| {# This element is handled via jQuery #}
+a(id="js-load-more", href="#", data-next-page="{{ metadata['page'] + 1 }}") Load More
+| {% else %}
+p No more posts!
+| {% endif %}
