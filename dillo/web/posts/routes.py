@@ -90,30 +90,43 @@ def create(community_url: str, post_type: str):
         _scheme=current_app.config['SCHEME']))
 
 
-@blueprint.route('/c/')
-def index_all():
-    """Aggregated view of all posts for the public communities.
+@blueprint.route('/posts/')
+def posts_list():
+    """Generate an embeddable list of posts.
+
+    Aggregated view of all posts for the public communities.
 
     If a user has a set of favourite communites in its settings, use those
     instead.
     """
     api = system_util.pillar_api()
-    project = get_main_project()
-    attach_project_pictures(project, api)
 
-    # Query API for followed communities
-    posts_request = api.http_call('/api/posts/', 'GET')
+    sorting = request.args.get('sorting', 'hot')
+    page = request.args.get('page', 1)
+    url = f'/api/posts/?sorting={sorting}&page={page}'
+
+    posts_request = api.http_call(url, method='GET')
     posts = posts_request['data']
-
     # Attach pictures
     for post in posts:
         if post.get('picture'):
             post['picture'] = get_file(post['picture'], api=api)
+    return render_template(
+        'dillo/posts_list.html',
+        posts=posts,
+    )
+
+
+@blueprint.route('/c/')
+def index_all():
+    """Landing page. Posts are loaded asynchronously."""
+    api = system_util.pillar_api()
+    project = get_main_project()
+    attach_project_pictures(project, api)
 
     return render_template(
         'dillo/index_followed.html',
         col_right={'activities': {'_meta': {'total': 0}}},
-        posts=posts,
         project=project)
 
 
