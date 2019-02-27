@@ -16,7 +16,7 @@ blueprint_api = Blueprint('posts_api', __name__)
 def validate_query_string(request):
     """Given a request, prepare the query params for get_post().
 
-    Looks for query arguments 'page' and 'sorting'.
+    Looks for query arguments 'page', 'sorting' and 'filter_tags'.
 
     Returns:
         A tuple featuring page and sorting paramters to be used in an
@@ -60,7 +60,10 @@ def validate_query_string(request):
 
     sorting = sorting_options[sorting_key]
 
-    return page, sorting
+    # Handle filters
+    filter_tags = request.args.getlist('filter_tags[]')
+
+    return page, sorting, filter_tags
 
 
 def add_communities_filter(pipeline):
@@ -93,6 +96,18 @@ def add_communities_filter(pipeline):
             pipeline[0]['$match']['project'] = {'$in': default_followed_community_ids}
 
 
+def add_facet_tags(pipeline):
+    """Given an aggregation pipeline, add elements to the facet step."""
+    pipeline[2]['$facet']['facet_tags'] = [
+        {'$unwind': '$properties.tags'},
+        {'$sortByCount': '$properties.tags'}
+      ]
+
+
+def add_filter_tags(pipeline, filter_tags):
+    pipeline[0]['$match']['properties.tags'] = {'$in': filter_tags}
+
+
 @blueprint_api.route('/')
 def get_posts():
     """Fetch list of paginated posts.
@@ -102,12 +117,15 @@ def get_posts():
 
     - page
     - sorting (hot, top, new)
+    - filters (tags, development_status)
 
     We limit the amount of results to 15 (config PAGINATION_DEFAULT_POSTS) per request.
+    Together with data and metadata, we also return 'facets' which act as 'filters'
+    when performing requests to this endpoint.
     """
 
     # Validate query parameters and define sorting and pagination
-    page, sorting = validate_query_string(flask.request)
+    page, sorting, filter_tags = validate_query_string(flask.request)
     pagination_default = current_app.config['PAGINATION_DEFAULT_POSTS']
     skip = pagination_default * (page - 1)
 
@@ -157,12 +175,18 @@ def get_posts():
     ]
 
     add_communities_filter(pipeline)
+    if filter_tags:
+        add_filter_tags(pipeline, filter_tags)
+    add_facet_tags(pipeline)
 
     nodes_coll = current_app.db('nodes')
     # The cursor will return only one item in the list
     posts_cursor = list(nodes_coll.aggregate(pipeline=pipeline))
 
-    return jsonify({
+    docs = {
         'metadata': posts_cursor[0]['metadata'][0],  # Only the first element from the list
         'data': posts_cursor[0]['data'],
-    })
+        'facet_tags': posts_cursor[0]['facet_tags']
+    }
+
+    return jsonify(docs)
