@@ -57,10 +57,12 @@ li
 #col_main.listing-list
 
 	.listing-list-info
-		select(id="list-sort-by", title="{{ _('Sort by') }}")
+		#facets
+		select(id="js-list-sort-by", title="{{ _('Sort by') }}")
 			option(value="hot") {{ _('Hot') }}
 			option(value="new") {{ _('New') }}
 			option(value="top") {{ _('Top') }}
+
 		#list-pagination
 
 	#list-hits
@@ -171,24 +173,29 @@ script.
 			if (append === undefined) { append = false};
 			//- The endpoint where we query for posts
 			$.get("{{ url_for('posts.posts_list') }}", params, function (dataHtml) {
+				var $dataHtml = $(dataHtml);
 				if (append) {
 					//- We are probably paginating
-					$('#list-hits').append(dataHtml);
+					$('#list-hits').append($dataHtml);
 				} else {
 					//- We are probably sorting
-					$('#list-hits').html(dataHtml);
+					$('#list-hits').html($dataHtml);
 				}
+
+				//- Capture the list-facet element and move it before #list-sort-by
+				var $facetTags = $dataHtml.filter("#js-facet-tags").detach();
+				$("#facets").html($facetTags);
 			});
 		}
 
 		//- Load default posts
 		fetchPosts();
 
-		var $sortingDropDown = $("#list-sort-by");
+		var $sortingDropDown = $("#js-list-sort-by");
 
 		$sortingDropDown.change(function () {
 			//- TODO(fsiddi) prevent reloading of same sorting
-			fetchPosts({'sorting': this.value});
+			fetchPosts({'sorting': $(this).val()});
 		});
 
 		$(document).on('click', 'body #js-load-more', function (e) {
@@ -200,6 +207,13 @@ script.
 				'sorting': $sortingDropDown.value,
 				'page': $(this).data('next-page')
 			}, true);
+		});
+
+		$(document).on('change', 'body #js-facet-tags', function (e) {
+			fetchPosts({
+				'sorting': $sortingDropDown.val(),
+				'filter_tags[]': [$(this).val()]
+			});
 		});
 
 	});

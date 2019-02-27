@@ -73,3 +73,8 @@ a(id="js-load-more", href="#", data-next-page="{{ metadata['page'] + 1 }}") Load
 | {% else %}
 p No more posts!
 | {% endif %}
+
+select(id="js-facet-tags", title="{{ _('Tags') }}")
+	| {% for tag in facet_tags %}
+	option(value="{{ tag['_id'] }}") {{ tag['_id'] }} {{ tag['count'] }}
+	| {% endfor %}
