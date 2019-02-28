@@ -308,3 +308,23 @@ class TestPostsListing(AbstractDilloTest):
             # Ensure that every post has has less or equal creation date than the following
             # TODO(fsiddi) ensure there is enough time between creation dates
             self.assertGreaterEqual(p['_created'], following_post['_created'])
+
+    def test_filter_community(self):
+        posts_count = 10
+        self.create_posts(self.user_id, 'tina-token', amount_per_project=posts_count)
+
+        # Get the first community created
+        community_id = self.projects[0][0]
+        community_url = self.projects[0][1]['url']
+
+        # Query for all posts belonging to one community
+        r = self.get(f'/api/posts?community_id={community_id}')
+        data = r.json['data']
+        metadata = r.json['metadata']
+
+        # Ensure that we only get the expected amount of posts
+        self.assertEqual(posts_count, metadata['total'])
+
+        # Ensure that each post belong to the correct project
+        for p in data:
+            self.assertEqual(community_url, p['project'])
