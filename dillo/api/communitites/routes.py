@@ -65,7 +65,8 @@ def follow(project_id: str):
         {'_id': current_user.user_id},
         {'$addToSet': {followed_communities_key: community['_id']}})
 
-    return jsonify({'_status': 'OK'})
+    return jsonify({'_status': 'OK',
+                    'message': f"Following {community['name']}"})
 
 
 @blueprint_api.route('/unfollow/<string(length=24):project_id>', methods=['POST'])
@@ -99,4 +100,4 @@ def unfollow(project_id: str):
 
     log.debug('Community %s successfully unfollowed' % community['name'])
     return jsonify({'_status': 'OK',
-                    'message': f"Community {community['name']} unfollowed."})
+                    'message': f"Unfollowed {community['name']}"})
