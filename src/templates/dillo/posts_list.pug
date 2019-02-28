@@ -66,12 +66,10 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 				li.item-author
 					a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
 
-
 | {% endfor %}
 
 | {% if not is_last_page %}
-.d-flex
-	| {# This element is handled via jQuery #}
-	a.btn.px-5.mx-auto(id="js-load-more", href="#", data-next-page="{{ metadata['page'] + 1 }}") Load More
+script.
+	document.getElementById("col_main").setAttribute("data-next-page", "{{ metadata['page'] + 1 }}");
 | {% endif %}
 

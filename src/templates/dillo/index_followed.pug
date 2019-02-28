@@ -55,7 +55,6 @@ li
 
 | {% block body %}
 #col_main.listing-list
-
 	.listing-list-info
 		#facets
 		select(id="js-list-sort-by", title="{{ _('Sort by') }}")
@@ -163,7 +162,6 @@ li
 
 | {% block footer_scripts %}
 script.
-
 	$(document).ready(function () {
 
 		function fetchPosts(params, append) {
@@ -189,7 +187,7 @@ script.
 			});
 		}
 
-		//- Load default posts
+		//- Load default posts.
 		fetchPosts();
 
 		var $sortingDropDown = $("#js-list-sort-by");
@@ -199,15 +197,24 @@ script.
 			fetchPosts({'sorting': $(this).val()});
 		});
 
-		$(document).on('click', 'body #js-load-more', function (e) {
-		// $("#js-load-more").on('click', function (e) {
-			e.preventDefault();
-			//- Remove the Load More button (it will be recreated by the new page loaded)
-			$(this).remove();
+		function fetchPostsNextPage(){
+			var nextPage = $('#col_main').data('next-page');
+
 			fetchPosts({
 				'sorting': $sortingDropDown.value,
-				'page': $(this).data('next-page')
+				'page': nextPage
 			}, true);
+		}
+
+		$( "#col_main" ).scroll(function() {
+			//visible height + pixel scrolled = total height
+			if(this.offsetHeight + this.scrollTop == this.scrollHeight){
+				//- Once the end of the pageis reached, move one pixel up to avoid
+				//- getting stuck loading multiple times.
+				//- TODO(pablo) find a nicer way to avoid this.
+				this.scrollTop = this.scrollTop - 1;
+				fetchPostsNextPage();
+			};
 		});
 
 		$(document).on('change', 'body #js-facet-tags', function (e) {
