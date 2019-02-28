@@ -13,19 +13,8 @@ log = logging.getLogger(__name__)
 blueprint_api = Blueprint('posts_api', __name__)
 
 
-def validate_query_string(request):
-    """Given a request, prepare the query params for get_post().
-
-    Looks for query arguments 'page', 'sorting' and 'filter_tags'.
-
-    Returns:
-        A tuple featuring page and sorting paramters to be used in an
-        aggregation pipeline.
-        Default values are 1 and 'hot'.
-    """
-
-    # Handle pagination
-    page = request.args.get('page', 1)
+def validate_query_string_page(page):
+    """Process the page query string in the request."""
     try:
         page = int(page)
     except ValueError:
@@ -41,16 +30,16 @@ def validate_query_string(request):
         abort(make_response(flask.jsonify({
             '_status': 'ERR',
             'message': 'The argument "page" should be an positive int.'}), 400))
+    return page
 
-    # Handle sorting (new, hot, top) with hardcoded order
+
+def validate_query_string_sorting(sorting_key):
+    """Process the sorting query string in the request."""
     sorting_options = {
         'new': {'_created': -1},
         'hot': {'properties.hot': -1},
         'top': {'properties.rating_positive': -1}
     }
-
-    # The default sorting key is hot (hot descending)
-    sorting_key = request.args.get('sorting', 'hot')
 
     # Ensure that sorting key is valid
     if sorting_key not in sorting_options:
@@ -58,12 +47,40 @@ def validate_query_string(request):
             '_status': 'ERR',
             'message': 'The argument "sorting" should be "new", "hot" or "top".'}), 400))
 
-    sorting = sorting_options[sorting_key]
+    return sorting_options[sorting_key]
+
+
+def validate_query_string_community(community_id):
+    if community_id and not ObjectId.is_valid(community_id):
+        abort(make_response(flask.jsonify({
+            '_status': 'ERR',
+            'message': f'{community_id} is not a valid community id.'}), 400))
+
+    return community_id
+
+
+def validate_query_strings(request):
+    """Given a request, prepare the query params for get_post().
+
+    Looks for query arguments 'page', 'sorting' and 'filter_tags'.
+
+    Returns:
+        A tuple featuring page and sorting paramters to be used in an
+        aggregation pipeline.
+        Default values are 1 and 'hot'.
+    """
+
+    # Handle pagination
+    page = validate_query_string_page(request.args.get('page', 1))
+
+    # Handle sorting (new, hot, top) with hardcoded order
+    sorting = validate_query_string_sorting(request.args.get('sorting', 'hot'))
 
     # Handle filters
     filter_tags = request.args.getlist('filter_tags[]')
+    filter_community = validate_query_string_community(request.args.get('community_id'))
 
-    return page, sorting, filter_tags
+    return page, sorting, filter_tags, filter_community
 
 
 def add_communities_filter(pipeline):
@@ -108,6 +125,10 @@ def add_filter_tags(pipeline, filter_tags):
     pipeline[0]['$match']['properties.tags'] = {'$in': filter_tags}
 
 
+def add_filter_community(pipeline, filter_community):
+    pipeline[0]['$match']['project'] = ObjectId(filter_community)
+
+
 @blueprint_api.route('/')
 def get_posts():
     """Fetch list of paginated posts.
@@ -125,7 +146,7 @@ def get_posts():
     """
 
     # Validate query parameters and define sorting and pagination
-    page, sorting, filter_tags = validate_query_string(flask.request)
+    page, sorting, filter_tags, filter_community = validate_query_strings(flask.request)
     pagination_default = current_app.config['PAGINATION_DEFAULT_POSTS']
     skip = pagination_default * (page - 1)
 
@@ -174,7 +195,13 @@ def get_posts():
 
     ]
 
-    add_communities_filter(pipeline)
+    if filter_community:
+        # If a community is specified, show only posts that belong to it
+        add_filter_community(pipeline, filter_community)
+    else:
+        # We are not viewing a community, use the aggregated communities
+        add_communities_filter(pipeline)
+
     if filter_tags:
         add_filter_tags(pipeline, filter_tags)
     add_facet_tags(pipeline)

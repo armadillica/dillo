@@ -111,6 +111,10 @@ def posts_list():
     if filter_tags:
         url = f'{url}&filter_tags[]={filter_tags}'
 
+    filter_community = request.args.get('community')
+    if filter_community:
+        url = f'{url}&community_id={filter_community}'
+
     posts_request = api.http_call(url, method='GET')
     posts = posts_request['data']
     # Attach pictures
