@@ -58,6 +58,11 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 							src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 				| {% endif %}
 
+				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
+					{# Display two tags max in the list. #}
+					{% for tag in post.properties.tags[:2] %}
+						{{ tag }}{{ ", " if not loop.last }}
+					{% endfor %}
 
 				li.item-date.js-item-open.js-convert-date
 					a(href="{{ post_url }}")
@@ -66,11 +71,6 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 				li.item-author
 					a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
 
-				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
-					{# Display two tags max in the list. #}
-					{% for tag in post.properties.tags[:2] %}
-						{{ tag }}{{ ", " if not loop.last }}
-					{% endfor %}
 
 | {% endfor %}
 
