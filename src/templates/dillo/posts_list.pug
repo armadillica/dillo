@@ -60,8 +60,9 @@
 				li.item-author
 					a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
 
-				li.
-					{% for tag in post.properties.tags %}
+				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
+					{# Display two tags max in the list. #}
+					{% for tag in post.properties.tags[:2] %}
 						{{ tag }}{{ ", " if not loop.last }}
 					{% endfor %}
 
