@@ -602,59 +602,35 @@ h4 .emoji
   vertical-align: middle
 
 .welcome
-  align-items: center
   background-color: $color-background-light
   border-radius: 3px
   box-shadow: 1px 2px 2px rgba(black, .2)
   display: flex
   flex-direction: column
   margin: 8px
-  padding: 0 25px
-
-  &-info
-    align-items: center
-    display: flex
-    justify-content: center
-    padding: 20px
+  padding: 0 20px
 
   &-logo
     max-height: 90px
-    max-width: 90px
-    margin-right: 20px
+    max-width: 120px
 
-    img
-      width: 100%
-
-  &-title
+  .social
     display: flex
-    flex-direction: column
-    font-size: 1.7em
-    position: relative
+    font-size: 1.4em
+    list-style-type: none
+    margin: 0
+    padding: 10px 0 0
 
     a
-      text-decoration: none
-
-    .summary
-      cursor: default
-      display: inline-block
-      font-size: $font-size
-      position: relative
-
-    .social
-      display: flex
-      font-size: .8em
-      list-style-type: none
-      margin: 0
-      padding: 10px 0 0
-
-      a
-        background-color: $color-background-light
-        margin-right: 5px
+      background-color: $color-background-light
+      margin-right: 5px
 
   &-extra
-    padding: 0 15px 15px
-    margin: 15px auto
-    max-width: 600px
+    max-width: 720px
+
+.node-details-description
+  a
+    color: var(--community-theme-color, $color-primary) !important
 
 .flyout
   &.notifications
@@ -756,14 +732,11 @@ h4 .emoji
     > ul
       display: flex
       flex-wrap: wrap
-      // flex-direction: column
       list-style: none
       margin: 0
       padding: 0 3px
 
       > li
-        +media-sm
-          width: 100%
         width: 50%
 
         > a
@@ -771,7 +744,6 @@ h4 .emoji
 
           &:hover
             background-color: initial
-
 
 
   &-item

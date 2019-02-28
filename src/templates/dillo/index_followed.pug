@@ -94,36 +94,38 @@ li
 
 		| {% elif 'activities' in col_right %}
 		.welcome
-			.welcome-info
+			.d-flex.px-3.py-4
 				| {% if project.picture_square %}
-				.welcome-logo
-					a(
-					href="{{ url_for('posts.index', community_url=project.url) }}")
-						img(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
+				a.welcome-logo.mr-4(href="{{ url_for('posts.index', community_url=project.url) }}")
+					img.w-100(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
 				| {% endif %}
 
-				.welcome-title
-					.title
-						a(href="{{ url_for('posts.index', community_url=project.url) }}")
-							| {{ project.name }}
+				.d-block
+					a.h3.my-1.d-block(href="{{ url_for('posts.index', community_url=project.url) }}")
+						| {{ project.name }}
+
+					| {% if project.summary %}
 					.summary {{ project.summary }}
+					| {% endif %}
 
-					| {% if project.extension_props.dillo %}
+					| {# Social buttons #}
+					.d-flex.align-items-center
+						| {% if project.extension_props.dillo %}
 
-					| {% if project.extension_props.dillo.social %}
-					ul.social
-						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
-						| {% if val %}
-						li
-							a(class="pi-social-{{ name }}",
-							title="{{ name | undertitle }}",
-							href="{{ val }}")
+						| {% if project.extension_props.dillo.social %}
+						ul.social.ml-3
+							| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
+							| {% if val %}
+							li
+								a(class="pi-social-{{ name }}",
+									title="{{ name | undertitle }}",
+									href="{{ val }}")
+							| {% endif %}
+							| {% endfor %}
 						| {% endif %}
-						| {% endfor %}
-					| {% endif %}
-					| {% endif %}
+						| {% endif %}
 
-			.welcome-extra
+			.node-details-description.p-3
 				| {{ project.description | markdown }}
 
 			| {% if is_main_project %}
