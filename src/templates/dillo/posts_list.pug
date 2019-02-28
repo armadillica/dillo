@@ -40,6 +40,11 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 				class="item-title js-item-open")
 				| {{ post.name }}
 			ul
+				| {% if rating > 5 %}
+				li(title="Hot Stuff")
+					i.pi-fire.text-danger
+				| {% endif %}
+
 				| {% if is_link %}
 				li.item-favicon
 					a(href="{{ post.properties.content }}", target="_blank")
