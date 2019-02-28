@@ -3,7 +3,6 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 	option(value="{{ tag['_id'] }}") {{ tag['_id'] }} {{ tag['count'] }}
 	| {% endfor %}
 
-
 | {% for post in posts %}
 
 | {% if post.properties.post_type == 'link' %}
@@ -35,16 +34,7 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 			| {% endif %}
 
 	.item-content(data-node-id="{{ post._id }}")
-		div(class="item-rating-box {% if is_positive %} rated {{is_positive}} {% endif %}")
-			.item-rating.up
-				i.pi-angle-up
-			.item-rating.value
-				| {{ rating }}
-
-			.item-rating.down
-				i.pi-angle-down
-
-		.item-details
+		.item-details.pl-3
 			a(
 				href="{{ post_url }}",
 				class="item-title js-item-open")
