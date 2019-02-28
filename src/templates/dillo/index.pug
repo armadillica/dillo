@@ -117,13 +117,6 @@ li
 
 | {% block body %}
 #col_main.listing-list
-
-	a(
-	href="#",
-	id="follow-toggle",
-	data-action="{% if community_is_followed %}unfollow{% else %}follow{% endif %}")
-		| {% if community_is_followed %}Unfollow{% else %}Follow{% endif %}
-
 	.listing-list-info
 		#list-sort-by(title="{{ _('Sort by') }}")
 		#list-pagination
@@ -163,36 +156,52 @@ li
 
 		| {% elif 'activities' in col_right %}
 		.welcome
-			.welcome-info
+			.d-flex.px-3.py-4
 				| {% if project.picture_square %}
-				.welcome-logo
-					a(
-						href="{{ url_for('posts.index', community_url=project.url) }}")
-						img(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
+				a.welcome-logo.mr-4(href="{{ url_for('posts.index', community_url=project.url) }}")
+					img.w-100(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
 				| {% endif %}
 
-				.welcome-title
-					.title
-						a(href="{{ url_for('posts.index', community_url=project.url) }}")
-							| {{ project.name }}
+				.d-block
+					a.h3.my-1.d-block(href="{{ url_for('posts.index', community_url=project.url) }}")
+						| {{ project.name }}
+
+					| {% if project.summary %}
 					.summary {{ project.summary }}
+					| {% endif %}
 
-					| {% if project.extension_props.dillo %}
-
-					| {% if project.extension_props.dillo.social %}
-					ul.social
-						| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
-						| {% if val %}
-						li
-							a(class="pi-social-{{ name }}",
-								title="{{ name | undertitle }}",
-								href="{{ val }}")
+					| {# Follow + Social buttons #}
+					.d-flex.align-items-center
+						| {% if community_is_followed %}
+						a.btn.btn-primary.px-5.mt-3(
+							href="#",
+							id="follow-toggle",
+							data-action="unfollow")
+							| Unfollow
+						| {% else %}
+						a.btn.btn-submit.px-5.mt-3(
+							href="#",
+							id="follow-toggle",
+							data-action="follow")
+							| Follow
 						| {% endif %}
-						| {% endfor %}
-					| {% endif %}
-					| {% endif %}
 
-			.welcome-extra
+						| {% if project.extension_props.dillo %}
+
+						| {% if project.extension_props.dillo.social %}
+						ul.social.ml-3
+							| {% for name, val in project.extension_props.dillo.social.to_dict().items() %}
+							| {% if val %}
+							li
+								a(class="pi-social-{{ name }}",
+									title="{{ name | undertitle }}",
+									href="{{ val }}")
+							| {% endif %}
+							| {% endfor %}
+						| {% endif %}
+						| {% endif %}
+
+			.node-details-description.p-3
 				| {{ project.description | markdown }}
 
 			| {% if is_main_project %}
