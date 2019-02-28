@@ -222,7 +222,7 @@ class TestPostsListing(AbstractDilloTest):
             self.login_api_as(self.user_id)
             r = self.get('/api/posts')
             # Ensure that 9 posts are listed
-            self.assertEqual(9, r.json['metadata'][0]['total'])
+            self.assertEqual(9, r.json['metadata']['total'])
 
         # Set the 'default' user to follow some communities
         with self.app.app_context():
@@ -237,7 +237,7 @@ class TestPostsListing(AbstractDilloTest):
             self.login_api_as(self.user_id)
             r = self.get('/api/posts')
             # Ensure that 6 posts are listed
-            self.assertEqual(6, r.json['metadata'][0]['total'])
+            self.assertEqual(6, r.json['metadata']['total'])
 
     def test_pagination(self):
         self.create_posts(self.user_id, 'tina-token', amount_per_project=10)
@@ -246,7 +246,7 @@ class TestPostsListing(AbstractDilloTest):
             # Query for all posts with no query arguments /api/posts
             url = flask.url_for('posts_api.get_posts')
             r = self.get(url)
-            metadata = r.json['metadata'][0]
+            metadata = r.json['metadata']
             data = r.json['data']
 
             # Ensure that the first page, with PAGINATION_DEFAULT_POSTS elements
@@ -259,7 +259,7 @@ class TestPostsListing(AbstractDilloTest):
             # Query for for all posts, page 2 /api/posts?page=2
             url = flask.url_for('posts_api.get_posts', page=2)
             r = self.get(url)
-            metadata = r.json['metadata'][0]
+            metadata = r.json['metadata']
             data = r.json['data']
 
             self.assertEqual(2, metadata['page'])
@@ -291,25 +291,11 @@ class TestPostsListing(AbstractDilloTest):
             # Ensure that every post has has less or equal hot than the following
             self.assertGreater(p['properties']['hot'], following_post['properties']['hot'])
 
-        # Query for all posts and sort the increasing hotness /api/posts?sorting=hot
-        r = self.get('/api/posts?sorting=hot')
-        data = r.json['data']
-
-        # Ensure that results are ordered by 'properties.hot'.
-        for idx, p in enumerate(data):
-            following_post_idx = idx + 1
-            # If we reached the last element of the array, stop
-            if following_post_idx == len(data):
-                continue
-            following_post = data[following_post_idx]
-            # Ensure that every post has has less or equal hot than the following
-            self.assertLessEqual(p['properties']['hot'], following_post['properties']['hot'])
-
     def test_sorting_created(self):
         self.create_posts(self.user_id, 'tina-token', amount_per_project=10)
 
         # Query for all posts with no query arguments /api/posts?sorting=-new
-        r = self.get('/api/posts?sorting=-new')
+        r = self.get('/api/posts?sorting=new')
         data = r.json['data']
 
         # Ensure that results are ordered by decreasing 'properties.hot'.
