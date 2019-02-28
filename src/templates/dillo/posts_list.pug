@@ -55,7 +55,7 @@
 
 				li.item-date.js-item-open.js-convert-date
 					a(href="{{ post_url }}")
-						| {{ post._created }}
+						| {{ post._created | pretty_date_time }}
 
 				li.item-author
 					a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
