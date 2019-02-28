@@ -634,10 +634,6 @@ h4 .emoji
     a
       text-decoration: none
 
-    a.beta
-      top: -10px
-      position: relative
-
     .summary
       cursor: default
       display: inline-block
@@ -716,14 +712,6 @@ h4 .emoji
           list-style: none
           margin: 0
           padding: 0 3px
-
-// Temporary, hopefully.
-a.beta
-  color: $color-danger
-  font-weight: bold
-  font-size: $font-size-smaller
-  margin-left: 7px
-  text-decoration: none
 
 
 // Communities list flyout
@@ -857,6 +845,7 @@ a.beta
   position: relative
   z-index: 2
 
+  // .d-header-background
   &-background
     +media-xs
       visibility: hidden
@@ -881,7 +870,7 @@ a.beta
       content: ' '
       background-image: linear-gradient(transparent 52px, $color-background 100%)
 
-
+  // .d-header-logo
   $header-logo-size: 60px
   &-logo
     +media-xs
@@ -932,20 +921,12 @@ a.beta
       background-color: var(--community-theme-color, $color-primary)
       border-radius: 3px
       box-shadow: 1px 1px 1px 0 rgba(black, .2)
-      color: white
+      color: $color-text
       font-size: $font-size-large
       text-decoration: none
       padding: 4px 15px
 
-    a.beta
-      background-color: $color-danger
-      border-radius: 3px
-      color: white
-      padding: 1px 4px
-      position: absolute
-      right: -25px
-      top: 20px
-
+  // .d-header-action
   &-action
     +media-xs
       margin-left: auto
@@ -988,7 +969,7 @@ a.beta
               margin: 5px 10px
               flex: 1
 
-
+  // .d-header-toggle-nav
   &-toggle-nav
     +media-xs
       display: block
