@@ -1,3 +1,9 @@
+select(id="js-facet-tags", title="{{ _('Tags') }}")
+	| {% for tag in facet_tags %}
+	option(value="{{ tag['_id'] }}") {{ tag['_id'] }} {{ tag['count'] }}
+	| {% endfor %}
+
+
 | {% for post in posts %}
 
 | {% if post.properties.post_type == 'link' %}
@@ -69,13 +75,8 @@
 | {% endfor %}
 
 | {% if not is_last_page %}
-| {# This element is handled via jQuery #}
-a(id="js-load-more", href="#", data-next-page="{{ metadata['page'] + 1 }}") Load More
-| {% else %}
-p No more posts!
+.d-flex
+	| {# This element is handled via jQuery #}
+	a.btn.px-5.mx-auto(id="js-load-more", href="#", data-next-page="{{ metadata['page'] + 1 }}") Load More
 | {% endif %}
 
-select(id="js-facet-tags", title="{{ _('Tags') }}")
-	| {% for tag in facet_tags %}
-	option(value="{{ tag['_id'] }}") {{ tag['_id'] }} {{ tag['count'] }}
-	| {% endfor %}
