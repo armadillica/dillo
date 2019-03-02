@@ -11,7 +11,7 @@ from dillo import EXTENSION_NAME
 
 
 log = logging.getLogger(__name__)
-blueprint_api = Blueprint('communitites_api', __name__)
+blueprint_api = Blueprint('communities_api', __name__)
 
 
 def get_community(project_id: str):

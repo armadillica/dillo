@@ -576,9 +576,9 @@ script.
 
 		// Define url, depending on the current status
 		if (action === 'follow') {
-			var url = "{{ url_for('communitites_api.follow', project_id=project._id) }}";
+			var url = "{{ url_for('communities_api.follow', project_id=project._id) }}";
 		} else {
-			var url = "{{ url_for('communitites_api.unfollow', project_id=project._id) }}";
+			var url = "{{ url_for('communities_api.unfollow', project_id=project._id) }}";
 		}
 
 		// AJAX request to follow or unfollow
