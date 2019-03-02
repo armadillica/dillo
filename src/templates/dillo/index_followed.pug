@@ -210,8 +210,7 @@ script.
 
 		$( "#col_main" ).scroll(function() {
 			//visible height + pixel scrolled = total height
-			if(this.offsetHeight + this.scrollTop == this.scrollHeight){
-				//- Once the end of the pageis reached, move one pixel up to avoid
+			if(this.offsetHeight + this.scrollTop === this.scrollHeight){
 				//- Once the end of the page is reached, move one pixel up to avoid
 				//- getting stuck loading multiple times.
 				//- TODO(pablo) find a nicer way to avoid this.
