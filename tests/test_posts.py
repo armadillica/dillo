@@ -239,6 +239,42 @@ class TestPostsListing(AbstractDilloTest):
             # Ensure that 6 posts are listed
             self.assertEqual(6, r.json['metadata']['total'])
 
+    def test_no_followed_communities_listing(self):
+        """Test different listings depending on the presence of followed_communities."""
+        # If the user does not have a 'followed_communities' prop, ensure that only posts from
+        # the default communities are visible in the feed.
+
+        # Setup a single default followed community
+        self.app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS'] = [self.projects[0][0]]
+
+        self.create_posts(self.user_id, auth_token='tina-token')
+
+        with self.app.app_context():
+            users_collection = self.app.db('users')
+            followed_communities_k = f'extension_props_public.dillo.followed_communities'
+            u = users_collection.find_one({
+                '_id': self.user_id,
+                followed_communities_k: {'$exists': True}
+            })
+            # Ensure that the user does not have a followed_communities prop
+            self.assertIsNone(u)
+
+        # Ensure that 3 posts are listed (because we follow only one community, with 3 posts)
+        r = self.get('/api/posts', auth_token='tina-token')
+        self.assertEqual(3, r.json['metadata']['total'])
+
+        # Add an empty followed_communities list
+
+        with self.app.app_context():
+            followed_communities_k = f'extension_props_public.dillo.followed_communities'
+            users_collection.update_one(
+                {'_id': self.user_id},
+                {'$set': {followed_communities_k: []}})
+
+        # Ensure that no posts are listed (because we have an empty list of followed_communities)
+        r = self.get('/api/posts', auth_token='tina-token')
+        self.assertEqual(0, r.json['metadata']['total'])
+
     def test_pagination(self):
         self.create_posts(self.user_id, 'tina-token', amount_per_project=10)
 
