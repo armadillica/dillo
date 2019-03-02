@@ -168,7 +168,7 @@ $item-thumbnail-size: 90px
 .item-content
   align-items: center
   display: flex
-  width: 100%
+  flex: 1
 
 .item-rating-box
   +media-xs
@@ -221,17 +221,13 @@ $item-thumbnail-size: 90px
 
   > ul
     margin: 0
-    padding: 0
-    display: flex
-    align-items: center
+    padding: 5px 0
 
     > li
-      margin: 0
-      padding: 0
       display: inline-block
       font-size: $font-size-small
-      padding: 5px
-      color: $color-text-light
+      margin: 0
+      padding: 0 5px
 
       &:before
         content: '·'
@@ -250,7 +246,7 @@ $item-thumbnail-size: 90px
         +media-xs
           text-decoration: underline
         text-decoration: none
-        color: $color-text-light
+        color: $color-text
         display: inline-block
 
         &:hover
@@ -276,8 +272,9 @@ $item-thumbnail-size: 90px
       &.item-author
         +media-xs
           display: none
-        text-overflow: ellipsis
 
+  &-header
+    color: $color-text-dark-secondary
 
 .item-info
   &-panel
