@@ -84,7 +84,7 @@ def validate_query_strings(request):
 
 
 def add_communities_filter(pipeline):
-    """Given an aggregation pipeline, filter communities."""
+    """Given an aggregation pipeline, add a filter for communities."""
 
     current_user = pillar.auth.get_current_user()
 
@@ -101,7 +101,7 @@ def add_communities_filter(pipeline):
         # TODO(fsiddi) project into a shorter key instead of followed_communities
         followed = users_coll.find_one({
             '_id': current_user.user_id,
-            followed_communities_key: {'$exists': True, '$ne': []}
+            followed_communities_key: {'$exists': True}
         }, {followed_communities_key: 1})
         # If current user is following communities, use them as filter
         if followed:
@@ -192,7 +192,6 @@ def get_posts():
                 }},
             ]
         }},
-
     ]
 
     if filter_community:
@@ -210,8 +209,13 @@ def get_posts():
     # The cursor will return only one item in the list
     posts_cursor = list(nodes_coll.aggregate(pipeline=pipeline))
 
+    # Set default values for metadata (in case no result was retrieved)
+    metadata = {'total': 0, 'page': 1}
+    if posts_cursor[0]['metadata']:
+        metadata = posts_cursor[0]['metadata'][0]  # Only the first element from the list
+
     docs = {
-        'metadata': posts_cursor[0]['metadata'][0],  # Only the first element from the list
+        'metadata': metadata,
         'data': posts_cursor[0]['data'],
         'facet_tags': posts_cursor[0]['facet_tags']
     }
