@@ -60,10 +60,19 @@ def follow(project_id: str):
         log.debug('User already follows community %s' % community['url'])
         return abort(403)
 
+    # If the user does not follow any community, create a list featuring the
+    # default communities and append the current community to it.
+    if not followed_communities:
+        followed_communities = [ObjectId(cid) for cid in
+                                current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
+
+    # Append the followed community to the existing list
+    followed_communities.append(community['_id'])
+
     followed_communities_key = f'extension_props_public.{EXTENSION_NAME}.followed_communities'
     users_coll.update_one(
         {'_id': current_user.user_id},
-        {'$addToSet': {followed_communities_key: community['_id']}})
+        {'$set': {followed_communities_key: followed_communities}})
 
     return jsonify({'_status': 'OK',
                     'message': f"Following {community['name']}"})
@@ -84,19 +93,21 @@ def unfollow(project_id: str):
     followed_communities = user['extension_props_public'][EXTENSION_NAME]. \
         get('followed_communities')
 
-    if not followed_communities:
-        log.debug('User does not follow any community.')
-        return abort(400)
-
     # Check if the user already does not follow the community
     if followed_communities and community['_id'] not in followed_communities:
         log.debug('User does not follow community %s' % community['url'])
         return abort(403)
 
+    if not followed_communities:
+        followed_communities = [ObjectId(cid) for cid in
+                                current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
+
+    followed_communities = [c for c in followed_communities if c != community['_id']]
+
     followed_communities_key = f'extension_props_public.{EXTENSION_NAME}.followed_communities'
     users_coll.update_one(
         {'_id': current_user.user_id},
-        {'$pull': {followed_communities_key: community['_id']}})
+        {'$set': {followed_communities_key: followed_communities}})
 
     log.debug('Community %s successfully unfollowed' % community['name'])
     return jsonify({'_status': 'OK',
