@@ -84,7 +84,7 @@ def validate_query_strings(request):
 
 
 def add_communities_filter(pipeline):
-    """Given an aggregation pipeline, filter communitites."""
+    """Given an aggregation pipeline, filter communities."""
 
     current_user = pillar.auth.get_current_user()
 
