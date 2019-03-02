@@ -163,12 +163,20 @@ def index(community_url):
     # Community is not followed by default
     community_is_followed = False
 
+    # Define the communities followed by default
+    followed_communities = [cid for cid in
+                            current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
+
     # Check if community is followed
     if current_user.is_authenticated:
         user = User.find(current_user.objectid, api=api)
-        if 'followed_communities' in user['extension_props_public']['dillo'] \
-                and project['_id'] in user['extension_props_public']['dillo']['followed_communities']:
-            community_is_followed = True
+        # If 'followed_communities' for the user exists and is not an empty list
+        if 'followed_communities' in user['extension_props_public']['dillo']\
+                and user['extension_props_public']['dillo']['followed_communities']:
+            followed_communities = user['extension_props_public']['dillo']['followed_communities']
+
+    if project['_id'] in followed_communities:
+        community_is_followed = True
 
     # Fetch all activities for the project
     activities = Activity.all({
@@ -190,7 +198,7 @@ def index(community_url):
             act.link = ''
 
     return render_template(
-        'dillo/index_followed.html',
+        'dillo/index.html',
         col_right={'activities': activities},
         project=project,
         submit_menu=project_submit_menu(project),
