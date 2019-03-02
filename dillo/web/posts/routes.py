@@ -111,7 +111,7 @@ def posts_list():
     if filter_tags:
         url = f'{url}&filter_tags[]={filter_tags}'
 
-    filter_community = request.args.get('community')
+    filter_community = request.args.get('community_id')
     if filter_community:
         url = f'{url}&community_id={filter_community}'
 
@@ -190,7 +190,7 @@ def index(community_url):
             act.link = ''
 
     return render_template(
-        'dillo/index.html',
+        'dillo/index_followed.html',
         col_right={'activities': activities},
         project=project,
         submit_menu=project_submit_menu(project),
