@@ -167,11 +167,21 @@ script.
 	$(document).ready(function () {
 
 		function fetchPosts(params, append) {
+			/*
+			Fetch posts and append them to the posts list.
+			*/
+
 			//- The query string parameters (sorting and page)
-			if (params === undefined) { params = null };
+			if (params === undefined) { params = {} };
 			//- Do we want to append the results to the current list, or replace it?
 			//- The first case is used for changing sorting, the second for pagination
 			if (append === undefined) { append = false};
+
+			//- Add the community_id to params as a filter, if we are in a community
+			{% if not is_main_project %}
+			params['community_id'] = "{{project._id}}";
+			{% endif %}
+
 			//- The endpoint where we query for posts
 			$.get("{{ url_for('posts.posts_list') }}", params, function (dataHtml) {
 				var $dataHtml = $(dataHtml);
