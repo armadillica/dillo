@@ -24,22 +24,36 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
 	data-url="{{ post_url }}")
-	a(
+	a.item-thumbnail(
 		href="{{ post_url }}",
-		class="item-thumbnail js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
+		class="js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
 		.item-thumbnail-picture
 			| {% if post.picture %}
 			img(src="{{ post.picture.thumbnail('m') }}")
-			ea
 			| {% endif %}
 
 	.item-content(data-node-id="{{ post._id }}")
 		.item-details.pl-3
-			a(
+			ul.item-details-header
+				| {% if is_main_project %}
+				li
+					| {{ post['project'] }}
+				| {% endif %}
+
+				| {% if post.properties.tags %}
+				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
+					{# Display two tags max in the list. #}
+					{% for tag in post.properties.tags[:2] %}
+						{{ tag }}{{ ", " if not loop.last }}{{ "..." if loop.last and (post.properties.tags | length) > 2 }}
+					{% endfor %}
+				| {% endif %}
+
+			a.item-title(
 				href="{{ post_url }}",
-				class="item-title js-item-open")
+				class="js-item-open")
 				| {{ post.name }}
-			ul
+
+			ul.pb-2
 				| {% if rating > 5 %}
 				li(title="Hot Stuff")
 					i.pi-fire.text-danger
@@ -52,12 +66,6 @@ select(id="js-facet-tags", title="{{ _('Tags') }}")
 							title="Link",
 							src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 				| {% endif %}
-
-				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
-					{# Display two tags max in the list. #}
-					{% for tag in post.properties.tags[:2] %}
-						{{ tag }}{{ ", " if not loop.last }}
-					{% endfor %}
 
 				li.item-date.js-item-open.js-convert-date
 					a(href="{{ post_url }}")
