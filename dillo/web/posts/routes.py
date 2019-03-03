@@ -149,6 +149,31 @@ def index_all():
         project=project)
 
 
+def is_community_followed(community) -> bool:
+    """Check if the community is followed."""
+
+    if current_user.is_anonymous:
+        return False
+
+    # Community is not followed by default
+    community_is_followed = False
+
+    # Define the communities followed by default
+    followed_communities = [cid for cid in
+                            current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
+
+    user = User.find(current_user.objectid, api=system_util.pillar_api())
+    # If 'followed_communities' for the user exists and is not an empty list
+    if 'followed_communities' in user['extension_props_public']['dillo'] \
+            and user['extension_props_public']['dillo']['followed_communities']:
+        followed_communities = user['extension_props_public']['dillo']['followed_communities']
+
+    if community['_id'] in followed_communities:
+        community_is_followed = True
+
+    return community_is_followed
+
+
 @blueprint.route('/c/<community_url>/')
 def index(community_url):
     api = system_util.pillar_api()
@@ -160,23 +185,7 @@ def index(community_url):
 
     attach_project_pictures(project, api)
 
-    # Community is not followed by default
-    community_is_followed = False
-
-    # Define the communities followed by default
-    followed_communities = [cid for cid in
-                            current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
-
-    # Check if community is followed
-    if current_user.is_authenticated:
-        user = User.find(current_user.objectid, api=api)
-        # If 'followed_communities' for the user exists and is not an empty list
-        if 'followed_communities' in user['extension_props_public']['dillo']\
-                and user['extension_props_public']['dillo']['followed_communities']:
-            followed_communities = user['extension_props_public']['dillo']['followed_communities']
-
-    if project['_id'] in followed_communities:
-        community_is_followed = True
+    community_is_followed = is_community_followed(project)
 
     # Fetch all activities for the project
     activities = Activity.all({
@@ -198,7 +207,7 @@ def index(community_url):
             act.link = ''
 
     return render_template(
-        'dillo/index.html',
+        'dillo/index_followed.html',
         col_right={'activities': activities},
         project=project,
         submit_menu=project_submit_menu(project),
