@@ -65,9 +65,11 @@ def validate_query_strings(request):
     Looks for query arguments 'page', 'sorting' and 'filter_tags'.
 
     Returns:
-        A tuple featuring page and sorting paramters to be used in an
-        aggregation pipeline.
-        Default values are 1 and 'hot'.
+        A tuple featuring:
+        - page: 1
+        - sorting: 'hot'
+        - filters: dict
+        - community_id: ObjectId() or None
     """
 
     # Handle pagination
@@ -76,11 +78,27 @@ def validate_query_strings(request):
     # Handle sorting (new, hot, top) with hardcoded order
     sorting = validate_query_string_sorting(request.args.get('sorting', 'hot'))
 
-    # Handle filters
-    filter_tags = request.args.getlist('filter_tags[]')
-    filter_community = validate_query_string_community(request.args.get('community_id'))
+    # Handle community_id
+    community_id = validate_query_string_community(request.args.get('community_id'))
 
-    return page, sorting, filter_tags, filter_community
+    # Handle filters
+    filters = {}
+
+    filter_tags = request.args.getlist('filter_tags[]')
+    if filter_tags:
+        filters['tags'] = filter_tags
+
+    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
+        # TODO(fsiddi) refactor this
+        if 'indexing' not in v or 'faceting' not in v['indexing']:
+            continue
+
+        # TODO(fsiddi) only match additional props associated with the current community
+        additional_filter = request.args.getlist(f'filter_{k}[]')
+        if additional_filter:
+            filters[k] = additional_filter
+
+    return page, sorting, filters, community_id
 
 
 def add_communities_filter(pipeline):
@@ -113,12 +131,48 @@ def add_communities_filter(pipeline):
             pipeline[0]['$match']['project'] = {'$in': default_followed_community_ids}
 
 
-def add_facet_tags(pipeline):
+def add_facets_to_pipeline(pipeline, filter_community):
     """Given an aggregation pipeline, add elements to the facet step."""
     pipeline[2]['$facet']['facet_tags'] = [
         {'$unwind': '$properties.tags'},
         {'$sortByCount': '$properties.tags'}
       ]
+
+    # If no community id is specified, do not look for custom facets
+    if not filter_community:
+        return
+
+    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
+        if 'indexing' not in v or 'faceting' not in v['indexing']:
+            continue
+
+        # TODO(fsiddi) only match additional props associated with the current community
+
+        pipeline[2]['$facet'][f'facet_{k}'] = [
+            {'$unwind': f'$properties.{k}'},
+            {'$sortByCount': f'$properties.{k}'}
+        ]
+
+
+def add_facets_to_response(doc, posts_cursor, filter_community):
+    """Move all facets in a 'facet' property."""
+    doc['facets'] = {'tags': {
+        'items': posts_cursor['facet_tags'],  # The actual facet options
+        'label': 'Tags',  # A human-readable label
+        'filter': 'filter_tags[]',  # The query string to use when performing requests
+    }}
+    if not filter_community:
+        return
+    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
+        if 'indexing' not in v or 'faceting' not in v['indexing']:
+            continue
+
+        # TODO(fsiddi) only match additional props associated with the current community
+        doc['facets'][k] = {
+            'items': posts_cursor[f'facet_{k}'],
+            'label': v['label'],  # A human-readable label
+            'filter': f'filter_{k}[]',  # The query string to use when performing requests
+        }
 
 
 def add_filter_tags(pipeline, filter_tags):
@@ -146,7 +200,7 @@ def get_posts():
     """
 
     # Validate query parameters and define sorting and pagination
-    page, sorting, filter_tags, filter_community = validate_query_strings(flask.request)
+    page, sorting, filters, community_id = validate_query_strings(flask.request)
     pagination_default = current_app.config['PAGINATION_DEFAULT_POSTS']
     skip = pagination_default * (page - 1)
 
@@ -194,30 +248,35 @@ def get_posts():
         }},
     ]
 
-    if filter_community:
+    if community_id:
         # If a community is specified, show only posts that belong to it
-        add_filter_community(pipeline, filter_community)
+        add_filter_community(pipeline, community_id)
     else:
         # We are not viewing a community, use the aggregated communities
         add_communities_filter(pipeline)
 
-    if filter_tags:
-        add_filter_tags(pipeline, filter_tags)
-    add_facet_tags(pipeline)
+    # if 'tags' in filters:
+    #     add_filter_tags(pipeline, filters['tags'])
+    for filter_key, filter_value in filters.items():
+        pipeline[0]['$match'][f'properties.{filter_key}'] = {'$in': filter_value}
+
+    # Add default facets, as well as community-specific facets
+    add_facets_to_pipeline(pipeline, community_id)
 
     nodes_coll = current_app.db('nodes')
     # The cursor will return only one item in the list
-    posts_cursor = list(nodes_coll.aggregate(pipeline=pipeline))
+    posts_cursor = list(nodes_coll.aggregate(pipeline=pipeline))[0]
 
     # Set default values for metadata (in case no result was retrieved)
     metadata = {'total': 0, 'page': 1}
-    if posts_cursor[0]['metadata']:
-        metadata = posts_cursor[0]['metadata'][0]  # Only the first element from the list
+    if posts_cursor['metadata']:
+        metadata = posts_cursor['metadata'][0]  # Only the first element from the list
 
     docs = {
         'metadata': metadata,
-        'data': posts_cursor[0]['data'],
-        'facet_tags': posts_cursor[0]['facet_tags']
+        'data': posts_cursor['data'],
     }
+
+    add_facets_to_response(docs, posts_cursor, community_id)
 
     return jsonify(docs)

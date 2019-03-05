@@ -166,6 +166,12 @@ li
 script.
 	$(document).ready(function () {
 
+		function moveFacetElements($dataHtml) {
+			//- Capture the list-facet element and move it before #list-sort-by
+			var $facetTags = $dataHtml.filter(".js-facet").detach();
+			$("#facets").html($facetTags);
+		}
+
 		function fetchPosts(params, append) {
 			/*
 			Fetch posts and append them to the posts list.
@@ -193,9 +199,7 @@ script.
 					$('#list-hits').html($dataHtml);
 				}
 
-				//- Capture the list-facet element and move it before #list-sort-by
-				var $facetTags = $dataHtml.filter("#js-facet-tags").detach();
-				$("#facets").html($facetTags);
+				moveFacetElements($dataHtml);
 			});
 		}
 
@@ -229,11 +233,19 @@ script.
 			};
 		});
 
-		$(document).on('change', 'body #js-facet-tags', function (e) {
-			fetchPosts({
-				'sorting': $sortingDropDown.val(),
-				'filter_tags[]': [$(this).val()]
+		$(document).on('change', 'body .js-facet', function (e) {
+			//- Define the base query
+			var queryString = {'sorting': $sortingDropDown.val()}
+			//- Get all query string filter values (filter_tags, filter_status_dev, etc)
+			$('body .js-facet').each(function (index) {
+				let filter = $(this).data('filter');
+				//- Append the filter based on the current facet
+				queryString[filter] = [$(this).val()];
 			});
+
+			// queryString[filter] = [$(this).val()];
+			//- TODO(fsiddi) append any other facet that might be set
+			fetchPosts(queryString);
 		});
 
 	});

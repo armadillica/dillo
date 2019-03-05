@@ -1,7 +1,14 @@
-select(id="js-facet-tags", title="{{ _('Tags') }}")
-	| {% for tag in facet_tags %}
-	option(value="{{ tag['_id'] }}") {{ tag['_id'] }} {{ tag['count'] }}
+| {% for facet_name, facet in facets.items() %}
+select(
+	id="js-facet-{{ facet_name }}",
+	class="js-facet",
+	title="{{ facet['label'] }}",
+	data-filter="{{ facet['filter'] }}")
+
+	| {% for facet_value in facet['items'] %}
+	option(value="{{ facet_value['_id'] }}") {{ facet_value['_id'] }} {{ facet_value['count'] }}
 	| {% endfor %}
+| {% endfor %}
 
 | {% for post in posts %}
 
