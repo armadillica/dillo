@@ -102,18 +102,13 @@ def posts_list():
     api = system_util.pillar_api()
 
     # Build base url for API request
-    sorting = request.args.get('sorting', 'hot')
-    page = request.args.get('page', 1)
-    url = f'/api/posts/?sorting={sorting}&page={page}'
+    url = '/api/posts/?'
 
-    # Append additional filters
-    filter_tags = request.args.get('filter_tags[]')
-    if filter_tags:
-        url = f'{url}&filter_tags[]={filter_tags}'
-
-    filter_community = request.args.get('community_id')
-    if filter_community:
-        url = f'{url}&community_id={filter_community}'
+    # Iterate over query strings
+    for qs, qv in request.args.items():
+        # Append to API url only query string with a value
+        if qv:
+            url += f'{qs}={qv}&'
 
     posts_request = api.http_call(url, method='GET')
     posts = posts_request['data']
@@ -131,7 +126,7 @@ def posts_list():
         'dillo/posts_list.html',
         posts=posts,
         metadata=posts_request['metadata'],
-        facet_tags=posts_request['facet_tags'],
+        facets=posts_request['facets'],
         is_last_page=is_last_page,
     )
 
