@@ -13,6 +13,16 @@ log = logging.getLogger(__name__)
 blueprint_api = Blueprint('posts_api', __name__)
 
 
+def get_post_additional_properties(community_id: ObjectId):
+    """Get post additional properties for a specific community."""
+    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
+        if community_id not in v['projects']:
+            continue
+        if 'indexing' not in v or 'faceting' not in v['indexing']:
+            continue
+        yield k, v
+
+
 def validate_query_string_page(page):
     """Process the page query string in the request."""
     try:
@@ -56,7 +66,7 @@ def validate_query_string_community(community_id):
             '_status': 'ERR',
             'message': f'{community_id} is not a valid community id.'}), 400))
 
-    return community_id
+    return ObjectId(community_id)
 
 
 def validate_query_strings(request):
@@ -88,15 +98,12 @@ def validate_query_strings(request):
     if filter_tags:
         filters['tags'] = filter_tags
 
-    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
-        # TODO(fsiddi) refactor this
-        if 'indexing' not in v or 'faceting' not in v['indexing']:
-            continue
-
-        # TODO(fsiddi) only match additional props associated with the current community
-        additional_filter = request.args.getlist(f'filter_{k}[]')
-        if additional_filter:
-            filters[k] = additional_filter
+    # This involves looking up community-specific filters
+    if community_id:
+        for k, v in get_post_additional_properties(community_id):
+            additional_filter = request.args.getlist(f'filter_{k}[]')
+            if additional_filter:
+                filters[k] = additional_filter
 
     return page, sorting, filters, community_id
 
@@ -142,32 +149,23 @@ def add_facets_to_pipeline(pipeline, community_id):
     if not community_id:
         return
 
-    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
-        if 'indexing' not in v or 'faceting' not in v['indexing']:
-            continue
-
-        # TODO(fsiddi) only match additional props associated with the current community
-
+    for k, v in get_post_additional_properties(community_id):
         pipeline[2]['$facet'][f'facet_{k}'] = [
             {'$unwind': f'$properties.{k}'},
             {'$sortByCount': f'$properties.{k}'}
         ]
 
 
-def add_facets_to_response(doc, posts_cursor, filter_community):
+def add_facets_to_response(doc, posts_cursor, community_id):
     """Move all facets in a 'facet' property."""
     doc['facets'] = {'tags': {
         'items': posts_cursor['facet_tags'],  # The actual facet options
         'label': 'Tags',  # A human-readable label
         'filter': 'filter_tags[]',  # The query string to use when performing requests
     }}
-    if not filter_community:
+    if not community_id:
         return
-    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
-        if 'indexing' not in v or 'faceting' not in v['indexing']:
-            continue
-
-        # TODO(fsiddi) only match additional props associated with the current community
+    for k, v in get_post_additional_properties(community_id):
         doc['facets'][k] = {
             'items': posts_cursor[f'facet_{k}'],
             'label': v['label'],  # A human-readable label

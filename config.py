@@ -52,7 +52,7 @@ ALGOLIA_INDEX_NODES_REPLICAS = {
 #             'searchable': True,
 #             'faceting': 'searchable'
 #         },
-#         'projects': ['rcs'],
+#         'projects': [ObjectId('valid-project-id')],
 #         'label': 'Dev. Status',
 #     }
 # }

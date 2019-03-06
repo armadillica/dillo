@@ -15,7 +15,7 @@ class TestAdditionalProps(AbstractDilloTest):
         self.create_valid_auth_token(ctd.EXAMPLE_PROJECT_OWNER_ID, 'token')
         self.project_id, _ = self.ensure_project_exists()
 
-    def attach_additional_properties(self, project_url='default-project'):
+    def attach_additional_properties(self):
         """Given a project_url attach additional props.
 
         Returns a tuple with the dillo_post node_type schema before and after
@@ -55,7 +55,7 @@ class TestAdditionalProps(AbstractDilloTest):
                     'searchable': True,
                     'faceting': 'searchable'
                 },
-                'projects': ['default-project'],
+                'projects': [str(self.project_id)],
                 'label': 'Dev. Status',
             }
         }
