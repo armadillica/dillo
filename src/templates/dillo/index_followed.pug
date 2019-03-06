@@ -111,6 +111,7 @@ li
 					.summary {{ project.summary }}
 					| {% endif %}
 
+					| {% if not is_main_project %}
 					| {# Follow + Social buttons #}
 					.d-flex.align-items-center
 						| {% if community_is_followed %}
@@ -141,6 +142,7 @@ li
 							| {% endfor %}
 						| {% endif %}
 						| {% endif %}
+					| {% endif %}
 
 			.node-details-description.p-3
 				| {{ project.description | markdown }}
