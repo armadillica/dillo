@@ -101,6 +101,9 @@ def posts_list():
     """
     api = system_util.pillar_api()
 
+    # Are we displaying posts for a specific community?
+    is_community_listing = 'community_id' in request.args
+
     # Build base url for API request
     url = '/api/posts/?'
 
@@ -128,6 +131,7 @@ def posts_list():
         metadata=posts_request['metadata'],
         facets=posts_request['facets'],
         is_last_page=is_last_page,
+        is_community_listing=is_community_listing,
     )
 
 
