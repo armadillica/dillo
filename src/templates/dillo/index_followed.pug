@@ -111,8 +111,22 @@ li
 					.summary {{ project.summary }}
 					| {% endif %}
 
-					| {# Social buttons #}
+					| {# Follow + Social buttons #}
 					.d-flex.align-items-center
+						| {% if community_is_followed %}
+						a.btn.btn-primary.px-5.mt-3(
+							href="#",
+							id="follow-toggle",
+							data-action="unfollow")
+							| Unfollow
+						| {% else %}
+						a.btn.btn-submit.px-5.mt-3(
+							href="#",
+							id="follow-toggle",
+							data-action="follow")
+							| Follow
+						| {% endif %}
+
 						| {% if project.extension_props.dillo %}
 
 						| {% if project.extension_props.dillo.social %}
@@ -130,6 +144,7 @@ li
 
 			.node-details-description.p-3
 				| {{ project.description | markdown }}
+
 
 			| {% if is_main_project %}
 			.d-communities-list
@@ -245,11 +260,43 @@ script.
 				queryString[filter] = [$(this).val()];
 			});
 
-			// queryString[filter] = [$(this).val()];
+			//- queryString[filter] = [$(this).val()];
 			//- TODO(fsiddi) append any other facet that might be set
 			fetchPosts(queryString);
 		});
 
-	});
 
+		//- Follow Communities
+		$('#follow-toggle').on('click', function (e) {
+			e.preventDefault();
+			//- Reference action button
+			var $actionButton = $(this);
+			var action = $actionButton.data('action');
+
+			//- Define url, depending on the current status
+			if (action === 'follow') {
+				var url = "{{ url_for('communities_api.follow', project_id=project._id) }}";
+			} else {
+				var url = "{{ url_for('communities_api.unfollow', project_id=project._id) }}";
+			}
+
+			//- AJAX request to follow or unfollow
+			$.post(url)
+				.done(function (data) {
+					toastr.success(data.message);
+					//- Update button
+					if (action === 'follow') {
+						$actionButton.data('action', 'unfollow');
+						$actionButton.text('Unfollow');
+					} else {
+						$actionButton.data('action', 'follow');
+						$actionButton.text('Follow');
+					}
+
+				})
+				.fail(function (err) {
+					toastr.error(xhrErrorResponseMessage(err), 'Not allowed');
+				});
+		});
+	});
 | {% endblock footer_scripts %}
