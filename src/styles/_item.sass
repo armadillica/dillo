@@ -179,11 +179,9 @@ $item-thumbnail-size: 90px
   min-width: 45px
   width: 45px
 
-  &.rated.positive .up
-    color: $color-vote-up
-
+  &.rated.positive .up,
   &.rated.negative .down
-    color: $color-vote-down
+    color: var(--community-theme-color, $color-primary)
 
 .item-rating
   +media-xs
@@ -602,10 +600,6 @@ body[data-context="post-edit"]
   top: 0
   transition: box-shadow 150ms ease-out, transform 150ms ease-out
   will-change: transform
-
-  &-header
-    display: flex
-    border-bottom: thin solid $color-background-dark
 
   &-close
     +media-xs
