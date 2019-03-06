@@ -43,10 +43,10 @@
 	.item-content(data-node-id="{{ post._id }}")
 		.item-details.pl-3
 			ul.item-details-header
-				| {% if is_main_project %}
 				li
-					| {{ post['project'] }}
-				| {% endif %}
+					//- TODO: Check if is_main_project
+					a(href="{{ url_for('posts.index', community_url=post.project.url) }}")
+						| {{ post.project.name  }}
 
 				| {% if post.properties.tags %}
 				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
