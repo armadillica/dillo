@@ -101,6 +101,9 @@ node_type_post = {
         },
         'hot': {'type': 'float'},
         'attachments': attachments_embedded_schema,
+        # Count comments for the post.
+        # Used for posts listing, so we do not require aggregations.
+        'comments_count': {'type': 'integer'},
     },
     'form_schema': {
         'content_html': {'visible': False},
@@ -111,6 +114,7 @@ node_type_post = {
         'slug': {'visible': False},
         'shortcode': {'visible': False},
         'attachments': {'visible': False},
+        'comments_count': {'visible': False},
     },
     'parent': []
 }
