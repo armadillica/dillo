@@ -146,7 +146,6 @@
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.widget.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
-script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
 
 script.
@@ -559,6 +558,5 @@ script.
 
 		// Initialize the tags picker
 		$("#tags").select2({placeholder: "{{ _('Assign tags to your post') }}"});
-
 	});
 | {% endblock footer_scripts %}

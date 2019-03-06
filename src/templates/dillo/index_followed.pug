@@ -55,14 +55,16 @@ li
 
 | {% block body %}
 #col_main.listing-list
-	.listing-list-info
-		#facets
-		select(id="js-list-sort-by", title="{{ _('Sort by') }}")
-			option(value="hot") {{ _('Hot') }}
-			option(value="new") {{ _('New') }}
-			option(value="top") {{ _('Top') }}
-
-		#list-pagination
+	.d-flex.listing-facets.py-2.px-1
+		#facets.d-flex
+		.ml-auto
+			select(
+				id="js-list-sort-by",
+				class="js-styleselect",
+				title="{{ _('Sort by') }}")
+				option(value="hot", selected) {{ _('Hot') }}
+				option(value="new") {{ _('New') }}
+				option(value="top") {{ _('Top') }}
 
 	#list-hits
 		.d-flex.justify-content-center.p-5
@@ -168,7 +170,7 @@ script.
 
 		function moveFacetElements($dataHtml) {
 			//- Capture the list-facet element and move it before #list-sort-by
-			var $facetTags = $dataHtml.filter(".js-facet").detach();
+			var $facetTags = $dataHtml.filter(".js-move-facet").detach();
 			$("#facets").html($facetTags);
 		}
 
