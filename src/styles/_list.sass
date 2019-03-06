@@ -85,7 +85,7 @@
     +media-xs
       font-size: 1em
     color: $color-text
-    font-size: 1.25em
+    font-size: 1.2em
 
     &:hover
       color: var(--community-theme-color, $color-primary)
@@ -176,26 +176,14 @@
   height: 100%
   overflow-x: hidden
 
-
-.listing-list-info
-  +media-xs
-    padding-right: 0
-    padding-bottom: 10px
-  display: flex
-  align-items: center
+.listing-facets
   justify-content: flex-end
-  padding-right: 12px
-  padding-top: 8px
 
-  #list-stats
-    +media-xs
-      margin-left: 0
-      margin-right: auto
-    margin-left: auto
+  .select2-container
+    margin: 0 10px
+    width: auto !important
+    min-width: 80px
 
-  .list-search-provider
-    margin: 3px auto 0 5px
-    width: 20px
-
-    svg
-      fill: rgba($color-text, .25)
+.list-facet.tags
+  .select2-container
+    min-width: 160px

@@ -285,6 +285,7 @@ html(lang='en')
 			});
 
 		| {% block footer_scripts %}{% endblock footer_scripts %}
+		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.select2.min.js') }}")
 
 		| {% if current_user.is_authenticated %}
 		script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.typewatch-3.0.0.min.js') }}")

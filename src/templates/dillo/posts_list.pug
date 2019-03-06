@@ -1,13 +1,14 @@
 | {% for facet_name, facet in facets.items() %}
-select(
-	id="js-facet-{{ facet_name }}",
-	class="js-facet",
-	title="{{ facet['label'] }}",
-	data-filter="{{ facet['filter'] }}")
+.list-facet(class="js-move-facet {{ facet_name }}")
+	select(
+		id="js-facet-{{ facet_name }}",
+		class="js-facet js-styleselect",
+		title="{{ facet['label'] }}",
+		data-filter="{{ facet['filter'] }}")
 
-	| {% for facet_value in facet['items'] %}
-	option(value="{{ facet_value['_id'] }}") {{ facet_value['_id'] }} {{ facet_value['count'] }}
-	| {% endfor %}
+		| {% for facet_value in facet['items'] %}
+		option(value="{{ facet_value['_id'] }}") {{ facet_value['_id'] }} ({{ facet_value['count'] }})
+		| {% endfor %}
 | {% endfor %}
 
 | {% for post in posts %}
@@ -89,4 +90,7 @@ script.
 | {% endif %}
 
 script.
+	console.log('Loading page:', "{{ metadata['page'] + 1 }}");
+
 	twemoji.parse(document.getElementById('list-hits'));
+	$('.js-styleselect').select2();
