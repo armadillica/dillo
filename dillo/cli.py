@@ -1,6 +1,7 @@
 """Commandline interface for Dillo."""
 
 import logging
+from bson import ObjectId
 
 from flask import current_app
 from flask_script import Manager
@@ -175,10 +176,10 @@ def attach_post_additional_properties():
         additional_properties = {}
         doc_key = f'node_types.$.dyn_schema.{k}'
         additional_properties[doc_key] = v['schema']
-        for project_url in v['projects']:
+        for project_id in v['projects']:
             u = db['projects'].update_one({
                 'node_types.name': 'dillo_post',
                 '_deleted': {'$ne': True},
-                'url': project_url},
+                '_id': ObjectId(project_id)},
                 {'$set': additional_properties})
             log.info('Updated %s document' % u.modified_count)
