@@ -61,6 +61,8 @@ def validate_query_string_sorting(sorting_key):
 
 
 def validate_query_string_community(community_id):
+    if not community_id:
+        return None
     if community_id and not ObjectId.is_valid(community_id):
         abort(make_response(flask.jsonify({
             '_status': 'ERR',
@@ -113,10 +115,7 @@ def add_communities_filter(pipeline):
 
     current_user = pillar.auth.get_current_user()
 
-    # Replace community id string with ObjectId
-    default_followed_community_ids = [ObjectId(cid) for cid in
-                                      current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
-
+    default_followed_community_ids = current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']
     # Add filter for communities
     if current_user.is_anonymous and default_followed_community_ids:
         pipeline[0]['$match']['project'] = {'$in': default_followed_community_ids}
