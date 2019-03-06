@@ -238,7 +238,8 @@ def get_posts():
                     'properties': 1,
                     'picture': 1,
                     '_created': 1,
-                    'project': '$project.url',
+                    'project.url': 1,
+                    'project.name': 1,
                     'user': '$user.username'
                 }},
             ]
