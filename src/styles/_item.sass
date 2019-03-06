@@ -128,8 +128,6 @@ $item-thumbnail-size: 90px
           object-fit: cover
           width: 100%
 
-    background-color: $color-background-light
-
     .item-thumbnail-picture
       &::before
         display: none
@@ -279,19 +277,15 @@ $item-thumbnail-size: 90px
 .item-info
   &-panel
     background-color: $color-background-light
-    border-bottom: thin solid $color-background
-    display: flex
+    border-bottom-left-radius: $border-radius * 2
+    border-bottom-right-radius: $border-radius * 2
 
   &-op
-    display: flex
-
     .op-avatar
       background-color: $color-background-dark
       box-shadow: 0 0 0 3px $color-background-lighter
-      border-radius: 50%
-      height: 40px
-      margin: 10px 0 10px 15px
-      max-width: 40px
+      height: 50px
+      max-width: 50px
       overflow: hidden
       position: relative
       transition: box-shadow 150ms ease-in-out
@@ -314,9 +308,6 @@ $item-thumbnail-size: 90px
           text-decoration: underline
 
     .op-meta
-      align-items: center
-      display: flex
-
       img
         opacity: .5
         transition: opacity 150ms ease-in-out
@@ -334,13 +325,6 @@ $item-thumbnail-size: 90px
       a
         display: block
         padding: 3px
-
-    .op-karma
-      color: $color-text-dark-hint
-      margin-left: 5px
-
-    .op-details
-      padding: 10px
 
   &-action
     +media-xs
@@ -589,7 +573,6 @@ body[data-context="post-edit"]
   +media-lg
     font-size: 16px
 
-  border-bottom: thin solid $color-background-dark
   color: $color-text-strong
   font-size: 16px
   line-height: 1.5em
@@ -614,8 +597,6 @@ body[data-context="post-edit"]
     margin: 0
     padding: 0
 
-  background-color: $color-background-lighter
-  border-radius: 3px
   box-shadow: 1px 2px 2px $color-background-dark
   margin: 9px 10px 5px
   min-height: 280px
@@ -656,7 +637,11 @@ body[data-context="post-edit"]
       +node-details-description
       padding: 20px
 
-      // Override Pillar's +node-details-description.
+      background-color: $color-background-lighter
+      border-top-left-radius: $border-radius * 2
+      border-top-right-radius: $border-radius * 2
+
+        // Override Pillar's +node-details-description.
       // TODO(Pablo) add a variable in Pillar so we don't have to do this.
       a:not([class])
         color: var(--community-theme-color, $color-primary)
@@ -713,7 +698,6 @@ body[data-context="post-edit"]
       padding: 0
 
   .comments-container
-    background-color: $color-background-light
     max-width: unset // Pillar sets a max-width in pixels.
 
     .sign-in a

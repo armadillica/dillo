@@ -12,7 +12,7 @@
 
 .item-view(
 	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
-	.item-view-header
+	.item-view-header.pb-2
 		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
 			i.pi-cancel-circle
 
@@ -113,20 +113,20 @@
 			data-adaptive-background)
 	| {% endif %}
 
-	.item-info-panel
-		.item-info-op
-			a.op-avatar(
+	.item-info-panel.d-flex
+		.item-info-op.d-flex
+			a.op-avatar.rounded-circle.m-3(
 				href="{{ url_for('users.users_view', username=node.user.username )}}",
 				title="{{ node.user.full_name }}")
 				img(src="{{ node.user.email | gravatar }}", alt="{{ _('Avatar') }}")
 
-			.op-details
+			.py-3
 				.op-name(href="{{ url_for('users.users_view', username=node.user.username )}}")
 					a(href="{{ url_for('users.users_view', username=node.user.username )}}")
 						| {{ node.user.full_name }}
 
-					span.op-karma(title="Karma")
-						| ({{ node.user.extension_props_public.dillo.karma }})
+						span.ml-1(title="Karma")
+							| ({{ node.user.extension_props_public.dillo.karma }})
 
 				.op-meta
 					| {% if node.user.extension_props_public.dillo.links %}
@@ -168,7 +168,7 @@
 				target="_blank")
 				i.pi-social-reddit
 
-	#item-comments
+	#item-comments.pt-3
 		.item-commenting-on.py-3
 			span {{ _("Leave a comment on") }} #[strong {{ project.name }} - {{ node.name }}]
 		.comments-container
