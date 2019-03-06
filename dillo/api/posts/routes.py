@@ -131,7 +131,7 @@ def add_communities_filter(pipeline):
             pipeline[0]['$match']['project'] = {'$in': default_followed_community_ids}
 
 
-def add_facets_to_pipeline(pipeline, filter_community):
+def add_facets_to_pipeline(pipeline, community_id):
     """Given an aggregation pipeline, add elements to the facet step."""
     pipeline[2]['$facet']['facet_tags'] = [
         {'$unwind': '$properties.tags'},
@@ -139,7 +139,7 @@ def add_facets_to_pipeline(pipeline, filter_community):
       ]
 
     # If no community id is specified, do not look for custom facets
-    if not filter_community:
+    if not community_id:
         return
 
     for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
