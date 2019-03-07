@@ -37,18 +37,6 @@
 				span#item-title.item-title {{ node.name }}
 				| {% endif %}
 				ul
-					li.item-community
-						a(href="{{ url_for('posts.index', community_url=project.url) }}")
-							| {{ project.name }}
-					li.item-author
-						a(href="{{ url_for('users.users_view', username=node.user.username )}}")
-							| {{ node.user.full_name }}
-					li
-						a.item-date(
-							title="{{ node._created }}",
-							href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
-							| {{ node._created | pretty_date }}
-
 					| {% if node.properties.tags %}
 					li#item-tags
 						| {% for tag in node.properties.tags %}
@@ -66,9 +54,14 @@
 					| {% endif %}
 					| {% endfor %}
 
+					li
+						a.item-date(
+							title="{{ node._created }}",
+							href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
+							| {{ node._created | pretty_date }}
 
 	| {% if not is_link %}
-	.item-body#item-content
+	.item-body.px-5.pt-5.pb-3#item-content
 		.item-body-text
 			| {% if is_html %}
 			| {{ node.properties.content_html }}
