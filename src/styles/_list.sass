@@ -59,12 +59,6 @@
     .item-thumbnail
       opacity: 0
 
-  &.is-own
-    .item-rating-box .item-rating.up,
-    .item-rating-box .item-rating.down
-      pointer-events: none
-      color: rgba($color-text-dark-hint, .4)
-
   .item-details
     +media-xs
       ul
@@ -72,7 +66,7 @@
           font-size: .8em
 
     li
-      font-size: $font-size-small
+      font-size: $font-size-smaller
 
     .item-link
       +media-lg
@@ -85,7 +79,7 @@
     +media-xs
       font-size: 1em
     color: $color-text
-    font-size: 1.2em
+    font-size: $font-size-large
 
     &:hover
       color: var(--community-theme-color, $color-primary)

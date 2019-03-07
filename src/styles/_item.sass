@@ -101,8 +101,8 @@ $item-thumbnail-size: 90px
     max-width: $item-thumbnail-size / 1.2
 
   align-items: center
-  border-bottom-right-radius: 3px
-  border-top-right-radius: 3px
+  border-bottom-right-radius: $border-radius * 2
+  border-top-right-radius: $border-radius * 2
   display: flex
   justify-content: center
   max-width: $item-thumbnail-size
@@ -567,7 +567,6 @@ body[data-context="post-edit"]
     font-size: 16px
 
   color: $color-text-strong
-  font-size: 16px
   line-height: 1.5em
 
   iframe, video
@@ -620,11 +619,7 @@ body[data-context="post-edit"]
 
   &.text
     .item-body
-      +media-lg
-        padding: 20px 65px
-
       +node-details-description
-      padding: 20px
 
       background-color: $color-background-lighter
       border-top-left-radius: $border-radius * 2
@@ -770,13 +765,8 @@ body[data-context="post-edit"]
 
 // Shown only when we are in main-project
 .item-commenting-on
-  +media-xs
-    padding-left: 10px
-  background-color: $color-background
-  color: rgba($color-text, .7)
   display: none
   font-size: $font-size-small
-  padding-left: 60px
 
   span
     +text-overflow-ellipsis
