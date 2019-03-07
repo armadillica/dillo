@@ -17,24 +17,21 @@
 | {% set is_link = true %}
 | {% endif %}
 
-| {% if post.properties.rating_positive or post.properties.rating_negative %}
-| {% set is_positive = 'negative' %}
-| {% if post.properties.rating_positive %}
-| {% set is_positive = 'positive' %}
-| {% endif %}
-| {% endif %}
-
 | {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
 | {% set post_url = url_for('posts.view', community_url=post.project.url, post_shortcode=post.properties.shortcode) %}
 
+| {% if post.properties.status_dev %}
+| {% set custom_status = post.properties.status_dev %}
+| {% endif %}
+
 .list-hits-item(
-	class="{% if post.user == (current_user.user_id | string) %}is-own{% endif %}",
+	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %}",
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
 	data-url="{{ post_url }}")
 	a.item-thumbnail(
 		href="{{ post_url }}",
-		class="js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
+		class="{% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
 		.item-thumbnail-picture
 			| {% if post.picture %}
 			img(src="{{ post.picture.thumbnail('m') }}")
@@ -45,7 +42,7 @@
 			ul.item-details-header
 				| {% if not is_community_listing %}
 				li
-					a(href="{{ url_for('posts.index', community_url=post.project.url) }}")
+					a.js-follow-link(href="{{ url_for('posts.index', community_url=post.project.url) }}")
 						| {{ post.project.name  }}
 				| {% endif %}
 
@@ -58,15 +55,15 @@
 				| {% endif %}
 
 			a.item-title(
-				href="{{ post_url }}",
-				class="js-item-open")
+				href="{{ post_url }}")
 				| {{ post.name }}
 
 			ul.pb-2
-				| {% if rating > 5 %}
-				li(title="Hot Stuff")
-					i.pi-fire.text-danger
-				| {% endif %}
+				li
+					| {% if rating > 5 %}
+					i(title="Hot Stuff").pi-fire.text-danger
+					| {% endif %}
+					| {{ rating }}
 
 				| {% if is_link %}
 				li.item-favicon
@@ -79,9 +76,6 @@
 				li.item-date.js-item-open.js-convert-date
 					a(href="{{ post_url }}")
 						| {{ post._created | pretty_date_time }}
-
-				li.item-author
-					a(href="{{ url_for('users.users_view', username=post.user) }}") {{ post.user }}
 
 | {% endfor %}
 
