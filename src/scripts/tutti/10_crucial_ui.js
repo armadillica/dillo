@@ -261,7 +261,7 @@ function viewPostMobile(){
 
 
 // Toggle Communities List
-$('.d-header-logo').on('click', function(e){
+$('.js-toggle-communities-flyout').on('click', function(e){
 	e.preventDefault();
 
 	$('.d-communities').toggleClass('active');

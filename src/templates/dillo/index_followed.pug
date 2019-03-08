@@ -54,6 +54,10 @@ li
 
 
 | {% block body %}
+#col_left.navigation
+	| {% from 'dillo/macros/_communities.html' import communities_lis_sidebar %}
+	| {{ communities_lis_sidebar(communities) }}
+
 #col_main.listing-list
 	.d-flex.listing-facets.py-2.px-1
 		#facets.d-flex

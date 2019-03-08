@@ -54,6 +54,9 @@ body[data-context='post-fullscreen']
   top: 55px
 
 
+#col_left
+  min-width: 50px
+
 #col_main::-webkit-scrollbar-track
   background-color: transparent
 
@@ -140,7 +143,7 @@ body[data-context='post-fullscreen']
   +media-xs
     top: $header-height
   +media-lg
-    width: 40%
+    width: 42%
 
 #col_right
   +media-xs
@@ -652,10 +655,10 @@ h4 .emoji
       top: 0
       width: 100%
 
-    left: 15px
+    box-shadow: 10px 10px 25px rgba(black, .2)
+    left: 60px
     max-width: 500px
     position: absolute
-    top: 100%
 
     .flyout
       &-title
@@ -809,7 +812,6 @@ h4 .emoji
     min-height: $header-height
 
   display: flex
-  padding: 0 10px
   position: relative
   z-index: 2
 
@@ -839,7 +841,7 @@ h4 .emoji
       background-image: linear-gradient(transparent 52px, $color-background 100%)
 
   // .d-header-logo
-  $header-logo-size: 60px
+  $header-logo-size: 50px
   &-logo
     +media-xs
       height: $header-logo-size / 1.8
@@ -878,8 +880,7 @@ h4 .emoji
     display: flex
     flex-direction: column
     justify-content: center
-    padding-left: 35px
-    position: relative
+    // position: relative
     transition: transform 100ms ease-in-out
 
     &:hover
