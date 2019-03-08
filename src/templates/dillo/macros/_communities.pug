@@ -27,3 +27,23 @@ ul
 				span.summary.
 					{{ _('We welcome international users or specialized Blender groups.Tell us why your community belongs here.') }}
 | {% endmacro %}
+
+| {% macro communities_lis_sidebar(communities) %}
+ul.list-unstyled
+	| {% for community in communities %}
+	li.pb-2
+		a(
+			href="{{ url_for('posts.index', community_url=community.url) }}",
+			title="{{ community.name }}")
+			| {% if community.picture_square %}
+			.d-header-logo
+				img(src="{{ community.picture_square.thumbnail('l') }}", alt="{{ community.name }} logo")
+			| {% else %}
+			.d-header-logo.no-logo
+				i.pi-grin
+			| {% endif %}
+	| {% endfor %}
+
+	li.js-toggle-communities-flyout.mt-2
+		i.pi-angle-right.h2.p-1
+| {% endmacro %}

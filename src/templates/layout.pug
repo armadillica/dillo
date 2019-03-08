@@ -89,17 +89,11 @@ html(lang='en')
 				style="background-image: url({{ project.picture_header.thumbnail('h') }});")
 			| {% endif %}
 			.d-header
-
-				| {% if project.picture_square %}
-				a.d-header-logo(
-					href="{{ url_for('posts.index', community_url=project.url) }}",
-					title="{{ _('All Communities') }}")
-					img(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")
-				| {% else %}
-				a.d-header-logo.no-logo(
-					href="{{ url_for('posts.index', community_url=project.url) }}")
-					i.pi-grin
-				| {% endif %}
+				a(
+					href="/c/",
+					title="Blender.Community")
+					.d-header-logo.no-logo
+						i.pi-grin.h4.ml-1
 
 				.d-communities
 					.flyout.communities
@@ -111,7 +105,7 @@ html(lang='en')
 							| {% from 'dillo/macros/_communities.html' import communities_list %}
 							| {{ communities_list(communities) }}
 
-				.d-header-title
+				.d-header-title.pl-3
 					| {% if is_main_project %}
 					a.title(href="{{ url_for('posts.index_all') }}")
 						span {{ project.name }}
