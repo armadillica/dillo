@@ -1,5 +1,5 @@
 | {% macro communities_list(communities) %}
-ul
+ul.list-unstyled
 	| {% for community in communities %}
 	li
 		a.d-communities-item(
@@ -28,8 +28,14 @@ ul
 					{{ _('We welcome international users or specialized Blender groups.Tell us why your community belongs here.') }}
 | {% endmacro %}
 
-| {% macro communities_lis_sidebar(communities) %}
+| {% macro communities_list_sidebar(main_project, communities) %}
 ul.list-unstyled
+	li
+		a(
+			href="/c/",
+			title="{{ main_project.name }}")
+			.d-header-logo
+				img(src="{{ main_project.picture_square.thumbnail('l') }}", alt="{{ main_project.name }} logo")
 	| {% for community in communities %}
 	li.pb-2
 		a(
