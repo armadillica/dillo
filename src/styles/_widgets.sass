@@ -1,0 +1,338 @@
+.btn
+  +button-dillo($color-text, 5px, false)
+
+  &.publish
+    +button-dillo($color-success, 5px, true)
+  &.cancel
+    +button-dillo($color-text-light, 5px)
+    margin-right: 10px
+  &.delete
+    +button-dillo($color-danger, 5px)
+  &.preview
+    display: none
+
+    +media-xs
+      display: block
+
+  &.btn-success
+    +button-dillo($color-success, 5px, true)
+  &.btn-info
+    +button-dillo($color-info, 5px, true)
+  &.btn-danger
+    +button-dillo($color-danger, 5px, true)
+  &.btn-warning
+    +button-dillo($color-warning, 5px, true)
+
+  &.btn-submit
+    +button-dillo(var(--community-theme-color, $color-primary), 5px, true)
+    +media-xs
+      border-radius: 999em
+      padding: 10px
+      width: 60px
+
+      > i
+        font-size: $font-size-large
+        margin-right: 0
+
+      > span
+        display: none
+
+    font-size: inherit
+
+    &:hover
+      +media-xs
+        border-radius: 999em
+        padding: 10px
+      +button-dillo(lighten($color-primary, 5%), 5px, true)
+
+    &.post
+      border-radius: 5px !important
+
+.btn-group
+  align-items: center
+  border-radius: 3px
+  color: $color-text
+  display: inline-flex
+  position: relative
+
+  &.submit
+    +media-xs
+      border-radius: 999em
+      bottom: 15px
+      box-shadow: 0 0 25px rgba(black, .2)
+      position: fixed
+      right: 10px
+
+    .dropdown-menu
+      +media-xs
+        top: -100%
+
+      background-color: var(--community-theme-color, $color-primary)
+      border-radius: 5px
+      top: 110%
+
+      a
+        color: white
+        font-weight: bold
+
+  label
+    font-size: 1em
+    padding-right: 10px
+
+  button, .btn, a.btn
+    &:first-child
+      border-top-right-radius: 0
+      border-bottom-right-radius: 0
+
+    &.solo
+      border-radius: 5px
+      padding-right: 20px
+
+    &.wgt-dropdown-toggle
+      +media-xs
+        border-top-right-radius: 999em !important
+        border-bottom-right-radius: 999em !important
+        > i
+          display: block
+
+      border-left: none
+      padding-left: 5px
+      padding-right: 5px
+      border-top-left-radius: 0 !important
+      border-bottom-left-radius: 0 !important
+      border-top-right-radius: 5px !important
+      border-bottom-right-radius: 5px !important
+
+      > i
+        margin: 0
+
+      .btn
+        +media-xs
+          box-shadow: none
+          width: auto
+        padding-top: 5px
+        padding-bottom: 5px
+
+
+select, textarea, input
+  border-radius: 5px
+  border-style: solid
+  border-width: 2px
+
+  &:focus
+    border-color: var(--community-theme-color, $color-primary)
+    outline: none
+
+  option
+    color: $color-text
+    // TODO(Pablo) Check override in Pillar.
+    background-color: $color-background !important
+
+
+.wgt-search
+  position: relative
+
+  .wgt-search-icon
+    position: absolute
+    right: 15px
+    top: 6px
+    color: $color-text-hint
+
+  input
+    +media-xs
+      width: 100px
+    background-color: $color-background-lighter
+    border: none
+    border-radius: 3px
+    box-shadow: inset 0 0 0 1px $color-background-dark
+    float: right
+    margin: 0 10px
+    padding: 6px 10px
+    width: 120px
+
+    &::placeholder
+      color: $color-text-hint
+
+
+.wgt-toggle-fullscreen
+  cursor: pointer
+
+  &.active
+    color: var(--community-theme-color, $color-primary)
+
+
+$wgt-dropdown-width: 150px
+.wgt-dropdown
+  &-root
+    position: relative
+    margin-left: 15px
+    margin-right: 15px
+
+  &-header
+    align-items: center
+    background-color: $color-background-light
+    box-shadow: 1px 1px 2px rgba(black, .2)
+    border: none
+    border-radius: 3px
+    cursor: pointer
+    display: flex
+    font-weight: lighter
+    min-width: $wgt-dropdown-width
+    min-height: $widget-min-height
+    padding-left: 10px
+    padding-right: 10px
+    user-select: none
+
+    &:after
+      content: '\e838'
+      font-family: "pillar-font"
+      margin-left: auto
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+  &-body
+    border: thin solid $color-background-dark
+    border-bottom-left-radius: 3px
+    border-bottom-right-radius: 3px
+    box-shadow: 1px 2px 2px $color-background-dark
+    display: none
+    position: absolute
+    top: 100%
+    z-index: 1
+
+    &.active
+      display: block
+
+  &-link
+    background-color: $color-background-light
+    border-top: thin solid $color-background-dark
+    color: $color-text
+    display: flex
+    padding: 10px 10px
+    min-width: $wgt-dropdown-width
+    text-decoration: none
+
+    &:hover
+      background-color: $color-background-lighter
+      color: var(--community-theme-color, $color-primary)
+
+  &-active
+    .wgt-dropdown-link
+      background-color: $color-background-lighter
+      color: var(--community-theme-color, $color-primary)
+      box-shadow: inset 3px 0 $color-secondary
+
+  &-count
+    margin-left: auto
+    color: $color-text-dark-hint
+
+  &-toggle
+    &.active
+      .wgt-dropdown-header
+        color: var(--community-theme-color, $color-primary)
+
+        &:after
+          content: '\e83b'
+
+      img.avatar
+        background-color: var(--community-theme-color, $color-primary)
+
+
+.wgt-pagination
+  &-root
+    align-items: center
+    display: flex
+    list-style-type: none
+    justify-content: flex-end
+    padding: 0
+    margin: 0 0 0 10px
+
+  &-item
+    align-items: center
+    display: flex
+    height: 100%
+    min-height: $widget-min-height
+
+  &-link
+    background-color: $color-background-lighter
+    border-top: thin solid $color-background
+    border-bottom: thin solid $color-background
+    color: $color-text-dark-secondary
+    display: flex
+    font-size: $font-size-small
+    padding: 5px
+    text-decoration: none
+    user-select: none
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+  &-disabled
+    .wgt-pagination-link
+      opacity: .3
+
+  &-active
+    display: none
+
+  &-last
+    .wgt-pagination-link
+      border-right: thin solid $color-background
+      border-top-right-radius: 3px
+      border-bottom-right-radius: 3px
+
+  &-first
+    .wgt-pagination-link
+      border-left: thin solid $color-background
+      border-top-left-radius: 3px
+      border-bottom-left-radius: 3px
+
+
+.wgt-stats
+  &-root
+    color: rgba($color-text, .8)
+    font-size: $font-size-smaller
+    padding: 5px 10px
+
+
+.wgt-clear
+  &-root
+    font-size: $font-size-small
+    color: $color-text-dark-secondary
+    display: inline-block
+    padding: 10px 5px
+
+    &:hover
+      color: var(--community-theme-color, $color-primary)
+
+
+.wgt-refined-values
+  &-body > div
+    align-items: center
+    background-color: $color-background-lighter
+    border-radius: 3px
+    display: flex
+    padding: 6px 8px
+
+    &:hover
+      .wgt-refined-values-link,
+      .wgt-refined-values-clear
+        color: var(--community-theme-color, $color-primary)
+
+  &-count
+    display: none
+
+  &-clear
+    font-size: $font-size-small
+    padding-right: 5px
+    position: relative
+    top: 1px
+
+  &-link
+    align-items: center
+    color: var(--community-theme-color, $color-primary)
+    cursor: pointer
+    display: flex
+    font-weight: lighter
+    user-select: none
+    text-decoration: none

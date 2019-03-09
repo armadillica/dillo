@@ -31,216 +31,6 @@ body[data-context='post-fullscreen']
   .d-header-background
     opacity: .33
 
-// Override Pillar's notifications style
-.nav-notifications
-  .nav-item
-    height: 40px
-    width: 40px
-    display: flex
-    align-items: center
-    justify-content: center
-    font-size: 1.2em
-
-#notifications
-  +media-xs
-    bottom: 0
-    height: 100%
-    max-height: 100% !important
-    right: 0
-    top: $header-height
-    width: auto
-
-  right: 15px
-  top: 55px
-
-
-#col_left
-  min-width: 50px
-
-#col_main::-webkit-scrollbar-track
-  background-color: transparent
-
-#col_main::-webkit-scrollbar-thumb
-  background-color: transparent
-
-#col_main:hover::-webkit-scrollbar-track
-  background-color: rgba($color-background-darker, .2)
-
-#col_main:hover::-webkit-scrollbar-thumb
-  background-color: var(--community-theme-color, $color-primary)
-
-#col_right, #col_main
-  background-color: transparent
-  overflow-y: auto
-  padding-left: 0 !important // override sidebar offset from Pillar
-
-  .fullscreen-overlay
-    display: none
-    pointer-events: none
-    visibility: hidden
-
-  &.fullscreen
-    +media-xs
-      background-color: $color-background
-      bottom: 0
-      display: flex
-      left: 0
-      position: fixed
-      right: 0
-      top: $header-height
-
-    background-color: rgba($color-background, .8)
-    position: absolute
-    width: 100%
-
-    .item-view-close
-      display: block
-
-    .fullscreen-overlay
-      display: initial
-      pointer-events: initial
-      position: fixed
-      top: 0
-      bottom: 0
-      left: 0
-      right: 0
-      visibility: visible
-      z-index: 0
-
-    #list-item
-      +media-xs
-        width: 100%
-        padding: 0
-
-      margin: 0 auto
-      max-width: 840px
-      overflow-x: initial
-      position: relative
-      z-index: 1
-      padding-left: 70px
-
-      .item-title
-        margin-right: 70px
-
-      .item-body,
-      .item-view-header
-        +media-xs
-          background-color: $color-background-lighter
-
-      .item-body
-        font-size: 16px
-
-      .item-view
-        +media-xs
-          background-color: $color-background
-          box-shadow: none
-          transform: none
-
-        box-shadow: 0 0 1px 0 rgba($color-background-darker, .2), 1px 1px 5px rgba($color-background-darker, .1), 0 15px 100px rgba($color-background-darker, .2)
-        transform: translateX(-35px)
-
-#col_main
-  +media-xs
-    top: $header-height
-  +media-lg
-    width: 42%
-
-#col_right
-  +media-xs
-    display: none // it's displayed when coupled with .fullscreen
-
-#app-header
-  +media-xs
-    left: 0
-    position: fixed
-    right: 0
-    top: 0
-    z-index: 10
-
-  display: flex
-  flex-direction: column
-
-#app-loader
-  background-color: var(--community-theme-color, $color-primary)
-  height: 0
-  left: 0
-  position: absolute
-  right: 0
-  top: 0
-  z-index: 99
-
-  visibility: hidden
-  opacity: 0
-  transition: all ease-in-out 50ms
-
-  background: linear-gradient(45deg, var(--community-theme-color, $color-primary), rgba(white, 0), rgba(white, 0), var(--community-theme-color, $color-primary))
-  background-size: 50% 100%
-  -webkit-animation: none
-  -moz-animation: none
-  animation: none
-
-  &.active
-    height: 2px
-    visibility: visible
-    opacity: 1
-    -webkit-animation: fLoaderBackground 3s linear infinite
-    -moz-animation: fLoaderBackground 3s linear infinite
-    animation: fLoaderBackground 3s linear infinite
-
-#app-overlay
-  align-items: center
-  justify-content: center
-  bottom: 0
-  display: flex
-  left: 0
-  opacity: 0
-  pointer-events: none
-  position: fixed
-  right: 0
-  top: 0
-  visibility: hidden
-  z-index: 9
-
-  .overlay-background
-    bottom: 0
-    left: 0
-    opacity: 0
-    position: fixed
-    right: 0
-    top: 0
-    transition: opacity 500ms ease-out, background-color 500ms ease-out
-
-  &.active
-    opacity: 1
-    pointer-events: initial
-    visibility: visible
-
-    .overlay-background
-      background-color: rgba($color-background-darker, .8)
-      opacity: 1
-
-  &.preview
-    pointer-events: auto
-    color: rgba($color-background, .2)
-    font-size: 2em
-
-    .overlay-background
-      align-items: center
-      display: flex
-      justify-content: center
-      opacity: 1
-
-    img
-      max-height: 90%
-      max-width: 90%
-
-  &.submit
-    .overlay-background
-      background: var(--community-theme-color, $color-primary)
-      opacity: .5
-
-    .dialog-box
-      top: 0
 
 .dialog-box
   align-self: flex-start
@@ -294,135 +84,6 @@ body[data-context='post-fullscreen']
   padding: 10px
   text-decoration: none
 
-.btn
-  +button-dillo($color-text, 5px, false)
-
-  &.publish
-    +button-dillo($color-success, 5px, true)
-  &.cancel
-    +button-dillo($color-text-light, 5px)
-    margin-right: 10px
-  &.delete
-    +button-dillo($color-danger, 5px)
-  &.preview
-    display: none
-
-    +media-xs
-      display: block
-
-  &.btn-success
-    +button-dillo($color-success, 5px, true)
-  &.btn-info
-    +button-dillo($color-info, 5px, true)
-  &.btn-danger
-    +button-dillo($color-danger, 5px, true)
-  &.btn-warning
-    +button-dillo($color-warning, 5px, true)
-
-  &.btn-submit
-    +button-dillo(var(--community-theme-color, $color-primary), 5px, true)
-    +media-xs
-      border-radius: 999em
-      padding: 10px
-      width: 60px
-
-      > i
-        font-size: $font-size-large
-        margin-right: 0
-
-      > span
-        display: none
-
-    font-size: inherit
-
-    &:hover
-      +media-xs
-        border-radius: 999em
-        padding: 10px
-      +button-dillo(lighten($color-primary, 5%), 5px, true)
-
-    &.post
-      border-radius: 5px !important
-
-.btn-group
-  align-items: center
-  border-radius: 3px
-  color: $color-text
-  display: inline-flex
-  position: relative
-
-  &.submit
-    +media-xs
-      border-radius: 999em
-      bottom: 15px
-      box-shadow: 0 0 25px rgba(black, .2)
-      position: fixed
-      right: 10px
-
-    .dropdown-menu
-      +media-xs
-        top: -100%
-
-      background-color: var(--community-theme-color, $color-primary)
-      border-radius: 5px
-      top: 110%
-
-      a
-        color: white
-        font-weight: bold
-
-  label
-    font-size: 1em
-    padding-right: 10px
-
-  button, .btn, a.btn
-    &:first-child
-      border-top-right-radius: 0
-      border-bottom-right-radius: 0
-
-    &.solo
-      border-radius: 5px
-      padding-right: 20px
-
-    &.wgt-dropdown-toggle
-      +media-xs
-        border-top-right-radius: 999em !important
-        border-bottom-right-radius: 999em !important
-        > i
-          display: block
-
-      border-left: none
-      padding-left: 5px
-      padding-right: 5px
-      border-top-left-radius: 0 !important
-      border-bottom-left-radius: 0 !important
-      border-top-right-radius: 5px !important
-      border-bottom-right-radius: 5px !important
-
-      > i
-        margin: 0
-
-      .btn
-        +media-xs
-          box-shadow: none
-          width: auto
-        padding-top: 5px
-        padding-bottom: 5px
-
-
-select, textarea, input
-  border-radius: 5px
-  border-style: solid
-  border-width: 2px
-
-  &:focus
-    border-color: var(--community-theme-color, $color-primary)
-    outline: none
-
-  option
-    color: $color-text
-    // TODO(Pablo) Check override in Pillar.
-    background-color: $color-background !important
 
 /* Navigation */
 nav
@@ -544,31 +205,6 @@ ul.dropdown-menu
 .spin
   animation-duration: 5s
 
-.wgt-search
-  position: relative
-
-  .wgt-search-icon
-    position: absolute
-    right: 15px
-    top: 6px
-    color: $color-text-hint
-
-  input
-    +media-xs
-      width: 100px
-    background-color: $color-background-lighter
-    border: none
-    border-radius: 3px
-    box-shadow: inset 0 0 0 1px $color-background-dark
-    float: right
-    margin: 0 10px
-    padding: 6px 10px
-    width: 120px
-
-    &::placeholder
-      color: $color-text-hint
-
-
 .emoji
   height: 16px
   width: 16px
@@ -587,27 +223,14 @@ h3 .emoji
   height: $h3-font-size
   width: $h3-font-size
 
-
 h4 .emoji
   height: $h4-font-size
   width: $h4-font-size
 
-.user-avatar
-  width: 28px
-  height: 28px
-  margin: 0
-  padding: 0
-  border-radius: 50%
-  vertical-align: middle
-
 .welcome
   background-color: $color-background-light
-  border-radius: 3px
+  border-radius: $border-radius * 2
   box-shadow: 1px 2px 2px rgba(black, .2)
-  display: flex
-  flex-direction: column
-  margin: 8px
-  padding: 0 20px
 
   &-logo
     max-height: 90px
@@ -632,18 +255,6 @@ h4 .emoji
     color: var(--community-theme-color, $color-primary) !important
 
 .flyout
-  &.notifications
-    +media-xs
-      bottom: 0
-      box-shadow: none
-      left: 0
-      margin: 0
-      padding: 0
-      position: fixed
-      right: 0
-      top: 0
-    top: 40px
-
   &.communities
     +media-xs
       bottom: 0
@@ -656,7 +267,6 @@ h4 .emoji
       width: 100%
 
     box-shadow: 10px 10px 25px rgba(black, .2)
-    left: 60px
     max-width: 500px
     position: absolute
 
@@ -875,25 +485,9 @@ h4 .emoji
 
   // .d-header-title
   &-title
-    +media-xs
-      display: none
-    display: flex
-    flex-direction: column
-    justify-content: center
-    // position: relative
-    transition: transform 100ms ease-in-out
-
-    &:hover
-      transform: scale(1.05)
-
-    .title
-      background-color: var(--community-theme-color, $color-primary)
-      border-radius: 3px
-      box-shadow: 1px 1px 1px 0 rgba(black, .2)
-      color: $color-text
-      font-size: $font-size-large
-      text-decoration: none
-      padding: 4px 15px
+    color: $color-text
+    font-size: $font-size-large
+    text-decoration: none
 
   // .d-header-action
   &-action
@@ -961,169 +555,6 @@ h4 .emoji
         content: '\e84b'
 
 
-/* General style for activities in all places */
-.d-activity
-  border-top: thin solid $color-background-dark
-  padding: 15px 15px 25px
-
-  .title
-    color: $color-text-hint
-    padding-bottom: 15px
-
-  $activity-highlight-color: #00cc9f
-  ul
-    cursor: default
-    margin: 0
-    padding: 0
-    color: $color-text-hint
-    list-style: none
-
-    li
-      padding: 2px 5px 7px 25px
-      position: relative
-
-      a
-        color: $color-text-hint
-        text-decoration: none
-
-        &:hover
-          text-decoration: underline
-
-      span.date
-        color: darken($activity-highlight-color, 5%)
-
-      /* Left Dot */
-      &:after
-        content: ''
-        position: absolute
-        top: 0
-        left: 0
-        width: 18px
-        height: 18px
-        background-color: $activity-highlight-color
-        border: thin solid $activity-highlight-color
-
-      /* Left Line */
-      &:before
-        content: ''
-        display: block
-        position: absolute
-        top: 10px
-        left: 9px
-        width: 2px
-        height: 100%
-        background-color: $activity-highlight-color
-        transition: all 250ms ease-in-out
-
-      &:last-child
-        &:before
-          background-color: transparent
-
-    span.actor
-      padding: 0 5px
-      color: $color-text-dark
-
-    img.actor-avatar
-      width: 18px
-      height: 18px
-      position: absolute
-      top: 1px
-      left: 1px
-      z-index: 1
-
-
-#notification-pop
-  &.code-403, &.code-422
-    background-color: $color-danger
-
-    .nc-avatar
-      display: none
-
-
-.wgt-toggle-fullscreen
-  cursor: pointer
-
-  &.active
-    color: var(--community-theme-color, $color-primary)
-
-
-$wgt-dropdown-width: 150px
-.wgt-dropdown
-  &-root
-    position: relative
-    margin-left: 15px
-    margin-right: 15px
-
-  &-header
-    align-items: center
-    background-color: $color-background-light
-    box-shadow: 1px 1px 2px rgba(black, .2)
-    border: none
-    border-radius: 3px
-    cursor: pointer
-    display: flex
-    font-weight: lighter
-    min-width: $wgt-dropdown-width
-    min-height: $widget-min-height
-    padding-left: 10px
-    padding-right: 10px
-    user-select: none
-
-    &:after
-      content: '\e838'
-      font-family: "pillar-font"
-      margin-left: auto
-
-    &:hover
-      color: var(--community-theme-color, $color-primary)
-
-  &-body
-    border: thin solid $color-background-dark
-    border-bottom-left-radius: 3px
-    border-bottom-right-radius: 3px
-    box-shadow: 1px 2px 2px $color-background-dark
-    display: none
-    position: absolute
-    top: 100%
-    z-index: 1
-
-    &.active
-      display: block
-
-  &-link
-    background-color: $color-background-light
-    border-top: thin solid $color-background-dark
-    color: $color-text
-    display: flex
-    padding: 10px 10px
-    min-width: $wgt-dropdown-width
-    text-decoration: none
-
-    &:hover
-      background-color: $color-background-lighter
-      color: var(--community-theme-color, $color-primary)
-
-  &-active
-    .wgt-dropdown-link
-      background-color: $color-background-lighter
-      color: var(--community-theme-color, $color-primary)
-      box-shadow: inset 3px 0 $color-secondary
-
-  &-count
-    margin-left: auto
-    color: $color-text-dark-hint
-
-  &-toggle
-    &.active
-      .wgt-dropdown-header
-        color: var(--community-theme-color, $color-primary)
-
-        &:after
-          content: '\e83b'
-
-      img.avatar
-        background-color: var(--community-theme-color, $color-primary)
-
 #list-sort-by
   margin-left: 10px
 
@@ -1140,107 +571,10 @@ $wgt-dropdown-width: 150px
       border-color: transparent
 
 
-.wgt-pagination
-  &-root
-    align-items: center
-    display: flex
-    list-style-type: none
-    justify-content: flex-end
-    padding: 0
-    margin: 0 0 0 10px
-
-  &-item
-    align-items: center
-    display: flex
-    height: 100%
-    min-height: $widget-min-height
-
-  &-link
-    background-color: $color-background-lighter
-    border-top: thin solid $color-background
-    border-bottom: thin solid $color-background
-    color: $color-text-dark-secondary
-    display: flex
-    font-size: $font-size-small
-    padding: 5px
-    text-decoration: none
-    user-select: none
-
-    &:hover
-      color: var(--community-theme-color, $color-primary)
-
-  &-disabled
-    .wgt-pagination-link
-      opacity: .3
-
-  &-active
-    display: none
-
-  &-last
-    .wgt-pagination-link
-      border-right: thin solid $color-background
-      border-top-right-radius: 3px
-      border-bottom-right-radius: 3px
-
-  &-first
-    .wgt-pagination-link
-      border-left: thin solid $color-background
-      border-top-left-radius: 3px
-      border-bottom-left-radius: 3px
-
-
-.wgt-stats
-  &-root
-    color: rgba($color-text, .8)
-    font-size: $font-size-smaller
-    padding: 5px 10px
-
-
-.wgt-clear
-  &-root
-    font-size: $font-size-small
-    color: $color-text-dark-secondary
-    display: inline-block
-    padding: 10px 5px
-
-    &:hover
-      color: var(--community-theme-color, $color-primary)
-
-
-.wgt-refined-values
-  &-body > div
-    align-items: center
-    background-color: $color-background-lighter
-    border-radius: 3px
-    display: flex
-    padding: 6px 8px
-
-    &:hover
-      .wgt-refined-values-link,
-      .wgt-refined-values-clear
-        color: var(--community-theme-color, $color-primary)
-
-  &-count
-    display: none
-
-  &-clear
-    font-size: $font-size-small
-    padding-right: 5px
-    position: relative
-    top: 1px
-
-  &-link
-    align-items: center
-    color: var(--community-theme-color, $color-primary)
-    cursor: pointer
-    display: flex
-    font-weight: lighter
-    user-select: none
-    text-decoration: none
-
 .hidden
   display: none !important
   visibility: hidden !important
+
 
 .comment-reply-field,
 .comment-reply-field textarea,
