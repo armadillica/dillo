@@ -261,7 +261,7 @@ def view(community_url, post_shortcode, slug=None):
         post.picture = get_file(post.picture, api=api)
 
     return render_template(
-        'dillo/index.html',
+        'dillo/index_followed.html',
         project=project,
         submit_menu=project_submit_menu(project),
         col_right={'post': post})
