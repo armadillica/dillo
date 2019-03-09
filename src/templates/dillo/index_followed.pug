@@ -54,10 +54,6 @@ li
 
 
 | {% block body %}
-#col_left.navigation
-	| {% from 'dillo/macros/_communities.html' import communities_lis_sidebar %}
-	| {{ communities_lis_sidebar(communities) }}
-
 #col_main.listing-list
 	.d-flex.listing-facets.py-2.px-1
 		#facets.d-flex
@@ -100,8 +96,8 @@ li
 			.item-body
 
 		| {% elif 'activities' in col_right %}
-		.welcome
-			.d-flex.px-3.py-4
+		.welcome.p-4.m-2
+			.d-flex
 				| {% if project.picture_square %}
 				a.welcome-logo.mr-4(href="{{ url_for('posts.index', community_url=project.url) }}")
 					img.w-100(src="{{ project.picture_square.thumbnail('l') }}", alt="{{ project.name }} logo")

@@ -80,163 +80,161 @@ html(lang='en')
 		| {% endblock og %}
 
 	body({% block bodyattrs %}{%endblock%})
-		#app-header
-			#app-loader.loading-bar
+		#app-container
+			#app-nav
+				| {% from 'dillo/macros/_communities.html' import communities_list_sidebar %}
+				| {{ communities_list_sidebar(main_project, communities) }}
+			#app-content
+				#app-header
+					#app-loader.loading-bar
 
-			| {% block header %}
-			| {% if project.picture_header %}
-			.d-header-background(
-				style="background-image: url({{ project.picture_header.thumbnail('h') }});")
-			| {% endif %}
-			.d-header
-				a(
-					href="/c/",
-					title="Blender.Community")
-					.d-header-logo.no-logo
-						i.pi-grin.h4.ml-1
-
-				.d-communities
-					.flyout.communities
-						.flyout-hat
-						.flyout-content
-							.flyout-title
-								a.title(href="{{ url_for('posts.index_all') }} ") {{ _('All Communities') }}
-
-							| {% from 'dillo/macros/_communities.html' import communities_list %}
-							| {{ communities_list(communities) }}
-
-				.d-header-title.pl-3
-					| {% if is_main_project %}
-					a.title(href="{{ url_for('posts.index_all') }}")
-						span {{ project.name }}
-					| {% else %}
-					a.title(href="{{ url_for('posts.index', community_url=project.url) }}")
-						span {{ project.name }}
+					| {% block header %}
+					| {% if project.picture_header %}
+					.d-header-background(
+						style="background-image: url({{ project.picture_header.thumbnail('h') }});")
 					| {% endif %}
+					.d-header
+						.d-communities
+							.flyout.communities
+								.flyout-hat
+								.flyout-content
+									.flyout-title
+										a.title(href="{{ url_for('posts.index_all') }} ") {{ _('All Communities') }}
 
-				.d-header-action.refine
-					nav.nav-bar
-						ul.list-unstyled.d-flex.align-items-center.m-0
-							li.d-flex
-								#list-refined-values
-								#list-tags.wgt-dropdown-toggle
-								//- Add POST_ADDITIONAL_PROPERTIES filters here
-								| {% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
-								| {% if project.url in v['projects'] %}
-								.wgt-dropdown-toggle(id="list-{{ k }}")
-								| {% endif %}
-								| {% endfor %}
-							li
-								.wgt-search
-									.wgt-search-icon
-										i.pi-search
-									input(
-										id="q",
-										type="text",
-										placeholder="{{ _('Search...') }}")
+									| {% from 'dillo/macros/_communities.html' import communities_list %}
+								| {{ communities_list(communities) }}
 
-				.d-header-toggle-nav
-					i.pi-menu
+						| {% if is_main_project %}
+						a.d-header-title.pl-3.pt-3(href="{{ url_for('posts.index_all') }}")
+							| {{ project.name }}
+						| {% else %}
+						a.d-header-title.pl-3.pt-3(href="{{ url_for('posts.index', community_url=project.url) }}")
+							| {{ project.name }}
+						| {% endif %}
 
-				.d-header-action
-					nav.nav-bar
-						ul.list-unstyled.d-flex.align-items-center.m-0
-							| {% if current_user.is_authenticated %}
-							| {% block submit_btn %} {% endblock %}
-
-							li.nav-notifications
-								a#notifications-toggle.nav-item.rounded-circle(
-									title="{{ _('Notifications') }}",
-									data-toggle="tooltip",
-									data-placement="bottom")
-									i.pi-notifications-none.nav-notifications-icon
-									span#notifications-count
-										span
-									.flyout-hat
-
-								#notifications.flyout.notifications
-									.flyout-content
-										span.flyout-title {{ _('Notifications') }}
-										a#notifications-markallread(
-											title="{{ _('Mark All as Read') }}",
-											href="/notifications/read-all")
-											| {{ _('Mark All as Read') }}
-
-										| {% include '_notifications.html' %}
-
-							li.dropdown.wgt-dropdown-toggle
-								.nav-item.dropdown-toggle
-									img.avatar.rounded-circle(
-										src="{{ current_user.gravatar }}",
-										alt="{{ _('Avatar') }}")
-
-									.dropdown-toggle-icon
-										i.pi-angle-down
-
-								ul.dropdown-menu.dropdown-menu-right
+						.d-header-action.refine
+							nav.nav-bar
+								ul.list-unstyled.d-flex.align-items-center.m-0
+									li.d-flex
+										#list-refined-values
+										#list-tags.wgt-dropdown-toggle
+										//- Add POST_ADDITIONAL_PROPERTIES filters here
+										| {% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
+										| {% if project.url in v['projects'] %}
+										.wgt-dropdown-toggle(id="list-{{ k }}")
+										| {% endif %}
+										| {% endfor %}
 									li
-										a.theme-toggle(
-											title="{{ _('Toggle between dark and light themes') }}")
-											i.pi-moon
-											| {{ _('Toggle Theme') }}
-									li
-										a(
-											href="{{ url_for('users.users_view', username=current_user.username) }}"
-											title="{{ _('Profile') }}")
-											i.pi-vcard
-											| {{ _('My Profile') }}
-									li
-										a(
-											href="{{ url_for('settings.profile') }}"
-											title="{{ _('Settings') }}")
-											i.pi-cog
-											| {{ _('Settings') }}
-									| {% if current_user.has_cap('admin') %}
-									li
-										a(
-											href="{{ url_for('projects.edit', project_url=project.url) }}"
-											title="{{ _('Community Settings') }}")
-											i.pi-whoosh
-											| {{ _('Community Settings') }}
-									| {% endif %}
-									li
-										a(
-											href="{{ url_for('users.logout') }}")
-											i.pi-off(title="{{ _('Log out') }}")
-											| {{ _('Log out') }}
+										.wgt-search
+											.wgt-search-icon
+												i.pi-search
+											input(
+												id="q",
+												type="text",
+												placeholder="{{ _('Search...') }}")
 
-							| {% else %}
-							li
-								a.nav-item.theme-toggle(
-									title="{{ _('Turn off the lights') }}")
-									i.pi-moon
-							li
-								.btn-group.submit
-									a.btn.btn-submit(
-										href="{{ url_for('users.login') }}",
-										title="{{ _('Submit a Link [Shift+A]')}}")
-										i.pi-link
-										span {{ _('Submit Link') }}
+						.d-header-toggle-nav
+							i.pi-menu
 
-									span.btn.btn-submit.wgt-dropdown-toggle
-										i.pi-angle-down
+						.d-header-action
+							nav.nav-bar
+								ul.list-unstyled.d-flex.align-items-center.m-0
+									| {% if current_user.is_authenticated %}
+									| {% block submit_btn %} {% endblock %}
 
-										ul.dropdown-menu.right
+									li.nav-notifications
+										a#notifications-toggle.nav-item.rounded-circle(
+											title="{{ _('Notifications') }}",
+											data-toggle="tooltip",
+											data-placement="bottom")
+											i.pi-notifications-none.nav-notifications-icon
+											span#notifications-count
+												span
+											.flyout-hat
+
+										#notifications.flyout.notifications
+											.flyout-content
+												span.flyout-title {{ _('Notifications') }}
+												a#notifications-markallread(
+													title="{{ _('Mark All as Read') }}",
+													href="/notifications/read-all")
+													| {{ _('Mark All as Read') }}
+
+												| {% include '_notifications.html' %}
+
+									li.dropdown.wgt-dropdown-toggle
+										.nav-item.dropdown-toggle
+											img.avatar.rounded-circle(
+												src="{{ current_user.gravatar }}",
+												alt="{{ _('Avatar') }}")
+
+											.dropdown-toggle-icon
+												i.pi-angle-down
+
+										ul.dropdown-menu.dropdown-menu-right
 											li
-												a.btn.btn-submit.post(
-													href="{{ url_for('users.login') }}",
-													title="{{ _('Write a Post') }}")
-													i.pi-document-text
-													|  {{ _('Write a Post') }}
+												a.theme-toggle(
+													title="{{ _('Toggle between dark and light themes') }}")
+													i.pi-moon
+													| {{ _('Toggle Theme') }}
+											li
+												a(
+													href="{{ url_for('users.users_view', username=current_user.username) }}"
+													title="{{ _('Profile') }}")
+													i.pi-vcard
+													| {{ _('My Profile') }}
+											li
+												a(
+													href="{{ url_for('settings.profile') }}"
+													title="{{ _('Settings') }}")
+													i.pi-cog
+													| {{ _('Settings') }}
+											| {% if current_user.has_cap('admin') %}
+											li
+												a(
+													href="{{ url_for('projects.edit', project_url=project.url) }}"
+													title="{{ _('Community Settings') }}")
+													i.pi-whoosh
+													| {{ _('Community Settings') }}
+											| {% endif %}
+											li
+												a(
+													href="{{ url_for('users.logout') }}")
+													i.pi-off(title="{{ _('Log out') }}")
+													| {{ _('Log out') }}
 
-							li
-								a.nav-item.login(href="{{ url_for('users.login') }}")
-									| {{ _('Log in') }}
-							| {% endif %}
-			| {% endblock header %}
+									| {% else %}
+									li
+										a.nav-item.theme-toggle(
+											title="{{ _('Turn off the lights') }}")
+											i.pi-moon
+									li
+										.btn-group.submit
+											a.btn.btn-submit(
+												href="{{ url_for('users.login') }}",
+												title="{{ _('Submit a Link [Shift+A]')}}")
+												i.pi-link
+												span {{ _('Submit Link') }}
 
-		#app-main
-			| {% block body %}{% endblock body %}
+											span.btn.btn-submit.wgt-dropdown-toggle
+												i.pi-angle-down
+
+												ul.dropdown-menu.right
+													li
+														a.btn.btn-submit.post(
+															href="{{ url_for('users.login') }}",
+															title="{{ _('Write a Post') }}")
+															i.pi-document-text
+															|  {{ _('Write a Post') }}
+
+									li
+										a.nav-item.login(href="{{ url_for('users.login') }}")
+											| {{ _('Log in') }}
+									| {% endif %}
+					| {% endblock header %}
+
+				#app-main
+					| {% block body %}{% endblock body %}
 
 		#app-overlay
 			.overlay-background
