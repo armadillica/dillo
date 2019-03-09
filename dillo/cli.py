@@ -183,3 +183,24 @@ def attach_post_additional_properties():
                 '_id': ObjectId(project_id)},
                 {'$set': additional_properties})
             log.info('Updated %s document' % u.modified_count)
+
+
+@manager_dillo.command
+def update_post_comments_count():
+    """Iterate over every published post and update properties.comments_count."""
+
+    from dillo.api.comments.hooks import update_post_comments_count
+
+    nodes_collection = current_app.db()['nodes']
+    posts = nodes_collection.find({
+        'node_type': 'dillo_post',
+        'properties.status': 'published',
+        '_deleted': {'$ne': True},
+    })
+
+    post_count = 0
+    for post in posts:
+        print(f"Updating post {post['_id']} - {post['name']}")
+        update_post_comments_count(post['_id'])
+        post_count += 1
+    print(f"Done! Updated {post_count} posts.")
