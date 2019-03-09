@@ -1,0 +1,42 @@
+// Override Pillar's notifications style
+.nav-notifications
+  .nav-item
+    height: 40px
+    width: 40px
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 1.2em
+
+#notifications
+  +media-xs
+    bottom: 0
+    height: 100%
+    max-height: 100% !important
+    right: 0
+    top: $header-height
+    width: auto
+
+  right: 15px
+  top: 55px
+
+.flyout
+  &.notifications
+    +media-xs
+      bottom: 0
+      box-shadow: none
+      left: 0
+      margin: 0
+      padding: 0
+      position: fixed
+      right: 0
+      top: 0
+    top: 40px
+
+
+#notification-pop
+  &.code-403, &.code-422
+    background-color: $color-danger
+
+    .nc-avatar
+      display: none

@@ -1,0 +1,69 @@
+/* General style for activities in all places */
+.d-activity
+  border-top: thin solid $color-background-dark
+  padding: 15px 15px 25px
+
+  .title
+    color: $color-text-hint
+    padding-bottom: 15px
+
+  $activity-highlight-color: #00cc9f
+  ul
+    cursor: default
+    margin: 0
+    padding: 0
+    color: $color-text-hint
+    list-style: none
+
+    li
+      padding: 2px 5px 7px 25px
+      position: relative
+
+      a
+        color: $color-text-hint
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+      span.date
+        color: darken($activity-highlight-color, 5%)
+
+      /* Left Dot */
+      &:after
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        width: 18px
+        height: 18px
+        background-color: $activity-highlight-color
+        border: thin solid $activity-highlight-color
+
+      /* Left Line */
+      &:before
+        content: ''
+        display: block
+        position: absolute
+        top: 10px
+        left: 9px
+        width: 2px
+        height: 100%
+        background-color: $activity-highlight-color
+        transition: all 250ms ease-in-out
+
+      &:last-child
+        &:before
+          background-color: transparent
+
+    span.actor
+      padding: 0 5px
+      color: $color-text-dark
+
+    img.actor-avatar
+      width: 18px
+      height: 18px
+      position: absolute
+      top: 1px
+      left: 1px
+      z-index: 1
