@@ -39,30 +39,6 @@ log = logging.getLogger(__name__)
 only_for_post = only_for_node_type_decorator(node_type_post['name'])
 
 
-def post_count_comments(post_id: ObjectId):
-    """Count the number of comments and replies for a certain post."""
-    nodes_coll = current_app.db('nodes')
-    aggr = nodes_coll.aggregate([
-        {'$match': {'parent': post_id, 'properties.status': 'published'}},
-        {'$lookup': {
-            'from': 'nodes',
-            'localField': '_id',
-            'foreignField': 'parent',
-            'as': 'comment_doc'}},
-        {'$project': {'count': {'$add': [1, {'$size': '$comment_doc'}]}}},
-        {'$group': {'_id': None, 'total': {'$sum': '$count'}}}
-    ])
-
-    try:
-        total_size = list(aggr)[0]['total']
-    except IndexError:
-        total_size = 0
-    except KeyError:
-        total_size = 0
-
-    return total_size
-
-
 def algolia_index_post_save(node):
 
     projects_collection = current_app.data.driver.db['projects']
@@ -72,8 +48,6 @@ def algolia_index_post_save(node):
     user = users_collection.find_one({'_id': ObjectId(node['user'])})
 
     rating = node['properties']['rating_positive'] - node['properties']['rating_negative']
-
-    comments_count = post_count_comments(node['_id'])
 
     node_ob = {
         'objectID': node['_id'],
@@ -96,10 +70,14 @@ def algolia_index_post_save(node):
         'tags': node['properties']['tags'],
         'rating': rating,
         'shortcode': node['properties']['shortcode'],
-        'comments_count': comments_count,
     }
+
     if 'content' in node['properties'] and node['properties']['content']:
         node_ob['content'] = node['properties']['content']
+
+    if 'comments_count' in node['properties']:
+        node_ob['comments_count'] = node['properties']['comments_count']
+
     # Hack for instantsearch.js. Because we can't do string comparison in Hogan,
     # we store this case in a boolean.
     if node['properties']['post_type'] == 'link':
@@ -219,6 +197,13 @@ def before_replacing_post(item, original):
     handler = post_handler[item['properties']['post_type']]
     handler(item)
     update_hot(item)
+    # Ensure that comments count was not modified
+    if 'comments_count' in original['properties']:
+        item['properties']['comments_count'] = original['properties']['comments_count']
+    elif 'comments_count' in item['properties']:
+        # If no comments_count was specified in the original document, strip comments_count from
+        # the updated document.
+        del item['properties']['comments_count']
     algolia_index_post_save(item)
 
 

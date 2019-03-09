@@ -364,3 +364,44 @@ class TestPostsListing(AbstractDilloTest):
         # Ensure that each post belong to the correct project
         for p in data:
             self.assertEqual(community_url, p['project'])
+
+
+class TestPostCommenting(AbstractDilloTest):
+    def setUp(self, **kwargs):
+        super().setUp(**kwargs)
+        self.dillo_user_main_grp = self.ensure_group_exists(
+            'cafef005972666988bef650f', 'dillo_user_main')
+        # TODO(fsiddi) The user should not be admin in order to post!
+        self.user_id = self.create_user(user_id=ObjectId(), groups=[self.dillo_user_main_grp],
+                                        roles={'admin'}, token='tina-token',
+                                        email='tina@ilvermorny.edu')
+        self.project_id, self.project = self.ensure_project_exists()
+        self.test_node = self.create_post_document(self.project_id, self.user_id)
+
+    def test_comments_count(self):
+        """After commenting on a post, check that comments_count increases."""
+
+        # TODO(fsiddi) Add more tests for comments from another user, replies, etc
+        test_node = copy.deepcopy(self.test_node)
+
+        # Create a post
+        with mock.patch('dillo.api.posts.hooks.algolia_index_post_save'):
+            resp = self.post('/api/nodes', json=test_node, auth_token='tina-token',
+                             expected_status=201)
+        post = resp.get_json()
+
+        # Get commenting URL for the post
+        with self.app.app_context():
+            comment_url = flask.url_for('nodes_api.post_node_comment', node_path=str(post['_id']))
+
+        # Comment to the post
+        with mock.patch('dillo.api.comments.hooks.algolia_index_post_save'):
+            comment = {'msg': 'Я хочу домой.'}
+            self.post(comment_url, json=comment, auth_token='tina-token', expected_status=201)
+
+        # Ensure that we now have 1 comment in the post
+        with self.app.app_context():
+            nodes_collection = self.app.db('nodes')
+            post_updated = nodes_collection.find_one(ObjectId(post['_id']))
+            self.assertEqual(1, post_updated['properties']['comments_count'])
+

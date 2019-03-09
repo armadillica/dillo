@@ -1,5 +1,6 @@
 import logging
 
+from bson import ObjectId
 import flask
 
 from pillar.api.nodes.eve_hooks import only_for_node_type_decorator
@@ -34,10 +35,36 @@ def get_parent_post(node):
         return get_parent_post(parent)
 
 
+def update_post_comments_count(post_id: ObjectId):
+    """Update the number of comments and replies for a certain post."""
+    nodes_coll = flask.current_app.db('nodes')
+    aggr = nodes_coll.aggregate([
+        {'$match': {'parent': post_id, 'properties.status': 'published'}},
+        {'$lookup': {
+            'from': 'nodes',
+            'localField': '_id',
+            'foreignField': 'parent',
+            'as': 'comment_doc'}},
+        {'$project': {'count': {'$add': [1, {'$size': '$comment_doc'}]}}},
+        {'$group': {'_id': None, 'total': {'$sum': '$count'}}}
+    ])
+
+    try:
+        comments_count = list(aggr)[0]['total']
+    except IndexError:
+        comments_count = 0
+    except KeyError:
+        comments_count = 0
+
+    nodes_coll.update_one({'_id': post_id},
+                          {'$set': {'properties.comments_count': comments_count}})
+
+
 @comment_nodes_only
 def reindex_post(comment):
     """Reindex the post, while updating the comments count."""
     post = get_parent_post(comment)
+    update_post_comments_count(post['_id'])
     algolia_index_post_save(post)
 
 
