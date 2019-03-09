@@ -83,7 +83,7 @@ html(lang='en')
 		#app-container
 			#app-nav
 				| {% from 'dillo/macros/_communities.html' import communities_list_sidebar %}
-				| {{ communities_list_sidebar(main_project, communities) }}
+				| {{ communities_list_sidebar(main_project, communities, project) }}
 			#app-content
 				#app-header
 					#app-loader.loading-bar

@@ -412,6 +412,22 @@ h4 .emoji
         color: $color-text-dark-secondary
         font-size: $font-size-small
 
+.d-communities-sidebar
+  @extend .list-unstyled
+
+  > li
+    padding: 5px
+    opacity: .6
+
+    &:hover
+      opacity: 1
+
+    &.is-active
+      background-color: $color-background
+      border-bottom-left-radius: 50%
+      border-top-left-radius: 50%
+      opacity: 1
+
 .d-header
   +media-xs
     background-image: none
@@ -451,7 +467,7 @@ h4 .emoji
       background-image: linear-gradient(transparent 52px, $color-background 100%)
 
   // .d-header-logo
-  $header-logo-size: 50px
+  $header-logo-size: 45px
   &-logo
     +media-xs
       height: $header-logo-size / 1.8

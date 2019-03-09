@@ -28,8 +28,8 @@ ul.list-unstyled
 					{{ _('We welcome international users or specialized Blender groups.Tell us why your community belongs here.') }}
 | {% endmacro %}
 
-| {% macro communities_list_sidebar(main_project, communities) %}
-ul.list-unstyled
+| {% macro communities_list_sidebar(main_project, communities, project) %}
+ul.d-communities-sidebar
 	li
 		a(
 			href="/c/",
@@ -37,7 +37,8 @@ ul.list-unstyled
 			.d-header-logo
 				img(src="{{ main_project.picture_square.thumbnail('l') }}", alt="{{ main_project.name }} logo")
 	| {% for community in communities %}
-	li.pb-2
+	| {% set is_active = (project._id == community._id) %}
+	li.pb-2(class="{% if is_active %}is-active{% endif%}")
 		a(
 			href="{{ url_for('posts.index', community_url=community.url) }}",
 			title="{{ community.name }}")
