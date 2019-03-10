@@ -261,7 +261,7 @@ script.
 			};
 		});
 
-		$(document).on('change', 'body .js-facet', function (e) {
+		function buildQueryString() {
 			//- Define the base query
 			var queryString = {'sorting': $sortingDropDown.val()}
 			//- Get all query string filter values (filter_tags, filter_status_dev, etc)
@@ -270,12 +270,21 @@ script.
 				//- Append the filter based on the current facet
 				queryString[filter] = [$(this).val()];
 			});
+			return queryString;
+		}
 
-			//- queryString[filter] = [$(this).val()];
-			//- TODO(fsiddi) append any other facet that might be set
+		$(document).on('change', 'body .js-facet', function (e) {
+			let queryString = buildQueryString();
 			fetchPosts(queryString);
 		});
 
+		$("#q").on("keypress", function (e) {
+			if (e.which === 13) {
+				let queryString = buildQueryString();
+				queryString['title'] = $(this).val();
+				fetchPosts(queryString);
+			}
+		});
 
 		//- Follow Communities
 		$('#follow-toggle').on('click', function (e) {

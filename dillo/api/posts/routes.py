@@ -93,6 +93,9 @@ def validate_query_strings(request):
     # Handle community_id
     community_id = validate_query_string_community(request.args.get('community_id'))
 
+    # Handle title search
+    title = request.args.get('title')
+
     # Handle filters
     filters = {}
 
@@ -107,7 +110,7 @@ def validate_query_strings(request):
             if additional_filter:
                 filters[k] = additional_filter
 
-    return page, sorting, filters, community_id
+    return page, sorting, filters, community_id, title
 
 
 def add_communities_filter(pipeline):
@@ -197,7 +200,7 @@ def get_posts():
     """
 
     # Validate query parameters and define sorting and pagination
-    page, sorting, filters, community_id = validate_query_strings(flask.request)
+    page, sorting, filters, community_id, title = validate_query_strings(flask.request)
     pagination_default = current_app.config['PAGINATION_DEFAULT_POSTS']
     skip = pagination_default * (page - 1)
 
@@ -253,10 +256,11 @@ def get_posts():
         # We are not viewing a community, use the aggregated communities
         add_communities_filter(pipeline)
 
-    # if 'tags' in filters:
-    #     add_filter_tags(pipeline, filters['tags'])
     for filter_key, filter_value in filters.items():
         pipeline[0]['$match'][f'properties.{filter_key}'] = {'$in': filter_value}
+
+    if title:
+        pipeline[0]['$match']['$text'] = {'$search': title}
 
     # Add default facets, as well as community-specific facets
     add_facets_to_pipeline(pipeline, community_id)
