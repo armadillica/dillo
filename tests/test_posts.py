@@ -264,7 +264,6 @@ class TestPostsListing(AbstractDilloTest):
         self.assertEqual(3, r.json['metadata']['total'])
 
         # Add an empty followed_communities list
-
         with self.app.app_context():
             followed_communities_k = f'extension_props_public.dillo.followed_communities'
             users_collection.update_one(

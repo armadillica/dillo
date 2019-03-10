@@ -53,18 +53,12 @@ def follow(project_id: str):
     user = users_coll.find_one(current_user.user_id)
     # Look for project in in extension_props_public.dillo.followed_communities
     followed_communities = user['extension_props_public'][EXTENSION_NAME].\
-        get('followed_communities')
+        get('followed_communities', [])
 
     # Check if the user already follows the community
     if followed_communities and community['_id'] in followed_communities:
         log.debug('User already follows community %s' % community['url'])
         return abort(403)
-
-    # If the user does not follow any community, create a list featuring the
-    # default communities and append the current community to it.
-    if not followed_communities:
-        followed_communities = [ObjectId(cid) for cid in
-                                current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
 
     # Append the followed community to the existing list
     followed_communities.append(community['_id'])
@@ -91,16 +85,12 @@ def unfollow(project_id: str):
     user = users_coll.find_one(current_user.user_id)
     # Look for project in in extension_props_public.dillo.followed_communities
     followed_communities = user['extension_props_public'][EXTENSION_NAME]. \
-        get('followed_communities')
+        get('followed_communities', [])
 
     # Check if the user already does not follow the community
     if followed_communities and community['_id'] not in followed_communities:
         log.debug('User does not follow community %s' % community['url'])
         return abort(403)
-
-    if not followed_communities:
-        followed_communities = [ObjectId(cid) for cid in
-                                current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS']]
 
     followed_communities = [c for c in followed_communities if c != community['_id']]
 
