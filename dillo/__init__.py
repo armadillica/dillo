@@ -14,6 +14,8 @@ from dillo.web.nodes import finders
 
 EXTENSION_NAME = 'dillo'
 
+log = logging.getLogger(__name__)
+
 
 class DilloExtension(PillarExtension):
     celery_task_modules = [
@@ -97,6 +99,28 @@ class DilloExtension(PillarExtension):
     def setup_app(self, app):
         from dillo import api
         api.setup_app(app)
+        with app.app_context():
+            self.setup_db_indices(app)
+
+    def setup_db_indices(self, app):
+        log.debug('Adding any missing database indices.')
+
+        import pymongo
+
+        db = app.data.driver.db
+        nodes_coll = db['nodes']
+        # This index is used for queries on project, and for queries on
+        # the combination (project, node type).
+        nodes_coll.create_index([('project', pymongo.ASCENDING),
+                                 ('name', pymongo.ASCENDING)])
+        nodes_coll.create_index([('properties.hot', pymongo.DESCENDING),
+                                 ('properties.tags', pymongo.ASCENDING)])
+        nodes_coll.create_index([('properties.rating_positive', pymongo.DESCENDING),
+                                 ('properties.tags', pymongo.ASCENDING)])
+        nodes_coll.create_index([('properties._created', pymongo.ASCENDING),
+                                 ('properties.tags', pymongo.ASCENDING)])
+
+        nodes_coll.create_index([('name', 'text')])
 
     def activities_for_node(self, node_id, max_results=20, page=1):
 
