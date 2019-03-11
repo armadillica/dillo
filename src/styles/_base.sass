@@ -417,17 +417,26 @@ h4 .emoji
   @extend .list-unstyled
 
   > li
-    padding: 5px
+    padding: 3px
     opacity: .6
 
     &:hover
       opacity: 1
 
     &.is-active
-      background-color: $color-background
-      border-bottom-left-radius: 50%
-      border-top-left-radius: 50%
       opacity: 1
+      position: relative
+      box-shadow: 5px 0 inset var(--community-theme-color, $color-primary)
+
+      &:after
+        content: ''
+        border: 8px solid transparent
+        border-left-color: $color-background-dark
+        position: absolute
+        top: 50%
+        transform: translateY(-50%)
+        right: -16px
+        opacity: 1
 
 .d-header
   +media-xs
@@ -448,6 +457,7 @@ h4 .emoji
       visibility: hidden
     background-color: $color-background-dark
     background-size: cover
+    background-position-x: 50px
     height: 150px
     left: 0
     position: absolute
@@ -468,7 +478,7 @@ h4 .emoji
       background-image: linear-gradient(transparent 52px, $color-background 100%)
 
   // .d-header-logo
-  $header-logo-size: 45px
+  $header-logo-size: 40px
   &-logo
     +media-xs
       height: $header-logo-size / 1.8
