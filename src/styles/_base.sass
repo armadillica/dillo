@@ -514,7 +514,16 @@ h4 .emoji
   &-title
     color: $color-text
     font-size: $font-size-large
+    font-weight: bold
     text-decoration: none
+
+    &:hover
+      text-decoration: none
+      color: $color-text
+
+    span
+      background-color: var(--community-theme-color, $color-primary)
+      border-radius: $border-radius
 
   // .d-header-action
   &-action
@@ -567,8 +576,7 @@ h4 .emoji
 
     color: $color-text-dark-secondary
     display: none
-    font-size: 1.8em
-    left: 50px
+    font-size: 1.6em
     padding: 4px 8px
     position: fixed
     top: 0

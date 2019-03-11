@@ -105,11 +105,11 @@ html(lang='en')
 								| {{ communities_list(communities) }}
 
 						| {% if is_main_project %}
-						a.d-header-title.pl-3.pt-3(href="{{ url_for('posts.index_all') }}")
-							| {{ project.name }}
+						a.d-header-title.pl-3.pt-2.d-none.d-sm-block(href="{{ url_for('posts.index_all') }}")
+							span.px-3.py-1 {{ project.name }}
 						| {% else %}
-						a.d-header-title.pl-3.pt-3(href="{{ url_for('posts.index', community_url=project.url) }}")
-							| {{ project.name }}
+						a.d-header-title.pl-3.pt-2.d-none.d-sm-block(href="{{ url_for('posts.index', community_url=project.url) }}")
+							span.px-3.py-1 {{ project.name }}
 						| {% endif %}
 
 						.d-header-action.refine
@@ -133,8 +133,10 @@ html(lang='en')
 												type="text",
 												placeholder="{{ _('Search...') }}")
 
+
 						.d-header-toggle-nav
 							i.pi-menu
+
 
 						.d-header-action
 							nav.nav-bar

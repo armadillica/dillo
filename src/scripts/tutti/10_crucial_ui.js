@@ -232,8 +232,10 @@ function toggleNavRefine(){
 
 	$('.btn-group.submit').toggle();
 	$('.d-header-toggle-nav').toggleClass('active');
-	$('.d-header-action.refine').toggleClass('active');
+	// $('.d-header-action.refine').toggleClass('active');
 	$('#col_main, #col_right').toggleClass('nav-refine-expanded');
+
+	$('.d-communities').toggleClass('active');
 
 
 	if ($('.d-header-action.refine').hasClass('active')){
