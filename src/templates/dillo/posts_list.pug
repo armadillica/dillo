@@ -86,6 +86,11 @@
 						| {{ post.properties.content }}
 				| {% endif %}
 
+				| {% if post.properties.status_dev %}
+				li
+					| {{ post.properties.status_dev }}
+				| {% endif %}
+
 | {% endfor %}
 
 | {% if not is_last_page %}
