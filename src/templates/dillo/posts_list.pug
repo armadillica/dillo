@@ -77,6 +77,17 @@
 					a(href="{{ post_url }}")
 						| {{ post._created | pretty_date_time }}
 
+				li
+					a(href="{{ post_url }}")
+						| {% if post.properties.comments_count %}
+						| {{ post.properties.comments_count }} #[i.pi-comment]
+						| {% else %}
+						| comment
+						| {% endif %}
+
+
+
+
 | {% endfor %}
 
 | {% if not is_last_page %}
