@@ -277,6 +277,7 @@ def get_posts():
     docs = {
         'metadata': metadata,
         'data': posts_cursor['data'],
+        'filters': filters,
     }
 
     add_facets_to_response(docs, posts_cursor, community_id)
