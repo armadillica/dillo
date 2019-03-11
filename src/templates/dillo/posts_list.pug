@@ -98,8 +98,14 @@
 				| {% endif %}
 
 				| {% if post.properties.status_dev %}
-				li
+				li(title="Development Status: {{ post.properties.status_dev }}")
+					| {% if post.properties.status_dev == 'Done' %}
+					span.text-success #[i.pi-check] {{ post.properties.status_dev }}
+					| {% elif post.properties.status_dev == 'In Development' %}
+					span.text-warning {{ post.properties.status_dev }}
+					| {% else %}
 					| {{ post.properties.status_dev }}
+					| {% endif %}
 				| {% endif %}
 
 | {% endfor %}
