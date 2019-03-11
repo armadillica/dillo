@@ -108,7 +108,7 @@ li
 						| {{ project.name }}
 
 					| {% if project.summary %}
-					.summary {{ project.summary }}
+					span {{ project.summary }}
 					| {% endif %}
 
 					| {% if not is_main_project %}
@@ -144,7 +144,7 @@ li
 						| {% endif %}
 					| {% endif %}
 
-			.node-details-description.p-3
+			.node-details-description.p-3.pt-5
 				| {{ project.description | markdown }}
 
 
@@ -274,6 +274,7 @@ script.
 				fetchPostsNextPage();
 			};
 		});
+		#}
 
 		function buildQueryString() {
 			//- Define the base query
