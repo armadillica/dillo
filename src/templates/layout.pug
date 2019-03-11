@@ -93,7 +93,7 @@ html(lang='en')
 					.d-header-background(
 						style="background-image: url({{ project.picture_header.thumbnail('h') }});")
 					| {% endif %}
-					.d-header
+					.d-header.pt-1
 						.d-communities
 							.flyout.communities
 								.flyout-hat
@@ -133,10 +133,8 @@ html(lang='en')
 												type="text",
 												placeholder="{{ _('Search...') }}")
 
-
 						.d-header-toggle-nav
 							i.pi-menu
-
 
 						.d-header-action
 							nav.nav-bar
