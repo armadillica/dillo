@@ -37,7 +37,7 @@
 			img(src="{{ post.picture.thumbnail('m') }}")
 			| {% endif %}
 
-	.item-content(data-node-id="{{ post._id }}")
+	.item-content.d-flex.pb-1(data-node-id="{{ post._id }}")
 		.item-details.pl-3
 			ul.item-details-header
 				| {% if not is_community_listing %}
@@ -73,7 +73,7 @@
 							src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
 				| {% endif %}
 
-				li.item-date.js-item-open.js-convert-date
+				li.item-date.js-item-open
 					a(href="{{ post_url }}")
 						| {{ post._created | pretty_date_time }}
 

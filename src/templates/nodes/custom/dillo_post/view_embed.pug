@@ -12,59 +12,58 @@
 
 .item-view(
 	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
-	.d-flex.py-2
+	.item-content.d-flex.py-2(
+		id="{{ node._id }}",
+		data-node-id="{{ node._id }}")
 		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
 			i.pi-cancel-circle
 
-		.item-content(
-			id="{{ node._id }}",
-			data-node-id="{{ node._id }}")
+		.item-rating-box(
+			class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
+			.item-rating.up(title="{{ _('Upvote this post') }}")
+				i.pi-angle-up
+			.item-rating.value(title="{{ _('Post Rating') }}") {{ node.properties.rating_positive - node.properties.rating_negative }}
+			.item-rating.down(title="{{ _('Downvote this post') }}")
+				i.pi-angle-down
 
-			.item-rating-box(
-				class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
-				.item-rating.up(title="{{ _('Upvote this post') }}")
-					i.pi-angle-up
-				.item-rating.value(title="{{ _('Post Rating') }}") {{ node.properties.rating_positive - node.properties.rating_negative }}
-				.item-rating.down(title="{{ _('Downvote this post') }}")
-					i.pi-angle-down
-
-			.item-details
-				| {% if is_link %}
-				a#item-title.item-title(
-					href="{{ node.properties.content }}"
-					target="_blank") {{ node.name }}
-				| {% else %}
-				span#item-title.item-title {{ node.name }}
-				| {% endif %}
-				ul.text-secondary
-					//- TODO: Make tags clickeable.
-					| {% if node.properties.tags %}
-					li#item-tags
-						| {% for tag in node.properties.tags %}
-						| {{ tag }}{{ ", " if not loop.last }}
-						| {% endfor %}
-					| {% endif %}
-
-					//- Add POST_ADDITIONAL_PROPERTIES filters here
-					| {% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
-					//- If the dillo_post dyn_schema in this project supports this
-					| {% if project.url in v['projects'] %}
-					| {% if k in node.properties %}
-					li(id="list-{{ k }}")
-						| {{ v['label'] }}: {{ node.properties[k] }}
-					| {% endif %}
-					| {% endif %}
+		.item-details
+			| {% if is_link %}
+			a#item-title.item-title(
+				href="{{ node.properties.content }}"
+				target="_blank") {{ node.name }}
+			| {% else %}
+			span#item-title.item-title {{ node.name }}
+			| {% endif %}
+			ul.text-secondary
+				//- TODO: Make tags clickeable.
+				| {% if node.properties.tags %}
+				li#item-tags
+					| {% for tag in node.properties.tags %}
+					| {{ tag }}{{ ", " if not loop.last }}
 					| {% endfor %}
+				| {% endif %}
 
-					li
-						a.text-secondary(
-							class="js-convert-date",
-							title="{{ node._created }}",
-							href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
-							| {{ node._created | pretty_date }}
+				//- Add POST_ADDITIONAL_PROPERTIES filters here
+				| {% for k, v in config['POST_ADDITIONAL_PROPERTIES'].items() %}
+				//- If the dillo_post dyn_schema in this project supports this
+				| {% if project.url in v['projects'] %}
+				| {% if k in node.properties %}
+				li(id="list-{{ k }}")
+					| {{ v['label'] }}: {{ node.properties[k] }}
+				| {% endif %}
+				| {% endif %}
+				| {% endfor %}
+
+				li
+					a.text-secondary(
+						class="js-convert-date",
+						title="{{ node._created }}",
+						href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
+						| {{ node._created | pretty_date }}
+
 
 	| {% if not is_link %}
-	.item-body.px-5.pt-5.pb-3#item-content
+	.item-body.px-5.pt-3.pb-3#item-content
 		.item-body-text
 			| {% if is_html %}
 			| {{ node.properties.content_html }}
@@ -98,6 +97,7 @@
 		| {% endif %}
 	| {% endif %}
 
+
 	| {# If the post is type link, only show if there is no oembed #}
 	| {% if (node.picture and not is_link) or (node.picture and (is_link and not is_html)) %}
 	a#item-media.d-flex.justify-content-center.position-relative(
@@ -108,6 +108,7 @@
 			alt="{{ _('Thumbnail') }}",
 			data-adaptive-background)
 	| {% endif %}
+
 
 	.item-info-panel.d-flex
 		.item-info-op.d-flex
