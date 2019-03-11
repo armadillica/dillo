@@ -65,18 +65,6 @@
 					| {% endif %}
 					| {{ rating }}
 
-				| {% if is_link %}
-				li.item-favicon
-					a(href="{{ post.properties.content }}", target="_blank")
-						img(
-							title="Link",
-							src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
-				| {% endif %}
-
-				li.item-date.js-item-open
-					a(href="{{ post_url }}")
-						| {{ post._created | pretty_date_time }}
-
 				li
 					a(href="{{ post_url }}")
 						| {% if post.properties.comments_count %}
@@ -85,7 +73,18 @@
 						| comment
 						| {% endif %}
 
+				li.item-date.js-item-open
+					a(href="{{ post_url }}")
+						| {{ post._created | pretty_date_time }}
 
+				| {% if is_link %}
+				li
+					a.text-muted(
+						class="js-url-cleanup js-follow-link",
+						href="{{ post.properties.content }}",
+						target="_blank")
+						| {{ post.properties.content }}
+				| {% endif %}
 
 
 | {% endfor %}
@@ -100,3 +99,8 @@ script.
 
 	twemoji.parse(document.getElementById('list-hits'));
 	$('.js-styleselect').select2();
+
+	$('.js-url-cleanup').each(function(){
+		url = this.href;
+		$(this).text(parse_hostname(url));
+	});

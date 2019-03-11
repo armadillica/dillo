@@ -69,3 +69,15 @@ var urlParams;
 (function ($) {
 	$.fn.typeahead = function() {};
 }(jQuery));
+
+
+/* Cleanup the URL to just have the domain, without WWW. */
+function parse_hostname(url) {
+	var anchor = document.createElement('a');
+	anchor.href = url;
+
+	var hostname = anchor.hostname;
+	hostname = hostname.replace(/^www./, "");
+
+	return hostname;
+}
