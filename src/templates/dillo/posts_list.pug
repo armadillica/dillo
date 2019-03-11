@@ -78,7 +78,7 @@
 						| {{ post._created | pretty_date_time }}
 
 				| {% if is_link %}
-				li
+				li.d-none.d-sm-inline-block
 					a.text-muted(
 						class="js-url-cleanup js-follow-link",
 						href="{{ post.properties.content }}",
