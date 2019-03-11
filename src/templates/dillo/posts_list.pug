@@ -1,4 +1,5 @@
 | {% for facet_name, facet in facets.items() %}
+| {% set active_filters_list = filters.get(facet_name, []) %}
 .list-facet(class="js-move-facet {{ facet_name }}")
 	select(
 		id="js-facet-{{ facet_name }}",
@@ -6,8 +7,14 @@
 		title="{{ facet['label'] }}",
 		data-filter="{{ facet['filter'] }}")
 
+		option(value="", selected) All
 		| {% for facet_value in facet['items'] %}
+
+		| {% if active_filters_list and (facet_value['_id'] in active_filters_list) %}
+		option(value="{{ facet_value['_id'] }}", selected) {{ facet_value['_id'] }} ({{ facet_value['count'] }})
+		| {% else %}
 		option(value="{{ facet_value['_id'] }}") {{ facet_value['_id'] }} ({{ facet_value['count'] }})
+		| {% endif %}
 		| {% endfor %}
 | {% endfor %}
 
@@ -102,8 +109,6 @@
 | {% endif %}
 
 script.
-	console.log('Loading page:', "{{ metadata['page'] + 1 }}");
-
 	//- Nicer dropdowns for tags/selects.
 	$('.js-styleselect').select2();
 

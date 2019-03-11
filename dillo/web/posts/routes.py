@@ -130,6 +130,7 @@ def posts_list():
         posts=posts,
         metadata=posts_request['metadata'],
         facets=posts_request['facets'],
+        filters=posts_request['filters'],
         is_last_page=is_last_page,
         is_community_listing=is_community_listing,
     )
