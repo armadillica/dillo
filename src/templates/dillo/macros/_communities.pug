@@ -30,16 +30,17 @@ ul.list-unstyled
 
 | {% macro communities_list_sidebar(main_project, communities, project) %}
 ul.d-communities-sidebar
-	li
-		a(
+	| {% set is_main_project_active = (project._id == main_project._id) %}
+	li(class="{% if is_main_project_active %}is-active{% endif%}")
+		a.py-1.d-block(
 			href="/c/",
 			title="{{ main_project.name }}")
 			.d-header-logo
 				img(src="{{ main_project.picture_square.thumbnail('l') }}", alt="{{ main_project.name }} logo")
 	| {% for community in communities %}
 	| {% set is_active = (project._id == community._id) %}
-	li.pb-2(class="{% if is_active %}is-active{% endif%}")
-		a(
+	li(class="{% if is_active %}is-active{% endif%}")
+		a.py-1.d-block(
 			href="{{ url_for('posts.index', community_url=community.url) }}",
 			title="{{ community.name }}")
 			| {% if community.picture_square %}
