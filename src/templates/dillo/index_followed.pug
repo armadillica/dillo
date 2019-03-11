@@ -241,6 +241,20 @@ script.
 			fetchPosts({'sorting': $(this).val()});
 		});
 
+		$('body').on('click', '.js-load-next-page', function(e){
+			e.preventDefault();
+			var nextPage = $(this).data('next-page');
+
+			//- Remove button and its container.
+			$(this).parent().remove();
+
+			fetchPosts({
+				'sorting': $sortingDropDown.value,
+				'page': $(this).data('next-page')
+			}, true);
+		});
+
+		{#
 		function fetchPostsNextPage(){
 			var nextPage = $('#col_main').data('next-page');
 

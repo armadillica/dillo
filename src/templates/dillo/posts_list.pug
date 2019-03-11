@@ -86,21 +86,27 @@
 						| {{ post.properties.content }}
 				| {% endif %}
 
-
 | {% endfor %}
 
 | {% if not is_last_page %}
-script.
-	document.getElementById("col_main").setAttribute("data-next-page", "{{ metadata['page'] + 1 }}");
+.d-flex.p-3.pb-4
+	button.btn.w-75.m-auto(
+		class="js-load-next-page",
+		data-next-page="{{ metadata['page'] + 1 }}")
+		| Load More Posts
 | {% endif %}
 
 script.
 	console.log('Loading page:', "{{ metadata['page'] + 1 }}");
 
-	twemoji.parse(document.getElementById('list-hits'));
+	//- Nicer dropdowns for tags/selects.
 	$('.js-styleselect').select2();
 
+	//- Clean URLs.
 	$('.js-url-cleanup').each(function(){
 		url = this.href;
 		$(this).text(parse_hostname(url));
 	});
+
+	//- Emoji!
+	twemoji.parse(document.getElementById('list-hits'));
