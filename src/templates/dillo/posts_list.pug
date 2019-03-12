@@ -31,8 +31,12 @@
 | {% set custom_status = post.properties.status_dev %}
 | {% endif %}
 
+| {% if rating > 5 %}
+| {% set is_hot = true %}
+| {% endif %}
+
 .list-hits-item(
-	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %}",
+	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
 	data-url="{{ post_url }}")
@@ -69,7 +73,7 @@
 				| {% if rating > 0 %}
 				li
 					| {{ rating }}
-					| {% if rating > 5 %}
+					| {% if is_hot %}
 					i(title="Hot Stuff").pi-fire.text-danger
 					| {% else %}
 					i.pi-heart-filled.text-secondary

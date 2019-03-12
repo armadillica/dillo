@@ -22,32 +22,31 @@
   &:hover
     background-color: $color-background-lighter
 
-    .is-featured
-      background-color: $color-background-lighter
-
   // Triangle on the right
   &:after
     +media-xs
       display: none
     opacity: 0
-    right: -8px
+    right: -12px
     transition: opacity 300ms ease-in-out, right 300ms ease-in-out
     transition-delay: 50ms
 
   &.active
     +media-xs
-      background-color: $color-background-lighter
-    background-color: $color-background-lighter
+      background-color: $color-background-dark
+    background-color: $color-background-dark
+    // box-shadow: -5px 0 inset var(--community-theme-color, $color-primary)
 
     // Triangle on the right
     &:after
       content: ''
-      border: 6px solid transparent
+      border: 8px solid transparent
       border-left-color: var(--community-theme-color, $color-primary)
+      border-radius: 3px
       position: absolute
       top: 50%
       transform: translateY(-50%)
-      right: -12px
+      right: -16px
       opacity: 1
 
     .item-title
@@ -76,7 +75,7 @@
     +media-xs
       font-size: 1em
     color: $color-text
-    font-size: $font-size-large
+    font-size: $font-size * 1.2
 
     &:hover
       color: var(--community-theme-color, $color-primary)
@@ -91,19 +90,8 @@
     &:before
       display: none
 
-.is-featured
-  align-items: center
-  background-color: $color-background-light
-  border-radius: 50%
-  color: $color-danger
-  display: flex
-  font-size: 1.2em
-  height: 22px
-  justify-content: center
-  position: absolute
-  right: 7px
-  top: 5px
-  width: 22px
+.is-hot
+  box-shadow: 5px 0 inset crimson
 
 .listing-empty
   align-items: center
@@ -139,23 +127,16 @@
   .item-title
     +media-xs
       font-size: $font-size * 1.2
-
     font-size: $font-size-extra-large
 
     .emoji
       height: $font-size-large
       width: $font-size-large
 
-  .item-rating-box
-    min-width: 50px
-
   .item-details
     +media-xs
       ul li
         font-size: .8em
-
-    padding: 5px 0
-
 
 #list-item
   height: 100%

@@ -1,3 +1,5 @@
+| {% set rating = node.properties.rating_positive - node.properties.rating_negative %}
+
 | {% if (current_user.user_id | string) == node.user._id %}
 | {% set is_own = 'is-own' %}
 | {% endif %}
@@ -10,6 +12,10 @@
 | {% set is_html = 'is-html' %}
 | {% endif %}
 
+| {% if rating > 5 %}
+| {% set is_hot = true %}
+| {% endif %}
+
 .item-view(
 	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
 	.item-content.d-flex.py-2(
@@ -18,7 +24,7 @@
 		span.item-view-close.js-toggle-fullscreen(title="{{ _('Close Fullscreen') }}")
 			i.pi-cancel-circle
 
-		.item-rating-box(
+		.item-rating-box.p-1(
 			class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
 			.item-rating.up(title="{{ _('Upvote this post') }}")
 				i.pi-angle-up
@@ -26,7 +32,7 @@
 			.item-rating.down(title="{{ _('Downvote this post') }}")
 				i.pi-angle-down
 
-		.item-details
+		.item-details.py-2
 			| {% if is_link %}
 			a#item-title.item-title(
 				href="{{ node.properties.content }}"
@@ -35,6 +41,11 @@
 			span#item-title.item-title {{ node.name }}
 			| {% endif %}
 			ul.text-secondary
+				| {% if is_hot %}
+				li
+					i(title="Hot Stuff").pi-fire.text-danger
+				| {% endif %}
+
 				//- TODO: Make tags clickeable.
 				| {% if node.properties.tags %}
 				li#item-tags

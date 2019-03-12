@@ -168,15 +168,9 @@ $item-thumbnail-size: 90px
   flex: 1
 
 .item-rating-box
-  +media-xs
-    min-width: 50px
-    width: 50px
-
   display: flex
   flex-direction: column
   height: 100%
-  min-width: 45px
-  width: 45px
 
   &.rated.positive .up,
   &.rated.negative .down
@@ -186,10 +180,20 @@ $item-thumbnail-size: 90px
   +media-xs
     padding: 3px 0
 
+  background-color: $color-background
   display: flex
   align-items: center
   justify-content: center
   height: 100%
+  margin-left: 10px
+  margin-right: 10px
+
+  &.up
+    border-top-left-radius: $border-radius * 2
+    border-top-right-radius: $border-radius * 2
+  &.down
+    border-bottom-left-radius: $border-radius * 2
+    border-bottom-right-radius: $border-radius * 2
 
   &.up, &.down
     +media-xs
@@ -200,6 +204,7 @@ $item-thumbnail-size: 90px
 
     &:hover
       color: var(--community-theme-color, $color-primary)
+      background-color: $color-background-light
 
   &.value
     color: $color-text
