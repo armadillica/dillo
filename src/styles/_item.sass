@@ -198,10 +198,8 @@ $item-thumbnail-size: 90px
     color: $color-text-hint
     cursor: pointer
 
-  &.up:hover
-    color: $color-vote-up
-  &.down:hover
-    color: $color-vote-down
+    &:hover
+      color: var(--community-theme-color, $color-primary)
 
   &.value
     color: $color-text
@@ -631,6 +629,7 @@ body[data-context="post-edit"]
   &.link
     .item-body
       align-items: center
+      background-color: $color-background-dark
       display: flex
 
       .item-link-data
@@ -653,7 +652,6 @@ body[data-context="post-edit"]
         margin-left: 8px
         margin-right: 24px
         position: relative
-        top: 3px
         width: 16px
 
       a.item-thumbnail

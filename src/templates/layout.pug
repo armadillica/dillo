@@ -106,10 +106,10 @@ html(lang='en')
 
 						| {% if is_main_project %}
 						a.d-header-title.pl-3.pt-2.d-none.d-sm-block(href="{{ url_for('posts.index_all') }}")
-							span.px-3.py-1 {{ project.name }}
+							span.px-3.py-2 {{ project.name }}
 						| {% else %}
 						a.d-header-title.pl-3.pt-2.d-none.d-sm-block(href="{{ url_for('posts.index', community_url=project.url) }}")
-							span.px-3.py-1 {{ project.name }}
+							span.px-3.py-2 {{ project.name }}
 						| {% endif %}
 
 						.d-header-action.refine
