@@ -27,58 +27,85 @@
 		| {% set rating = (post.properties.rating_positive - post.properties.rating_negative) %}
 		| {% set post_url = url_for('posts.view', community_url=post.project.url, post_shortcode=post.properties.shortcode) %}
 
+		| {% if post.properties.status_dev %}
+		| {% set custom_status = post.properties.status_dev %}
+		| {% endif %}
+
 		.list-hits-item(
-			class="{% if post.user == (current_user.user_id | string) %}is-own{% endif %}",
+			class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %}",
 			id="item-{{ post._id }}",
 			data-id="{{ post._id }}",
 			data-url="{{ post_url }}")
-			a(
+			a.item-thumbnail(
 				href="{{ post_url }}",
-				class="item-thumbnail js-item-open {% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
+				class="{% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
 				.item-thumbnail-picture
 					| {% if post.picture %}
 					img(src="{{ post.picture.thumbnail('m') }}")
-					ea
 					| {% endif %}
 
-			.item-content(data-node-id="{{ post._id }}")
-				div(class="item-rating-box {% if is_positive %} rated {{is_positive}} {% endif %}")
-					.item-rating.up
-						i.pi-angle-up
-					.item-rating.value
-						| {{ rating }}
+			.item-content.d-flex.pb-1(data-node-id="{{ post._id }}")
+				.item-details.pl-3
+					ul.item-details-header
+						//- TODO: Missing project.
+						//- li
+						//- 	a.js-follow-link(href="{{ url_for('posts.index', community_url=post.project.url) }}")
+						//- 		| {{ post.project.name  }}
 
-					.item-rating.down
-						i.pi-angle-down
-
-				.item-details
-					a(
-						href="{{ post_url }}",
-						class="item-title js-item-open")
-							| {{ post.name }}
-					ul
-						| {% if is_link %}
-						li.item-favicon
-							a(href="{{ post.properties.content }}", target="_blank")
-								img(
-									title="Link",
-									src="https://www.google.com/s2/favicons?domain={{ post.properties.content }}")
+						| {% if post.properties.tags %}
+						li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
+							{# Display two tags max in the list. #}
+							{% for tag in post.properties.tags[:2] %}
+								{{ tag }}{{ ", " if not loop.last }}{{ "..." if loop.last and (post.properties.tags | length) > 2 }}
+							{% endfor %}
 						| {% endif %}
 
+					a.item-title(
+						href="{{ post_url }}")
+						| {{ post.name }}
 
-						li.item-date.js-item-open.js-convert-date
-								a(href="{{ post_url }}")
-									| {{ post._created }}
+					ul.pb-2
+						| {% if rating > 0 %}
+						li
+							| {{ rating }}
+							| {% if rating > 5 %}
+							i(title="Hot Stuff").pi-fire.text-danger
+							| {% else %}
+							i.pi-heart-filled.text-secondary
+							| {% endif %}
+						| {% endif %}
 
-						li.item-author
-							a(href="{{ url_for('users.users_view', username=user.username )}}")
-								| {{ user.full_name }}
+						li
+							a(href="{{ post_url }}")
+								| {% if post.properties.comments_count %}
+								| {{ post.properties.comments_count }} #[i.pi-comment]
+								| {% else %}
+								| comment
+								| {% endif %}
 
-						li.
-							{% for tag in post.properties.tags %}
-								{{ tag }}{{ ", " if not loop.last }}
-							{% endfor %}
+						li.item-date.js-item-open
+							a(href="{{ post_url }}")
+								| {{ post._created | pretty_date_time }}
 
+						| {% if is_link %}
+						li.d-none.d-sm-inline-block
+							a.text-muted(
+								class="js-url-cleanup js-follow-link",
+								href="{{ post.properties.content }}",
+								target="_blank")
+								| {{ post.properties.content }}
+						| {% endif %}
+
+						| {% if post.properties.status_dev %}
+						li(title="Development Status: {{ post.properties.status_dev }}")
+							| {% if post.properties.status_dev == 'Done' %}
+							span.text-success #[i.pi-check] {{ post.properties.status_dev }}
+							| {% elif post.properties.status_dev == 'In Development' %}
+							span.text-warning {{ post.properties.status_dev }}
+							| {% else %}
+							| {{ post.properties.status_dev }}
+							| {% endif %}
+						| {% endif %}
 		| {% endfor %}
 
 	.listing-list-info
@@ -146,17 +173,15 @@
 
 | {% block footer_scripts %}
 script.
-
 	$(document).ready(function(){
-
-		// Parse dates using momentjs
-		$('.js-convert-date').each(function(e){
-			var $item_date = $('.js-convert-date').eq(e);
-			var text = $item_date.text();
-			$item_date.text(moment(text).fromNow());
+		//- Clean URLs.
+		$('.js-url-cleanup').each(function(){
+			url = this.href;
+			$(this).text(parse_hostname(url));
 		});
 
-		twemoji.parse(document.body);
+		//- Emoji!
+		twemoji.parse(document.getElementById('list-hits'));
 	});
 
 | {% endblock footer_scripts %}
