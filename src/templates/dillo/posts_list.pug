@@ -7,7 +7,7 @@
 		title="{{ facet['label'] }}",
 		data-filter="{{ facet['filter'] }}")
 
-		option(value="", selected) All
+		option(value="", selected) All {{ facet['label'] }}
 		| {% for facet_value in facet['items'] %}
 
 		| {% if active_filters_list and (facet_value['_id'] in active_filters_list) %}
