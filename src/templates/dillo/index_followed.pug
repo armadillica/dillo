@@ -183,8 +183,14 @@ li
 
 | {% block footer_scripts %}
 script.
-	$(document).ready(function () {
+	//- Set project ID to for Javascript to enable/disable certain properties (like submit dialog).
+	ProjectUtils.setProjectAttributes({projectId: '{{project._id}}', projectUrl: '{{project.url}}'});
 
+	// Save state the first time we load the page
+	// For example, to load the post fullscreen
+	var first_time = true;
+
+	$(document).ready(function () {
 		function moveFacetElements($dataHtml) {
 			//- Capture the list-facet element and move it before #list-sort-by
 			var $facetTags = $dataHtml.filter(".js-move-facet").detach();
@@ -224,11 +230,17 @@ script.
 
 		//- If a post is specified, load it before the left column.
 		{% if 'post' in col_right %}
-		var item_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True, _scheme=config['PREFERRED_URL_SCHEME']) }}";
-		if (location.hash) {item_url += location.hash;};
-		item_open("{{col_right['post']['_id']}}", item_url);
-		// When loading the page for the first time, load post fullscreen
-		if (first_time) {enterFullscreen();}
+
+			var item_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=col_right['post'].properties.shortcode, _external=True, _scheme=config['PREFERRED_URL_SCHEME']) }}";
+
+			if (location.hash) {item_url += location.hash;};
+
+			// When loading the page for the first time, load post fullscreen
+			if (first_time) {
+				enterFullscreen();
+			}
+
+			item_open("{{ col_right['post']['_id'] }}", item_url);
 		{% endif %}
 
 		//- Load default posts.
