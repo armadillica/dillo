@@ -18,6 +18,17 @@ ul.list-unstyled
 				span.summary {{ community.summary }}
 	| {% endfor %}
 
+	li
+		a.d-communities-item(
+			href="https://blender.chat/",
+			title="blender.chat")
+			.d-header-logo
+				img(src="{{ url_for('static_dillo', filename='images/logo_blender_chat.png') }}", alt="blender.chat")
+
+			.d-communities-info
+				span.title blender.chat
+				span.summary Feeling chatty? Meet other Blenderheads!
+
 	li.d-communities-suggest
 		a.d-communities-item(
 			href="mailto:contact@blender.community",
@@ -51,6 +62,17 @@ ul.d-communities-sidebar.d-flex.flex-column.h-100.mb-0
 				i.pi-grin
 			| {% endif %}
 	| {% endfor %}
+
+	li
+		hr.bg-dark
+
+	li
+		a.py-1.pr-2.d-block(
+			target="_blank",
+			href="https://blender.chat/",
+			title="Meet other Blenderheads at blender.chat")
+			.d-header-logo
+				img(src="{{ url_for('static_dillo', filename='images/logo_blender_chat.png') }}", alt="blender.chat")
 
 	//- Hide the toggle for all communities until we have more.
 		li.js-toggle-communities-flyout.mt-2
