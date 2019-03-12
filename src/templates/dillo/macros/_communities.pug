@@ -29,7 +29,7 @@ ul.list-unstyled
 | {% endmacro %}
 
 | {% macro communities_list_sidebar(main_project, communities, project) %}
-ul.d-communities-sidebar
+ul.d-communities-sidebar.d-flex.flex-column.h-100.mb-0
 	| {% set is_main_project_active = (project._id == main_project._id) %}
 	li(class="{% if is_main_project_active %}is-active{% endif%}")
 		a.py-1.pr-2.d-block(

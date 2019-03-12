@@ -63,7 +63,7 @@
 
 
 	| {% if not is_link %}
-	.item-body.px-5.pt-3.pb-3#item-content
+	.item-body.px-5.pt-4.pb-3#item-content
 		.item-body-text
 			| {% if is_html %}
 			| {{ node.properties.content_html }}
@@ -165,10 +165,10 @@
 				target="_blank")
 				i.pi-social-reddit
 
-	#item-comments.pt-3
+	#item-comments
 		.item-commenting-on.py-3
 			span {{ _("Leave a comment on") }} #[strong {{ project.name }} - {{ node.name }}]
-		.comments-container
+		.comments-container.pt-3
 			comments-tree#comments-embed(
 				parent-id="{{ node._id }}"
 				)
