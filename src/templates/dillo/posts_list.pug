@@ -118,6 +118,11 @@
 		| Load More Posts
 | {% endif %}
 
+| {% if not posts %}
+.d-flex.text-muted
+	.p-5.m-auto No posts found.
+| {% endif %}
+
 script.
 	//- Nicer dropdowns for tags/selects.
 	$('.js-styleselect').select2();
