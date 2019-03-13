@@ -293,6 +293,8 @@ $item-thumbnail-size: 90px
         width: auto
 
     .op-name
+      @extend .d-flex
+
       a
         color: $color-text-light
         text-decoration: none
@@ -300,6 +302,18 @@ $item-thumbnail-size: 90px
         &:hover
           color: var(--community-theme-color, $color-primary)
           text-decoration: underline
+
+    .blender-id-badges
+      @extend .d-flex
+      @extend .list-unstyled
+      @extend .ml-1
+      @extend .pl-1
+      @extend .my-0
+
+      img
+        @extend .w-auto
+        @extend .mr-1
+        max-height: 20px
 
     .op-meta
       img
@@ -654,8 +668,6 @@ body[data-context="post-edit"]
           margin-left: 5px
           margin-right: 10px
         height: 16px
-        margin-left: 8px
-        margin-right: 24px
         position: relative
         width: 16px
 

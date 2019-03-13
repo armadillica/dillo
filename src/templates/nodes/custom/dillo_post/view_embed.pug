@@ -94,7 +94,7 @@
 				href="{{ node.properties.content }}",
 				target="_blank",
 				title="Visit URL")
-				img.favicon(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}", alt="Favicon")
+				img.favicon.mr-3.ml-1(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}", alt="Favicon")
 				| {{ node.properties.content }}
 			| {% else %}
 			span.item-link-data There should be content here.
@@ -135,6 +135,8 @@
 
 						span.ml-1(title="Karma")
 							| ({{ node.user.extension_props_public.dillo.karma }})
+
+					| {{ node.user.badges.html|safe }}
 
 				.op-meta
 					| {% if node.user.extension_props_public.dillo.links %}
