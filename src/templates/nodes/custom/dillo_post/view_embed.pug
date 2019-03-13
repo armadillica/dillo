@@ -46,6 +46,17 @@
 					i(title="Hot Stuff").pi-fire.text-danger
 				| {% endif %}
 
+				| {% if node.properties.status_dev %}
+				li(title="Development Status: {{ node.properties.status_dev }}")
+					| {% if node.properties.status_dev == 'Done' %}
+					span.text-success #[i.pi-check] {{ node.properties.status_dev }}
+					| {% elif node.properties.status_dev == 'In Development' %}
+					span.text-warning {{ node.properties.status_dev }}
+					| {% else %}
+					| {{ node.properties.status_dev }}
+					| {% endif %}
+				| {% endif %}
+
 				//- TODO: Make tags clickeable.
 				| {% if node.properties.tags %}
 				li#item-tags
