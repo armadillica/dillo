@@ -144,7 +144,7 @@ def index_all():
     attach_project_pictures(project, api)
 
     return render_template(
-        'dillo/index_followed.html',
+        'dillo/index.html',
         col_right={'activities': {'_meta': {'total': 0}}},
         project=project)
 
@@ -207,7 +207,7 @@ def index(community_url):
             act.link = ''
 
     return render_template(
-        'dillo/index_followed.html',
+        'dillo/index.html',
         col_right={'activities': activities},
         project=project,
         submit_menu=project_submit_menu(project),
@@ -262,7 +262,7 @@ def view(community_url, post_shortcode, slug=None):
         post.picture = get_file(post.picture, api=api)
 
     return render_template(
-        'dillo/index_followed.html',
+        'dillo/index.html',
         project=project,
         submit_menu=project_submit_menu(project),
         col_right={'post': post})
