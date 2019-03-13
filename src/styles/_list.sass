@@ -52,9 +52,6 @@
     .item-title
       color: var(--community-theme-color, $color-primary)
 
-    .item-thumbnail
-      opacity: 0
-
   .item-details
     +media-xs
       ul
@@ -80,10 +77,6 @@
     &:hover
       color: var(--community-theme-color, $color-primary)
 
-  .item-author
-    +media-xs
-      display: none
-
   .item-comments
     margin-left: auto
 
@@ -92,36 +85,6 @@
 
 .is-hot
   box-shadow: 5px 0 inset crimson
-
-.listing-empty
-  align-items: center
-  bottom: 0
-  color: $color-text-dark-primary
-  cursor: default
-  display: flex
-  font-size: $font-size-small
-  flex-direction: column
-  justify-content: center
-  left: 0
-  position: absolute
-  right: 0
-  text-align: center
-  top: 0
-
-  span.query
-    color: var(--community-theme-color, $color-primary)
-    display: block
-    font-size: $font-size-extra-large
-    padding: 0 40px 10px
-
-  .query-clear
-    cursor: pointer
-    color: var(--community-theme-color, $color-primary)
-    font-size: $font-size-small
-
-    &:hover
-      color: var(--community-theme-color, $color-primary)
-      text-decoration: underline
 
 .listing-view
   .item-title
@@ -137,10 +100,6 @@
     +media-xs
       ul li
         font-size: .8em
-
-#list-item
-  height: 100%
-  overflow-x: hidden
 
 .listing-facets
   justify-content: flex-end
