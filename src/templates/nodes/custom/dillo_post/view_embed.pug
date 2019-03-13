@@ -1,4 +1,5 @@
 | {% set rating = node.properties.rating_positive - node.properties.rating_negative %}
+| {% set rating_perc = (node.properties.rating_positive * 100) / (node.properties.rating_positive + node.properties.rating_negative) %}
 
 | {% if (current_user.user_id | string) == node.user._id %}
 | {% set is_own = 'is-own' %}
@@ -16,6 +17,11 @@
 | {% set is_hot = true %}
 | {% endif %}
 
+| {% if node.properties.status_dev %}
+| {% set custom_status = node.properties.status_dev %}
+| {% endif %}
+
+
 .item-view(
 	class="{{ node.properties.post_type }} {{ is_own }} c-{{ project.url }}")
 	.item-content.d-flex.py-2(
@@ -28,7 +34,7 @@
 			class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
 			.item-rating.up(title="{{ _('Upvote this post') }}")
 				i.pi-angle-up
-			.item-rating.value(title="{{ _('Post Rating') }}") {{ node.properties.rating_positive - node.properties.rating_negative }}
+			.item-rating.value(title="{{ _('Post Rating') }} ({{rating_perc |round|int }}% Positive)") {{ node.properties.rating_positive - node.properties.rating_negative }}
 			.item-rating.down(title="{{ _('Downvote this post') }}")
 				i.pi-angle-down
 
@@ -82,7 +88,6 @@
 						title="{{ node._created }}",
 						href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 						| {{ node._created | pretty_date }}
-
 
 	| {% if not is_link %}
 	.item-body.px-5.pt-4.pb-3#item-content
