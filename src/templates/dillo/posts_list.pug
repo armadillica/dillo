@@ -35,7 +35,7 @@
 | {% set is_hot = true %}
 | {% endif %}
 
-.list-hits-item(
+.list-hits-item.d-flex.mx-1.my-2(
 	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",

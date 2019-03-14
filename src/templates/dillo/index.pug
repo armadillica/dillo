@@ -96,7 +96,7 @@ li
 			.item-body
 
 		| {% elif 'activities' in col_right %}
-		.welcome.p-4.m-2
+		.welcome.p-4.m-1
 			.d-flex
 				| {% if project.picture_square %}
 				a.welcome-logo.mr-4(href="{{ url_for('posts.index', community_url=project.url) }}")

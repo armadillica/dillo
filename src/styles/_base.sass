@@ -13,9 +13,6 @@
 a
   color: var(--community-theme-color, $color-primary)
 
-h1
-  font-size: 1.8em
-
 hr
   width: 100%
   height: 1px
@@ -80,12 +77,6 @@ body[data-context='post-fullscreen']
 
     .btn.preview
       display: none
-
-.app-branding
-  color: var(--community-theme-color, $color-primary)
-  font-size: $font-size-large
-  padding: 10px
-  text-decoration: none
 
 
 /* Navigation */
@@ -238,7 +229,7 @@ h4 .emoji
 
   &-logo
     max-height: 90px
-    max-width: 120px
+    max-width: 110px
 
   .social
     display: flex
@@ -420,8 +411,8 @@ h4 .emoji
   @extend .list-unstyled
 
   > li
-    padding: 3px
-    opacity: .6
+    padding: 0 3px
+    opacity: .5
 
     &:hover
       opacity: 1
@@ -430,16 +421,6 @@ h4 .emoji
       opacity: 1
       position: relative
       box-shadow: 5px 0 inset var(--community-theme-color, $color-primary)
-
-      &:after
-        content: ''
-        border: 8px solid transparent
-        border-left-color: $color-background-dark
-        position: absolute
-        top: 50%
-        transform: translateY(-50%)
-        right: -16px
-        opacity: 1
 
 .d-header
   +media-xs
@@ -515,8 +496,7 @@ h4 .emoji
 
   // .d-header-title
   &-title
-    color: $color-text
-    font-size: $font-size-large
+    color: $white
     font-weight: bold
     text-decoration: none
 
