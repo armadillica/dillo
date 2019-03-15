@@ -40,13 +40,10 @@
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
 	data-url="{{ post_url }}")
-	a.item-thumbnail(
-		href="{{ post_url }}",
-		class="{% if post.picture %}has-thumbnail{% endif %} {% if is_link %}is-link{% endif %}")
-		.item-thumbnail-picture
-			| {% if post.picture %}
-			img(src="{{ post.picture.thumbnail('m') }}")
-			| {% endif %}
+	| {% if post.picture %}
+	a.item-thumbnail.m-2(href="{{ post_url }}")
+		img(src="{{ post.picture.thumbnail('l') }}")
+	| {% endif %}
 
 	.item-content.d-flex.pb-1(data-node-id="{{ post._id }}")
 		.item-details.pl-3
