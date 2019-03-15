@@ -211,12 +211,16 @@ script.
 		function parseText(content) {
 			var crsf_token = document.getElementById("csrf_token").value;
 			// var content = document.getElementById("content").value;
+			let data = JSON.stringify({
+				content: content
+			});
 			$.ajax({
 				url: "{{ url_for('nodes.preview_markdown')}}",
 				type: 'post',
-				data: {content: content,},
+				data: data,
 				headers: {"X-CSRFToken": crsf_token},
-				dataType: 'json'
+				dataType: 'json',
+				contentType: 'application/json; charset=UTF-8'
 			})
 			.done(function (data) {
 				replaceContentPreview(data.content);
