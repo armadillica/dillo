@@ -54,6 +54,11 @@
 						| {{ post.project.name  }}
 				| {% endif %}
 
+				| {% if post.properties.operating_system %}
+				li(title="{{ post.properties.operating_system }}")
+					| {{ post.properties.operating_system }}
+				| {% endif %}
+
 				| {% if post.properties.tags %}
 				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
 					{# Display two tags max in the list. #}
