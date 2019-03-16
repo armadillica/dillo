@@ -453,14 +453,10 @@ script.
 
 					// If on load the post was not published
 					if (statusLoad_val == 'pending'){
-						toastr.success("{{ _('You\'re a rockstar!') }}", "{{ _('Post published') }}");
 						ga('send', 'event', 'post', 'published', $('#post_type').val());
 
-						// Refresh the list after a bit to let Algolia think about it
-						setTimeout(function(){
-							var post_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode) }}";
-							window.location.replace(post_url);
-						}, 3000);
+						toastr.success("{{ _('You\'re a rockstar!') }}", "{{ _('Post published') }}");
+						window.location.replace(post_url);
 
 					} else {
 						toastr.success("{{ _('Post saved!') }}");
@@ -499,13 +495,11 @@ script.
 
 			$.post(urlNodeDelete, {node_id: ProjectUtils.nodeId()})
 				.done(function () {
-					toastr.info("{{ _('Going back home...') }}", "{{ _('Post deleted') }}");
 					ga('send', 'event', 'post', 'deleted');
 
-					// Go back home, first wait a bit for Algolia to update the index
-					setTimeout(function(){
-						window.location.replace('/');
-					}, 3000);
+					// Go back home.
+					window.location.replace('/');
+					toastr.info("{{ _('Post deleted') }}");
 				})
 				.fail(function(xhr) {
 					toastr.error(xhr.statusText, "Couldn't delete. This shouldn't happen, please report it");
