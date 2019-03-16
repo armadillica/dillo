@@ -139,3 +139,80 @@ There are a few places where additional properties are handled:
 Additional Properties should be displayed only in the context where we expect them to
 be. For this reason, the main posts index (which aggregates posts from all projects)
 does not feature them as filters.
+
+
+## Communities
+
+### Graphicall
+
+* Create a new community with `/p/create`
+* Configure the community
+* Copy the community id and create a `C_GRAPHICALL` var in `config_local.py`
+* Run `./manage.py dillo setup_for_dillo graphicall`
+* Update `POST_ADDITIONAL_PROPERTIES`
+
+```
+POST_ADDITIONAL_PROPERTIES = {
+    'status_dev': {
+        'schema':  {
+            'type': 'string',
+            'default': 'Open',
+            'allowed': ['Open', 'In Development', 'Done', 'Archived', 'Incomplete', 'Duplicate']
+        },
+        'indexing': {
+            'searchable': True,
+            'faceting': 'searchable'
+        },
+        'projects': [C_RCS],
+        'label': 'Dev. Status',
+    },
+    'download': {
+        'schema': {
+            'type': 'objectid',
+            'data_relation': {
+                'resource': 'files',
+                'field': '_id',
+                'embeddable': True
+            }
+        },
+        'projects': [C_GRAPHICALL],
+        'label': 'Download file',
+    },
+    'operating_system': {
+        'schema':  {
+            'type': 'string',
+            'default': 'Windows',
+            'allowed': ['Windows', 'Linux', 'macOs']
+        },
+        'indexing': {
+            'searchable': True,
+            'faceting': 'searchable'
+        },
+        'projects': [C_GRAPHICALL],
+        'label': 'OS',
+    },
+    'downloads_total': {
+        'schema': {
+            'type': 'integer',
+        },
+        'projects': [C_GRAPHICALL],
+        'label': 'Total downloads count',
+    },
+    'downloads_latest': {
+        'schema': {
+            'type': 'integer',
+        },
+        'projects': [C_GRAPHICALL],
+        'label': 'Downloads count since last update',
+    },
+    'source_link': {
+        'schema': {
+            'type': 'string',
+        },
+        'projects': [C_GRAPHICALL],
+        'label': 'Link to the source code/commit',
+    },
+}
+```
+
+* Run `./manage.py dillo attach_post_additional_properties`
