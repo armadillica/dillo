@@ -30,6 +30,7 @@ log = logging.getLogger(__name__)
 
 @blueprint.route('/nodes/<string(length=24):node_id>/view')
 def view_embed(node_id):
+    """Extend the default view_embed Pillar function."""
     api = system_util.pillar_api()
 
     # Get node, we'll embed linked objects later.
