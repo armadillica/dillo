@@ -206,28 +206,9 @@
 script.
 
 	var context = ProjectUtils.context();
-	var search = instantsearch({
-		appId: '{{ config.ALGOLIA_USER }}',
-		apiKey: '{{ config.ALGOLIA_PUBLIC_KEY }}',
-		indexName: '{{ config.ALGOLIA_INDEX_NODES }}',
-		urlSync: {},
-		searchParameters: {
-			disjunctiveFacets: ['project._id']
-		}
-	});
 
 	if (context != 'post-edit'){
 		new Vue({el: '#comments-embed'});
-	}
-
-	if (context == 'posts-index'){
-		var onRenderHandler = function() {
-			// Set item on the list as active
-			var item = '#item-{{ node._id }}';
-			$(item).addClass('active');
-		}
-
-		search.on('render', onRenderHandler);
 	}
 
 	var page_title = '{{ node.name | striptags }} — {{ main_project.name | striptags }}';

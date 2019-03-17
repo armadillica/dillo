@@ -39,69 +39,6 @@ log = logging.getLogger(__name__)
 only_for_post = only_for_node_type_decorator(node_type_post['name'])
 
 
-def algolia_index_post_save(node):
-
-    projects_collection = current_app.data.driver.db['projects']
-    project = projects_collection.find_one({'_id': ObjectId(node['project'])})
-
-    users_collection = current_app.data.driver.db['users']
-    user = users_collection.find_one({'_id': ObjectId(node['user'])})
-
-    rating = node['properties']['rating_positive'] - node['properties']['rating_negative']
-
-    node_ob = {
-        'objectID': node['_id'],
-        'name': node['name'],
-        'project': {
-            '_id': project['_id'],
-            'name': project['name'],
-            'url': project['url'],
-        },
-        'created': node['_created'],
-        'updated': node['_updated'],
-        'node_type': node['node_type'],
-        'user': {
-            '_id': user['_id'],
-            'full_name': user['full_name'],
-            'username': user['username'],
-        },
-        'hot': node['properties']['hot'],
-        'slug': node['properties']['slug'],
-        'tags': node['properties']['tags'],
-        'rating': rating,
-        'shortcode': node['properties']['shortcode'],
-    }
-
-    if 'content' in node['properties'] and node['properties']['content']:
-        node_ob['content'] = node['properties']['content']
-
-    if 'comments_count' in node['properties']:
-        node_ob['comments_count'] = node['properties']['comments_count']
-
-    # Hack for instantsearch.js. Because we can't do string comparison in Hogan,
-    # we store this case in a boolean.
-    if node['properties']['post_type'] == 'link':
-        node_ob['is_link'] = True
-    if 'picture' in node and node['picture']:
-        files_collection = current_app.data.driver.db['files']
-        lookup = {'_id': ObjectId(node['picture'])}
-        picture = files_collection.find_one(lookup)
-
-        variation_s = next((item for item in picture['variations']
-                            if item['size'] == 's'), None)
-        if variation_s:
-            node_ob['picture'] = generate_link(picture['backend'],
-                                               variation_s['file_path'],
-                                               project_id=str(picture['project']),
-                                               is_public=True)
-
-    # Try to index additional props (see config.py for more info).
-    for key in current_app.config['POST_ADDITIONAL_PROPERTIES']:
-        if key in node['properties']:
-            node_ob[key] = node['properties'][key]
-    current_app.algolia_index_nodes.save_object(node_ob)
-
-
 def update_hot(item):
     dt = item['_created']
     dt = dt.replace(tzinfo=datetime.timezone.utc)
@@ -219,7 +156,6 @@ def before_replacing_post(item, original):
         # If no comments_count was specified in the original document, strip comments_count from
         # the updated document.
         del item['properties']['comments_count']
-    algolia_index_post_save(item)
     check_download_property_update(item, original)
 
 
@@ -278,9 +214,3 @@ def subscribe_to_activity(item):
 def after_inserting_posts(items):
     for item in items:
         subscribe_to_activity(item)
-
-
-@only_for_post
-def after_deleting_post(item):
-    from pillar.api.search import algolia_indexing
-    algolia_indexing.index_node_delete(str(item['_id']))

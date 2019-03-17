@@ -64,11 +64,8 @@ class NodeOwnerTest(AbstractDilloTest):
         self.delete(f"/api/nodes/{node_doc['_id']}", headers={'If-Match': node_doc['_etag']},
                     auth_token='other_token', expected_status=403)
 
-    @mock.patch('dillo.api.posts.hooks.algolia_index_post_save')
-    def test_edit_with_explicit_owner(self, algolia_index_post_save):
-        """Test editing a node as the owner of the node. We ignore the
-        algolia_index_post_save call in one of the hooks.
-        """
+    def test_edit_with_explicit_owner(self):
+        """Test editing a node as the owner of the node."""
         import pillarsdk
         from pillar.web.utils import system_util
 
@@ -88,11 +85,8 @@ class NodeOwnerTest(AbstractDilloTest):
             node.properties.status = 'published'
             node.update(api=api)
 
-    @mock.patch('dillo.api.posts.hooks.algolia_index_post_save')
-    def test_edit_with_other_user(self, algolia_index_post_save):
-        """Test editing a node as another user than the owner. We ignore the
-        algolia_index_post_save call in one of the hooks.
-        """
+    def test_edit_with_other_user(self):
+        """Test editing a node as another user than the owner."""
 
         from pillar.api.utils import remove_private_keys
         from pillarsdk.utils import remove_none_attributes
@@ -384,9 +378,8 @@ class TestPostCommenting(AbstractDilloTest):
         test_node = copy.deepcopy(self.test_node)
 
         # Create a post
-        with mock.patch('dillo.api.posts.hooks.algolia_index_post_save'):
-            resp = self.post('/api/nodes', json=test_node, auth_token='tina-token',
-                             expected_status=201)
+        resp = self.post('/api/nodes', json=test_node, auth_token='tina-token',
+                         expected_status=201)
         post = resp.get_json()
 
         # Get commenting URL for the post
@@ -394,9 +387,8 @@ class TestPostCommenting(AbstractDilloTest):
             comment_url = flask.url_for('nodes_api.post_node_comment', node_path=str(post['_id']))
 
         # Comment to the post
-        with mock.patch('dillo.api.comments.hooks.algolia_index_post_save'):
-            comment = {'msg': 'Я хочу домой.'}
-            self.post(comment_url, json=comment, auth_token='tina-token', expected_status=201)
+        comment = {'msg': 'Я хочу домой.'}
+        self.post(comment_url, json=comment, auth_token='tina-token', expected_status=201)
 
         # Ensure that we now have 1 comment in the post
         with self.app.app_context():

@@ -18,9 +18,6 @@ log = logging.getLogger(__name__)
 
 
 class DilloExtension(PillarExtension):
-    celery_task_modules = [
-        'dillo.celery.algolia_tasks',
-    ]
 
     def __init__(self):
         self._log = logging.getLogger('%s.DilloExtension' % __name__)

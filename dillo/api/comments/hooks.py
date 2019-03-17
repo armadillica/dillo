@@ -7,8 +7,6 @@ from pillar.api.nodes.eve_hooks import only_for_node_type_decorator
 import pillar.api.activities
 import pillar.api.utils.authentication
 
-from dillo.api.posts.hooks import algolia_index_post_save
-
 log = logging.getLogger(__name__)
 
 comment_nodes_only = only_for_node_type_decorator('comment')
@@ -65,7 +63,6 @@ def reindex_post(comment):
     """Reindex the post, while updating the comments count."""
     post = get_parent_post(comment)
     update_post_comments_count(post['_id'])
-    algolia_index_post_save(post)
 
 
 @comment_nodes_only

@@ -7,7 +7,7 @@ from pillar.api.utils import authentication, jsonify
 from pillar.api.nodes.custom import register_patch_handler
 from pillar.api.nodes.custom.comment import vote_comment, assert_is_valid_patch
 
-from dillo.api.posts.hooks import algolia_index_post_save, update_hot
+from dillo.api.posts.hooks import update_hot
 from dillo import EXTENSION_NAME
 
 log = logging.getLogger(__name__)
@@ -56,7 +56,6 @@ def patch_post(node_id, patch):
         update_hot(node)
         nodes_coll.update_one({'_id': node['_id']}, {'$set': {'properties.hot': node['properties']['hot']}})
 
-        algolia_index_post_save(node)
     else:
         return abort(403)
 

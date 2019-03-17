@@ -25,4 +25,3 @@ def update_links(user_id: bson.ObjectId, links: list):
 
 def setup_app(app):
     app.on_inserted_users += hooks.after_creating_users
-    app.on_replaced_users += hooks.on_replaced_users

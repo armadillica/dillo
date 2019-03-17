@@ -21,11 +21,6 @@ SETTINGS_TWITTER_USERNAME = ''
 PAGINATION_DEFAULT_POSTS = 15
 
 
-ALGOLIA_INDEX_NODES_REPLICAS = {
-    'created': '_by_created_desc',
-    'rating': '_by_rating_desc',
-}
-
 # Support for a handful of properties that are defined on a per-project basis
 # The properties should follow the Cerberus pattern, and will be appended to the
 # dyn_schema of the dillo_post node type for the project specified when running

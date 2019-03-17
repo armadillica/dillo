@@ -45,30 +45,6 @@ def setup_for_dillo(project_url, replace=False):
 
 
 @manager_dillo.command
-def index_nodes_rebuild():
-    """Clear all nodes, update settings and reindex all posts."""
-
-    from dillo.api.posts.hooks import algolia_index_post_save
-
-    nodes_index = current_app.algolia_index_nodes
-
-    log.info('Dropping index: {}'.format(nodes_index))
-    nodes_index.clear_index()
-    index_nodes_update_settings()
-
-    db = current_app.db()
-    nodes_dillo_posts = db['nodes'].find({
-        '_deleted': {'$ne': True},
-        'node_type': 'dillo_post',
-        'properties.status': 'published',
-    })
-
-    log.info('Reindexing all nodes')
-    for post in nodes_dillo_posts:
-        algolia_index_post_save(post)
-
-
-@manager_dillo.command
 def process_posts(community_name):
     """Manually trigger pre-update hooks."""
     from flask import g
@@ -96,65 +72,6 @@ def process_posts(community_name):
         process_picture_oembed(n, n)
         before_replacing_post(n, n)
         nodes_collection.find_one_and_replace({'_id': n_id}, n)
-
-
-@manager_dillo.command
-def index_nodes_update_settings():
-    import copy
-    """Configure indexing backend as required by the project"""
-    nodes_index = current_app.algolia_index_nodes
-    nodex_index_replicas = current_app.config['ALGOLIA_INDEX_NODES_REPLICAS']
-
-    # Create index name by combining the base Nodes index with the replica extension
-    for k, v in nodex_index_replicas.items():
-        nodex_index_replicas[k] = f"{nodes_index.index_name}{v}"
-
-    shared_settings = {
-        'searchableAttributes': [
-            'name',
-            'content',
-        ],
-        'attributesForFaceting': [
-            'searchable(tags)',
-            'project._id',
-        ],
-    }
-
-    # Configure indexing for additional properties
-    for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
-        indexing_settings = v.get('indexing')
-        if not indexing_settings:
-            continue
-        if 'searchable' in indexing_settings and indexing_settings['searchable']:
-            shared_settings['searchableAttributes'].append(k)
-        if 'faceting' in indexing_settings:
-            if indexing_settings['faceting'] == 'searchable':
-                searchable_str = f'searchable({k})'
-            else:
-                searchable_str = k
-            shared_settings['attributesForFaceting'].append(searchable_str)
-
-    # Automatically creates index if it does not exist
-    index_settings = copy.deepcopy(shared_settings)
-    index_settings.update({
-        'customRanking': [
-            'desc(hot)',
-            'desc(created)',
-        ],
-        'replicas': [v for k, v in nodex_index_replicas.items()]
-        })
-    nodes_index.set_settings(index_settings)
-
-    for k, v in nodex_index_replicas.items():
-        replica_settings = copy.deepcopy(shared_settings)
-        replica_settings.update({
-            'customRanking': [
-                f"desc({k})",
-            ],
-        })
-
-        index_nodes_replica = nodes_index.client.init_index(v)
-        index_nodes_replica.set_settings(replica_settings)
 
 
 @manager_dillo.command
