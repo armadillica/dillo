@@ -161,6 +161,21 @@ def generate_oembed(item):
         item['properties']['content_html'] = content_html
 
 
+def check_download_property_update(item, original):
+    """Update node if properties.download was updated.
+
+    In particular, reset the downloads_latest to 0 and update hotness.
+    The hotness is updated based on _updated and not _created.
+    """
+    if 'download' not in item['properties'] or 'download' not in original['properties']:
+        return
+
+    if item['properties']['download'] != original['properties'].get('download'):
+        item['properties']['downloads_latest'] = 0
+        # TODO(fsiddi) Update hotness as well. This needs more consideration, since whenever
+        # we perform an upvote we calculate hotness using _created.
+
+
 @only_for_post
 def before_replacing_post(item, original):
     if len(item['properties']['content']) < 6:
@@ -205,6 +220,7 @@ def before_replacing_post(item, original):
         # the updated document.
         del item['properties']['comments_count']
     algolia_index_post_save(item)
+    check_download_property_update(item, original)
 
 
 @only_for_post
