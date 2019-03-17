@@ -283,3 +283,17 @@ def get_posts():
     add_facets_to_response(docs, posts_cursor, community_id)
 
     return jsonify(docs)
+
+
+def update_download_count(post_id):
+    """Update download count for the Post.
+
+    This function is called from dillo.web.posts.routes.download_file.
+    """
+
+    current_app.db('nodes').update_one(
+        {'_id': ObjectId(post_id)},
+        {'$inc': {'properties.downloads_total': 1, 'properties.downloads_latest': 1}})
+
+    log.debug('Updated download count for post %s' % post_id)
+    return jsonify({'status': 'OK'})

@@ -24,6 +24,8 @@ from pillar.web.nodes.routes import url_for_node
 from dillo import current_dillo
 from dillo.web.posts.utils import project_submit_menu
 
+from dillo.api.posts.routes import update_download_count
+
 blueprint = Blueprint('posts', __name__)
 log = logging.getLogger(__name__)
 
@@ -58,6 +60,22 @@ def view_embed(node_id):
         write_access=write_access,
         api=api,
         **extra_template_args)
+
+
+@blueprint.route('/<string(length=24):post_id>/download/<string(length=24):file_id>')
+def download_file(post_id: str, file_id: str):
+    """Download a file and update download counters for the Post.
+
+    The the download counters are dynamically created/updated with the following names:
+    - properties.downloads_total
+    - properties.downloads_latest (gets reset once the file is updated)
+
+    These properties must exist in POST_ADDITIONAL_PROPERTIES.
+    """
+    f = get_file(file_id, api=system_util.pillar_api())
+    # Update download count (done via the API to reduce overhead)
+    update_download_count(post_id)
+    return redirect(f.link)
 
 
 @blueprint.route('/c/<community_url>/post/<post_type>')
