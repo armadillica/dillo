@@ -50,6 +50,15 @@ services:
      - mongo
      - redis
      - rabbit
+  dillo_static:
+    image: nginx
+    container_name: dillo_static
+    restart: always
+    environment:
+      VIRTUAL_HOST: http://static.blender.community/*,https://static.blender.community/*
+      FORCE_SSL: "true"
+    volumes:
+      - /data/storage/pillar:/usr/share/nginx/html:ro
   celery_worker:
     image: armadillica/dillo:latest
     entrypoint: /celery-worker.sh
@@ -90,7 +99,7 @@ services:
       environment:
           WEBROOT: /data/letsencrypt
           LISTEN: '[::]:80'
-          VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*
+          VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*,http://static.blender.community/.well-known/
           VIRTUAL_HOST_WEIGHT: 30
       volumes:
           - /data/letsencrypt:/data/letsencrypt
@@ -102,7 +111,7 @@ services:
      - "443:443"
      - "80:80"
     environment:
-     - ADDITIONAL_SERVICES=docker:dillo,docker:letsencrypt
+     - ADDITIONAL_SERVICES=docker:dillo,docker:dillo_static,docker:letsencrypt
      - CERT_FOLDER=/certs/
      - TIMEOUT=connect 5s, client 5m, server 10m
     depends_on:
