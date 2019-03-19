@@ -51,6 +51,27 @@
     &:before
       display: none
 
+.cards-display
+  .list-hits-item
+    flex-direction: column
+
+    .item-thumbnail
+      background-color: $color-background-light
+      border-bottom-left-radius: 0
+      border-bottom-right-radius: 0
+      max-width: unset
+      max-height: 500px
+      margin: 0 !important // overrides .m-2 class.
+
+      img
+        height: unset
+        width: 100%
+        position: unset
+        left: unset
+        top: unset
+        transform: unset
+        object-fit: scale-down
+
 .is-hot
   box-shadow: 5px 0 inset crimson
 
