@@ -111,13 +111,19 @@
 			| {% endif %}
 	| {% endif %}
 
-
 	| {% if is_link %}
 	.item-link-container(
 		class="{% if is_html %}is-embed{% endif %}")
+		| {# If it's a link with oembed support #}
+		| {% if is_html %}
+		#item-media.d-flex.justify-content-center.position-relative(
+			class="item-media oembed")
+			| {{ node.properties.content_html | safe }}
+		| {% endif %}
+
 		.item-body#item-content
 			| {% if node.properties.content %}
-			a.d-block.p-3(
+			a.d-block.px-3.pb-3(
 				class="item-link-data",
 				href="{{ node.properties.content }}",
 				target="_blank",
@@ -127,13 +133,6 @@
 			| {% else %}
 			span.item-link-data There should be content here.
 			| {% endif %}
-
-		| {# If it's a link with oembed support #}
-		| {% if is_html %}
-		#item-media.d-flex.justify-content-center.position-relative(
-			class="item-media oembed")
-			| {{ node.properties.content_html | safe }}
-		| {% endif %}
 	| {% endif %}
 
 
