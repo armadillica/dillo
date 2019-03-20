@@ -42,7 +42,7 @@
 			.item-rating.down(title="{{ _('Downvote this post') }}")
 				i.pi-angle-down
 
-		.item-details.py-2
+		.item-details
 			| {% if is_link %}
 			a#item-title.item-title(
 				href="{{ node.properties.content }}"
@@ -50,7 +50,7 @@
 			| {% else %}
 			span#item-title.item-title {{ node.name }}
 			| {% endif %}
-			ul.text-secondary
+			ul.text-secondary.px-0.py-1.m-0
 				| {% if is_hot %}
 				li
 					i(title="Hot Stuff").pi-fire.text-danger

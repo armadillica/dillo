@@ -12,10 +12,7 @@
     background-color: $color-background-lighter
 
   &.active
-    +media-xs
-      background-color: $color-background-dark
     background-color: $color-background-dark
-    // box-shadow: -5px 0 inset var(--community-theme-color, $color-primary)
 
     .item-title
       color: var(--community-theme-color, $color-primary)
@@ -103,6 +100,9 @@
         font-size: .8em
 
 .listing-facets
+  +media-xs
+    flex-direction: column
+
   justify-content: flex-end
 
   .select2-container

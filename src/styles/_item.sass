@@ -166,13 +166,11 @@ $item-thumbnail-size: 90px
 .item-details
   display: flex
   flex-direction: column
-  justify-content: space-around
+  justify-content: center
   font-size: $font-size-small
   flex: 1
 
   > ul
-    margin: 0
-    padding: 5px 0
 
     > li
       display: inline-block
@@ -663,9 +661,7 @@ body[data-context="post-edit"]
       padding: 10px 25px
 
     .comment-avatar
-      display: flex
-      flex-direction: column
-      align-items: center
+      @extend .mt-1
 
     .comment-reply-field, .comment-reply-field textarea
       background-color: $color-background-dark
@@ -702,10 +698,11 @@ body[data-context="post-edit"]
           text-decoration: underline !important
 
       &.is-first
-        border-color: $color-background-dark
+        border-color: $color-background-darker
 
       &.is-reply
-        box-shadow: inset 3px 0 0 $color-background-dark
+        box-shadow: inset 10px 0 0 $color-background-dark
+        background-color: rgba($color-background-dark, .2)
 
   &.is-own
     .item-rating

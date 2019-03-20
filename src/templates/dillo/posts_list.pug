@@ -35,7 +35,7 @@
 | {% set is_hot = true %}
 | {% endif %}
 
-.list-hits-item.d-flex.mx-1.my-2(
+.list-hits-item.d-flex.m-2(
 	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
@@ -47,7 +47,7 @@
 
 	.item-content.d-flex.pb-1(data-node-id="{{ post._id }}")
 		.item-details.pl-3
-			ul.item-details-header
+			ul.item-details-header.px-0.py-1.m-0
 				| {% if not is_community_listing %}
 				li
 					a.js-follow-link(href="{{ url_for('posts.index', community_url=post.project.url) }}")
@@ -71,7 +71,7 @@
 				href="{{ post_url }}")
 				| {{ post.name }}
 
-			ul.pb-2
+			ul.px-0.py-1.m-0
 				| {% if rating > 0 %}
 				li
 					| {{ rating }}
