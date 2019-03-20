@@ -1,8 +1,12 @@
 | {% set rating = node.properties.rating_positive - node.properties.rating_negative %}
 | {% set rating_perc = (node.properties.rating_positive * 100) / (node.properties.rating_positive + node.properties.rating_negative) %}
 
-| {% if node.user._id == current_user.objectid %}
+| {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
 | {% set is_own = 'is-own' %}
+| {% endif %}
+
+| {% if current_user.has_cap('admin') %}
+| {% set is_admin = 'is-admin' %}
 | {% endif %}
 
 | {% if (node.properties.post_type == 'link') %}
@@ -95,7 +99,7 @@
 					| {{ node.properties.downloads_total }} {{ _('Downloads') }}
 				| {% endif %}
 
-				| {% if is_own or current_user.has_cap('admin') %}
+				| {% if is_own or is_admin %}
 				li
 					a.text-muted(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 						| {{ _('Edit Post') }}
@@ -177,12 +181,10 @@
 					| {% endif %}
 
 		.item-info-action
-			| {% if current_user.is_authenticated %}
-			| {% if is_own or current_user.has_cap('admin') %}
+			| {% if is_own or is_admin %}
 			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 				i.pi-edit.pr-1
 				| {{ _('Edit Post') }}
-			| {% endif %}
 			| {% endif %}
 
 			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
