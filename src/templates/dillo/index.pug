@@ -5,13 +5,17 @@
 | {% set is_main_project = 'main-project' %}
 | {% endif %}
 
+| {% if project %}
+| {% set community_name = 'main-project' if (main_project._id == project._id) else ('c-' + project.url)  %}
+| {% endif %}
+
 | {% block page_title %}
 | {{ (col_right['post'].name if 'post' in col_right) }}
 | {% endblock page_title %}
 
 | {% block bodyattrs %}
 | {{ super() }}
-| class='{{ page_name }} {% if current_user.is_authenticated %}logged-in{% endif %} {{ is_main_project }}' data-context='{{ page_name }}'
+| class='{{ page_name }} {% if current_user.is_authenticated %}logged-in{% endif %} {{ community_name }}' data-context='{{ page_name }}'
 | {% endblock bodyattrs %}
 
 
