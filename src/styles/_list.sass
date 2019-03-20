@@ -51,6 +51,18 @@
     &:before
       display: none
 
+  //- Status-dev styling in posts_list.
+  &.Duplicate
+    opacity: .5
+
+    ul *,
+    .item-thumbnail
+      display: none
+
+    &.active
+      opacity: unset
+
+
 .cards-display
   .list-hits-item
     flex-direction: column-reverse
