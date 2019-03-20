@@ -100,17 +100,14 @@ $item-thumbnail-size: 90px
     min-width: $item-thumbnail-size / 1.2
     max-width: $item-thumbnail-size / 1.2
 
-  align-items: center
   background-color: $color-background
   border-radius: $border-radius * 2
-  display: flex
-  justify-content: center
+  margin: $border-radius
   max-width: $item-thumbnail-size
   min-width: $item-thumbnail-size
-  min-height: 80px
+  min-height: $item-thumbnail-size / 2
   overflow: hidden
   position: relative
-  transition: margin-right 150ms ease-in
 
   img
     +position-center-translate
@@ -169,6 +166,7 @@ $item-thumbnail-size: 90px
   display: flex
   flex-direction: column
   justify-content: space-around
+  font-size: $font-size-small
   flex: 1
 
   > ul
@@ -177,7 +175,6 @@ $item-thumbnail-size: 90px
 
     > li
       display: inline-block
-      font-size: $font-size-small
       margin: 0
       padding: 0 5px
 

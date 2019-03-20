@@ -41,7 +41,7 @@
 	data-id="{{ post._id }}",
 	data-url="{{ post_url }}")
 	| {% if post.picture %}
-	a.item-thumbnail.m-2(href="{{ post_url }}")
+	a.item-thumbnail(href="{{ post_url }}")
 		img(src="{{ post.picture.thumbnail('l') }}")
 	| {% endif %}
 
