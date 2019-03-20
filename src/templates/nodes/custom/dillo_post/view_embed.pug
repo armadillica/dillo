@@ -95,6 +95,11 @@
 					| {{ node.properties.downloads_total }} {{ _('Downloads') }}
 				| {% endif %}
 
+				| {% if is_own or current_user.has_cap('admin') %}
+				li
+					a.text-muted(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
+						| {{ _('Edit Post') }}
+				| {% endif %}
 
 	| {% if not is_link %}
 	.item-body.px-5.pt-4.pb-3#item-content
