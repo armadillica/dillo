@@ -1,7 +1,7 @@
 | {% set rating = node.properties.rating_positive - node.properties.rating_negative %}
 | {% set rating_perc = (node.properties.rating_positive * 100) / (node.properties.rating_positive + node.properties.rating_negative) %}
 
-| {% if (current_user.user_id | string) == node.user._id %}
+| {% if node.user._id == current_user.objectid %}
 | {% set is_own = 'is-own' %}
 | {% endif %}
 
@@ -173,15 +173,16 @@
 					| {% endif %}
 
 		.item-info-action
-			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
-				i.pi-resize-full
 			| {% if current_user.is_authenticated %}
-			| {% if (node.user._id == current_user.objectid) or current_user.has_cap('admin') %}
+			| {% if is_own or current_user.has_cap('admin') %}
 			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
-				i.pi-edit
+				i.pi-edit.pr-1
 				| {{ _('Edit Post') }}
 			| {% endif %}
 			| {% endif %}
+
+			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
+				i.pi-resize-full
 
 			a.social(
 				title="{{ _('Share on Facebook') }}",
