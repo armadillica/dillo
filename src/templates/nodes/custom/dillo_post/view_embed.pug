@@ -52,6 +52,18 @@
 					i(title="Hot Stuff").pi-fire.text-danger
 				| {% endif %}
 
+				| {% if 'download' in node.properties %}
+				li
+					a.text-success(
+						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}")
+						| {{ _('Download') }}
+				| {% endif %}
+
+				| {% if 'operating_system' in node.properties %}
+				li
+					strong {{ node.properties.operating_system }}
+				| {% endif %}
+
 				| {% if node.properties.status_dev %}
 				li(title="Development Status: {{ node.properties.status_dev }}")
 					| {% if node.properties.status_dev == 'Done' %}
@@ -78,6 +90,12 @@
 						href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 						| {{ node._created | pretty_date }}
 
+				| {% if 'downloads_total' in node.properties %}
+				li(title="{% if 'downloads_latest' in node.properties %}{{ node.properties.downloads_latest }} {{ _('Downloads since the last update') }}{% endif %}")
+					| {{ node.properties.downloads_total }} {{ _('Downloads') }}
+				| {% endif %}
+
+
 	| {% if not is_link %}
 	.item-body.px-5.pt-4.pb-3#item-content
 		.item-body-text
@@ -86,18 +104,6 @@
 			| {% else %}
 			p {{ _('Write something nice.') }}
 			| {% endif %}
-	//- Display Additional properties (for example download)
-	| {% if 'download' in node.properties %}
-	a(href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}") Download
-	| {% endif %}
-	| {% if 'downloads_total' in node.properties %}
-	p Total Downloads {{ node.properties.downloads_total }}
-	| {% endif %}
-	| {% if 'downloads_latest' in node.properties %}
-	p Downloads since last update {{ node.properties.downloads_latest }}
-	| {% endif %}
-
-
 	| {% endif %}
 
 
