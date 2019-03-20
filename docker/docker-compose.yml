@@ -50,12 +50,13 @@ services:
      - mongo
      - redis
      - rabbit
-  dillo_static:
+  dillo_static_origin:
+    # Acts as origin for CDN serving content on static.blender.community
     image: nginx
-    container_name: dillo_static
+    container_name: dillo_static_origin
     restart: always
     environment:
-      VIRTUAL_HOST: http://static.blender.community/*,https://static.blender.community/*
+      VIRTUAL_HOST: http://static-origin.blender.community/*,https://static-origin.blender.community/*
       FORCE_SSL: "true"
     volumes:
       - /data/storage/pillar:/usr/share/nginx/html:ro
@@ -99,7 +100,7 @@ services:
       environment:
           WEBROOT: /data/letsencrypt
           LISTEN: '[::]:80'
-          VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*,http://static.blender.community/.well-known/
+          VIRTUAL_HOST: http://blender.community/.well-known/*,http://www.blender.community/.well-known/*,http://static-origin.blender.community/.well-known/
           VIRTUAL_HOST_WEIGHT: 30
       volumes:
           - /data/letsencrypt:/data/letsencrypt
@@ -111,7 +112,7 @@ services:
      - "443:443"
      - "80:80"
     environment:
-     - ADDITIONAL_SERVICES=docker:dillo,docker:dillo_static,docker:letsencrypt
+     - ADDITIONAL_SERVICES=docker:dillo,docker:dillo_static_origin,docker:letsencrypt
      - CERT_FOLDER=/certs/
      - TIMEOUT=connect 5s, client 5m, server 10m
     depends_on:
