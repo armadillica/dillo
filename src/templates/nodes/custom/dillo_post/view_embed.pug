@@ -225,7 +225,7 @@ script.
 
 	{% if not is_link %}
 		var item_content = $('#item-content');
-		item_content.html(twemoji.parse(item_content.text()));
+		item_content.html(twemoji.parse(item_content.html()));
 	{% endif %}
 
 	// If the parameter ?fs is in the url, go imax!
