@@ -105,38 +105,33 @@
 
 		.item-edit-bar
 			| {% if node.properties.status != 'pending' %}
-			.item-status
-				| {{ _('Status') }}:
-				span {{ node.properties.status | undertitle }}
+			button.btn.delete.mr-auto {{ _('Delete') }}
 			| {% endif %}
-			.item-edit-bar-action
 
-				| {% if node.properties.status != 'pending' %}
-				button.btn.delete {{ _('Delete') }}
-				| {% endif %}
+			| {% if node.properties.status == 'published' %}
+			a.btn.cancel.ml-auto(
+				href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}")
+				| {{ _('Cancel') }}
+			| {% else %}
+			a.btn.cancel.ml-auto(
+				href="{{ url_for('posts.index', community_url=project.url)}}",
+				class="js-cancel-submit")
+				| {{ _('Cancel') }}
+			| {% endif %}
 
-				| {% if node.properties.status == 'published' %}
-				a.btn.cancel(
-					href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}")
-					| {{ _('Cancel') }}
-				| {% else %}
-				a.btn.cancel.js-cancel-submit(href="{{ url_for('posts.index', community_url=project.url)}}")
-					| {{ _('Cancel') }}
-				| {% endif %}
+			button.btn.preview {{ _('Preview') }}
 
-				button.btn.preview {{ _('Preview') }}
-
-				| {% if node.properties.status != 'published' %}
-				button.item-save-publish.btn.btn-success(
-				data-action="publish",
-				title="{{ _('Make post publicly available!') }}")
-					i.pi-check
-					| {{ _('Publish') }}
-				| {% else %}
-				button.item-save-publish.btn.publish(
-				data-action="save",
-				title="{{ _('Save Changes') }}") {{ _('Save Changes') }}
-				| {% endif %}
+			| {% if node.properties.status != 'published' %}
+			button.item-save-publish.btn.btn-success.px-5(
+			data-action="publish",
+			title="{{ _('Make post publicly available!') }}")
+				i.pi-check
+				| {{ _('Publish') }}
+			| {% else %}
+			button.item-save-publish.btn.publish(
+			data-action="save",
+			title="{{ _('Save Changes') }}") {{ _('Save Changes') }}
+			| {% endif %}
 
 #col_right.listing-view.item-edit-view
 

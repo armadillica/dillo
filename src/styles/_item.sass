@@ -319,9 +319,16 @@ body[data-context="post-edit"]
   &-bar
     +media-xs
       padding-top: 0
+      flex-direction: column-reverse
+      margin: 0
+      width: 100%
+
     align-items: center
     display: flex
-    padding: 0 30px 10px
+    padding: 0 25px 10px
+
+    .btn
+      margin-bottom: 10px
 
     &.top
       align-items: center
@@ -334,30 +341,6 @@ body[data-context="post-edit"]
 
       a.all
         margin-left: auto
-
-    &-action
-      +media-xs
-        display: flex
-        flex-direction: column-reverse
-        margin: 0
-        width: 100%
-
-        .btn
-          margin-bottom: 10px
-
-      margin-left: auto
-
-      .btn-group
-        margin-left: 5px
-
-    .item-status
-      +media-xs
-        display: none
-
-      color: $color-text-hint
-
-      span
-        padding-left: 5px
 
   &-form
     form
@@ -480,8 +463,8 @@ body[data-context="post-edit"]
       padding: 0
 
     background-color: $color-background
-    border-radius: 3px
-    margin: 9px 10px 5px
+    border-radius: $border-radius * 2
+    margin: 8px 10px 5px
     top: 0
     transition: box-shadow 150ms ease-out, transform 150ms ease-out
 

@@ -35,7 +35,7 @@
 | {% set is_hot = true %}
 | {% endif %}
 
-.list-hits-item.d-flex.m-2(
+.list-hits-item.d-flex.mx-2.mb-2(
 	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
@@ -191,7 +191,6 @@ script.
 
 	$displayToggleWidget.on('click', function (e) {
 		e.preventDefault();
-		console.log(e);
 		projectBrowseToggle();
 	});
 

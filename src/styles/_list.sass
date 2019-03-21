@@ -103,12 +103,25 @@
   +media-xs
     flex-direction: column
 
+    div
+      flex-direction: column
+      padding-bottom: 5px
+
+    .list-facet.status_dev .select2-container,
+    .list-facet.tags .select2-container
+      min-width: 95%
+      margin-right: 5%
+
   justify-content: flex-end
+  flex-wrap: wrap
 
   .select2-container
-    margin: 0 10px
+    margin: 0 0 10px 10px
     width: auto !important
     min-width: 80px
+
+  .wgt
+    margin: 0 0 10px 10px
 
 $select-min-width: 160px
 .list-facet
