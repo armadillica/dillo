@@ -49,13 +49,18 @@
       display: none
 
   //- Status-dev styling in posts_list.
-  &.Duplicate
+  &.Duplicate,
+  &.Rejected,
+  &.Archived
     box-shadow: none
     opacity: .5
 
     ul *,
     .item-thumbnail
       display: none
+
+    .item-title
+      font-size: unset
 
     &.active
       opacity: unset
