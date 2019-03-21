@@ -451,6 +451,8 @@ script.
 						ga('send', 'event', 'post', 'published', $('#post_type').val());
 
 						toastr.success("{{ _('You\'re a rockstar!') }}", "{{ _('Post published') }}");
+
+						var post_url = "{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode) }}";
 						window.location.replace(post_url);
 
 					} else {
