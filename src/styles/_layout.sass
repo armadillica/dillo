@@ -160,6 +160,14 @@
       visibility: visible
       z-index: 0
 
+    .item-media
+      &.oembed
+        +media-xs
+          height: calc((9/16) * 100vw)
+        +media-sm
+          height: calc((9/16) * 60vw)
+        height: calc((9/16) * 50vw)
+
     #list-item
       +media-xs
         width: 100%
@@ -193,8 +201,11 @@
 #col_main
   +media-xs
     top: $header-height
-  +media-lg
+  +media-sm
     width: 42%
+  +media-lg
+    max-width: 720px
+    width: 45%
 
 #col_right
   +media-xs
