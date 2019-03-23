@@ -29,6 +29,7 @@ from pillar.api.nodes.eve_hooks import only_for_node_type_decorator
 from pillar.api.utils.authentication import current_user_id
 from pillar.api.file_storage import upload_and_process
 from pillar.api.activities import activity_subscribe
+from pillar.api.utils import utcnow
 from dillo import current_dillo
 from dillo.node_types.post import node_type_post
 from dillo.utils.sorting import hot
@@ -39,12 +40,35 @@ only_for_post = only_for_node_type_decorator(node_type_post['name'])
 
 
 def update_hot(item):
-    dt = item['_created']
+    """Update hot value for a Post.
+
+    The calculation of hotness is calculated in different ways, depending on the
+    type of Post. In the case of upvotable posts, we calculate it based on
+    '_created', 'rating_positive' and 'rating_negative'.
+    In the case of documents featuring a 'download' and a 'download_updated'
+    property, we use 'download_updated' instead of '_created'.
+    """
+
+    item_properties = item['properties']
+
+    # Default values for rating
+    rating_positive = 1
+    rating_negative = 0
+
+    if 'download' in item_properties and 'download_updated' in item_properties:
+        # We are dealing with a post featuring a downloadable item
+        dt = item_properties['download_updated']
+    else:
+        # Usually text or link posts, votable
+        dt = item['_created']
+        rating_positive = item_properties['rating_positive']
+        rating_negative = item_properties['rating_negative']
+
     dt = dt.replace(tzinfo=datetime.timezone.utc)
 
-    item['properties']['hot'] = hot(
-        item['properties']['rating_positive'],
-        item['properties']['rating_negative'],
+    item_properties['hot'] = hot(
+        rating_positive,
+        rating_negative,
         dt,
     )
 
@@ -108,8 +132,9 @@ def check_download_property_update(item, original):
 
     if item['properties']['download'] != original['properties'].get('download'):
         item['properties']['downloads_latest'] = 0
-        # TODO(fsiddi) Update hotness as well. This needs more consideration, since whenever
-        # we perform an upvote we calculate hotness using _created.
+        # Update the upload timestamp
+        item['properties']['download_updated'] = utcnow()
+        # Hotness recalculation is done in 'before_replacing_post'
 
 
 @only_for_post
@@ -147,7 +172,6 @@ def before_replacing_post(item, original):
 
     handler = post_handler[item['properties']['post_type']]
     handler(item)
-    update_hot(item)
     # Ensure that comments count was not modified
     if 'comments_count' in original['properties']:
         item['properties']['comments_count'] = original['properties']['comments_count']
@@ -156,6 +180,7 @@ def before_replacing_post(item, original):
         # the updated document.
         del item['properties']['comments_count']
     check_download_property_update(item, original)
+    update_hot(item)
 
 
 @only_for_post
