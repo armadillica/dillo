@@ -107,6 +107,9 @@ In this case:
 * `projects` defines to which project we should apply this additional properties
 * `label` is the UI representation of the key
 
+Optionally, we can specify a `form_schema` property, that will be used to update the 
+`form_schema` of the node_type.
+
 
 ### Usage
 

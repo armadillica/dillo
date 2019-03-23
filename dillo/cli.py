@@ -82,7 +82,10 @@ def reset_users_karma():
 
 @manager_dillo.command
 def attach_post_additional_properties():
-    """If POST_ADDITIONAL_PROPERTIES exists, extend dillo_post node type."""
+    """If POST_ADDITIONAL_PROPERTIES exists, extend dillo_post node type.
+
+    See index.md for documentation.
+    """
 
     if not current_app.config['POST_ADDITIONAL_PROPERTIES']:
         log.info('No POST_ADDITIONAL_PROPERTIES was defined')
@@ -90,16 +93,32 @@ def attach_post_additional_properties():
     # Create a dict with the additional properties ready to be appended to the doc
     db = current_app.db()
     for k, v in current_app.config['POST_ADDITIONAL_PROPERTIES'].items():
-        additional_properties = {}
-        doc_key = f'node_types.$.dyn_schema.{k}'
-        additional_properties[doc_key] = v['schema']
+        prop_key = f'node_types.$.dyn_schema.{k}'
+        form_key = f'node_types.$.form_schema.{k}'
+        additional_properties = {prop_key: v['schema']}
+        additional_form_schema = {form_key: v['form_schema']} if 'form_schema' in v else None
+
         for project_id in v['projects']:
-            u = db['projects'].update_one({
+            node_type_query = {
                 'node_types.name': 'dillo_post',
                 '_deleted': {'$ne': True},
-                '_id': ObjectId(project_id)},
+                '_id': ObjectId(project_id)}
+            u = db['projects'].update_one(
+                node_type_query,
                 {'$set': additional_properties})
-            log.info('Updated %s document' % u.modified_count)
+            if additional_form_schema:
+                # Update form_schema if a value is specified
+                u = db['projects'].update_one(
+                    node_type_query,
+                    {'$set': additional_form_schema})
+            else:
+                # Remove the key from form_schema if not specified
+                u = db['projects'].update_one(
+                    node_type_query,
+                    {'$unset': {form_key: ''}})
+
+            if u.modified_count > 0:
+                log.info('Updated document')
 
 
 @manager_dillo.command
