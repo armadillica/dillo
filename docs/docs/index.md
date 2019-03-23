@@ -169,22 +169,22 @@ POST_ADDITIONAL_PROPERTIES = {
         'projects': [C_GRAPHICALL],
         'label': 'Download file',
     },
-    'operating_system': {
-        'schema':  {
-            'type': 'string',
-            'default': 'Windows',
-            'allowed': ['Windows', 'Linux', 'macOs']
+    'download_updated': {
+        'schema': {
+            'type': 'datetime',
         },
-        'indexing': {
-            'searchable': True,
-            'faceting': 'searchable'
+        'form_schema': {
+            'visible': False
         },
         'projects': [C_GRAPHICALL],
-        'label': 'OS',
+        'label': 'Upload last updated',
     },
     'downloads_total': {
         'schema': {
             'type': 'integer',
+        },
+        'form_schema': {
+            'visible': False
         },
         'projects': [C_GRAPHICALL],
         'label': 'Total downloads count',
@@ -193,8 +193,24 @@ POST_ADDITIONAL_PROPERTIES = {
         'schema': {
             'type': 'integer',
         },
+        'form_schema': {
+            'visible': False
+        },
         'projects': [C_GRAPHICALL],
         'label': 'Downloads count since last update',
+    },
+    'operating_system': {
+        'schema':  {
+            'type': 'string',
+            'default': 'Windows',
+            'allowed': ['Windows', 'Linux', 'macOS']
+        },
+        'indexing': {
+            'searchable': True,
+            'faceting': 'searchable'
+        },
+        'projects': [C_GRAPHICALL],
+        'label': 'OS',
     },
     'source_link': {
         'schema': {
