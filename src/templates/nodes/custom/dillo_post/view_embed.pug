@@ -105,7 +105,7 @@
 			ul.text-secondary.px-0.m-0.pt-2
 				li
 					a.btn-outline-xs.btn-success(
-						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}")
+						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download._id) }}")
 						| {{ _('Download') }}
 
 				| {% if 'operating_system' in node.properties %}
