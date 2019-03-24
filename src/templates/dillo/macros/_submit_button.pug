@@ -1,0 +1,47 @@
+| {% macro submit_button(submit_menu, project) %}
+| {% if submit_menu %}
+li
+	.submit(class="{% if submit_menu['allowed'] %}btn-group{% endif %}")
+		| {% if project.url == 'graphicall' %}
+		a.btn.btn-submit.rounded(
+		href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+		title="{{ _('Upload Build') }}")
+			i.pi-blender
+			span.pr-2 {{ _('Upload Build') }}
+
+		| {% else %}
+
+		| {% if submit_menu['default'] == 'text' %}
+		a.btn.btn-submit(
+		href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+		title="{{ _('Write a Post') }}")
+			i.pi-document-text
+			span {{ _('Write a Post') }}
+
+		| {% elif submit_menu['default'] == 'link' %}
+		button.btn.btn-submit.wgt-toggle-submit(
+		data-action="publish",
+		title="{{ _('Submit a Link [Shift+A]')}}",
+		class="{% if not submit_menu['allowed'] %}solo{% endif %}")
+			i.pi-link
+			span {{ _('Submit Link') }}
+		| {% endif %}
+
+		| {# TODO: To be replaced with an iteration over allowed post_type #}
+		| {% if submit_menu['allowed'] %}
+		span.btn.btn-submit.wgt-dropdown-toggle
+			i.pi-angle-down
+
+			ul.dropdown-menu.dropdown-menu-right
+				li
+					a.btn.btn-submit.post(
+					href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+					title="{{ _('Write a Post') }}")
+						i.pi-document-text
+						|  {{ _('Write a Post') }}
+		| {% endif %}
+
+		| {% endif %}
+
+| {% endif %}
+| {% endmacro %}
