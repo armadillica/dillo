@@ -104,13 +104,16 @@ html(lang='en')
 									| {% from 'dillo/macros/_communities.html' import communities_list %}
 								| {{ communities_list(communities) }}
 
+
 						| {% if is_main_project %}
-						a.d-header-title.pl-3.pt-2.d-none.d-sm-block(href="{{ url_for('posts.index_all') }}")
-							span.px-3.py-2 {{ project.name }}
+						| {% set index_url = url_for('posts.index_all') %}
 						| {% else %}
-						a.d-header-title.pl-3.pt-2.d-none.d-sm-block(href="{{ url_for('posts.index', community_url=project.url) }}")
-							span.px-3.py-2 {{ project.name }}
+						| {% set index_url = url_for('posts.index', community_url=project.url) %}
 						| {% endif %}
+						a.btn.btn-primary.d-none.d-sm-block.ml-3(
+							href="{{ index_url  }}")
+							span {{ project.name }}
+
 
 						.d-header-action.refine
 							nav.nav-bar
