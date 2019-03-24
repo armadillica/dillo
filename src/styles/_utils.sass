@@ -1,3 +1,12 @@
+//- Add the community theme variable to any property.
+//- Example usage:
+//- @include community-theme('color')
+//- @include community-theme('background-color', '!important')
+//- @include community-theme('box-shadow', 'inset 3px 0 0')
+@mixin community-theme($property, $extra...)
+	#{$property}: var(--community-theme-color, $color-primary) #{$extra}
+
+
 @mixin button-dillo($mixin-color, $roundness, $filled: false)
 	align-items: center
 	border-radius: $roundness
@@ -62,11 +71,11 @@
 
 
 =button-simple
-  background-color: $color-background-light
-  border: 3px solid $color-background-dark
-  box-shadow: 0 1px 1px rgba(black, .1)
-  color: $color-text
-  transition: color 100ms ease-in-out, transform 100ms ease-in-out
+	background-color: $color-background-light
+	border: 3px solid $color-background-dark
+	box-shadow: 0 1px 1px rgba(black, .1)
+	color: $color-text
+	transition: color 100ms ease-in-out, transform 100ms ease-in-out
 
-  &:hover
-    color: var(--community-theme-color, $color-primary)
+	&:hover
+		@include community-theme('color')

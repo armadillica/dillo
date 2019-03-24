@@ -15,7 +15,7 @@
     background-color: $color-background-dark
 
     .item-title
-      color: var(--community-theme-color, $color-primary)
+      @include community-theme('color')
 
   .item-details
     +media-xs
@@ -40,7 +40,7 @@
     font-size: $font-size * 1.2
 
     &:hover
-      color: var(--community-theme-color, $color-primary)
+      @include community-theme('color')
 
   .item-comments
     margin-left: auto

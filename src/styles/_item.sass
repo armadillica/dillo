@@ -9,7 +9,7 @@
 
   // Text highlighted when searching.
   em
-    color: var(--community-theme-color, $color-primary)
+    +community-theme('color')
     font-style: normal
 
 .item-media
@@ -75,7 +75,7 @@ $item-thumbnail-size: 90px
       transition: border-color 100ms ease-in-out, transform 100ms ease-in-out
 
       &.active
-        border-color: var(--community-theme-color, $color-primary)
+        +community-theme('border-color')
         box-shadow: rgba(black, .25) 0px 1px 4px -1px, 0 0 25px rgba(black, .25)
         transform: scale(1)
 
@@ -124,7 +124,7 @@ $item-thumbnail-size: 90px
 
   &.rated.positive .up,
   &.rated.negative .down
-    color: var(--community-theme-color, $color-primary)
+    +community-theme('color')
 
 
 .item-rating
@@ -155,7 +155,7 @@ $item-thumbnail-size: 90px
     cursor: pointer
 
     &:hover
-      color: var(--community-theme-color, $color-primary)
+      +community-theme('color')
       background-color: $color-background-light
 
   &.value
@@ -196,7 +196,7 @@ $item-thumbnail-size: 90px
         display: inline-block
 
         &:hover
-          color: var(--community-theme-color, $color-primary)
+          +community-theme('color')
           text-decoration: underline
 
       img
@@ -251,7 +251,7 @@ $item-thumbnail-size: 90px
         text-decoration: none
 
         &:hover
-          color: var(--community-theme-color, $color-primary)
+          +community-theme('color')
           text-decoration: underline
 
     .blender-id-badges
@@ -301,13 +301,13 @@ $item-thumbnail-size: 90px
       padding: 10px 5px
 
       &:hover
-        color: var(--community-theme-color, $color-primary)
+        +community-theme('color')
 
   &-edit
     padding-left: 10px
 
     a
-      color: var(--community-theme-color, $color-primary)
+      +community-theme('color')
 
 
 /* Edit */
@@ -361,7 +361,7 @@ body[data-context="post-edit"]
         a
           color: $color-text-hint
           &:hover
-            color: var(--community-theme-color, $color-primary)
+            +community-theme('color')
 
       .tags
         padding: 10px
@@ -574,7 +574,7 @@ body[data-context="post-edit"]
         // Override Pillar's +node-details-description.
       // TODO(Pablo) add a variable in Pillar so we don't have to do this.
       a:not([class])
-        color: var(--community-theme-color, $color-primary)
+        +community-theme('color')
 
         &:hover
           color: $color-text
@@ -587,7 +587,7 @@ body[data-context="post-edit"]
 
       .item-link-data
         +text-overflow-ellipsis
-        color: var(--community-theme-color, $color-primary)
+        +community-theme('color')
         flex: 1
         font-size: $font-size-small
         line-height: $font-size
@@ -631,11 +631,11 @@ body[data-context="post-edit"]
     max-width: unset // Pillar sets a max-width in pixels.
 
     a, .sign-in a
-      color: var(--community-theme-color, $color-primary) !important
+      +community-theme('color', '!important')
 
     .comment-action span,
     .comment-action-reply span
-      color: var(--community-theme-color, $color-primary)
+      +community-theme('color')
 
       &:hover
         color: $color-text !important
@@ -670,10 +670,10 @@ body[data-context="post-edit"]
         color: $color-text !important
 
         &:hover
-          color: var(--community-theme-color, $color-primary) !important
+          +community-theme('color', '!important')
 
       .comment-author a
-        color: var(--community-theme-color, $color-primary) !important
+        +community-theme('color', '!important')
         text-decoration: none !important
         font-weight: normal
 

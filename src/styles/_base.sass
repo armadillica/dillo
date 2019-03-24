@@ -7,11 +7,11 @@
   border-radius: 999em
 
 ::-webkit-scrollbar-thumb
-  background-color: var(--community-theme-color, $color-primary)
+  +community-theme('background-color')
   border-radius: 999em
 
 a
-  color: var(--community-theme-color, $color-primary)
+  +community-theme('color')
 
 hr
   width: 100%
@@ -105,7 +105,7 @@ nav
             +button-simple
 
             &.active
-              background-color: var(--community-theme-color, $color-primary)
+              +community-theme('background-color')
               color: $color-background-lighter
 
           #notifications-toggle
@@ -119,7 +119,7 @@ nav
 
           &:hover
             img.avatar
-              background-color: var(--community-theme-color, $color-primary)
+              +community-theme('background-color')
 
           &.theme-toggle
             +button-simple
@@ -185,7 +185,7 @@ ul.dropdown-menu
       width: 100%
 
       &:hover
-        color: var(--community-theme-color, $color-primary)
+        +community-theme('color')
 
       i
         display: inline-block
@@ -245,7 +245,7 @@ h4 .emoji
 
 .node-details-description
   a
-    color: var(--community-theme-color, $color-primary) !important
+    +community-theme('color', '!important')
 
 .flyout
   &.communities
@@ -418,7 +418,7 @@ h4 .emoji
     &.is-active
       opacity: 1
       position: relative
-      box-shadow: 5px 0 inset var(--community-theme-color, $color-primary)
+      +community-theme('box-shadow', 'inset 5px 0 0')
 
 .d-header
   +media-xs
@@ -503,7 +503,7 @@ h4 .emoji
       color: $color-text
 
     span
-      background-color: var(--community-theme-color, $color-primary)
+      +community-theme('background-color')
       border-radius: $border-radius
 
   // .d-header-action
@@ -565,7 +565,7 @@ h4 .emoji
     z-index: 11
 
     &.active
-      color: var(--community-theme-color, $color-primary)
+      +community-theme('color')
 
       > i:before
         content: '\e84b'
