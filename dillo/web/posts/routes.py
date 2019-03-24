@@ -49,6 +49,10 @@ def view_embed(node_id):
     node.picture = get_file(node.picture, api=api)
     node.user = node.user and User.find(node.user, api=api)
 
+    # Embed downloadable file, if available
+    if 'download' in node.properties:
+        node.properties.download = get_file(node.properties.download, api=api)
+
     write_access = 'PUT' in (node.allowed_methods or set())
 
     extra_template_args = {'project': project}

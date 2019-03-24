@@ -61,6 +61,8 @@
 					a.text-success(
 						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}")
 						| {{ _('Download') }}
+				li
+					span {{ node.properties.download.length | filesizeformat }}
 				| {% endif %}
 
 				| {% if 'operating_system' in node.properties %}
