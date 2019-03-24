@@ -38,19 +38,12 @@
 			class="{% if node._current_user_rating is not none %}rated {% if node._current_user_rating %}positive{% else %}negative{% endif %}{% endif %}")
 			.item-rating.up(title="{{ _('Upvote this post') }}")
 				i.pi-angle-up
-			.item-rating.value(title="{{ _('Post Rating') }} ({{rating_perc |round|int }}% Positive)") {{ node.properties.rating_positive - node.properties.rating_negative }}
+			.item-rating.value(title="{{ _('Post Rating') }} ({{rating_perc |round|int }}% Positive)")
+				| {{ rating }}
 			.item-rating.down(title="{{ _('Downvote this post') }}")
 				i.pi-angle-down
 
 		.item-details
-			| {% if is_link %}
-			a#item-title.item-title(
-				href="{{ node.properties.content }}"
-				target="_blank") {{ node.name }}
-			| {% else %}
-			span#item-title.item-title {{ node.name }}
-			| {% endif %}
-
 			ul.text-secondary.px-0.py-1.m-0
 				| {% if is_hot %}
 				li
@@ -66,11 +59,6 @@
 					| {% else %}
 					| {{ node.properties.status_dev }}
 					| {% endif %}
-				| {% endif %}
-
-				| {% if 'operating_system' in node.properties %}
-				li(title="{{ _('Operating System') }}")
-					strong {{ node.properties.operating_system }}
 				| {% endif %}
 
 				//- TODO: Make tags clickable.
@@ -94,17 +82,39 @@
 						| {{ _('Edit Post') }}
 				| {% endif %}
 
+			| {% if is_link %}
+			a#item-title.item-title(
+				href="{{ node.properties.content }}"
+				target="_blank") {{ node.name }}
+
+			| {% if node.properties.content %}
+			a.d-block.py-2(
+				class="item-link-data",
+				href="{{ node.properties.content }}",
+				target="_blank",
+				title="Visit URL")
+				| {{ node.properties.content }}
+			| {% endif %}
+			| {% else %}
+			span#item-title.item-title {{ node.name }}
+			| {% endif %}
+
 			//- Secondary list of details under the title.
 			//- Used by GraphicAll.
 			| {% if 'download' in node.properties %}
-			ul.text-secondary.px-0.m-0
+			ul.text-secondary.px-0.m-0.pt-2
 				li
 					a.btn-outline-xs.btn-success(
 						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}")
 						| {{ _('Download') }}
 
+				| {% if 'operating_system' in node.properties %}
+				li(title="{{ _('Operating System') }}")
+					strong {{ node.properties.operating_system }}
+				| {% endif %}
+
 				li
-					strong {{ node.properties.download.length | filesizeformat }}
+					span {{ node.properties.download.length | filesizeformat }}
 
 				| {% if 'downloads_total' in node.properties %}
 				li(title="{% if 'downloads_latest' in node.properties %}{{ node.properties.downloads_latest }} {{ _('Downloads since the last update') }}{% endif %}")
@@ -112,16 +122,6 @@
 				| {% endif %}
 			| {% endif %}
 
-
-	| {% if not is_link %}
-	.item-body.px-5.pt-4.pb-3#item-content
-		.item-body-text
-			| {% if is_html %}
-			| {{ node.properties | markdowned('content') }}
-			| {% else %}
-			p {{ _('Write something nice.') }}
-			| {% endif %}
-	| {% endif %}
 
 	| {% if is_link %}
 	.item-link-container(
@@ -132,18 +132,13 @@
 			class="item-media oembed")
 			| {{ node.properties.content_html | safe }}
 		| {% endif %}
-
-		.item-body#item-content
-			| {% if node.properties.content %}
-			a.d-block.px-3.pb-3(
-				class="item-link-data",
-				href="{{ node.properties.content }}",
-				target="_blank",
-				title="Visit URL")
-				img.favicon.mr-3.ml-1(src="https://www.google.com/s2/favicons?domain={{ node.properties.content }}", alt="Favicon")
-				| {{ node.properties.content }}
+	| {% else %}
+	.item-body.px-5.pt-4.pb-3#item-content
+		.item-body-text
+			| {% if is_html %}
+			| {{ node.properties | markdowned('content') }}
 			| {% else %}
-			span.item-link-data There should be content here.
+			p {{ _('Write something nice.') }}
 			| {% endif %}
 	| {% endif %}
 

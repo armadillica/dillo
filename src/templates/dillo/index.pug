@@ -57,18 +57,18 @@
 		.item-view.loading
 			.item-view-header
 				.item-content.d-flex.py-2
-					.item-rating-box
+					.item-rating-box.p-1
 						.item-rating.up
 							i.pi-angle-up
 						.item-rating.value &#x221e;
 						.item-rating.down
 							i.pi-angle-down
 					.item-details
-						a#item-title.item-title {{ col_right['post']['name'] }}
-						ul.p-0.m-0
+						ul.text-secondary.px-0.py-1.m-0
 							li
 								i.pi-spin.spin
 								span {{ _('Fetching the goods...') }}
+						a#item-title.item-title {{ col_right['post']['name'] }}
 			.item-body
 
 		| {% elif 'activities' in col_right %}
