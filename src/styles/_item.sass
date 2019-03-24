@@ -166,8 +166,7 @@ $item-thumbnail-size: 90px
 .item-details
   display: flex
   flex-direction: column
-  justify-content: center
-  font-size: $font-size-small
+  font-size: $font-size-smaller
   flex: 1
 
   > ul
@@ -342,118 +341,6 @@ body[data-context="post-edit"]
       a.all
         margin-left: auto
 
-  &-form
-    form
-      display: flex
-      flex-direction: column
-
-      #name, #content
-        padding: 10px
-
-      textarea#content
-        min-height: 150px
-
-      span.content-extra
-        font-size: $font-size-smaller
-        text-align: right
-        padding: 5px 10px
-
-        a
-          color: $color-text-hint
-          &:hover
-            +community-theme('color')
-
-      .tags
-        padding: 10px
-
-        label
-          padding-bottom: 5px
-          padding-left: 5px
-          display: block
-
-        .select2-container
-          background-color: $color-background-lighter
-          border-radius: 5px
-          box-shadow: none
-
-          .select2-selection__choice
-            background-color: $color-background
-
-          .select2-selection
-            border: none
-            box-shadow: 1px 2px 2px $color-background-dark
-
-      #status, #post_type, #picture_url
-        visibility: hidden
-        display: none
-
-      .form-upload-file
-        margin-bottom: 0
-        padding: 0 10px
-
-        .form-upload-file
-          padding: 0
-
-      input, textarea
-        margin: 5px 10px
-        background-color: $color-background-lighter
-
-      label
-        color: $color-text
-        padding-top: 10px
-        padding-left: 15px
-
-      .input-content
-        display: flex
-        flex-direction: column
-
-        input, textarea
-          background-color: $color-background-lighter
-
-        &.item-oembed-images
-          display: none
-
-          &.active
-            display: block
-            visibility: visible
-
-      .fileupload
-        box-shadow: none
-        background-color: $color-background-light
-        padding: 10px
-        margin: 10px 0
-
-      #item-icon
-        align-items: center
-        bottom: 10px
-        color: rgba($color-text, .8)
-        display: flex
-        justify-content: center
-        height: 32px
-        position: absolute
-        right: 14px
-        width: 32px
-        white-space: nowrap
-
-        img
-          max-width: 24px
-          max-height: 24px
-
-        &.invalid
-          background-color: $color-background-light
-          border-left: 2px solid $color-danger
-          color: $color-danger
-          cursor: default
-          font-size: .9em
-          font-weight: bold
-          padding: 0 10px
-          user-select: none
-          width: auto
-
-        &.success
-          color: $color-success
-
-
   &-tab
     +media-xs
       border-radius: 0
@@ -585,29 +472,30 @@ body[data-context="post-edit"]
       background-color: $color-background-dark
       display: flex
 
-      .item-link-data
-        +text-overflow-ellipsis
-        +community-theme('color')
-        flex: 1
-        font-size: $font-size-small
-        line-height: $font-size
-        max-width: 100vh
-        text-decoration: none
+    .item-link-data
+      +text-overflow-ellipsis
+      color: $color-text-dark-primary
+      flex: 1
+      font-size: $font-size-small
+      max-width: 50vh
+      text-decoration: none
 
-        &:hover
-          text-decoration: underline
+      &:hover
+        +community-theme('color')
+        text-decoration: underline
 
       img.favicon
         +media-xs
           margin-left: 5px
           margin-right: 10px
         height: 16px
+        top: -2px
         position: relative
         width: 16px
 
-      a.item-thumbnail
-        overflow: initial
-        margin-left: 20px
+    a.item-thumbnail
+      overflow: initial
+      margin-left: 20px
 
 
   &.loading

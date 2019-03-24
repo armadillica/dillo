@@ -1,0 +1,114 @@
+.item-edit-form
+
+	form
+		display: flex
+		flex-direction: column
+		padding: 0 15px
+
+		#name, #content
+			padding: 10px
+
+		textarea#content
+			min-height: 150px
+
+		span.content-extra
+			font-size: $font-size-smaller
+			text-align: right
+			padding: 5px 10px
+
+			a
+				color: $color-text-hint
+				&:hover
+					+community-theme('color')
+
+		.tags
+			padding-bottom: 10px
+
+			.select2-container
+				background-color: $color-background-lighter
+				border-radius: 5px
+				box-shadow: none
+
+				.select2-selection__choice
+					background-color: $color-background
+
+				.select2-selection
+					border: none
+					box-shadow: 1px 2px 2px $color-background-dark
+
+		#status, #post_type, #picture_url
+			visibility: hidden
+			display: none
+
+		.form-upload-file
+			margin-bottom: 0
+			padding: 0 10px
+
+			.form-upload-file
+				padding: 0
+
+		input, textarea
+			background-color: $color-background-lighter
+
+		label
+			color: $color-text
+			display: block
+			padding: 10px 5px 5px
+			text-transform: capitalize
+
+		.input-content
+			display: flex
+			flex-direction: column
+
+			input, textarea
+				background-color: $color-background-lighter
+
+			&.item-oembed-images
+				display: none
+
+				&.active
+					display: block
+					visibility: visible
+
+		.fileupload
+			box-shadow: none
+			padding: 10px
+			margin: 10px 0
+
+		#item-icon
+			align-items: center
+			bottom: 10px
+			color: rgba($color-text, .8)
+			display: flex
+			justify-content: center
+			height: 32px
+			position: absolute
+			right: 14px
+			width: 32px
+			white-space: nowrap
+
+			img
+				max-width: 24px
+				max-height: 24px
+
+			&.invalid
+				background-color: $color-background-light
+				border-left: 2px solid $color-danger
+				color: $color-danger
+				cursor: default
+				font-size: .9em
+				font-weight: bold
+				padding: 0 10px
+				user-select: none
+				width: auto
+
+			&.success
+				color: $color-success
+
+.form-group
+	&.download
+		+community-theme('box-shadow', 'inset 0 3px 0')
+		background-color: $color-background-dark
+		border-radius: $border-radius * 2
+		border-top-left-radius: 0
+		border-top-right-radius: 0
