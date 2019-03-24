@@ -50,28 +50,15 @@
 			| {% else %}
 			span#item-title.item-title {{ node.name }}
 			| {% endif %}
+
 			ul.text-secondary.px-0.py-1.m-0
 				| {% if is_hot %}
 				li
-					i(title="Hot Stuff").pi-fire.text-danger
-				| {% endif %}
-
-				| {% if 'download' in node.properties %}
-				li
-					a.text-success(
-						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}")
-						| {{ _('Download') }}
-				li
-					span {{ node.properties.download.length | filesizeformat }}
-				| {% endif %}
-
-				| {% if 'operating_system' in node.properties %}
-				li
-					strong {{ node.properties.operating_system }}
+					i(title="{ _('Hot Stuff') }}").pi-fire.text-danger
 				| {% endif %}
 
 				| {% if node.properties.status_dev %}
-				li(title="Development Status: {{ node.properties.status_dev }}")
+				li(title="{{ _('Development Status') }}: {{ node.properties.status_dev }}")
 					| {% if node.properties.status_dev == 'Done' %}
 					span.text-success #[i.pi-check] {{ node.properties.status_dev }}
 					| {% elif node.properties.status_dev == 'In Development' %}
@@ -79,6 +66,11 @@
 					| {% else %}
 					| {{ node.properties.status_dev }}
 					| {% endif %}
+				| {% endif %}
+
+				| {% if 'operating_system' in node.properties %}
+				li(title="{{ _('Operating System') }}")
+					strong {{ node.properties.operating_system }}
 				| {% endif %}
 
 				//- TODO: Make tags clickable.
@@ -96,16 +88,30 @@
 						href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
 						| {{ node._created | pretty_date }}
 
-				| {% if 'downloads_total' in node.properties %}
-				li(title="{% if 'downloads_latest' in node.properties %}{{ node.properties.downloads_latest }} {{ _('Downloads since the last update') }}{% endif %}")
-					| {{ node.properties.downloads_total }} {{ _('Downloads') }}
-				| {% endif %}
-
 				| {% if is_own or is_admin %}
 				li
 					a.text-muted(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 						| {{ _('Edit Post') }}
 				| {% endif %}
+
+			//- Secondary list of details under the title.
+			//- Used by GraphicAll.
+			| {% if 'download' in node.properties %}
+			ul.text-secondary.px-0.m-0
+				li
+					a.btn-outline-xs.btn-success(
+						href="{{ url_for('posts.download_file', post_id=node._id, file_id=node.properties.download) }}")
+						| {{ _('Download') }}
+
+				li
+					strong {{ node.properties.download.length | filesizeformat }}
+
+				| {% if 'downloads_total' in node.properties %}
+				li(title="{% if 'downloads_latest' in node.properties %}{{ node.properties.downloads_latest }} {{ _('Downloads since the last update') }}{% endif %}")
+					| {{ node.properties.downloads_total }} {{ _('Downloads') }}
+				| {% endif %}
+			| {% endif %}
+
 
 	| {% if not is_link %}
 	.item-body.px-5.pt-4.pb-3#item-content

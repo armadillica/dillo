@@ -23,6 +23,9 @@
   &.btn-warning
     +button-dillo($color-warning, 5px, true)
 
+  &.btn-primary
+    +button-dillo(var(--community-theme-color, $color-primary), 5px, true)
+
   &.btn-submit
     +button-dillo(var(--community-theme-color, $color-primary), 5px, true)
     +media-xs
@@ -48,6 +51,7 @@
     &.post
       border-radius: 5px !important
 
+  //- Generic. Like the Cards/List toggle.
   &.wgt
     background-color: $color-background-light
     border: none
@@ -55,8 +59,25 @@
 
   &.btn-icon-only
     padding: 4px 8px
+
     i
       margin: 0
+
+.btn-outline-xs
+  background-color: transparent
+  border: thin solid $color-text
+  border-radius: 3px
+  padding-left: 8px
+  padding-right: 8px
+
+  &:hover
+    background-color: transparent
+    border-color: currentColor !important
+    text-decoration: none !important
+
+  &.btn-success
+    color: $color-success
+    border-color: $color-success
 
 .btn-group
   align-items: center
