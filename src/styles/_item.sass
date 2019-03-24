@@ -226,10 +226,16 @@ $item-thumbnail-size: 90px
 
   &-op
     .op-avatar
+      +media-xs
+        height: 32px
+        width: 32px
+        min-width: 32px
+
       background-color: $color-background-dark
       box-shadow: 0 0 0 3px $color-background-lighter
       height: 50px
-      max-width: 50px
+      width: 50px
+      min-width: 50px
       overflow: hidden
       position: relative
       transition: box-shadow 150ms ease-in-out
@@ -606,6 +612,9 @@ body[data-context="post-edit"]
 
 // Shown only when we are in main-project
 .item-commenting-on
+  +media-xs
+    padding: 10px
+
   display: none
   font-size: $font-size-small
 

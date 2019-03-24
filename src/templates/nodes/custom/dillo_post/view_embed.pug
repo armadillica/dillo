@@ -77,7 +77,7 @@
 						| {{ node._created | pretty_date }}
 
 				| {% if is_own or is_admin %}
-				li.float-right.pr-3.list-no-bullet
+				li.float-right.pr-3.list-no-bullet.d-none.d-sm-block
 					a.text-muted(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 						| {{ _('Edit Post') }}
 				| {% endif %}
@@ -184,7 +184,7 @@
 					| {% endif %}
 
 		.item-info-action
-			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
+			a.wgt-toggle-fullscreen.js-toggle-fullscreen.d-none.d-sm-block(title="{{ _('Toggle Fullscreen') }}")
 				i.pi-resize-full
 
 			a.social(
