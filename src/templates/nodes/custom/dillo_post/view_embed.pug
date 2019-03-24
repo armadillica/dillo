@@ -77,7 +77,7 @@
 						| {{ node._created | pretty_date }}
 
 				| {% if is_own or is_admin %}
-				li
+				li.float-right.pr-3.list-no-bullet
 					a.text-muted(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
 						| {{ _('Edit Post') }}
 				| {% endif %}
@@ -184,12 +184,6 @@
 					| {% endif %}
 
 		.item-info-action
-			| {% if is_own or is_admin %}
-			a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
-				i.pi-edit.pr-1
-				| {{ _('Edit Post') }}
-			| {% endif %}
-
 			a.wgt-toggle-fullscreen.js-toggle-fullscreen(title="{{ _('Toggle Fullscreen') }}")
 				i.pi-resize-full
 
@@ -210,6 +204,13 @@
 				href="http://www.reddit.com/submit?url={{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}",
 				target="_blank")
 				i.pi-social-reddit
+
+			| {% if is_own or is_admin %}
+			div
+				a.item-edit(href="{{ url_for('nodes.edit', node_id=node['_id']) }}")
+					i.pi-edit.pr-1
+					| {{ _('Edit Post') }}
+			| {% endif %}
 
 	#item-comments
 		.item-commenting-on.py-3
