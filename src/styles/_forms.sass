@@ -107,8 +107,32 @@
 
 .form-group
 	&.download
-		+community-theme('box-shadow', 'inset 0 3px 0')
 		background-color: $color-background-dark
 		border-radius: $border-radius * 2
 		border-top-left-radius: 0
 		border-top-right-radius: 0
+		padding-top: 15px
+
+		label
+			display: none
+
+		.form-upload-file-meta,
+		.form-upload-file-meta li
+			color: $color-text-hint
+			padding-left: 2px
+
+		.form-upload-file-actions,
+		.preview-thumbnail
+			display: none
+
+.form-notes
+	+community-theme('box-shadow', 'inset 0 3px 0')
+	background-color: $color-background-dark
+	border-bottom: thin solid $color-background
+	padding: 15px
+
+#node-edit-embed
+	.dyn_schema textarea,
+	.form_schema textarea,
+	.permissions textarea
+		min-height: 300px

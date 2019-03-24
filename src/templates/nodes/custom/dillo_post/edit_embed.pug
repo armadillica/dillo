@@ -65,7 +65,17 @@
 						| Add New Attachment
 				| {{ render_field(field, field.name) }}
 				| {% endif %} {# post_type #}
-				// Display any additional props that we want to support (for example RCS).
+
+				//- Communities that can upload custom files, like GraphicAll.
+				| {% elif field.name == 'download' %}
+				.form-notes
+					strong.d-block {{ _('Upload File') }}
+					| {{ _('You can replace this file with new versions as many times as you want.') }}
+					br
+					| {{ _('Replacing the file will keep the total downloads count.') }}
+				| {{ render_field(field, field.name) }}
+
+				//- Display any additional props that we want to support (for example RCS).
 					See config.py to learn more about POST_ADDITIONAL_PROPERTIES.
 				| {% elif field.name in config['POST_ADDITIONAL_PROPERTIES']%}
 				| {{ render_field(field, field.name) }}
