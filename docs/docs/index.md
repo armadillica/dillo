@@ -148,7 +148,7 @@ POST_ADDITIONAL_PROPERTIES = {
         'schema':  {
             'type': 'string',
             'default': 'Open',
-            'allowed': ['Open', 'In Development', 'Done', 'Archived', 'Incomplete', 'Duplicate']
+            'allowed': ['Open', 'In Development', 'Done', 'Archived', 'Incomplete', 'Duplicate', 'Rejected']
         },
         'indexing': {
             'searchable': True,
