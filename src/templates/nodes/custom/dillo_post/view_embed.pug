@@ -1,13 +1,13 @@
-| {% set rating = node.properties.rating_positive - node.properties.rating_negative %}
-| {% set rating_perc = (node.properties.rating_positive * 100) / (node.properties.rating_positive + node.properties.rating_negative) %}
+| {% if current_user.has_cap('admin') %}
+| {% set is_admin = 'is-admin' %}
+| {% endif %}
 
 | {% if current_user.is_authenticated and (node.user._id == current_user.objectid) %}
 | {% set is_own = 'is-own' %}
 | {% endif %}
 
-| {% if current_user.has_cap('admin') %}
-| {% set is_admin = 'is-admin' %}
-| {% endif %}
+| {% set rating = node.properties.rating_positive - node.properties.rating_negative %}
+| {% set rating_perc = (node.properties.rating_positive * 100) / (node.properties.rating_positive + node.properties.rating_negative) %}
 
 | {% if (node.properties.post_type == 'link') %}
 | {% set is_link = 'is-link' %}
