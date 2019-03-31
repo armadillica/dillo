@@ -121,7 +121,7 @@
 			| {% if node.properties.status == 'published' %}
 			a.btn.cancel.ml-auto(
 				href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode)}}")
-				| {{ _('Cancel') }}
+				| {{ _('Back to Post') }}
 			| {% else %}
 			a.btn.cancel.ml-auto(
 				href="{{ url_for('posts.index', community_url=project.url)}}",
