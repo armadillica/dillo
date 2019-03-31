@@ -179,7 +179,7 @@
 							| {% for link in node.user.extension_props_public.dillo.links %}
 							li
 								a(href="{{ link.url }}", target="_blank", title="{{ link.name }}")
-									img.favicon(src="https://www.google.com/s2/favicons?domain={{ link.url }}", alt="Favicon")
+									img.favicon(src="https://www.google.com/s2/favicons?domain={{ link.url }}", alt="{{ link.name }}")
 							| {% endfor %}
 					| {% endif %}
 
