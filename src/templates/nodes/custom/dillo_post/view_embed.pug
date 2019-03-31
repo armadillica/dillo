@@ -234,7 +234,10 @@ script.
 
 	// Parse emojis (very important! :) and date with momentjs (so it gets translations)
 	$('#item-title').html(twemoji.parse('{{ node.name }}'));
-	$('.js-convert-date').text(moment('{{ node._created }}').fromNow());
+	$('.js-convert-date').each(function(){
+		let time = $(this).text();
+		$(this).text(moment(time).fromNow());
+	});
 
 	{% if is_link %}
 		$('#item-link-url').text(shortenUrl('{{ node.properties.content }}'));
