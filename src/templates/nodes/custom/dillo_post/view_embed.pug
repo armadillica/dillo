@@ -69,12 +69,19 @@
 					| {% endfor %}
 				| {% endif %}
 
+				//- If the file has been updated, show that instead of creation date.
+				| {% if node.properties.download_updated %}
+				li
+					span(title="{{ node.properties.download_updated }}")
+						| {{ _('Updated') }} #[span.js-convert-date {{ node.properties.download_updated }}]
+				| {% else %}
 				li
 					a.text-secondary(
 						class="js-convert-date",
 						title="{{ node._created }}",
 						href="{{ url_for('posts.view', community_url=project.url, post_shortcode=node.properties.shortcode, _external=True) }}")
-						| {{ node._created | pretty_date }}
+						| {{ node._created }}
+				| {% endif %}
 
 				| {% if is_own or is_admin %}
 				li.float-right.pr-3.list-no-bullet.d-none.d-sm-inline-block
