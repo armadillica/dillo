@@ -24,7 +24,7 @@ def add_extension_props(user: dict):
     extension_props_public = {
         'karma': 0,
         'links': [],
-        'followed_communities': [],
+        'followed_communities': current_app.config['DEFAULT_FOLLOWED_COMMUNITY_IDS'],
     }
 
     log.debug('Recording user custom extension_props_public for dillo')
