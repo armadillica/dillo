@@ -356,7 +356,7 @@ class TestPostsListing(AbstractDilloTest):
 
         # Ensure that each post belong to the correct project
         for p in data:
-            self.assertEqual(community_url, p['project'])
+            self.assertEqual(community_url, p['project']['url'])
 
 
 class TestPostCommenting(AbstractDilloTest):
