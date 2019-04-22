@@ -152,6 +152,7 @@ script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.ui.wid
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.iframe-transport.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/vendor/jquery.fileupload.min.js') }}")
 script(src="{{ url_for('static_pillar', filename='assets/js/file_upload.min.js') }}")
+script(src="{{ url_for('static_dillo', filename='js/vendor/pikaday-1.8.0.min.js') }}")
 
 script.
 
@@ -564,4 +565,19 @@ script.
 		// Initialize the tags picker
 		$("#tags").select2({placeholder: "{{ _('Assign tags to your post') }}"});
 	});
+
+	let dateSelectors = [$('#date_start')[0], $('#date_end')[0]]
+
+	$.each(dateSelectors, function(index, dateSelector) {
+		if (dateSelector === undefined) {return true;}
+		new Pikaday({
+			field: dateSelector,
+			firstDay: 1,
+			showTime: false,
+			use24hour: true,
+			format: 'YYYY-MM-DD',
+			timeLabel: 'Time: ',
+			autoClose: true});
+		});
+
 | {% endblock footer_scripts %}
