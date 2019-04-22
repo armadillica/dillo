@@ -219,6 +219,60 @@ POST_ADDITIONAL_PROPERTIES = {
         'projects': [C_GRAPHICALL],
         'label': 'Link to the source code/commit',
     },
+    'contract': {
+        'schema':  {
+            'type': 'string',
+            'default': 'Full-time',
+            'allowed': ['Full-time', 'Part-time', 'Freelance', 'Internship']
+        },
+        'indexing': {
+            'searchable': True,
+            'faceting': 'searchable'
+        },
+        'projects': [C_JOBS],
+        'label': 'Contract Type'
+    },
+    'contact_email': {
+        'schema': {
+            'type': 'string',
+        },
+        'projects': [C_JOBS],
+        'label': 'Email address',
+    },
+    'contact_website': {
+        'schema': {
+            'type': 'string',
+        },
+        'projects': [C_JOBS],
+        'label': 'Web address',
+    },
+    'location': {
+        'schema': {
+            'type': 'string',
+        },
+        'projects': [C_JOBS],
+        'label': 'Location',
+    },
+    'date_start': {
+        'schema': {
+            'type': 'datetime',
+        },
+        'form_schema': {
+            'dateonly': True
+        },
+        'projects': [C_JOBS],
+        'label': 'Start Date'
+    },
+    'date_end': {
+        'schema': {
+            'type': 'datetime',
+        },
+        'form_schema': {
+            'dateonly': True
+        },
+        'projects': [C_JOBS],
+        'label': 'End Date'
+    },
 }
 ```
 
