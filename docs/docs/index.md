@@ -243,14 +243,14 @@ POST_ADDITIONAL_PROPERTIES = {
         'schema': {
             'type': 'string',
         },
-        'projects': [C_JOBS],
+        'projects': [C_JOBS, C_EVENTS],
         'label': 'Web address',
     },
     'location': {
         'schema': {
             'type': 'string',
         },
-        'projects': [C_JOBS],
+        'projects': [C_JOBS, C_EVENTS],
         'label': 'Location',
     },
     'date_start': {
@@ -260,7 +260,7 @@ POST_ADDITIONAL_PROPERTIES = {
         'form_schema': {
             'dateonly': True
         },
-        'projects': [C_JOBS],
+        'projects': [C_JOBS, C_EVENTS],
         'label': 'Start Date'
     },
     'date_end': {
@@ -270,7 +270,7 @@ POST_ADDITIONAL_PROPERTIES = {
         'form_schema': {
             'dateonly': True
         },
-        'projects': [C_JOBS],
+        'projects': [C_JOBS, C_EVENTS],
         'label': 'End Date'
     },
 }
