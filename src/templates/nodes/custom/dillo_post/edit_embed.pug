@@ -132,13 +132,16 @@
 			button.btn.preview {{ _('Preview') }}
 
 			| {% if node.properties.status != 'published' %}
+			//- The class .button-save is used by Pillar's file_upload.js for styling/disable during upload.
 			button.item-save-publish.btn.btn-success.px-5(
+			class="button-save",
 			data-action="publish",
 			title="{{ _('Make post publicly available!') }}")
 				i.pi-check
 				| {{ _('Publish') }}
 			| {% else %}
 			button.item-save-publish.btn.publish(
+			class="button-save",
 			data-action="save",
 			title="{{ _('Save Changes') }}") {{ _('Save Changes') }}
 			| {% endif %}
