@@ -91,13 +91,13 @@
 					| {# Follow + Social buttons #}
 					.d-flex.align-items-center
 						| {% if community_is_followed %}
-						a.btn.btn-primary.px-5.mt-3(
+						a.btn.btn-primary-outline.px-5.mt-3(
 							href="#",
 							id="follow-toggle",
 							data-action="unfollow")
 							| Unfollow
 						| {% else %}
-						a.btn.btn-submit.px-5.mt-3(
+						a.btn.btn-primary.px-5.mt-3(
 							href="#",
 							id="follow-toggle",
 							data-action="follow")
@@ -293,7 +293,7 @@ script.
 						$actionButton.data('action', 'follow');
 						$actionButton.text('Follow');
 					}
-
+					$actionButton.toggleClass('btn-primary');
 				})
 				.fail(function (err) {
 					toastr.error(xhrErrorResponseMessage(err), 'Not allowed');
