@@ -59,6 +59,18 @@
 					| {{ post.properties.operating_system }}
 				| {% endif %}
 
+				//- Jobs, Events
+				| {% if post.properties.location %}
+				li(title="{{ post.properties.location }}")
+					| {{ post.properties.location }}
+				| {% endif %}
+
+				//- Jobs
+				| {% if post.properties.contract %}
+				li(title="{{ post.properties.contract }}")
+					| {{ post.properties.contract }}
+				| {% endif %}
+
 				| {% if post.properties.tags %}
 				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
 					{# Display two tags max in the list. #}
