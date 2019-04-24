@@ -35,6 +35,9 @@
 | {% set is_hot = true %}
 | {% endif %}
 
+//- URL of the communities where to not show tags.
+| {% set hide_tags = ['jobs', 'events'] %}
+
 .list-hits-item.d-flex.mx-2.mb-2(
 	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 	id="item-{{ post._id }}",
@@ -54,6 +57,7 @@
 						| {{ post.project.name  }}
 				| {% endif %}
 
+				//- GraphicAll
 				| {% if post.properties.operating_system %}
 				li(title="{{ post.properties.operating_system }}")
 					| {{ post.properties.operating_system }}
@@ -71,12 +75,14 @@
 					| {{ post.properties.contract }}
 				| {% endif %}
 
+				| {% if post.project.url not in hide_tags %}
 				| {% if post.properties.tags %}
 				li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
 					{# Display two tags max in the list. #}
 					{% for tag in post.properties.tags[:2] %}
 						{{ tag }}{{ ", " if not loop.last }}{{ "..." if loop.last and (post.properties.tags | length) > 2 }}
 					{% endfor %}
+				| {% endif %}
 				| {% endif %}
 
 			a.item-title(
