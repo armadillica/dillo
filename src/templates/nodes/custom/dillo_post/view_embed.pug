@@ -129,6 +129,27 @@
 				| {% endif %}
 			| {% endif %}
 
+			| {% if node.properties.location %}
+			ul.text-secondary.px-0.m-0.pt-2
+				//- Jobs, Events
+				li(title="{{ node.properties.location }}")
+					| {{ node.properties.location }}
+
+				//- Jobs
+				| {% if node.properties.contract %}
+				li(title="{{ node.properties.contract }}")
+					| {{ node.properties.contract }}
+				| {% endif %}
+
+				| {% if node.properties.date_start %}
+				li(title="{{ node.properties.date_start }}")
+					| {{ node.properties.date_start | pretty_date }}
+				| {% endif %}
+				| {% if node.properties.date_end %}
+				li(title="{{ node.properties.date_end }}")
+					| {{ node.properties.date_end | pretty_date }}
+				| {% endif %}
+			| {% endif %}
 
 	| {% if is_link %}
 	.item-link-container(
@@ -147,6 +168,21 @@
 			| {% else %}
 			p {{ _('Write something nice.') }}
 			| {% endif %}
+
+	| {% if node.properties.contact_website or node.properties.contact_email %}
+	.px-5.py-2.d-flex
+		| {% if node.properties.contact_website %}
+		a.text-white.d-block(href="{{ node.properties.contact_website }}", target="_blank")
+			i.pi-globe.pr-2
+			| Website
+		| {% endif %}
+		| {% if node.properties.contact_email %}
+		a.pl-3.text-white(href="mailto:{{ node.properties.contact_email }}")
+			i.pi-email.pr-2
+			| E-mail
+		| {% endif %}
+	| {% endif %}
+
 	| {% endif %}
 
 
