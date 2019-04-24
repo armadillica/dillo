@@ -73,9 +73,9 @@ html(lang='en')
 		meta(name="twitter:title" content="{{ project.name }}")
 		meta(name="twitter:description" content="{{ project.summary }}")
 		meta(property="og:description", content="{{ project.summary }}")
-		| {% if project.picture_header %}
-		meta(name="twitter:image" content="{{ project.picture_header.thumbnail('h') }}")
-		meta(property="og:image", content="{{ project.picture_header.thumbnail('h') }}")
+		| {% if project.picture_16_9 %}
+		meta(name="twitter:image" content="{{ project.picture_16_9.thumbnail('h') }}")
+		meta(property="og:image", content="{{ project.picture_16_9.thumbnail('h') }}")
 		| {% endif %}
 		| {% endblock og %}
 
