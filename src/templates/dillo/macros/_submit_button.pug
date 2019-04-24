@@ -1,28 +1,51 @@
 | {% macro submit_button(submit_menu, project) %}
+
+mixin submit_button_generic(submit_text, submit_url, submit_icon)
+	a.btn.btn-submit.rounded(
+		href=submit_url,
+		title=submit_text)
+
+		if submit_icon
+			i(class=submit_icon)
+
+		if submit_text
+			=submit_text
+
+mixin submit_button_text()
+	+submit_button_generic(
+		"{{ _('Write a Post') }}",
+		"{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+		"pi-document-text")
+
 | {% if submit_menu %}
 li
 	.submit(class="{% if submit_menu['allowed'] %}btn-group{% endif %}")
 		| {% if project.url == 'graphicall' %}
-		a.btn.btn-submit.rounded(
-		href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
-		title="{{ _('Upload Build') }}")
-			i.pi-blender
-			span.pr-2 {{ _('Upload Build') }}
+		+submit_button_generic(
+			"{{ _('Upload Build') }}",
+			"{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+			"pi-blender")
 
+		| {% elif project.url == 'jobs' %}
+		+submit_button_generic(
+			"{{ _('Submit Job') }}",
+			"{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+			"pi-vcard")
+		| {% elif project.url == 'events' %}
+		+submit_button_generic(
+			"{{ _('Submit Event') }}",
+			"{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+			"pi-globe")
 		| {% else %}
 
 		| {% if submit_menu['default'] == 'text' %}
-		a.btn.btn-submit(
-		href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
-		title="{{ _('Write a Post') }}")
-			i.pi-document-text
-			span {{ _('Write a Post') }}
+		+submit_button_text
 
 		| {% elif submit_menu['default'] == 'link' %}
 		button.btn.btn-submit.wgt-toggle-submit(
-		data-action="publish",
-		title="{{ _('Submit a Link [Shift+A]')}}",
-		class="{% if not submit_menu['allowed'] %}solo{% endif %}")
+			data-action="publish",
+			title="{{ _('Submit Link') }}",
+			class="{% if not submit_menu['allowed'] %}solo{% endif %}")
 			i.pi-link
 			span {{ _('Submit Link') }}
 		| {% endif %}
@@ -34,11 +57,7 @@ li
 
 			ul.dropdown-menu.dropdown-menu-right
 				li
-					a.btn.btn-submit.post(
-					href="{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
-					title="{{ _('Write a Post') }}")
-						i.pi-document-text
-						|  {{ _('Write a Post') }}
+					+submit_button_text
 		| {% endif %}
 
 		| {% endif %}
