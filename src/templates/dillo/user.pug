@@ -31,23 +31,32 @@
 		| {% set custom_status = post.properties.status_dev %}
 		| {% endif %}
 
-		.list-hits-item.d-flex.mx-1.my-2(
-			class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %}",
+		| {% if rating > 6 %}
+		| {% set is_hot = true %}
+		| {% endif %}
+
+		.list-hits-item.d-flex.mx-2.mb-2(
+			class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 			id="item-{{ post._id }}",
 			data-id="{{ post._id }}",
 			data-url="{{ post_url }}")
 			| {% if post.picture %}
-			a.item-thumbnail.m-2(href="{{ post_url }}")
+			a.item-thumbnail(href="{{ post_url }}")
 				img(src="{{ post.picture.thumbnail('l') }}")
 			| {% endif %}
 
 			.item-content.d-flex.pb-1(data-node-id="{{ post._id }}")
 				.item-details.pl-3
-					ul.item-details-header
+					ul.item-details-header.px-0.py-1.m-0
 						//- TODO: Missing project.
 						//- li
 						//- 	a.js-follow-link(href="{{ url_for('posts.index', community_url=post.project.url) }}")
 						//- 		| {{ post.project.name  }}
+
+						| {% if post.properties.operating_system %}
+						li(title="{{ post.properties.operating_system }}")
+							| {{ post.properties.operating_system }}
+						| {% endif %}
 
 						| {% if post.properties.tags %}
 						li(title="{% for tag in post.properties.tags %}{{ tag }}{{ ', ' if not loop.last }}{% endfor %}").
@@ -61,11 +70,11 @@
 						href="{{ post_url }}")
 						| {{ post.name }}
 
-					ul.pb-2
+					ul.px-0.py-1.m-0
 						| {% if rating > 0 %}
 						li
 							| {{ rating }}
-							| {% if rating > 5 %}
+							| {% if is_hot %}
 							i(title="Hot Stuff").pi-fire.text-danger
 							| {% else %}
 							i.pi-heart-filled.text-secondary
