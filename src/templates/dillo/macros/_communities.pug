@@ -44,8 +44,9 @@ ul.d-communities-sidebar.d-flex.flex-column.h-100.mb-0.list-unstyled
 	| {% set is_main_project_active = (project._id == main_project._id) %}
 	li(class="c-main{% if is_main_project_active %} is-active{% endif%}")
 		a.py-1.pr-2.d-block(
+			class="show-tooltip",
 			href="/c/",
-			data-community-name="{{ _('All Communities') }}")
+			data-tooltip="{{ _('All Communities') }}")
 			.d-header-logo
 				img(src="{{ main_project.picture_square.thumbnail('l') }}", alt="{{ main_project.name }} logo")
 	| {% for community in communities %}
