@@ -141,12 +141,16 @@
 				| {% endif %}
 
 				| {% if node.properties.date_start %}
-				li(title="{{ node.properties.date_start }}")
-					| {{ node.properties.date_start | pretty_date }}
+				li(
+					title="{{ node.properties.date_start }}",
+					class="js-convert-date")
+					| {{ node.properties.date_start }}
 				| {% endif %}
-				| {% if node.properties.date_end %}
-				li(title="{{ node.properties.date_end }}")
-					| {{ node.properties.date_end | pretty_date }}
+				| {% if node.properties.date_end and (node.properties.date_start != node.properties.date_end) %}
+				li(
+					title="{{ node.properties.date_end }}",
+					class="js-convert-date")
+					| {{ node.properties.date_end }}
 				| {% endif %}
 			| {% endif %}
 
