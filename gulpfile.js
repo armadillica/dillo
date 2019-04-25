@@ -13,7 +13,7 @@ let plumber      = require(pillarMod + 'gulp-plumber');
 let rename       = require(pillarMod + 'gulp-rename');
 let sass         = require(pillarMod + 'gulp-sass');
 let sourcemaps   = require(pillarMod + 'gulp-sourcemaps');
-var uglify       = require(pillarMod + 'gulp-uglify-es').default;
+let uglify       = require(pillarMod + 'gulp-uglify-es').default;
 
 var enabled = {
 		failCheck: !argv.production,
