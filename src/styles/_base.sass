@@ -310,7 +310,7 @@ h4 .emoji
     display: block
     visibility: visible
 
-  &-list
+  &-list // .d-communities-list
     border-top: thin solid $color-background-dark
     font-size: .9em
     padding: 5px 5px 15px
@@ -348,7 +348,7 @@ h4 .emoji
             background-color: initial
 
 
-  &-item
+  &-item // .d-communities-item
     +media-xs
       border-top: thin solid $color-background-dark
     align-items: center
@@ -406,11 +406,10 @@ h4 .emoji
         font-size: $font-size-small
 
 .d-communities-sidebar
-  @extend .list-unstyled
-
   > li
     padding: 0 3px
     opacity: .5
+    order: 50 // gets manually ordered below.
 
     &:hover
       opacity: 1
@@ -420,6 +419,34 @@ h4 .emoji
       position: relative
       +community-theme('box-shadow', 'inset 5px 0 0')
 
+    // Main community goes first.
+    &.c-main
+      order: 0
+
+    // The big bois.
+    &.c-today
+      order: 1
+    &.c-rightclickselect
+      order: 2
+    &.c-graphicall
+      order: 3
+
+    // Important ones.
+    &.c-jobs,
+    &.c-events
+      order: 4
+
+    // Lastly, local communities.
+    &.c-hoy,
+    &.c-hoje,
+    &.c-oggi,
+    &.c-actu
+      order: 99
+
+    // Bottom, separator and chat.
+    &.c-separator,
+    &.c-chat
+      order: 9999
 .d-header
   +media-xs
     background-image: none
@@ -474,10 +501,10 @@ h4 .emoji
     height: $header-logo-size
     position: relative
     width: $header-logo-size
-    transition: transform 100ms ease-in-out
+    transition: transform 125ms ease-in-out
 
     &:hover
-      transform: scale(1.05)
+      transform: scale(1.1)
 
     img
       +position-center-translate
