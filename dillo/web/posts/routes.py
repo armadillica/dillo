@@ -324,7 +324,7 @@ def spoon():
     o = urlparse(r.url)
     url_no_query = o.scheme + "://" + o.netloc + o.path
 
-    soup = BeautifulSoup(r.content, 'html5lib')
+    soup = BeautifulSoup(r.content, 'html.parser')
 
     # Get the page title
     if soup.title:
