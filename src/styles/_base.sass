@@ -447,6 +447,43 @@ h4 .emoji
     &.c-separator,
     &.c-chat
       order: 9999
+
+    .show-tooltip
+      position: relative
+
+      &:after
+        border: 5px solid transparent
+        border-right-color: $color-background-dark
+        content: ''
+        left: 45px
+        position: fixed
+        margin-top: -20px
+        transform: translateX(-10px)
+        transition: opacity 100ms ease-in-out, transform 100ms ease-in-out
+        z-index: 2
+
+      &:before
+        background: $color-background-dark
+        color: $color-text
+        content: attr(data-tooltip)
+        font-size: $font-size-small
+        left: 55px
+        position: fixed
+        margin-top: 5px
+        padding: 5px 10px
+        border-radius: $border-radius
+        opacity: 0
+        transform: translateX(-10px)
+        transition: opacity 100ms ease-in-out, transform 100ms ease-in-out
+        white-space: nowrap
+        z-index: 9999
+
+      &:hover
+        &:before, &:after
+          opacity: 1
+          transform: translateX(0)
+
+
 .d-header
   +media-xs
     background-image: none
