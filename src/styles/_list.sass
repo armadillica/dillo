@@ -61,7 +61,7 @@
 
     ul *,
     .item-thumbnail
-      display: none
+      display: none !important
 
     .item-title
       font-size: unset
@@ -74,16 +74,21 @@
   .list-hits-item
     flex-direction: column-reverse
 
+    &.active
+      .item-thumbnail
+        background-color: $color-background-dark
+
     .item-thumbnail
       background-color: $color-background-light
       border-top-left-radius: 0
       border-top-right-radius: 0
+      display: flex
+      align-items: center
       margin: 0
       max-width: unset
       max-height: 500px
 
       img
-        height: unset
         width: 100%
         position: unset
         left: unset
