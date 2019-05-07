@@ -35,6 +35,17 @@ Configure your nodes index with:
 python manage.py dillo index_nodes_update_settings
 ```
 
+## Gulp
+
+Templates, styles, and scripts need to be compiled in both `pillar` and `dillo`. We use `gulp` for that, via npm.
+
+```bash
+npm install
+```
+```bash
+gulp
+```
+
 ## How to run it (FIXME)
 
 ```bash
