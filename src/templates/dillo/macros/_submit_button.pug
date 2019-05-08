@@ -25,7 +25,11 @@ li
 			"{{ _('Upload Build') }}",
 			"{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
 			"pi-blender")
-
+		| {% elif project.url == 'rightclickselect' %}
+		+submit_button_generic(
+			"{{ _('Submit Proposal') }}",
+			"{{ url_for('posts.create', community_url=project.url, post_type='text') }}",
+			"pi-document-text")
 		| {% elif project.url == 'jobs' %}
 		+submit_button_generic(
 			"{{ _('Submit Job') }}",
