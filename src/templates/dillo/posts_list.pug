@@ -108,9 +108,19 @@
 						| comment
 						| {% endif %}
 
+				//- If the file has been updated, show that instead of creation date.
+				| {% if post.properties.download_updated %}
 				li.item-date.js-item-open
-					a(href="{{ post_url }}")
+					a(
+						title="{{ _('Updated') }} {{ post.properties.download_updated }}",
+						href="{{ post_url }}")
+						| #[span {{ post.properties.download_updated | pretty_date }}]
+				| {% else %}
+				li.item-date.js-item-open
+					a(href="{{ post_url }}",
+						title="{{ _('Created') }} {{ post._created }}")
 						| {{ post._created | pretty_date_time }}
+				| {% endif %}
 
 				| {% if is_link %}
 				li.d-none.d-sm-inline-block
