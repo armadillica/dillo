@@ -72,7 +72,7 @@
 				//- If the file has been updated, show that instead of creation date.
 				| {% if node.properties.download_updated %}
 				li
-					span(title="{{ node.properties.download_updated }}")
+					span(title="{{ _('Updated') }} {{ node.properties.download_updated }}, {{ _('Created') }} {{ node._created }}")
 						| {{ _('Updated') }} #[span {{ node.properties.download_updated | pretty_date }}]
 				| {% else %}
 				li
