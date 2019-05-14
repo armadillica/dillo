@@ -68,14 +68,35 @@ html(lang='en')
 		meta(property="og:site_name", content="{{ project.name }}")
 		meta(name="twitter:card" content="summary_large_image")
 		meta(name="twitter:site" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
-		| {% block og %}
 		meta(name="twitter:creator" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
-		meta(name="twitter:title" content="{{ project.name }}")
-		meta(name="twitter:description" content="{{ project.summary }}")
-		meta(property="og:description", content="{{ project.summary }}")
-		| {% if project.picture_16_9 %}
-		meta(name="twitter:image" content="{{ project.picture_16_9.thumbnail('h') }}")
-		meta(property="og:image", content="{{ project.picture_16_9.thumbnail('h') }}")
+
+		| {% if 'post' in col_right %}
+		| {% set og_title = col_right['post']['name'] + '-' + project.name %}
+		| {% set og_description = col_right['post'].properties.content | truncate(180) %}
+
+		| {# Image Hierarchy: Post Picture > Community 16/9 > Community Logo #}
+		| {% if col_right['post'].picture %}
+		| {% set og_image = col_right['post'].picture.thumbnail('h') %}
+		| {% elif project.picture_16_9  %}
+		| {% set og_image = project.picture_16_9.thumbnail('h') %}
+		| {% elif project.picture_square %}
+		| {% set og_image = project.picture_square.thumbnail('h') %}
+		| {% endif %}
+
+		| {% else %}
+		| {% set og_title = project.name %}
+		| {% set og_description = project.summary %}
+		| {% endif %}
+
+		| {% block og %}
+		meta(name="twitter:title" content="{{ og_title }}")
+		meta(name="twitter:description" content="{{ og_description }}")
+		meta(property="og:title" content="{{ og_title }}")
+		meta(property="og:description", content="{{ og_description }}")
+
+		| {% if og_image %}
+		meta(name="twitter:image" content="{{ og_image }}")
+		meta(property="og:image", content="{{ og_image }}")
 		| {% endif %}
 		| {% endblock og %}
 
