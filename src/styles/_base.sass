@@ -451,6 +451,7 @@ h4 .emoji
     .show-tooltip
       position: relative
 
+      // Triangle on the left of the tooltip.
       &:after
         border: 5px solid transparent
         border-right-color: $color-background-dark
@@ -462,6 +463,7 @@ h4 .emoji
         transition: opacity 100ms ease-in-out, transform 100ms ease-in-out
         z-index: 2
 
+      // Actual tooltip.
       &:before
         background: $color-background-dark
         color: $color-text
@@ -473,6 +475,7 @@ h4 .emoji
         padding: 5px 10px
         border-radius: $border-radius
         opacity: 0
+        pointer-events: none
         transform: translateX(-10px)
         transition: opacity 100ms ease-in-out, transform 100ms ease-in-out
         white-space: nowrap
