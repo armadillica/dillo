@@ -71,7 +71,7 @@ html(lang='en')
 		meta(name="twitter:creator" content="@{{ config.SETTINGS_TWITTER_USERNAME }}")
 
 		| {% if 'post' in col_right %}
-		| {% set og_title = col_right['post']['name'] + '-' + project.name %}
+		| {% set og_title = col_right['post']['name'] + ' — ' + project.name %}
 		| {% set og_description = col_right['post'].properties.content | truncate(180) %}
 
 		| {# Image Hierarchy: Post Picture > Community 16/9 > Community Logo #}
