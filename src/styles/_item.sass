@@ -174,20 +174,7 @@ $item-thumbnail-size: 90px
     > li
       display: inline-block
       margin: 0
-      padding: 0 5px
-
-      &:before
-        content: '·'
-        font-weight: bolder
-        position: relative
-        left: -6px
-        top: 1px
-        color: $color-text-hint
-
-      &:first-child
-        padding-left: 0
-        &:before
-          content: ''
+      padding: 0 10px 0 0
 
       a
         text-decoration: none
@@ -215,7 +202,9 @@ $item-thumbnail-size: 90px
         text-transform: capitalize
 
   &-header
-    color: $color-text-dark-secondary
+    color: rgba($color-text, .5)
+    font-size: $font-size-extra-small
+    text-transform: uppercase
 
 
 .item-info

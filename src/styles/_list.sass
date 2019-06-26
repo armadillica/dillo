@@ -18,13 +18,12 @@
       @include community-theme('color')
 
   .item-details
+    font-size: $font-size-smaller
+
     +media-xs
       ul
         li
           font-size: .8em
-
-    li
-      font-size: $font-size-smaller
 
     .item-link
       +media-lg
@@ -38,9 +37,6 @@
       font-size: 1em
     color: $color-text
     font-size: $font-size * 1.2
-
-    &:hover
-      @include community-theme('color')
 
   .item-comments
     margin-left: auto
@@ -133,7 +129,7 @@
   .select2-container
     margin: 0 0 10px 10px
     width: auto !important
-    min-width: 80px
+    min-width: 100px
 
   .wgt
     margin: 0 0 10px 10px

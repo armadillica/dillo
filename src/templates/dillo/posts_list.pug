@@ -38,7 +38,7 @@
 //- URL of the communities where to not show tags.
 | {% set hide_tags = ['jobs', 'events'] %}
 
-.list-hits-item.d-flex.mx-2.mb-2(
+.list-hits-item.d-flex.m-2(
 	class="js-item-open {% if custom_status %}{{ custom_status }}{% endif %} {% if is_hot %}is-hot{% endif %}",
 	id="item-{{ post._id }}",
 	data-id="{{ post._id }}",
@@ -50,7 +50,7 @@
 
 	.item-content.d-flex.pb-1(data-node-id="{{ post._id }}")
 		.item-details.pl-3
-			ul.item-details-header.px-0.py-1.m-0
+			ul.item-details-header.px-0.py-2.m-0
 				| {% if not is_community_listing %}
 				li
 					a.js-follow-link(href="{{ url_for('posts.index', community_url=post.project.url) }}")
@@ -89,7 +89,7 @@
 				href="{{ post_url }}")
 				| {{ post.name }}
 
-			ul.px-0.py-1.m-0
+			ul.px-0.py-2.m-0
 				| {% if rating > 0 %}
 				li
 					| {{ rating }}
@@ -111,13 +111,13 @@
 				//- If the file has been updated, show that instead of creation date.
 				| {% if post.properties.download_updated %}
 				li.item-date.js-item-open
-					a(
+					a.text-muted(
 						title="{{ _('Updated') }} {{ post.properties.download_updated }}",
 						href="{{ post_url }}")
 						| #[span {{ post.properties.download_updated | pretty_date }}]
 				| {% else %}
 				li.item-date.js-item-open
-					a(href="{{ post_url }}",
+					a.text-muted(href="{{ post_url }}",
 						title="{{ _('Created') }} {{ post._created }}")
 						| {{ post._created | pretty_date_time }}
 				| {% endif %}
