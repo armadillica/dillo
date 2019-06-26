@@ -229,14 +229,22 @@ script.
 			fetchPosts({'sorting': $(this).val()});
 		});
 
+		//- Pagination: load more posts
 		$('body').on('click', '.js-load-next-page', function(e){
 			e.preventDefault();
 
-			//- Remove button and its container.
+			//- Remove button and its container
 			$(this).parent().remove();
 
 			let queryString = buildQueryString();
+			//- Specify the next page
 			queryString['page'] = $(this).data('next-page');
+
+			//- Look for a value in the search field and add it to the query
+			let title = $('#q').val();
+			if (title) {
+				queryString['title'] = title;
+			}
 
 			fetchPosts(queryString, true);
 		});
