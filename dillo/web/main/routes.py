@@ -19,3 +19,7 @@ def index():
 @blueprint.route('/privacy')
 def privacy():
     return render_template('privacy.html')
+
+@blueprint.route('/about')
+def about():
+    return render_template('about.html')

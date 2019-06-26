@@ -445,9 +445,8 @@ h4 .emoji
       order: 99
 
     // Bottom, separator and chat.
-    &.c-separator,
     &.c-chat
-      order: 9999
+      order: 500
 
     .show-tooltip
       position: relative
@@ -538,6 +537,7 @@ h4 .emoji
     align-items: center
     border-radius: 3px
     display: flex
+    font-size: $font-size-large
     justify-content: center
     height: $header-logo-size
     position: relative
@@ -554,11 +554,11 @@ h4 .emoji
 
     &.no-logo
       i
-        +position-center-translate
         background-color: $color-background
         border-radius: 50%
         color: $color-text
-        padding: 8px
+        height: $header-logo-size
+        width: $header-logo-size
 
   // .d-header-title
   &-title
