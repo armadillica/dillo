@@ -1,11 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, url_for, jsonify, render_template
-from flask_login import login_required, current_user
-from bson import ObjectId
-
-
-from pillar import current_app
+from flask import Blueprint, redirect, url_for, render_template
 
 blueprint = Blueprint('dillo', __name__)
 log = logging.getLogger(__name__)
