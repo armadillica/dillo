@@ -140,3 +140,30 @@ def update_post_comments_count():
         update_post_comments_count(post['_id'])
         post_count += 1
     print(f"Done! Updated {post_count} posts.")
+
+
+@manager_dillo.command
+def remove_deleted_files():
+    """Iterate over every _deleted file, remove file from the system and delete doc."""
+    from pillar.api.file_storage_backends import default_storage_backend
+    from pillar.api.file_storage_backends.local import LocalBlob
+
+    file_collection = current_app.db()['files']
+    files = file_collection.find({
+        '_deleted': True
+    })
+
+    for f in files:
+        bucket = default_storage_backend(f['project'])
+        blob = bucket.get_blob(f['name'])
+        if not isinstance(blob, LocalBlob):
+            log.info('Skipping non local blob')
+            continue
+        file_abspath = blob.abspath()
+        log.info('Removing %s from filesystem' % file_abspath)
+        try:
+            file_abspath.unlink()
+        except OSError:
+            log.error('File %s not found' % file_abspath)
+        log.info('Deleting file document for file %s' % f['_id'])
+        file_collection.delete_one({'_id': f['_id']})
