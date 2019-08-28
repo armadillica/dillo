@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-DEPLOY_BRANCH=${DEPLOY_BRANCH:-production}
+DEPLOY_BRANCH=${DEPLOY_BRANCH:-dillo}
 
 # macOS does not support readlink -f, so we use greadlink instead
 if [[ `uname` == 'Darwin' ]]; then
