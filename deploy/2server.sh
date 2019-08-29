@@ -49,7 +49,7 @@ echo "==================================================================="
 echo "Bringing remote Docker up to date…"
 $SSH mkdir -p $REMOTE_DOCKER_COMPOSE_DIR
 $SCP \
-    $ROOT/docker/{docker-compose.yml,renew-letsencrypt.sh,mongo-backup.{cron,sh}} \
+    $ROOT/docker/{docker-compose.yml,renew-letsencrypt.sh,backup{.cron,-mongo.sh,-file-to-remote.sh}} \
     $DEPLOYHOST:$REMOTE_DOCKER_COMPOSE_DIR
 $SSH -T <<EOT
 set -e

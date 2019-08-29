@@ -2,4 +2,5 @@
 # (so remove the .cron from the name)
 
 MAILTO=yourname@youraddress.org
-30 5 * * * root /root/docker/mongo-backup.sh
+0 * * * * root /root/docker/backup-mongo.sh
+30 * * * * root /root/docker/backup-files-to-remote.sh
