@@ -167,3 +167,66 @@ def remove_deleted_files():
             log.error('File %s not found' % file_abspath)
         log.info('Deleting file document for file %s' % f['_id'])
         file_collection.delete_one({'_id': f['_id']})
+
+
+@manager_dillo.command
+def flag_unused_files_as_deleted():
+    """Locate files larger than 50MB and see if they are in use.
+
+    If they are not in use, flag them as deleted.
+    """
+
+    def convert_size(size_bytes):
+        import math
+        if size_bytes == 0:
+            return "0B"
+        size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+        i = int(math.floor(math.log(size_bytes, 1024)))
+        p = math.pow(1024, i)
+        s = round(size_bytes / p, 2)
+        return "%s %s" % (s, size_name[i])
+
+    # target_size = 50000000
+    target_size = 15000
+
+    nodes_collection = current_app.db()['nodes']
+    files_collection = current_app.db()['files']
+    files = files_collection.find({
+        '_deleted': False,
+        'length_aggregate_in_bytes': {'$gt': target_size},
+    })
+
+    # Store file ids in a set
+    files_set = {f['_id']: {
+        'filename': f['filename'],
+        'length_aggregate_in_bytes': f['length_aggregate_in_bytes'],
+        'project': f['project'],
+    } for f in files}
+
+    # Fetch all nodes with a download property
+    nodes = nodes_collection.find({
+        '_deleted': False,
+        'properties.download': {'$exists': True},
+    })
+
+    projected_freed_space_in_bytes = 0
+
+    print(f"Processing {len(files_set)} files")
+    for n in nodes:
+        # Remove used file from the list
+        try:
+            del files_set[n['properties']['download']]
+        except KeyError:
+            print(f"Node {n['_id']} features a deleted file - {n['name']}")
+    print(f"{len(files_set)} files will be marked as deleted")
+
+    # The files remaining in files_set are not referenced by any node, so
+    # they will be marked as _deleted
+    for i, f in files_set.items():
+        projected_freed_space_in_bytes += f['length_aggregate_in_bytes']
+        print(f['filename'])
+        print(f"   - file_id: {str(i)}")
+        print(f"   - project: {str(f['project'])}")
+        # Flag the files remaining in files_set as _deleted
+        files_collection.update_one({'_id': i}, {'$set': {'_deleted': True}})
+    print(f"{convert_size(projected_freed_space_in_bytes)} will be freed")
