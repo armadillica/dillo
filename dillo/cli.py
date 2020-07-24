@@ -1,6 +1,8 @@
 """Commandline interface for Dillo."""
 
 import logging
+import datetime
+import bson
 from bson import ObjectId
 
 from flask import current_app
@@ -230,3 +232,57 @@ def flag_unused_files_as_deleted():
         # Flag the files remaining in files_set as _deleted
         files_collection.update_one({'_id': i}, {'$set': {'_deleted': True}})
     print(f"{convert_size(projected_freed_space_in_bytes)} will be freed")
+
+
+@manager_dillo.command
+def delete_user_and_content(username):
+    users_collection = current_app.db()['users']
+    nodes_collection = current_app.db()['nodes']
+    tokens_collection = current_app.db()['tokens']
+    activities_collection = current_app.db()['activities']
+
+    user = users_collection.find_one({
+        'username': username,
+    })
+    print(f"Deleting {user['_id']}")
+
+    # Delete user
+    users_collection.update_one({'username': username}, {'$set': {'_deleted': True}})
+
+    past_date = datetime.datetime(2012, 1, 1, tzinfo=bson.tz_util.utc)
+    trunc_now = past_date.replace(microsecond=past_date.microsecond - (past_date.microsecond % 1000))
+
+    # Delete posts and replies
+    posts = nodes_collection.find({
+        'node_type': 'dillo_post',
+        'user': user['_id'],
+    })
+
+    for post in posts:
+        nodes_collection.update({'_id': post['_id']}, {'$set': {
+            '_created': trunc_now, 'properties.hot': 0, '_deleted': True}},)
+
+        print(f"Deleting activity for post {post['_id']}")
+        activities_collection.update_many({'object': post['_id']}, {'$set': {'_deleted': True}})
+        activities_collection.update_many({'context_object': post['_id']}, {'$set': {'_deleted': True}})
+
+        # Delete replies to post
+        print(f"Deleting replies to post {post['_id']}")
+        nodes_collection.update_many({
+            'parent': post['_id']}, {
+            '$set': {
+                '_created': trunc_now,
+                '_deleted': True}
+        }, )
+
+    # Delete comments by the user
+    nodes_collection.update_many({
+        'user': user['_id'],
+        'node_type': 'comment'}, {
+        '$set': {
+            '_created': trunc_now,
+            '_deleted': True}
+    }, )
+
+    # Delete tokens
+    tokens_collection.delete_many({'user': user['_id']})

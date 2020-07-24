@@ -214,6 +214,7 @@ def index(community_url):
     activities = Activity.all({
         'where': {
             'project': project['_id'],
+            '_deleted': {'$ne': True}
         },
         'sort': [('_created', -1)],
         'max_results': 15,
@@ -224,6 +225,8 @@ def index(community_url):
         act.actor_user = subquery.get_user_info(act.actor_user)
         try:
             act.link = url_for_node(node_id=act.object)
+        except ResourceNotFound:
+            act.link = ''
         except ValueError:
             # If the node was delete, we get ValueError exception.
             # By setting act.link to '', it does not get displayed in the list.
