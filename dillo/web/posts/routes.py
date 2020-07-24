@@ -86,6 +86,10 @@ def download_file(post_id: str, file_id: str):
 def create(community_url: str, post_type: str):
     api = system_util.pillar_api()
 
+    user = User.find(current_user.objectid, api=api)
+    if user.extension_props_public.dillo.karma < 0:
+        return abort(404)
+
     project = Project.find_first({'where': {'url': community_url}}, api=api)
     if project is None:
         return abort(404)
