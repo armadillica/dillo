@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "animato"
+version = "0.1.0"
+description = "Social network for the world of animation"
+authors = ["Francesco Siddi <francesco.siddi@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+django = "^2.2"
+psycopg2 = "^2.8"
+pypugjs = "^5.8"
+jsmin = "^2.2"
+django-pipeline = "^1.6"
+libsasscompiler = "^0.1.5"
+django-allauth = "^0.41"
+django-taggit = "^1.1"
+django-activity-stream = "^0.8"
+django-hashid-field = "^3.1"
+Pillow = "^7.0"
+sorl-thumbnail = "^12.5"
+python-magic = "^0.4.15"
+django-anymail = { version = "^7.0",  extras = [ "mailgun" ] }
+django-crispy-forms = "^1.7"
+django-background-tasks = "^1.2"
+django-loginas = "^0.3.6"
+django-tinymce = "^2.8"
+micawber = "^0.5.0"
+django-project-version = "^0.10.2"
+django-debug-toolbar = "^2.0"
+sentry-sdk = "^0.14.1"
+mistune = "^0.8.4"
+bleach = "^3.1"
+user-agents = "^2.1"
+
+[tool.poetry.dev-dependencies]
+black = {version = "*", allow-prereleases = true}
+
+[tool.black]
+line-length = 100
+target_version = ['py37']
+skip_string_normalization = true
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

@@ -1,0 +1,30 @@
+[
+{
+    "model": "socialaccount.socialapp",
+    "pk": 1,
+    "fields": {
+        "provider": "facebook",
+        "name": "Animato",
+        "client_id": "SET ME",
+        "secret": "SET ME",
+        "key": "",
+        "sites": [
+            1
+        ]
+    }
+},
+{
+    "model": "socialaccount.socialapp",
+    "pk": 2,
+    "fields": {
+        "provider": "google",
+        "name": "Animato",
+        "client_id": "SET ME",
+        "secret": "SET ME",
+        "key": "",
+        "sites": [
+            1
+        ]
+    }
+}
+]
