@@ -1,6 +1,0 @@
-# Change to suit your needs, then place in /etc/cron.d/mongo-backup
-# (so remove the .cron from the name)
-
-MAILTO=yourname@youraddress.org
-0 * * * * root /root/docker/backup-mongo.sh
-30 * * * * root /root/docker/backup-files-to-remote.sh

@@ -1,9 +1,0 @@
-bash docker-entrypoint.sh
-env | sort
-apache2ctl start
-apache2ctl graceful
-/manage.sh operations worker -- -C
-celery status --broker amqp://guest:guest@rabbit:5672//
-celery events --broker amqp://guest:guest@rabbit:5672//
-tail -n 40 -f /var/log/apache2/access.log
-tail -n 40 -f /var/log/apache2/error.log
