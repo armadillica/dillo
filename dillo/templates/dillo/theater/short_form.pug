@@ -1,0 +1,20 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+| {% block content_card %}
+.card
+	.card-header
+		h1 {% trans 'Submit Short' %}
+		//- TODO: Nice intro text for short submission.
+
+	form(method="post", enctype="multipart/form-data")
+		.card-body
+			| {% csrf_token %}
+			| {{ form | crispy }}
+		.card-cta
+			button.btn.btn-primary.btn-block.with-icon(
+				type="submit")
+				i.i-check
+				| {% trans 'Submit Short' %}
+| {% endblock content_card %}

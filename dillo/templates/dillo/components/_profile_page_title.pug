@@ -1,0 +1,7 @@
+| {% load i18n %}
+
+| {% if user.profile.name %}
+| {{ user.profile.name }} (@{{ user.username }})
+| {% else %}{{ user.username }}
+| {% endif %}
+| {% trans "on" %}

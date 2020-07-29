@@ -1,0 +1,11 @@
+| {% extends 'dillo/emails/base.pug' %}
+
+| {% block subject %}{{ subject }}{% endblock subject %}
+
+| {% block content %}
+p(style="text-align: center") Hey {{ own_name }}, #[a(href="{{ action_author_absolute_url }}") {{ action_author_name }}] just liked your {{ content_type }} #[a(href="{{ content_absolute_url }}") {{ content_name }}]!
+| {% endblock content%}
+
+| {% block call_to_action %}
+| {% include 'dillo/emails/_button_cta.pug' with label='See Your' url=content_absolute_url specify_content_type=content_type %}
+| {% endblock call_to_action %}

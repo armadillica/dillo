@@ -1,0 +1,81 @@
+!!! 5
+html(lang="en")
+	head
+		| {% load i18n %}
+		| {% load static %}
+		| {% include 'dillo/components/_head_tags.pug'%}
+
+		| {% load pipeline %}
+
+		| {% stylesheet 'main' %}
+		| {% block head_extra %}
+		| {% endblock head_extra %}
+
+	body(class="{% block body_classes %}{% endblock %}")
+		| {% block body %}
+
+		| {% if messages %}
+		| {% for message in messages %}
+		.container.alert.alert-dismissible.show.my-2(
+			role='alert',
+			class="{% if message.tags %}alert-{{ message.tags }}{% endif %}")
+			| {{ message }}
+			button.close(type='button', data-dismiss='alert', aria-label='Close')
+				span(aria-hidden='true')
+					i.i-cancel
+		| {% endfor %}
+		| {% endif %}
+
+		| {% block navbar %}
+		| {% include 'dillo/components/_navigation_main.pug'%}
+		| {% endblock navbar %}
+
+		| {% block pre-main %}{% endblock pre-main %}
+
+		main(role='main')
+			| {% block content %}{% endblock content %}
+
+			| {% block site_footer %}
+			| {% include 'dillo/components/_footer.pug'%}
+			| {% endblock site_footer %}
+		| {% endblock body %}
+
+		| {% block body_extra %}
+		| {% endblock body_extra %}
+
+		| {% javascript 'vendor' %}
+		| {% javascript 'tutti' %}
+
+		| {% if request.user.is_authenticated %}
+		| {% javascript 'tutti_user' %}
+		| {% endif %}
+
+		| {% block javascript_extra %}
+		| {% endblock javascript_extra %}
+
+		| {% include 'dillo/components/_notifications.pug' %}
+		| {% include 'dillo/components/_modal.pug' %}
+		| {% include 'dillo/components/_modal_post_detail.pug' %}
+
+		#hop(title='{% trans "Bounce back up!" %}')
+			i.i-chevron-up
+
+		script.
+			var hop = document.getElementById("hop"); hop.onclick = function(e){ window.scrollTo(0, 0);}
+			window.addEventListener("scroll", function() {
+				if (window.pageYOffset > 250){ hop.className = 'active'; } else {	hop.className = ''; }});
+
+		script.
+			twemoji.parse(document.body);
+			initSearch();
+
+		| {% if GOOGLE_ANALYTICS_TRACKING_ID %}
+		script(async='', src='https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_TRACKING_ID }}')
+		script.
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', '{{ GOOGLE_ANALYTICS_TRACKING_ID }}');
+		| {% endif %}

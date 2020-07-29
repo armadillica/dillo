@@ -1,0 +1,19 @@
+| {% load thumbnail %}
+
+a.profile-avatar-container(
+	class="{{ is_link_disabled }}",
+	data-placement="{% if tooltip %}{{ tooltip }}{% endif %}",
+	data-toggle="{% if tooltip %}tooltip{% endif %}",
+	href="{% url 'profile_details' user.username %}",
+	title="{{ user.username }}")
+	.profile-avatar(
+		class="{% if size %}avatar-size-{{ size }}{% endif %}")
+		| {% thumbnail user.profile.avatar "128x128" crop="center" as im %}
+		img(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+			alt="{{ user.username }}")
+		| {% empty %}
+		i.i-user
+		| {% endthumbnail %}

@@ -1,0 +1,109 @@
+| {% extends "dillo/base_columns.pug" %}
+| {% load i18n %}
+| {% load dillo_filters %}
+| {% load thumbnail %}
+
+| {% block page_title %}{{ event.name }} &mdash; {% trans 'Event on' %}{% endblock page_title %}
+
+//- TODO: Fill OpenGraph data
+| {% block opengraph %}
+meta(property="og:type", content="article")
+
+meta(name="twitter:title", content="{{ event.name }} {% trans 'on' %} {{ site_name }}")
+meta(property="og:title", content="{{ event.name }} {% trans 'on' %} {{ site_name }}")
+
+meta(name="twitter:description", content="{{ event.description | urlizetrunc:20 }}")
+meta(property="og:description", content="{{ event.description | urlizetrunc:20 }}")
+
+//- TODO: Use first media image, if any.
+| {% thumbnail event.image "1280x720" crop="center" as im %}
+meta(name="twitter:image", content="{{ im.url }}")
+meta(property="og:image", content="{{ im.url }}")
+meta(name="twitter:image:alt", content="{{ event.name }}")
+//- TODO: Use fallback image ({% empty %})
+| {% endthumbnail %}
+| {% endblock opengraph %}
+
+| {% block stream %}
+.event-container.card
+	.event-header(class="{% if event.image %}with-cover{% endif %}")
+
+		| {% thumbnail event.image "1280" crop="center" as im %}
+		.event-cover
+			img(
+				src="{{ im.url }}",
+				width="{{ im.width }}",
+				height="{{ im.height }}",
+				alt="{{ event.name }}")
+		| {% endthumbnail %}
+
+	.card-body
+		.lead {{ event.description | markdown | safe | urlize }}
+| {% endblock stream %}
+
+
+| {% block sidebar %}
+
+.sidebar-block
+	h3.text-center.py-3 {{ event.name }}
+
+	ul.sidebar-list
+		li(title="{% trans 'Date' %}")
+			i.i-events
+			| {{ event.starts_at|date }}
+			| {% if event.starts_at|date != event.ends_at|date %}
+			#[span.px-2 · ] {{ event.ends_at|date }}
+			| {% endif %}
+
+		li
+			| {% if event.is_online %}
+			span
+				i.i-tv
+				| Online Event
+			| {% else %}
+			a(title="{% trans 'Location' %}",
+				href="https://www.google.com/maps/place/{{ event.location | slugify }}", target="_blank")
+				i.i-map-pin
+				| {{ event.location }}
+			| {% endif %}
+
+		| {% if event.website %}
+		li
+			a(title="{% trans 'Website' %}", href="{{ event.website }}", target="_blank")
+				i.i-link
+				| {{ event.website | website_hostname }}
+		| {% endif %}
+
+		| {% if event.attendees.all %}
+		li
+			i.i-users
+			| {{ event.attendees.all.count }} going
+
+	.d-flex.pb-4
+		//- TODO(Francesco): Open modal with list of attendees.
+		| {% for attendee in event.attendees.all %}
+		| {% if forloop.counter < 6 %}
+		| {% include 'dillo/components/_profile_avatar.pug' with user=attendee %}
+		| {% endif %}
+		| {% endfor %}
+	| {% endif %}
+
+	| {% include 'dillo/components/_button_attend.pug' with event=event %}
+
+.sidebar-block
+	| {% include 'dillo/components/_button_share.pug' with shared_object_label='event' %}
+
+| {% if request.user.is_superuser %}
+.sidebar-block
+	| {% url 'admin:dillo_event_change' event.id as edit_url %}
+	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Event" %}
+| {% endif %}
+
+//- TODO(Pablo): Show more/related events.
+
+.sidebar-block
+	| {% include 'dillo/components/_footer.pug' %}
+
+| {% endblock sidebar %}
+
+| {% block site_footer %}{% endblock %}

@@ -1,0 +1,7 @@
+| {% extends 'dillo/emails/base.pug' %}
+
+| {% block subject %}The Animato Newsletter{% endblock subject %}
+
+| {% block content %}
+| {{ body_html | safe }}
+| {% endblock content%}

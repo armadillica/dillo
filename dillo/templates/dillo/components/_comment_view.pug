@@ -1,0 +1,97 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+.comment-item(
+	id="comment-{{ comment.id }}",
+	class="{% if comment.parent_comment.id %}is-reply{% endif %}")
+
+	.comment-avatar
+		| {% include 'dillo/components/_profile_avatar.pug' with user=comment.user size='small' %}
+
+	.comment-body
+		.comment-header
+			a.comment-author(
+				href="{% url 'profile_details' comment.user.username %}",
+				title="{{ comment.user.username }}") {{ comment.user.username }}
+			a.comment-date(
+				href="{% url 'post_detail' comment.post.hash_id %}#comment-{{ comment.id }}",
+				title="{{ comment.created_at | date:'DATETIME_FORMAT' }}")
+				| {{ comment.created_at | timesince | compact_timesince }}
+
+		.comment-content {{ comment.content | linkify_tags_and_mentions | urlizetrunc:20 | linebreaksbr }}
+
+		.comment-actions.btn-toolbar-row.btn-sm
+			nav.navbar.navbar-expand.px-0.mr-auto
+				| {% if request.user.is_authenticated %}
+				.btn.btn-link.btn-like(
+					id="likes-count-{{ comment.content_type_id }}-{{ comment.id }}",
+					data-toggle="tooltip",
+					data-like_toggle_url="{% url 'like_toggle' content_type_id=comment.content_type_id object_id=comment.id %}",
+					class="js-like-toggle {% if comment|is_liked:request.user %}is-liked{% endif %}",
+					title="{% trans 'Like comment' %}")
+					i.i-heart
+					| {% if comment.likes.count > 0 %}
+					span.js-likes-count {{ comment.likes.count }}
+					| {% endif %}
+
+				//- Reply button. If comment.parent_comment then it's a reply.
+				.btn.btn-link(
+					class="js-reply-comment",
+					data-comment_id="{{ comment.id }}",
+					data-parent_comment_id="{{ comment.parent_comment.id }}",
+					data-toggle="tooltip",
+					title="{% trans 'Reply to this comment' %}")
+					| {% trans "Reply" %}
+				| {% else %}
+				//- Dummy buttons, redirect to login.
+				a.btn.btn-link.btn-like(
+					data-toggle="tooltip",
+					href="{% url 'account_login' %}",
+					title="{% trans 'Like comment' %}")
+					i.i-heart
+					| {% if comment.likes.count > 0 %}
+					span {{ comment.likes.count }}
+					| {% endif %}
+
+				a.btn.btn-link(
+					data-toggle="tooltip",
+					href="{% url 'account_login' %}",
+					title="{% trans 'Reply to this comment' %}")
+					| {% trans "Reply" %}
+				| {% endif %}
+
+			| {% if request.user.is_authenticated %}
+			nav.navbar.navbar-expand.px-0.ml-auto
+				ul.navbar-nav
+					li.nav-item.dropdown
+						a#dropdown-comment.btn.btn-link(
+							href='#',
+							data-toggle='dropdown',
+							aria-haspopup='true',
+							aria-expanded='false')
+							i.i-more-vertical
+
+						.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-comment')
+							//- If user is comment author, allow deletion.
+							| {% if user == comment.user %}
+							a.dropdown-item(
+								href="#",
+								class="js-delete-comment",
+								data-comment_id="comment-{{ comment.id }}",
+								data-comment_delete_url="{% url 'comment_delete' comment_id=comment.id %}",
+								title='{% trans "Delete Comment" %}')
+								i.i-trash
+								| {% trans "Delete Comment" %}
+
+							| {% else%}
+							a.dropdown-item(
+								href="#",
+								class="js-show-modal",
+								data-modal_category='form',
+								data-modal_title='{% trans "Report" %}',
+								data-content_url="{% url 'report_content' content_type_id=comment.content_type_id object_id=comment.id %}",
+								data-toggle='modal',
+								data-target='#modal')
+								i.i-flag
+								| {% trans "Report" %}...
+							| {% endif %}
+			| {% endif %}

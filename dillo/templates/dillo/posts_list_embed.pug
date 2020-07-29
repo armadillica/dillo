@@ -1,0 +1,41 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+
+| {% if posts %}
+| {% for post in posts %}
+li.post-container(
+	class="js-show-modal",
+	data-content_url="{% url 'post_detail' post.hash_id %}",
+	data-target="#modal-post-detail",
+	data-toggle="modal",
+	data-post_id="{{ post.hash_id }}",
+	id="js-post-{{ post.hash_id }}")
+
+	| {% include 'dillo/components/_post_header.pug' with post=post show_tags=true %}
+
+	.post-media
+		| {% if post.postmedia_set.all.count > 1 %}
+		span.post-label-icon
+			i.i-layers
+		| {% endif %}
+		| {% include 'dillo/components/_post_media_carousel.pug' with post=post is_post_details=true %}
+
+	| {% include 'dillo/components/_post_actions.pug' with post=post view='list' %}
+	| {% include 'dillo/components/_post_description.pug' with post=post truncate=True truncate_limit=25 %}
+	| {% include 'dillo/components/_post_meta.pug' with post=post data_toggle_modal='modal' %}
+
+| {% endfor %}
+
+| {% if page_obj.has_next %}
+li
+	| {% include 'dillo/components/_button_load_more.pug' with js_class='js-load-more' page_obj=page_obj %}
+| {% endif %}
+
+| {% else %}
+| {% include 'dillo/components/_post_list_empty.pug' %}
+| {% endif %}
+
+script.
+	$(function () {
+		initTooltips();
+	});

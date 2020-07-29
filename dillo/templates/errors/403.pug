@@ -1,0 +1,15 @@
+| {% extends 'errors/base.pug' %}
+| {% block page_title %}Forbidden{% endblock %}
+| {% block errorbody %}
+h1 Nope.
+
+p For some reason you are not allowed to do this.
+| {% if user.is_authenticated %}
+p Try #[a(href="{% url 'homepage' %}") exploring your homepage] instead.
+| {% else %}
+p Maybe you'd be allowed after logging in?
+p
+	a.btn.btn-primary(href="{% url 'account_login' %}")
+		| Sign in
+| {% endif %}
+| {% endblock %}

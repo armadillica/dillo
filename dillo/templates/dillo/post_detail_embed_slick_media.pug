@@ -1,0 +1,18 @@
+| {% extends "dillo/post_detail_embed_base.pug" %}
+| {% load i18n %}
+
+| {% block site_footer %}{% endblock site_footer %}
+
+| {% block media %}
+.post-container
+	.post-media
+		| {% include 'dillo/components/_post_media_carousel.pug' with post=post is_post_details=true post_detail_media_prefix='post-detail-media-' %}
+| {% endblock media %}
+
+| {% block javascript_media %}
+script.
+	$(function () {
+		let $postMediaContainer = $('.post-media-container.js-with-post-detail-media-prefix');
+		loadSinglePostList($postMediaContainer);
+	});
+| {% endblock javascript_media %}

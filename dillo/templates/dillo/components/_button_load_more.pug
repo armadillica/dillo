@@ -1,0 +1,7 @@
+| {% load i18n %}
+
+button.btn.btn-link.btn-sidebar.px-4(
+	class="{{ js_class }}",
+	title="{% trans 'Load More' %}",
+	data-next_url="{{ url_next }}?page={{ page_obj.next_page_number }}")
+	strong {% trans 'Load More' %}

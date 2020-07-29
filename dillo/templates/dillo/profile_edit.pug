@@ -1,0 +1,36 @@
+| {% extends "dillo/account_edit_base.pug" %}
+| {% load i18n %}
+| {% load pipeline %}
+| {% load crispy_forms_tags %}
+
+| {% block page_title %}{% trans "Edit Profile" %} – {% endblock page_title %}
+
+| {% load account %}
+
+| {% block content_account_edit_form %}
+form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="multipart/form-data")
+	.card
+		.card-body
+			| {% csrf_token %}
+			.form-group
+				| {{ form | crispy }}
+				| {% include 'dillo/components/_formset_link_list.pug' %}
+
+				.d-flex.border-top.py-3.mt-3
+					input.btn.btn-primary.px-5.ml-auto(
+						type="submit", value="Save Changes")
+
+| {% endblock content_account_edit_form %}
+
+| {% block javascript_extra %}
+| {% javascript 'vendor_jquery_formset' %}
+script.
+	$('.js-formset-row').formset({
+		addText: 'Add Social Account',
+		addCssClass: 'btn-link-add',
+		deleteText: '',
+		deleteCssClass: 'js-link-delete btn-link-delete',
+		formCssClass: 'profile-edit-links-row',
+		prefix: 'links'
+	});
+| {% endblock javascript_extra %}

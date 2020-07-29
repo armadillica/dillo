@@ -1,0 +1,10 @@
+| {% extends 'dillo/base_single_card.pug' %}
+
+| {% block card_width %}6{% endblock %}
+
+| {% block content_card %}
+.card
+	.card-body
+		| {% block errorbody %}
+		| {% endblock %}
+| {% endblock content_card %}

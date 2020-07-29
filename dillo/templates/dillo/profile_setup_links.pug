@@ -1,0 +1,18 @@
+| {% extends "dillo/profile_setup.pug" %}
+| {% load i18n pipeline %}
+| {% block profile_setup_form_extra %}
+| {% include 'dillo/components/_formset_link_list.pug' %}
+| {% endblock profile_setup_form_extra %}
+
+| {% block javascript_extra %}
+| {% javascript 'vendor_jquery_formset' %}
+script.
+	$('.js-formset-row').formset({
+		addText: 'Add Social Account',
+		addCssClass: 'btn-link-add',
+		deleteText: '',
+		deleteCssClass: 'js-link-delete btn-link-delete',
+		formCssClass: 'profile-edit-links-row',
+		prefix: 'links'
+	});
+| {% endblock javascript_extra %}

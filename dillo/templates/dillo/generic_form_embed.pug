@@ -1,0 +1,31 @@
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+form(
+	action="{{ action_url }}",
+	method="post"
+	id="generic_form")
+	| {% csrf_token %}
+	.form-group.mb-0
+		| {{ form | crispy }}
+		.d-flex.border-top.pt-3.mt-3
+			input.btn.btn-primary.px-5.ml-auto(
+				type="submit",
+				value="{{ submit_label }}",
+				class="{{ submit_class }}")
+
+script.
+	$("#generic_form").on("submit", function (event) {
+		event.preventDefault();
+
+		let $report_content_form = $(this).parent('.modal-body');
+		let url = $(this).attr('action');
+
+		$.post(url, $(this).serialize(), function (data) {
+			$report_content_form.html("Submitting...");
+		}).done(function (data) {
+			$report_content_form.html(data);
+		}).fail(function (jqxhr) {
+			console.log(xhrErrorResponseMessage(jqxhr));
+		});
+	});

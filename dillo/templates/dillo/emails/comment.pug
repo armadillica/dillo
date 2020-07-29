@@ -1,0 +1,13 @@
+| {% extends 'dillo/emails/base.pug' %}
+
+| {% block subject %}{{ subject }}{% endblock subject %}
+
+| {% block content %}
+p(style="text-align: center") #[a(href="{{ action_author_absolute_url }}") {{ action_author_name }}] just commented on {{ content_type }} #[a(href="{{ content_absolute_url }}") {{ content_name }}]:
+blockquote(style="background-color: #{css_body_bg_color}; display: block; padding: 10px 30px; margin: 20px 40px; border-left: 5px solid #{css_color_secondary};")
+	| {{ content_text }}
+| {% endblock content%}
+
+| {% block call_to_action %}
+| {% include 'dillo/emails/_button_cta.pug' with label='See Comment' url=content_absolute_url %}
+| {% endblock call_to_action %}

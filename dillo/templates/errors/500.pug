@@ -1,0 +1,13 @@
+| {% extends 'errors/base.pug' %}
+| {% block page_title %}Internal Server Error{% endblock %}
+| {% block errorbody %}
+h1 Internal Server Error
+
+p Oops, we made a mistake somewhere.
+p Try #[a(href="{% url 'homepage' %}") the frontpage] instead.
+
+hr
+| {% if request.sentry.id %}
+p If you need assistance, you may reference this error as <strong>{{ request.sentry.id }}</strong>.
+| {% endif %}
+| {% endblock %}

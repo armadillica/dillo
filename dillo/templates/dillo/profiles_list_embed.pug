@@ -1,0 +1,11 @@
+| {% load i18n %}
+
+| {% for user in object_list %}
+li
+	| {% include 'dillo/components/_profile_list_item.pug' with user_obj=user %}
+| {% endfor %}
+
+| {% if page_obj.has_next %}
+li
+	| {% include 'dillo/components/_button_load_more.pug' with js_class='js-load-more' page_obj=page_obj %}
+| {% endif %}

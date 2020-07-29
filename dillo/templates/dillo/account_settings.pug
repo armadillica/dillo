@@ -1,0 +1,42 @@
+| {% extends "dillo/account_edit_base.pug" %}
+| {% load i18n %}
+
+| {% block head_title %}{% trans "Account Settings" %}{% endblock %}
+
+| {% block content_account_edit_form %}
+.card-header
+	h1 {% trans "Settings" %}
+
+.card-body
+	h2 {% trans "Username" %}
+	p
+		strong {% trans "Changing your username will break all existing links to your profile." %}
+
+	a(
+		class="js-show-modal btn btn-success px-5 mr-auto",
+		data-modal_category='form',
+		data-modal_title='{% trans "Update username" %}',
+		data-content_url="{% url 'account_update_username' %}",
+		data-toggle='modal',
+		data-target='#modal',
+		href="#")
+		| Update Username...
+
+	hr
+
+	h2 {% trans "Account" %}
+	p {% trans "Your data is yours. You can delete your account anytime." %}
+	p
+		strong {% trans "Keep in mind deletion is permanent, irreversible, gone, finito." %}
+
+	a(
+		class="js-show-modal btn btn-danger px-5 mr-auto",
+		data-modal_category='form',
+		data-modal_title='{% trans "Permanently Delete Account" %}',
+		data-content_url="{% url 'account_delete'%}",
+		data-toggle='modal',
+		data-target='#modal',
+		href="#")
+		| Delete Account...
+
+| {% endblock %}

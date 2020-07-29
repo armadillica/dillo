@@ -1,0 +1,7 @@
+Hey {{ own_name }},
+
+{{ action_author_name }} just started following you!
+
+Visit your profile to see who else is following you: {{ own_profile_absolute_url }}
+
+with love ♥ animato

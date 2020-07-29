@@ -1,0 +1,56 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+
+| {% if is_post_details %}
+.d-flex.py-3
+	.btn.btn-primary.w-100.mr-2.btn-sm(
+		class="js-like-toggle {% if post|is_liked:request.user %}is-liked{% endif %}",
+		data-like_toggle_url="{% url 'like_toggle' content_type_id=post.content_type_id object_id=post.id %}",
+		title="{% if post|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}")
+		i.i-heart.h5.pr-2
+		strong Like{% if post|is_liked:request.user %}d{% endif %}
+| {% endif %}
+
+.post-meta
+	ul
+
+		li.post-meta-link(title="{{ post.published_at | date:'DATETIME_FORMAT' }}")
+			| {{ post.published_at | timesince | shorten_timesince }} {% trans 'ago' %}
+
+		| {% if post.comments_count %}
+		li.post-meta-link
+			| {% blocktrans count post.comments_count as amount %}
+			| one comment
+			| {% plural %}
+			| {{ amount }} comments
+			| {% endblocktrans %}
+		| {% endif %}
+
+		| {% if post.likes.count %}
+		li.post-meta-link.post-meta-link-persistent(
+			class="js-show-modal",
+			id="likes-count-{{ post.content_type_id }}-{{ post.id }}",
+			data-modal_category='list',
+			data-modal_title='{% trans "Likes" %}',
+			data-content_url="{% url 'embed_likes_list' content_type_id=post.content_type_id object_id=post.id %}",
+			title='{% trans "Likes" %}',
+			data-toggle='modal',
+			data-target='#modal')
+			| {% blocktrans count post.likes.count as amount %}
+			| #[span.js-likes-count {{ amount }}] #[span.js-likes-word like]
+			| {% plural %}
+			| #[span.js-likes-count {{ amount }}] #[span.js-likes-word likes]
+			| {% endblocktrans %}
+		| {% endif %}
+
+		| {% if is_post_details == false %}
+		li.post-meta-link
+			| LEAVE A COMMENT
+		| {% endif %}
+
+	.d-flex.ml-auto
+		| {% if post.status != 'published' %}
+		.d-flex.align-items-center
+			span.text-muted.d-none.ml-auto.px-3 Playing
+			span.text-muted.px-2 {{ post.status }}
+		| {% endif %}

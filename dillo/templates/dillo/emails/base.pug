@@ -1,0 +1,136 @@
+doctype html
+- var css_body_bg_color = "#1d2024";
+- var css_body_color = "#d1d8de";
+- var css_font_family = 'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+- var css_body_font_size_base = "font-size: 14px";
+- var css_body_font_size_small = "font-size: 11px";
+- var css_box_sizing = "box-sizing: border-box";
+
+- var css_color_primary = "#46dcc3";
+- var css_color_secondary = "#5f666d";
+
+- var css_card_bg_color = "#282d32";
+- var css_card_width = "580";
+
+- var label_brand = "animato";
+- var label_brand_url = "https://anima.to";
+
+- var logo_url = "https://chat.anima.to/assets/logo.png";
+- var logo_height = "28px";
+- var logo_width = "150px";
+
+- var settings_url = "https://anima.to/accounts/notifications";
+
+//- NOTE: Manually change the footer links.
+
+html(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+	head
+		meta(name='viewport', content='width=device-width')
+		meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+		title {% block subject %}{% endblock subject %}
+
+		style(type='text/css').
+			img {
+				max-width: 100%;
+			}
+			body {
+				-webkit-font-smoothing: antialiased;
+				-webkit-text-size-adjust: none;
+				width: 100% !important;
+				height: 100%;
+				line-height: 1.6em;
+			}
+			body {
+				background-color: #{css_body_color} !important;
+				color: #{css_body_color};
+			}
+
+			u + #mailbody a {
+				color: #{css_color_primary} !important;
+				text-decoration: underline !important;
+				font-size: inherit;
+				font-family: inherit;
+				font-weight: inherit;
+				line-height: inherit;
+			}
+			a { color: #{css_color_primary} !important;}
+
+			u + #mailbody #mailcontent { color: #{css_body_color} !important; }
+			u + #mailbody #mailfooter a { color: #{css_body_bg_color} !important; }
+			u + #mailbody .mailcta { color: #{css_body_bg_color} !important; }
+			u + #mailbody a.mailcta {color: #{css_body_bg_color} !important;}
+
+			.logo { max-width: #{logo_width}; width: #{logo_width}; height: #{logo_height}; max-height: #{logo_height}; }
+			@media only screen and (max-width: 640px) {
+				body {
+					padding: 0 !important;
+				}
+				.container {
+					padding: 0 !important;
+					width: 100% !important;
+				}
+				.content {
+					padding: 0 !important;
+				}
+				.content-wrap {
+					padding: 10px !important;
+				}
+				.invoice {
+					width: 100% !important;
+				}
+			}
+	body(id="mailbody", itemscope='', itemtype='http://schema.org/EmailMessage', style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #{css_body_color} !important; margin: 0;", bgcolor=css_body_color)
+		table.body-wrap(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; width: 100%; background-color: #{css_body_color} !important; margin: 0;", bgcolor=css_body_color)
+			tbody
+				tr(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+					td(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; vertical-align: top; margin: 0;", valign='top')
+					td.container(width=css_card_width, style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; vertical-align: top; display: block !important; max-width: #{css_card_width}px !important; clear: both !important; margin: 0 auto; padding: 0;", valign='top')
+						.content(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; max-width: #{css_card_width}px; display: block; margin: 0 auto; padding: 20px;")
+							table.main(width='100%', cellpadding='0', cellspacing='0', style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; border-radius: 0.75rem; background-color: #{css_card_bg_color}; margin: 0; border: none;", bgcolor=css_card_bg_color)
+								tbody
+									tr(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+										td(style="#{css_font_family}; #{css_box_sizing}; vertical-align: middle; text-align: center; margin: 0;", align='center', valign='top')
+											a(style="display: block; text-align: center; padding-top: 40px; padding-bottom: 20px; width: 100%", href=label_brand_url)
+												img.logo(src="https://chat.anima.to/assets/logo.png", style="display: block; margin: auto;", alt=label_brand width=logo_width height=logo_height)
+									tr(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+										td.content-wrap(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; vertical-align: top; margin: 0; padding-left: 40px; padding-right: 40px; padding-top: 0; padding-bottom: 20px;", valign='top')
+											table(width='100%', cellpadding='0', cellspacing='0', style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+												tbody(style="color: #{css_body_color} !important")
+													div(id="mailcontent", style="color: #{css_body_color} !important")
+														| {% block content %}{% endblock content %}
+													| {% block call_to_action %}{% endblock %}
+
+													| {% block signature %}
+													p(style="color: #{css_body_color} !important; opacity: 0.5; text-align: center")
+														| with love &hearts; #{label_brand}
+													| {% endblock signature %}
+
+							.footer(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; width: 100%; clear: both; color: #{css_color_secondary}; margin: 0; padding: 10px;")
+								table(id="mailfooter", width='100%', style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+									tbody
+										tr(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; margin: 0;")
+											td.aligncenter.content-block(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_small}; vertical-align: top; color: #{css_color_secondary}; text-align: center; margin: 0; padding: 0 0 20px;", align='center', valign='top')
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/explore/') explore
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/theater/reels/') reels
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/events') events
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/jobs/') jobs
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='https://chat.anima.to', target='_blank') chat
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/bookmarks/') bookmarks
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/about/') about
+												span(style="margin: 0 8px") &middot;
+												a(style="color: #{css_color_secondary} !important", href='#{label_brand_url}/blog/') blog
+
+												br
+
+												| manage your #[a(href='#{settings_url}', style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_small}; color: #{css_color_secondary} !important; text-decoration: underline; margin: 0;") notifications]
+												| {% if unsubscribe_url %}
+												| - #[a(href="{{ unsubscribe_url }}", style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_small}; color: #{css_color_secondary} !important; text-decoration: underline; margin: 0;") unsubscribe]
+												| {% endif %}
+
+					td(style="#{css_font_family}; #{css_box_sizing}; #{css_body_font_size_base}; vertical-align: top; margin: 0;", valign='top')

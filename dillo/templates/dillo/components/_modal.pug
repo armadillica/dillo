@@ -1,0 +1,10 @@
+#modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modal-title', aria-hidden='true')
+	.modal-dialog.modal-dialog-centered(role='document')
+		.modal-content
+			.modal-header
+				h5#modal-title.modal-title.font-weight-bold Modal title
+				button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true')
+						i.i-cancel
+			.modal-body
+				| ...

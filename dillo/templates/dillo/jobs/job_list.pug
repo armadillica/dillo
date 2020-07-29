@@ -1,0 +1,129 @@
+| {% extends "dillo/base_columns.pug" %}
+| {% load i18n %}
+| {% load thumbnail %}
+| {% load dillo_filters %}
+
+| {% block page_title %}
+| {% trans 'Jobs' %} {% trans 'on' %}
+| {% endblock page_title %}
+
+| {% block stream %}
+
+.pb-3.mb-3.border-bottom
+	h2 {% trans 'Jobs Board' %}
+	small.d-block.text-muted Data sourced from Animation/VFX/Game Industry Job Postings by #[a.text-muted(href="https://anima.to/chrismayne/") @chrismayne]
+
+.jobs-list
+	| {% if jobs %}
+	| {% for job in jobs %}
+	.job-item
+		//- Disable thumbnails for now, since the Jobs spreadsheet doesn't have.
+			| {% thumbnail job.image "80x80" crop="top" as im %}
+			a.card-header-thumbnail(
+				href="{{ job.url_apply }}",
+				title='{% trans "Apply Now" %}')
+				img.rounded-circle(
+					src="{{ im.url }}",
+					width="{{ im.width }}",
+					height="{{ im.height }}",
+					alt="{{ job.title }}")
+			| {% endthumbnail %}
+
+		.row
+			.col-12
+				//- Job date.
+				small.pb-2.text-muted.float-left(
+					title="{{ job.created_at }}")
+					span {{ job.created_at | timesince | shorten_timesince }} {% trans 'ago' %}
+
+				//- Job location.
+				small.text-secondary.float-right(title="{% trans 'Location' %}")
+					| {% if job.city %}{{ job.city }}, {% endif %}{{ job.country }}
+		.row
+			.col-12.col-sm-6
+				//- Job title.
+				h5.job-title
+					//- Latino check if it's an email, look for '@' symbol.
+					a(href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
+						title="{% trans 'Apply as' %} {{ job.title }} {% trans 'at' %} {{ job.company }}")
+						| {{ job.title }}
+
+				//- Job software.
+				| {% if job.software %}
+				.py-2(title="Software")
+					i.i-package.pr-1
+					| {{ job.software }}
+				| {% endif %}
+
+
+			.col-12.col-sm-6
+				//- Job company.
+				h5.job-company
+					| {{ job.company }}
+
+		//- Notes.
+		| {% if job.notes %}
+		.row
+			.col
+				.py-3 lsdjkglksjdf {{ job.notes | urlizetrunc:30 }}
+		| {% endif %}
+
+		.row.pt-3
+			.col-12.col-sm-6
+				.d-flex
+					| {% if job.level %}
+					span.badge.badge-secondary.with-icon
+						i.i-jobs
+						| {{ job.level }}
+					| {% endif %}
+
+					span.badge.badge-secondary.with-icon
+						i.i-home
+						| {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
+
+			.col-12.col-sm-6
+				//- Latino check if it's an email, look for '@' symbol.
+				a.job-apply-button(
+					href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
+					title='{% trans "Apply Now" %}')
+					i.i-check
+					strong {% trans "Apply Now" %}
+	| {% endfor %}
+
+	| {% else %}
+	p.py-4.text-muted
+		| {% url 'job-create' as url_job_create %}
+		| {% blocktrans with url_job_create=url_job_create %}
+		| No job posts yet. Got any to <a href="{{ url_job_create }}">submit</a>?
+		| {% endblocktrans %}
+	| {% endif %}
+| {% endblock stream %}
+
+| {% block sidebar %}
+//- TODO: Nice text about job posting.
+.sidebar-block
+	a.btn.btn-primary.btn-sidebar(
+		href="{% url 'job-create' %}",
+		title='{% trans "Post a Job" %}')
+		strong {% trans "Post a Job" %}
+
+//- TODO: Filters for jobs.
+
+| {% if upcoming_events %}
+.sidebar-block
+	| {% include 'dillo/components/_feed_events.pug' with events=upcoming_events events_title='Events' %}
+| {% endif %}
+
+| {% if trending_tags %}
+.sidebar-block.feed-trending
+	| {% include 'dillo/components/_feed_trending.pug' %}
+| {% endif %}
+
+.sidebar-block
+	| {% include 'dillo/components/_footer.pug' %}
+
+| {% endblock sidebar %}
+
+| {% block site_footer %}{% endblock %}
+
+| {% block base_classes %}mt-2{% endblock base_classes %}

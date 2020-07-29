@@ -1,0 +1,160 @@
+| {% extends "dillo/base_columns.pug" %}
+| {% load i18n %}
+| {% load dillo_filters %}
+
+| {% block page_title %}{% if tag_name %}&#35;{{ tag_name }} {% trans 'on' %} {% endif%}{% endblock page_title %}
+
+| {% block stream_classes %}posts-list-container posts-list{% endblock stream_classes %}
+| {% block sidebar_classes %}hide-xs{% endblock sidebar_classes %}
+
+| {% block stream %}
+//- If we are exploring a tag, show it,
+//- otherwise show the list of trending tags.
+| {% if tag_name %}
+.posts-list-header.pb-5
+	.posts-list-tag-container
+		h1
+			#[small #[i.i-hash]]{{ tag_name }}
+		| {% if tag_followers_count %}
+		.posts-list-tag-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
+		| {% endif %}
+		// TODO: Posts count.
+	.posts-list-tag-action
+		| {% include 'dillo/components/_button_follow.pug' with target_object=tag %}
+| {% else %}
+
+| {% if processing_posts.posts %}
+.posts-processing
+	| #[span #[i.spinner-grow]] Your posts are being processed, hold tight...
+| {% endif %}
+
+| {% if '/explore/' in request.path_info %}
+.feed-trending
+	| {% include 'dillo/components/_feed_trending.pug' %}
+| {% endif %}
+| {% endif %}
+
+ul#posts-list.list-unstyled(
+	class="{% if layout == 'grid' %}posts-list-grid{% endif %}",
+	data-embed_url="{{ query_url }}")
+	li.mx-auto.my-5.py-5.text-center
+		.spinner-border.text-muted
+| {% endblock stream %}
+
+| {% block sidebar %}
+
+| {% block navbar_upload_btn %}
+.mb-4
+	.row.btn-toolbar-row
+		.col-sm-4
+			.btn-group.btn-block
+				a.btn.btn-link-bg.btn-sidebar(
+					title="{% trans 'List View' %}",
+					href="?layout=list",
+					data-toggle="tooltip",
+					class="{% if layout == 'list' %}is-active{% endif %}")
+					i.i-list
+				a.btn.btn-link-bg.btn-sidebar(
+					title="{% trans 'Grid View' %}",
+					href="?layout=grid",
+					data-toggle="tooltip",
+					class="{% if layout == 'grid' %}is-active{% endif %}")
+					i.i-grid
+
+		.col-sm-8
+			a.btn.btn-primary.btn-sidebar(
+				href="{% url 'post_create' %}",
+				title='{% trans "Create a Post" %}')
+				i.i-edit
+				strong {% trans "Create Post" %}
+| {% endblock navbar_upload_btn%}
+
+| {% if request.user.is_authenticated %}
+.sidebar-block.profile-sidebar
+	| {% include 'dillo/components/_profile_header_sidebar.pug' %}
+| {% endif %}
+
+| {% if trending_tags %}
+.sidebar-block.feed-trending
+	| {% include 'dillo/components/_feed_trending.pug' %}
+| {% endif %}
+
+| {% if upcoming_events %}
+.sidebar-block
+	| {% include 'dillo/components/_feed_events.pug' with events=upcoming_events events_title='Events' %}
+| {% endif %}
+
+.sidebar-block
+	| {% include 'dillo/components/_footer.pug' %}
+
+| {% endblock sidebar %}
+
+| {% block javascript_extra %}
+
+| {{ processing_posts | json_script:"js-processing-posts" }}
+
+script.
+	/* When processing posts are detected, query for their status until they are 'published',
+	* and then reload the page. */
+	let processingPosts = JSON.parse(document.getElementById('js-processing-posts').textContent);
+
+	function queryPostStatus(hashId) {
+		let statusUrl = '/p/' + hashId  + '/status';
+		$.get(statusUrl, function (data) {
+			if (data.status === 'published') location.reload();
+		})
+	}
+
+	function queryPostStatuses() {
+		for (let i = 0; i < processingPosts.posts.length; i++) {
+			let hashId = processingPosts.posts[i]
+			queryPostStatus(hashId)
+		}
+	}
+
+	if (processingPosts.posts) {
+		window.setInterval(queryPostStatuses, 3000);
+	}
+
+script.
+	$(function() {
+
+		let postsList = document.getElementById('posts-list');
+		let embedUrl = $(postsList).data('embed_url');
+
+		//- Get the embed_url attribute of posts-list
+		$.get(embedUrl, function (data) {
+			$(postsList).html(data);
+			loadPosts(data);
+			twemoji.parse(postsList);
+			toggleAutoplay();
+		});
+
+
+		$(window).scroll(function() {
+			toggleAutoplay();
+
+			//- Pagination: load more posts when in viewport
+			$('.js-load-more').each(function() {
+				if ($(this).is(':in-viewport()')){
+					//- Get url to load next page
+					let url = embedUrl + $(this).data('next_url');
+					//- Remove this element to prevent future triggers
+					$(this).parents('li').remove();
+					//- Get content of the next page and append it to the existing list
+					$.get(url, function (data) {
+						$(postsList).append(data);
+						loadPosts(data);
+						twemoji.parse(postsList);
+					});
+				}
+			});
+
+		});
+	});
+| {% endblock javascript_extra %}
+
+//- This page has infinite scroll, footer is shoveled in the sidebar.
+| {% block site_footer %}{% endblock site_footer %}
+
+| {% block base_classes %}mt-2{% endblock base_classes %}

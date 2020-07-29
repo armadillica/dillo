@@ -1,0 +1,17 @@
+| {% extends "dillo/base.pug" %}
+
+//- This template is a card centered in the whole page, without anything else.
+//- Usages: Submission forms, error pages.
+
+| {% block content %}
+.container.m-auto
+	.row
+		.mx-auto(class="col-lg-{% block card_width %}8{% endblock %}")
+			| {% block content_card %}
+			| {% endblock content_card %}
+| {% endblock content %}
+
+| {% block body_classes %}is-single-card-solo{% endblock %}
+
+| {% block navbar %}{% endblock %}
+| {% block site_footer %}{% endblock %}

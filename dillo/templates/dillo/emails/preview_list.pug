@@ -1,0 +1,17 @@
+| {% extends "dillo/base.pug" %}
+
+| {% block page_title %}{{ flatpage.title }}{% endblock page_title %}
+
+| {% block content %}
+.container
+	.row
+		.col-md-8.mx-auto.py-5
+			h1 Email templates
+			p Collection of the email templates, used to send user notifications.
+			ul
+			for email_template in email_templates
+				li
+					a(href="{% url 'preview_email_template_detail' email_template %}") {{ email_template }}
+					a(href="{% url 'preview_email_template_send' email_template %}")
+						i(class="i-mail pl-2")
+| {% endblock content %}

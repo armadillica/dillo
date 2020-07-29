@@ -1,0 +1,26 @@
+| {% extends "dillo/base.pug" %}
+| {% load i18n %}
+| {% load dillo_filters %}
+
+| {% block page_title %}
+| {% include 'dillo/components/_profile_page_title.pug' with user=post.user %}
+| {% endblock page_title %}
+
+| {% block javascript_extra %}
+script.
+	$.get("{% url 'post_detail' post.hash_id %}?from_post_detail=true", function (data) {
+				$('main').html(data);
+		});
+| {% endblock javascript_extra %}
+
+//- TODO: Use og_data workflow.
+| {% block head_extra %}
+|{% if post.postmedia_set and post.postmedia_set.first.content_type.name == 'post media video' %}
+meta(property="og:video", content="{{ post.postmedia_set.first.content_object.url_720p }}")
+meta(property="og:video:url", content="{{ post.postmedia_set.first.content_object.url_720p }}")
+meta(property="og:video:secure_url", content="{{ post.postmedia_set.first.content_object.url_720p }}")
+meta(property="og:video:type", content="video/mp4")
+meta(property="og:video:width", content="1280")
+meta(property="og:video:height", content="720")
+| {% endif %}
+| {% endblock head_extra %}

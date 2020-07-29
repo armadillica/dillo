@@ -1,0 +1,24 @@
+| {% load i18n %}
+| {% if comments %}
+| {% for comment in comments %}
+.comment-container
+	| {% include 'dillo/components/_comment_view.pug' with comment=comment %}
+
+	//- If the comment has replies, show them here.
+	| {% for reply in comment.replies %}
+	| {% include 'dillo/components/_comment_view.pug' with comment=reply %}
+	| {% endfor %}
+| {% endfor %}
+| {% endif %}
+
+| {% if page_obj.has_next %}
+.btn.btn-link-text.btn-block.my-3(
+	class="js-load-more-comments",
+	data-next_url="{% url 'comments_list' hash_id=hash_id %}?page={{ page_obj.next_page_number }}")
+	| {% trans 'Load more comments...' %}
+| {% endif %}
+
+script.
+	$(function () {
+		initTooltips();
+	});

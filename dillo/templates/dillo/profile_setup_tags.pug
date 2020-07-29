@@ -1,0 +1,45 @@
+| {% extends "dillo/profile_setup.pug" %}
+| {% load i18n %}
+| {% block profile_setup_form_extra %}
+| {% if trending_tags %}
+.feed-trending.setup.px-5
+	.feed-group
+		ul
+			| {% for tag in trending_tags %}
+			li
+				a.btn.btn-link(
+					class="js-tag-follow",
+					data-value="{{ tag }}",
+					href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
+					| &#35;{{ tag | truncatechars:35 }}
+			| {% endfor %}
+| {% endif %}
+| {% endblock profile_setup_form_extra %}
+
+| {% block javascript_extra %}
+script.
+	$('.js-tag-follow').on('click', function (event) {
+		event.preventDefault();
+		//- Get the tags form field
+		let $tagsHiddenField = $('#id_tags');
+		//- Load its content in an array
+		var followedTags = $tagsHiddenField.val().split(',');
+		let selectedTag = $(this).data('value');
+
+		//- Toggle the selection state of the button
+		$(this).toggleClass('is-selected');
+
+		//- Check if the tag should be added or removed from the list
+		if (followedTags.indexOf(selectedTag) >= 0) {
+			// Remove from list
+			followedTags.splice(followedTags.indexOf(selectedTag), 1);
+		} else {
+			// Add to list
+			followedTags.push(selectedTag);
+		}
+
+		//- Turn the array back into a string and update the field valye
+		followedTags = followedTags.join(',');
+		$tagsHiddenField.val(followedTags);
+	});
+| {% endblock javascript_extra %}

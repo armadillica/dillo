@@ -1,0 +1,61 @@
+| {% load i18n %}
+| {% load djversion_tags %}
+
+footer.site-footer
+	.btn-toolbar-row
+		a.btn.btn-link.btn-icon.mx-2(href="https://twitter.com/AnimatoHQ")
+			i.i-twitter
+		a.btn.btn-link.btn-icon.mx-2(href="https://instagram.com/AnimatoHQ")
+			i.i-instagram
+
+	.footer-nav
+		ul
+			li
+				a.p-2(href="{% url 'explore' %}") {% trans "explore" %}
+			li
+				a.p-2(href="{% url 'reel-list' %}") {% trans "reels" %}
+			li
+				a.p-2(href="{% url 'rig-list' %}") {% trans "rigs" %}
+			li
+				a.p-2(href="{% url 'event_list' %}") {% trans "events" %}
+			li
+				a.p-2(href="{% url 'job-list' %}") {% trans "jobs" %}
+			li
+				a.p-2(href="https://chat.anima.to", target="_blank") {% trans "chat" %}
+			li
+				a.p-2(href="{% url 'bookmarks' %}") {% trans "bookmarks" %}
+			li
+				a.p-2(href="{% url 'about' %}") {% trans "about" %}
+			li
+				a.p-2(href="{% url 'blog' %}") {% trans "blog" %}
+			li
+				a.p-2(href="{% url 'privacy' %}") {% trans "privacy" %}
+			li
+				a.p-2(href="{% url 'terms' %}") {% trans "terms" %}
+			li
+				| {% if request.user.is_authenticated %}
+				a.p-2(
+					href="#",
+					class="js-show-modal",
+					data-modal_category='form',
+					data-modal_title='{% trans "Give Feedback" %}',
+					data-content_url="{% url 'contact' %}",
+					data-toggle='modal',
+					data-target='#modal')
+					| {% trans "give feedback" %}
+				| {% else %}
+				a.p-2(href="{% url 'account_login' %}")
+					| {% trans "give feedback" %}
+				| {% endif %}
+
+	.footer-nav.brand
+		ul
+			li
+				| {% trans  'made with love for animation' %}
+
+		| {% project_version as VERSION %}
+		| {% if VERSION %}
+		span.px-3
+			| ·
+		.px-1 {{ VERSION }}
+		| {% endif %}

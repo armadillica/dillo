@@ -1,0 +1,46 @@
+| {% load i18n %}
+| {% load thumbnail %}
+| {% load dillo_filters %}
+| {% load activity_tags %}
+
+| {% if request.user.is_authenticated %}
+
+| {% if notifications %}
+| {% for notification in notifications %}
+li
+	.py-2.pr-3
+		| {% include 'dillo/components/_profile_avatar.pug' with user=notification.action.actor %}
+	div.notifications-text.
+		#[a.pr-1(href="{% url 'profile_details' notification.action.actor.username %}") {{ notification.action.actor.username }}]
+		{{ notification.action.verb }}
+		#[a(href="{{ notification.action.action_object.get_absolute_url }}") {{ notification.action.action_object }}]
+		#[span.text-secondary.pr-3 {{ notification.action.timestamp | timesince | compact_timesince }}]
+
+	| {% if request.user|is_following:notification.action.actor %}
+	| {% if notification.action.action_object.thumbnail %}
+	| {% thumbnail notification.action.action_object.thumbnail "64x64" crop="center" as im %}
+	a.ml-auto(href="{{ notification.action.action_object.absolute_url }}")
+		img.notifications-preview(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+		)
+	| {% endthumbnail %}
+	| {% endif %}
+	| {% else %}
+	.ml-auto.pl-4
+		| {% include 'dillo/components/_button_follow.pug' with target_object=notification.action.actor %}
+	| {% endif %}
+| {% endfor %}
+| {% else %}
+p.p-3.text-center.text-muted
+	| {% trans "No notifications yet." %}
+| {% endif %}
+
+| {% if page_obj.has_next %}
+li
+	| {% url 'notifications' as url_next %}
+	| {% include 'dillo/components/_button_load_more.pug' with js_class='js-load-more-notifications' page_obj=page_obj url_next=url_next %}
+| {% endif %}
+
+| {% endif %}

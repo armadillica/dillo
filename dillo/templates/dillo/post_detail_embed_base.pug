@@ -1,0 +1,72 @@
+| {% load i18n %}
+
+| {% block media %}
+| {% endblock media %}
+
+| {% block info %}
+section.post-view-info.col-scrollable
+	| {% include 'dillo/components/_post_header.pug' with post=post show_tags=false %}
+	| {% include 'dillo/components/_post_description.pug' with post=post is_post_details=true %}
+	| {% include 'dillo/components/_post_actions.pug' with post=post %}
+	| {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=true %}
+
+	| {% if request.user.is_anonymous %}
+	.pl-1.text-muted
+		| #[a(href="{% url 'account_login' %}") Sign in]&nbsp;to comment.
+	| {% endif %}
+	#js-comments.pt-3(
+		data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
+	)
+		.spinner-border.text-muted
+		//- Comments are loaded via js
+
+	.comment-container(class="js-comment-form-placeholder")
+		| {% include 'dillo/components/_comment_form.pug' %}
+| {% endblock info %}
+
+| {% block javascript_history %}
+script.
+	/* When browsing history, if this template is accessed reload the whole page. */
+	window.addEventListener("pageshow", function (event) {
+		let historyTraversal = event.persisted ||
+			(typeof window.performance != "undefined" &&
+				window.performance.navigation.type === 2);
+		if (historyTraversal) {
+			// Handle page restore.
+			window.location.reload();
+		}
+	});
+| {% endblock %}
+
+| {% block javascript_comments %}
+script.
+	$(function() {
+
+		let $commentsContainer = $("#js-comments");
+		$.get($commentsContainer.data('comments_url'), function (data) {
+			$commentsContainer.html(data);
+		});
+
+		let $commentTextField = $('#id_content');
+		if ($commentTextField.length === 0) {return};
+		//- Resize comment field on typing.
+		$commentTextField.autoResize();
+		//- Send comment on Ctrl+Enter.
+		$commentTextField.on("keyup", function (e) {
+			if ((e.keyCode == 13 || e.key === 'Enter') && e.ctrlKey) {
+				$(this).submit();
+			}
+		});
+
+	});
+| {% endblock javascript_comments %}
+
+script.
+	$(function () {
+		initTooltips();
+	});
+
+| {% block javascript_media %}
+| {% endblock javascript_media %}
+
+| {% block site_footer %}{% endblock site_footer %}

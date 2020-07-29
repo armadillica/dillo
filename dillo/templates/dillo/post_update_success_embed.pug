@@ -1,0 +1,14 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+p#js-updated-post-locator(
+data-post_hash_id="{{ object.hash_id }}"
+)
+	| {% trans "Your post was updated." %}
+
+#js-updated-post-title.d-none
+	| {{ object.title | linkify_tags_and_mentions | urlizetrunc:20 }}
+
+script.
+	var postHashId = $("#js-updated-post-locator").data('post_hash_id');
+	var postTitleText = $("#js-updated-post-title").html();
+	$("#js-post-text-" + postHashId).html(postTitleText);

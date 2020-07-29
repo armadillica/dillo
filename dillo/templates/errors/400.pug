@@ -1,0 +1,13 @@
+| {% extends 'errors/base.pug' %}
+| {% block page_title %}Bad Request{% endblock %}
+| {% block errorbody %}
+h1 Bad Request
+
+p Your HTTP client sent a request that we did not understand.
+p Try #[a(href="{% url 'homepage' %}") the frontpage] instead.
+
+hr
+| {% if request.sentry.id %}
+p If you need assistance, you may reference this error as <strong>{{ request.sentry.id }}</strong>.
+| {% endif %}
+| {% endblock %}

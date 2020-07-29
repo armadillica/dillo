@@ -1,0 +1,8 @@
+| {% extends 'errors/base.pug' %}
+| {% block page_title %}Page Not Found{% endblock %}
+| {% block errorbody %}
+h1 Page Not Found
+
+p The page you tried to reach does not exist.
+p Try #[a(href="{% url 'homepage' %}") the frontpage] instead.
+| {% endblock %}

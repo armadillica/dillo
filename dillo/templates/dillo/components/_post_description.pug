@@ -1,0 +1,11 @@
+| {% load dillo_filters %}
+
+.post-text
+	p.post-text-content(
+		id="js-post-text-{{ post.hash_id }}")
+		| {% if truncate %}
+		| {{ post.title | linkify_tags_and_mentions | urlizetrunc:32 | linebreaksbr | truncatewords_html:truncate_limit }}
+		| {% if post.title|wordcount > truncate_limit %}#[span.text-muted more]{% endif %}
+		| {% else %}
+		| {{ post.title | linkify_tags_and_mentions | urlizetrunc:32 | linebreaksbr }}
+		| {% endif %}

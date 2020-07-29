@@ -1,0 +1,9 @@
+Hey {{ own_name }},
+
+{{ action_author_name }} just commented on {{ content_name }}:
+
+"{{ content_text }}"
+
+See the comment at {{ content_absolute_url }}
+
+with love ♥ animato

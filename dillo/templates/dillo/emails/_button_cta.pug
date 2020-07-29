@@ -1,0 +1,6 @@
+div(style="text-align: center; margin: 30px")
+	a(
+		class="mailcta",
+		href="{{ url }}", title="{{ label }}",
+		style='padding: 10px 50px; background-color: #{css_color_primary}; color: #{css_body_bg_color} !important; border-radius: 0.5rem; text-align: center; text-decoration: none !important; display: inline-block;')
+		strong {{ label }} {% if specify_content_type %}{{ content_type | title }}{% endif %}

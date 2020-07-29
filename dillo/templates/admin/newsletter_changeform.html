@@ -1,0 +1,8 @@
+{% extends 'admin/change_form.html' %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="{% url 'admin-send-newsletter' original.pk %}">Send Newsletter</a>
+    </li>
+    {{ block.super }}
+{% endblock %}

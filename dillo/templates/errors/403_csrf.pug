@@ -1,0 +1,31 @@
+| {% block page_title %}CSRF error{% endblock %}
+| {% block errorbody %}
+h1 CSRF Protection
+
+p.
+	TL;DR: Probably the best way to fix this is to
+	#[a(href='javascript:history.back(); window.location.reload();') #[strong go back, strong refresh the page, and try again]].
+
+p.
+	All forms on Blender ID are protected against Cross-Site Request Forgeries.
+	This type of attack occurs when a malicious website contains a link, a form button or some
+	JavaScript that is intended to perform some action on your website, using the credentials of a
+	logged-in user who visits the malicious site in their browser. A related type of attack, ‘login
+	CSRF’, where an attacking site tricks a user’s browser into logging into a site with someone
+	else’s credentials, is also covered<sup>*</sup>.
+
+		For some reason, this protection rejected
+	the data you just submitted.
+
+p
+	a.btn.btn-lg.btn-squishy(href="javascript:history.back(); window.location.reload();")
+		| Go back and try again (and make sure you refresh the page)
+
+hr
+p.hint
+	sup *
+	='Source: '
+	a(href='https://docs.djangoproject.com/en/1.11/ref/csrf/') Django documentation
+	='.'
+
+| {% endblock %}

@@ -1,0 +1,8 @@
+| {% load i18n %}
+p {% trans "Your account was deleted. This page will reload in a few seconds." %}
+
+script.
+	window.setTimeout(function () {
+		//- Redirect to homepage
+		window.location.href = "/";
+	}, 5000);

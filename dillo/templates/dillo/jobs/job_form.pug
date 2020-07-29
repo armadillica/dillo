@@ -1,0 +1,18 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+| {% block page_title %}
+| {% trans 'Submit a Job' %} {% trans 'on' %}
+| {% endblock page_title %}
+
+| {% block content_card %}
+form.card(method="post", enctype="multipart/form-data")
+	.card-header
+		h1 {% trans 'Post a Job' %}
+	.card-body
+		| {% csrf_token %}
+		| {{ form | crispy }}
+	.card-cta
+		input.btn.btn-primary.btn-block.my-4(type="submit" value="Submit")
+| {% endblock content_card %}

@@ -1,0 +1,30 @@
+| {% load i18n %}
+| {% load thumbnail %}
+| {% load micawber_tags %}
+| {% load dillo_filters %}
+
+.profile-header
+	.profile-info
+		.profile-info-avatar
+			| {% include 'dillo/components/_profile_avatar.pug' with user=user size='medium' %}
+
+		.profile-stats
+			span.stat(
+				class="js-show-modal",
+				id="user-followers-{{ user.id }}",
+				data-modal_category='list',
+				data-modal_title='{% trans "Followers" %}',
+				data-content_url="{% url 'embed_user_followers_list' user_id=user.id %}",
+				title='{% trans "Followers" %}',
+				data-toggle='modal',
+				data-target='#modal')
+				span {{ user.profile.followers_count|compact_number }}
+				span follower{{ user.profile.followers_count|pluralize }}
+
+			span.stat
+				span {{ user.profile.likes_count|compact_number }}
+				span like{{ user.profile.likes_count|pluralize }}
+
+			span.stat
+				span {{ user.profile.views_count|compact_number }}
+				span views

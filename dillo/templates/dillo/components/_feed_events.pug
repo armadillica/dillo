@@ -1,0 +1,34 @@
+| {% load i18n %}
+| {% if events %}
+.feed-group.feed-events
+	a.feed-group-title(
+		href="{% url 'event_list' %}", title="{% trans 'See All Events' %}")
+		| #[i.i-events] {{ events_title }}
+
+	ul
+		| {% for event in events %}
+		li
+			a.e-event(href="{% url 'event_detail' event.slug %}")
+				.e-event-date
+					figure
+						span.month {{ event.starts_at | date:"M" | upper }}
+						span.day {{ event.starts_at | date:"d" }}
+
+				.e-event-info
+					h6.title {{ event }}
+					small.location
+						| {% if event.is_online %}
+						| Online Event
+						| {% else %}
+						| {{ event.location }}
+						| {% endif %}
+
+					| {% if event.attendees.all %}
+					small.going {{ event.attendees.all.count }} going
+					| {% endif %}
+		| {% endfor %}
+
+	a.feed-group-footer(
+		href="{% url 'event_list' %}", title="{% trans 'See All Events' %}")
+		| {% trans 'See More' %}
+| {% endif %}

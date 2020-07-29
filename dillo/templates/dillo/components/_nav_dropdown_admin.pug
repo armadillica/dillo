@@ -1,0 +1,17 @@
+| {% load i18n %}
+| {% if request.user.is_superuser %}
+a.dropdown-item(href="{% url 'admin:index' %}", title='Whoosh')
+	i.i-coffee
+	| Whoosh
+a.dropdown-item(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
+	i.i-users
+	| Users
+.dropdown-divider
+| {% endif %}
+a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')
+	i.i-settings
+	| {% trans "Settings" %}
+.dropdown-divider
+a.dropdown-item(href="{% url 'logout' %}", title='{% trans "Logout" %}')
+	i.i-log-out
+	| {% trans "Logout" %}

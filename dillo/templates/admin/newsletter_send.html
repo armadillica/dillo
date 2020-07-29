@@ -1,0 +1,27 @@
+{% extends 'admin/base_site.html' %}
+{% load l10n %}
+
+{% block content %}
+
+    <h2>Text Version</h2>
+    <pre>{{ newsletter.body_txt }}</pre>
+    <h2>Html Version</h2>
+    {{ newsletter.body_html | safe }}
+
+{% block submit_buttons_bottom %}{{ block.super }}{% endblock %}
+<form action="{% url 'admin-send-newsletter' newsletter.id %}" method="post">
+    {% csrf_token %}
+    <div>
+        <p class="deletelink-box">
+            <a href="{% url 'admin:dillo_newsletter_change' newsletter.id %}" class="deletelink">Cancel</a>
+        </p>
+        <input checked type="radio" id="preview" name="recipients" value="preview">
+        <label for="preview">Preview</label><br>
+        <input type="radio" id="mass" name="recipients" value="mass">
+        <label for="mass">Mass Mail {{ newsletter_address }}</label><br>
+
+        <input type="submit" value="Send Newsletter" />
+    </div>
+</form>
+
+{% endblock %}

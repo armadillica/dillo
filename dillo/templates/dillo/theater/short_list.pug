@@ -1,0 +1,55 @@
+| {% extends "dillo/theater/theater_base.pug" %}
+| {% load i18n %}
+| {% load micawber_tags %}
+| {% load thumbnail %}
+
+| {% block theater-content %}
+| {% if object_list %}
+.row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-lg-2.row-cols-xl-3
+	| {% for short in object_list %}
+	.col
+		.card-borderless
+			| {% thumbnail short.image "480" crop="center" as im %}
+			a.card-thumbnail(href="{% url 'short-detail' short.pk %}", title="{{ short.title }}")
+				img.img-fluid(
+					src="{{ im.url }}",
+					width="{{ im.width }}",
+					height="{{ im.height }}",
+					alt="{{ short.title }}")
+			| {% endthumbnail %}
+			.card-body
+				a.card-title(href="{% url 'short-detail' short.pk %}")
+					| {{ short.title }}
+	| {% endfor %}
+| {% else %}
+p.py-4.text-muted
+	| {% url 'short-create' as url_short_create %}
+	| {% blocktrans with url_short_create=url_short_create %}
+	| No shorts yet. Got any to #[a(href="{{ url_short_create }}") submit]?
+	| {% endblocktrans %}
+| {% endif %}
+| {% endblock theater-content %}
+
+| {% block sidebar %}
+.sidebar-block
+	a.btn.btn-primary.btn-sidebar(href="{% url 'short-create' %}")
+		| {% trans 'Submit Short' %}
+
+| {% if request.user.is_authenticated %}
+.sidebar-block
+	a.btn.btn-link-bg.btn-sidebar(href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}")
+		strong {% trans 'My Shorts' %}
+| {% endif %}
+
+| {% if trending_tags %}
+.sidebar-block.feed-trending
+	| {% include 'dillo/components/_feed_trending.pug' %}
+| {% endif %}
+
+.sidebar-block
+	| {% include 'dillo/components/_footer.pug' %}
+| {% endblock sidebar %}
+
+| {% block site_footer %}{% endblock %}
+
+| {% block base_classes %}mt-2{% endblock base_classes %}

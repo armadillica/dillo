@@ -1,0 +1,33 @@
+| {% load i18n crispy_forms_tags pipeline %}
+| {% if links %}
+.profile-edit-links
+	table
+		h2 {% trans 'Social' %}
+		p.
+			{% blocktrans %}
+			Links to your social media accounts #[span.text-muted (e.g. YouTube, Twitter, Instagram, etc.)]
+			{% endblocktrans %}
+
+		| {{ links.management_form }}
+		| {% for form in links.forms %}
+		| {% if forloop.first %}
+		thead
+			tr
+				| {% for field in form.visible_fields %}
+				th {{ field.label|capfirst }}
+				| {% endfor %}
+		| {% endif %}
+		tr(class="js-formset-row")
+			| {% for field in form.visible_fields %}
+			td
+				| {# Include the hidden fields in the form #}
+				| {% if forloop.first %}
+				| {% for hidden in form.hidden_fields %}
+				| {{ hidden }}
+				| {% endfor %}
+				| {% endif %}
+				| {{ field.errors.as_ul }}
+				| {{ field | as_crispy_field }}
+				| {% endfor %}
+			| {% endfor %}
+	| {% endif %}

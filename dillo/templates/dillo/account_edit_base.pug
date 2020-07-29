@@ -1,0 +1,54 @@
+| {% extends "dillo/base.pug" %}
+| {% load i18n %}
+
+| {% block content %}
+.container.mt-3
+	.row
+		.col-sm-3.mt-2
+			#list-tab.list-group
+				a.list-group-item.list-group-item-action(
+					href="{% url 'profile_edit' %}",
+					class="{% if request.path == '/accounts/profile/'%}active{% endif %}",
+				)
+					i.i-user.pr-3
+					| Profile
+
+				a.list-group-item.list-group-item-action(
+					href="{% url 'account_change_password' %}",
+					class="{% if request.path == '/accounts/password/change/'%}active{% endif %}",
+				)
+					i.i-shield.pr-3
+					| Change Password
+
+				a.list-group-item.list-group-item-action(
+					href="{% url 'account_email' %}",
+					class="{% if request.path == '/accounts/email/'%}active{% endif %}",
+				)
+					i.i-mail.pr-3
+					| Email
+
+				a.list-group-item.list-group-item-action(
+					href="{% url 'account-email-notifications' %}",
+					class="{% if request.path == '/accounts/notifications'%}active{% endif %}",
+				)
+					i.i-bell.pr-3
+					| Notifications
+
+				a.list-group-item.list-group-item-action(
+					href="{% url 'account_settings' %}",
+					class="{% if request.path == '/accounts/settings/'%}active{% endif %}",
+
+				)
+					i.i-settings.pr-3
+					| Settings
+
+		.col-9
+			#nav-tabContent.tab-content.p-2
+				.tab-pane.fade.show.active
+					.d-flex.flex-column
+						.card
+							| {% block content_account_edit_form %}
+							| {% endblock content_account_edit_form %}
+
+| {% endblock content %}
+

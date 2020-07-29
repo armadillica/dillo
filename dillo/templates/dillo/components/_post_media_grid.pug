@@ -1,0 +1,28 @@
+| {% load thumbnail %}
+| {% load i18n %}
+
+.js-post-media-container(
+	data-post_layout="grid",
+	data-post_hash_id="{{ post.hash_id }}",
+	id="post-media-{{ post.hash_id }}")
+	a.post-media-item-grid(
+		class="js-show-modal",
+		data-content_url="{% url 'post_detail' post.hash_id %}",
+		data-toggle='modal',
+		data-target='#modal-post-detail',
+		data-post_id="{{ post.hash_id }}",
+		href="{% url 'post_detail' post.hash_id %}",
+		data-preview="{{ post.postmedia_set.first.content_object.url_preview }}")
+
+		| {% thumbnail post.thumbnail "640x360" crop="center" as im %}
+		img.media-thumbnail(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+			alt="{{ post.user }}")
+		| {% endthumbnail %}
+
+		| {% if post.postmedia_set.all.count > 1 %}
+		span.post-label-icon
+			i.i-layers
+		| {% endif %}

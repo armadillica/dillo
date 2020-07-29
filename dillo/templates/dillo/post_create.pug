@@ -1,0 +1,122 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load pipeline %}
+| {% block page_title %}{% trans "Create Post" %}{% endblock %}
+| {% block body_classes %}page-create{% endblock %}
+
+| {% block content_card %}
+.post-form-container
+	if error_message
+		p.text-danger.p-3
+			strong {{ error_message }}
+
+	form#postMediaDropzone.dropzone.post-create-dropzone(
+		method="post",
+		data-unpublished_uploads_url="{% url 'post_unpublished_uploads' post.hash_id %}",
+		data-delete_unpublished_upload_url="{% url 'delete_unpublished_upload' post.hash_id %}",
+		action="{% url 'post_file_upload' hash_id=post.hash_id %}", enctype="multipart/form-data")
+		| {% csrf_token %}
+		.dropzone-icons
+			i.i-image
+			i.i-reel
+			span.label 100#[small MB]
+		.fallback
+			input(name='file', type='file', multiple='')
+
+	.dropzone-error-list
+
+
+	form(action="{% url 'post_create' %}", method="post", enctype="multipart/form-data")
+		.form-group
+			| {% csrf_token %}
+			| {{ form }}
+
+		.d-flex
+			button.post-create-btn.disabled.btn-lg(
+				type='submit',
+				class="js-post-create-btn")
+				| {% trans "Create Post" %}
+
+.d-flex.text-muted.w-100.py-5
+	small.mx-auto {% trans "Tip: Use #hashtags to increase discoverability." %}
+| {% endblock content_card %}
+
+| {% block javascript_extra %}
+| {% javascript 'vendor_dropzone' %}
+script.
+	Dropzone.options.postMediaDropzone = {
+		maxFilesize: 100, // MB
+		uploadMultiple: false,  // Must be false, otherwise deletion of uploads won't work (see post_file_upload)
+		addRemoveLinks: true,
+		thumbnailHeight: 250,
+		thumbnailWidth: 250,
+		acceptedFiles: "{{ MEDIA_UPLOADS_ACCEPTED_MIMES | join:',' }}",
+		dictDefaultMessage: '{% trans "here you can drop multiple images, videos, or tap to browse" %}',
+		init: function () {
+			postMediaDropzone = this;
+			$.ajax({
+				url: $('#postMediaDropzone').data('unpublished_uploads_url'),
+				type: 'post',
+				dataType: 'json',
+				success: function (response) {
+					$.each(response.media, function (key, value) {
+						// Create a mockFile from existing uploaded data
+						let mockFile = {name: value.name, size: value.size, dataURL: value.url, postMediaId: value.post_media_id};
+						postMediaDropzone.emit("addedfile", mockFile);
+						postMediaDropzone.createThumbnailFromUrl(mockFile,
+							postMediaDropzone.options.thumbnailWidth,
+							postMediaDropzone.options.thumbnailHeight,
+							postMediaDropzone.options.thumbnailMethod, true, function (thumbnail) {
+								postMediaDropzone.emit("thumbnail", mockFile, thumbnail);
+							},
+							'anonymous');
+						postMediaDropzone.emit("complete", mockFile);
+						postMediaDropzone.files.push(mockFile);
+					});
+				}
+			});
+			this.on("complete", function (file) {
+				$(".dz-remove").html("<i class='i-cancel'></i>");
+			}).on("success", function (file, data) {
+				// Attach postMediaId to file object, so we can delete it if we want
+				file.postMediaId = data.post_media_id;
+			}).on('error', function(file, response) {
+
+				// On error, display the message, and attach file-name so we can later clear this specific message.
+				$('.dropzone-error-list')
+					.addClass('is-active')
+					.append('\
+						<div class="dropzone-error" data-error-file="' + file.name + '">\
+							<div>' + file.name + '</div> <span class="error">' + response + '</span></div>');
+			}).on("removedfile", function (file) {
+				// Call the delete_unpublished_upload_url and pass file.postMediaId to
+				// delete the desired PostMedia.
+				$.ajax({
+					type: 'post',
+					url: $('#postMediaDropzone').data('delete_unpublished_upload_url'),
+					data: {'post_media_id': file.postMediaId},
+					dataType: 'json'
+				});
+
+				$('[data-error-file="' + file.name + '"]').remove();
+			});
+		}
+	};
+
+	let $postDescription = $('#id_title');
+
+	// Auto-resize text field as we type.
+	$postDescription.autoResize();
+
+	// Disable the Create Post button if text field is empty and no (valid) files were uploaded.
+	$postDescription.on('keyup', function () {
+		let totalFilesCount = Dropzone.getElement("#postMediaDropzone").dropzone.files.length;
+		if ($.trim($postDescription.val()) && totalFilesCount > 0) {
+			$('.js-post-create-btn')
+				.removeClass('disabled');
+		} else {
+			$('.js-post-create-btn')
+				.addClass('disabled');
+		}
+	});
+| {% endblock javascript_extra %}

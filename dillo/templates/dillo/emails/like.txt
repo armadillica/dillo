@@ -1,0 +1,7 @@
+Hey {{ own_name }},
+
+{{ action_author_name }} just liked your {{ content_type }} {{ content_name }}!
+
+See your post at {{ content_absolute_url }}
+
+with love ♥ animato

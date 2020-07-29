@@ -1,0 +1,9 @@
+.d-flex.pb-3
+	| {% include 'dillo/components/_profile_avatar.pug' with user=user_obj size='medium' %}
+	.d-flex.p-2.w-100.align-items-start
+		.d-flex.flex-column.pl-3.w-100
+			a.text-light(href="{% url 'profile_details' user_obj.username %}") {{ user_obj.profile.name }}
+			a.text-muted(href="{% url 'profile_details' user_obj.username %}") @{{ user_obj.username }}
+
+		.pl-4.w-75
+			| {% include 'dillo/components/_button_follow.pug' with target_object=user_obj %}

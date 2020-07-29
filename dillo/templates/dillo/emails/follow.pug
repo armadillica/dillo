@@ -1,0 +1,13 @@
+| {% extends 'dillo/emails/base.pug' %}
+
+| {% block subject %}{{ subject }}{% endblock subject %}
+
+| {% block content %}
+div(style="text-align: center")
+	p #[a(href="{{ action_author_absolute_url }}") {{ action_author_name }}] just started following you on #{label_brand}!
+	p Go to your profile to see who else is following you.
+| {% endblock content%}
+
+| {% block call_to_action %}
+| {% include 'dillo/emails/_button_cta.pug' with label='See Your Profile' url=own_profile_absolute_url %}
+| {% endblock call_to_action %}

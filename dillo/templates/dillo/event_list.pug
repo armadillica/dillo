@@ -1,0 +1,86 @@
+| {% extends "dillo/base_columns.pug" %}
+| {% load i18n %}
+| {% load thumbnail %}
+
+| {% block page_title %}
+| {% trans 'Events' %} {% trans 'on' %}
+| {% endblock page_title %}
+
+| {% block stream %}
+
+| {% if events %}
+| {% for event in events %}
+.card.e-event-large
+	| {% thumbnail event.image "1280" crop="center" as im %}
+	a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
+		img(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+			alt="{{ event.name }}")
+	| {% endthumbnail %}
+
+	.card-body
+		.e-event
+			a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
+				.month {{ event.starts_at | date:"M" | upper }}
+				span.day {{ event.starts_at | date:"d" }}
+
+			.e-event-info
+				a(href="{% url 'event_detail' slug=event.slug %}")
+					h2 {{ event.name }}
+
+				.location
+					| {% if event.is_online %}
+					| {% include 'dillo/components/_badge_online.pug' %}
+					| {% else %}
+					i.i-map-pin
+					| {{ event.location }}
+					| {% endif %}
+
+				| {% if event.attendees.all %}
+				.going
+					| {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
+					| {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
+					| {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
+				| {% endif %}
+| {% endfor %}
+
+| {% else %}
+p No events for now.
+| {% endif %}
+
+| {% endblock stream %}
+
+| {% block sidebar %}
+
+.sidebar-block
+	| {% if request.user.is_authenticated %}
+	button.btn.btn-primary.btn-sidebar(
+		href="#",
+		class="js-show-modal",
+		data-modal_category='form',
+		data-modal_title='{% trans "Suggest Event" %}',
+		data-content_url="{% url 'contact' %}",
+		data-toggle='modal',
+		data-target='#modal')
+		| {% trans "Suggest Event" %}
+	| {% else %}
+	a.btn.btn-outline-primary.btn-sidebar(href="{% url 'account_login' %}")
+		| {% trans "Suggest Event" %}
+	| {% endif %}
+
+//- TODO: Filters for events.
+
+| {% if trending_tags %}
+.sidebar-block.feed-trending
+	| {% include 'dillo/components/_feed_trending.pug' %}
+| {% endif %}
+
+.sidebar-block
+	| {% include 'dillo/components/_footer.pug' %}
+| {% endblock sidebar %}
+
+| {% block site_footer %}{% endblock %}
+
+| {% block base_classes %}mt-2{% endblock base_classes %}
