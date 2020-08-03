@@ -129,9 +129,9 @@ def send_newsletter(request, newsletter_id):
         if not recipients or recipients not in {'mass', 'preview'}:
             return HttpResponseServerError()
         if recipients == 'preview':
-            newsletter.send_preview()
+            newsletter.send(is_preview=True)
         else:
-            newsletter.send()
+            newsletter.send(is_preview=False)
         return redirect('admin:dillo_newsletter_changelist')
 
 

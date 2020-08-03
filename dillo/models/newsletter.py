@@ -1,7 +1,6 @@
 import logging
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
 from django.template.loader import render_to_string
@@ -27,32 +26,27 @@ class Newsletter(CreatedUpdatedMixin, models.Model):
         return f'{self.body_txt}\n\nUnsunscribe here: %mailing_list_unsubscribe_url%'
 
     def __str__(self):
-        return self.subject + " - " + self.created_at.strftime("%B %d, %Y")
+        return f"{self.subject} - {self.created_at.strftime('%B %d, %Y')}"
 
-    def send(self):
-        """Send the newsletter via Mailgun mailing list."""
+    def send(self, is_preview=True):
+        """Send the newsletter via Mailgun mailing list.
+
+        If is_preview is true, we send to a testing mailing list (same
+        config as a production list, just with a limited number of
+        subscribers).
+        """
         log.debug("Appending unsubscribe links")
 
-        log.debug("Sending the newsletter to %s" % settings.MAILING_LIST_NEWSLETTER_EMAIL)
+        mailig_list_address = settings.MAILING_LIST_NEWSLETTER_EMAIL
+        if is_preview:
+            mailig_list_address = settings.MAILING_LIST_NEWSLETTER_EMAIL_PREVIEW
+
+        log.debug("Sending the newsletter to %s" % mailig_list_address)
         send_mail(
             self.subject,
             self.body_txt_and_unsubscribe,
             settings.DEFAULT_FROM_EMAIL,
-            [settings.MAILING_LIST_NEWSLETTER_EMAIL],
-            fail_silently=False,
-            html_message=self.body_html_and_unsubscribe,
-        )
-
-    def send_preview(self):
-        """Send a preview copy of the newsletter to the admins."""
-        subject = f"[Animato Newsletter Preview] {self.subject}"
-        superusers_emails = User.objects.filter(is_superuser=True).values_list('email')
-        superusers_emails_list = [email[0] for email in superusers_emails]
-        send_mail(
-            subject,
-            self.body_txt_and_unsubscribe,
-            settings.DEFAULT_FROM_EMAIL,
-            superusers_emails_list,
+            [mailig_list_address],
             fail_silently=False,
             html_message=self.body_html_and_unsubscribe,
         )
