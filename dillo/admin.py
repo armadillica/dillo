@@ -23,8 +23,14 @@ import dillo.models.posts
 import dillo.models.profiles
 import dillo.models.shorts
 import dillo.models.newsletter
+import dillo.models.communities
 
 log = logging.getLogger(__name__)
+
+
+@admin.register(dillo.models.communities.Community)
+class CommunityAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(dillo.models.posts.PostMedia)
