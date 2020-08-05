@@ -24,6 +24,7 @@ from dillo.models.mixins import (
     get_upload_to_hashed_path,
 )
 from dillo.tasks import create_job
+from .communities import Community
 
 log = logging.getLogger(__name__)
 
@@ -73,8 +74,10 @@ class Post(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
     published_at = models.DateTimeField('date published', null=True, blank=True)
     hash_id = HashidField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, on_delete=models.CASCADE, null=True, blank=True)
     # TODO(fsiddi) rename to description
     title = models.TextField(null=True)
+    content = models.TextField(null=True)
     status = models.CharField(max_length=20, choices=STATUSES, default='draft')
     visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='public')
     is_hidden_by_moderator = models.BooleanField(default=False)
