@@ -4,22 +4,21 @@
 
 | {% block page_title %}{% if tag_name %}&#35;{{ tag_name }} {% trans 'on' %} {% endif%}{% endblock page_title %}
 
-| {% block stream_classes %}posts-list-container posts-list{% endblock stream_classes %}
 | {% block sidebar_classes %}hide-xs{% endblock sidebar_classes %}
 
 | {% block stream %}
 //- If we are exploring a tag, show it,
 //- otherwise show the list of trending tags.
 | {% if tag_name %}
-.posts-list-header.pb-5
-	.posts-list-tag-container
+.post-stream-header.pb-5
+	.post-stream-tag-container
 		h1
 			#[small #[i.i-hash]]{{ tag_name }}
 		| {% if tag_followers_count %}
-		.posts-list-tag-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
+		.post-stream-tag-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
 		| {% endif %}
-		// TODO: Posts count.
-	.posts-list-tag-action
+	// TODO: Posts count.
+	.post-stream-tag-action
 		| {% include 'dillo/components/_button_follow.pug' with target_object=tag %}
 | {% else %}
 
@@ -34,8 +33,8 @@
 | {% endif %}
 | {% endif %}
 
-ul#posts-list.list-unstyled(
-	class="{% if layout == 'grid' %}posts-list-grid{% endif %}",
+ul#posts-list.post-list(
+	class="{% if layout == 'grid' %}post-stream-grid{% else %}post-stream-list{% endif %}",
 	data-embed_url="{{ query_url }}")
 	li.mx-auto.my-5.py-5.text-center
 		.spinner-border.text-muted
@@ -156,5 +155,3 @@ script.
 
 //- This page has infinite scroll, footer is shoveled in the sidebar.
 | {% block site_footer %}{% endblock site_footer %}
-
-| {% block base_classes %}mt-2{% endblock base_classes %}
