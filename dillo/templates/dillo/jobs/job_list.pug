@@ -9,11 +9,11 @@
 
 | {% block stream %}
 
-.pb-3.mb-3.border-bottom
-	h2 {% trans 'Jobs Board' %}
-	small.d-block.text-muted Data sourced from Animation/VFX/Game Industry Job Postings by #[a.text-muted(href="https://anima.to/chrismayne/") @chrismayne]
+.job-list-header
+	h1 {% trans 'Jobs Board' %}
+	p Data sourced from Animation/VFX/Game Industry Job Postings by #[a(href="https://anima.to/chrismayne/") @chrismayne]
 
-.jobs-list
+.job-list
 	| {% if jobs %}
 	| {% for job in jobs %}
 	.job-item
@@ -31,18 +31,18 @@
 
 		.row
 			.col-12
-				//- Job date.
-				small.pb-2.text-muted.float-left(
-					title="{{ job.created_at }}")
-					span {{ job.created_at | timesince | shorten_timesince }} {% trans 'ago' %}
+				.job-header
+					//- Job date.
+					div(title="{{ job.created_at }}")
+						| {{ job.created_at | timesince | shorten_timesince }} {% trans 'ago' %}
 
-				//- Job location.
-				small.text-secondary.float-right(title="{% trans 'Location' %}")
-					| {% if job.city %}{{ job.city }}, {% endif %}{{ job.country }}
+					//- Job location.
+					div(title="{% trans 'Location' %}")
+						| {% if job.city %}{{ job.city }}, {% endif %}{{ job.country }}
 		.row
 			.col-12.col-sm-6
 				//- Job title.
-				h5.job-title
+				h2.job-title
 					//- Latino check if it's an email, look for '@' symbol.
 					a(href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
 						title="{% trans 'Apply as' %} {{ job.title }} {% trans 'at' %} {{ job.company }}")
@@ -50,36 +50,34 @@
 
 				//- Job software.
 				| {% if job.software %}
-				.py-2(title="Software")
-					i.i-package.pr-1
+				.job-software(title="Software")
+					i.i-package
 					| {{ job.software }}
 				| {% endif %}
 
-
 			.col-12.col-sm-6
 				//- Job company.
-				h5.job-company
+				h2.job-company
 					| {{ job.company }}
 
 		//- Notes.
 		| {% if job.notes %}
 		.row
 			.col
-				.py-3 lsdjkglksjdf {{ job.notes | urlizetrunc:30 }}
+				| {{ job.notes | urlizetrunc:30 }}
 		| {% endif %}
 
-		.row.pt-3
+		.row
 			.col-12.col-sm-6
-				.d-flex
-					| {% if job.level %}
-					span.badge.badge-secondary.with-icon
-						i.i-jobs
-						| {{ job.level }}
-					| {% endif %}
+				| {% if job.level %}
+				span.badge.badge-secondary.with-icon
+					i.i-jobs
+					| {{ job.level }}
+				| {% endif %}
 
-					span.badge.badge-secondary.with-icon
-						i.i-home
-						| {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
+				span.badge.badge-secondary.with-icon
+					i.i-home
+					| {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
 
 			.col-12.col-sm-6
 				//- Latino check if it's an email, look for '@' symbol.
@@ -91,11 +89,12 @@
 	| {% endfor %}
 
 	| {% else %}
-	p.py-4.text-muted
-		| {% url 'job-create' as url_job_create %}
-		| {% blocktrans with url_job_create=url_job_create %}
-		| No job posts yet. Got any to <a href="{{ url_job_create }}">submit</a>?
-		| {% endblocktrans %}
+
+	| {% url 'job-create' as url_job_create %}
+	| {% blocktrans with url_job_create=url_job_create %}
+	p No job posts yet. Got any to <a href="{{ url_job_create }}">submit</a>?
+	| {% endblocktrans %}
+
 	| {% endif %}
 | {% endblock stream %}
 
@@ -125,5 +124,3 @@
 | {% endblock sidebar %}
 
 | {% block site_footer %}{% endblock %}
-
-| {% block base_classes %}mt-2{% endblock base_classes %}
