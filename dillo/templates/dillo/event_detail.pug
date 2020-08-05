@@ -45,14 +45,14 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 | {% block sidebar %}
 
 .sidebar-block
-	h3.text-center.py-3 {{ event.name }}
+	h3 {{ event.name }}
 
 	ul.sidebar-list
 		li(title="{% trans 'Date' %}")
 			i.i-events
 			| {{ event.starts_at|date }}
 			| {% if event.starts_at|date != event.ends_at|date %}
-			#[span.px-2 · ] {{ event.ends_at|date }}
+			#[span · ] {{ event.ends_at|date }}
 			| {% endif %}
 
 		li
@@ -79,7 +79,7 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 			i.i-users
 			| {{ event.attendees.all.count }} going
 
-	.d-flex.pb-4
+	.event-attendees
 		//- TODO(Francesco): Open modal with list of attendees.
 		| {% for attendee in event.attendees.all %}
 		| {% if forloop.counter < 6 %}
