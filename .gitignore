@@ -3,3 +3,4 @@ __pycache__
 .sass-cache
 .cache
 pip-wheel-metadata/*
+.venv
