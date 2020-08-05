@@ -6,24 +6,40 @@
 li.post-container(
 	data-post_id="{{ post.hash_id }}",
 )
-	.card-thumbnail
+	.post-thumbnail
 		| {% include 'dillo/components/_post_media_grid.pug' with post=post %}
-	.d-flex.pt-1.pb-2
-		.card-header-thumbnail.pl-2
+	.post-details
+		.card-header-thumbnail
 			| {% include 'dillo/components/_profile_avatar.pug' with user=post.user size='small' %}
-		a.card-header-title.text-muted.py-1(
+		a.card-header-title(
 			class="js-show-modal",
 			data-content_url="{% url 'post_detail' post.hash_id %}",
 			data-toggle='modal',
 			data-target='#modal-post-detail',
 			data-post_id="{{ post.hash_id }}",
 			href="{% url 'post_detail' post.hash_id %}")
-			small
-				| {% if post.postmedia_set.first.content_object.views_count %}
+
+			| {% if post.postmedia_set.first.content_object.views_count %}
+			span
 				| {{ post.postmedia_set.first.content_object.views_count|compact_number }} {% trans 'views' %}
 				#[strong.px-2 ·]
 				| {% endif %}
 				| {{ post.published_at | timesince | shorten_timesince }} {% trans 'ago' %}
+			| {% endif %}
+
+			| {% if post.comments_count %}
+			span
+				| {{ post.comments_count }} #[i.i-comment]
+			| {% endif %}
+
+			| {% if post.likes.count %}
+			span
+				| {{ post.likes.count }} #[i.i-heart]
+			| {% endif %}
+
+			span.date
+				| {{ post.published_at | timesince | compact_timesince }} {% trans 'ago' %}
+
 | {% endif %}
 
 | {% empty %}

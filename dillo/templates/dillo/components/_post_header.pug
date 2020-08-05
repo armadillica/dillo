@@ -3,7 +3,7 @@
 .post-header
 	| {% include 'dillo/components/_profile_avatar.pug' with user=post.user %}
 
-	a.profile-username.btn.btn-link-text-white(
+	a.post-author.btn.btn-link-text-white(
 		href="{% url 'profile_details' post.user.username %}",
 		title="{{ post.user }}")
 		| {{ post.user }}

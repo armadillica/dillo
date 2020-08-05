@@ -2,7 +2,7 @@
 | {% load dillo_filters %}
 
 .post-actions
-	small.text-uppercase.d-flex.align-items-center
+	.post-actions-button-group
 		| {% if request.user.is_authenticated %}
 		button.post-actions-btn(
 			data-toggle="tooltip",
@@ -25,7 +25,7 @@
 	.post-carousel-dots
 	| {% endif %}
 
-	.post-actions-button-group
+	.post-actions-button-group.right
 		| {% if request.user.is_authenticated %}
 		button.post-actions-btn(
 			class="js-bookmark-toggle btn-bookmark {% if post|is_bookmarked:request.user %}is-active{% endif %}",
