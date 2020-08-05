@@ -4,9 +4,11 @@
 //- Usages: Submission forms, error pages.
 
 | {% block content %}
-.container.m-auto
+.container
 	.row
-		.mx-auto(class="col-lg-{% block card_width %}8{% endblock %}")
+		div(class="col-lg-{% block card_width %}8{% endblock %}")
 			| {% block content_card %}
 			| {% endblock content_card %}
 | {% endblock content %}
+
+| {% block body_classes %} is-centered{% endblock %}
