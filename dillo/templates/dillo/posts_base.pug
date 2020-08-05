@@ -10,7 +10,7 @@
 //- If we are exploring a tag, show it,
 //- otherwise show the list of trending tags.
 | {% if tag_name %}
-.post-stream-header.pb-5
+.post-stream-header
 	.post-stream-tag-container
 		h1
 			#[small #[i.i-hash]]{{ tag_name }}
@@ -34,10 +34,10 @@
 | {% endif %}
 
 ul#posts-list.post-list(
-	class="{% if layout == 'grid' %}post-stream-grid{% else %}post-stream-list{% endif %}",
+	class="post-stream-{% if layout == 'grid' %}grid{% else %}list{% endif %}",
 	data-embed_url="{{ query_url }}")
-	li.mx-auto.my-5.py-5.text-center
-		.spinner-border.text-muted
+	li.post-list-empty
+		.spinner-border
 | {% endblock stream %}
 
 | {% block sidebar %}
