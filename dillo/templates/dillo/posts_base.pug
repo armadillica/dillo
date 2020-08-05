@@ -43,29 +43,27 @@ ul#posts-list.post-list(
 | {% block sidebar %}
 
 | {% block navbar_upload_btn %}
-.mb-4
-	.row.btn-toolbar-row
-		.col-sm-4
-			.btn-group.btn-block
-				a.btn.btn-link-bg.btn-sidebar(
-					title="{% trans 'List View' %}",
-					href="?layout=list",
-					data-toggle="tooltip",
-					class="{% if layout == 'list' %}is-active{% endif %}")
-					i.i-list
-				a.btn.btn-link-bg.btn-sidebar(
-					title="{% trans 'Grid View' %}",
-					href="?layout=grid",
-					data-toggle="tooltip",
-					class="{% if layout == 'grid' %}is-active{% endif %}")
-					i.i-grid
+.sidebar-block
+	.btn-toolbar-row
+		.btn-group
+			a.btn.btn-link-bg.btn-sidebar(
+				title="{% trans 'List View' %}",
+				href="?layout=list",
+				data-toggle="tooltip",
+				class="{% if layout == 'list' %}is-active{% endif %}")
+				i.i-list
+			a.btn.btn-link-bg.btn-sidebar(
+				title="{% trans 'Grid View' %}",
+				href="?layout=grid",
+				data-toggle="tooltip",
+				class="{% if layout == 'grid' %}is-active{% endif %}")
+				i.i-grid
 
-		.col-sm-8
-			a.btn.btn-primary.btn-sidebar(
-				href="{% url 'post_create' %}",
-				title='{% trans "Create a Post" %}')
-				i.i-edit
-				strong {% trans "Create Post" %}
+		a.btn-create(
+			href="{% url 'post_create' %}",
+			title='{% trans "Create a Post" %}')
+			i.i-edit
+			strong {% trans "Create Post" %}
 | {% endblock navbar_upload_btn%}
 
 | {% if request.user.is_authenticated %}
@@ -155,3 +153,5 @@ script.
 
 //- This page has infinite scroll, footer is shoveled in the sidebar.
 | {% block site_footer %}{% endblock site_footer %}
+
+| {% block body_classes %}post-stream{% endblock body_classes %}
