@@ -19,28 +19,15 @@ nav.nav-primary.navbar.navbar-expand
 				//- 		i.i-compass
 				//- 		span {% trans 'Explore' %}
 
-				li.is-dropdown-disabled(class="{% if '/theater' in request.path_info %}active{% endif %}")
-					a(href="{% url 'reel-list' %}", title="{% trans 'Reels and Shorts Theater' %}")
-						i.i-shorts
+				li(class="{% if '/reels' in request.path_info %}active{% endif %}")
+					a(href="{% url 'reel-list' %}", title="{% trans 'Reels Theater' %}")
+						i.i-reel
 						span {% trans 'Reels' %}
 
-				//- XXX - Hide Theater dropdown for the moment.
-				//- 	.nav-dropdown
-				//- 		ul
-				//- 			li
-				//- 				a.card-header-row(href="{% url 'short-list' %}", title="{% trans 'Shorts Theater' %}")
-				//- 					.card-header-thumbnail
-				//- 						i.i-shorts
-				//- 					.card-header-title
-				//- 						span {% trans 'Shorts' %}
-				//- 						div.description {% trans 'Curated collection of animation short films.'%}
-				//- 			li
-				//- 				a.card-header-row(href="{% url 'reel-list' %}", title="{% trans 'Reels Theater' %}")
-				//- 					.card-header-thumbnail
-				//- 						i.i-reel
-				//- 					.card-header-title
-				//- 						span {% trans 'Reels' %}
-				//- 						div.description {% trans 'Watch animation reels from the community.' %}
+				li(class="{% if '/shorts' in request.path_info %}active{% endif %}")
+					a(href="{% url 'short-list' %}", title="{% trans 'Shorts Theater' %}")
+						i.i-shorts
+						span {% trans 'Shorts' %}
 
 				li(class="{% if '/rigs' in request.path_info %}active{% endif %}")
 					a(href="{% url 'rig-list' %}", title="{% trans 'Rigs' %}")
@@ -56,11 +43,6 @@ nav.nav-primary.navbar.navbar-expand
 					a(href="{% url 'job-list' %}", title="{% trans 'Animation Jobs' %}")
 						i.i-jobs
 						span {% trans 'Jobs' %}
-
-				li
-					a(href="https://chat.anima.to", title="{% trans 'Chat' %}")
-						i.i-comment
-						span {% trans 'Chat' %}
 
 				li(class="{% if '/bookmarks' in request.path_info %}active{% endif %}")
 					a(href="{% url 'bookmarks' %}", title="{% trans 'Your Saved Bookmarks' %}")

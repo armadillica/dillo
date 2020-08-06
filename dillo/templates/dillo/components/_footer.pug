@@ -3,38 +3,36 @@
 
 footer.site-footer
 	.btn-toolbar-row
-		a.btn.btn-link.btn-icon.mx-2(href="https://twitter.com/AnimatoHQ")
+		a.btn.btn-link.btn-icon(href="https://twitter.com/AnimatoHQ")
 			i.i-twitter
-		a.btn.btn-link.btn-icon.mx-2(href="https://instagram.com/AnimatoHQ")
+		a.btn.btn-link.btn-icon(href="https://instagram.com/AnimatoHQ")
 			i.i-instagram
 
 	.footer-nav
 		ul
 			li
-				a.p-2(href="{% url 'explore' %}") {% trans "explore" %}
+				a(href="{% url 'explore' %}") {% trans "explore" %}
 			li
-				a.p-2(href="{% url 'reel-list' %}") {% trans "reels" %}
+				a(href="{% url 'reel-list' %}") {% trans "reels" %}
 			li
-				a.p-2(href="{% url 'rig-list' %}") {% trans "rigs" %}
+				a(href="{% url 'rig-list' %}") {% trans "rigs" %}
 			li
-				a.p-2(href="{% url 'event_list' %}") {% trans "events" %}
+				a(href="{% url 'event_list' %}") {% trans "events" %}
 			li
-				a.p-2(href="{% url 'job-list' %}") {% trans "jobs" %}
+				a(href="{% url 'job-list' %}") {% trans "jobs" %}
 			li
-				a.p-2(href="https://chat.anima.to", target="_blank") {% trans "chat" %}
+				a(href="{% url 'bookmarks' %}") {% trans "bookmarks" %}
 			li
-				a.p-2(href="{% url 'bookmarks' %}") {% trans "bookmarks" %}
+				a(href="{% url 'about' %}") {% trans "about" %}
 			li
-				a.p-2(href="{% url 'about' %}") {% trans "about" %}
+				a(href="{% url 'blog' %}") {% trans "blog" %}
 			li
-				a.p-2(href="{% url 'blog' %}") {% trans "blog" %}
+				a(href="{% url 'privacy' %}") {% trans "privacy" %}
 			li
-				a.p-2(href="{% url 'privacy' %}") {% trans "privacy" %}
-			li
-				a.p-2(href="{% url 'terms' %}") {% trans "terms" %}
+				a(href="{% url 'terms' %}") {% trans "terms" %}
 			li
 				| {% if request.user.is_authenticated %}
-				a.p-2(
+				a(
 					href="#",
 					class="js-show-modal",
 					data-modal_category='form',
@@ -44,7 +42,7 @@ footer.site-footer
 					data-target='#modal')
 					| {% trans "give feedback" %}
 				| {% else %}
-				a.p-2(href="{% url 'account_login' %}")
+				a(href="{% url 'account_login' %}")
 					| {% trans "give feedback" %}
 				| {% endif %}
 
@@ -55,7 +53,7 @@ footer.site-footer
 
 		| {% project_version as VERSION %}
 		| {% if VERSION %}
-		span.px-3
+		span
 			| ·
-		.px-1 {{ VERSION }}
+		span {{ VERSION }}
 		| {% endif %}
