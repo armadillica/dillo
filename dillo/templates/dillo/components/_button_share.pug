@@ -4,7 +4,7 @@
 button.post-actions-btn(
 	class="js-share",
 	title="{% trans 'Share' %}",
-	data-toggle="tooltip",
+	data-toggle="tooltip", data-placement="bottom",
 	data-share-title="{% trans 'Share Post' %}",
 	data-share-text="{% firstof post.user.profile.name post.user.username %} {% trans 'on' %} anima.to",
 	data-share-url="{% url 'post_detail' post.hash_id %}",
