@@ -1,0 +1,84 @@
+| {% extends "dillo/account_edit_base.pug" %}
+
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+| {% load account %}
+
+| {% block head_title %}{% trans "Account" %}{% endblock %}
+| {% block content_account_edit_form %}
+.card-header
+	h1 {% trans "E-mail Addresses" %}
+
+.card-body
+	| {% if user.emailaddress_set.all %}
+	p {% trans 'The following addresses are associated with your account:' %}
+	form.email_list(action="{% url 'account_email' %}", method='post')
+		| {% csrf_token %}
+		fieldset
+			| {% for emailaddress in user.emailaddress_set.all %}
+			.custom-control.custom-radio
+				input.custom-control-input(
+					id='email_radio_{{forloop.counter}}',
+					type="radio", name="email",
+					checked="{% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked{%endif %}",
+					value="{{emailaddress.email}}"
+					)
+				label.custom-control-label(
+					for="email_radio_{{forloop.counter}}",
+					class="{% if emailaddress.primary %}primary_email{%endif%}")
+					span.mr-2 {{ emailaddress.email }}
+
+					| {% if emailaddress.primary %}
+					span.badge.badge-light.mr-2 {% trans "Primary" %}
+					| {% endif %}
+
+					| {% if emailaddress.verified %}
+					span.badge.badge-success {% trans "Verified" %}
+					| {% else %}
+					span.badge.badge-warning {% trans "Unverified" %}
+					| {% endif %}
+
+			| {% endfor %}
+
+			.d-flex.pt-3
+				button.btn.btn-outline-primary.mr-3(type='submit', name='action_primary')
+					| {% trans 'Make Primary' %}
+
+				button.btn.btn-outline-secondary(type='submit', name='action_send')
+					| {% trans 'Re-send Verification' %}
+
+				.ml-auto
+
+				button.btn.btn-outline-danger(type='submit', name='action_remove')
+					| {% trans 'Remove' %}
+	| {% else %}
+	p
+		strong {% trans 'Warning:'%}
+		|  {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}
+	| {% endif %}
+
+	hr
+
+	h2 {% trans "Add E-mail Address" %}
+
+	form.add_email(method='post', action="{% url 'account_email' %}")
+		| {% csrf_token %}
+		| {{ form | crispy }}
+		button.btn.btn-primary(name='action_add', type='submit')
+			| {% trans "Add E-mail" %}
+| {% endblock %}
+
+| {% block extra_body %}
+script(type='text/javascript').
+	(function() {
+	var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+	var actions = document.getElementsByName('action_remove');
+	if (actions.length) {
+	actions[0].addEventListener("click", function(e) {
+	if (! confirm(message)) {
+	e.preventDefault();
+	}
+	});
+	}
+	})();
+| {% endblock %}

@@ -1,0 +1,47 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load socialaccount %}
+| {% load crispy_forms_tags %}
+
+| {% block page_title %}{% trans "Sign In" %} &mdash; {% endblock %}
+
+| {% block card_width %}6{% endblock %}
+
+| {% block content_card %}
+.card.account
+	.card-header
+		h1.card-title {% trans "Hello" %}
+	.card-body
+
+		| {% get_providers as socialaccount_providers %}
+		| {% if socialaccount_providers %}
+		.social
+			ul.social-providers
+				| {% include "socialaccount/snippets/provider_list.pug" with process="login" %}
+		| {% include "socialaccount/snippets/login_extra.html" %}
+		| {% endif %}
+
+		.account-divider
+			span {% trans "OR" %}
+
+		form.login(method='POST', action="{% url 'account_login' %}")
+			| {% csrf_token %}
+			| {{ form | crispy }}
+
+			| {% if redirect_field_value %}
+			input(type='hidden', name='{{ redirect_field_name }}', value='{{ redirect_field_value }}')
+			| {% endif %}
+
+
+			.card-cta
+				button.btn.btn-primary.btn-block(type='submit')
+					| {% trans "Sign In" %}
+
+	.card-footer
+		a.btn.btn-link(href='{{ signup_url }}')
+			| {% trans "Create a New Account" %}
+
+		a.btn.btn-link(href="{% url 'account_reset_password' %}")
+			| {% trans "Forgot Password" %}
+
+| {% endblock content_card %}

@@ -1,0 +1,13 @@
+| {% extends "account/base.pug" %}
+| {% load i18n %}
+| {% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+| {% block content %}
+.container.my-auto
+	.row
+		.col-md-8.mx-auto
+				.card.account
+					.card-header
+						h1.cart-title {% trans "Verify Your E-mail Address" %}
+					.card-body
+						p {% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}
+| {% endblock %}

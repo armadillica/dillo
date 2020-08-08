@@ -216,6 +216,17 @@ version = "0.3.8"
 
 [[package]]
 category = "main"
+description = "Django model mixins and utilities"
+name = "django-model-utils"
+optional = false
+python-versions = "*"
+version = "4.0.0"
+
+[package.dependencies]
+Django = ">=2.0.1"
+
+[[package]]
+category = "main"
 description = "Pipeline is an asset packaging library for Django."
 name = "django-pipeline"
 optional = false
@@ -574,7 +585,7 @@ python-versions = "*"
 version = "0.5.1"
 
 [metadata]
-content-hash = "dbda0ad0744e6adc1151336a1ffcbd9a18238fa23239a2b4d299dda6b0d84dc3"
+content-hash = "2762a3053cc0c343eada5d11b586af66893f5a36059797550a2015dc7c5f6bb7"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -649,6 +660,10 @@ django-hashid-field = [
 django-loginas = [
     {file = "django-loginas-0.3.8.tar.gz", hash = "sha256:0a6f956fdbb2184d8b33e7d71528dea1762f0507c7dcedfc9403996b0541c148"},
     {file = "django_loginas-0.3.8-py2.py3-none-any.whl", hash = "sha256:5179434a85eb0244f0d0a4a9f7d3e293fa907abc540e1a75f1a4d13c0d26b929"},
+]
+django-model-utils = [
+    {file = "django-model-utils-4.0.0.tar.gz", hash = "sha256:adf09e5be15122a7f4e372cb5a6dd512bbf8d78a23a90770ad0983ee9d909061"},
+    {file = "django_model_utils-4.0.0-py2.py3-none-any.whl", hash = "sha256:9cf882e5b604421b62dbe57ad2b18464dc9c8f963fc3f9831badccae66c1139c"},
 ]
 django-pipeline = [
     {file = "django-pipeline-1.7.0.tar.gz", hash = "sha256:0ded22b974e3d627c27fc490ef5b23fcdcf0cdb00b704d628b5ca6d0b010d6fe"},

@@ -1,0 +1,33 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+| {% block page_title %}{% trans "Signup" %}{% endblock %}
+
+| {% block card_width %}6{% endblock %}
+
+| {% block content_card %}
+.card.account.message
+	.card-header
+		h1.card-title {% trans "Sign Up" %}
+
+	.card-body
+		| {% url 'account_login' as login_url %}
+		.lead
+			| {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
+			| Use your {{provider_name}} account to login to
+			| {{site_name}}.
+			| {% endblocktrans %}
+
+		form#signup_form.signup(method='post', action="{% url 'socialaccount_signup' %}")
+			| {% csrf_token %}
+			| {{ form | crispy }}
+
+			| {% if redirect_field_value %}
+			input(type='hidden', name='{{ redirect_field_name }}', value='{{ redirect_field_value }}')
+			| {% endif %}
+
+			.card-cta
+				button.btn.btn-primary(type='submit') {% trans "Sign Up" %}
+
+| {% endblock content_card %}

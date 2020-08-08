@@ -69,11 +69,6 @@ urlpatterns += [
     ),
 ]
 
-# Rigs
-urlpatterns += [
-    path('rigs/', include('rigs.urls')),
-]
-
 # Posts
 urlpatterns += [
     # Explore list view
@@ -252,6 +247,15 @@ urlpatterns += [
     path('jobs/submit', dillo.views.jobs.JobCreateView.as_view(), name='job-create'),
     path('jobs/<int:pk>/update', dillo.views.jobs.JobUpdateView.as_view(), name='job-update'),
 ]
+
+# Rigs
+urlpatterns += [
+    path('tmp-rigs/', TemplateView.as_view(template_name=''), name='rig-list'),
+    path('tmp-rigs/<int:pk>/', TemplateView.as_view(template_name=''), name='rig-detail'),
+    path('tmp-rigs/submit/', TemplateView.as_view(template_name=''), name='rig-create'),
+    path('tmp-rigs/<int:pk>/update', TemplateView.as_view(template_name=''), name='rig-update'),
+]
+
 
 # Flat Pages
 urlpatterns += [

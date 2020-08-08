@@ -18,7 +18,6 @@ from django.utils.safestring import mark_safe
 from tinymce.widgets import TinyMCE
 
 import dillo.models.events
-import dillo.models.jobs
 import dillo.models.posts
 import dillo.models.profiles
 import dillo.models.shorts
@@ -145,62 +144,15 @@ class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
 
 
-@admin.register(dillo.models.jobs.Job)
+@admin.register(dillo.models.posts.PostJob)
 class JobsAdmin(admin.ModelAdmin):
     list_display = ('title', 'company', 'visibility', 'created_at', 'show_link')
     ordering = ('-created_at',)
     exclude = ('image_height', 'image_width')
-    readonly_fields = ('created_at', 'updated_at', 'tags')
+    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
-
-    change_list_template = "admin/jobs_changelist.html"
-
-    def get_urls(self):
-        urls = super().get_urls()
-        my_urls = [
-            path('import-csv/', self.import_csv),
-        ]
-        return my_urls + urls
-
-    def import_csv(self, request):
-        if request.method == "POST":
-            csv_file = request.FILES["csv_file"]
-            decoded_file = csv_file.read().decode('utf-8').splitlines()
-            reader = csv.DictReader(decoded_file)
-            for line in reader:
-                # Check if the job already exists
-                url_apply = line['Source/Contact']
-                if not url_apply:
-                    log.debug("Source/Contact not found")
-                    continue
-                if dillo.models.jobs.Job.objects.filter(url_apply=url_apply).exists():
-                    log.debug("Skipping import of existing job")
-                    continue
-
-                is_remote_friendly = False if line['On-Site/Remote'] == 'On-Site' else True
-
-                job = dillo.models.jobs.Job.objects.create(
-                    user=request.user,
-                    company=line['Studio'],
-                    city=line['City'],
-                    province_state=line['Province/State'],
-                    country=line['Country'],
-                    title=line['Job Title'],
-                    is_remote_friendly=is_remote_friendly,
-                    url_apply=url_apply,
-                    starts_at=datetime.datetime.strptime(line['Date'], '%B %d, %Y'),
-                    description='',
-                )
-
-                log.debug("Created job %i" % job.id)
-
-            self.message_user(request, "Your csv file has been imported")
-            return redirect("..")
-        form = CsvImportForm()
-        payload = {"form": form}
-        return render(request, "admin/csv_form.html", payload)
 
 
 class EmailIsVerifiedListFilter(admin.SimpleListFilter):

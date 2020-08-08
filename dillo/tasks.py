@@ -18,7 +18,7 @@ from django.urls import reverse
 from micawber.contrib.mcdjango import providers
 from taggit import models as models_taggit
 
-import coconut.job
+import dillo.coconut.job
 import dillo.models
 import dillo.models.feeds
 import dillo.models.messages
@@ -86,7 +86,7 @@ def create_job(post_hash_id: str, video_id: int, source_path: str):
         'post_update_video_processing', kwargs={'hash_id': post_hash_id, 'video_id': video_id}
     )
 
-    j = coconut.job.create(
+    j = dillo.coconut.job.create(
         api_key=settings.COCONUT_API_KEY,
         source=f'{job_storage_base}{source_path}',
         webhook=f'{settings.COCONUT_DECLARED_HOSTNAME}{job_webhook}, events=true, metadata=true',
@@ -351,7 +351,7 @@ def feeds_fanout_started_following(action):
 
     # Email notification
     follow_context = dillo.views.emails.FollowContext(
-        subject='Your have a new follower!',
+        subject='You have a new follower!',
         own_name=action.target.profile.first_name_guess or action.target.username,
         own_profile_absolute_url=action.target.profile.absolute_url,
         action_author_name=action.actor.profile.first_name_guess or action.actor.username,
@@ -407,7 +407,7 @@ def activity_fanout_to_feeds(actstream_action_id):
 
 
 @background()
-def repopulate_timeline_content(content_type_id, object_id, user_id, action):
+def repopulate_timeline_content(content_type: ContentType, object_id, user_id, action):
     """Based on the follow/unfollow action.
 
     Only repopulates if a User object is being followed or unfollowed.
@@ -433,7 +433,12 @@ def repopulate_timeline_content(content_type_id, object_id, user_id, action):
         except dillo.models.feeds.FeedEntry.DoesNotExist:
             pass
 
-    target = ContentType.objects.get_for_id(content_type_id).get_object_for_this_type(pk=object_id)
+    content_type_class = content_type.model_class()
+    try:
+        target = content_type.get_object_for_this_type(pk=object_id)
+    except content_type_class.DoesNotExist:
+        log.debug("Skipping timeline repopulation, content was deleted")
+        return
     # If follow User
     if action == 'follow' and isinstance(target, User):
         # If following user, get 10 posts and check if their creation activity is already in the

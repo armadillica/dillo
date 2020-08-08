@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dillo"
-version = "0.1.0"
+version = "0.2.0"
 description = "The core of community"
 authors = ["Francesco Siddi <francesco.siddi@gmail.com>", "Pablo Vazquez <venomgfx@gmail.com>"]
 
@@ -31,6 +31,7 @@ sentry-sdk = "^0.14.1"
 mistune = "^0.8.4"
 bleach = "^3.1"
 user-agents = "^2.1"
+django-model-utils = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}

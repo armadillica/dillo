@@ -1,0 +1,20 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+
+| {% block page_title %}{% trans "Login Cancelled" %} &mdash; {% endblock %}
+
+| {% block content_card %}
+.card.account.message
+	.card-header
+		h1.card-title {% trans "Changed your mind?" %}
+
+	.card-body
+		| {% url 'account_login' as login_url %}
+		.lead
+			| {% blocktrans %}
+			| If you did not mean to cancel login, try signing in again.
+			| {% endblocktrans %}
+
+	.card-cta
+		a.btn.btn-primary(href="{{ login_url }}") {% trans "Sign In" %}
+| {% endblock content_card %}

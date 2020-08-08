@@ -10,6 +10,7 @@ from actstream.actions import follow
 from allauth.socialaccount.models import SocialAccount
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.db.models import F
@@ -262,16 +263,17 @@ def on_created_action(sender, instance: models_actstream.Action, created, **kwar
 def on_created_follow(sender, instance: models_actstream.Follow, created, **kwargs):
     if not created:
         return
-    tasks.repopulate_timeline_content(
-        instance.content_type_id, instance.object_id, instance.user_id, 'follow'
-    )
+    content_type = ContentType.objects.get_for_id(instance.content_type_id)
+    tasks.repopulate_timeline_content(content_type, instance.object_id, instance.user_id, 'follow')
 
 
 @receiver(post_delete, sender=models_actstream.Follow)
 def on_deleted_follow(sender, instance: models_actstream.Follow, **kwargs):
-    """User stops following something"""
+    """User stops following something."""
+    content_type = ContentType.objects.get_for_id(instance.content_type_id)
+    log.debug("Unfollowing %s %s" % (content_type.name, instance.object_id))
     tasks.repopulate_timeline_content(
-        instance.content_type_id, instance.object_id, instance.user_id, 'unfollow'
+        content_type, instance.object_id, instance.user_id, 'unfollow'
     )
 
 

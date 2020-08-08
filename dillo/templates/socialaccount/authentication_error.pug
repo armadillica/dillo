@@ -1,0 +1,24 @@
+| {% extends "dillo/base.pug" %}
+
+| {% load i18n %}
+
+| {% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+| {% block content %}
+.container.my-auto
+	.row
+		.col-md-8.mx-auto
+			.card.account.message
+				.card-header
+					h1.card-title {% trans "Something went wrong." %}
+
+				.card-body
+					| {% url 'account_login' as login_url %}
+					.lead
+						| {% blocktrans %}
+						| An error occurred while attempting to login via your social network account. Do you mind trying again?
+						| {% endblocktrans %}
+
+				.card-cta
+					a.btn.btn-primary(href="{{ login_url }}") {% trans "Sign In" %}
+| {% endblock %}

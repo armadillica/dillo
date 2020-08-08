@@ -1,0 +1,42 @@
+| {% extends "dillo/base.pug" %}
+| {% load i18n %}
+| {% load socialaccount %}
+| {% load crispy_forms_tags %}
+| {% block head_title %}{% trans "Signup" %}{% endblock %}
+| {% block content %}
+.container.my-auto
+	.row
+		.col-md-8.mx-auto
+			.card.account
+				.card-header
+					h1.card-title {% trans "Welcome" %}
+
+				.card-body
+					| {% get_providers as socialaccount_providers %}
+					| {% if socialaccount_providers %}
+					.social
+						ul.social-providers
+							| {% include "socialaccount/snippets/provider_list.pug" with process="login" %}
+
+					.account-divider
+						span {% trans "OR" %}
+
+					| {% include "socialaccount/snippets/login_extra.html" %}
+					| {% endif %}
+
+					form#signup_form.signup(method='post', action="{% url 'account_signup' %}")
+						| {% csrf_token %}
+						| {{ form | crispy }}
+						| {% if redirect_field_value %}
+						input(type='hidden', name='{{ redirect_field_name }}', value='{{ redirect_field_value }}')
+						|   {% endif %}
+
+						small.
+							By pressing the Sign Up button, I accept the #[a(href="{% url 'terms' %}") terms and conditions].
+
+						button.btn.btn-primary.btn-block.my-4(type='submit')
+							| {% trans "Sign Up" %}
+
+					.card-footer
+						a.btn.btn-link.mx-auto(href='{{ login_url }}') {% blocktrans %}Already have an account?{% endblocktrans %}
+| {% endblock %}
