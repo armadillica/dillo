@@ -81,35 +81,36 @@ nav.nav-primary.navbar.navbar-expand
 					data-toggle="tooltip")
 					i.i-search
 
-			| {% if request.user.is_anonymous %}
-			a.btn.btn-link(
-				href="{% url 'account_login' %}",
-				title='{% trans "Log In" %}')
-				strong {% trans "Log In" %}
+			.btn-toolbar-row
+				| {% if request.user.is_anonymous %}
+				a.btn.btn-link(
+					href="{% url 'account_login' %}",
+					title='{% trans "Log In" %}')
+					strong {% trans "Log In" %}
 
-			a.btn.btn-link-bg-primary(
-				href="{% url 'account_signup' %}",
-				title='{% trans "Sign Up" %}')
-				strong {% trans "Sign Up" %}
-			| {% endif %}
+				a.btn.btn-link-bg-primary(
+					href="{% url 'account_signup' %}",
+					title='{% trans "Sign Up" %}')
+					strong {% trans "Sign Up" %}
+				| {% endif %}
 
-			| {% if request.user.is_authenticated %}
-			a.btn.btn-link.btn-icon(href="{% url 'explore' %}",
-				title="{% trans 'Activity' %}",
-				data-notifications-count="{{ notifications_count }}",
-				data-toggle="tooltip",
-				class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}")
-				i.i-bell
-			| {% endif %}
+				| {% if request.user.is_authenticated %}
+				a.btn.btn-link.btn-icon(href="{% url 'explore' %}",
+					title="{% trans 'Activity' %}",
+					data-notifications-count="{{ notifications_count }}",
+					data-toggle="tooltip",
+					class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}")
+					i.i-bell
+				| {% endif %}
 
-			| {% if request.user.is_authenticated %}
-			.dropdown
-				a.btn.btn-link.btn-icon#dropdown-user(
-					data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', href="#", title='{% trans "More..." %}')
-					i.i-more-vertical
-				.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-user')
-					| {% include 'dillo/components/_nav_dropdown_admin.pug' %}
-			| {% endif %}
+				| {% if request.user.is_authenticated %}
+				.dropdown
+					a.btn.btn-link.btn-icon#dropdown-user(
+						data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', href="#", title='{% trans "More..." %}')
+						i.i-more-vertical
+					.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-user')
+						| {% include 'dillo/components/_nav_dropdown_admin.pug' %}
+				| {% endif %}
 
 nav.nav-primary-mobile
 	a.btn.btn-icon(href='/')
