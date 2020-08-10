@@ -1,13 +1,13 @@
 | {% load i18n %}
 | {% if trending_tags %}
 .feed-group
-	.feed-group-title
-		| #[i.i-trending] {% trans 'Trending' %}
+  .feed-group-title
+    | #[i.i-trending] {% trans 'Trending' %}
 
-	ul
-		| {% for tag in trending_tags %}
-		li
-			a.btn-tag(href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
-				| &#35;{{ tag | truncatechars:35 }}
-		| {% endfor %}
+  ul
+    | {% for tag in trending_tags %}
+    li
+      a.btn-tag(href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
+        | &#35;{{ tag | truncatechars:35 }}
+    | {% endfor %}
 | {% endif %}
