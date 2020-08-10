@@ -22,10 +22,10 @@
 					| {{ short.title }}
 	| {% endfor %}
 | {% else %}
-p.py-4.text-muted
+.post-list-empty
 	| {% url 'short-create' as url_short_create %}
 	| {% blocktrans with url_short_create=url_short_create %}
-	| No shorts yet. Got any to #[a(href="{{ url_short_create }}") submit]?
+	p No shorts yet. #[a(href="{{ url_short_create }}") Submit yours!]
 	| {% endblocktrans %}
 | {% endif %}
 | {% endblock theater-content %}

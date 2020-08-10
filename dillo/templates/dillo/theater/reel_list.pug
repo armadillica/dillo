@@ -7,28 +7,26 @@
 //- Notice for users without a reel.
 | {% if request.user.is_authenticated %}
 | {% if not user.profile.reel %}
-.card.mt-3
-	.card-body.p-3
+.card.theater-header
+	.card-body
 		.row.align-items-center
 			.col-md-9
-				.d-flex
-					div
-						| {% url 'profile_edit' as profile_edit_url %}
-						| {% blocktrans with profile_edit_url=profile_edit_url %}
-						| #[strong #[i.i-star] Your reel could be here!]
-						| Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
-						| {% endblocktrans %}
+				| {% url 'profile_edit' as profile_edit_url %}
+				| {% blocktrans with profile_edit_url=profile_edit_url %}
+				| #[strong #[i.i-star] Your reel could be here!]
+				| Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
+				| {% endblocktrans %}
 
 			.col-md-3
-				a.float-right.btn.btn-sm.btn-outline-primary.btn-block(href="{% url 'profile_edit' %}")
-					| {% trans 'Edit Profile' %}
+				a.btn.btn-primary.btn-block(href="{% url 'profile_edit' %}")
+					| {% trans 'Add Reel to Profile' %}
 | {% endif %}
 | {% endif %}
 
 | {% if object_list %}
 .row.row-cols-1.row-cols-sm-2.row-cols-lg-4
 	| {% for profile in object_list %}
-	.col.mt-3
+	.col
 		.card-borderless
 			| {% thumbnail profile.reel_thumbnail_16_9 "640x360" crop="center" as im %}
 			a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}", title="{{ profile.name }}")
@@ -49,14 +47,14 @@
 	| {% endfor %}
 
 | {% else %}
-p.py-4.text-muted
+.post-list-empty
 	| {% url 'profile_edit' as url_short_create %}
 	| {% blocktrans with url_short_create=url_short_create %}
-	| No reels to show yet. Add yours to <a href="{{ url_short_create }}">your profile</a>!
+	| No reels to show yet.
 	| {% endblocktrans %}
 | {% endif %}
 
-.d-flex.justify-content-center.my-3
+.theater-footer
 	| {% include 'dillo/components/_pagination.pug' with page=page_obj %}
 
 | {% endblock theater-content %}
@@ -73,5 +71,3 @@ p.py-4.text-muted
 | {% endblock sidebar %}
 
 | {% block stream_width %}12{% endblock %}
-
-| {% block base_classes %}mt-2{% endblock base_classes %}
