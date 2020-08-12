@@ -1,1 +1,75 @@
-| {% extends "dillo/base_columns.pug" %}
+| {% extends "dillo/base.pug" %}
+
+| {% block body %}
+.container
+  h1 Headings
+
+  h1 Heading H1
+  h2 Heading H2
+  h3 Heading H3
+  h4 Heading H4
+  h5 Heading H5
+  h6 Heading H6
+
+  hr
+
+  h1 Buttons
+
+  .row
+    .col-md-8
+      h2 Regular
+      .btn Button
+      .btn.btn-secondary Secondary
+      .btn.btn-danger Danger
+      .btn.btn-success Success
+      .btn.btn-info Info
+      .btn.btn-warning Warning
+
+      hr
+
+      h2 Buttons Row
+      .btn-toolbar-row
+        a(href="#").btn Button
+        a(href="#").btn.btn-secondary Secondary
+        a(href="#").btn.btn-danger Danger
+        a(href="#").btn.btn-success Success
+        a(href="#").btn.btn-info Info
+        a(href="#").btn.btn-warning Warning
+
+        .btn-group
+          .btn A
+          .btn B
+
+      hr
+
+      h2 Buttons Column
+      .row
+        .col-4
+          .btn-toolbar-col
+            a(href="#").btn Button
+            a(href="#").btn.btn-secondary Secondary
+            a(href="#").btn.btn-danger Danger
+        .col-4
+          .btn-toolbar-col
+            a(href="#").btn.btn-success Success
+            a(href="#").btn.btn-info Info
+            a(href="#").btn.btn-warning Warning
+
+    .col-md-4
+      h2 Small
+      a(href="#").btn.btn-sm Button
+      a(href="#").btn.btn-sm.btn-primary Primary
+
+      hr
+
+      h2 Buttons Group
+      .btn-group
+        a(href="#").btn.btn-primary Primary
+        a(href="#").btn.btn-secondary Secondary
+        a(href="#").btn.btn-danger Danger
+        a(href="#").btn.btn-success Success
+        a(href="#").btn.btn-info Info
+        a(href="#").btn.btn-warning Warning
+
+
+| {% endblock body %}
