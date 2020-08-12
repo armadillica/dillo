@@ -3,20 +3,20 @@
 | {% if is_detail %}
 .btn-toolbar-row
 	| {% if prev_obj_url %}
-	a.btn.btn-link.with-icon(href="{{ prev_obj_url }}")
+	a.btn.btn-link(href="{{ prev_obj_url }}")
 		i.i-chevron-left
 		span {% trans 'Previous' %}
 	| {% else %}
-	a.btn.btn-link.with-icon.disabled(href="#")
+	a.btn.btn-link.disabled(href="#")
 		i.i-chevron-left
 		span {% trans 'Previous' %}
 	| {% endif %}
 	| {% if next_obj_url %}
-	a.btn.btn-link.with-icon.right(href="{{ next_obj_url }}")
+	a.btn.btn-link.right(href="{{ next_obj_url }}")
 		span {% trans 'Next' %}
 		i.i-chevron-right
 	| {% else %}
-	a.btn.btn-link.with-icon.disabled(href="#")
+	a.btn.btn-link.disabled(href="#")
 		span {% trans 'Next' %}
 		i.i-chevron-right
 	| {% endif %}
@@ -24,11 +24,11 @@
 | {% else %}
 .btn-toolbar-row
 	| {% if page_obj.has_previous %}
-	a.btn.btn-link.with-icon(href="?{{search}}&page={{ page_obj.previous_page_number }}", tabindex='-1')
+	a.btn.btn-link(href="?{{search}}&page={{ page_obj.previous_page_number }}", tabindex='-1')
 		i.i-chevron-left
 		span {% trans 'Previous' %}
 	| {% else %}
-	a.btn.btn-link.with-icon.disabled(href="#")
+	a.btn.btn-link.disabled(href="#")
 		i.i-chevron-left
 		span {% trans 'Previous' %}
 	| {% endif %}
@@ -42,11 +42,11 @@
 		| {% endfor %}
 
 	| {% if page_obj.has_next %}
-	a.btn.btn-link.with-icon.right(href="?page={{ page_obj.next_page_number }}")
+	a.btn.btn-link.right(href="?page={{ page_obj.next_page_number }}")
 		span {% trans 'Next' %}
 		i.i-chevron-right
 	| {% else %}
-	a.btn.btn-link.with-icon.disabled(href="#")
+	a.btn.btn-link.disabled(href="#")
 		span {% trans 'Next' %}
 		i.i-chevron-right
 	| {% endif %}
