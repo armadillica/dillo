@@ -579,7 +579,7 @@ def update_mailing_list_subscription(user_email: str, is_subscribed: typing.Opti
 
 if settings.BACKGROUND_TASKS_AS_FOREGROUND:
     # Will execute activity_fanout_to_feeds immediately
-    log.debug('Executing background tasks syncronously')
+    log.debug('Executing background tasks synchronously')
     activity_fanout_to_feeds = activity_fanout_to_feeds.task_function
     send_mail_report_content = send_mail_report_content.task_function
     repopulate_timeline_content = repopulate_timeline_content.task_function
