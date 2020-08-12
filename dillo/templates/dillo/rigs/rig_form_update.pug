@@ -1,0 +1,30 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load static %}
+| {% load pipeline %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+
+| {% block content_card %}
+
+.card
+	.card-header
+		h2 Update Rig
+
+	.card-body
+		form(method="post", enctype="multipart/form-data")
+			| {% csrf_token %}
+			| {{ form | crispy }}
+			input.btn.btn-primary.btn-block.my-4(type="submit" value="Update")
+
+| {% endblock content_card %}
+
+| {% block head_extra %}
+| {% stylesheet 'edit' %}
+| {% endblock head_extra %}
+
+| {% block javascript_extra %}
+script(src="{% static 'js/vendor/unbundled-jquery-select2-4.0.13.min.js' %}", type="text/javascript", charset="utf-8")
+script.
+	$('#id_software').select2();
+| {% endblock javascript_extra %}

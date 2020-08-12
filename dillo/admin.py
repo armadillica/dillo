@@ -1,5 +1,3 @@
-import csv
-import datetime
 import logging
 from django import forms
 from django.conf import settings
@@ -11,7 +9,6 @@ from django.contrib.flatpages.models import FlatPage
 from django.db.models import Count
 from django.http import HttpResponseServerError
 from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import path
 from django.utils.translation import gettext as _
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -23,6 +20,7 @@ import dillo.models.profiles
 import dillo.models.shorts
 import dillo.models.newsletter
 import dillo.models.communities
+import dillo.models.post_rigs
 
 log = logging.getLogger(__name__)
 
@@ -153,6 +151,19 @@ class JobsAdmin(admin.ModelAdmin):
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
+
+
+@admin.register(dillo.models.post_rigs.PostRig)
+class RigsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'visibility')
+    exclude = ('image_height', 'image_width', 'title', 'content')
+    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
+
+    def show_link(self, obj):
+        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
+
+
+admin.site.register(dillo.models.post_rigs.Software)
 
 
 class EmailIsVerifiedListFilter(admin.SimpleListFilter):

@@ -1,0 +1,32 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load static %}
+| {% load pipeline %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+| {% block head_extra %}
+| {% stylesheet 'edit' %}
+| {% endblock head_extra %}
+
+| {% block content_card %}
+.card
+	.card-header
+		h1 {% trans 'Submit Rig' %}
+		p If you are not the rig creator you can submit the rig anyway, just make sure you provide credit!
+
+	form(method="post", enctype="multipart/form-data")
+		.card-body
+			| {% csrf_token %}
+			| {{ form | crispy }}
+		.card-cta
+			button.btn.btn-primary.btn-block.with-icon(
+				type="submit")
+				i.i-check
+				| {% trans 'Submit Rig' %}
+| {% endblock content_card %}
+
+| {% block javascript_extra %}
+script(src="{% static 'js/vendor/unbundled-jquery-select2-4.0.13.min.js' %}", type="text/javascript", charset="utf-8")
+script.
+	$('#id_software').select2();
+| {% endblock javascript_extra %}

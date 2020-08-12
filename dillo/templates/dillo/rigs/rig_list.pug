@@ -1,0 +1,61 @@
+| {% extends "dillo/theater/theater_base.pug" %}
+| {% load i18n %}
+| {% load micawber_tags %}
+| {% load thumbnail %}
+
+| {% block theater-content %}
+| {% if object_list %}
+.row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-lg-2.row-cols-xl-3
+	| {% for rig in object_list %}
+	.col
+		.card-borderless
+			| {% thumbnail rig.image "640x360" crop="center" as im %}
+			a.card-thumbnail(href="{% url 'rig-detail' rig.pk %}", title="{{ rig.name }}")
+				img.img-fluid(
+					src="{{ im.url }}",
+					width="{{ im.width }}",
+					height="{{ im.height }}",
+					alt="{{ rig.name }}")
+			| {% endthumbnail %}
+			.card-body
+				a.card-header-title(href="{% url 'rig-detail' rig.pk %}")
+					| {{ rig.name }}
+					| {% if rig.supported_software %}
+					small.d-block
+						| {{ rig.supported_software.all|join:", " }}
+					| {% endif %}
+	| {% endfor %}
+| {% else %}
+p.py-4.text-muted
+	| {% url 'rig-create' as url_rig_create %}
+	| {% blocktrans with url_rig_create=url_rig_create %}
+	| No rigs yet. Got any to #[a(href="{{ url_rig_create }}") submit]?
+	| {% endblocktrans %}
+| {% endif %}
+| {% endblock theater-content %}
+
+| {% block sidebar %}
+.sidebar-block
+	a.btn.btn-primary.btn-sidebar(href="{% url 'rig-create' %}")
+		| {% trans 'Submit a Rig' %}
+
+	| {% if request.user.is_authenticated %}
+	hr
+	a.btn.btn-link-bg.btn-sidebar(href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}")
+		strong {% trans 'My Rigs' %}
+	| {% endif %}
+
+.sidebar-block
+	| {% include 'dillo/components/_footer.pug' %}
+| {% endblock sidebar %}
+
+| {% block theater-nav %}
+.text-muted.d-flex.align-items-center
+	span.pr-2 {{ page_obj.paginator.count }} Rigs
+.ml-auto.text-muted.d-flex.align-items-center
+	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
+| {% endblock theater-nav %}
+
+| {% block site_footer %}{% endblock %}
+
+| {% block base_classes %}mt-2{% endblock base_classes %}

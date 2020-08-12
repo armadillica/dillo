@@ -1,0 +1,85 @@
+| {% extends "dillo/theater/theater_base.pug" %}
+| {% load i18n %}
+| {% load dillo_filters %}
+| {% load micawber_tags %}
+| {% load thumbnail %}
+
+| {% block page_title %}{{ rig.name }}{% endblock page_title %}
+
+| {% block theater-nav %}
+h1 {{ rig.name }}
+| {% endblock theater-nav %}
+
+| {% block theater-content %}
+.card
+	| {% thumbnail rig.image "1280" crop="center" as im %}
+	a(href="{{ rig.url }}", target="_blank")
+		img.img-fluid.rounded.mb-3(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+			alt="{{ rig.name }}")
+	| {% endthumbnail %}
+	.p-3.lead
+		| {{ rig.description | markdown | safe }}
+| {% endblock theater-content %}
+
+| {% block sidebar %}
+.d-flex
+	| {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_rig_url next_obj_url=next_rig_url %}
+
+.sidebar-block
+	.pb-3
+		a.btn.btn-block.btn-primary.with-icon(
+			href="{{ rig.url }}",
+			target="_blank")
+			i.i-download
+			| Download Rig
+
+	ul.sidebar-list
+		| {% if rig.supported_software %}
+		li(title="{% trans 'Author' %}")
+			i.i-package
+			| {{ rig.supported_software.all|join:", " }}
+		| {% endif %}
+
+		li(title="{% trans 'Author' %}")
+			i.i-user
+			| {% if rig.author %}
+			| {{ rig.author }}
+			| {% else %}
+			#[a.text-muted(href="{% url 'profile_details' rig.user.username %}", title="{{ rig.user.username }}") {{ rig.user }}]
+			| {% endif %}
+
+	small.text-muted
+		| {% trans 'Posted' %} #[span(title="{{ rig.created_at }}") {{ rig.created_at | timesince | compact_timesince }}] {% trans 'ago' %}
+
+	.btn-toolbar-row.mt-3
+		button.btn.btn-link-bg.btn-sidebar(
+			data-like_toggle_url="{% url 'like_toggle' content_type_id=rig.content_type_id object_id=rig.id %}",
+			class="js-like-toggle{% if rig|is_liked:request.user %} is-liked{% endif %}",
+			title="{% if rig|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}")
+			i.i-heart
+			strong {% if rig|is_liked:request.user %}{% trans 'Liked' %}{% else %}{% trans 'Like' %}{% endif %}
+
+		| {% include 'dillo/components/_button_share.pug' with shared_object_label='rig' %}
+
+	| {% if rig.user == request.user %}
+
+	hr
+
+	| {% url 'rig-update' rig.pk as edit_url %}
+	| {% trans 'Edit Rig' as edit_label %}
+	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label %}
+	| {% endif %}
+
+.p-3
+	a.btn.btn-outline-primary.btn-sidebar(href="{% url 'rig-create' %}")
+		strong {% trans 'Submit a Rig' %}
+
+	| {% if request.user.is_superuser %}
+	hr
+	| {% url 'admin:rigs_rig_change' rig.id as edit_url %}
+	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Whoosh Rig" %}
+	| {% endif %}
+	| {% endblock sidebar %}

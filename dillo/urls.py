@@ -22,6 +22,7 @@ import dillo.views.users.profile
 import dillo.views.theater
 import dillo.views.jobs
 import dillo.views.emails
+import dillo.views.posts.post_rigs
 
 # User Pages
 urlpatterns = [
@@ -250,12 +251,15 @@ urlpatterns += [
 
 # Rigs
 urlpatterns += [
-    path('tmp-rigs/', TemplateView.as_view(template_name=''), name='rig-list'),
-    path('tmp-rigs/<int:pk>/', TemplateView.as_view(template_name=''), name='rig-detail'),
-    path('tmp-rigs/submit/', TemplateView.as_view(template_name=''), name='rig-create'),
-    path('tmp-rigs/<int:pk>/update', TemplateView.as_view(template_name=''), name='rig-update'),
+    path('rigs/', dillo.views.posts.post_rigs.RigListView.as_view(), name='rig-list'),
+    path('rigs/<int:pk>/', dillo.views.posts.post_rigs.RigDetailView.as_view(), name='rig-detail'),
+    path('rigs/submit/', dillo.views.posts.post_rigs.RigCreateView.as_view(), name='rig-create'),
+    path(
+        'rigs/<int:pk>/update',
+        dillo.views.posts.post_rigs.RigUpdateView.as_view(),
+        name='rig-update',
+    ),
 ]
-
 
 # Flat Pages
 urlpatterns += [

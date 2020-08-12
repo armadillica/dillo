@@ -11,6 +11,7 @@ import dillo.models.feeds
 from dillo.models.messages import ContentReports
 from dillo.models.posts import Post, Comment
 from dillo.models.profiles import Profile
+from dillo.models.post_rigs import PostRig
 
 
 class TestViewsMixin(TestCase):
@@ -525,3 +526,39 @@ class SignUpViewTest(TestCase):
         self.assertEqual('albusdumbledore', user.username)
         # Ensure that user name is saved
         self.assertEqual(user_name, user.profile.name)
+
+
+@override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')
+class RigViewsTest(TestViewsMixin):
+    def setUp(self) -> None:
+        self.user_harry = User.objects.create_user(username='harry')
+        self.client = Client()
+
+    def test_create_rig_view(self):
+        """Test create view permissions."""
+        # Create post URL
+        rig_create_url = reverse('rig-create')
+        # Issue a GET request
+        response = self.client.get(rig_create_url)
+        # Unauthenticated users can't create rigs
+        self.assertEqual(302, response.status_code)
+        self.client.force_login(self.user_harry)
+        # Issue a GET request
+        response = self.client.get(rig_create_url)
+        # Authenticated users can create rigs
+        self.assertEqual(200, response.status_code)
+
+    def test_create_rig_submit(self):
+        """Test create view permissions."""
+        # Create post URL
+        rig_create_url = reverse('rig-create')
+        self.client.force_login(self.user_harry)
+        # Issue a POST request
+        response = self.client.post(
+            rig_create_url,
+            {'name': 'Rain Rig', 'description': 'A good rig', 'url': 'https://cloud.blender.org/'},
+        )
+        # Successful submission redirects to detail view
+        self.assertEqual(302, response.status_code)
+        # Rig was created in database
+        self.assertEqual(True, PostRig.objects.filter(name='Rain Rig').exists())
