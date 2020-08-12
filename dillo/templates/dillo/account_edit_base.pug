@@ -2,45 +2,45 @@
 | {% load i18n %}
 
 | {% block content %}
-.container.mt-3
+.container
 	.row
-		.col-sm-3.mt-2
+		.col-sm-3
 			.btn-toolbar-col
-				a.btn.btn-link-bg(
+				a.btn(
 					href="{% url 'profile_edit' %}",
 					class="{% if request.path == '/accounts/profile/'%}active{% endif %}",
 				)
 					i.i-user
-					| Profile
+					span Profile
 
-				a.btn.btn-link-bg(
+				a.btn(
 					href="{% url 'account_change_password' %}",
 					class="{% if request.path == '/accounts/password/change/'%}active{% endif %}",
 				)
 					i.i-shield
-					| Change Password
+					span Change Password
 
-				a.btn.btn-link-bg(
+				a.btn(
 					href="{% url 'account_email' %}",
 					class="{% if request.path == '/accounts/email/'%}active{% endif %}",
 				)
 					i.i-mail
-					| Email
+					span Email
 
-				a.btn.btn-link-bg(
+				a.btn(
 					href="{% url 'account-email-notifications' %}",
 					class="{% if request.path == '/accounts/notifications'%}active{% endif %}",
 				)
 					i.i-bell
-					| Notifications
+					span Notifications
 
-				a.btn.btn-link-bg(
+				a.btn(
 					href="{% url 'account_settings' %}",
 					class="{% if request.path == '/accounts/settings/'%}active{% endif %}",
 
 				)
 					i.i-settings
-					| Settings
+					span Settings
 
 		.col-9
 			#nav-tabContent.tab-content
