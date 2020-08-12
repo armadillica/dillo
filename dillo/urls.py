@@ -325,6 +325,15 @@ if settings.DEBUG:
         ),
     ]
 
+    # Design System
+    urlpatterns += [
+        path(
+            'design-system/',
+            TemplateView.as_view(template_name='dillo/design_system.pug'),
+            name='design-system',
+        ),
+    ]
+
 # User Profile (keep at the end, since "Profile URL" catches all urls
 urlpatterns += [
     # Profile setup
