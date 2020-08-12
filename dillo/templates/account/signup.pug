@@ -1,42 +1,44 @@
-| {% extends "dillo/base.pug" %}
+| {% extends "dillo/base_single_card.pug" %}
 | {% load i18n %}
 | {% load socialaccount %}
 | {% load crispy_forms_tags %}
+
 | {% block head_title %}{% trans "Signup" %}{% endblock %}
-| {% block content %}
-.container.my-auto
-	.row
-		.col-md-8.mx-auto
-			.card.account
-				.card-header
-					h1.card-title {% trans "Welcome" %}
+| {% block card_width %}6{% endblock %}
 
-				.card-body
-					| {% get_providers as socialaccount_providers %}
-					| {% if socialaccount_providers %}
-					.social
-						ul.social-providers
-							| {% include "socialaccount/snippets/provider_list.pug" with process="login" %}
+| {% block content_card %}
+.card.account
+	.card-header
+		h1.card-title {% trans "Welcome" %}
 
-					.account-divider
-						span {% trans "OR" %}
+	.card-body
+		| {% get_providers as socialaccount_providers %}
+		| {% if socialaccount_providers %}
+		.social
+			ul.social-providers
+				| {% include "socialaccount/snippets/provider_list.pug" with process="login" %}
 
-					| {% include "socialaccount/snippets/login_extra.html" %}
-					| {% endif %}
+		.account-divider
+			span {% trans "OR" %}
 
-					form#signup_form.signup(method='post', action="{% url 'account_signup' %}")
-						| {% csrf_token %}
-						| {{ form | crispy }}
-						| {% if redirect_field_value %}
-						input(type='hidden', name='{{ redirect_field_name }}', value='{{ redirect_field_value }}')
-						|   {% endif %}
+		| {% include "socialaccount/snippets/login_extra.html" %}
+		| {% endif %}
 
-						small.
-							By pressing the Sign Up button, I accept the #[a(href="{% url 'terms' %}") terms and conditions].
+		form#signup_form.signup(method='post', action="{% url 'account_signup' %}")
+			| {% csrf_token %}
+			| {{ form | crispy }}
+			| {% if redirect_field_value %}
+			input(type='hidden', name='{{ redirect_field_name }}', value='{{ redirect_field_value }}')
+			|   {% endif %}
 
-						button.btn.btn-primary.btn-block.my-4(type='submit')
-							| {% trans "Sign Up" %}
+			small.
+				By pressing the Sign Up button, I accept the #[a(href="{% url 'terms' %}") terms and conditions].
 
-					.card-footer
-						a.btn.btn-link.mx-auto(href='{{ login_url }}') {% blocktrans %}Already have an account?{% endblocktrans %}
-| {% endblock %}
+			.card-cta
+				button.btn.btn-primary.btn-block(type='submit')
+					| {% trans "Sign Up" %}
+
+	.card-footer
+		a.btn.btn-link(href='{{ login_url }}')
+			| {% blocktrans %}Already have an account?{% endblocktrans %}
+| {% endblock content_card %}
