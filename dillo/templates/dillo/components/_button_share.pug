@@ -11,15 +11,16 @@ button.post-actions-btn(
 	data-popover='#popover-share')
 	i.i-share
 | {% else %}
-button.btn.btn-link-bg.btn-sidebar(
+button.btn.btn-sidebar(
 	class="js-share",
 	title="{% trans 'Share' %}",
 	data-share-title="{% trans 'Share' %} {{ shared_object_label }} {% trans 'from' %} {{ site_name }}",
 	data-share-text="{% trans 'Share' %} {{ shared_object_label }} {% trans 'from' %} {{ site_name }}",
 	data-share-url="{{ request.build_absolute_uri }}",
 	data-popover='#popover-share')
-	i.i-share
-	strong {% trans 'Share' %}
+	span
+		i.i-share
+		strong {% trans 'Share' %}
 | {% endif %}
 
 #popover-share.popover.card.p-3.bg-dark

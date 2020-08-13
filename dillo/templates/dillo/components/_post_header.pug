@@ -3,25 +3,24 @@
 .post-header
 	| {% include 'dillo/components/_profile_avatar.pug' with user=post.user %}
 
-	a.post-author.btn.btn-link-text-white(
+	a.post-author(
 		href="{% url 'profile_details' post.user.username %}",
 		title="{{ post.user }}")
-		| {{ post.user }}
+		span {{ post.user }}
 
-	| {% if request.user.is_authenticated and request.user.id != post.user.id %}
-	a.btn.btn-link.mx-2(
-		class="js-follow-toggle{% if not request.user|is_following:post.user %} btn-link-primary{% endif %}",
+	| {% if request.user.is_authenticated and request.user.id != post.user.id and not request.user|is_following:post.user %}
+	a.post-follow(
+		class="js-follow-toggle{% if request.user|is_following:post.user %} is-follower{% endif %}",
 		data-follow_toggle_label="{% if request.user|is_following:post.user %}Follow{% else %}Unfollow{% endif %}"
 		href="{% follow_url post.user %}")
-		| {% if request.user|is_following:post.user %}Unfollow{% else %}Follow{% endif %}
+		span {% if request.user|is_following:post.user %}Unfollow{% else %}Follow{% endif %}
 	| {% endif %}
 
 	| {% if show_tags %}
 	| {% if post.tags.names %}
-	small
-		| {% for tag in post.tags.names %}
-		a.text-muted.pr-1(href="{% url 'posts_list_tag' tag %}") &#35;{{ tag }}
-		| {% endfor %}
+	| {% for tag in post.tags.names %}
+	a.btn-link(href="{% url 'posts_list_tag' tag %}") &#35;{{ tag }}
+	| {% endfor %}
 	| {% endif %}
 	| {% endif %}
 
@@ -29,8 +28,8 @@
 	.post-header-action
 		nav.navbar.navbar-expand
 			ul.navbar-nav
-				li.nav-item.dropdown
-					a.btn.btn-link.btn-icon(
+				li.dropdown
+					a.btn(
 						id="dropdown-post-{{ post.id }}"
 						href='#',
 						data-toggle='dropdown',
