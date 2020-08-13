@@ -13,14 +13,14 @@
 		strong {% trans "Changing your username will break all existing links to your profile." %}
 
 	a(
-		class="js-show-modal btn btn-success px-5 mr-auto",
+		class="js-show-modal btn btn-success",
 		data-modal_category='form',
 		data-modal_title='{% trans "Update username" %}',
 		data-content_url="{% url 'account_update_username' %}",
 		data-toggle='modal',
 		data-target='#modal',
 		href="#")
-		| Update Username...
+		span Update Username...
 
 	hr
 
@@ -30,13 +30,13 @@
 		strong {% trans "Keep in mind deletion is permanent, irreversible, gone, finito." %}
 
 	a(
-		class="js-show-modal btn btn-danger px-5 mr-auto",
+		class="js-show-modal btn btn-danger",
 		data-modal_category='form',
 		data-modal_title='{% trans "Permanently Delete Account" %}',
 		data-content_url="{% url 'account_delete'%}",
 		data-toggle='modal',
 		data-target='#modal',
 		href="#")
-		| Delete Account...
+		span Delete Account...
 
 | {% endblock %}
