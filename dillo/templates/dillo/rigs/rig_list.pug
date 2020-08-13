@@ -26,36 +26,39 @@
 					| {% endif %}
 	| {% endfor %}
 | {% else %}
-p.py-4.text-muted
+.post-list-empty
 	| {% url 'rig-create' as url_rig_create %}
 	| {% blocktrans with url_rig_create=url_rig_create %}
-	| No rigs yet. Got any to #[a(href="{{ url_rig_create }}") submit]?
+	p No rigs yet. #[a(href="{{ url_rig_create }}") Submit yours!]
 	| {% endblocktrans %}
 | {% endif %}
+
+.theater-footer
+	| {% include 'dillo/components/_pagination.pug' with page=page_obj %}
 | {% endblock theater-content %}
 
-| {% block sidebar %}
-.sidebar-block
-	a.btn.btn-primary.btn-sidebar(href="{% url 'rig-create' %}")
-		| {% trans 'Submit a Rig' %}
+| {% block theater-nav %}
+.nav-tabbar-items
+	a.btn(
+		href="{% url 'rig-list' %}",
+		class="{% ifequal request.get_full_path|slice:'-1' '/rigs' %}active{% endifequal %}")
+		span {% trans 'All Rigs' %}
 
 	| {% if request.user.is_authenticated %}
-	hr
-	a.btn.btn-link-bg.btn-sidebar(href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}")
-		strong {% trans 'My Rigs' %}
+	a.btn(
+		href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}",
+		class="{% if '?submitted-by' in request.get_full_path %}active{% endif %}")
+		span {% trans 'My Rigs' %}
 	| {% endif %}
 
-.sidebar-block
-	| {% include 'dillo/components/_footer.pug' %}
-| {% endblock sidebar %}
+	a.btn-cta(
+		href="{% url 'rig-create' %}",
+		class="{% if '/rigs/submit/' in request.path_info %}active{% endif %}")
+		span {% trans 'Submit a Rig' %}
 
-| {% block theater-nav %}
-.text-muted.d-flex.align-items-center
-	span.pr-2 {{ page_obj.paginator.count }} Rigs
-.ml-auto.text-muted.d-flex.align-items-center
+.pagination
+	.pagination-stat {{ page_obj.paginator.count }} Rigs
 	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
 | {% endblock theater-nav %}
 
-| {% block site_footer %}{% endblock %}
-
-| {% block base_classes %}mt-2{% endblock base_classes %}
+| {% block stream_width %}12{% endblock %}

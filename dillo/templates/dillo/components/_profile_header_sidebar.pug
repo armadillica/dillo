@@ -8,7 +8,7 @@
 		.profile-info-avatar
 			| {% include 'dillo/components/_profile_avatar.pug' with user=user size='medium' tooltip='bottom' %}
 
-		.profile-stats
+		a.profile-stats(href="{% url 'profile_details' user.username %}")
 			span.stat(
 				class="js-show-modal",
 				id="user-followers-{{ user.id }}",

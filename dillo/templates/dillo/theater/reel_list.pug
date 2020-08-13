@@ -9,7 +9,7 @@
 | {% if not user.profile.reel %}
 .card.theater-header
 	.card-body
-		.row.align-items-center
+		.row
 			.col-md-9
 				| {% url 'profile_edit' as profile_edit_url %}
 				| {% blocktrans with profile_edit_url=profile_edit_url %}
@@ -19,7 +19,7 @@
 
 			.col-md-3
 				a.btn.btn-primary.btn-block(href="{% url 'profile_edit' %}")
-					| {% trans 'Add Reel to Profile' %}
+					span {% trans 'Add Reel to Profile' %}
 | {% endif %}
 | {% endif %}
 
@@ -62,8 +62,8 @@
 | {% block theater-nav %}
 | {{ block.super }}
 
-.nav-tabbar-pagination
-	.nav-pagination-stat {{ page_obj.paginator.count }} Reels
+.pagination
+	.pagination-stat {{ page_obj.paginator.count }} Reels
 	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
 | {% endblock theater-nav %}
 

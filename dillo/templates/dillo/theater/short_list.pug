@@ -25,29 +25,29 @@
 .post-list-empty
 	| {% url 'short-create' as url_short_create %}
 	| {% blocktrans with url_short_create=url_short_create %}
-	p No shorts yet. #[a(href="{{ url_short_create }}") Submit yours!]
+	p No shorts yet. #[a(href="{{ url_short_create }}") Submit your short film!]
 	| {% endblocktrans %}
 | {% endif %}
 | {% endblock theater-content %}
 
-| {% block sidebar %}
-.sidebar-block
-	a.btn.btn-primary.btn-sidebar(href="{% url 'short-create' %}")
-		| {% trans 'Submit Short' %}
+| {% block theater-nav %}
+| {{ block.super }}
+.nav-tabbar-items
+	| {% if request.user.is_authenticated %}
+	a.btn(
+		href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}",
+		class="{% if '?submitted-by' in request.get_full_path %}active{% endif %}")
+		span {% trans 'My Shorts' %}
+	| {% endif %}
 
-| {% if request.user.is_authenticated %}
-.sidebar-block
-	a.btn.btn-link-bg.btn-sidebar(href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}")
-		strong {% trans 'My Shorts' %}
-| {% endif %}
+	a.btn-cta(
+		href="{% url 'short-create' %}",
+		class="{% if '/shorts/submit/' in request.path_info %}active{% endif %}")
+		span {% trans 'Submit Short' %}
 
-| {% if trending_tags %}
-.sidebar-block.feed-trending
-	| {% include 'dillo/components/_feed_trending.pug' %}
-| {% endif %}
+.pagination
+	.pagination-stat {{ page_obj.paginator.count }} Shorts
+	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
+| {% endblock theater-nav %}
 
-.sidebar-block
-	| {% include 'dillo/components/_footer.pug' %}
-| {% endblock sidebar %}
-
-| {% block site_footer %}{% endblock %}
+| {% block stream_width %}12{% endblock %}

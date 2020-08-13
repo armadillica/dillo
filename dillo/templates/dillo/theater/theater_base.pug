@@ -10,13 +10,13 @@
 		.nav-tabbar-items
 			a.btn.btn-border(
 				href="{% url 'reel-list' %}",
-				class="{% if '/reels/' in request.path_info %}is-active{% endif %}")
-				| {% trans 'Reels' %}
+				class="{% if '/reels/' in request.path_info %}active{% endif %}")
+				span {% trans 'Reels' %}
 
 			a.btn.btn-border(
 				href="{% url 'short-list' %}",
-				class="{% if '/shorts/' in request.path_info %}is-active{% endif %}")
-				| {% trans 'Short Films' %}
+				class="{% ifequal request.get_full_path|slice:'-1' '/theater/shorts' %}active{% endifequal %}")
+				span {% trans 'Short Films' %}
 		| {% endblock theater-nav %}
 
 	| {% block theater-content %}
