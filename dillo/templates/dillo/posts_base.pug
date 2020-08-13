@@ -62,8 +62,9 @@ ul#posts-list.post-list(
 		a.btn-create(
 			href="{% url 'post_create' %}",
 			title='{% trans "Create a Post" %}')
-			i.i-edit
-			strong {% trans "Create Post" %}
+			span
+				i.i-edit
+				| {% trans "Create Post" %}
 | {% endblock navbar_upload_btn%}
 
 | {% if request.user.is_authenticated %}
