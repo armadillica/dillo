@@ -84,8 +84,9 @@
 				a.job-apply-button(
 					href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
 					title='{% trans "Apply Now" %}')
-					i.i-check
-					strong {% trans "Apply Now" %}
+					span
+						i.i-check
+						strong {% trans "Apply Now" %}
 	| {% endfor %}
 
 	| {% else %}

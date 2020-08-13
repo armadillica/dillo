@@ -9,8 +9,6 @@
     .col-sm-10
       .row
         .col-sm-4
-          h1 Headings
-
           h1 Heading H1
           h2 Heading H2
           h3 Heading H3
@@ -33,6 +31,85 @@
           blockquote
             p This is a #[code blockquote]. Who knows how is this going to render.
             small Author: Unknown
+
+  hr
+
+  .row
+    .col-sm-2(style="text-align: right")
+      h1 Dropdown
+
+    .col-sm-10
+      .post-header-action
+        nav.navbar.navbar-expand
+          ul.navbar-nav
+            li.dropdown
+              a.btn.active(
+                id="dropdown-post-123"
+                href='#',
+                data-toggle='dropdown',
+                aria-haspopup='true',
+                aria-expanded='false')
+                i.i-more-vertical
+
+              .dropdown-menu.dropdown-menu-right.show(
+                aria-labelledby='dropdown-post-123',
+                style="position: relative; margin: 0 1rem 1rem 0")
+                a.dropdown-item(
+                  href="#",
+                  class="js-follow-toggle",
+                  data-follow_toggle_label="Turn On Post Notifications"
+                  title='Toggle Post Notifications')
+                  span
+                    i.i-bell-off
+                    | Turn On Post Notifications
+
+                .dropdown-divider
+
+                a.dropdown-item(
+                  href="#",
+                  class="js-show-modal",
+                  data-modal_category='form',
+                  data-modal_title='Report',
+                  data-content_url="#",
+                  data-toggle='modal',
+                  data-target='#modal')
+                  span
+                    i.i-flag
+                    | Report...
+
+
+                .dropdown-divider
+
+                a.dropdown-item(
+                  href="#",
+                  class="js-show-modal",
+                  data-modal_category='form',
+                  data-modal_title='Edit',
+                  data-content_url="123",
+                  data-toggle='modal',
+                  data-target='#modal')
+                  span
+                    i.i-edit
+                    | Edit
+
+                // TODO: Add confirmation prompt.
+                a.dropdown-item.danger(
+                  href="#",
+                  class="js-delete-post",
+                  data-post_delete_url="123",
+                  title='Delete Post')
+                  span
+                    i.i-trash
+                    | Delete Post
+
+                .dropdown-divider
+
+                a.dropdown-item(
+                  href="#",
+                  title='See User')
+                  span
+                    i.i-coffee
+                    | User
 
   hr
 
