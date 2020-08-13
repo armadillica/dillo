@@ -1,16 +1,18 @@
 | {% load activity_tags %}
 | {% if request.user.is_authenticated %}
 | {% if request.user != target_object %}
-a.btn.btn-sidebar.px-5(
-	href="{% follow_url target_object %}",
-	data-follow_toggle_label="{% if request.user|is_following:target_object %}Follow{% else %}Unfollow{% endif %}",
-	class="js-follow-toggle {% if request.user|is_following:target_object %}btn-outline-primary{% else %}btn-primary{% endif %}",
-	)
-	i(class="{% if tag %}i-hash{% else %}{% if request.user|is_following:target_object %}i-cancel{% else %}i-user-plus{% endif %}{% endif %}")
-	| {% if request.user|is_following:target_object %}Unfollow{% else %}Follow{% endif %}{% if tag %} Hashtag{% endif %}
+a.btn.btn-sidebar(
+  href="{% follow_url target_object %}",
+  data-follow_toggle_label="{% if request.user|is_following:target_object %}Follow{% else %}Unfollow{% endif %}",
+  class="js-follow-toggle {% if request.user|is_following:target_object %}btn-outline-primary{% else %}btn-primary{% endif %}",
+  )
+  span
+    i(class="{% if tag %}i-hash{% else %}{% if request.user|is_following:target_object %}i-cancel{% else %}i-user-plus{% endif %}{% endif %}")
+    | {% if request.user|is_following:target_object %}Unfollow{% else %}Follow{% endif %}{% if tag %} Hashtag{% endif %}
 | {% endif %}
 | {% else %}
-a.btn.btn-primary.btn-block.px-5.with-icon(href="{% follow_url target_object %}")
-	i.i-user-plus
-	| Follow
+a.btn.btn-primary.btn-block(href="{% follow_url target_object %}")
+  span
+    i.i-user-plus
+    | Follow
 | {% endif %}

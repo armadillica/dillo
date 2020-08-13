@@ -8,6 +8,6 @@
     | {% for tag in trending_tags %}
     li
       a.btn-tag(href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
-        | &#35;{{ tag | truncatechars:35 }}
+        span &#35;{{ tag | truncatechars:35 }}
     | {% endfor %}
 | {% endif %}
