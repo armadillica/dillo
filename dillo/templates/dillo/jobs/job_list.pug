@@ -70,12 +70,12 @@
 		.row
 			.col-12.col-sm-6
 				| {% if job.level %}
-				span.badge.badge-secondary.with-icon
+				span.badge
 					i.i-jobs
 					| {{ job.level }}
 				| {% endif %}
 
-				span.badge.badge-secondary.with-icon
+				span.badge
 					i.i-home
 					| {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
 

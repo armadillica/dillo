@@ -86,12 +86,12 @@ nav.nav-primary.navbar.navbar-expand
 				a.btn.btn-link(
 					href="{% url 'account_login' %}",
 					title='{% trans "Log In" %}')
-					strong {% trans "Log In" %}
+					span {% trans "Log In" %}
 
 				a.btn.btn-link-bg-primary(
 					href="{% url 'account_signup' %}",
 					title='{% trans "Sign Up" %}')
-					strong {% trans "Sign Up" %}
+					span {% trans "Sign Up" %}
 				| {% endif %}
 
 				| {% if request.user.is_authenticated %}
