@@ -3,6 +3,11 @@
 | {% block content %}
 .container
   .row
+    .col(style="text-align: center; margin: 2rem 0 1rem; font-size: 3rem")
+      h1 anima.to
+
+  hr
+  .row
     .col-sm-2(style="text-align: right")
       h1 Type
 
@@ -28,9 +33,76 @@
             #[abbr(title="Anyway") Either way] helps for #[code white-space] stuff.
 
         .col-sm-4
+          p(style="font-size: var(--font-size-lg)") Font size large. #[code --font-size-lg]
+          p Regular font size. #[code --font-size-base]
+          p(style="font-size: var(--font-size-sm)") Font size small. #[code --font-size-sm]
+          p(style="font-size: var(--font-size-xs)") Font size extra-small. #[code --font-size-xs]
+
           blockquote
             p This is a #[code blockquote]. Who knows how is this going to render.
             small Author: Unknown
+
+  hr
+
+  .row
+    .col-sm-2(style="text-align: right")
+      h1 Cards
+
+    .col-sm-10
+      .row.cards-row
+        .col
+          .card
+            .card-thumbnail
+              img(src="https://loremflickr.com/1280/720/glaciares")
+            .card-header
+              .card-title Lonely Title
+
+        .col
+          .card
+            .card-thumbnail
+              img(src="https://loremflickr.com/1280/720/patagonia")
+            .card-header
+              .card-header-text
+                .card-title I'm a Title
+                .card-subtitle With a Subtitle!
+
+        .col
+          .card
+            .card-thumbnail
+              img(src="https://loremflickr.com/1280/720/pinguinos")
+            .card-header
+              .card-header-image
+                img(src="https://loremflickr.com/100/100/")
+              .card-header-text
+                .card-title I've got an Image
+                .card-subtitle With a Subtitle!
+
+        .col
+          .card-borderless
+            .card-thumbnail
+              img(src="https://loremflickr.com/1280/720/chalten")
+            .card-header
+              .card-title Lonely Title
+
+        .col
+          .card-borderless
+            .card-thumbnail
+              img(src="https://loremflickr.com/1280/720/patagonico")
+            .card-header
+              .card-header-text
+                .card-title I'm a Title
+                .card-subtitle With a Subtitle!
+
+        .col
+          .card-borderless
+            .card-thumbnail
+              img(src="https://loremflickr.com/1280/720/patagonica")
+            .card-header
+              .card-header-image
+                img(src="https://loremflickr.com/100/100/")
+              .card-header-text
+                .card-title I've got an Image
+                .card-subtitle With a Subtitle!
 
   hr
 
@@ -138,7 +210,7 @@
       p
         .btn-group
           .btn
-            span Button
+            span Grouped Buttons
           .btn
             i.i-check
           .btn.active
@@ -151,9 +223,11 @@
 
         .btn-group
           .btn
-            span Group
+            span Another
           .btn.active
-            span of
+            span Group
+          .btn
+            span o'
           .btn
             span Icons
 
