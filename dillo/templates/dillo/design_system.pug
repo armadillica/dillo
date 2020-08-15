@@ -7,9 +7,11 @@
       h1 anima.to
 
   hr
-  .row
+
+  .row#type
     .col-sm-2(style="text-align: right")
-      h1 Type
+      a(href="#type")
+        h1 Type
 
     .col-sm-10
       .row
@@ -22,11 +24,14 @@
           h6 Heading H6
 
         .col-sm-4
-          p Regular paragraph, and #[a(href="#") a link].
+          p(style="color: var(--body-color-highlight)") Regular paragraph, highlight color.
+          p Regular paragraph, base color.
+          p(style="color: var(--body-color-secondary)") Regular paragraph, secondary color.
+          p(style="color: var(--body-color-hint)") Regular paragraph, hint color.
 
           p.
             Another #[strong paragraph] this time #[i slightly longer],
-            to see how it wraps around. Comes in handy to check the
+            to see how it wraps around. #[a(href="#") Comes in handy] to check the
             #[code line-height] CSS property.
             Is it supercalifragilisticexpialidocious
             or #[strong megasupercalifragilisticexpialidocious]?
@@ -44,9 +49,10 @@
 
   hr
 
-  .row
+  .row#cards
     .col-sm-2(style="text-align: right")
-      h1 Cards
+      a(href="#cards")
+        h1 Cards
 
     .col-sm-10
       .row.cards-row
@@ -106,9 +112,10 @@
 
   hr
 
-  .row
+  .row#dropdown
     .col-sm-2(style="text-align: right")
-      h1 Dropdown
+      a(href="#dropdown")
+        h1 Dropdown
 
     .col-sm-10
       .post-header-action
@@ -185,9 +192,10 @@
 
   hr
 
-  .row
+  .row#buttons
     .col-sm-2(style="text-align: right")
-      h1 Buttons
+      a(href="#buttons")
+        h1 Buttons
 
     .col-sm-10
       div
