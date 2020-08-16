@@ -5,22 +5,28 @@
 
 | {% block content_card %}
 .card.account.setup
+	| {% if title %}
 	.card-header
 		h1.card-title {{ title }}
+	| {% endif %}
+
 	.card-body
-		p {{ message }}
+		| {% if message %}
+		p.card-message {{ message }}
+		| {% endif %}
+
 		form(
 			method="post"
 			enctype="multipart/form-data",
 			id="generic_form")
 			| {% csrf_token %}
-			.form-group.mb-0
+
+			.form-group
 				| {{ form | crispy }}
 				| {% block profile_setup_form_extra %} {% endblock %}
 
-				.d-flex.border-top.pt-3.mt-3
-					input.btn.btn-primary.px-5.ml-auto(
-						type="submit",
-						value="Next")
+			.card-cta
+				button.btn.btn-primary(type="submit")
+					span {% trans 'Next' %}
 
 | {% endblock %}
