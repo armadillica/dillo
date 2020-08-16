@@ -112,10 +112,42 @@
 
   hr
 
+  .row#cards
+    .col-sm-2(style="text-align: right")
+      a(href="#cards-single")
+        h1 Single Card
+      small Login or setup screens.
+
+    .col-sm-10
+      .row.cards-row(style="min-height: 600px")
+        .col(style="margin: auto")
+          .card.account.setup
+            .card-header
+              h1.card-title Setup Your Profile
+
+            .card-body
+              p.card-message Choose an avatar that represents you!
+
+              form(
+                method="post"
+                enctype="multipart/form-data",
+                id="generic_form")
+
+                .form-group
+                  input.form-control(type="text")
+
+                .card-cta
+                  button.btn.btn-primary(type="submit")
+                    span Next
+
+  hr
+
   .row#dropdown
     .col-sm-2(style="text-align: right")
       a(href="#dropdown")
         h1 Dropdown
+
+      small Account or post options.
 
     .col-sm-10
       .post-header-action
