@@ -16,13 +16,12 @@ html(lang="en")
 
 		| {% if messages %}
 		| {% for message in messages %}
-		.container.alert.alert-dismissible.show.my-2(
+		.container.alert.alert-dismissible.show(
 			role='alert',
 			class="{% if message.tags %}alert-{{ message.tags }}{% endif %}")
-			| {{ message }}
+			| {{ message }} esa!
 			button.close(type='button', data-dismiss='alert', aria-label='Close')
-				span(aria-hidden='true')
-					i.i-cancel
+				i.i-cancel(aria-hidden='true')
 		| {% endfor %}
 		| {% endif %}
 
