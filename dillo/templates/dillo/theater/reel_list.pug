@@ -24,7 +24,7 @@
 | {% endif %}
 
 | {% if object_list %}
-.row.row-cols-1.row-cols-sm-2.row-cols-lg-4
+.row.cards-row
 	| {% for profile in object_list %}
 	.col
 		.card-borderless
@@ -36,13 +36,13 @@
 					height="{{ im.height }}",
 					alt="{{ profile.name }}")
 			| {% endthumbnail %}
-			.d-flex
-				.card-header-thumbnail
+			.card-header
+				.card-header-image
 					| {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
-				a.card-header-title(href="{% url 'reel-detail' profile.user_id %}")
-					div {{ profile.name }}
+				a.card-header-text(href="{% url 'reel-detail' profile.user_id %}")
+					.card-title {{ profile.name }}
 					| {% if profile.location %}
-					small {{ profile.location }}
+					.card-subtitle {{ profile.location }}
 					| {% endif %}
 	| {% endfor %}
 
@@ -63,7 +63,7 @@
 | {{ block.super }}
 
 .pagination
-	.pagination-stat {{ page_obj.paginator.count }} Reels
+	.pagination-stat {{ page_obj.paginator.count }} Reel{{ page_obj.paginator.count | pluralize }}
 	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
 | {% endblock theater-nav %}
 
