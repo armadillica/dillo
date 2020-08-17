@@ -12,17 +12,19 @@
 .card
 	.card-header
 		h1 {% trans 'Submit Rig' %}
+
+	.card-body
 		p If you are not the rig creator you can submit the rig anyway, just make sure you provide credit!
 
-	form(method="post", enctype="multipart/form-data")
-		.card-body
+		form(method="post", enctype="multipart/form-data")
 			| {% csrf_token %}
 			| {{ form | crispy }}
+
 		.card-cta
-			button.btn.btn-primary.btn-block.with-icon(
-				type="submit")
-				i.i-check
-				| {% trans 'Submit Rig' %}
+			button.btn.btn-primary.btn-block(type="submit")
+				span
+					i.i-check
+					| {% trans 'Submit Rig' %}
 | {% endblock content_card %}
 
 | {% block javascript_extra %}
