@@ -51,14 +51,15 @@ ul#posts-list.post-list(
 				href="?layout=list",
 				data-toggle="tooltip",
 				class="{% if layout == 'list' %}is-active{% endif %}")
-				i.i-list
+				span
+					i.i-list
 			a.btn.btn-link-bg.btn-sidebar(
 				title="{% trans 'Grid View' %}",
 				href="?layout=grid",
 				data-toggle="tooltip",
 				class="{% if layout == 'grid' %}is-active{% endif %}")
-				i.i-grid
-
+				span
+					i.i-grid
 
 		| {% url 'post_create' as btn_create_url %}
 		| {% trans 'Create a Post' as btn_label %}
