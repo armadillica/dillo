@@ -1,0 +1,11 @@
+a.btn.btn-block(
+  class="{{ class }}",
+  href="{{ url }}",
+  title="{{ label }}")
+  span
+    {% if icon %}
+    i(class="{{ icon }}")
+    span {{ label }}
+    {% else %}
+    | {{ label }}
+    {% endif %}
