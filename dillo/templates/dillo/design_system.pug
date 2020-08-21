@@ -230,36 +230,43 @@
         h1 Buttons
 
     .col-sm-10
+      p Buttons must have their labels inside #[code= '<span>'] elements.
+      p Only Label: #[code='<a class="btn btn-primary"><span>Label</span></a>']
+      p Label + Icon: #[code='<a class="btn btn-primary"><span><i class="i-check"></i><span>Label</span></span></a>']
+
+      hr
+
       div
         button
           span Button Element
         .btn
           span Text Button
         .btn
-          i.i-check
+          span
+            i.i-check
         .btn.active
-          i.i-check
-        .btn
-          i.i-check
-          span Span + Icon Outside
+          span
+            i.i-check
         .btn
           span
             i.i-check
-            | Span + Icon Inside
+            span Span + Icon Inside
 
       p
         .btn-group
           .btn
             span Grouped Buttons
           .btn
-            i.i-check
+            span
+              i.i-check
           .btn.active
-            i.i-check
-            span With Span + Active
+            span
+              i.i-check
+              span With Span + Active
           .btn
             span
               i.i-check
-              | With Span
+              span With Span
 
         .btn-group
           .btn
@@ -319,22 +326,22 @@
             a.btn.active(href="#")
               span
                 i.i-user
-                | Profile
+                span Profile
 
             a.btn(href="#")
               span
                 i.i-shield
-                | Change Password
+                span Change Password
 
             a.btn(href="#")
               span
                 i.i-mail
-                | Email
+                span Email
 
             a.btn(href="#")
               span
                 i.i-bell
-                | Notifications
+                span Notifications
 
         .col-4
           .btn-toolbar-col
@@ -380,6 +387,18 @@
       a(href="#").btn.btn-sm.btn-primary
         span Primary
 
+      hr
+
+      h2 Animated
+
+      p Use the class #[code is-loading] to replace the label with a spinner. Click to toggle loader.
+
+      .btn-toolbar-row
+        a(href="#").btn.is-loading.js-toggle-loading
+          span
+            i.i-check
+        a(href="#").btn.is-loading.js-toggle-loading
+          span A loooong label.
 | {% endblock content %}
 
 | {% block javascript_extra %}
@@ -388,4 +407,15 @@ script.
     e.preventDefault();
     $(this).toggleClass('active');
   });
+
+  $('.js-toggle-loading').on('click', function(e){
+    e.preventDefault();
+    $(this).toggleClass('is-loading');
+  });
 | {% endblock javascript_extra %}
+
+| {% block head_extra %}
+style.
+  /* Buttons with .is-loading class have pointer events disabled. Enable them here so we can test how it looks. */
+  .js-toggle-loading { pointer-events: initial !important; }
+| {% endblock head_extra %}
