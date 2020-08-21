@@ -61,7 +61,7 @@
 							| {% trans "Edit" %}
 
 						// TODO: Add confirmation prompt.
-						a.dropdown-item(
+						a.dropdown-item.danger(
 							href="#",
 							class="js-delete-post",
 							data-post_delete_url="{% url 'post_delete' hash_id=post.hash_id %}",
