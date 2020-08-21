@@ -57,15 +57,11 @@
 
 .sidebar-block
 	| {% if request.user.is_authenticated %}
-	button.btn.btn-primary.btn-sidebar(
-		href="#",
-		class="js-show-modal",
-		data-modal_category='form',
-		data-modal_title='{% trans "Suggest Event" %}',
-		data-content_url="{% url 'contact' %}",
-		data-toggle='modal',
-		data-target='#modal')
-		| {% trans "Suggest Event" %}
+
+	| {% url 'contact' as content_url %}
+	| {% trans 'Suggest Event' as btn_modal_label %}
+	| {% include 'dillo/components/_button_modal_open.pug' with url=content_url label=btn_modal_label class='btn-primary' %}
+
 	| {% else %}
 	a.btn.btn-outline-primary.btn-sidebar(href="{% url 'account_login' %}")
 		| {% trans "Suggest Event" %}

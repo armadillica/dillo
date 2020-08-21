@@ -101,11 +101,12 @@
 
 | {% block sidebar %}
 //- TODO: Nice text about job posting.
+
+
 .sidebar-block
-	a.btn.btn-primary.btn-sidebar(
-		href="{% url 'job-create' %}",
-		title='{% trans "Post a Job" %}')
-		strong {% trans "Post a Job" %}
+	| {% url 'job-create' as btn_post_create_url %}
+	| {% trans 'Post a Job' as btn_label %}
+	| {% include 'dillo/components/_button_generic.pug' with url=btn_post_create_url label=btn_label class="btn-primary" %}
 
 //- TODO: Filters for jobs.
 
