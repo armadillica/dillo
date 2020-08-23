@@ -6,13 +6,16 @@ form(
 	method="post"
 	id="generic_form")
 	| {% csrf_token %}
-	.form-group.mb-0
+
+	.form-group
 		| {{ form | crispy }}
-		.d-flex.border-top.pt-3.mt-3
-			input.btn.btn-primary.px-5.ml-auto(
-				type="submit",
-				value="{{ submit_label }}",
-				class="{{ submit_class }}")
+
+	.btn-toolbar-row
+		button.btn.btn-primary(
+			type="submit",
+			value="{{ submit_label }}",
+			class="{{ submit_class }}")
+			span {{ submit_label }}
 
 script.
 	$("#generic_form").on("submit", function (event) {
