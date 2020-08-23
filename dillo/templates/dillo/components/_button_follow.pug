@@ -8,11 +8,11 @@ a.btn.btn-sidebar(
   )
   span
     i(class="{% if tag %}i-hash{% else %}{% if request.user|is_following:target_object %}i-cancel{% else %}i-user-plus{% endif %}{% endif %}")
-    | {% if request.user|is_following:target_object %}Unfollow{% else %}Follow{% endif %}{% if tag %} Hashtag{% endif %}
+    span {% if request.user|is_following:target_object %}Unfollow{% else %}Follow{% endif %}{% if tag %} Hashtag{% endif %}
 | {% endif %}
 | {% else %}
 a.btn.btn-primary.btn-block(href="{% follow_url target_object %}")
   span
     i.i-user-plus
-    | Follow
+    span Follow
 | {% endif %}
