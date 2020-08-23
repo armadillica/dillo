@@ -1,16 +1,19 @@
 | {% load i18n %}
 | {% if comments %}
 | {% for comment in comments %}
-.comment-container
+//- Contains the first comment and all replies.
+.comment-container(class="js-comment-container {% if comment.replies %}has-replies{% endif %}")
+	//- Main comment.
 	| {% include 'dillo/components/_comment_view.pug' with comment=comment %}
 
-	//- If the comment has replies, show them here.
+	//- Comment replies.
 	| {% for reply in comment.replies %}
 	| {% include 'dillo/components/_comment_view.pug' with comment=reply %}
 	| {% endfor %}
 | {% endfor %}
 | {% endif %}
 
+//- Pagination.
 | {% if page_obj.has_next %}
 .btn.btn-link-text.btn-block.my-3(
 	class="js-load-more-comments",
@@ -18,7 +21,6 @@
 	| {% trans 'Load more comments...' %}
 | {% endif %}
 
+//- Initialize tooltips.
 script.
-	$(function () {
-		initTooltips();
-	});
+	$(function () {initTooltips();});

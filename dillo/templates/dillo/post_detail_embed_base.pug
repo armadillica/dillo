@@ -11,17 +11,21 @@ section.post-view-info.col-scrollable
 	| {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=true %}
 
 	| {% if request.user.is_anonymous %}
-	.pl-1.text-muted
-		| #[a(href="{% url 'account_login' %}") Sign in]&nbsp;to comment.
+	| #[a(href="{% url 'account_login' %}") Sign in]&nbsp;to comment.
 	| {% endif %}
-	#js-comments.pt-3(
-		data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
-	)
-		.spinner-border.text-muted
-		//- Comments are loaded via js
 
-	.comment-container(class="js-comment-form-placeholder")
-		| {% include 'dillo/components/_comment_form.pug' %}
+	.comments-container
+		//- Comments are loaded via js here, see below.
+		#js-comments(
+			data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
+		)
+			.comments-loading
+				.spinner-border-sm
+				span loading comments...
+
+		//- Placeholder for when we need to bring the form back here (e.g. on reply cancel).
+		#js-comment-form-placeholder
+			| {% include 'dillo/components/_comment_form.pug' %}
 | {% endblock info %}
 
 | {% block javascript_history %}
