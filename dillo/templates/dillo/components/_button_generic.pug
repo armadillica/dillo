@@ -1,7 +1,9 @@
 a.btn.btn-block(
   class="{{ class }}",
   href="{{ url }}",
-  title="{{ label }}")
+  title="{{ label }}",
+  target="{% if external %}_blank{% endif %}",
+  rel="{% if external %}noopener noreferrer{% endif %}")
   span
     {% if icon %}
     i(class="{{ icon }}")
