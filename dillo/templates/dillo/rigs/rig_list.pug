@@ -57,7 +57,7 @@
 		span {% trans 'Submit a Rig' %}
 
 .pagination
-	.pagination-stat {{ page_obj.paginator.count }} Rigs
+	.pagination-stat {{ page_obj.paginator.count }} Rig{{ page_obj.paginator.count | pluralize }}
 	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
 | {% endblock theater-nav %}
 
