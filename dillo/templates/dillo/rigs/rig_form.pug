@@ -20,11 +20,11 @@
 			| {% csrf_token %}
 			| {{ form | crispy }}
 
-		.card-cta
-			button.btn.btn-primary.btn-block(type="submit")
-				span
-					i.i-check
-					| {% trans 'Submit Rig' %}
+			.card-cta
+				button.btn.btn-primary(type="submit")
+					span
+						i.i-check
+						span {% trans 'Submit Rig' %}
 | {% endblock content_card %}
 
 | {% block javascript_extra %}
