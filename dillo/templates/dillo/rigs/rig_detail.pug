@@ -13,14 +13,14 @@ h1 {{ rig.name }}
 | {% block theater-content %}
 .card
 	| {% thumbnail rig.image "1280" crop="center" as im %}
-	a(href="{{ rig.url }}", target="_blank")
-		img.img-fluid.rounded.mb-3(
+	a.card-thumbnail(href="{{ rig.url }}", target="_blank")
+		img(
 			src="{{ im.url }}",
 			width="{{ im.width }}",
 			height="{{ im.height }}",
 			alt="{{ rig.name }}")
 	| {% endthumbnail %}
-	.p-3.lead
+	.card-body
 		| {{ rig.description | markdown | safe }}
 | {% endblock theater-content %}
 
@@ -29,12 +29,9 @@ h1 {{ rig.name }}
 	| {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_rig_url next_obj_url=next_rig_url %}
 
 .sidebar-block
-	.pb-3
-		a.btn.btn-block.btn-primary.with-icon(
-			href="{{ rig.url }}",
-			target="_blank")
-			i.i-download
-			| Download Rig
+	| {% url rig.url as btn_create_url %}
+	| {% trans 'Download Rig' as btn_label %}
+	| {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary" icon="i-download" external=True %}
 
 	ul.sidebar-list
 		| {% if rig.supported_software %}
@@ -54,7 +51,11 @@ h1 {{ rig.name }}
 	small.text-muted
 		| {% trans 'Posted' %} #[span(title="{{ rig.created_at }}") {{ rig.created_at | timesince | compact_timesince }}] {% trans 'ago' %}
 
-	.btn-toolbar-row.mt-3
+	hr
+
+	.btn-toolbar-row
+
+		//- TODO(Pablo): Make into a component.
 		button.btn.btn-link-bg.btn-sidebar(
 			data-like_toggle_url="{% url 'like_toggle' content_type_id=rig.content_type_id object_id=rig.id %}",
 			class="js-like-toggle{% if rig|is_liked:request.user %} is-liked{% endif %}",
@@ -71,16 +72,12 @@ h1 {{ rig.name }}
 
 	| {% url 'rig-update' rig.pk as edit_url %}
 	| {% trans 'Edit Rig' as edit_label %}
-	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label %}
+	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' %}
 	| {% endif %}
-
-.p-3
-	a.btn.btn-outline-primary.btn-sidebar(href="{% url 'rig-create' %}")
-		strong {% trans 'Submit a Rig' %}
 
 	| {% if request.user.is_superuser %}
 	hr
 	| {% url 'admin:rigs_rig_change' rig.id as edit_url %}
-	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Whoosh Rig" %}
+	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label="Whoosh Rig" icon='i-edit' %}
 	| {% endif %}
 	| {% endblock sidebar %}
