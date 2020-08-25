@@ -2,6 +2,7 @@
 
 | {% block content %}
 .container(class="base-columns {% block base_classes %}{% endblock base_classes %}")
+	| {% block stream_nav %}{% endblock stream_nav %}
 	.row
 		| {% block stream_wrapper %}
 		div(class="stream col-lg-{% block stream_width %}9{% endblock %} {% block stream_classes %}{% endblock stream_classes %}")

@@ -1,6 +1,12 @@
 | {% load i18n %}
 
 .pagination
+	//- Only show stats if there is label and we are in list view.
+	| {% if label and not is_detail %}
+	.pagination-stat {{ page_obj.paginator.count }} {{ label }}{{ page_obj.paginator.count | pluralize }}
+	| {% endif %}
+
+	//- In detail view, only show previous and next buttons, no page number.
 	| {% if is_detail %}
 	.btn-toolbar-row
 		| {% if prev_obj_url %}
@@ -24,6 +30,7 @@
 
 	| {% else %}
 	.btn-toolbar-row
+		//- Previous button.
 		| {% if page_obj.has_previous %}
 		a.btn(href="?{{search}}&page={{ page_obj.previous_page_number }}", tabindex='-1')
 			i.i-chevron-left
@@ -34,6 +41,8 @@
 			span {% trans 'Previous' %}
 		| {% endif %}
 
+		//- Page number.
+		| {% if page_obj.has_previous or page_obj.has_next %}
 		.btn-group
 			| {% for page_number in page_obj.paginator.page_range %}
 			a.btn(
@@ -41,7 +50,9 @@
 				class="{% if page_number == page_obj.number %}active{% endif %}")
 				span {{ page_number }}
 			| {% endfor %}
+		| {% endif %}
 
+		//- Next button.
 		| {% if page_obj.has_next %}
 		a.btn(href="?page={{ page_obj.next_page_number }}")
 			span {% trans 'Next' %}
