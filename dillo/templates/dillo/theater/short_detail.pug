@@ -1,4 +1,4 @@
-| {% extends "dillo/theater/theater_base.pug" %}
+| {% extends "dillo/base_columns.pug" %}
 | {% load i18n %}
 | {% load dillo_filters %}
 | {% load micawber_tags %}
@@ -6,76 +6,66 @@
 
 | {% block page_title %}{{ short.title }}{% endblock page_title %}
 
-//- TODO: Fill OpenGraph data
-| {% block opengraph %}
-| {% endblock opengraph %}
 
-| {% block theater-content %}
+| {% block stream_nav %}
+.nav-tabbar
+  | {% block stream_nav_items %}
+  | {% include 'dillo/theater/_navigation_theater.pug' with is_shorts=True %}
+  | {{ block.super }}
+
+  | {% endblock stream_nav_items %}
+
+  | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_short_url next_obj_url=next_short_url %}
+| {% endblock stream_nav %}
+
+
+| {% block stream %}
 .row
-	.col-md-9
-		.profile-reel.mt-3 {{ short.url | oembed }}
-		.p-3 {{ short.description | markdown | safe | urlize }}
+  .col-md-9
+    .profile-reel.mt-3 {{ short.url | oembed }}
+    .p-3 {{ short.description | markdown | safe | urlize }}
 
-	.col-md-3
-		.sidebar-block
-			| {% thumbnail short.image "480" crop="center" as im %}
-			img.short-poster(
-				src="{{ im.url }}",
-				width="{{ im.width }}",
-				height="{{ im.height }}",
-				alt="{{ short.title }}")
-			| {% endthumbnail %}
+  .col-md-3
+    .sidebar-block
+      | {% thumbnail short.image "480" crop="center" as im %}
+      img.short-poster(
+        src="{{ im.url }}",
+        width="{{ im.width }}",
+        height="{{ im.height }}",
+        alt="{{ short.title }}")
+      | {% endthumbnail %}
 
-			h3 {{ short.title }}
+      h3 {{ short.title }}
 
-			small.text-muted
-				| {% trans 'Posted' %} #[span(title="{{ short.created_at }}") {{ short.created_at | timesince | shorten_timesince }}] {% trans 'ago by' %}
-				#[a.text-muted(href="{% url 'profile_details' short.user.username %}", title="{{ short.user.username }}") {{ short.user }}]
+      small.text-muted
+        | {% trans 'Posted' %} #[span(title="{{ short.created_at }}") {{ short.created_at | timesince | shorten_timesince }}] {% trans 'ago by' %}
+        #[a.text-muted(href="{% url 'profile_details' short.user.username %}", title="{{ short.user.username }}") {{ short.user }}]
 
-			hr
+      hr
 
-			.btn-toolbar-row
-				button.btn.btn-sidebar(
-					data-like_toggle_url="{% url 'like_toggle' content_type_id=short.content_type_id object_id=short.id %}",
-					class="js-like-toggle{% if short|is_liked:request.user %} is-liked{% endif %}",
-					title="{% if short|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}")
-					span
-						i.i-heart
-						span {% if short|is_liked:request.user %}{% trans 'Liked' %}{% else %}{% trans 'Like' %}{% endif %}
+      .btn-toolbar-row
+        button.btn.btn-sidebar(
+          data-like_toggle_url="{% url 'like_toggle' content_type_id=short.content_type_id object_id=short.id %}",
+          class="js-like-toggle{% if short|is_liked:request.user %} is-liked{% endif %}",
+          title="{% if short|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}")
+          span
+            i.i-heart
+            span {% if short|is_liked:request.user %}{% trans 'Liked' %}{% else %}{% trans 'Like' %}{% endif %}
 
-				| {% include 'dillo/components/_button_share.pug' with shared_object_label='short' %}
+        | {% include 'dillo/components/_button_share.pug' with shared_object_label='short' %}
 
-			| {% if short.user == request.user %}
-			hr
-			| {% url 'short-update' short.pk as btn_edit_url %}
-			| {% trans 'Edit Short' as btn_edit_label %}
-			| {% include 'dillo/components/_button_generic.pug' with url=btn_edit_url label=btn_edit_label icon='i-edit' %}
-			| {% endif %}
+      | {% if short.user == request.user %}
+      hr
+      | {% url 'short-update' short.pk as btn_edit_url %}
+      | {% trans 'Edit Short' as btn_edit_label %}
+      | {% include 'dillo/components/_button_generic.pug' with url=btn_edit_url label=btn_edit_label icon='i-edit' %}
+      | {% endif %}
 
-			| {% if request.user.is_superuser %}
-			hr
-			| {% url 'admin:dillo_short_change' short.pk as btn_edit_url %}
-			| {% include 'dillo/components/_button_generic.pug' with url=btn_edit_url label="Whoosh Short" icon='i-edit' %}
-			| {% endif %}
-| {% endblock theater-content %}
-
-| {% block theater-nav %}
-| {{ block.super }}
-.nav-tabbar-items
-	| {% if request.user.is_authenticated %}
-	a.btn(
-		href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}",
-		class="{% if '?submitted-by' in request.get_full_path %}active{% endif %}")
-		span {% trans 'My Shorts' %}
-	| {% endif %}
-
-	a.btn-cta(
-		href="{% url 'short-create' %}",
-		class="{% if '/shorts/submit/' in request.path_info %}active{% endif %}")
-		span {% trans 'Submit Short' %}
-
-.pagination
-	| {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_short_url next_obj_url=next_short_url %}
-| {% endblock theater-nav %}
+      | {% if request.user.is_superuser %}
+      hr
+      | {% url 'admin:dillo_short_change' short.pk as btn_edit_url %}
+      | {% include 'dillo/components/_button_generic.pug' with url=btn_edit_url label="Whoosh Short" icon='i-edit' %}
+      | {% endif %}
+| {% endblock stream %}
 
 | {% block stream_width %}12{% endblock %}

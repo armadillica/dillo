@@ -13,7 +13,7 @@
 			| {% csrf_token %}
 			| {{ form | crispy }}
 		.card-cta
-			button.btn.btn-primary.btn-block.with-icon(
+			button.btn.btn-primary(
 				type="submit")
 				span
 					i.i-check

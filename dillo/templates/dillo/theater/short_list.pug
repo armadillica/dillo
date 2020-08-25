@@ -1,53 +1,44 @@
-| {% extends "dillo/theater/theater_base.pug" %}
+| {% extends "dillo/base_columns.pug" %}
 | {% load i18n %}
 | {% load micawber_tags %}
 | {% load thumbnail %}
 
-| {% block theater-content %}
+
+| {% block stream_nav %}
+.nav-tabbar
+  | {% block stream_nav_items %}
+  | {% include 'dillo/theater/_navigation_theater.pug' with is_shorts=True %}
+  | {% endblock stream_nav_items %}
+
+  | {% include 'dillo/components/_pagination.pug' with page=page_obj label="Short" %}
+| {% endblock stream_nav %}
+
+
+| {% block stream %}
 | {% if object_list %}
 .row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-lg-2.row-cols-xl-3
-	| {% for short in object_list %}
-	.col
-		.card-borderless
-			| {% thumbnail short.image "480" crop="center" as im %}
-			a.card-thumbnail(href="{% url 'short-detail' short.pk %}", title="{{ short.title }}")
-				img.img-fluid(
-					src="{{ im.url }}",
-					width="{{ im.width }}",
-					height="{{ im.height }}",
-					alt="{{ short.title }}")
-			| {% endthumbnail %}
-			.card-body
-				a.card-title(href="{% url 'short-detail' short.pk %}")
-					| {{ short.title }}
-	| {% endfor %}
+  | {% for short in object_list %}
+  .col
+    .card-borderless
+      | {% thumbnail short.image "480" crop="center" as im %}
+      a.card-thumbnail(href="{% url 'short-detail' short.pk %}", title="{{ short.title }}")
+        img.img-fluid(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ short.title }}")
+      | {% endthumbnail %}
+      .card-body
+        a.card-title(href="{% url 'short-detail' short.pk %}")
+          | {{ short.title }}
+  | {% endfor %}
 | {% else %}
 .post-list-empty
-	| {% url 'short-create' as url_short_create %}
-	| {% blocktrans with url_short_create=url_short_create %}
-	p No shorts yet. #[a(href="{{ url_short_create }}") Submit your short film!]
-	| {% endblocktrans %}
+  | {% url 'short-create' as url_short_create %}
+  | {% blocktrans with url_short_create=url_short_create %}
+  p No shorts yet. #[a(href="{{ url_short_create }}") Submit your short film!]
+  | {% endblocktrans %}
 | {% endif %}
-| {% endblock theater-content %}
-
-| {% block theater-nav %}
-| {{ block.super }}
-.nav-tabbar-items
-	| {% if request.user.is_authenticated %}
-	a.btn(
-		href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}",
-		class="{% if '?submitted-by' in request.get_full_path %}active{% endif %}")
-		span {% trans 'My Shorts' %}
-	| {% endif %}
-
-	a.btn-cta(
-		href="{% url 'short-create' %}",
-		class="{% if '/shorts/submit/' in request.path_info %}active{% endif %}")
-		span {% trans 'Submit Short' %}
-
-.pagination
-	.pagination-stat {{ page_obj.paginator.count }} Shorts
-	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
-| {% endblock theater-nav %}
+| {% endblock stream %}
 
 | {% block stream_width %}12{% endblock %}
