@@ -1,0 +1,19 @@
+| {% load i18n %}
+
+.nav-tabbar-items
+  a.btn(
+    href="{% url 'rig-list' %}",
+    class="{% ifequal request.get_full_path|slice:'-1' '/rigs' %}active{% endifequal %}")
+    span {% trans 'All Rigs' %}
+
+  | {% if request.user.is_authenticated %}
+  a.btn(
+    href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}",
+    class="{% if '?submitted-by' in request.get_full_path %}active{% endif %}")
+    span {% trans 'My Rigs' %}
+  | {% endif %}
+
+  a.btn-cta(
+    href="{% url 'rig-create' %}",
+    class="{% if '/rigs/submit/' in request.path_info %}active{% endif %}")
+    span {% trans 'Submit a Rig' %}

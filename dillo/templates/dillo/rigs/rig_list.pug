@@ -1,64 +1,52 @@
-| {% extends "dillo/theater/theater_base.pug" %}
+| {% extends "dillo/base_columns.pug" %}
 | {% load i18n %}
 | {% load micawber_tags %}
 | {% load thumbnail %}
 
-| {% block theater-content %}
+
+| {% block stream_nav %}
+.nav-tabbar
+  | {% block stream_nav_items %}
+  | {% include 'dillo/rigs/_navigation_rig.pug' %}
+  | {% endblock stream_nav_items %}
+
+  | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="Rig" %}
+| {% endblock stream_nav %}
+
+
+| {% block stream %}
 | {% if object_list %}
 .row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-lg-2.row-cols-xl-3
-	| {% for rig in object_list %}
-	.col
-		.card-borderless
-			| {% thumbnail rig.image "640x360" crop="center" as im %}
-			a.card-thumbnail(href="{% url 'rig-detail' rig.pk %}", title="{{ rig.name }}")
-				img.img-fluid(
-					src="{{ im.url }}",
-					width="{{ im.width }}",
-					height="{{ im.height }}",
-					alt="{{ rig.name }}")
-			| {% endthumbnail %}
-			.card-body
-				a.card-header-title(href="{% url 'rig-detail' rig.pk %}")
-					| {{ rig.name }}
-					| {% if rig.supported_software %}
-					small.d-block
-						| {{ rig.supported_software.all|join:", " }}
-					| {% endif %}
-	| {% endfor %}
+  | {% for rig in object_list %}
+  .col
+    .card-borderless
+      | {% thumbnail rig.image "640x360" crop="center" as im %}
+      a.card-thumbnail(href="{% url 'rig-detail' rig.pk %}", title="{{ rig.name }}")
+        img.img-fluid(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ rig.name }}")
+      | {% endthumbnail %}
+      .card-body
+        a.card-header-title(href="{% url 'rig-detail' rig.pk %}")
+          | {{ rig.name }}
+          | {% if rig.supported_software %}
+          small.d-block
+            | {{ rig.supported_software.all|join:", " }}
+          | {% endif %}
+  | {% endfor %}
 | {% else %}
 .post-list-empty
-	| {% url 'rig-create' as url_rig_create %}
-	| {% blocktrans with url_rig_create=url_rig_create %}
-	p No rigs yet. #[a(href="{{ url_rig_create }}") Submit yours!]
-	| {% endblocktrans %}
+  | {% url 'rig-create' as url_rig_create %}
+  | {% blocktrans with url_rig_create=url_rig_create %}
+  p No rigs yet. #[a(href="{{ url_rig_create }}") Submit yours!]
+  | {% endblocktrans %}
 | {% endif %}
 
 .theater-footer
-	| {% include 'dillo/components/_pagination.pug' with page=page_obj %}
-| {% endblock theater-content %}
+  | {% include 'dillo/components/_pagination.pug' with page=page_obj %}
+| {% endblock stream %}
 
-| {% block theater-nav %}
-.nav-tabbar-items
-	a.btn(
-		href="{% url 'rig-list' %}",
-		class="{% ifequal request.get_full_path|slice:'-1' '/rigs' %}active{% endifequal %}")
-		span {% trans 'All Rigs' %}
-
-	| {% if request.user.is_authenticated %}
-	a.btn(
-		href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}",
-		class="{% if '?submitted-by' in request.get_full_path %}active{% endif %}")
-		span {% trans 'My Rigs' %}
-	| {% endif %}
-
-	a.btn-cta(
-		href="{% url 'rig-create' %}",
-		class="{% if '/rigs/submit/' in request.path_info %}active{% endif %}")
-		span {% trans 'Submit a Rig' %}
-
-.pagination
-	.pagination-stat {{ page_obj.paginator.count }} Rig{{ page_obj.paginator.count | pluralize }}
-	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
-| {% endblock theater-nav %}
 
 | {% block stream_width %}12{% endblock %}
