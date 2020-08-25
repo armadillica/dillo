@@ -1,75 +1,73 @@
-| {% extends "dillo/theater/theater_base.pug" %}
+| {% extends "dillo/base_columns.pug" %}
 | {% load i18n %}
 | {% load thumbnail %}
 
-| {% block theater-content %}
 
+| {% block stream_nav %}
+.nav-tabbar
+  | {% block stream_nav_items %}
+  | {% include 'dillo/theater/_navigation_theater.pug' %}
+  | {% endblock stream_nav_items %}
+
+  | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="Reel" %}
+| {% endblock stream_nav %}
+
+
+| {% block stream %}
 //- Notice for users without a reel.
 | {% if request.user.is_authenticated %}
 | {% if not user.profile.reel %}
 .card.theater-header
-	.card-body
-		.row
-			.col-md-9
-				| {% url 'profile_edit' as profile_edit_url %}
-				| {% blocktrans with profile_edit_url=profile_edit_url %}
-				| #[strong #[i.i-star] Your reel could be here!]
-				| Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
-				| {% endblocktrans %}
+  .card-body
+    .row
+      .col-md-9
+        | {% url 'profile_edit' as profile_edit_url %}
+        | {% blocktrans with profile_edit_url=profile_edit_url %}
+        | #[strong #[i.i-star] Your reel could be here!]
+        | Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
+        | {% endblocktrans %}
 
-			.col-md-3
-				| {% url 'profile_edit' as btn_profile_url %}
-				| {% trans 'Add Reel to Profile' as btn_profile_label %}
-				| {% include 'dillo/components/_button_generic.pug' with url=btn_profile_url label=btn_profile_label class="btn-primary" %}
-
+      .col-md-3
+        | {% url 'profile_edit' as btn_profile_url %}
+        | {% trans 'Add Reel to Profile' as btn_profile_label %}
+        | {% include 'dillo/components/_button_generic.pug' with url=btn_profile_url label=btn_profile_label class="btn-primary" %}
 | {% endif %}
 | {% endif %}
 
 | {% if object_list %}
 .row.cards-row
-	| {% for profile in object_list %}
-	.col
-		.card-borderless
-			| {% thumbnail profile.reel_thumbnail_16_9 "640x360" crop="center" as im %}
-			a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}", title="{{ profile.name }}")
-				img.img-fluid(
-					src="{{ im.url }}",
-					width="{{ im.width }}",
-					height="{{ im.height }}",
-					alt="{{ profile.name }}")
-			| {% endthumbnail %}
-			.card-header
-				.card-header-image
-					| {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
-				a.card-header-text(href="{% url 'reel-detail' profile.user_id %}")
-					.card-title {{ profile.name }}
-					| {% if profile.location %}
-					.card-subtitle {{ profile.location }}
-					| {% endif %}
-	| {% endfor %}
+  | {% for profile in object_list %}
+  .col
+    .card-borderless
+      | {% thumbnail profile.reel_thumbnail_16_9 "640x360" crop="center" as im %}
+      a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}", title="{{ profile.name }}")
+        img.img-fluid(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ profile.name }}")
+      | {% endthumbnail %}
+      .card-header
+        .card-header-image
+          | {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
+        a.card-header-text(href="{% url 'reel-detail' profile.user_id %}")
+          .card-title {{ profile.name }}
+          | {% if profile.location %}
+          .card-subtitle {{ profile.location }}
+          | {% endif %}
+  | {% endfor %}
 
 | {% else %}
 .post-list-empty
-	| {% url 'profile_edit' as url_short_create %}
-	| {% blocktrans with url_short_create=url_short_create %}
-	| No reels to show yet.
-	| {% endblocktrans %}
+  | {% url 'profile_edit' as url_short_create %}
+  | {% blocktrans with url_short_create=url_short_create %}
+  | No reels to show yet.
+  | {% endblocktrans %}
 | {% endif %}
 
 .theater-footer
-	| {% include 'dillo/components/_pagination.pug' with page=page_obj %}
+  | {% include 'dillo/components/_pagination.pug' with page=page_obj %}
 
-| {% endblock theater-content %}
-
-| {% block theater-nav %}
-| {{ block.super }}
-
-.pagination
-	.pagination-stat {{ page_obj.paginator.count }} Reel{{ page_obj.paginator.count | pluralize }}
-	| {% include 'dillo/components/_pagination.pug' with page_obj=page_obj %}
-| {% endblock theater-nav %}
-
-| {% block sidebar %}
-| {% endblock sidebar %}
+| {% endblock stream %}
 
 | {% block stream_width %}12{% endblock %}
