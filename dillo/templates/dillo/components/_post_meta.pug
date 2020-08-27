@@ -13,7 +13,6 @@
 
 .post-meta
 	ul
-
 		li.post-meta-link(title="{{ post.published_at | date:'DATETIME_FORMAT' }}")
 			| {{ post.published_at | timesince | shorten_timesince }} {% trans 'ago' %}
 
