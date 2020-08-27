@@ -119,34 +119,53 @@ script.
 		let postsList = document.getElementById('posts-list');
 		let embedUrl = $(postsList).data('embed_url');
 
-		//- Get the embed_url attribute of posts-list
-		$.get(embedUrl, function (data) {
-			$(postsList).html(data);
-			loadPosts(data);
-			twemoji.parse(postsList);
-			toggleAutoplay();
-		});
+		//- Get content of the next page and append it to the existing list.
+		function triggerLoadPosts(ob){
 
+			//- If it's a URL, simply load that.
+			if (typeof ob == 'string'){
+				$.get(ob, function (data) {
+					$(postsList).html(data);
+					loadPosts(data);
+					twemoji.parse(postsList);
+				});
 
+			//- If it's an object (Load More button), remove it and load next page.
+			} else {
+
+				//- Get url to load next page.
+				let url = embedUrl + ob.data('next_url');
+
+				//- Remove this element to prevent future triggers.
+				ob.parents('li').remove();
+
+				$.get(url, function (data) {
+					$(postsList).append(data);
+					loadPosts(data);
+					twemoji.parse(postsList);
+				});
+
+			}
+		}
+
+		//- Get the embed_url attribute of posts-list.
+		triggerLoadPosts(embedUrl);
+
+		//- Trigger on scroll.
 		$(window).scroll(function() {
 			toggleAutoplay();
 
-			//- Pagination: load more posts when in viewport
+			//- Pagination: load more posts when in viewport.
 			$('.js-load-more').each(function() {
 				if ($(this).is(':in-viewport()')){
-					//- Get url to load next page
-					let url = embedUrl + $(this).data('next_url');
-					//- Remove this element to prevent future triggers
-					$(this).parents('li').remove();
-					//- Get content of the next page and append it to the existing list
-					$.get(url, function (data) {
-						$(postsList).append(data);
-						loadPosts(data);
-						twemoji.parse(postsList);
-					});
+					triggerLoadPosts($(this));
 				}
 			});
+		});
 
+		//- Trigger on clicking Load More.
+		$('body').on('click', '.js-load-more', function() {
+			triggerLoadPosts($(this));
 		});
 	});
 | {% endblock javascript_extra %}
