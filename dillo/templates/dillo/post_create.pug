@@ -31,14 +31,16 @@
 			| {% csrf_token %}
 			| {{ form }}
 
-		.d-flex
-			button.post-create-btn.disabled.btn-lg(
-				type='submit',
-				class="js-post-create-btn")
-				| {% trans "Create Post" %}
+		.form-group
+			.btn-toolbar-row
+				button.post-create-btn.disabled.btn-lg(
+					type='submit',
+					class="js-post-create-btn")
+					span {% trans "Create Post" %}
 
-.d-flex.text-muted.w-100.py-5
-	small.mx-auto {% trans "Tip: Use #hashtags to increase discoverability." %}
+	.form-tip
+		span {% trans "Tip: Use #hashtags to increase discoverability." %}
+
 | {% endblock content_card %}
 
 | {% block javascript_extra %}
