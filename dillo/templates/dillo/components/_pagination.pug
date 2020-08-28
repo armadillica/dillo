@@ -11,21 +11,25 @@
 	.btn-toolbar-row
 		| {% if prev_obj_url %}
 		a.btn(href="{{ prev_obj_url }}")
-			i.i-chevron-left
-			span {% trans 'Previous' %}
+			span
+				i.i-chevron-left
+				span {% trans 'Previous' %}
 		| {% else %}
 		a.btn.disabled(href="#")
-			i.i-chevron-left
-			span {% trans 'Previous' %}
+			span
+				i.i-chevron-left
+				span {% trans 'Previous' %}
 		| {% endif %}
 		| {% if next_obj_url %}
 		a.btn(href="{{ next_obj_url }}")
-			span {% trans 'Next' %}
-			i.i-chevron-right
+			span
+				span {% trans 'Next' %}
+				i.i-chevron-right
 		| {% else %}
 		a.btn.disabled(href="#")
-			span {% trans 'Next' %}
-			i.i-chevron-right
+			span
+				span {% trans 'Next' %}
+				i.i-chevron-right
 		| {% endif %}
 
 	| {% else %}
