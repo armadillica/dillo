@@ -52,21 +52,23 @@
 		| {% endif %}
 
 		| {% if is_post_details %}
-		.post-media-item-actions
+		.post-media-item-actions.btn-toolbar-row
 			a.btn.btn-link.btn-sm(
 				class="js-media-download",
 				data-toggle="tooltip",
 				href="{{ im_full.url }}",
 				title="{% trans 'Download' %}",
 				download="{{ post.user }}-{{ post.hash_id }}")
-				i.i-download
+				span
+					i.i-download
 
-			button.btn.btn-link.btn-sm.ml-2(
+			button.btn.btn-link.btn-sm(
 				class="js-media-expand",
 				data-toggle="tooltip",
 				title="{% trans 'Fullscreen' %}",
 				data-media-url='{{ im_full.url }}')
-				i.i-maximize
+				span
+					i.i-maximize
 		| {% endif %}
 	| {% endthumbnail %}
 	| {% endthumbnail %}
