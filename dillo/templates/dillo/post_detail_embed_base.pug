@@ -7,8 +7,8 @@
 section.post-view-info.col-scrollable
 	| {% include 'dillo/components/_post_header.pug' with post=post show_tags=false %}
 	| {% include 'dillo/components/_post_description.pug' with post=post is_post_details=true %}
-	| {% include 'dillo/components/_post_actions.pug' with post=post %}
-	| {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=true %}
+	| {% include 'dillo/components/_post_actions.pug' with post=post is_post_details=True %}
+	| {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=True %}
 
 	| {% if request.user.is_anonymous %}
 	| #[a(href="{% url 'account_login' %}") Sign in]&nbsp;to comment.
