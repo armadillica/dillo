@@ -8,7 +8,7 @@ button.post-actions-btn(
 	data-share-title="{% trans 'Share Post' %}",
 	data-share-text="{% firstof post.user.profile.name post.user.username %} {% trans 'on' %} anima.to",
 	data-share-url="{% url 'post_detail' post.hash_id %}",
-	data-popover='#popover-share')
+	data-target='#modal-share-{{ post.hash_id }}')
 	i.i-share
 | {% else %}
 button.btn.btn-sidebar(
@@ -17,33 +17,53 @@ button.btn.btn-sidebar(
 	data-share-title="{% trans 'Share' %} {{ shared_object_label }} {% trans 'from' %} {{ site_name }}",
 	data-share-text="{% trans 'Share' %} {{ shared_object_label }} {% trans 'from' %} {{ site_name }}",
 	data-share-url="{{ request.build_absolute_uri }}",
-	data-popover='#popover-share')
+	data-target='#modal-share-{{ post.hash_id }}')
 	span
 		i.i-share
-		strong {% trans 'Share' %}
+		span {% trans 'Share' %}
 | {% endif %}
 
-#popover-share.popover.card.p-3.bg-dark
-	.btn-toolbar-row
-		button.btn.btn-sm.btn-link.btn-social-facebook(
-			title="{% trans 'Share on' %} Facebook", class="js-share-pop",
-			data-social-media="facebook", data-share-url="{{ request.build_absolute_uri }}")
-			i.i-facebook
+.modal.fade(
+	id="modal-share-{{ post.hash_id }}",
+	tabindex='-1',
+	role='dialog',
+	aria-labelledby='modal-title-{{ post.hash_id }}',
+	aria-hidden='true')
+	.modal-dialog.modal-dialog-centered(role='document')
+		.modal-content
+			.modal-header
+				h2.modal-title(id="modal-title-{{ post.hash_id }}")
+					| {% trans 'Share' %}
 
-		button.btn.btn-sm.btn-link.btn-social-twitter(
-			title="{% trans 'Share on' %} Twitter", class="js-share-pop",
-			data-social-media="twitter", data-share-url="{{ request.build_absolute_uri }}")
-			i.i-twitter
+				button.close(
+					type='button',
+					data-dismiss='modal',
+					aria-label='Close')
+					span(aria-hidden='true')
+						i.i-cancel
 
-		button.btn.btn-sm.btn-link.btn-social-pinterest(
-			title="{% trans 'Share on' %} Pinterest", class="js-share-pop",
-			data-social-media="pinterest", data-share-url="{{ request.build_absolute_uri }}")
-			i.i-pinterest
+			.modal-body
+				.btn-toolbar-row
+					button.btn.btn-social-facebook(
+						title="{% trans 'Share on' %} Facebook", class="js-share-pop",
+						data-social-media="facebook", data-share-url="{{ request.build_absolute_uri }}")
+						span
+							i.i-facebook
 
-		button.btn.btn-sm.btn-link.btn-social-linkedin(
-			title="{% trans 'Share on' %} LinkedIn", class="js-share-pop",
-			data-social-media="linkedin", data-share-url="{{ request.build_absolute_uri }}")
-			i.i-linkedin
+					button.btn.btn-social-twitter(
+						title="{% trans 'Share on' %} Twitter", class="js-share-pop",
+						data-social-media="twitter", data-share-url="{{ request.build_absolute_uri }}")
+						span
+							i.i-twitter
 
-		button.btn.btn-sm.btn-link(data-dismiss="modal", class="js-dismiss-modal", data-dismiss-modal="#popover-share")
-			i.i-cancel
+					button.btn.btn-social-pinterest(
+						title="{% trans 'Share on' %} Pinterest", class="js-share-pop",
+						data-social-media="pinterest", data-share-url="{{ request.build_absolute_uri }}")
+						span
+							i.i-pinterest
+
+					button.btn.btn-social-linkedin(
+						title="{% trans 'Share on' %} LinkedIn", class="js-share-pop",
+						data-social-media="linkedin", data-share-url="{{ request.build_absolute_uri }}")
+						span
+							i.i-linkedin
