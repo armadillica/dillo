@@ -4,8 +4,11 @@
 	data-post_layout="grid",
 	data-post_hash_id="{{ post.hash_id }}",
 	id="post-media-{{ post.hash_id }}")
+
+	//- .js-show-modal: opens the post in #modal-post-detail.
+	//- .js-post-media: for switching thumbnail for gif on hover (see posts.js)
 	a.post-media-item-grid(
-		class="js-show-modal",
+		class="js-show-modal js-post-media",
 		data-content_url="{% url 'post_detail' post.hash_id %}",
 		data-toggle='modal',
 		data-target='#modal-post-detail',
