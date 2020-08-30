@@ -23,7 +23,6 @@ li.post-container(
 			span
 				| {{ post.postmedia_set.first.content_object.views_count|compact_number }} {% trans 'views' %}
 				#[strong.px-2 ·]
-				| {% endif %}
 				| {{ post.published_at | timesince | shorten_timesince }} {% trans 'ago' %}
 			| {% endif %}
 
