@@ -11,58 +11,16 @@
 		.comment-header
 			a.comment-author(
 				href="{% url 'profile_details' comment.user.username %}",
-				title="{{ comment.user.username }}") {{ comment.user.username }}
+				title="{{ comment.user.username }}")
+				| {{ comment.user.username }}
 			a.comment-date(
 				href="{% url 'post_detail' comment.post.hash_id %}#comment-{{ comment.id }}",
 				title="{{ comment.created_at | date:'DATETIME_FORMAT' }}")
 				| {{ comment.created_at | timesince | compact_timesince }}
 
-		.comment-content {{ comment.content | linkify_tags_and_mentions | urlizetrunc:20 | linebreaksbr }}
-
-		.comment-actions
-			.btn-toolbar-row.btn-sm
+			.btn-toolbar-row.right
+				//- Dropdown menu.
 				| {% if request.user.is_authenticated %}
-				.btn.btn-link.btn-like(
-					id="likes-count-{{ comment.content_type_id }}-{{ comment.id }}",
-					data-toggle="tooltip",
-					data-like_toggle_url="{% url 'like_toggle' content_type_id=comment.content_type_id object_id=comment.id %}",
-					class="js-like-toggle {% if comment|is_liked:request.user %}is-liked{% endif %}",
-					title="{% trans 'Like comment' %}")
-					span
-						i.i-heart
-						| {% if comment.likes.count > 0 %}
-						span.js-likes-count {{ comment.likes.count }}
-						| {% endif %}
-
-				//- Reply button. If comment.parent_comment then it's a reply.
-				.btn.btn-link(
-					class="js-reply-comment",
-					data-comment_id="{{ comment.id }}",
-					data-parent_comment_id="{{ comment.parent_comment.id }}",
-					data-toggle="tooltip",
-					title="{% trans 'Reply to this comment' %}")
-					span {% trans "Reply" %}
-				| {% else %}
-				//- Dummy buttons, redirect to login.
-				a.btn.btn-link.btn-like(
-					data-toggle="tooltip",
-					href="{% url 'account_login' %}",
-					title="{% trans 'Like comment' %}")
-					span
-						i.i-heart
-						| {% if comment.likes.count > 0 %}
-						span {{ comment.likes.count }}
-						| {% endif %}
-
-				a.btn.btn-link(
-					data-toggle="tooltip",
-					href="{% url 'account_login' %}",
-					title="{% trans 'Reply to this comment' %}")
-					span {% trans "Reply" %}
-				| {% endif %}
-
-				| {% if request.user.is_authenticated %}
-
 				ul.navbar-nav
 					li.nav-item.dropdown
 						a#dropdown-comment.btn.btn-link(
@@ -97,4 +55,54 @@
 								i.i-flag
 								| {% trans "Report" %}...
 							| {% endif %}
+				| {% endif %}
+
+
+		//- The text and content of the comment.
+		.comment-content
+			| {{ comment.content | linkify_tags_and_mentions | urlizetrunc:20 | linebreaksbr }}
+
+
+		//- Buttons e.g. Reply, Like.
+		.comment-actions
+			.btn-toolbar-row
+				| {% if request.user.is_authenticated %}
+				.btn-like(
+					id="likes-count-{{ comment.content_type_id }}-{{ comment.id }}",
+					data-toggle="tooltip",
+					data-like_toggle_url="{% url 'like_toggle' content_type_id=comment.content_type_id object_id=comment.id %}",
+					class="js-like-toggle {% if comment|is_liked:request.user %}is-liked{% endif %}",
+					title="{% trans 'Like comment' %}")
+					span
+						i.i-heart
+						| {% if comment.likes.count > 0 %}
+						span.js-likes-count {{ comment.likes.count }}
+						| {% endif %}
+
+				//- Reply button. If comment.parent_comment then it's a reply.
+				.btn-reply(
+					class="js-reply-comment",
+					data-comment_id="{{ comment.id }}",
+					data-parent_comment_id="{{ comment.parent_comment.id }}",
+					data-toggle="tooltip",
+					title="{% trans 'Reply to this comment' %}")
+					span {% trans "Reply" %}
+
+				| {% else %}
+				//- Dummy buttons, redirect to login.
+				a.btn-like(
+					data-toggle="tooltip",
+					href="{% url 'account_login' %}",
+					title="{% trans 'Like comment' %}")
+					span
+						i.i-heart
+						| {% if comment.likes.count > 0 %}
+						span {{ comment.likes.count }}
+						| {% endif %}
+
+				a.btn-reply(
+					data-toggle="tooltip",
+					href="{% url 'account_login' %}",
+					title="{% trans 'Reply to this comment' %}")
+					span {% trans "Reply" %}
 				| {% endif %}
