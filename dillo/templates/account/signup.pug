@@ -7,7 +7,7 @@
 | {% block card_width %}6{% endblock %}
 
 | {% block content_card %}
-.card.account
+.card.account.login
 	.card-header
 		h1.card-title {% trans "Welcome" %}
 
@@ -36,9 +36,9 @@
 
 			.card-cta
 				button.btn.btn-primary.btn-block(type='submit')
-					| {% trans "Sign Up" %}
+					span {% trans "Sign Up" %}
 
 	.card-footer
-		a.btn.btn-link(href='{{ login_url }}')
-			| {% blocktrans %}Already have an account?{% endblocktrans %}
+		a.btn.btn-text(href='{{ login_url }}')
+			span {% blocktrans %}Already have an account?{% endblocktrans %}
 | {% endblock content_card %}

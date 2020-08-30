@@ -9,12 +9,15 @@
 | {% block content %}
 
 .container
-	.row.py-4
-		.col-md-8.mx-auto
-			h1 Update job
-			form(method="post", enctype="multipart/form-data")
-				| {% csrf_token %}
-				| {{ form | crispy }}
-				input.btn.btn-primary.btn-block.my-4(type="submit" value="Update")
+  .row.py-4
+    .col-md-8.mx-auto
+      h1 Update Job
+
+      form(method="post", enctype="multipart/form-data")
+        | {% csrf_token %}
+        | {{ form | crispy }}
+
+        button.btn.btn-primary(type="submit")
+         span Update
 
 | {% endblock content %}

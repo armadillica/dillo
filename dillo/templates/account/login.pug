@@ -8,7 +8,7 @@
 | {% block card_width %}6{% endblock %}
 
 | {% block content_card %}
-.card.account
+.card.account.login
 	.card-header
 		h1.card-title {% trans "Hello" %}
 	.card-body
@@ -34,13 +34,14 @@
 
 			.card-cta
 				button.btn.btn-primary.btn-block(type='submit')
-					| {% trans "Sign In" %}
+					span {% trans "Sign In" %}
 
 	.card-footer
-		a.btn.btn-link(href='{{ signup_url }}')
-			| {% trans "Create a New Account" %}
+		.btn-toolbar-row
+			a.btn.btn-text(href='{{ signup_url }}')
+				span {% trans "Create a New Account" %}
 
-		a.btn.btn-link(href="{% url 'account_reset_password' %}")
-			| {% trans "Forgot Password" %}
+			a.btn.btn-text(href="{% url 'account_reset_password' %}")
+				span {% trans "Forgot Password" %}
 
 | {% endblock content_card %}
