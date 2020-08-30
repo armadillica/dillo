@@ -17,8 +17,9 @@ form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="mul
 				| {% include 'dillo/components/_formset_link_list.pug' %}
 
 				.d-flex.border-top.py-3.mt-3
-					input.btn.btn-primary.px-5.ml-auto(
-						type="submit", value="Save Changes")
+					button.btn.btn-primary.px-5.ml-auto(
+						type="submit")
+						span {% trans 'Save Changes' %}
 
 | {% endblock content_account_edit_form %}
 
