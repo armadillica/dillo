@@ -15,7 +15,6 @@ section.post-view-info.col-scrollable
 		| {% url 'account_login' as btn_create_url %}
 		| {% trans 'Log in to comment' as btn_label %}
 		| {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary" %}
-
 	hr
 	| {% endif %}
 

@@ -63,8 +63,8 @@
 	| {% include 'dillo/components/_button_modal_open.pug' with url=content_url label=btn_modal_label class='btn-primary' %}
 
 	| {% else %}
-	a.btn.btn-outline-primary.btn-sidebar(href="{% url 'account_login' %}")
-		| {% trans "Suggest Event" %}
+	a.btn.btn-primary.btn-sidebar(href="{% url 'account_login' %}")
+		span {% trans "Suggest Event" %}
 	| {% endif %}
 
 //- TODO: Filters for events.
