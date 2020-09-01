@@ -2,16 +2,16 @@
 | {% load i18n %}
 | {% block profile_setup_form_extra %}
 | {% if trending_tags %}
-.feed-trending.setup.px-5
+.feed-trending.setup
 	.feed-group
 		ul
 			| {% for tag in trending_tags %}
 			li
-				a.btn.btn-link(
+				a.btn-tag(
 					class="js-tag-follow",
 					data-value="{{ tag }}",
 					href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
-					| &#35;{{ tag | truncatechars:35 }}
+					span &#35;{{ tag | truncatechars:35 }}
 			| {% endfor %}
 | {% endif %}
 | {% endblock profile_setup_form_extra %}

@@ -29,7 +29,7 @@
 					span.mr-2 {{ emailaddress.email }}
 
 					| {% if emailaddress.primary %}
-					span.badge.badge-light.mr-2 {% trans "Primary" %}
+					span.badge.badge-light {% trans "Primary" %}
 					| {% endif %}
 
 					| {% if emailaddress.verified %}
@@ -40,17 +40,15 @@
 
 			| {% endfor %}
 
-			.d-flex.pt-3
-				button.btn.btn-outline-primary.mr-3(type='submit', name='action_primary')
-					| {% trans 'Make Primary' %}
+			.btn-toolbar-row.btn-sm
+				button.btn.btn-primary(type='submit', name='action_primary')
+					span {% trans 'Make Primary' %}
 
-				button.btn.btn-outline-secondary(type='submit', name='action_send')
-					| {% trans 'Re-send Verification' %}
+				button.btn.btn-secondary(type='submit', name='action_send')
+					span {% trans 'Re-send Verification' %}
 
-				.ml-auto
-
-				button.btn.btn-outline-danger(type='submit', name='action_remove')
-					| {% trans 'Remove' %}
+				button.btn.btn-danger(type='submit', name='action_remove')
+					span {% trans 'Remove' %}
 	| {% else %}
 	p
 		strong {% trans 'Warning:'%}
@@ -64,8 +62,10 @@
 	form.add_email(method='post', action="{% url 'account_email' %}")
 		| {% csrf_token %}
 		| {{ form | crispy }}
-		button.btn.btn-primary(name='action_add', type='submit')
-			| {% trans "Add E-mail" %}
+
+		.card-cta
+			button.btn.btn-primary(name='action_add', type='submit')
+				span {% trans "Add E-mail" %}
 | {% endblock %}
 
 | {% block extra_body %}

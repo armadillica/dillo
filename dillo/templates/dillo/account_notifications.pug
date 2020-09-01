@@ -8,33 +8,33 @@
 
 | {% block content_account_edit_form %}
 .card-header
-	h1 {% trans "Manage your notifications" %}
+  h1 {% trans "Manage your notifications" %}
 
 .card-body
-	form(action="{% url 'account-email-notifications' %}", method="post")
-		| {% csrf_token %}
-		.form-group
-			| {{ form | crispy }}
+  form(action="{% url 'account-email-notifications' %}", method="post")
+    | {% csrf_token %}
+    .form-group
+      | {{ form | crispy }}
 
-		.d-flex.border-top.pt-3.mt-3
-			input.btn.btn-primary.px-5(
-				type="submit", value="Save Changes")
+    .card-cta
+      button.btn.btn-primary(type="submit", name="action")
+        span {% trans "Save Changes" %}
 
 | {% endblock content_account_edit_form %}
 
 | {% block javascript_extra %}
 script.
-	let notificationFieldActions = ['like', 'follow', 'comment', 'reply']
-	$('#id_is_enabled').on('change', function (event) {
-		notificationFieldActions.forEach(value => {
-			let $inputField = $('#id_is_enabled_for_' + value);
-			if ($(this).prop("checked")) {
-				$inputField.removeAttr('disabled');
-			} else {
-				$inputField.attr('disabled', true);
-			}
-		});
-	});
+  let notificationFieldActions = ['like', 'follow', 'comment', 'reply']
+  $('#id_is_enabled').on('change', function (event) {
+    notificationFieldActions.forEach(value => {
+      let $inputField = $('#id_is_enabled_for_' + value);
+      if ($(this).prop("checked")) {
+        $inputField.removeAttr('disabled');
+      } else {
+        $inputField.attr('disabled', true);
+      }
+    });
+  });
 | {% endblock javascript_extra %}
 
 
