@@ -51,16 +51,18 @@ script.
 script.
 	$(function() {
 
+		// Load comments.
 		let $commentsContainer = $("#js-comments");
 		$.get($commentsContainer.data('comments_url'), function (data) {
 			$commentsContainer.html(data);
 		});
 
+		// Resize comment field on typing.
 		let $commentTextField = $('#id_content');
 		if ($commentTextField.length === 0) {return};
-		//- Resize comment field on typing.
 		$commentTextField.autoResize();
-		//- Send comment on Ctrl+Enter.
+
+		// Send comment on Ctrl+Enter.
 		$commentTextField.on("keyup", function (e) {
 			if ((e.keyCode == 13 || e.key === 'Enter') && e.ctrlKey) {
 				$(this).submit();
