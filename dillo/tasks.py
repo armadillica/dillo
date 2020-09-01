@@ -453,10 +453,11 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
         # Get 10 posts with that tag
         posts = dillo.models.posts.Post.objects.filter(tags__name__in=[target.name])[:10]
         for post in posts:
-            # Find post action
-            action = models_actstream.Action.objects.get(
+            # Find post action (get only the first, as the same post could be
+            # connected with multiple tags)
+            action = models_actstream.Action.objects.filter(
                 verb='posted', action_object_object_id=post.pk
-            )
+            ).first()
             push_action_in_user_feed(User.objects.get(pk=user_id), action)
     # If unfollow User
     elif action == 'unfollow' and isinstance(target, User):
