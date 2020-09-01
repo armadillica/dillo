@@ -43,6 +43,11 @@ ul#posts-list.post-list(
 | {% block sidebar %}
 
 | {% block navbar_upload_btn %}
+| {% if request.user.is_authenticated %}
+.sidebar-block.profile-sidebar
+	| {% include 'dillo/components/_profile_header_sidebar.pug' %}
+| {% endif %}
+
 .sidebar-block
 	.btn-toolbar-row
 		.btn-group
@@ -65,11 +70,6 @@ ul#posts-list.post-list(
 		| {% trans 'Create a Post' as btn_label %}
 		| {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary" icon="i-edit" %}
 | {% endblock navbar_upload_btn%}
-
-| {% if request.user.is_authenticated %}
-.sidebar-block.profile-sidebar
-	| {% include 'dillo/components/_profile_header_sidebar.pug' %}
-| {% endif %}
 
 | {% if trending_tags %}
 .sidebar-block.feed-trending
