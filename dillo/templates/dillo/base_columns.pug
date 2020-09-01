@@ -12,7 +12,8 @@
 
 		| {% block sidebar_wrapper %}
 		div(class="sidebar col-lg-{% block sidebar_width %}3{% endblock %} {% block sidebar_classes %}{% endblock sidebar_classes %}")
-			| {% block sidebar %}
-			| {% endblock sidebar %}
+			.sidebar-affix
+				| {% block sidebar %}
+				| {% endblock sidebar %}
 		| {% endblock sidebar_wrapper %}
 | {% endblock content %}
