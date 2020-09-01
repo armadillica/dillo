@@ -2,7 +2,7 @@
 | {% load dillo_filters %}
 
 .post-actions
-	.post-actions-button-group
+	.btn-toolbar-row
 		| {% if request.user.is_authenticated %}
 		button.post-actions-btn(
 			data-toggle="tooltip", data-placement="bottom",
@@ -10,13 +10,15 @@
 			class="js-like-toggle{% if post|is_liked:request.user %} is-liked{% endif %}",
 			data-like_toggle_url="{% url 'like_toggle' content_type_id=post.content_type_id object_id=post.id %}",
 			)
-			i.i-heart
+			span
+				i.i-heart
 		| {% else %}
 		a.post-actions-btn(
 			data-toggle="tooltip", data-placement="bottom",
 			href="{% url 'account_signup' %}",
 			title="{% trans 'Like' %}")
-			i.i-heart
+			span
+				i.i-heart
 		| {% endif %}
 
 		| {% include 'dillo/components/_button_share.pug' with shared_object_label='job' is_post=True %}
@@ -25,19 +27,21 @@
 	.post-carousel-dots
 	| {% endif %}
 
-	.post-actions-button-group.right
+	.btn-toolbar-row.right
 		| {% if request.user.is_authenticated %}
 		button.post-actions-btn(
 			class="js-bookmark-toggle btn-bookmark {% if post|is_bookmarked:request.user %}is-active{% endif %}",
 			title="{% trans 'Save to Bookmarks' %}",
 			data-toggle="tooltip", data-placement="bottom",
 			data-bookmark_toggle_url="{% url 'bookmark_toggle' post.id %}")
-			i.i-bookmark
+			span
+				i.i-bookmark
 		| {% else %}
 		a.post-actions-btn(
 			class="btn-bookmark",
 			href="{% url 'account_signup' %}",
 			title="{% trans 'Save to Bookmarks' %}",
 			data-toggle="tooltip", data-placement="bottom")
-			i.i-bookmark
+			span
+				i.i-bookmark
 		| {% endif %}

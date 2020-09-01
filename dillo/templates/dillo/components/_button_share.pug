@@ -9,7 +9,8 @@ button.post-actions-btn(
 	data-share-text="{% firstof post.user.profile.name post.user.username %} {% trans 'on' %} anima.to",
 	data-share-url="{% url 'post_detail' post.hash_id %}",
 	data-target='#modal-share-{{ post.hash_id }}')
-	i.i-share
+	span
+		i.i-share
 | {% else %}
 button.btn.btn-sidebar(
 	class="js-share",

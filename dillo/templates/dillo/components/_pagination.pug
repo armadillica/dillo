@@ -10,7 +10,7 @@
 	| {% if is_detail %}
 	.btn-toolbar-row
 		| {% if prev_obj_url %}
-		a.btn(href="{{ prev_obj_url }}")
+		a.btn.btn-prev(href="{{ prev_obj_url }}")
 			span
 				i.i-chevron-left
 				span {% trans 'Previous' %}
@@ -21,7 +21,7 @@
 				span {% trans 'Previous' %}
 		| {% endif %}
 		| {% if next_obj_url %}
-		a.btn(href="{{ next_obj_url }}")
+		a.btn.btn-next(href="{{ next_obj_url }}")
 			span
 				span {% trans 'Next' %}
 				i.i-chevron-right
@@ -36,7 +36,7 @@
 	.btn-toolbar-row
 		//- Previous button.
 		| {% if page_obj.has_previous %}
-		a.btn(href="?{{search}}&page={{ page_obj.previous_page_number }}", tabindex='-1')
+		a.btn.btn-prev(href="?{{search}}&page={{ page_obj.previous_page_number }}", tabindex='-1')
 			i.i-chevron-left
 			span {% trans 'Previous' %}
 		| {% else %}
@@ -58,7 +58,7 @@
 
 		//- Next button.
 		| {% if page_obj.has_next %}
-		a.btn(href="?page={{ page_obj.next_page_number }}")
+		a.btn.btn-next(href="?page={{ page_obj.next_page_number }}")
 			span {% trans 'Next' %}
 			i.i-chevron-right
 		| {% else %}
