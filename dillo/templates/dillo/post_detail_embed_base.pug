@@ -19,6 +19,10 @@ section.post-view-info.col-scrollable
 	| {% endif %}
 
 	.comments-container
+		//- Placeholder for when we need to bring the form back here (e.g. on reply cancel).
+		#js-comment-form-placeholder
+			| {% include 'dillo/components/_comment_form.pug' %}
+
 		//- Comments are loaded via js here, see below.
 		#js-comments(
 			data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
@@ -27,9 +31,6 @@ section.post-view-info.col-scrollable
 				.spinner-border-sm
 				span loading comments...
 
-		//- Placeholder for when we need to bring the form back here (e.g. on reply cancel).
-		#js-comment-form-placeholder
-			| {% include 'dillo/components/_comment_form.pug' %}
 | {% endblock info %}
 
 | {% block javascript_history %}
