@@ -41,8 +41,9 @@
 			span {% trans 'Previous' %}
 		| {% else %}
 		a.btn.disabled(href="#")
-			i.i-chevron-left
-			span {% trans 'Previous' %}
+			span
+				i.i-chevron-left
+				span {% trans 'Previous' %}
 		| {% endif %}
 
 		//- Page number.
@@ -59,11 +60,13 @@
 		//- Next button.
 		| {% if page_obj.has_next %}
 		a.btn.btn-next(href="?page={{ page_obj.next_page_number }}")
-			span {% trans 'Next' %}
-			i.i-chevron-right
+			span
+				span {% trans 'Next' %}
+				i.i-chevron-right
 		| {% else %}
 		a.btn.disabled(href="#")
-			span {% trans 'Next' %}
-			i.i-chevron-right
+			span
+				span {% trans 'Next' %}
+				i.i-chevron-right
 		| {% endif %}
 	| {% endif %}

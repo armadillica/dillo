@@ -52,8 +52,8 @@
 		| {% endif %}
 
 		| {% if is_post_details %}
-		.post-media-item-actions.btn-toolbar-row
-			a.btn.btn-link.btn-sm(
+		.post-media-item-actions.btn-toolbar-row.btn-sm
+			a.btn.btn-link(
 				class="js-media-download",
 				data-toggle="tooltip",
 				href="{{ im_full.url }}",
@@ -62,7 +62,7 @@
 				span
 					i.i-download
 
-			button.btn.btn-link.btn-sm(
+			button.btn.btn-link(
 				class="js-media-expand",
 				data-toggle="tooltip",
 				title="{% trans 'Fullscreen' %}",
