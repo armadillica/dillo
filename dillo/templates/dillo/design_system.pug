@@ -112,38 +112,6 @@
 
   hr
 
-  .row#cards
-    .col-sm-2(style="text-align: right")
-      a(href="#cards-single")
-        h1 Single Card
-      small Login or setup screens.
-
-    .col-sm-10
-      .row.cards-row(style="min-height: 600px")
-        .col(style="margin: auto")
-          .card.account.setup
-            .card-header
-              h1.card-title Setup Your Profile
-
-            .card-body
-              p.card-message Choose an avatar that represents you!
-
-              form(
-                method="post"
-                enctype="multipart/form-data",
-                id="generic_form")
-
-                .form-group
-                  input.form-control(type="text")
-
-                .card-cta
-                  button.btn.btn-primary(type="submit")
-                    span
-                      span 'Next'
-                      i.i-chevron-right
-
-  hr
-
   .row#dropdown
     .col-sm-2(style="text-align: right")
       a(href="#dropdown")
@@ -238,53 +206,27 @@
 
       hr
 
+      p
+        .btn-toolbar-row
+          a.btn(href="#") #[span btn]
+          a.btn-link(href="#") #[span btn-link]
+
+      p
+        .btn-toolbar-row
+          a.btn-primary(href="#") #[span btn-primary]
+          a.btn-primary-alt(href="#") #[span btn-primary-alt]
+
       div
         button
           span Button Element
         .btn
-          span Text Button
-        .btn
-          span
-            i.i-check
-        .btn.active
-          span
-            i.i-check
-        .btn
-          span
-            i.i-check
-            span Span + Icon Inside
+          span Regular Div
 
       p
-        .btn-group
-          .btn
-            span Grouped Buttons
-          .btn
-            span
-              i.i-check
-          .btn.active
-            span
-              i.i-check
-              span With Span + Active
-          .btn
-            span
-              i.i-check
-              span With Span
-
-        .btn-group
-          .btn
-            span Another
-          .btn.active
-            span Group
-          .btn
-            span o'
-          .btn
-            span Icons
-
-      p
-        .btn.btn-link
-          span Link
         .btn.btn-primary
           span Primary
+        .btn.btn-primary-alt
+          span Secondary
         .btn.btn-secondary
           span Secondary
         .btn.btn-danger
@@ -298,30 +240,41 @@
 
       h2 Buttons Row
       p
-        | Wrapped in #[code btn-toolbar-row]
+        | Expands full width. Wrap buttons in a #[code btn-toolbar-row]
       .btn-toolbar-row
         a(href="#").btn
           span Button
-        a(href="#").btn.btn-link
-          span Link
         a(href="#").btn.btn-primary
           span Primary
-        a(href="#").btn.btn-secondary
-          span Secondary
 
         .btn-group
           .btn
-            span Group
-          .btn.active
-            span of
+            span Grouped Buttons
           .btn
-            span Icons
+            span
+              i.i-check
+          .btn
+            span
+              i.i-check
+              span With Span
+          .btn.active
+            span
+              i.i-check
+              span With Span + Active
+
+        .btn-group
+          .btn.active
+            span
+              i.i-list
+          .btn
+            span
+              i.i-grid
 
       hr
 
       h2 Buttons Column
       p
-        | Wrapped in #[code btn-toolbar-col]
+        | Same as a row, but in a column. Wrap buttons in a #[code btn-toolbar-col]
       .row
         .col-4
           .btn-toolbar-col
@@ -340,79 +293,94 @@
                 i.i-mail
                 span Email
 
-            a.btn(href="#")
-              span
-                i.i-bell
-                span Notifications
-
         .col-4
-          .btn-toolbar-col
+          .btn-toolbar-col.btn-sm
             a(href="#").btn
-              span Button
-            a(href="#").btn.btn-link
-              i.i-check
-              span Link: i Outside Span
-            a(href="#").btn.btn-primary
-              span
-                i.i-check
-                | Primary: i Inside Span
-            a(href="#").btn.btn-secondary
-              span Secondary
-
-        .col-4
-          .btn-toolbar-col
-            a(href="#").btn.btn-sm
               span Small
-            a(href="#").btn.btn-sm
+            a(href="#").btn
               span Small Primary
-            a(href="#").btn.btn-sm
+            a(href="#").btn
               span Small Secondary
 
       hr
 
-      h2 Buttons Group
-      .btn-group
-        a(href="#").btn
-          span Button
-        a(href="#").btn.btn-link
-          span Link
-        a(href="#").btn.btn-primary
-          span Primary
-        a(href="#").btn.btn-secondary
-          span Secondary
+      .row
+        .col-md-6
+          h2 Animated
 
-      hr
+          p Add the class #[code is-processing] to replace the label with a spinner. Click to toggle.
 
-      h2 Small
-      a(href="#").btn.btn-sm
-        span Button
-      a(href="#").btn.btn-sm.btn-primary
-        span Primary
+          .btn-toolbar-row
+            a(href="#").btn.is-processing.js-toggle-loading
+              span
+                i.i-check
+            a(href="#").btn.is-processing.js-toggle-loading
+              span A loooong label.
 
-      hr
+            a(href="#").btn.btn-sm.is-processing.js-toggle-loading
+              span
+                i.i-check
+            a(href="#").btn.btn-sm.is-processing.js-toggle-loading
+              span A small label.
 
-      h2 Animated
+        .col-md-6
+          h2 Small
+          p
+            | Add the class #[code btn-sm] to the button or to #[code btn-toolbar-row]/#[code btn-toolbar-col]
+          .btn-toolbar-row
+            a(href="#").btn.btn-sm
+              span Button
+            a(href="#").btn.btn-sm.btn-primary
+              span Primary
 
-      p Use the class #[code is-loading] to replace the label with a spinner. Click to toggle loader.
+  hr
 
-      .btn-toolbar-row
-        a(href="#").btn.is-loading.js-toggle-loading
-          span
-            i.i-check
-        a(href="#").btn.is-loading.js-toggle-loading
-          span A loooong label.
+  .row#cards
+    .col-sm-2(style="text-align: right")
+      a(href="#cards-single")
+        h1 Single Card
+      small Login or setup screens.
+
+    .col-sm-10
+      .row.cards-row(style="min-height: 600px")
+        .col(style="margin: auto")
+          .card.account.setup
+            .card-header
+              h1.card-title Setup Your Profile
+
+            .card-body
+              p.card-message Choose an avatar that represents you!
+
+              form(
+                method="post"
+                enctype="multipart/form-data",
+                id="generic_form")
+
+                .form-group
+                  input.form-control(type="text")
+
+                .card-cta
+                  button.btn.btn-primary(type="submit")
+                    span
+                      span 'Next'
+                      i.i-chevron-right
+
+
 | {% endblock content %}
 
 | {% block javascript_extra %}
 script.
-  $('.btn').on('click', function(e){
+  $('a').on('click', function(e){ e.preventDefault(); });
+
+  $('button, .btn, .btn-primary, .btn-link, .btn-primary-alt').on('click', function(e){
     e.preventDefault();
     $(this).toggleClass('active');
   });
 
+
   $('.js-toggle-loading').on('click', function(e){
     e.preventDefault();
-    $(this).toggleClass('is-loading');
+    $(this).toggleClass('is-processing');
   });
 | {% endblock javascript_extra %}
 

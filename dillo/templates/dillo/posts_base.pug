@@ -51,14 +51,14 @@ ul#posts-list.post-list(
 .sidebar-block
 	.btn-toolbar-row
 		.btn-group
-			a.btn.btn-link-bg.btn-sidebar(
+			a.btn(
 				title="{% trans 'List View' %}",
 				href="?layout=list",
 				data-toggle="tooltip",
 				class="{% if layout == 'list' %}is-active{% endif %}")
 				span
 					i.i-list
-			a.btn.btn-link-bg.btn-sidebar(
+			a.btn(
 				title="{% trans 'Grid View' %}",
 				href="?layout=grid",
 				data-toggle="tooltip",
