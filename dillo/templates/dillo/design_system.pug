@@ -370,7 +370,7 @@
 
 | {% block javascript_extra %}
 script.
-  $('a').on('click', function(e){ e.preventDefault(); });
+  $('main a').on('click', function(e){ e.preventDefault(); });
 
   $('button, .btn, .btn-primary, .btn-link, .btn-primary-alt').on('click', function(e){
     e.preventDefault();
