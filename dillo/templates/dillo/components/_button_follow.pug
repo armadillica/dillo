@@ -11,7 +11,7 @@ a.btn.btn-sidebar(
     span {% if request.user|is_following:target_object %}Unfollow{% else %}Follow{% endif %}{% if tag %} Hashtag{% endif %}
 | {% endif %}
 | {% else %}
-a.btn.btn-primary.btn-block(href="{% follow_url target_object %}")
+a.btn.btn-primary-alt.btn-block(href="{% follow_url target_object %}")
   span
     i.i-user-plus
     span Follow
