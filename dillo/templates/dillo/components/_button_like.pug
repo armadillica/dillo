@@ -1,0 +1,27 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+
+| {% if request.user.is_authenticated %}
+button.btn(
+	class="js-like-toggle{% if ob|is_liked:request.user %} is-liked{% endif %}{% if icon_only %} btn-icon{% endif %} {{ classes }}",
+	data-like_toggle_url="{% url 'like_toggle' content_type_id=ob.content_type_id object_id=ob.id %}",
+	data-toggle="{% if icon_only %}tooltip{% endif %}", data-placement="bottom",
+	title="{% if ob|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}",
+	)
+	span
+		i.i-heart
+		| {% if not icon_only %}
+		span {% if ob|is_liked:request.user %}{% trans 'Liked' %}{% else %}{% trans 'Like' %}{% endif %}
+		| {% endif %}
+| {% else %}
+a.btn(
+	classes="{% if icon_only %}btn-icon {% endif %}{{ classes }}",
+	data-toggle="{% if icon_only %}tooltip{% endif %}", data-placement="bottom",
+	href="{% url 'account_signup' %}",
+	title="{% trans 'Like' %}")
+	span
+		i.i-heart
+		| {% if not icon_only %}
+		span {% trans 'Liked' %}
+		| {% endif %}
+| {% endif %}

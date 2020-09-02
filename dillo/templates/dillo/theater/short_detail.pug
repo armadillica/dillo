@@ -44,14 +44,7 @@
       hr
 
       .btn-toolbar-row
-        button.btn.btn-sidebar(
-          data-like_toggle_url="{% url 'like_toggle' content_type_id=short.content_type_id object_id=short.id %}",
-          class="js-like-toggle{% if short|is_liked:request.user %} is-liked{% endif %}",
-          title="{% if short|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}")
-          span
-            i.i-heart
-            span {% if short|is_liked:request.user %}{% trans 'Liked' %}{% else %}{% trans 'Like' %}{% endif %}
-
+        | {% include 'dillo/components/_button_like.pug' with ob=short %}
         | {% include 'dillo/components/_button_share.pug' with shared_object_label='short' %}
 
       | {% if short.user == request.user %}
