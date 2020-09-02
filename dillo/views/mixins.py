@@ -9,7 +9,7 @@ from sorl.thumbnail import get_thumbnail
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from dillo.models.posts import get_trending_tags, Post
+from dillo.models.posts import get_trending_tags, Post, PostWithMedia
 from dillo.models.events import Event
 from dillo.templatetags.dillo_filters import markdown
 
@@ -46,7 +46,7 @@ class PostListEmbedView(ListView):
     """List of all published posts."""
 
     context_object_name = 'posts'
-    model = Post
+    model = PostWithMedia
 
     def get_queryset(self):
         # By default, show only non-hidden posts
@@ -54,9 +54,10 @@ class PostListEmbedView(ListView):
         # If authenticated, show hidden posts only to the post owner
         if self.request.user.is_authenticated:
             is_hidden = is_hidden | Q(is_hidden_by_moderator=True, user=self.request.user)
-        return Post.objects.filter(is_hidden, status='published', visibility='public',).order_by(
-            '-published_at'
-        )
+        # Retrieve only Posts (no Rigs or Jobs)
+        return PostWithMedia.objects.filter(
+            is_hidden, status='published', visibility='public',
+        ).order_by('-published_at')
 
     def get_template_names(self):
         current_layout = self.request.session.get('layout', 'list')

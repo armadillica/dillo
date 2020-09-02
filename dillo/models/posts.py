@@ -238,6 +238,11 @@ class Post(InheritanceManagerMixin, CreatedUpdatedMixin, LikesMixin, MentionsMix
         ordering = ['-created_at']
 
 
+class PostWithMedia(Post):
+    # TODO (fsiddi) Rename to PostMedia (and PostMedia to PostAsset)
+    pass
+
+
 class PostLink(Post):
     pass
 
