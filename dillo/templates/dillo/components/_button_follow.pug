@@ -4,7 +4,7 @@
 a.btn.btn-sidebar(
   href="{% follow_url target_object %}",
   data-follow_toggle_label="{% if request.user|is_following:target_object %}Follow{% else %}Unfollow{% endif %}",
-  class="js-follow-toggle {% if request.user|is_following:target_object %}btn-outline-primary{% else %}btn-primary{% endif %}",
+  class="js-follow-toggle {% if not request.user|is_following:target_object %}btn-primary-alt{% endif %}",
   )
   span
     i(class="{% if tag %}i-hash{% else %}{% if request.user|is_following:target_object %}i-cancel{% else %}i-user-plus{% endif %}{% endif %}")
