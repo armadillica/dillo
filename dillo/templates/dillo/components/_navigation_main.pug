@@ -20,32 +20,32 @@ nav.nav-primary.navbar.navbar-expand
 				//- 		span {% trans 'Explore' %}
 
 				li(class="{% if '/reels' in request.path_info %}active{% endif %}")
-					a(href="{% url 'reel-list' %}", title="{% trans 'Demo Reels Theater' %}", data-toggle="tooltip")
+					a(href="{% url 'reel-list' %}", title="{% trans 'Demo Reels Theater' %}")
 						i.i-reel
 						span {% trans 'Reels' %}
 
 				li(class="{% if '/shorts' in request.path_info %}active{% endif %}")
-					a(href="{% url 'short-list' %}", title="{% trans 'Shorts Theater' %}", data-toggle="tooltip")
+					a(href="{% url 'short-list' %}", title="{% trans 'Shorts Theater' %}")
 						i.i-shorts
 						span {% trans 'Shorts' %}
 
 				li(class="{% if '/rigs' in request.path_info %}active{% endif %}")
-					a(href="{% url 'rig-list' %}", title="{% trans 'Download Rigs' %}", data-toggle="tooltip")
+					a(href="{% url 'rig-list' %}", title="{% trans 'Download Rigs' %}")
 						i.i-package
 						span {% trans 'Rigs' %}
 
 				li(class="{% if '/events' in request.path_info %}active{% endif %}")
-					a(href="{% url 'event_list' %}", title="{% trans 'Animation Events' %}", data-toggle="tooltip")
+					a(href="{% url 'event_list' %}", title="{% trans 'Animation Events' %}")
 						i.i-events
 						span {% trans 'Events' %}
 
 				li(class="{% if '/jobs' in request.path_info %}active{% endif %}")
-					a(href="{% url 'job-list' %}", title="{% trans 'Animation Jobs' %}", data-toggle="tooltip")
+					a(href="{% url 'job-list' %}", title="{% trans 'Animation Jobs' %}")
 						i.i-jobs
 						span {% trans 'Jobs' %}
 
 				li(class="{% if '/bookmarks' in request.path_info %}active{% endif %}")
-					a(href="{% url 'bookmarks' %}", title="{% trans 'Your Saved Bookmarks' %}", data-toggle="tooltip")
+					a(href="{% url 'bookmarks' %}", title="{% trans 'Your Saved Bookmarks' %}")
 						i.i-bookmark
 						span {% trans 'Bookmarks' %}
 
