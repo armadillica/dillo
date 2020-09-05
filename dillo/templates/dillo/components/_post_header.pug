@@ -86,7 +86,7 @@
 						| {% if request.user.is_superuser %}
 						.dropdown-divider
 						a.dropdown-item(
-							href="{% url 'admin:dillo_post_change' post.id %}",
+							href="{% url 'admin:dillo_postwithmedia_change' post.id %}",
 							title='{% trans "See Post in Whoosh" %}')
 							i.i-coffee
 							| {% trans "Post" %}

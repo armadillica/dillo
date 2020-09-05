@@ -2,7 +2,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 from django.db import connection
-from dillo.models.posts import Post, PostWithMedia
+from dillo.models.posts import Post
 
 log = logging.getLogger(__name__)
 

@@ -46,7 +46,7 @@ class PostListEmbedView(ListView):
     """List of all published posts."""
 
     context_object_name = 'posts'
-    model = PostWithMedia
+    model = Post
 
     def get_queryset(self):
         # By default, show only non-hidden posts
@@ -55,8 +55,8 @@ class PostListEmbedView(ListView):
         if self.request.user.is_authenticated:
             is_hidden = is_hidden | Q(is_hidden_by_moderator=True, user=self.request.user)
         # Retrieve only Posts (no Rigs or Jobs)
-        return PostWithMedia.objects.filter(
-            is_hidden, status='published', visibility='public',
+        return Post.objects.filter(
+            is_hidden, status='published', visibility='public', postwithmedia__isnull=False,
         ).order_by('-published_at')
 
     def get_template_names(self):
