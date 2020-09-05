@@ -10,7 +10,7 @@ class DilloConfig(AppConfig):
         from taggit.models import Tag
         from django.contrib.auth.models import User
 
-        registry.register(self.get_model('Post'))
+        registry.register(self.get_model('PostWithMedia'))
         registry.register(self.get_model('Comment'))
         registry.register(Tag)
         registry.register(User)
