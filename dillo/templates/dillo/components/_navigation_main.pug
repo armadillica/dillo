@@ -66,56 +66,56 @@ nav.nav-primary.navbar.navbar-expand
 						| {% include 'dillo/components/_nav_dropdown_admin.pug' %}
 				| {% endif %}
 
-			.navbar-action-container
-				form.navbar-search(
-					id='search',
-					action="{% url 'posts_search' %}"
-				)
-					input.form-control(
-						id="search-text",
-						type='text',
-						placeholder='{% trans "Search..." %}',
-						aria-label="Search...",
-						aria-describedby='search-submit')
-					button#search-submit.btn.btn-link.btn-input-embed(
-						type='button',
-						title='{% trans "Search" %}',
-						data-toggle="tooltip")
+		.navbar-action-container
+			form.navbar-search(
+				id='search',
+				action="{% url 'posts_search' %}"
+			)
+				input.form-control(
+					id="search-text",
+					type='text',
+					placeholder='{% trans "Search..." %}',
+					aria-label="Search...",
+					aria-describedby='search-submit')
+				button#search-submit.btn.btn-link.btn-input-embed(
+					type='button',
+					title='{% trans "Search" %}',
+					data-toggle="tooltip")
+					span
+						i.i-search
+
+			.btn-toolbar-row
+				| {% if request.user.is_anonymous %}
+				a.btn.btn-link(
+					href="{% url 'account_login' %}",
+					title='{% trans "Log In" %}')
+					span {% trans "Log In" %}
+
+				a.btn.btn-link-primary(
+					href="{% url 'account_signup' %}",
+					title='{% trans "Sign Up" %}')
+					span {% trans "Sign Up" %}
+				| {% endif %}
+
+				| {% if request.user.is_authenticated %}
+				a.btn.btn-link.btn-icon(href="{% url 'explore' %}",
+					title="{% trans 'Activity' %}",
+					data-notifications-count="{{ notifications_count }}",
+					data-toggle="tooltip",
+					class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}")
+					span
+						i.i-bell
+				| {% endif %}
+
+				| {% if request.user.is_authenticated %}
+				.dropdown
+					a.btn.btn-link.btn-icon#dropdown-user(
+						data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', href="#", title='{% trans "More..." %}')
 						span
-							i.i-search
-
-				.btn-toolbar-row
-					| {% if request.user.is_anonymous %}
-					a.btn.btn-link(
-						href="{% url 'account_login' %}",
-						title='{% trans "Log In" %}')
-						span {% trans "Log In" %}
-
-					a.btn.btn-link-primary(
-						href="{% url 'account_signup' %}",
-						title='{% trans "Sign Up" %}')
-						span {% trans "Sign Up" %}
-					| {% endif %}
-
-					| {% if request.user.is_authenticated %}
-					a.btn.btn-link.btn-icon(href="{% url 'explore' %}",
-						title="{% trans 'Activity' %}",
-						data-notifications-count="{{ notifications_count }}",
-						data-toggle="tooltip",
-						class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}")
-						span
-							i.i-bell
-					| {% endif %}
-
-					| {% if request.user.is_authenticated %}
-					.dropdown
-						a.btn.btn-link.btn-icon#dropdown-user(
-							data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', href="#", title='{% trans "More..." %}')
-							span
-								i.i-more-vertical
-						.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-user')
-							| {% include 'dillo/components/_nav_dropdown_admin.pug' %}
-					| {% endif %}
+							i.i-more-vertical
+					.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-user')
+						| {% include 'dillo/components/_nav_dropdown_admin.pug' %}
+				| {% endif %}
 
 nav.nav-primary-mobile
 	a.btn.btn-icon(href='/')
