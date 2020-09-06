@@ -5,5 +5,5 @@ a(
 	data-attend_toggle_label="{% if event|is_attended:request.user %}Going{% else %}I'm going! {% endif %}",
 	class="js-attend-toggle btn-attend {% if event|is_attended:request.user %}active{% endif %}",
 	)
-	| {% if event|is_attended:request.user %}I'm going! {% else %}Going{% endif %}
+	span {% if event|is_attended:request.user %}I'm going! {% else %}Going{% endif %}
 | {% endif %}
