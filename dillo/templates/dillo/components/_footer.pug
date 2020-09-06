@@ -3,9 +3,17 @@
 
 footer.site-footer
 	.btn-toolbar-row
-		a.btn(href="https://twitter.com/AnimatoHQ")
+		a.btn(
+			data-toggle="tooltip",
+			href="https://twitter.com/AnimatoHQ",
+			target="_blank",
+			title="{% trans 'Follow Animato on Twitter!' %}")
 			i.i-twitter
-		a.btn(href="https://instagram.com/AnimatoHQ")
+		a.btn(
+			data-toggle="tooltip",
+			href="https://instagram.com/AnimatoHQ",
+			target="_blank",
+			title="{% trans 'Follow Animato on Instagram!' %}")
 			i.i-instagram
 
 	.footer-nav
