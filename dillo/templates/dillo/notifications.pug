@@ -4,17 +4,25 @@
 | {% load activity_tags %}
 
 | {% if request.user.is_authenticated %}
-
 | {% if notifications %}
 | {% for notification in notifications %}
-li
-	.py-2.pr-3
-		| {% include 'dillo/components/_profile_avatar.pug' with user=notification.action.actor %}
-	div.notifications-text.
-		#[a.pr-1(href="{% url 'profile_details' notification.action.actor.username %}") {{ notification.action.actor.username }}]
-		{{ notification.action.verb }}
-		#[a(href="{{ notification.action.action_object.get_absolute_url }}") {{ notification.action.action_object }}]
-		#[span.text-secondary.pr-3 {{ notification.action.timestamp | timesince | compact_timesince }}]
+li.notification-item
+	| {% include 'dillo/components/_profile_avatar.pug' with user=notification.action.actor %}
+
+	.notification-text
+		//- Who
+		a(href="{% url 'profile_details' notification.action.actor.username %}")
+			| {{ notification.action.actor.username }}
+
+		//- What (liked, replied, started following)
+		span {{ notification.action.verb }}
+
+		//- Where (a profile name, a post title)
+		a(href="{{ notification.action.action_object.get_absolute_url }}")
+			| {{ notification.action.action_object }}
+
+		//- When
+		span {{ notification.action.timestamp | timesince | compact_timesince }}
 
 	| {% if request.user|is_following:notification.action.actor %}
 	| {% if notification.action.action_object.thumbnail %}
@@ -28,12 +36,12 @@ li
 	| {% endthumbnail %}
 	| {% endif %}
 	| {% else %}
-	.ml-auto.pl-4
+	.notification-action
 		| {% include 'dillo/components/_button_follow.pug' with target_object=notification.action.actor %}
 	| {% endif %}
 | {% endfor %}
 | {% else %}
-p.p-3.text-center.text-muted
+p.post-list-empty
 	| {% trans "No notifications yet." %}
 | {% endif %}
 
