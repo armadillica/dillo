@@ -310,7 +310,7 @@ class PostMediaVideo(models.Model):
     # video = models.FilePathField(
     #     blank=True,
     # )
-    source_metadata = JSONField(null=True)
+    source_metadata = JSONField(null=True, blank=True)
     source_filename = models.CharField(max_length=128, null=True)
     framerate = models.FloatField(null=True)
     aspect = models.FloatField(null=True)
