@@ -157,7 +157,7 @@ class JobsAdmin(admin.ModelAdmin):
 class RigsAdmin(admin.ModelAdmin):
     list_display = ('name', 'visibility')
     exclude = ('image_height', 'image_width', 'title', 'content')
-    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
+    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
