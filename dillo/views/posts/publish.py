@@ -33,7 +33,9 @@ class PostCreateView(LoginRequiredMixin, FormView):
         # Get an existing post in draft status
         # Note: this makes it impossible for a user to create multiple
         # posts in parallel.
-        post, _ = PostWithMedia.objects.get_or_create(user=request.user, status='draft')
+        post, _ = Post.objects.get_or_create(
+            user=request.user, status='draft', postwithmedia__isnull=False
+        )
         self.initial = {'post_id': post.id}
         form_class = self.get_form_class()
         form = self.get_form(form_class)
