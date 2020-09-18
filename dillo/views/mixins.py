@@ -39,6 +39,10 @@ class PostListView(TemplateView):
             .all()
         )
         context['trending_tags'] = get_trending_tags()
+        processing_posts = Post.objects.filter(
+            status='processing', user=self.request.user, visibility='public'
+        )
+        context['processing_posts'] = {'posts': [str(post.hash_id) for post in processing_posts]}
         return context
 
 
