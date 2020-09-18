@@ -79,22 +79,28 @@ def create_profile_and_notifications_settings(sender, instance: User, created, *
     EmailNotificationsSettings.objects.create(user=instance)
 
 
-@receiver(post_save, sender=dillo.models.posts.Post)
-def on_created_post(sender, instance: dillo.models.posts.Post, created, **kwargs):
-    """On post creation, set hash_id."""
+@receiver(post_save)
+def on_created_post(sender, instance, created, **kwargs):
+    """On post(type) creation, set hash_id."""
     if not created:
+        return
+    if not issubclass(sender, dillo.models.posts.Post):
         return
     instance.hash_id = instance.id
     instance.save()
+    if not isinstance(sender, dillo.models.posts.PostWithMedia):
+        return
     log.debug('Set user %s as follower of own post %i' % (instance.user, instance.id))
-    follow(instance.user, instance, actor_only=False)
+    follow(instance.user, instance.post_ptr, actor_only=False)
 
 
-@receiver(post_save, sender=dillo.models.posts.Post)
-def on_saved_post(sender, instance: dillo.models.posts.Post, created, **kwargs):
-    """Assign Tags and Mentions to a Post by parsing the description."""
+@receiver(post_save)
+def on_saved_post(sender, instance, created, **kwargs):
+    """Assign Tags and Mentions to a Post(type) by parsing the description."""
     # If the post was just created, stop here since we have no tags yet
     if created:
+        return
+    if not issubclass(sender, dillo.models.posts.Post):
         return
     # Extract tags and mentions from text and assign them to the Post
     tags, mentions = extract_tags_and_mentions(instance.title)
