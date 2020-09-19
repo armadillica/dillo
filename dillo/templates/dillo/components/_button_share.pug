@@ -2,7 +2,7 @@
 
 | {% if is_post %}
 button.post-actions-btn(
-	class="js-share",
+	class="js-share {{ class }}",
 	title="{% trans 'Share' %}",
 	data-toggle="tooltip", data-placement="bottom",
 	data-share-title="{% trans 'Share Post' %}",

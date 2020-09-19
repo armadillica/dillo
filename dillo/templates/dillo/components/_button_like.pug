@@ -3,7 +3,7 @@
 
 | {% if request.user.is_authenticated %}
 button.btn(
-	class="js-like-toggle{% if ob|is_liked:request.user %} is-liked{% endif %}{% if icon_only %} btn-icon{% else %} btn-block{% endif %} {{ classes }}",
+	class="js-like-toggle{% if ob|is_liked:request.user %} is-liked{% endif %}{% if icon_only %} btn-icon{% else %} btn-block{% endif %} {{ class }}",
 	data-like_toggle_url="{% url 'like_toggle' content_type_id=ob.content_type_id object_id=ob.id %}",
 	data-toggle="{% if icon_only %}tooltip{% endif %}", data-placement="bottom",
 	title="{% if ob|is_liked:request.user %}{% trans 'Unlike' %}{% else %}{% trans 'Like' %}{% endif %}",
@@ -15,13 +15,13 @@ button.btn(
 		| {% endif %}
 | {% else %}
 a.btn(
-	classes="{% if icon_only %}btn-icon {% endif %}{{ classes }}",
+	class="{% if icon_only %}btn-icon {% endif %}{{ class }}",
 	data-toggle="{% if icon_only %}tooltip{% endif %}", data-placement="bottom",
 	href="{% url 'account_signup' %}",
 	title="{% trans 'Like' %}")
 	span
 		i.i-heart
 		| {% if not icon_only %}
-		span {% trans 'Liked' %}
+		span {% trans 'Like' %}
 		| {% endif %}
 | {% endif %}
