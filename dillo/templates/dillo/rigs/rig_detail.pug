@@ -59,7 +59,7 @@
   hr
 
   .btn-toolbar-row
-    | {% include 'dillo/components/_button_like.pug' with ob=rig %}
+    | {% include 'dillo/components/_button_like.pug' with ob=rig class="btn-sidebar" %}
     | {% include 'dillo/components/_button_share.pug' with shared_object_label='rig' %}
 
   | {% if rig.user == request.user %}

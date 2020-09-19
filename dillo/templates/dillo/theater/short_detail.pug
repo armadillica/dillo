@@ -44,7 +44,7 @@
       hr
 
       .btn-toolbar-row
-        | {% include 'dillo/components/_button_like.pug' with ob=short %}
+        | {% include 'dillo/components/_button_like.pug' with ob=short class="btn-sidebar" %}
         | {% include 'dillo/components/_button_share.pug' with shared_object_label='short' %}
 
       | {% if short.user == request.user %}
