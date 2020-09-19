@@ -78,9 +78,10 @@ nav.nav-primary.navbar.navbar-expand
 					aria-label="Search...",
 					aria-describedby='search-submit')
 				button#search-submit.btn.btn-link.btn-input-embed(
+					data-placement="bottom",
+					data-toggle="tooltip",
 					type='button',
-					title='{% trans "Search" %}',
-					data-toggle="tooltip")
+					title='{% trans "Search" %}')
 					span
 						i.i-search
 
@@ -99,10 +100,11 @@ nav.nav-primary.navbar.navbar-expand
 
 				| {% if request.user.is_authenticated %}
 				a.btn.btn-link.btn-icon(href="{% url 'explore' %}",
-					title="{% trans 'Activity' %}",
+					class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}"
 					data-notifications-count="{{ notifications_count }}",
+					data-placement="bottom",
 					data-toggle="tooltip",
-					class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}")
+					title="{% trans 'Activity' %}")
 					span
 						i.i-bell
 				| {% endif %}
