@@ -33,9 +33,8 @@
 
 | {% block sidebar %}
 .sidebar-block
-  | {% url rig.url as btn_create_url %}
   | {% trans 'Download Rig' as btn_label %}
-  | {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary" icon="i-download" external=True %}
+  | {% include 'dillo/components/_button_generic.pug' with url=rig.url label=btn_label class="btn-primary" icon="i-download" external=True %}
 
 .sidebar-block
   ul.sidebar-list
