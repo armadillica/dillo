@@ -14,9 +14,9 @@
       | {% csrf_token %}
       | {{ form | crispy }}
 
-    .card-cta
-      button.btn.btn-primary(type="submit")
-        span {% trans 'Update Rig' %}
+      .card-cta
+        button.btn.btn-primary(type="submit")
+          span {% trans 'Update Rig' %}
 
 | {% endblock content_card %}
 
