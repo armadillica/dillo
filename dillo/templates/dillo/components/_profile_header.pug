@@ -9,7 +9,7 @@
 
   //- Username or Name
   a.profile-name(href="#", class="{{ is_link_disabled }}")
-    span(style="--user-id: {{ user.id }}") {% firstof user.profile.name user.username %}
+    span {% firstof user.profile.name user.username %}
     | {% if user.profile.name %}
     .username @{{ user.username }}
     | {% endif %}
@@ -89,6 +89,10 @@
       span views
     | {% endif %}
 
+  hr
+
+  | {% include 'dillo/components/_button_follow.pug' with target_object=user class="btn-profile-follow" %}
+
   | {% if request.user == user %}
 
   hr
@@ -98,5 +102,4 @@
     | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Profile" class="btn-sidebar" %}
   | {% else %}
   hr
-  | {% include 'dillo/components/_button_follow.pug' with target_object=user %}
   | {% endif %}

@@ -2,16 +2,18 @@
 | {% if request.user.is_authenticated %}
 | {% if request.user != target_object %}
 a.btn.btn-sidebar(
-  href="{% follow_url target_object %}",
+  class="js-follow-toggle {% if not request.user|is_following:target_object %}btn-primary-alt{% endif %} {{ class }}",
   data-follow_toggle_label="{% if request.user|is_following:target_object %}Follow{% else %}Unfollow{% endif %}",
-  class="js-follow-toggle {% if not request.user|is_following:target_object %}btn-primary-alt{% endif %}",
+  href="{% follow_url target_object %}",
   )
   span
     i(class="{% if tag %}i-hash{% else %}{% if request.user|is_following:target_object %}i-user-x{% else %}i-user-plus{% endif %}{% endif %}")
     span {% if request.user|is_following:target_object %}Unfollow{% else %}Follow{% endif %}{% if tag %} Hashtag{% endif %}
 | {% endif %}
 | {% else %}
-a.btn.btn-primary-alt.btn-block(href="{% follow_url target_object %}")
+a.btn.btn-primary-alt.btn-block(
+  class="{{ class }}",
+  href="{% follow_url target_object %}")
   span
     i.i-user-plus
     span Follow

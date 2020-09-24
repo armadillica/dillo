@@ -9,9 +9,16 @@
 | {% endblock page_title %}
 
 | {% block stream %}
+style.
+  .stream, .sidebar {
+    --accent-profile-h: {{ user.id }};
+    --accent-profile: hsl(var(--accent-profile-h), 100%, 70%);
+    --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
+  }
+
 | {% if user.profile.reel %}
 .profile-reel
-	| {{ user.profile.reel | oembed }}
+  | {{ user.profile.reel | oembed }}
 | {% endif %}
 
 | {{ block.super }}
@@ -19,21 +26,21 @@
 
 | {% block sidebar %}
 .sidebar-block
-	| {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
+  | {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
 
 | {% if user.profile.next_events_attending %}
 .sidebar-block
-	| {% include 'dillo/components/_feed_events.pug' with events=user.profile.next_events_attending events_title='Going To' %}
+  | {% include 'dillo/components/_feed_events.pug' with events=user.profile.next_events_attending events_title='Going To' %}
 | {% endif %}
 
 .sidebar-block
-	| {% include 'dillo/components/_button_share.pug' with shared_object_label='profile' %}
+  | {% include 'dillo/components/_button_share.pug' with shared_object_label='profile' %}
 
 | {% if request.user.is_superuser %}
 .sidebar-block
-	| {% url 'admin:auth_user_change' user.id as edit_url %}
-	| {% trans 'Whoosh User' as edit_label %}
-	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' %}
+  | {% url 'admin:auth_user_change' user.id as edit_url %}
+  | {% trans 'Whoosh User' as edit_label %}
+  | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' %}
 | {% endif %}
 | {% endblock sidebar %}
 

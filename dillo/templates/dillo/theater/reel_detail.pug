@@ -19,6 +19,13 @@
 | {% endblock stream_nav %}
 
 | {% block stream %}
+style.
+  .stream, .sidebar {
+    --accent-profile-h: {{ user.id }};
+    --accent-profile: hsl(var(--accent-profile-h), 100%, 70%);
+    --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
+  }
+
 //- Profile Reel.
 | {% if user.profile.reel %}
 .profile-reel
@@ -32,7 +39,7 @@
 | {% block sidebar %}
 //- Profile sidebar avatar and info.
 .sidebar-block
-  | {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
+  | {% include 'dillo/components/_profile_header.pug' with show_bio=True %}
 
 
 //- Events attending.
