@@ -9,7 +9,7 @@
 		| {% if post.comments_count %}
 		li.post-meta-link
 			| {% blocktrans count post.comments_count as amount %}
-			| one comment
+			| 1 comment
 			| {% plural %}
 			| {{ amount }} comments
 			| {% endblocktrans %}
