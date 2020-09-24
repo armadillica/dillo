@@ -45,6 +45,11 @@ nav.nav-primary.navbar.navbar-expand
 						i.i-jobs
 						span {% trans 'Jobs' %}
 
+				li
+					a(href="https://discord.gg/N7gJzaf", title="{% trans 'Animato on Discord' %}", target="_blank")
+						i.i-discord
+						span {% trans 'Chat' %}
+
 				li(class="{% if '/bookmarks' in request.path_info %}active{% endif %}")
 					a(href="{% url 'bookmarks' %}", title="{% trans 'Your Saved Bookmarks' %}")
 						i.i-bookmark
