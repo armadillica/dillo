@@ -39,7 +39,7 @@ class RigUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class RigListView(ListView):
 
-    paginate_by = 30
+    paginate_by = 32
     template_name = 'dillo/rigs/rig_list.pug'
 
     def get_queryset(self):
