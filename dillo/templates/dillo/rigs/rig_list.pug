@@ -16,7 +16,7 @@
 
 | {% block stream %}
 | {% if object_list %}
-.row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-lg-2.row-cols-xl-3
+.row.cards-row
   | {% for rig in object_list %}
   .col
     .card-borderless
@@ -28,12 +28,11 @@
           height="{{ im.height }}",
           alt="{{ rig.name }}")
       | {% endthumbnail %}
-      .card-body
-        a.card-header-title(href="{% url 'rig-detail' rig.pk %}")
-          | {{ rig.name }}
+      .card-header
+        a.card-header-text(href="{% url 'rig-detail' rig.pk %}")
+          .card-title {{ rig.name }}
           | {% if rig.supported_software %}
-          small.d-block
-            | {{ rig.supported_software.all|join:", " }}
+          .card-subtitle {{ rig.supported_software.all|join:", " }}
           | {% endif %}
   | {% endfor %}
 | {% else %}
