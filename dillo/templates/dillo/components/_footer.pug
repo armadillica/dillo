@@ -67,7 +67,5 @@ footer.site-footer
 
 		| {% project_version as VERSION %}
 		| {% if VERSION %}
-		span
-			| ·
-		span {{ VERSION }}
+		span #[span.separator &middot;&nbsp;] {{ VERSION }}
 		| {% endif %}
