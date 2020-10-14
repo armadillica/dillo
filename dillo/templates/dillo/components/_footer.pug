@@ -67,5 +67,6 @@ footer.site-footer
 
 		| {% project_version as VERSION %}
 		| {% if VERSION %}
-		span #[span.separator &middot;&nbsp;] {{ VERSION }}
+		span(title='{% trans "Version running under the hood" %}')
+			| #[span.separator &middot;&nbsp;] {{ VERSION }}
 		| {% endif %}
