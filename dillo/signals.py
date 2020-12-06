@@ -16,6 +16,7 @@ from django.db.models.signals import post_save, post_delete, pre_delete
 from django.db.models import F
 from django.db import IntegrityError, transaction
 from django.dispatch import receiver
+from django.core.files.storage import default_storage
 from allauth.account.signals import email_confirmed, email_changed
 
 import dillo.models.mixins
@@ -167,17 +168,21 @@ def on_deleted_post_media_image_remove_file(sender, instance, **kwargs):
     if not instance.image:
         return
     instance.image.delete(False)
-    log.debug('Removed image from filesystem PostMedia %s' % instance.image)
+    log.debug('Removed image for PostMedia %s' % instance.image)
 
 
 @receiver(post_delete, sender=dillo.models.posts.PostMediaVideo)
 def on_deleted_post_media_video_remove_files(sender, instance, **kwargs):
-    """Delete image file after PostMediaImage instance is deleted."""
+    """Delete video and variations after PostMediaImage instance is deleted."""
     if not instance.source:
         return
-    parent_dir = pathlib.PurePath(instance.source.path).parent
-    shutil.rmtree(parent_dir)
-    log.debug('Removed %s from filesystem' % parent_dir)
+    # We do not use instance.source.path as it's not supported by the S3 backend
+    source_path = pathlib.Path(str(instance.source))
+    default_storage.delete(str(source_path.with_suffix('.preview.gif')))
+    default_storage.delete(str(source_path.with_suffix('.720p.mp4')))
+    instance.source.delete(False)
+    instance.thumbnail.delete(False)
+    log.debug('Removed video and variations from storage')
 
 
 @receiver(post_save, sender=dillo.models.mixins.Likes)

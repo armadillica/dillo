@@ -1,8 +1,12 @@
 import json
 import logging
+import pathlib
 import subprocess
 
 import magic
+import boto3
+from botocore.config import Config as BotoConfig
+from botocore.exceptions import ClientError
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +19,9 @@ from django.views.generic import FormView
 
 from dillo import forms
 from dillo.models.posts import Post, PostWithMedia, PostMediaImage, PostMediaVideo, PostMedia
+from dillo.models.mixins import generate_hash_from_filename
+from dillo.tasks import move_blob_from_upload_to_storage
+from dillo.coconut import events
 
 log = logging.getLogger(__name__)
 
@@ -263,15 +270,34 @@ def delete_unpublished_upload(request, hash_id):
 
 @require_POST
 @csrf_exempt
-def post_update_video_processing(request, hash_id, video_id):
+def coconut_webhook(request, hash_id, video_id):
     """Endpoint used by Coconut to update us on video processing."""
     if request.content_type != 'application/json':
-        raise SuspiciousOperation('Coconut webhook was sent non-JSON data')
+        raise SuspiciousOperation('Coconut webhook endpoint was sent non-JSON data')
     job = json.loads(request.body)
     post = get_object_or_404(Post, hash_id=hash_id)
-    log.info('Updating video %i processing status to %s' % (video_id, job['event']))
-    post.update_video_processing_status(video_id, job)
+    video = get_object_or_404(PostMediaVideo, id=video_id)
+    if video.encoding_job_id != job['id']:
+        # If the job id changed, we likely restarted the job (manually)
+        video.encoding_job_status = None
+        video.encoding_job_id = job['id']
+        video.save()
 
+    log.info('Updating video %i processing status: %s' % (video_id, job['event']))
+    # On source.transferred
+    if job['event'] == 'source.transferred':
+        events.source_transferred(job, video)
+    # On output.processed (thumbnail)
+    elif job['event'] == 'output.processed' and job['format'].startswith('jpg'):
+        events.output_processed_images(job, video)
+    # On output.processed (video variation)
+    elif job['event'] == 'output.processed' and (
+        job['format'].startswith('mp4') or job['format'].startswith('gif')
+    ):
+        events.output_processed_video(job, video)
+    # On job.completed (unused for now)
+    elif job['event'] == 'job.completed':
+        events.job_completed(job, video, post)
     return JsonResponse({'status': 'ok'})
 
 
@@ -305,3 +331,86 @@ def post_status(request, hash_id):
             "User %i tried to check post %i status" % (request.user.id, post.id)
         )
     return JsonResponse({'status': post.status})
+
+
+@require_POST
+@csrf_exempt
+@login_required
+def get_aws_s3_signed_url(request) -> JsonResponse:
+    """Generate a presigned S3 POST URL."""
+
+    body = json.loads(request.body)
+
+    s3_client = boto3.client(
+        's3',
+        'eu-central-1',  # Not specifying this breaks.
+        config=BotoConfig(s3={'addressing_style': 'path'}),
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
+    try:
+        # Create a path that looks like this
+        # a4/a4955e4f68e22a095422e1286d95a5a7/a4955e4f68e22a095422e1286d95a5a7.jpg
+        file_path = pathlib.Path(body['filename'])
+        hashed_path = generate_hash_from_filename(file_path.name)
+        path = (
+            pathlib.Path(hashed_path[:2])
+            .joinpath(hashed_path)
+            .joinpath(hashed_path)
+            .with_suffix(file_path.suffix)
+        )
+        response = s3_client.generate_presigned_post(
+            settings.AWS_UPLOADS_BUCKET_NAME,
+            str(path),
+            Fields=None,
+            Conditions=None,
+            ExpiresIn=600,
+        )
+    except ClientError as e:
+        logging.error(e)
+        raise SuspiciousOperation("Error while creating signed url")
+
+    return JsonResponse({'method': 'POST', 'url': response['url'], 'fields': response['fields']})
+
+
+class AttachS3UploadUploadToPost(LoginRequiredMixin, FormView):
+    http_method_names = ['post']
+    form_class = forms.AttachS3UploadToPostForm
+
+    def process_file_type(self, post, mime_type, key, name, size_bytes):
+        if mime_type not in settings.MEDIA_UPLOADS_ACCEPTED_MIMES:
+            log.info('MIME type %s not accepted for upload' % mime_type)
+            return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
+
+        # Move file from upload to storage bucket, synchronously
+        move_blob_from_upload_to_storage(key)
+
+        if mime_type.startswith('image'):
+            image = PostMediaImage.objects.create(image=key, source_filename=name,)
+            log.debug('Attaching image to unpublished post %s' % post.hash_id)
+            post_media = post.postmedia_set.create(content_object=image)
+        elif mime_type.startswith('video'):
+            video = PostMediaVideo.objects.create(source=key, source_filename=name)
+            log.debug('Attaching video to unpublished post %s' % post.hash_id)
+            post_media = post.postmedia_set.create(content_object=video)
+        else:
+            log.error('Unknown upload type %s' % mime_type)
+            return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
+
+        return JsonResponse({'status': 'ok', 'post_media_id': post_media.id})
+
+    def form_valid(self, form):
+        post = get_object_or_404(Post, id=form.cleaned_data['post_id'])
+        if self.request.user != post.user:
+            return JsonResponse({'error': 'Not allowed to upload on this post.'}, status=422)
+        return self.process_file_type(
+            post,
+            form.cleaned_data['mime_type'],
+            form.cleaned_data['key'],
+            form.cleaned_data['name'],
+            form.cleaned_data['size_bytes'],
+        )
+
+    def form_invalid(self, form):
+        # TODO(fsiddi) Improve error messages
+        return JsonResponse({'status': 'error', 'message': 'Invalid form.'}, status=400)

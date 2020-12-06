@@ -98,6 +98,12 @@ urlpatterns += [
         dillo.views.posts.publish.post_file_upload,
         name='post_file_upload',
     ),
+    path('s3-sign', dillo.views.posts.publish.get_aws_s3_signed_url, name='post_s3_signed_url',),
+    path(
+        'attach-upload-to-post',
+        dillo.views.posts.publish.AttachS3UploadUploadToPost.as_view(),
+        name='attach_s3_upload_to_post',
+    ),
     path(
         'p/<slug:hash_id>/unpublished-uploads',
         dillo.views.posts.publish.post_get_unpublished_uploads,
@@ -127,8 +133,8 @@ urlpatterns += [
     # Video Processing webhook
     path(
         'p/<slug:hash_id>/video/<int:video_id>',
-        dillo.views.posts.publish.post_update_video_processing,
-        name='post_update_video_processing',
+        dillo.views.posts.publish.coconut_webhook,
+        name='coconut-webhook',
     ),
     # Likes
     path(

@@ -7,11 +7,12 @@ from urllib.parse import urlparse
 from allauth.account.models import EmailAddress
 from actstream import models as models_actstream
 from background_task import background
+import boto3
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mass_mail, send_mail, EmailMessage
-
+from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import truncatechars
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -30,9 +31,41 @@ import dillo.views.emails
 log = logging.getLogger(__name__)
 
 
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+)
+
+
+def get_storage_paths() -> (str, str):
+    """Get storage paths depending on DEFAULT_FILE_STORAGE."""
+    storage_backend = settings.DEFAULT_FILE_STORAGE
+
+    if storage_backend == 'django.core.files.storage.FileSystemStorage':
+        # The base SFTP path, with credentials
+        storage_base_src = settings.COCONUT_SFTP_STORAGE
+        storage_base_dst = storage_base_src
+
+        # Override settings if debug mode
+        if settings.DEBUG:
+            storage_base_src = f'{settings.COCONUT_DECLARED_HOSTNAME}/media/'
+            storage_base_dst = f'{settings.COCONUT_DECLARED_HOSTNAME}/debug-video-transfer/'
+
+        return storage_base_src, storage_base_dst
+    elif storage_backend == 'storages.backends.s3boto3.S3Boto3Storage':
+        return (
+            f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/",
+            f"s3://{settings.AWS_ACCESS_KEY_ID}:{settings.AWS_SECRET_ACCESS_KEY}@"
+            f"{settings.AWS_UPLOADS_BUCKET_NAME}/",
+        )
+    else:
+        raise ValueError('Unsupported storage_backend: %s' % storage_backend)
+
+
 @background()
-def create_job(post_hash_id: str, video_id: int, source_path: str):
-    """Create video encoding jobs.
+def create_coconut_job(post_hash_id: str, video_id: int):
+    """Create a video encoding job.
 
     Because of the @background decorator, we only accept hashable
     arguments.
@@ -48,28 +81,22 @@ def create_job(post_hash_id: str, video_id: int, source_path: str):
         log.info('Missing COCONUT_API_KEY: no video encoding will be performed')
         return
 
-    # The base SFTP path, with credentials
-    job_storage_base = settings.COCONUT_SFTP_STORAGE
-    job_storage_base_out = job_storage_base
-
-    # Override settings if debug mode
-    if settings.DEBUG:
-        job_storage_base = f'{settings.COCONUT_DECLARED_HOSTNAME}/media/'
-        job_storage_base_out = f'{settings.COCONUT_DECLARED_HOSTNAME}/debug-video-transfer/'
+    storage_base_src, storage_base_dst = get_storage_paths()
 
     # Outputs
     outputs = {}
 
-    source_path = pathlib.PurePath(source_path)
+    video = dillo.models.posts.PostMediaVideo.objects.get(id=video_id)
+    source_path = pathlib.PurePath(video.source.name)
 
     # The jpg:1280x thumbnail
-    outputs['jpg:1280x'] = f"{job_storage_base_out}{source_path.with_suffix('.thumbnail.jpg')}"
+    outputs['jpg:1280x'] = f"{storage_base_dst}{source_path.with_suffix('.thumbnail.jpg')}"
 
     # The gif:240x preview
-    outputs['gif:240x'] = f"{job_storage_base_out}{source_path.with_suffix('.preview.gif')}"
+    outputs['gif:240x'] = f"{storage_base_dst}{source_path.with_suffix('.preview.gif')}"
 
     # The mp4:720p version of the path (relative to MEDIA_ROOT)
-    outputs['mp4:0x720'] = f"{job_storage_base_out}{source_path.with_suffix('.720p.mp4')}"
+    outputs['mp4:0x720'] = f"{storage_base_dst}{source_path.with_suffix('.720p.mp4')}"
 
     # The httpstream packaging configuration
     httpstream_packaging = 'dash+hlsfmp4=/stream'
@@ -82,21 +109,19 @@ def create_job(post_hash_id: str, video_id: int, source_path: str):
     #     f'{httpstream_packaging}, {httpstream_variants}'
 
     # Webhook for encoding updates
-    job_webhook = reverse(
-        'post_update_video_processing', kwargs={'hash_id': post_hash_id, 'video_id': video_id}
-    )
+    job_webhook = reverse('coconut-webhook', kwargs={'hash_id': post_hash_id, 'video_id': video_id})
 
     j = dillo.coconut.job.create(
         api_key=settings.COCONUT_API_KEY,
-        source=f'{job_storage_base}{source_path}',
+        source=f'{storage_base_src}{source_path}',
         webhook=f'{settings.COCONUT_DECLARED_HOSTNAME}{job_webhook}, events=true, metadata=true',
         outputs=outputs,
     )
 
-    if j['status'] == 'ok':
+    if j['status'] == 'processing':
         log.info('Started processing job %i' % j['id'])
     else:
-        log.error('Error %s - %s' % (j['error_code'], j['message']))
+        log.error('Error processing job %i' % (j['id']))
 
 
 @background()
@@ -578,6 +603,41 @@ def update_mailing_list_subscription(user_email: str, is_subscribed: typing.Opti
         log.error("Newsletter API returned status code %i" % r_update.status_code)
 
 
+def move_blob_from_upload_to_storage(key):
+    """Move a blob from the upload bucket to the permanent location."""
+    try:
+        log.info(
+            'Copying %s%s to %s'
+            % (settings.AWS_UPLOADS_BUCKET_NAME, key, settings.AWS_STORAGE_BUCKET_NAME)
+        )
+        s3_client.copy_object(
+            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+            Key=key,
+            CopySource={'Bucket': settings.AWS_UPLOADS_BUCKET_NAME, 'Key': key},
+            MetadataDirective="REPLACE",
+        )
+    except Exception as e:
+        log.error('Generic exception on %s' % key)
+        log.error(str(e))
+        return
+
+    log.debug('Deleting %s from upload bucket' % key)
+    s3_client.delete_object(
+        Bucket=settings.AWS_UPLOADS_BUCKET_NAME, Key=key,
+    )
+
+
+@background()
+def async_move_blob_from_upload_to_storage(key):
+    """Call the actual move function.
+
+    This is done because in AttachS3UploadUploadToPost we have to call
+    move_blob_from_upload_to_storage synchronously. Since we have a
+    BACKGROUND_TASKS_AS_FOREGROUND setting, this would be a problem.
+    """
+    move_blob_from_upload_to_storage(key)
+
+
 if settings.BACKGROUND_TASKS_AS_FOREGROUND:
     # Will execute activity_fanout_to_feeds immediately
     log.debug('Executing background tasks synchronously')
@@ -587,3 +647,5 @@ if settings.BACKGROUND_TASKS_AS_FOREGROUND:
     send_mail_message_contact = send_mail_message_contact.task_function
     update_profile_reel_thumbnail = update_profile_reel_thumbnail.task_function
     update_mailing_list_subscription = update_mailing_list_subscription.task_function
+    async_move_blob_from_upload_to_storage = async_move_blob_from_upload_to_storage.task_function
+    create_coconut_job = create_coconut_job.task_function

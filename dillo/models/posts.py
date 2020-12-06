@@ -25,7 +25,7 @@ from dillo.models.mixins import (
     MentionsMixin,
     get_upload_to_hashed_path,
 )
-from dillo.tasks import create_job
+from dillo.tasks import create_coconut_job
 from .communities import Community
 
 log = logging.getLogger(__name__)
@@ -167,49 +167,7 @@ class Post(InheritanceManagerMixin, CreatedUpdatedMixin, LikesMixin, MentionsMix
         # Set status as processing, without triggering Post save signals
         Post.objects.filter(pk=self.id).update(status='processing')
         # Create a background job, using only hashable arguments
-        create_job(str(self.hash_id), video.id, video.source.name)
-
-    def update_video_processing_status(self, video_id: int, job: dict):
-        """Update the processing status of a video.
-
-        Called via the post_update_video_processing view, updates the
-        the encoding_job_status and if the job status is 'job.completed'
-        check if the Post itself is ready for publishing. If it is,
-        kick off the publishing pipeline.
-        """
-        video = PostMediaVideo.objects.get(pk=video_id)
-        if video.encoding_job_id != job['id']:
-            # If the job id changed, we likely restarted the job (manually)
-            video.encoding_job_status = None
-            video.encoding_job_id = job['id']
-            video.save()
-
-        # If the current status of the video job is completed, we quit.
-        # This prevents status updates sent after the completion of the job
-        # from altering the video status.
-        if video.encoding_job_status == 'job.completed':
-            log.info('Encoding job was already completed')
-            return
-
-        # Update encoding job status
-        job_status = job['event']
-        job_progress = None if 'progress' not in job else job['progress']
-        video.encoding_job_status = job_status
-        video.encoding_job_progress = job_progress
-
-        # Assign video thumbnail
-        if 'format' in job and job['format'].startswith('jpg'):
-            log.debug('Assigning thumbnail to video %i' % video_id)
-            url = pathlib.Path(video.source.name)
-            video.thumbnail = str(url.with_suffix('.thumbnail.jpg'))
-
-        video.save()
-        if job_status != 'job.completed':
-            return
-        if not self.may_i_publish:
-            return
-        log.debug('Video has been processed, attempting to publish')
-        self.publish()
+        create_coconut_job(str(self.hash_id), video.id)
 
     def publish(self):
         """If the Post is in 'draft', kick-off the publishing pipeline."""

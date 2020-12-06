@@ -116,7 +116,7 @@ class PostViewsTest(TestCase):
         self.assertJSONEqual(response.content, {'status': 'draft'})
 
     @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='animato_test').name)
-    def test_post_upload_video(self):
+    def test_post_upload_video_local(self):
         import os
 
         post_title = 'Velocità con #animato'
@@ -151,6 +151,39 @@ class PostViewsTest(TestCase):
         with open(path_square_video, 'rb') as video_file:
             response = self.client.post(post_file_upload_url, {'file': video_file})
             self.assertEqual(response.status_code, 422)
+
+    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='animato_test').name)
+    def test_post_upload_video_s3(self):
+        """Test the endpoint called after a file is uploade on s3"""
+        post_title = 'Velocità con #animato'
+        # Create Post
+        post = Post.objects.create(user=self.user, title=post_title)
+
+        # Create post URL
+        attach_url = reverse('attach_s3_upload_to_post')
+        # Log in the user
+        self.client.force_login(self.user)
+        # Attempt a GET request, which is not allowed
+        r = self.client.get(attach_url)
+        self.assertEqual(r.status_code, 405)
+
+        payload = {
+            'post_id': post.id,
+            'key': '8f/8f8f0ef2516ca5d7699fc1cf27531c35/8f8f0ef2516ca5d7699fc1cf27531c35.MOV',
+            'size_bytes': 31534525,
+            'name': 'IMG_2372.MOV',
+            'mime_type': 'video/quicktime',
+        }
+        self.client.post(attach_url, payload)
+        # Ensure that a video file is attached to the post
+        media_video = post.videos[0]
+        self.assertEqual(
+            '8f/8f8f0ef2516ca5d7699fc1cf27531c35/8f8f0ef2516ca5d7699fc1cf27531c35.MOV',
+            media_video.source,
+        )
+        self.assertEqual(
+            'IMG_2372.MOV', media_video.source_filename,
+        )
 
 
 @override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')

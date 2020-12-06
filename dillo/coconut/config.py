@@ -1,4 +1,12 @@
 def new(**kwargs):
+    """Create a new Coconut configuration text.
+
+    Accept a key/value pairs specifying how a video processing job needs
+    to be executed. Return a string formatted as the service expects.
+    More information about the syntax at https://coconut.co/docs/api/config/.
+
+    This function is copied from the coconutpy package.
+    """
     if 'conf' in kwargs:
         conf_file = kwargs['conf']
         conf = open(conf_file).read().strip().splitlines()

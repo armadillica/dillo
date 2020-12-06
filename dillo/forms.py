@@ -173,3 +173,13 @@ class CustomSocialSignupForm(CustomSignupMixin, SocialSignupForm):
 
 class ProfileSetupTagsForm(forms.Form):
     tags = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+
+class AttachS3UploadToPostForm(forms.Form):
+    """Form called from AJAX request."""
+
+    post_id = forms.IntegerField()
+    key = forms.CharField()
+    name = forms.CharField()
+    mime_type = forms.CharField()
+    size_bytes = forms.IntegerField()

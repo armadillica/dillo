@@ -32,6 +32,8 @@ mistune = "^0.8.4"
 bleach = "^3.1"
 user-agents = "^2.1"
 django-model-utils = "^4.0.0"
+django-storages = "^1.10.1"
+boto3 = "^1.15.11"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}
