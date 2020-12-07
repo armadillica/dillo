@@ -5,8 +5,7 @@
 | {% block body_classes %}page-create{% endblock %}
 
 | {% block head_extra %}
-link(href="https://transloadit.edgly.net/releases/uppy/v1.21.2/uppy.min.css", rel="stylesheet")
-
+| {% stylesheet 'edit' %}
 | {% endblock head_extra %}
 
 | {% block content_card %}
@@ -15,21 +14,27 @@ link(href="https://transloadit.edgly.net/releases/uppy/v1.21.2/uppy.min.css", re
     p.text-danger.p-3
       strong {{ error_message }}
 
-  form#postMediaDropzone.dropzone.post-create-dropzone(
-    method="post",
+  // TODO: Remove when Uppy is working properly.
+    //- form#postMediaDropzone.dropzone.post-create-dropzone(
+    //-   method="post",
+    //-   data-unpublished_uploads_url="{% url 'post_unpublished_uploads' post.hash_id %}",
+    //-   data-delete_unpublished_upload_url="{% url 'delete_unpublished_upload' post.hash_id %}",
+    //-   action="{% url 'post_file_upload' hash_id=post.hash_id %}", enctype="multipart/form-data")
+    //-   | {% csrf_token %}
+    //-   .dropzone-icons
+    //-     i.i-image
+    //-     i.i-reel
+    //-     span.label 100#[small MB]
+    //-   .fallback
+    //-     input(name='file', type='file', multiple='')
+
+    //- .dropzone-error-list
+
+  #uppy-drop-area(
+    data-post_id="{{ post.id }}",
     data-unpublished_uploads_url="{% url 'post_unpublished_uploads' post.hash_id %}",
     data-delete_unpublished_upload_url="{% url 'delete_unpublished_upload' post.hash_id %}",
-    action="{% url 'post_file_upload' hash_id=post.hash_id %}", enctype="multipart/form-data")
-    | {% csrf_token %}
-    .dropzone-icons
-      i.i-image
-      i.i-reel
-      span.label 100#[small MB]
-    .fallback
-      input(name='file', type='file', multiple='')
-
-  .dropzone-error-list
-
+  )
 
   form(action="{% url 'post_create' %}", method="post", enctype="multipart/form-data")
     .form-group
@@ -46,11 +51,6 @@ link(href="https://transloadit.edgly.net/releases/uppy/v1.21.2/uppy.min.css", re
   .form-tip
     span {% trans "Tip: Use #hashtags to increase discoverability." %}
 
-  #uppy-drop-area(
-    data-post_id="{{ post.id }}",
-    data-unpublished_uploads_url="{% url 'post_unpublished_uploads' post.hash_id %}",
-    data-delete_unpublished_upload_url="{% url 'delete_unpublished_upload' post.hash_id %}",
-  )
 
 | {% endblock content_card %}
 
