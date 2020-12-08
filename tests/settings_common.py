@@ -207,8 +207,8 @@ DEFAULT_FROM_EMAIL = "Animato <contact@anima.to>"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_FILE_OVERWRITE = False
 AWS_S3_REGION_NAME = 'eu-central-1'
-AWS_STORAGE_BUCKET_NAME = 'animato-storage'
-AWS_S3_CUSTOM_DOMAIN = 'd1hukknh2p1fng.cloudfront.net'
-AWS_UPLOADS_BUCKET_NAME = 'animato-uploads'
+AWS_STORAGE_BUCKET_NAME = 'dev-animato-storage'
+AWS_S3_CUSTOM_DOMAIN = 'd2x9a2ro516tym.cloudfront.net'
+AWS_UPLOADS_BUCKET_NAME = 'dev-animato-uploads'
 
 THUMBNAIL_STORAGE = DEFAULT_FILE_STORAGE
