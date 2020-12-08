@@ -235,7 +235,7 @@ script.
 
   // Disable the Create Post button if text field is empty and no (valid) files were uploaded.
   $postDescription.on('keyup', function () {
-    let totalFilesCount = Dropzone.getElement("#postMediaDropzone").dropzone.files.length;
+    let totalFilesCount = uppy.getFiles().length;
     if ($.trim($postDescription.val()) && totalFilesCount > 0) {
       $('.js-post-create-btn')
         .removeClass('disabled');
