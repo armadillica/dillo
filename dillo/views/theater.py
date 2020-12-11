@@ -148,7 +148,7 @@ class ShortUpdateView(LoginRequiredMixin, UpdateView):
 
 class ShortListView(ListView):
 
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'dillo/theater/short_list.pug'
 
     def get_queryset(self):
