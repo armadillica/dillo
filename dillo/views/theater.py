@@ -161,7 +161,7 @@ class ShortListView(ListView):
             except ValueError:
                 log.warning('Trying to folder shorts by %s' % submitted_by)
 
-        return shorts.order_by('created_at')
+        return shorts.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
