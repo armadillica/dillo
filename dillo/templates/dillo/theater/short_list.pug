@@ -19,18 +19,29 @@
 .row.cards-row
   | {% for short in object_list %}
   .col
-    .card-borderless
-      | {% thumbnail short.image "480x270" crop="center" as im %}
-      a.card-thumbnail(href="{% url 'short-detail' short.pk %}", title="{{ short.title }}")
-        img.img-fluid(
+    .post-container
+      a.post-media-item-grid(
+        href="{% url 'short-detail' short.pk %}")
+
+        | {% thumbnail short.image "640x360" crop="center" as im %}
+        img.media-thumbnail(
           src="{{ im.url }}",
           width="{{ im.width }}",
           height="{{ im.height }}",
-          alt="{{ short.title }}")
-      | {% endthumbnail %}
-      .card-header
-        a.card-header-text(href="{% url 'short-detail' short.pk %}")
-          .card-title {{ short.title }}
+          alt="{{ post.user }}")
+        | {% endthumbnail %}
+
+      .post-grid-details
+        .post-grid-info.large
+          a.post-author(href="{% url 'short-detail' short.pk %}")
+            span {{ short.title }}
+
+          a.post-grid-meta
+            //- Likes.
+            | {% if short.likes.count %}
+            span  #[i.i-heart] {{ short.likes.count }}
+            | {% endif %}
+
   | {% endfor %}
 | {% else %}
 .post-list-empty
