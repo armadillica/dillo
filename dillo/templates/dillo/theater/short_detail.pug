@@ -29,21 +29,29 @@
 
   .col-md-3
     .sidebar-block
-      | {% thumbnail short.image "480" crop="center" as im %}
-      img.short-poster(
-        src="{{ im.url }}",
-        width="{{ im.width }}",
-        height="{{ im.height }}",
-        alt="{{ short.title }}")
-      | {% endthumbnail %}
+      h2 {{ short.title }}
 
-      h3 {{ short.title }}
+      .post-meta
+        ul
+          li.post-meta-link(title="{{ short.created_at | date:'DATETIME_FORMAT' }}")
+            | {{ short.created_at | timesince | shorten_timesince }} {% trans 'ago' %}
 
-      small.text-muted
-        | {% trans 'Posted' %} #[span(title="{{ short.created_at }}") {{ short.created_at | timesince | shorten_timesince }}] {% trans 'ago by' %}
-        #[a.text-muted(href="{% url 'profile_details' short.user.username %}", title="{{ short.user.username }}") {{ short.user }}]
-
-      hr
+          | {% if short.likes.count %}
+          li.post-meta-link.post-meta-link-persistent(
+            class="js-show-modal",
+            id="likes-count-{{ short.content_type_id }}-{{ short.id }}",
+            data-modal_category='list',
+            data-modal_title='{% trans "Likes" %}',
+            data-content_url="{% url 'embed_likes_list' content_type_id=short.content_type_id object_id=short.id %}",
+            title='{% trans "Likes" %}',
+            data-toggle='modal',
+            data-target='#modal')
+            | {% blocktrans count short.likes.count as amount %}
+            | #[span.js-likes-count {{ amount }}] #[span.js-likes-word like]
+            | {% plural %}
+            | #[span.js-likes-count {{ amount }}] #[span.js-likes-word likes]
+            | {% endblocktrans %}
+          | {% endif %}
 
       .btn-toolbar-row
         | {% include 'dillo/components/_button_like.pug' with ob=short class="btn-sidebar" %}
