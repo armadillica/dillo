@@ -1,7 +1,8 @@
 import logging
 import pathlib
-import typing
 import requests
+import tempfile
+import typing
 from urllib.parse import urlparse
 
 from allauth.account.models import EmailAddress
@@ -11,6 +12,7 @@ import boto3
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.files.images import ImageFile
 from django.core.mail import send_mass_mail, send_mail, EmailMessage
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import truncatechars
@@ -508,21 +510,20 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
             pull_action_from_user_feed(user, action)
 
 
-def download_image_from_web(url, model_instance):
+def download_image_from_web(url, model_instance, attribute):
     # Build request (streaming)
     r = requests.get(url, stream=True)
     # Get the path component from the url
     path_comp = urlparse(url)[2]
     hashed_path = dillo.models.mixins.get_upload_to_hashed_path(model_instance, path_comp)
-    src = pathlib.Path(settings.MEDIA_ROOT, hashed_path)
-    src.parent.mkdir(parents=True, exist_ok=True)
 
     # Download the file
-    with src.open('wb') as fp:
-        log.debug("Downloading file %s to %s" % (url, str(src)))
+    with tempfile.TemporaryFile() as fp:
+        log.debug("Downloading file %s to %s" % (url, fp.name))
         for chunk in r.iter_content(chunk_size=128):
             fp.write(chunk)
-    return hashed_path
+        log.debug("Assigning file to model instance")
+        attribute.save(str(hashed_path), ImageFile(fp))
 
 
 @background()
@@ -533,13 +534,8 @@ def update_profile_reel_thumbnail(user_id):
     if 'thumbnail_url' not in oembed_data:
         return
     url = oembed_data['thumbnail_url']
-    hashed_path = download_image_from_web(url, dillo.models.posts.PostMediaImage())
     log.debug("Update profile for user %i" % user_id)
-    dillo.models.profiles.Profile.objects.filter(user_id=user_id).update(
-        reel_thumbnail_16_9=hashed_path
-    )
-
-    # TODO(fsiddi) empty sorl cache
+    download_image_from_web(url, dillo.models.posts.PostMediaImage(), profile.reel_thumbnail_16_9)
 
 
 @background()
