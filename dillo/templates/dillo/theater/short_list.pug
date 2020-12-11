@@ -20,7 +20,7 @@
   | {% for short in object_list %}
   .col
     .card-borderless
-      | {% thumbnail short.image "480" crop="center" as im %}
+      | {% thumbnail short.image "480x270" crop="center" as im %}
       a.card-thumbnail(href="{% url 'short-detail' short.pk %}", title="{{ short.title }}")
         img.img-fluid(
           src="{{ im.url }}",
