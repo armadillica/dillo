@@ -23,7 +23,9 @@
 .row
   .col-md-9
     .profile-reel.mt-3 {{ short.url | oembed }}
+    | {% if short.description %}
     .p-3 {{ short.description | markdown | safe | urlize }}
+    | {% endif %}
 
   .col-md-3
     .sidebar-block

@@ -120,7 +120,10 @@ class ShortCreateView(LoginRequiredMixin, CreateView):
     template_name = 'dillo/theater/short_form.pug'
 
     model = Short
-    fields = ['title', 'url', 'description', 'image']
+    fields = [
+        'title',
+        'url',
+    ]
 
     def form_valid(self, form):
         # Set user as owner of the short
@@ -181,18 +184,13 @@ class ShortDetailView(DetailView):
         short = self.object
 
         image_field = None
-        # Try to use the short image (it's a poster image, so it will be cropped)
-        # TODO (fsiddi) download 16_9 thumbnail as well like we do for reels
         if short.image:
             image_field = short.image
 
         image_alt = f"{short.title} on anima.to"
 
         return OgData(
-            title=short.title,
-            description=short.description,
-            image_field=image_field,
-            image_alt=image_alt,
+            title=short.title, description='', image_field=image_field, image_alt=image_alt,
         )
 
     def get_adjacent_shorts(self, short_id):
