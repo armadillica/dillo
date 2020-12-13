@@ -2,16 +2,14 @@
 
 .nav-tabbar-items
   a.btn(
-    href="{% url 'reel-list' %}",
-    class="{% if '/reels/' in request.path_info %}active{% endif %}")
-    span {% trans 'Reels' %}
-
-  a.btn(
     href="{% url 'short-list' %}",
-    class="{% ifequal request.get_full_path|slice:'-1' '/theater/shorts' %}active{% endifequal %}")
-    span {% trans 'Short Films' %}
+    class="{% ifequal '/shorts/' request.get_full_path %}active{% endifequal %}")
+    span {% trans 'Top Shorts' %}
+  a.btn(
+    href="{% url 'short-list' %}?sort=recent",
+    class="{% ifequal '/shorts/?sort=recent' request.get_full_path %}active{% endifequal %}")
+    span {% trans 'Most Recent' %}
 
-  | {% if is_shorts %}
   .btn-toolbar-row
     | {% if request.user.is_authenticated %}
     a.btn(
@@ -24,4 +22,3 @@
       href="{% url 'short-create' %}",
       class="{% if '/shorts/submit/' in request.path_info %}active{% endif %}")
       span {% trans 'Submit Short' %}
-  | {% endif %}

@@ -1,0 +1,11 @@
+| {% load i18n %}
+
+.nav-tabbar-items
+  a.btn(
+    href="{% url 'reel-list' %}",
+    class="{% ifequal '/reels/' request.get_full_path %}active{% endifequal %}")
+    span {% trans 'Top Reels' %}
+  a.btn(
+    href="{% url 'reel-list' %}?sort=recent",
+    class="{% ifequal '/reels/?sort=recent' request.get_full_path %}active{% endifequal %}")
+    span {% trans 'Most Recent' %}

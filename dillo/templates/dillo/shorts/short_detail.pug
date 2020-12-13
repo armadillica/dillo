@@ -10,7 +10,7 @@
 | {% block stream_nav %}
 .nav-tabbar
   | {% block stream_nav_items %}
-  | {% include 'dillo/theater/_navigation_theater.pug' with is_shorts=True %}
+  | {% include 'dillo/shorts/_navigation_short.pug' %}
   | {{ block.super }}
 
   | {% endblock stream_nav_items %}

@@ -26,7 +26,7 @@ nav.nav-primary.navbar.navbar-expand
 						span {% trans 'Reels' %}
 
 				li(class="{% if '/shorts' in request.path_info %}active{% endif %}")
-					a(href="{% url 'short-list' %}", title="{% trans 'Shorts Theater' %}")
+					a(href="{% url 'short-list' %}?sort=recent", title="{% trans 'Shorts Theater' %}")
 						i.i-shorts
 						span {% trans 'Shorts' %}
 

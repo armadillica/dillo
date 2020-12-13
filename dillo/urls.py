@@ -14,12 +14,13 @@ import dillo.views.posts.publish
 import dillo.views.posts.queries
 import dillo.views.posts.videos
 import dillo.views.report
+import dillo.views.shorts
 import dillo.views.users.account
 import dillo.views.users.bookmarks
 import dillo.views.users.homepage
 import dillo.views.users.notifications
 import dillo.views.users.profile
-import dillo.views.theater
+import dillo.views.reels
 import dillo.views.jobs
 import dillo.views.emails
 import dillo.views.posts.post_rigs
@@ -223,27 +224,19 @@ urlpatterns += [
     ),
 ]
 
-# Theater
+# Reels
 urlpatterns += [
-    path('theater/reels/', dillo.views.theater.ReelListView.as_view(), name='reel-list'),
+    path('reels/', dillo.views.reels.ReelListView.as_view(), name='reel-list'),
+    path('reels/<int:profile_id>', dillo.views.reels.ReelDetailView.as_view(), name='reel-detail',),
+]
+
+# Shorts
+urlpatterns += [
+    path('shorts/', dillo.views.shorts.ShortListView.as_view(), name='short-list'),
+    path('shorts/<int:pk>', dillo.views.shorts.ShortDetailView.as_view(), name='short-detail',),
+    path('shorts/submit', dillo.views.shorts.ShortCreateView.as_view(), name='short-create'),
     path(
-        'theater/reels/<int:profile_id>',
-        dillo.views.theater.ReelDetailView.as_view(),
-        name='reel-detail',
-    ),
-    path('theater/shorts/', dillo.views.theater.ShortListView.as_view(), name='short-list'),
-    path(
-        'theater/shorts/<int:pk>',
-        dillo.views.theater.ShortDetailView.as_view(),
-        name='short-detail',
-    ),
-    path(
-        'theater/shorts/submit', dillo.views.theater.ShortCreateView.as_view(), name='short-create'
-    ),
-    path(
-        'theater/shorts/<int:pk>/update',
-        dillo.views.theater.ShortUpdateView.as_view(),
-        name='short-update',
+        'shorts/<int:pk>/update', dillo.views.shorts.ShortUpdateView.as_view(), name='short-update',
     ),
 ]
 

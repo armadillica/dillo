@@ -77,7 +77,7 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
     avatar_height = models.PositiveIntegerField(null=True)
     avatar_width = models.PositiveIntegerField(null=True)
 
-    # Thumbnail used to preview the profile's reel in the reel theater.
+    # Thumbnail used to preview the profile's reel in the reel gallery.
     reel_thumbnail_16_9 = models.ImageField(
         upload_to=get_upload_to_hashed_path,
         blank=True,

@@ -6,9 +6,8 @@
 | {% block stream_nav %}
 .nav-tabbar
   | {% block stream_nav_items %}
-  | {% include 'dillo/theater/_navigation_theater.pug' %}
+  | {% include 'dillo/reels/_navigation_reel.pug' %}
   | {% endblock stream_nav_items %}
-
   | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="Reel" %}
 | {% endblock stream_nav %}
 

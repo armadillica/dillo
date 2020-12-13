@@ -12,9 +12,8 @@
 | {% block stream_nav %}
 .nav-tabbar
   | {% block stream_nav_items %}
-  | {% include 'dillo/theater/_navigation_theater.pug' %}
+  | {% include 'dillo/reels/_navigation_reel.pug' %}
   | {% endblock stream_nav_items %}
-
   | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_profile_url next_obj_url=next_profile_url label="Reel" %}
 | {% endblock stream_nav %}
 
