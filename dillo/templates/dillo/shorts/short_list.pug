@@ -21,7 +21,7 @@
   .col
     .post-container
       a.post-media-item-grid(
-        href="{% url 'short-detail' short.pk %}")
+        href="{% url 'short-detail' short.pk %}?{{ sort }}")
 
         | {% thumbnail short.image "640x360" crop="center" as im %}
         img.media-thumbnail(
@@ -33,7 +33,7 @@
 
       .post-grid-details
         .post-grid-info.large
-          a.post-author(href="{% url 'short-detail' short.pk %}")
+          a.post-author(href="{% url 'short-detail' short.pk %}?{{ sort }}")
             span {{ short.title }}
 
           a.post-grid-meta

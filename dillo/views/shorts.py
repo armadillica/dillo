@@ -100,28 +100,28 @@ class ShortDetailView(DetailView):
             title=short.title, description='', image_field=image_field, image_alt=image_alt,
         )
 
-    def get_adjacent_shorts(self, short_id):
-        """Given a Short id, find the previous and the next one.
+    def get_adjacent_shorts(self):
+        shorts = Short.objects.filter(visibility='public')
 
-        TODO (fsiddi): Add tests for this
-        """
+        sort = self.request.GET.get('sort') or None
+        if sort == 'recent':
+            shorts = shorts.order_by('-created_at', 'id')
+        else:
+            shorts = shorts.annotate(likes_count=Count('likes')).order_by('-likes_count', 'id')
+
+        shorts_list = list(shorts)
+        idx = shorts_list.index(self.object)
         try:
-            # Get the next short
-            next_short = Short.objects.filter(visibility='public', id__gt=short_id).order_by(
-                'created_at'
-            )[0]
+            next_short = shorts_list[idx + 1]
         except IndexError:
-            log.debug("No prev_short found, end of the list")
+            log.debug("No next_short found, end of the list")
             next_short = None
 
-        try:
-            # Get the previous short
-            prev_short = Short.objects.filter(visibility='public', id__lt=short_id).order_by(
-                '-created_at'
-            )[0]
-        except IndexError:
+        if idx == 0:
             log.debug("No prev_short found, end of the list")
             prev_short = None
+        else:
+            prev_short = shorts_list[idx - 1]
 
         prev_short_url = (
             None if prev_short is None else reverse('short-detail', kwargs={'pk': prev_short.id})
@@ -135,9 +135,11 @@ class ShortDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        current_short_id = context['object'].id
-        context['prev_short_url'], context['next_short_url'] = self.get_adjacent_shorts(
-            current_short_id
-        )
+        context['prev_short_url'], context['next_short_url'] = self.get_adjacent_shorts()
         context['og_data'] = self.populate_og_data()
+        sort = self.request.GET.get('sort')
+        # Build 'sort' query argument to use in the _pagination.pug component
+        # This allows to perform correct pagination
+        if sort == 'recent':
+            context['sort'] = 'sort=recent'
         return context

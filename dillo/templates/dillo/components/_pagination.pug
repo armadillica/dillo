@@ -10,7 +10,7 @@
 	| {% if is_detail %}
 	.btn-toolbar-row
 		| {% if prev_obj_url %}
-		a.btn.btn-prev(href="{{ prev_obj_url }}")
+		a.btn.btn-prev(href="{{ prev_obj_url }}?{{ sort }}")
 			span
 				i.i-chevron-left
 				span {% trans 'Previous' %}
@@ -21,7 +21,7 @@
 				span {% trans 'Previous' %}
 		| {% endif %}
 		| {% if next_obj_url %}
-		a.btn.btn-next(href="{{ next_obj_url }}")
+		a.btn.btn-next(href="{{ next_obj_url }}?{{ sort }}")
 			span
 				span {% trans 'Next' %}
 				i.i-chevron-right

@@ -53,7 +53,14 @@ class ReelDetailView(DetailView):
 
     def get_adjacent_profiles_with_reels(self):
         """Given a User id, find the previous and the next reel."""
-        profiles = Profile.objects.exclude(reel__exact='').order_by('-likes_count', 'user_id')
+        profiles = Profile.objects.exclude(reel__exact='')
+
+        sort = self.request.GET.get('sort') or None
+        if sort == 'recent':
+            profiles = profiles.order_by('-created_at', 'user_id')
+        else:
+            profiles = profiles.order_by('-likes_count', 'user_id')
+
         profiles_list = list(profiles)
         # Faster idx, no needed yet
         # idx = list(next_profiles.values_list('user_id', flat=True)).index(self.object.user.id)
@@ -120,4 +127,9 @@ class ReelDetailView(DetailView):
         )
         context['layout'] = 'grid'
         context['og_data'] = self.populate_og_data()
+        sort = self.request.GET.get('sort')
+        # Build 'sort' query argument to use in the _pagination.pug component
+        # This allows to perform correct pagination
+        if sort == 'recent':
+            context['sort'] = 'sort=recent'
         return context
