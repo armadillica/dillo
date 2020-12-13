@@ -37,6 +37,11 @@ class ReelListView(ListView):
             image_field=None,
             image_alt=None,
         )
+        sort = self.request.GET.get('sort')
+        # Build 'sort' query argument to use in the _pagination.pug component
+        # This allows to perform correct pagination
+        if sort == 'recent':
+            context['sort'] = 'sort=recent'
         return context
 
 

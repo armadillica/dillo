@@ -7,7 +7,7 @@
     span {% trans 'Top Shorts' %}
   a.btn(
     href="{% url 'short-list' %}?sort=recent",
-    class="{% ifequal '/shorts/?sort=recent' request.get_full_path %}active{% endifequal %}")
+    class="{% if '/shorts/?sort=recent' in request.get_full_path %}active{% endif %}")
     span {% trans 'Most Recent' %}
 
   .btn-toolbar-row

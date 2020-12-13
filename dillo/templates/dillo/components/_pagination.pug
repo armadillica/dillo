@@ -36,7 +36,7 @@
 	.btn-toolbar-row
 		//- Previous button.
 		| {% if page_obj.has_previous %}
-		a.btn.btn-prev(href="?{{search}}&page={{ page_obj.previous_page_number }}", tabindex='-1')
+		a.btn.btn-prev(href="?{{ sort }}&page={{ page_obj.previous_page_number }}", tabindex='-1')
 			i.i-chevron-left
 			span {% trans 'Previous' %}
 		| {% else %}
@@ -51,7 +51,7 @@
 		.btn-group
 			| {% for page_number in page_obj.paginator.page_range %}
 			a.btn(
-				href="?page={{ page_number }}",
+				href="?{{ sort }}&page={{ page_number }}",
 				class="{% if page_number == page_obj.number %}active{% endif %}")
 				span {{ page_number }}
 			| {% endfor %}
@@ -59,7 +59,7 @@
 
 		//- Next button.
 		| {% if page_obj.has_next %}
-		a.btn.btn-next(href="?page={{ page_obj.next_page_number }}")
+		a.btn.btn-next(href="?{{ sort }}&page={{ page_obj.next_page_number }}")
 			span
 				span {% trans 'Next' %}
 				i.i-chevron-right

@@ -1,6 +1,7 @@
 import logging
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, ListView, DetailView
 
@@ -48,15 +49,21 @@ class ShortListView(ListView):
 
     def get_queryset(self):
         submitted_by = self.request.GET.get('submitted-by') or None
-        shorts = Short.objects.filter(visibility='public')
+        qs = Short.objects.filter(visibility='public')
         if submitted_by:
             try:
                 submitted_by = int(submitted_by)
-                shorts = shorts.filter(user_id__exact=submitted_by)
+                qs = qs.filter(user_id__exact=submitted_by)
             except ValueError:
                 log.warning('Trying to folder shorts by %s' % submitted_by)
 
-        return shorts.order_by('-created_at')
+        sort = self.request.GET.get('sort') or None
+        if sort == 'recent':
+            qs = qs.order_by('-created_at', 'id')
+        else:
+            qs = qs.annotate(likes_count=Count('likes')).order_by('-likes_count', 'user_id')
+
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,6 +73,11 @@ class ShortListView(ListView):
             image_field=None,
             image_alt=None,
         )
+        sort = self.request.GET.get('sort')
+        # Build 'sort' query argument to use in the _pagination.pug component
+        # This allows to perform correct pagination
+        if sort == 'recent':
+            context['sort'] = 'sort=recent'
         return context
 
 
