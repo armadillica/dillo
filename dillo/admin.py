@@ -142,27 +142,6 @@ class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
 
 
-@admin.register(dillo.models.posts.PostJob)
-class JobsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'company', 'visibility', 'created_at', 'show_link')
-    ordering = ('-created_at',)
-    exclude = ('image_height', 'image_width')
-    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
-
-    def show_link(self, obj):
-        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
-
-
-@admin.register(dillo.models.post_rigs.PostRig)
-class RigsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'visibility')
-    exclude = ('image_height', 'image_width', 'title', 'content')
-    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at')
-
-    def show_link(self, obj):
-        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
-
-
 admin.site.register(dillo.models.post_rigs.Software)
 
 
