@@ -20,7 +20,7 @@ import dillo.models.profiles
 import dillo.models.shorts
 import dillo.models.newsletter
 import dillo.models.communities
-import dillo.models.post_rigs
+import dillo.models.software
 
 log = logging.getLogger(__name__)
 
@@ -142,7 +142,7 @@ class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
 
 
-admin.site.register(dillo.models.post_rigs.Software)
+admin.site.register(dillo.models.software.Software)
 
 
 class EmailIsVerifiedListFilter(admin.SimpleListFilter):
