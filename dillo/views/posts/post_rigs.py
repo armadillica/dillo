@@ -7,14 +7,14 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from dillo.views.mixins import OgData
-from dillo.models.post_rigs import PostRig
+from dillo.models.post_rigs import Rig
 
 log = logging.getLogger(__name__)
 
 
 class RigCreateView(LoginRequiredMixin, CreateView):
 
-    model = PostRig
+    model = Rig
     template_name = 'dillo/rigs/rig_form.pug'
     fields = ['name', 'url', 'description', 'image', 'software']
 
@@ -28,7 +28,7 @@ class RigUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     template_name = 'dillo/rigs/rig_form_update.pug'
 
-    model = PostRig
+    model = Rig
     fields = ['name', 'description', 'image', 'software']
 
     def test_func(self):
@@ -44,7 +44,7 @@ class RigListView(ListView):
 
     def get_queryset(self):
         submitted_by = self.request.GET.get('submitted-by') or None
-        rigs = PostRig.objects.filter(visibility='public')
+        rigs = Rig.objects.filter(visibility='public')
         if submitted_by:
             try:
                 submitted_by = int(submitted_by)
@@ -68,11 +68,11 @@ class RigListView(ListView):
 class RigDetailView(DetailView):
 
     template_name = 'dillo/rigs/rig_detail.pug'
-    model = PostRig
+    model = Rig
 
     def populate_og_data(self):
         """Prepare the OgData object for the context."""
-        rig: PostRig = self.object
+        rig: Rig = self.object
 
         image_field = None
         # Try to use the rig image (it's a poster image, so it will be cropped)
@@ -89,10 +89,10 @@ class RigDetailView(DetailView):
         )
 
     def get_adjacent_rigs(self, rig_id):
-        """Given a PostRig id, find the previous and the next one."""
+        """Given a Rig id, find the previous and the next one."""
         try:
             # Get the next rig
-            next_rig = PostRig.objects.filter(visibility='public', id__gt=rig_id).order_by(
+            next_rig = Rig.objects.filter(visibility='public', id__gt=rig_id).order_by(
                 'created_at'
             )[0]
         except IndexError:
@@ -101,7 +101,7 @@ class RigDetailView(DetailView):
 
         try:
             # Get the previous rig
-            prev_rig = PostRig.objects.filter(visibility='public', id__lt=rig_id).order_by(
+            prev_rig = Rig.objects.filter(visibility='public', id__lt=rig_id).order_by(
                 '-created_at'
             )[0]
         except IndexError:

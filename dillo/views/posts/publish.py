@@ -18,7 +18,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import FormView
 
 from dillo import forms
-from dillo.models.posts import Post, PostWithMedia, PostMediaImage, PostMediaVideo, PostMedia
+from dillo.models.posts import Post, PostMediaImage, PostMediaVideo, PostMedia
 from dillo.models.mixins import generate_hash_from_filename
 from dillo.tasks import move_blob_from_upload_to_storage
 from dillo.coconut import events
@@ -40,7 +40,7 @@ class PostCreateView(LoginRequiredMixin, FormView):
         # Get an existing post in draft status
         # Note: this makes it impossible for a user to create multiple
         # posts in parallel.
-        post_with_media, _ = PostWithMedia.objects.get_or_create(user=request.user, status='draft')
+        post_with_media, _ = Post.objects.get_or_create(user=request.user, status='draft')
 
         self.initial = {'post_id': post_with_media.id}
         form_class = self.get_form_class()

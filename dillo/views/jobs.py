@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from dillo.views.mixins import OgData
-from dillo.models.posts import PostJob
+from dillo.models.posts import Job
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ class JobCreateView(LoginRequiredMixin, CreateView):
 
     template_name = 'dillo/jobs/job_form.pug'
 
-    model = PostJob
+    model = Job
     fields = [
         'title',
         'company',
@@ -49,7 +49,7 @@ class JobUpdateView(LoginRequiredMixin, UpdateView):
 
     template_name = 'dillo/jobs/job_form_update.pug'
 
-    model = PostJob
+    model = Job
     fields = [
         'title',
         'company',
@@ -80,7 +80,7 @@ class JobListView(ListView):
     context_object_name = 'jobs'
 
     def get_queryset(self):
-        jobs = PostJob.objects.filter(visibility='public').order_by('-created_at', 'title')
+        jobs = Job.objects.filter(visibility='public').order_by('-created_at', 'title')
         return jobs
 
     def get_context_data(self, **kwargs):
@@ -97,7 +97,7 @@ class JobListView(ListView):
 class JobDetailView(DetailView):
 
     template_name = 'dillo/jobs/job_detail.pug'
-    model = PostJob
+    model = Job
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

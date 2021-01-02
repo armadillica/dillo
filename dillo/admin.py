@@ -50,8 +50,8 @@ class PostMediaInline(admin.TabularInline):
     fields = ['order', 'post_media_edit_link']
 
 
-@admin.register(dillo.models.posts.PostWithMedia)
-class PostWithMediaAdmin(admin.ModelAdmin):
+@admin.register(dillo.models.posts.Post)
+class PostAdmin(admin.ModelAdmin):
     actions = ['process_videos']
     list_display = ('__str__', 'show_link', 'hash_id', 'status', 'created_at', 'updated_at')
     list_display_links = ('__str__',)

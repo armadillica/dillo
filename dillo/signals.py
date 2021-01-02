@@ -89,8 +89,6 @@ def on_created_post(sender, instance, created, **kwargs):
         return
     instance.hash_id = instance.id
     instance.save()
-    if not isinstance(sender, dillo.models.posts.PostWithMedia):
-        return
     log.debug('Set user %s as follower of own post %i' % (instance.user, instance.id))
     follow(instance.user, instance.post_ptr, actor_only=False)
 
