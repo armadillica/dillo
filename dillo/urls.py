@@ -248,17 +248,6 @@ urlpatterns += [
     path('jobs/<int:pk>/update', dillo.views.jobs.JobUpdateView.as_view(), name='job-update'),
 ]
 
-# Rigs
-urlpatterns += [
-    path('rigs/', dillo.views.posts.post_rigs.RigListView.as_view(), name='rig-list'),
-    path('rigs/<int:pk>/', dillo.views.posts.post_rigs.RigDetailView.as_view(), name='rig-detail'),
-    path('rigs/submit/', dillo.views.posts.post_rigs.RigCreateView.as_view(), name='rig-create'),
-    path(
-        'rigs/<int:pk>/update',
-        dillo.views.posts.post_rigs.RigUpdateView.as_view(),
-        name='rig-update',
-    ),
-]
 
 # Flat Pages
 urlpatterns += [
