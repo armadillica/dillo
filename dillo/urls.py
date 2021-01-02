@@ -23,7 +23,6 @@ import dillo.views.users.profile
 import dillo.views.reels
 import dillo.views.jobs
 import dillo.views.emails
-import dillo.views.posts.post_rigs
 
 # User Pages
 urlpatterns = [
