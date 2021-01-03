@@ -29,7 +29,6 @@ import dillo.models.posts
 import dillo.models.profiles
 import dillo.models.mixins
 import dillo.views.emails
-import dillo.models.shorts
 
 log = logging.getLogger(__name__)
 

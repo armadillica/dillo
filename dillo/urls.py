@@ -14,7 +14,6 @@ import dillo.views.posts.publish
 import dillo.views.posts.queries
 import dillo.views.posts.videos
 import dillo.views.report
-import dillo.views.shorts
 import dillo.views.users.account
 import dillo.views.users.bookmarks
 import dillo.views.users.homepage
@@ -229,15 +228,6 @@ urlpatterns += [
     path('reels/<int:profile_id>', dillo.views.reels.ReelDetailView.as_view(), name='reel-detail',),
 ]
 
-# Shorts
-# urlpatterns += [
-#     path('shorts/', dillo.views.shorts.ShortListView.as_view(), name='short-list'),
-#     path('shorts/<int:pk>', dillo.views.shorts.ShortDetailView.as_view(), name='short-detail',),
-#     path('shorts/submit', dillo.views.shorts.ShortCreateView.as_view(), name='short-create'),
-#     path(
-#         'shorts/<int:pk>/update', dillo.views.shorts.ShortUpdateView.as_view(), name='short-update',
-#     ),
-# ]
 
 # Jobs
 urlpatterns += [

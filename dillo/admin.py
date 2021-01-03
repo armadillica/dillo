@@ -17,7 +17,6 @@ from tinymce.widgets import TinyMCE
 import dillo.models.events
 import dillo.models.posts
 import dillo.models.profiles
-import dillo.models.shorts
 import dillo.models.newsletter
 import dillo.models.communities
 import dillo.models.software
@@ -94,16 +93,6 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'visibility', 'show_link')
     exclude = ('image_height', 'image_width', 'attendees')
     prepopulated_fields = {'slug': ('name',)}
-
-    def show_link(self, obj):
-        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
-
-
-@admin.register(dillo.models.shorts.Short)
-class ShortsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'visibility', 'updated_at', 'show_link')
-    exclude = ('image_height', 'image_width')
-    readonly_fields = ('created_at', 'updated_at', 'user', 'tags')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
