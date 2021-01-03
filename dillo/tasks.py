@@ -600,17 +600,6 @@ def update_mailing_list_subscription(user_email: str, is_subscribed: typing.Opti
         log.error("Newsletter API returned status code %i" % r_update.status_code)
 
 
-def update_short_thumbnail(short_id):
-
-    short = dillo.models.shorts.Short.objects.get(id=short_id)
-    oembed_data = providers.request(short.url)
-    if 'thumbnail_url' not in oembed_data:
-        return
-    url = oembed_data['thumbnail_url']
-    log.debug("Update short %i thumbnail" % short_id)
-    download_image_from_web(url, dillo.models.posts.PostMediaImage(), short.image)
-
-
 def move_blob_from_upload_to_storage(key):
     """Move a blob from the upload bucket to the permanent location."""
     try:

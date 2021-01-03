@@ -230,14 +230,14 @@ urlpatterns += [
 ]
 
 # Shorts
-urlpatterns += [
-    path('shorts/', dillo.views.shorts.ShortListView.as_view(), name='short-list'),
-    path('shorts/<int:pk>', dillo.views.shorts.ShortDetailView.as_view(), name='short-detail',),
-    path('shorts/submit', dillo.views.shorts.ShortCreateView.as_view(), name='short-create'),
-    path(
-        'shorts/<int:pk>/update', dillo.views.shorts.ShortUpdateView.as_view(), name='short-update',
-    ),
-]
+# urlpatterns += [
+#     path('shorts/', dillo.views.shorts.ShortListView.as_view(), name='short-list'),
+#     path('shorts/<int:pk>', dillo.views.shorts.ShortDetailView.as_view(), name='short-detail',),
+#     path('shorts/submit', dillo.views.shorts.ShortCreateView.as_view(), name='short-create'),
+#     path(
+#         'shorts/<int:pk>/update', dillo.views.shorts.ShortUpdateView.as_view(), name='short-update',
+#     ),
+# ]
 
 # Jobs
 urlpatterns += [
