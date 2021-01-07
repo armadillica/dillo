@@ -1,0 +1,108 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+| {% load thumbnail %}
+
+| {% for activity in object_list %}
+
+| {% if activity.action_object_content_type.name == 'post' %}
+| {% if activity.action_object.postmedia_set.all %}
+li.post-container(
+  data-post_id="{{ activity.action_object.hash_id }}",
+)
+  | {% include 'dillo/components/_post_media_grid.pug' with post=activity.action_object %}
+
+  .post-grid-details
+    .post-grid-avatar
+      | {% include 'dillo/components/_profile_avatar.pug' with user=activity.action_object.user size='small' %}
+
+    .post-grid-info
+      a.post-author(href="")
+        span {{ activity.action_object.user.username }}
+
+      a.post-grid-meta(
+        class="js-show-modal",
+        data-content_url="{% url 'post_detail' activity.action_object.hash_id %}",
+        data-toggle='modal',
+        data-target='#modal-post-detail',
+        data-post_id="{{ activity.action_object.hash_id }}",
+        href="{% url 'post_detail' activity.action_object.hash_id %}")
+
+        //- Views.
+        | {% if activity.action_object.postmedia_set.first.content_object.views_count %}
+        span
+          | #[i.i-eye] {{ activity.action_object.postmedia_set.first.content_object.views_count|compact_number }}
+        | {% endif %}
+
+        //- Comments.
+        | {% if activity.action_object.comments_count %}
+        span  #[i.i-comment] {{ activity.action_object.comments_count }}
+        | {% endif %}
+
+        //- Likes.
+        | {% if activity.action_object.likes.count %}
+        span  #[i.i-heart] {{ activity.action_object.likes.count }}
+        | {% endif %}
+
+| {% endif %}
+
+| {% elif activity.action_object_content_type.name == 'short' %}
+li.post-container
+  .js-oembed-container(
+    data-post_layout="grid")
+
+    //- .js-show-modal: opens the post in #modal-post-detail.
+    //- .js-post-media: for switching thumbnail for gif on hover (see posts.js)
+    a.post-media-item-grid(
+      href="{% url 'short-detail' activity.action_object.id %}")
+      | {% thumbnail activity.action_object.image "640x360" crop="center" as im %}
+      img.media-thumbnail(
+        src="{{ im.url }}",
+        width="{{ im.width }}",
+        height="{{ im.height }}",
+        alt="{{ activity.action_object.title }}")
+      | {% endthumbnail %}
+
+  .post-grid-details
+    .post-grid-info
+      a.post-author
+        span {{ activity.action_object.title }}
+        //- Likes.
+        | {% if activity.action_object.likes.count %}
+        span  #[i.i-heart] {{ activity.action_object.likes.count }}
+        | {% endif %}
+
+
+| {% elif activity.action_object_content_type.name == 'profile' %}
+li.post-container
+  .js-oembed-container(
+    data-post_layout="grid")
+
+    //- .js-show-modal: opens the post in #modal-post-detail.
+    //- .js-post-media: for switching thumbnail for gif on hover (see posts.js)
+    a.post-media-item-grid(
+      href="{{ activity.action_object.get_absolute_url }}")
+      | {% thumbnail activity.action_object.reel_thumbnail_16_9 "640x360" crop="center" as im %}
+      img.media-thumbnail(
+        src="{{ im.url }}",
+        width="{{ im.width }}",
+        height="{{ im.height }}",
+        alt="{{ activity.action_object.name }}")
+      | {% endthumbnail %}
+
+  .post-grid-details
+    .post-grid-info
+      a.post-author
+        span {{ activity.action_object.name }}
+
+
+| {% endif %}
+
+| {% empty %}
+| {% include 'dillo/components/_post_list_empty.pug' %}
+| {% endfor %}
+
+| {% if page_obj.has_next %}
+li
+  .d-flex.mx-auto.py-3.justify-content-center
+    | {% include 'dillo/components/_button_load_more.pug' with js_class='js-load-more' page_obj=page_obj %}
+| {% endif %}

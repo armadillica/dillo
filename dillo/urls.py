@@ -22,6 +22,7 @@ import dillo.views.users.profile
 import dillo.views.reels
 import dillo.views.jobs
 import dillo.views.emails
+import dillo.views.explore
 
 # User Pages
 urlpatterns = [
@@ -36,6 +37,13 @@ urlpatterns = [
         'e/stream/',
         dillo.views.users.homepage.PostsStreamUserListEmbedView.as_view(),
         name='embed_stream',
+    ),
+    # Embedded Activities Feed
+    path('feed-explore', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
+    path(
+        'e/feed-explore',
+        dillo.views.explore.ExploreFeedEmbedView.as_view(),
+        name='embed-explore-feed',
     ),
 ]
 

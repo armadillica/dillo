@@ -2,6 +2,7 @@ import logging
 import urllib.parse
 
 from actstream.models import followers, following
+from actstream import action
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.db import models
@@ -181,6 +182,8 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         if self.data_changed(['reel']):
             log.debug('Updating reel thumbnail for user %i' % self.user_id)
             tasks.update_profile_reel_thumbnail(self.user_id)
+            # Create activity for reel update
+            action.send(self.user, verb='updated their reel', action_object=self)
 
         if self.data_changed(['name']):
             log.debug('Updating newsletter information for user')

@@ -3,7 +3,6 @@ import typing
 import re
 import pathlib
 import requests
-import shutil
 
 from actstream import action, models as models_actstream
 from actstream.actions import follow
@@ -264,6 +263,15 @@ def on_created_action(sender, instance: models_actstream.Action, created, **kwar
     """On action created, fan out notifications"""
     if not created:
         return
+
+    # If content_type is Post or Profile
+    if instance.action_object_content_type == ContentType.objects.get_for_model(
+        dillo.models.posts.Post
+    ) or instance.action_object_content_type == ContentType.objects.get_for_model(
+        dillo.models.profiles.Profile
+    ):
+        tasks.establish_time_proximity(instance)
+
     log.debug('Creating background fanout operation for action %i' % instance.id)
     tasks.activity_fanout_to_feeds(instance.id)
 

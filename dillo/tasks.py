@@ -1,3 +1,4 @@
+import datetime
 import logging
 import pathlib
 import requests
@@ -18,8 +19,10 @@ from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import truncatechars
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 from micawber.contrib.mcdjango import providers
 from taggit import models as models_taggit
+
 
 import dillo.coconut.job
 import dillo.models
@@ -417,12 +420,14 @@ def feeds_fanout_posted(action):
             add_to_timeline(follower, action)
 
 
+# TODO(fsiddi) turn this into a shared enum to use with action.send
 fanout_functions = {
     'liked': feeds_fanout_liked,
     'commented': feeds_fanout_commented,
     'replied': feeds_fanout_replied,
     'started following': feeds_fanout_started_following,
     'posted': feeds_fanout_posted,
+    'updated their reel': lambda _: None,
 }
 
 
@@ -430,6 +435,8 @@ fanout_functions = {
 def activity_fanout_to_feeds(actstream_action_id):
     action = models_actstream.Action.objects.get(pk=actstream_action_id)
     log.debug('Processing "%s" action for feed fanout' % action.verb)
+    if action.verb not in fanout_functions:
+        return
     fanout_functions[action.verb](action)
 
 
@@ -632,6 +639,46 @@ def async_move_blob_from_upload_to_storage(key):
     BACKGROUND_TASKS_AS_FOREGROUND setting, this would be a problem.
     """
     move_blob_from_upload_to_storage(key)
+
+
+def establish_time_proximity(action: models_actstream.Action):
+    """Add Extra information a Post-related action.
+
+    If a similar action (same actor, same object type, time delta less than 1h)
+    was created, set the action_parent to said action.
+
+    TODO(fsiddi): Refactor into add_extra_properties, with subfunctions for
+    time proximity and feature in explore feed.
+    """
+    adjacent_action = (
+        models_actstream.Action.objects.filter(
+            actor_content_type=action.actor_content_type,
+            actor_object_id=action.actor_object_id,
+            verb=action.verb,
+            action_object_content_type=action.action_object_content_type,
+            timestamp__gte=(timezone.now() - datetime.timedelta(minutes=60)),
+        )
+        .exclude(pk=action.id)
+        .order_by('-timestamp')
+        .first()
+    )
+    parent_action = None
+
+    if adjacent_action:
+        adjancent_timeline_entry = dillo.models.feeds.ActionExtra.objects.filter(
+            action=adjacent_action
+        ).first()
+        if not adjancent_timeline_entry:
+            log.error('Missing adjacent timeline entry for action %i' % action.id)
+        else:
+            parent_action = (
+                adjancent_timeline_entry.parent_action or adjancent_timeline_entry.action
+            )
+
+    log.debug('Adding extra info to action %i' % action.id)
+    dillo.models.feeds.ActionExtra.objects.create(
+        action=action, parent_action=parent_action, is_on_explore_feed=True
+    )
 
 
 if settings.BACKGROUND_TASKS_AS_FOREGROUND:

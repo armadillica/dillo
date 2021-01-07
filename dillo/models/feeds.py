@@ -31,3 +31,28 @@ class FeedEntry(models.Model):
 
     def __str__(self):
         return 'FeedEntry: %s %s' % (self.action.actor, self.action.verb)
+
+
+class ActionExtra(models.Model):
+    action = models.OneToOneField(Action, on_delete=models.CASCADE, related_name='extra')
+    parent_action = models.ForeignKey(
+        Action, on_delete=models.CASCADE, null=True, blank=True, related_name='near_actions',
+    )
+    is_on_explore_feed = models.BooleanField(default=False)
+
+    @property
+    def near_actions_count(self):
+        if self.is_parent:
+            return ActionExtra.objects.filter(parent_action=self.action).count()
+        else:
+            return ActionExtra.objects.filter(parent_action=self.parent_action).count()
+
+    @property
+    def is_parent(self):
+        return not self.parent_action
+
+    class Meta:
+        db_table = 'actstream_action_extra'
+
+    def __str__(self):
+        return 'ActionExtra: %s' % self.action

@@ -22,6 +22,10 @@ class PostListView(TemplateView):
         """Force the creation of CSRF cookie."""
         return super().dispatch(*args, **kwargs)
 
+    @staticmethod
+    def get_query_url():
+        return reverse('embed_posts_list')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -30,7 +34,7 @@ class PostListView(TemplateView):
         if session_layout != request_layout:
             self.request.session['layout'] = request_layout
 
-        context['query_url'] = reverse('embed_posts_list')
+        context['query_url'] = self.get_query_url()
         context['layout'] = request_layout
         context['layout_switch'] = 'grid' if request_layout == 'list' else 'list'
         context['upcoming_events'] = (
