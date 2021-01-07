@@ -89,7 +89,7 @@ def on_created_post(sender, instance, created, **kwargs):
     instance.hash_id = instance.id
     instance.save()
     log.debug('Set user %s as follower of own post %i' % (instance.user, instance.id))
-    follow(instance.user, instance.post_ptr, actor_only=False)
+    follow(instance.user, instance, actor_only=False)
 
 
 @receiver(post_save)
