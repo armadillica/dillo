@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from dillo.views.mixins import OgData
-from dillo.models.posts import Job
+from dillo.models.jobs import Job
 
 log = logging.getLogger(__name__)
 
