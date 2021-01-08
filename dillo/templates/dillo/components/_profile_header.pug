@@ -4,10 +4,12 @@
 | {% load dillo_filters %}
 
 .profile-info
+
+  //- Avatar.
   .profile-info-avatar
     | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
 
-  //- Username or Name
+  //- Username or Name.
   a.profile-name(
     class="{{ is_link_disabled }}",
     href="{% url 'profile_details' user.username %}")
@@ -26,7 +28,7 @@
       | {{ user.profile.location }}
   | {% endif %}
 
-  //- Website
+  //- Website.
   | {% if user.profile.website %}
   a(
     href="{{ user.profile.website }}",
@@ -34,8 +36,8 @@
     | {{ user.profile.website_hostname }}
   | {% endif %}
 
+  //- Social Links.
   .profile-social
-    //- Social Links
     | {% for profile_link in user.profile.links.all %}
     | {% firstof profile_link.social 'Website' as social_site %}
     a.btn.btn-icon(
@@ -47,14 +49,14 @@
         i(class="i-{% firstof profile_link.social 'link' %}")
     | {% endfor %}
 
-  //- Short Bio
+  //- Bio.
   | {% if show_bio %}
   | {% if user.profile.bio %}
   .profile-bio {{ user.profile.bio }}
   | {% endif %}
   | {% endif %}
 
-  //- Statistics
+  //- Statistics.
   .profile-stats
     | {% if user.profile.followers_count > 0 %}
     span.stat(
@@ -98,15 +100,14 @@
 
   hr
 
-  | {% include 'dillo/components/_button_follow.pug' with target_object=user class="btn-profile-follow" %}
-
+  //- Show Edit Profile button for the current user.
   | {% if request.user == user %}
-
-  hr
-
   .sidebar-block
     | {% url 'profile_edit' as edit_url %}
     | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Profile" class="btn-sidebar" %}
+
   | {% else %}
-  hr
+
+  //- Show Follow button for everyone else.
+  | {% include 'dillo/components/_button_follow.pug' with target_object=user class="btn-profile-follow" %}
   | {% endif %}
