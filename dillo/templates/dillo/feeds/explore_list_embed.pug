@@ -22,6 +22,14 @@ li.post-container.post-feed-transparent
 
     .post-feed-verb {{ activity.verb }}
 
+    | {% if request.user.is_authenticated and request.user.id != activity.actor.profile.user.id and not request.user|is_following:activity.actor.profile.user %}
+    a.post-follow(
+      class="js-follow-toggle{% if request.user|is_following:activity.actor.profile.user %} is-follower{% endif %}",
+      data-follow_toggle_label="{% if request.user|is_following:activity.actor.profile.user %}Follow{% else %}Unfollow{% endif %}"
+      href="{% follow_url activity.actor.profile.user %}")
+      span {% if request.user|is_following:activity.actor.profile.user %}Unfollow{% else %}Follow{% endif %}
+    | {% endif %}
+
   .post-feed-embed
     .post-feed-embed-16by9
       | {{ activity.action_object.url | oembed }}
