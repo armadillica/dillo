@@ -109,11 +109,6 @@ li.post-container
         a.post-author(href="{% url 'reel-list' %}")
           span {% trans 'Reels' %}
 
-  .post-grid-details
-    .post-grid-info
-      a.post-author
-        span {{ activity.action_object.name }}
-
 | {% endif %}
 
 | {% empty %}
