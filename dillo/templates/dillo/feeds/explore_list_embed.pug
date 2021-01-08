@@ -1,4 +1,5 @@
 | {% load micawber_tags %}
+| {% load activity_tags %}
 
 | {% if not object_list %}
 p No item in the timeline. This is just the beginning.
@@ -10,14 +11,49 @@ p No item in the timeline. This is just the beginning.
 | {% include 'dillo/components/_post_list_element.pug' with post=activity.action_object %}
 
 | {% elif activity.action_object_content_type.name == 'short' %}
-li.post-container {{ activity.action_object.url | oembed }}
+li.post-container.post-feed-transparent
+  .post-header
+    | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor.profile.user %}
+
+    a.post-author(
+      href="{% url 'profile_details' activity.actor.profile.user.username %}",
+      title="{{ activity.actor.profile.user }}")
+      span {{ activity.actor.profile.user }}
+
+    .post-feed-verb {{ activity.verb }}
+
+  .post-feed-embed
+    .post-feed-embed-16by9
+      | {{ activity.action_object.url | oembed }}
+
   | {% if activity.extra.near_actions_count %}
   | and #[a(href="{% url 'short-list' %}") {{ activity.extra.near_actions_count }} more...]
   | {% endif %}
 
 | {% elif activity.action_object_content_type.name == 'profile' %}
-li.post-container {{ activity.action_object.reel | oembed }}
-  | {{ activity.actor.profile.name }} {{ activity.verb }} {{ activity.actor.profile.get_absolute_url }}
+li.post-container.post-feed-transparent
+  .post-header
+    | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor.profile.user %}
+
+    a.post-author(
+      href="{% url 'profile_details' activity.actor.profile.user.username %}",
+      title="{{ activity.actor.profile.user }}")
+      span {{ activity.actor.profile.user }}
+
+    .post-feed-verb {{ activity.verb }}
+
+    | {% if request.user.is_authenticated and request.user.id != activity.actor.profile.user.id and not request.user|is_following:activity.actor.profile.user %}
+    a.post-follow(
+      class="js-follow-toggle{% if request.user|is_following:activity.actor.profile.user %} is-follower{% endif %}",
+      data-follow_toggle_label="{% if request.user|is_following:activity.actor.profile.user %}Follow{% else %}Unfollow{% endif %}"
+      href="{% follow_url activity.actor.profile.user %}")
+      span {% if request.user|is_following:activity.actor.profile.user %}Unfollow{% else %}Follow{% endif %}
+    | {% endif %}
+
+  .post-feed-embed
+    .post-feed-embed-16by9
+      | {{ activity.action_object.reel | oembed }}
+
 | {% else %}
 
 li Unsupported item: {{ activity.action_object_content_type.name }}
