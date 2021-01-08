@@ -1,17 +1,20 @@
 | {% load i18n %}
 | {% if request.user.is_superuser %}
-a.dropdown-item(href="{% url 'admin:index' %}", title='Whoosh')
+a.dropdown-item.is-admin(href="{% url 'admin:index' %}", title='Whoosh')
   i.i-coffee
   | Whoosh
-a.dropdown-item(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
+a.dropdown-item.is-admin(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
   i.i-users
   | Users
 //- XXX Replace with proper url lookup like 'admin:rigs' or so.
-a.dropdown-item(href="/admin/rigs/rig/", title='Rigs List')
+a.dropdown-item.is-admin(href="/admin/rigs/rig/", title='Rigs List')
   i.i-package
   | Rigs
 .dropdown-divider
 | {% endif %}
+a.dropdown-item(href="{% url 'profile_details' user.username %}", title='{% trans "Profile" %}')
+  i.i-user
+  | {% trans "Profile" %}
 a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')
   i.i-settings
   | {% trans "Settings" %}
