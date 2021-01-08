@@ -1,3 +1,4 @@
+| {% load i18n %}
 | {% load micawber_tags %}
 | {% load activity_tags %}
 
@@ -20,7 +21,7 @@ li.post-container.post-feed-transparent
       title="{{ activity.actor.profile.user }}")
       span {{ activity.actor.profile.user }}
 
-    .post-feed-verb {{ activity.verb }}
+    .post-feed-verb {{ activity.verb }} {% trans 'the short film' %} #[i {{ activity.action_object.title }}]
 
     | {% if request.user.is_authenticated and request.user.id != activity.actor.profile.user.id and not request.user|is_following:activity.actor.profile.user %}
     a.post-follow(
@@ -29,6 +30,10 @@ li.post-container.post-feed-transparent
       href="{% follow_url activity.actor.profile.user %}")
       span {% if request.user|is_following:activity.actor.profile.user %}Unfollow{% else %}Follow{% endif %}
     | {% endif %}
+
+    .post-header-action
+      a(href="{% url 'short-list' %}")
+        | {% trans 'See more' %}
 
   .post-feed-embed
     .post-feed-embed-16by9
@@ -62,6 +67,10 @@ li.post-container.post-feed-transparent
       href="{% follow_url activity.actor.profile.user %}")
       span {% if request.user|is_following:activity.actor.profile.user %}Unfollow{% else %}Follow{% endif %}
     | {% endif %}
+
+    .post-header-action
+      a(href="{% url 'reel-list' %}")
+        | {% trans 'See more' %}
 
   .post-feed-embed
     .post-feed-embed-16by9

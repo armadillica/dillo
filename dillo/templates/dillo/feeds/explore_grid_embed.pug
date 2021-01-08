@@ -62,10 +62,15 @@ li.post-container
         alt="{{ activity.action_object.title }}")
       | {% endthumbnail %}
 
+      span.post-label-icon
+        i.i-shorts
+
   .post-grid-details
     .post-grid-info
-      a.post-author
+      a.post-author(href="{% url 'short-detail' activity.action_object.id %}")
         span {{ activity.action_object.title }}
+
+      .post-grid-meta
         //- Likes.
         | {% if activity.action_object.likes.count %}
         span  #[i.i-heart] {{ activity.action_object.likes.count }}
@@ -89,11 +94,25 @@ li.post-container
         alt="{{ activity.action_object.name }}")
       | {% endthumbnail %}
 
+      span.post-label-icon
+        i.i-reel
+
+  .post-grid-details
+    .post-grid-avatar
+      | {% include 'dillo/components/_profile_avatar.pug' with user=activity.action_object.user size='small' %}
+
+    .post-grid-info
+      a.post-author(href="{% url 'profile_details' activity.action_object.user.username %}")
+        span {{ activity.action_object.name }}
+
+      .post-grid-meta
+        a.post-author(href="{% url 'reel-list' %}")
+          span {% trans 'Reels' %}
+
   .post-grid-details
     .post-grid-info
       a.post-author
         span {{ activity.action_object.name }}
-
 
 | {% endif %}
 
