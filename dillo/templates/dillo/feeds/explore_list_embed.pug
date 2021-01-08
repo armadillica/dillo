@@ -27,7 +27,12 @@ li.post-container.post-feed-transparent
       | {{ activity.action_object.url | oembed }}
 
   | {% if activity.extra.near_actions_count %}
-  | and #[a(href="{% url 'short-list' %}") {{ activity.extra.near_actions_count }} more...]
+  .post-feed-more
+    a.btn.btn-link(href="{% url 'short-list' %}?sort=recent")
+      span
+        i.i-layers
+        span
+          | See {{ activity.extra.near_actions_count }} more short{{ activity.extra.near_actions_count | pluralize }}
   | {% endif %}
 
 | {% elif activity.action_object_content_type.name == 'profile' %}
