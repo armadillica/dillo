@@ -85,12 +85,12 @@
 
 						| {% if request.user.is_superuser %}
 						.dropdown-divider
-						a.dropdown-item(
+						a.dropdown-item.is-admin(
 							href="{% url 'admin:dillo_post_change' post.id %}",
 							title='{% trans "See Post in Whoosh" %}')
 							i.i-coffee
 							| {% trans "Post" %}
-						a.dropdown-item(
+						a.dropdown-item.is-admin(
 							href="{% url 'admin:auth_user_change' post.user.id %}",
 							title='{% trans "See User" %}')
 							i.i-coffee
