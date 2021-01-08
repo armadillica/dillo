@@ -96,7 +96,8 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 | {% if request.user.is_superuser %}
 .sidebar-block
 	| {% url 'admin:dillo_event_change' event.id as edit_url %}
-	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Event" %}
+	| {% trans 'Edit Event' as edit_label %}
+	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="is-admin" %}
 | {% endif %}
 
 //- TODO(Pablo): Show more/related events.

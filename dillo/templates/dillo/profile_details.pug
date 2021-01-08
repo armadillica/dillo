@@ -39,8 +39,8 @@ style.
 | {% if request.user.is_superuser %}
 .sidebar-block
   | {% url 'admin:auth_user_change' user.id as edit_url %}
-  | {% trans 'Whoosh User' as edit_label %}
-  | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' %}
+  | {% trans 'Edit User' as edit_label %}
+  | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="is-admin" %}
 | {% endif %}
 | {% endblock sidebar %}
 
