@@ -265,10 +265,14 @@ def on_created_action(sender, instance: models_actstream.Action, created, **kwar
         return
 
     # If content_type is Post or Profile
-    if instance.action_object_content_type == ContentType.objects.get_for_model(
-        dillo.models.posts.Post and instance.verb == 'posted'
-    ) or instance.action_object_content_type == ContentType.objects.get_for_model(
-        dillo.models.profiles.Profile and instance.verb == 'updated their reel'
+    if (
+        instance.action_object_content_type
+        == ContentType.objects.get_for_model(dillo.models.posts.Post)
+        and instance.verb == 'posted'
+    ) or (
+        instance.action_object_content_type
+        == ContentType.objects.get_for_model(dillo.models.profiles.Profile)
+        and instance.verb == 'updated their reel'
     ):
         tasks.establish_time_proximity(instance)
 
