@@ -3,7 +3,7 @@
 a(
 	href="{% if event|is_attended:request.user %}{% url 'event_attend_toggle' event.slug 'decline' %}{% else %}{% url 'event_attend_toggle' event.slug 'attend' %}{% endif %}",
 	data-attend_toggle_label="{% if event|is_attended:request.user %}Going{% else %}I'm going! {% endif %}",
-	class="js-attend-toggle btn-attend {% if event|is_attended:request.user %}active{% endif %}",
+	class="js-attend-toggle btn-attend {% if event|is_attended:request.user %}is-active{% endif %}",
 	)
 	span {% if event|is_attended:request.user %}I'm going! {% else %}Going{% endif %}
 | {% endif %}

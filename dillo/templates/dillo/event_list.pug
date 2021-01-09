@@ -9,42 +9,44 @@
 | {% block stream %}
 
 | {% if events %}
-| {% for event in events %}
-.card.e-event-large
-	| {% thumbnail event.image "1280" crop="center" as im %}
-	a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
-		img(
-			src="{{ im.url }}",
-			width="{{ im.width }}",
-			height="{{ im.height }}",
-			alt="{{ event.name }}")
-	| {% endthumbnail %}
+.row.cards-row-2
+	| {% for event in events %}
+	.col
+		.card.e-event-large
+			| {% thumbnail event.image "1280" crop="center" as im %}
+			a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
+				img(
+					src="{{ im.url }}",
+					width="{{ im.width }}",
+					height="{{ im.height }}",
+					alt="{{ event.name }}")
+			| {% endthumbnail %}
 
-	.card-body
-		.e-event
-			a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
-				.month {{ event.starts_at | date:"M" | upper }}
-				span.day {{ event.starts_at | date:"d" }}
+			.card-body
+				.e-event
+					a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
+						.month {{ event.starts_at | date:"M" | upper }}
+						span.day {{ event.starts_at | date:"d" }}
 
-			.e-event-info
-				a(href="{% url 'event_detail' slug=event.slug %}")
-					h2 {{ event.name }}
+					.e-event-info
+						a(href="{% url 'event_detail' slug=event.slug %}")
+							h2 {{ event.name }}
 
-				.location
-					| {% if event.is_online %}
-					| {% include 'dillo/components/_badge_online.pug' %}
-					| {% else %}
-					i.i-map-pin
-					| {{ event.location }}
-					| {% endif %}
+						.location
+							| {% if event.is_online %}
+							| {% include 'dillo/components/_badge_online.pug' %}
+							| {% else %}
+							i.i-map-pin
+							| {{ event.location }}
+							| {% endif %}
 
-				| {% if event.attendees.all %}
-				.going
-					| {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
-					| {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
-					| {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
-				| {% endif %}
-| {% endfor %}
+						| {% if event.attendees.all %}
+						.going
+							| {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
+							| {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
+							| {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
+						| {% endif %}
+	| {% endfor %}
 
 | {% else %}
 .post-list-empty
