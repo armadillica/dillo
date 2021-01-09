@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime, timedelta
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import SuspiciousOperation
 from django.http import JsonResponse
@@ -21,7 +23,9 @@ class EventListView(ListView):
     template_name = 'dillo/event_list.pug'
 
     def get_queryset(self):
-        return Event.objects.filter(visibility='public').order_by('starts_at')
+        yesterday = datetime.now() - timedelta(days=1)
+
+        return Event.objects.filter(starts_at__gte=yesterday, visibility='public').order_by('starts_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
