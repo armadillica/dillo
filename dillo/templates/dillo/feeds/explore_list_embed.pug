@@ -31,8 +31,8 @@ li.post-container.post-is-feed.post-feed-transparent
       span {{ activity.actor }}
 
     .post-feed-verb
-      | {{ activity.verb }} {% trans 'the short film' %} #[a(href="{% url 'short-detail' activity.action_object.id %}") {{ activity.action_object.title }}]
-      | {% if activity.extra.near_actions_count %} and {{ activity.extra.near_actions_count }} more.{% endif %}
+      | {{ activity.verb }} {% trans 'the short film' %} #[a(href="{% url 'short-detail' activity.action_object.id %}?sort=recent") #[strong {{ activity.action_object.title }}]]
+      | {% if activity.extra.near_actions_count %} and #[a(href="{% url 'short-list' %}?sort=recent") {{ activity.extra.near_actions_count }} more].{% endif %}
 
     | {% if request.user.is_authenticated and request.user.id != activity.actor.id and not request.user|is_following:activity.actor %}
     a.post-follow(
