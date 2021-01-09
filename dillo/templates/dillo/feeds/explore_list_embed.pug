@@ -14,21 +14,21 @@ p No item in the timeline. This is just the beginning.
 | {% elif activity.action_object_content_type.name == 'short' %}
 li.post-container.post-feed-transparent
   .post-header
-    | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor.profile.user %}
+    | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor %}
 
     a.post-author(
-      href="{% url 'profile_details' activity.actor.profile.user.username %}",
-      title="{{ activity.actor.profile.user }}")
-      span {{ activity.actor.profile.user }}
+      href="{% url 'profile_details' activity.actor.username %}",
+      title="{{ activity.actor }}")
+      span {{ activity.actor }}
 
     .post-feed-verb {{ activity.verb }} {% trans 'the short film' %} #[i {{ activity.action_object.title }}]
 
-    | {% if request.user.is_authenticated and request.user.id != activity.actor.profile.user.id and not request.user|is_following:activity.actor.profile.user %}
+    | {% if request.user.is_authenticated and request.user.id != activity.actor.id and not request.user|is_following:activity.actor %}
     a.post-follow(
-      class="js-follow-toggle{% if request.user|is_following:activity.actor.profile.user %} is-follower{% endif %}",
-      data-follow_toggle_label="{% if request.user|is_following:activity.actor.profile.user %}Follow{% else %}Unfollow{% endif %}"
-      href="{% follow_url activity.actor.profile.user %}")
-      span {% if request.user|is_following:activity.actor.profile.user %}Unfollow{% else %}Follow{% endif %}
+      class="js-follow-toggle{% if request.user|is_following:activity.actor %} is-follower{% endif %}",
+      data-follow_toggle_label="{% if request.user|is_following:activity.actor %}Follow{% else %}Unfollow{% endif %}"
+      href="{% follow_url activity.actor %}")
+      span {% if request.user|is_following:activity.actor %}Unfollow{% else %}Follow{% endif %}
     | {% endif %}
 
     .post-header-action
@@ -51,21 +51,21 @@ li.post-container.post-feed-transparent
 | {% elif activity.action_object_content_type.name == 'profile' %}
 li.post-container.post-feed-transparent
   .post-header
-    | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor.profile.user %}
+    | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor %}
 
     a.post-author(
-      href="{% url 'profile_details' activity.actor.profile.user.username %}",
-      title="{{ activity.actor.profile.user }}")
-      span {{ activity.actor.profile.user }}
+      href="{% url 'profile_details' activity.actor.username %}",
+      title="{{ activity.actor }}")
+      span {{ activity.actor }}
 
     .post-feed-verb {{ activity.verb }}
 
-    | {% if request.user.is_authenticated and request.user.id != activity.actor.profile.user.id and not request.user|is_following:activity.actor.profile.user %}
+    | {% if request.user.is_authenticated and request.user.id != activity.actor.id and not request.user|is_following:activity.actor %}
     a.post-follow(
-      class="js-follow-toggle{% if request.user|is_following:activity.actor.profile.user %} is-follower{% endif %}",
-      data-follow_toggle_label="{% if request.user|is_following:activity.actor.profile.user %}Follow{% else %}Unfollow{% endif %}"
-      href="{% follow_url activity.actor.profile.user %}")
-      span {% if request.user|is_following:activity.actor.profile.user %}Unfollow{% else %}Follow{% endif %}
+      class="js-follow-toggle{% if request.user|is_following:activity.actor %} is-follower{% endif %}",
+      data-follow_toggle_label="{% if request.user|is_following:activity.actor %}Follow{% else %}Unfollow{% endif %}"
+      href="{% follow_url activity.actor %}")
+      span {% if request.user|is_following:activity.actor %}Unfollow{% else %}Follow{% endif %}
     | {% endif %}
 
     .post-header-action
