@@ -7,5 +7,5 @@
     span {% trans 'Top Reels' %}
   a.btn(
     href="{% url 'reel-list' %}?sort=recent",
-    class="{% ifequal '/reels/?sort=recent' request.get_full_path %}active{% endifequal %}")
+    class="{% if '/reels/?sort=recent' in request.get_full_path %}active{% endif %}")
     span {% trans 'Most Recent' %}
