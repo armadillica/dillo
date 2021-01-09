@@ -47,8 +47,8 @@ li.post-container.post-is-feed.post-feed-transparent
         | {% trans 'See All Shorts' %}
 
   .post-feed-verb-newline
-    | {{ activity.verb }} {% trans 'the short film' %} #[a(href="{% url 'short-detail' activity.action_object.id %}") {{ activity.action_object.title }}]
-    | {% if activity.extra.near_actions_count %} and {{ activity.extra.near_actions_count }} more.{% endif %}
+    | {{ activity.verb }} {% trans 'the short film' %} #[a(href="{% url 'short-detail' activity.action_object.id %}") #[strong {{ activity.action_object.title }}]]
+    | {% if activity.extra.near_actions_count %} and #[a(href="{% url 'short-list' %}?sort=recent") {{ activity.extra.near_actions_count }} more].{% endif %}
 
   .post-feed-embed
     .post-feed-embed-16by9
