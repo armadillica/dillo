@@ -28,7 +28,7 @@ import dillo.views.explore
 urlpatterns = [
     # path('', dillo.views.users.homepage.HomepageView.as_view(), name='homepage'),
     # Embedded Activities Feed
-    path('', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
+    path('', dillo.views.explore.ExploreFeedView.as_view(), name='homepage',),
     path(
         'e/feed-explore',
         dillo.views.explore.ExploreFeedEmbedView.as_view(),
