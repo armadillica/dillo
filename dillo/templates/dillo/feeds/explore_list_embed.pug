@@ -11,6 +11,15 @@ p No item in the timeline. This is just the beginning.
 | {% if activity.action_object_content_type.name == 'post' %}
 | {% include 'dillo/components/_post_list_element.pug' with post=activity.action_object %}
 
+| {% if activity.extra.near_actions_count %}
+.post-feed-more
+  a.btn.btn-link(href="{{ activity.actor.profile.get_absolute_url }}")
+    span
+      i.i-layers
+      span
+        | See {{ activity.extra.near_actions_count }} more post{{ activity.extra.near_actions_count | pluralize }} by {{ activity.actor }}
+| {% endif %}
+
 | {% elif activity.action_object_content_type.name == 'short' %}
 li.post-container.post-feed-transparent
   .post-header
