@@ -26,9 +26,14 @@ import dillo.views.explore
 
 # User Pages
 urlpatterns = [
-    # XXX - Temporary change to show PostListView (aka /explore) as homepage for users.
     # path('', dillo.views.users.homepage.HomepageView.as_view(), name='homepage'),
-    path('', dillo.views.mixins.PostListView.as_view(), name='homepage'),
+    # Embedded Activities Feed
+    path('', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
+    path(
+        'e/feed-explore',
+        dillo.views.explore.ExploreFeedEmbedView.as_view(),
+        name='embed-explore-feed',
+    ),
     path(
         'logout/', dillo.views.custom_logout.CustomLogoutView.as_view(next_page='/'), name='logout'
     ),
@@ -37,13 +42,6 @@ urlpatterns = [
         'e/stream/',
         dillo.views.users.homepage.PostsStreamUserListEmbedView.as_view(),
         name='embed_stream',
-    ),
-    # Embedded Activities Feed
-    path('feed-explore', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
-    path(
-        'e/feed-explore',
-        dillo.views.explore.ExploreFeedEmbedView.as_view(),
-        name='embed-explore-feed',
     ),
 ]
 
