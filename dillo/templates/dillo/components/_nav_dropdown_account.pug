@@ -10,6 +10,9 @@ a.dropdown-item.is-admin(href="{% url 'admin:auth_user_changelist' %}", title='U
 a.dropdown-item.is-admin(href="/admin/rigs/rig/", title='Rigs List')
   i.i-package
   | Rigs
+a.dropdown-item.is-admin(href="/admin/dillo/event/", title='Events')
+  i.i-events
+  | Events
 .dropdown-divider
 | {% endif %}
 a.dropdown-item(href="{% url 'profile_details' user.username %}", title='{% trans "Profile" %}')
