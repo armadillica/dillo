@@ -21,7 +21,7 @@ p No item in the timeline. This is just the beginning.
 | {% endif %}
 
 | {% elif activity.action_object_content_type.name == 'short' %}
-li.post-container.post-feed-transparent
+li.post-container.post-is-feed.post-feed-transparent
   .post-header
     | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor %}
 
@@ -30,7 +30,9 @@ li.post-container.post-feed-transparent
       title="{{ activity.actor }}")
       span {{ activity.actor }}
 
-    .post-feed-verb {{ activity.verb }} {% trans 'the short film' %} #[i {{ activity.action_object.title }}]
+    .post-feed-verb
+      | {{ activity.verb }} {% trans 'the short film' %} #[a(href="{% url 'short-detail' activity.action_object.id %}") {{ activity.action_object.title }}]
+      | {% if activity.extra.near_actions_count %} and {{ activity.extra.near_actions_count }} more.{% endif %}
 
     | {% if request.user.is_authenticated and request.user.id != activity.actor.id and not request.user|is_following:activity.actor %}
     a.post-follow(
@@ -43,6 +45,10 @@ li.post-container.post-feed-transparent
     .post-header-action
       a(href="{% url 'short-list' %}")
         | {% trans 'See All Shorts' %}
+
+  .post-feed-verb-newline
+    | {{ activity.verb }} {% trans 'the short film' %} #[a(href="{% url 'short-detail' activity.action_object.id %}") {{ activity.action_object.title }}]
+    | {% if activity.extra.near_actions_count %} and {{ activity.extra.near_actions_count }} more.{% endif %}
 
   .post-feed-embed
     .post-feed-embed-16by9
@@ -58,7 +64,7 @@ li.post-container.post-feed-transparent
   | {% endif %}
 
 | {% elif activity.action_object_content_type.name == 'profile' %}
-li.post-container.post-feed-transparent
+li.post-container.post-is-feed.post-feed-transparent
   .post-header
     | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor %}
 
@@ -80,6 +86,8 @@ li.post-container.post-feed-transparent
     .post-header-action
       a(href="{% url 'reel-list' %}")
         | {% trans 'See All Reels' %}
+
+  .post-feed-verb-newline {{ activity.verb }}
 
   .post-feed-embed
     .post-feed-embed-16by9
