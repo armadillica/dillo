@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timedelta
+import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import SuspiciousOperation
@@ -23,9 +23,11 @@ class EventListView(ListView):
     template_name = 'dillo/event_list.pug'
 
     def get_queryset(self):
-        yesterday = datetime.now() - timedelta(days=1)
-
-        return Event.objects.filter(starts_at__gte=yesterday, visibility='public').order_by('starts_at')
+        # Show only events that happened yesterday, today or in the future
+        yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+        return Event.objects.filter(starts_at__gte=yesterday, visibility='public').order_by(
+            'starts_at'
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
