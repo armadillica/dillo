@@ -45,6 +45,7 @@
 				h2.job-title
 					//- Latino check if it's an email, look for '@' symbol.
 					a(href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
+						target="_blank",
 						title="{% trans 'Apply as' %} {{ job.title }} {% trans 'at' %} {{ job.company }}")
 						| {{ job.title }}
 
@@ -83,6 +84,7 @@
 				//- Latino check if it's an email, look for '@' symbol.
 				a.job-apply-button(
 					href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
+					target="_blank",
 					title='{% trans "Apply Now" %}')
 					span
 						i.i-check
