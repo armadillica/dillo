@@ -10,7 +10,10 @@ def forwards_func(apps, schema_editor):
     Action = apps.get_model('actstream', 'Action')
     ActionExtra = apps.get_model('dillo', 'ActionExtra')
     Post = apps.get_model('dillo', 'Post')
-    post_content_type = ContentType.objects.get(app_label='dillo', model='post')
+    try:
+        post_content_type = ContentType.objects.get(app_label='dillo', model='post')
+    except ContentType.DoesNotExist:
+        return
     db_alias = schema_editor.connection.alias
     for action in Action.objects.using(db_alias).filter(
         action_object_content_type_id=post_content_type.id, verb='posted',
