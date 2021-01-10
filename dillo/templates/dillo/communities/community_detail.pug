@@ -26,7 +26,7 @@ header.app-main-header
       input.form-control(placeholder="Search...")
 
     .btn.btn-primary
-      span Upload Build
+      span Submit News
 | {% endblock content-header %}
 
 | {% block content %}
@@ -80,33 +80,34 @@ header.app-main-header
       | {% endfor %}
 
   .app-detail
-    .card
-      .card-body
-        .detail-header
-          | {% if community.logo %}
-          | {% include 'dillo/communities/_community_avatar.pug' with community=community size='large' %}
-          | {% endif %}
+    .container
+      .card
+        .card-body
+          .detail-header
+            | {% if community.logo %}
+            | {% include 'dillo/communities/_community_avatar.pug' with community=community size='large' %}
+            | {% endif %}
 
-          div
-            h1 {{ community.name }}
-            p {{ community.tagline }}
+            div
+              h1 {{ community.name }}
+              p {{ community.tagline }}
 
-            //- Social Links.
-            .profile-social
-              | {% for community_link in community.links.all %}
-              | {% firstof community_link.social 'Website' as social_site %}
-              a.btn.btn-icon(
-                data-toggle="tooltip",
-                href="{{ community_link.url }}",
-                target="_blank",
-                title="{{ social_site | title }}")
-                span
-                  i(class="i-{% firstof community_link.social 'link' %}")
-              | {% endfor %}
+              //- Social Links.
+              .profile-social
+                | {% for community_link in community.links.all %}
+                | {% firstof community_link.social 'Website' as social_site %}
+                a.btn.btn-icon(
+                  data-toggle="tooltip",
+                  href="{{ community_link.url }}",
+                  target="_blank",
+                  title="{{ social_site | title }}")
+                  span
+                    i(class="i-{% firstof community_link.social 'link' %}")
+                | {% endfor %}
 
-              div
-                .btn.btn-primary
-                  span Follow
+                div
+                  .btn.btn-primary
+                    span Follow
 
-        p {{ community.description | markdown | safe | urlize }}
+          p {{ community.description | markdown | safe | urlize }}
 | {% endblock content %}
