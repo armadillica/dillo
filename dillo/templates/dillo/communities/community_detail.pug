@@ -15,7 +15,11 @@ style.
 | {% block content-header %}
 header.app-main-header
   .header-title
-    | {{ community.name }}
+    span
+      a(href="{% url 'community-detail' community.slug %}") {{ community.name }}
+
+    //- XXX - Use button_follow template.
+    | {% include 'dillo/components/_button_generic.pug' with label="Follow" icon='i-follow' %}
 
   .header-action-bar
     .form-group
@@ -28,6 +32,15 @@ header.app-main-header
 | {% block content %}
 .app-main-content
   .app-feed
+    .app-feed-toolbar
+      | {% if community.categories %}
+      .form-group
+        select.form-control(title="{% trans 'Category' %}")
+          | {% for category in community.categories.all %}
+          option(value="{{ category.slug }}") {{ category.name }}
+          | {% endfor %}
+      | {% endif %}
+
     ul.posts-list
       | {% for i in "x"|rjust:"10"|make_list %}
       li
@@ -64,43 +77,36 @@ header.app-main-header
                     href='POST-URL',
                     title='Updated Wed, 30 Dec 2020 21:49:35 GMT')
                     span 5h ago
-
-
       | {% endfor %}
 
   .app-detail
     .card
       .card-body
-        | {{ communities }}
-        hr
+        .detail-header
+          | {% if community.logo %}
+          | {% include 'dillo/communities/_community_avatar.pug' with community=community size='large' %}
+          | {% endif %}
 
-        | {% include 'dillo/communities/_community_avatar.pug' with community=community size='large' %}
+          div
+            h1 {{ community.name }}
+            p {{ community.tagline }}
 
-        h1 {{ community.name }}
-        h3 {{ community.tagline }}
+            //- Social Links.
+            .profile-social
+              | {% for community_link in community.links.all %}
+              | {% firstof community_link.social 'Website' as social_site %}
+              a.btn.btn-icon(
+                data-toggle="tooltip",
+                href="{{ community_link.url }}",
+                target="_blank",
+                title="{{ social_site | title }}")
+                span
+                  i(class="i-{% firstof community_link.social 'link' %}")
+              | {% endfor %}
 
-        hr
-
-        .btn.btn-primary
-          span Follow
-
-        hr
-
-        h5 Categories
-        ul
-          | {% for category in community.categories.all %}
-          li {{ category.name }} - {{ category.slug }}
-          | {% endfor %}
-
-        hr
-
-        h5 Social
-        ul
-          | {% for social in community.links.all %}
-          li {{ social.url }}
-          | {% endfor %}
-
-        hr
+              div
+                .btn.btn-primary
+                  span Follow
 
         p {{ community.description | markdown | safe | urlize }}
 | {% endblock content %}

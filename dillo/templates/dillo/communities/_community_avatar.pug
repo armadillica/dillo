@@ -7,6 +7,11 @@ a.profile-avatar-container(
   href="{% url 'community-detail' community.slug %}",
   title="{{ community.name }}")
 
+  //- There are 4 avatar sizes available:
+  //- small   - for comments
+  //- default
+  //- medium  - for lists e.g: likes
+  //- large   - for profiles
   .profile-avatar(
     class="{% if size %}avatar-size-{{ size }}{% endif %}")
     | {% thumbnail community.logo "128x128" crop="center" as im %}
