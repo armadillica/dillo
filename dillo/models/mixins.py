@@ -1,5 +1,6 @@
 import hashlib
 import pathlib
+import urllib.parse
 import uuid
 import logging
 
@@ -10,6 +11,30 @@ from django.core.exceptions import SuspiciousOperation
 from django.db import models
 
 log = logging.getLogger(__name__)
+
+
+def get_social_from_url(url):
+    """Used when parsing links in ProfileLink and CommunityLink"""
+    supported_domains = {
+        'artstation.com',
+        'facebook.com',
+        'instagram.com',
+        'linkedin.com',
+        'patreon.com',
+        'twitch.tv',
+        'twitter.com',
+        'vimeo.com',
+        'youtube.com',
+    }
+    hostname = urllib.parse.urlparse(url).hostname
+    # We iterate over the domains instead of looking up the hostname in the supported_domains
+    # list because a hostname could be instagram.com or www.instagram.com
+    for s in supported_domains:
+        if s in hostname:
+            log.debug('Found %s in social url' % hostname)
+            return s.split('.')[0]
+    log.debug('No social found in %s' % hostname)
+    return ''
 
 
 def generate_hash_from_filename(filename):
@@ -173,3 +198,4 @@ class ChangeAwareness(models.Model):
             return False
 
         return True
+

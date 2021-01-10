@@ -13,34 +13,11 @@ from dillo import tasks
 from dillo.models.mixins import (
     CreatedUpdatedMixin,
     get_upload_to_hashed_path,
-    ChangeAwareness,
+    ChangeAwareness, get_social_from_url,
 )
 from dillo.validators import validate_reel_url
 
 log = logging.getLogger(__name__)
-
-
-def get_social_from_url(url):
-    supported_domains = {
-        'artstation.com',
-        'facebook.com',
-        'instagram.com',
-        'linkedin.com',
-        'patreon.com',
-        'twitch.tv',
-        'twitter.com',
-        'vimeo.com',
-        'youtube.com',
-    }
-    hostname = urllib.parse.urlparse(url).hostname
-    # We iterate over the domains instead of looking up the hostname in the supported_domains
-    # list because a hostname could be instagram.com or www.instagram.com
-    for s in supported_domains:
-        if s in hostname:
-            log.debug('Found %s in social url' % hostname)
-            return s.split('.')[0]
-    log.debug('No social found in %s' % hostname)
-    return ''
 
 
 class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):

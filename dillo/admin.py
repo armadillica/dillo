@@ -24,9 +24,43 @@ import dillo.models.software
 log = logging.getLogger(__name__)
 
 
+class CommunityCategoryInline(admin.TabularInline):
+    """Inline form for Categories.
+
+    This gets included in CommunityAdmin.
+    """
+
+    model = dillo.models.communities.CommunityCategory
+    fields = ['name', 'slug']
+    prepopulated_fields = {'slug': ('name',)}
+
+
+class CommunityLinkInline(admin.TabularInline):
+    """Inline form for Community Links.
+
+    This gets included in CommunityAdmin.
+    """
+
+    model = dillo.models.communities.CommunityLink
+    fields = ['url']
+
+
 @admin.register(dillo.models.communities.Community)
 class CommunityAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
+    fields = [
+        'name',
+        'slug',
+        'tagline',
+        'description',
+        'visibility',
+        'is_featured',
+        'thumbnail',
+        'logo',
+        'header',
+        'theme_color',
+    ]
+    inlines = [CommunityCategoryInline, CommunityLinkInline]
 
 
 @admin.register(dillo.models.posts.PostMedia)

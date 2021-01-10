@@ -4,6 +4,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 
 import dillo.views.comments
+import dillo.views.communities
 import dillo.views.contact
 import dillo.views.custom_logout
 import dillo.views.events
@@ -74,6 +75,16 @@ urlpatterns += [
         name='account_settings',
     ),
 ]
+
+# Communities
+urlpatterns += [
+    path(
+        'c/<slug:slug>',
+        dillo.views.communities.CommunityDetailView.as_view(),
+        name='community-detail',
+    ),
+]
+
 
 # Posts
 urlpatterns += [
@@ -234,7 +245,6 @@ urlpatterns += [
     path('reels/<int:profile_id>', dillo.views.reels.ReelDetailView.as_view(), name='reel-detail',),
 ]
 
-
 # Jobs
 urlpatterns += [
     path('jobs/', dillo.views.jobs.JobListView.as_view(), name='job-list'),
@@ -242,7 +252,6 @@ urlpatterns += [
     path('jobs/submit', dillo.views.jobs.JobCreateView.as_view(), name='job-create'),
     path('jobs/<int:pk>/update', dillo.views.jobs.JobUpdateView.as_view(), name='job-update'),
 ]
-
 
 # Flat Pages
 urlpatterns += [
@@ -276,7 +285,6 @@ urlpatterns += [
     ),
 ]
 
-
 # Mailgun webhook for mailing list unsubscribes
 urlpatterns += [
     path(
@@ -285,7 +293,6 @@ urlpatterns += [
         name='webhook-newsletter-unsubscribe',
     ),
 ]
-
 
 if settings.DEBUG:
     # Video upload for debug
