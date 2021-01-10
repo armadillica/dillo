@@ -1,96 +1,106 @@
-| {% extends "dillo/base_columns.pug" %}
+| {% extends "dillo/base.pug" %}
 | {% load i18n %}
 | {% load dillo_filters %}
 | {% load thumbnail %}
 
-| {% block page_title %}{{ job.title }} &mdash; {% trans 'Job post on' %} {% endblock page_title %}
+//- | {% block page_title %}{{ job.title }} &mdash; {% trans 'Job post on' %} {% endblock page_title %}
 
-| {% block stream %}
-.container
-	.card
-		.card-header
-			.d-flex
-				.d-inline-block
-					a.btn.btn-link(href="{% url 'job-list' %}", title="{% trans 'All Jobs' %}")
-						i.i-chevron-left
-						| {% trans 'See All Jobs' %}
-				.ml-auto
-					| {% if job.user == request.user %}
-					| {% url 'job-update' job.pk as edit_url %}
-					| {% trans 'Edit Job' as edit_label %}
-					| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label %}
-					| {% endif %}
+| {% block head_extra %}
+style.
+  :root {
+    --community-theme-color: {{ community.theme_color }};
+  }
+| {% endblock head_extra %}
 
-			h1.pt-3 {{ job.title }}
+| {% block content-header %}
+header.app-main-header
+  .header-title
+    | {{ community.name }}
 
-		.card-body
-			.lead {{ job.description | markdown | safe }}
+  .header-action-bar
+    .form-group
+      input.form-control(placeholder="Search...")
 
-			small.text-muted(title="{{ job.created_at }}")
-				| Posted {{ job.created_at | timesince | shorten_timesince }} ago
-| {% endblock stream %}
+    .btn.btn-primary
+      span Upload Build
+| {% endblock content-header %}
 
-| {% block sidebar %}
-.sidebar-block
-	.text-center
-		| {% thumbnail job.image "150x150" crop="top" as im %}
-		a(target="_blank",
-			href="{{ job.url_apply }}",
-			title='{% trans "Apply Now" %}')
-			img.rounded-circle(
-				src="{{ im.url }}",
-				width="{{ im.width }}",
-				height="{{ im.height }}",
-				alt="{{ job.company }}")
-		| {% endthumbnail %}
+| {% block content %}
+.app-main-content
+  .app-feed
+    ul.posts-list
+      | {% for i in "x"|rjust:"10"|make_list %}
+      li
+        .post-list-item(
+          class="{% if forloop.counter|divisibleby:3 %}is-hot{% endif %} {% if forloop.counter == 3 %}is-active{% endif %}")
+          .post-list-item-thumbnail
+          .post-list-item-content
+            .post-list-item-header
+              ul
+                li Windows,
+                li Experimental
 
-		h3.py-3 {{ job.company }}
+            .post-list-item-title
+              | Dit is post {{ forloop.counter }}
+            .post-list-item-meta
+              ul
+                li.item-points
+                  | 14
+                  | {% if forloop.counter|divisibleby:3 %}
+                  i.i-fire(title='Hot Stuff')
+                  | {% else %}
+                  i.i-heart(title='Likes')
+                  | {% endif %}
+                li
+                  a(href='POST-URL-WITH-COMMENTS-ANCHOR')
+                    | {% if forloop.counter|divisibleby:3 %}
+                    | 12
+                    i.i-comment
+                    | {% else %}
+                    | comment
+                    | {% endif %}
+                li.item-date.js-item-open
+                  a(
+                    href='POST-URL',
+                    title='Updated Wed, 30 Dec 2020 21:49:35 GMT')
+                    span 5h ago
 
-	ul.sidebar-list
-		li(title="{% trans 'Contract Type' %}")
-			i.i-jobs
-			| {{ job.contract_type | title }}
 
-		li(title="{% trans 'Location' %}")
-			a(href="https://www.google.com/maps/place/{{ job.city | slugify }}+{{ job.country | slugify}}", target="_blank")
-				i.i-map-pin
-				| {{ job.city }}
-				| {% if job.province_state %}, {{ job.province_state }}{% endif %}
-				| {{ job.country }}
+      | {% endfor %}
 
-		li
-			i.i-home
-			| {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
+  .app-detail
+    .card
+      .card-body
+        | {{ communities }}
+        hr
 
-		| {% if job.studio_website %}
-		li(title="{% trans 'Company Website' %}")
-			a(href="{{ job.studio_website }}", target="_blank")
-				i.i-link
-				| {{ job.studio_website | website_hostname }}
-		| {% endif %}
+        | {% include 'dillo/communities/_community_avatar.pug' with community=community size='large' %}
 
-		| {% if job.starts_at %}
-		li
-			i.i-events
-			| Starting {{ job.starts_at }}
-		| {% endif %}
+        h1 {{ community.name }}
+        h3 {{ community.tagline }}
 
-	a.btn.btn-primary.btn-sidebar(
-		href="{{ job.url_apply }}",
-		title='{% trans "Apply Now" %}')
-		i.i-check
-		strong {% trans "Apply Now" %}
+        hr
 
-.sidebar-block
-	| {% include 'dillo/components/_button_share.pug' with shared_object_label='job' %}
+        .btn.btn-primary
+          span Follow
 
-| {% if request.user.is_superuser %}
-.sidebar-block
-	| {% url 'admin:dillo_job_change' job.id as edit_url %}
-	| {% trans 'Whoosh Job' as edit_label %}
-	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label %}
-| {% endif %}
+        hr
 
-.sidebar-block
-	| {% include 'dillo/components/_footer.pug' %}
-| {% endblock sidebar %}
+        h5 Categories
+        ul
+          | {% for category in community.categories.all %}
+          li {{ category.name }} - {{ category.slug }}
+          | {% endfor %}
+
+        hr
+
+        h5 Social
+        ul
+          | {% for social in community.links.all %}
+          li {{ social.url }}
+          | {% endfor %}
+
+        hr
+
+        p {{ community.description | markdown | safe | urlize }}
+| {% endblock content %}
