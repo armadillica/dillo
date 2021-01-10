@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from dillo.models.mixins import get_social_from_url, get_upload_to_hashed_path
 
@@ -48,6 +49,9 @@ class Community(models.Model):
     header_width = models.PositiveIntegerField(null=True)
 
     theme_color = models.CharField(max_length=16, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('community-detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name
