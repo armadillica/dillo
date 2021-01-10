@@ -83,6 +83,7 @@ TEMPLATES = [
                 'dillo.context_processors.google_analytics_tracking_id',
                 'dillo.context_processors.default_og_data',
                 'dillo.context_processors.media_uploads_accepted_mimes',
+                'dillo.context_processors.communities_featured',
             ],
             # PyPugJS:
             'loaders': [
