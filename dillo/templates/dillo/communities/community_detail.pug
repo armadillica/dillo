@@ -2,6 +2,7 @@
 | {% load i18n %}
 | {% load dillo_filters %}
 | {% load thumbnail %}
+| {% load pipeline %}
 
 //- | {% block page_title %}{{ job.title }} &mdash; {% trans 'Job post on' %} {% endblock page_title %}
 
@@ -30,7 +31,7 @@ header.app-main-header
 | {% endblock content-header %}
 
 | {% block content %}
-.app-main-content
+#app.app-main-content
   .app-feed
     .app-feed-toolbar
       | {% if community.categories %}
@@ -42,42 +43,9 @@ header.app-main-header
       | {% endif %}
 
     ul.posts-list
-      | {% for i in "x"|rjust:"10"|make_list %}
-      li
-        .post-list-item(
-          class="{% if forloop.counter|divisibleby:3 %}is-hot{% endif %} {% if forloop.counter == 3 %}is-active{% endif %}")
-          .post-list-item-thumbnail
-          .post-list-item-content
-            .post-list-item-header
-              ul
-                li Windows,
-                li Experimental
-
-            .post-list-item-title
-              | Dit is post {{ forloop.counter }}
-            .post-list-item-meta
-              ul
-                li.item-points
-                  | 14
-                  | {% if forloop.counter|divisibleby:3 %}
-                  i.i-fire(title='Hot Stuff')
-                  | {% else %}
-                  i.i-heart(title='Likes')
-                  | {% endif %}
-                li
-                  a(href='POST-URL-WITH-COMMENTS-ANCHOR')
-                    | {% if forloop.counter|divisibleby:3 %}
-                    | 12
-                    i.i-comment
-                    | {% else %}
-                    | comment
-                    | {% endif %}
-                li.item-date.js-item-open
-                  a(
-                    href='POST-URL',
-                    title='Updated Wed, 30 Dec 2020 21:49:35 GMT')
-                    span 5h ago
-      | {% endfor %}
+      li(v-for="post in posts")
+        post-list-item(
+          v-bind:post="post")
 
   .app-detail
     .container
@@ -87,7 +55,6 @@ header.app-main-header
             | {% if community.logo %}
             | {% include 'dillo/communities/_community_avatar.pug' with community=community size='large' %}
             | {% endif %}
-
             div
               h1 {{ community.name }}
               p {{ community.tagline }}
@@ -109,5 +76,47 @@ header.app-main-header
                   .btn.btn-primary
                     span Follow
 
-          p {{ community.description | markdown | safe | urlize }}
+
+          p {{ community.description | markdown | safe }}
+
 | {% endblock content %}
+
+
+| {% block javascript_extra %}
+| {% verbatim %}
+
+script(type="text/x-template", id="post-list-item-template")
+  .post-list-item(
+    @click="toggleActive",
+    :class="{'is-hot': post.isHot, 'is-active':isActive}")
+    .post-list-item-thumbnail
+    .post-list-item-content
+      .post-list-item-header
+        ul
+          li(v-for="category in post.categories") {{ category }},
+
+      .post-list-item-title
+        | {{ post.title }}
+      .post-list-item-meta
+        ul
+          li.item-points
+            | {{ post.likesCount }}
+            i.i-fire(v-if="post.likesCount > 12", title="Hot Stuff")
+            i.i-fire(v-else, title="Likes")
+          li
+            a(href='POST-URL-WITH-COMMENTS-ANCHOR')
+              span(v-if="post.commentsCount > 0") {{ post.commentsCount }}
+                i.i-comment
+              span(v-else) comment
+          li.item-date.js-item-open
+            a(
+              href='POST-URL',
+              title='Updated Wed, 30 Dec 2020 21:49:35 GMT')
+              span 5h ago
+
+script(type="text/x-template", id="button-counter-template")
+  button(v-on:click="count++") You clicked me {{ count }} times.
+
+| {% endverbatim %}
+| {% javascript 'vue_post_list' %}
+| {% endblock javascript_extra %}
