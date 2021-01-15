@@ -4,7 +4,6 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 
 import dillo.views.comments
-import dillo.views.communities
 import dillo.views.contact
 import dillo.views.custom_logout
 import dillo.views.events
@@ -73,15 +72,6 @@ urlpatterns += [
         'accounts/settings/',
         dillo.views.users.account.AccountSettings.as_view(),
         name='account_settings',
-    ),
-]
-
-# Communities
-urlpatterns += [
-    path(
-        'c/<slug:slug>',
-        dillo.views.communities.CommunityDetailView.as_view(),
-        name='community-detail',
     ),
 ]
 
