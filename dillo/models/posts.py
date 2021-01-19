@@ -23,7 +23,7 @@ from dillo.models.mixins import (
     get_upload_to_hashed_path,
 )
 from dillo.tasks import create_coconut_job
-from .communities import Community
+from .communities import Community, CommunityCategory
 
 log = logging.getLogger(__name__)
 
@@ -77,10 +77,11 @@ class Entity(CreatedUpdatedMixin, models.Model):
 
 class Post(Entity, LikesMixin, MentionsMixin):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, null=True, blank=True)
-    title = models.TextField(null=True)
-    content = models.TextField(null=True)
+    title = models.TextField(null=True, blank=True)
+    content = models.TextField(null=True, blank=True)
     is_hidden_by_moderator = models.BooleanField(default=False)
     tags = TaggableManager()
+    categories = models.ManyToManyField(CommunityCategory, blank=True)
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'hash_id': str(self.hash_id)})

@@ -78,3 +78,6 @@ class CommunityCategory(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
         unique_together = ['community', 'slug']
+
+    def __str__(self):
+        return f"{self.community.slug} - {self.name}"
