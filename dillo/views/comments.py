@@ -36,6 +36,15 @@ class CommentsListView(ListView):
         return context
 
 
+class ApiCommentsListView(CommentsListView):
+    def render_to_response(self, context, **response_kwargs):
+        comments = []
+        for c in context['comments']:
+            # Serialize all objects
+            comments.append({'user': c.user.username, 'content': c.content})
+        return JsonResponse({'results': comments})
+
+
 @require_POST
 @login_required
 def comment_create(request):

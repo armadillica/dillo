@@ -125,6 +125,11 @@ urlpatterns += [
         dillo.views.comments.CommentsListView.as_view(),
         name='comments_list',
     ),
+    path(
+        'api/p/<slug:hash_id>/comments/',
+        dillo.views.comments.ApiCommentsListView.as_view(),
+        name='api-comments-list',
+    ),
     # Post update
     path(
         'e/<slug:hash_id>/update',
