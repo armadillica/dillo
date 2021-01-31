@@ -1,0 +1,163 @@
+%reply-timeline
+  &:before
+    background-color: var(--background-tertiary)
+    bottom: 0
+    content: ''
+    display: block
+    left: $spacer * .7
+    position: absolute
+    top: 0
+    width: calc(var(--border-width) * 2)
+    z-index: -1
+
+
+// Contains the first comment and all replies.
+.comment-container
+  position: relative
+
+  &.has-replies
+    .comment-item
+      @extend %reply-timeline
+
+      &:first-child
+        &:before
+          top: $spacer
+
+      &:last-child
+        &:before
+          bottom: calc(100% - 1rem)
+
+
+// Each comment item (regular comment or reply)
+.comment-item
+  +padding(2, top)
+  display: flex
+  position: relative
+
+  &:hover
+    +media-tablet
+      .btn-toolbar-row
+        opacity: 1
+
+
+.comment-avatar
+  +margin(2, right)
+  +margin(2, top)
+
+
+// Contains the comment header (author, date), content, and actions (like, reply).
+.comment-body
+  +padding(3)
+  +padding(2, y)
+  background-color: var(--background-secondary)
+  border-radius: var(--border-radius-lg)
+  border-top-left-radius: var(--border-radius-sm)
+  display: flex
+  flex: 1
+  flex-direction: column
+
+
+// Header contains the author and date.
+.comment-header
+  align-items: center
+  display: flex
+  font-size: var(--font-size-sm)
+
+  .btn-toolbar-row
+    +media-tablet
+      opacity: 0 // revealed on .comment-item:hover
+      transition: opacity ease-in-out var(--transition-speed)
+
+    .btn
+      background-color: transparent
+
+
+.comment-author
+  @extend %btn-text
+  color: var(--text-secondary)
+  font-weight: bold
+
+
+.comment-date
+  @extend %btn-text
+  +padding(3, left)
+  color: var(--text-secondary)
+
+
+// The text of the comment.
+.comment-content
+  +text-generic
+
+
+.comment-actions
+  .btn-toolbar-row
+    +margin(3, top)
+    ul
+      margin-left: auto
+
+  .dropdown-menu
+    // Don't know why BS doesn't detect the right width.
+    min-width: 15rem
+
+  .btn-toolbar-row
+    @extend %btn-sm
+
+  .btn-like,
+  .btn-reply
+    @extend %btn
+    @extend %btn-link
+    background-color: transparent
+
+  .btn-reply
+    margin-left: auto !important
+
+.comment-form-container
+  padding-top: 0
+
+  .comment-avatar
+    +margin(3, top)
+
+  .comment-body
+    background-color: initial
+    padding-left: 0
+    padding-right: 0
+
+
+.comment-form
+  .btn-toolbar-row
+    +margin(2, top)
+    justify-content: flex-end
+
+  textarea
+    border-top-left-radius: var(--border-radius-sm)
+
+.is-replying
+  @extend %reply-timeline
+
+  &:before
+    bottom: calc(100% - 1rem) !important
+
+  .js-reply-cancel
+    visibility: visible
+
+.js-reply-cancel
+  visibility: hidden
+
+
+.comments-loading
+  +padding(4, y)
+  align-items: center
+  color: var(--text-secondary)
+  cursor: default
+  display: flex
+  justify-content: center
+
+  span
+    +margin(3, left)
+    font-size: var(--font-size-sm)
+
+
+.comments-list
+  +padding(0)
+  +margin(0)
+  list-style-type: none
