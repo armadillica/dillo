@@ -1,4 +1,6 @@
+import sorl.thumbnail
 from django.contrib.auth.decorators import login_required
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -37,11 +39,28 @@ class CommentsListView(ListView):
 
 
 class ApiCommentsListView(CommentsListView):
+    def get_paginate_by(self, queryset):
+        return '10'
+
     def render_to_response(self, context, **response_kwargs):
         comments = []
         for c in context['comments']:
             # Serialize all objects
-            comments.append({'user': c.user.username, 'content': c.content})
+            comments.append(
+                {
+                    'user': {
+                        'username': c.user.username,
+                        'url': c.user.profile.absolute_url,
+                        # Generate thumbnail for user
+                        'avatar': sorl.thumbnail.get_thumbnail(
+                            c.user.profile.avatar, '128x128', crop='center', quality=80
+                        ).url,
+                    },
+                    'content': c.content,
+                    'dateCreated': c.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                    'naturalCreationTime': naturaltime(c.created_at),
+                }
+            )
         return JsonResponse({'results': comments})
 
 
