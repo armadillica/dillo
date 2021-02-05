@@ -9,6 +9,7 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import SuspiciousOperation
 from django.db import models
+from django.urls import reverse
 
 log = logging.getLogger(__name__)
 
@@ -77,6 +78,12 @@ class LikesMixin(models.Model):
     @property
     def content_type_id(self):
         return ContentType.objects.get_for_model(self).id
+
+    @property
+    def like_toggle_url(self):
+        return reverse(
+            'like_toggle', kwargs={'content_type_id': self.content_type_id, 'object_id': self.id}
+        )
 
     def is_liked(self, user: User):
         if user.is_anonymous:
@@ -198,4 +205,3 @@ class ChangeAwareness(models.Model):
             return False
 
         return True
-
