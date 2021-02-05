@@ -13,7 +13,8 @@ from dillo import tasks
 from dillo.models.mixins import (
     CreatedUpdatedMixin,
     get_upload_to_hashed_path,
-    ChangeAwareness, get_social_from_url,
+    ChangeAwareness,
+    get_social_from_url,
 )
 from dillo.validators import validate_reel_url
 
