@@ -46,15 +46,20 @@ class ApiCommentsListView(CommentsListView):
         comments = []
         for c in context['comments']:
             # Serialize all objects
+
+            user_avatar_url = None
+            if c.user.profile.avatar:
+                user_avatar_url = sorl.thumbnail.get_thumbnail(
+                    c.user.profile.avatar, '128x128', crop='center', quality=80
+                ).url
+
             comments.append(
                 {
                     'user': {
                         'username': c.user.username,
                         'url': c.user.profile.absolute_url,
                         # Generate thumbnail for user
-                        'avatar': sorl.thumbnail.get_thumbnail(
-                            c.user.profile.avatar, '128x128', crop='center', quality=80
-                        ).url,
+                        'avatar': user_avatar_url,
                     },
                     'content': c.content,
                     'dateCreated': c.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
