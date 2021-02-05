@@ -46,6 +46,7 @@ class ApiCommentsListView(CommentsListView):
         serialized_comment = {
             'id': comment.id,
             'user': {
+                'name': comment.user.profile.name,
                 'username': comment.user.username,
                 'url': comment.user.profile.absolute_url,
                 'avatar': None,
