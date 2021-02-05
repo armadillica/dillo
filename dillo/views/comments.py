@@ -42,31 +42,42 @@ class ApiCommentsListView(CommentsListView):
     def get_paginate_by(self, queryset):
         return '10'
 
+    def serialize_comment(self, comment: Comment):
+        serialized_comment = {
+            'id': comment.id,
+            'user': {
+                'username': comment.user.username,
+                'url': comment.user.profile.absolute_url,
+                'avatar': None,
+            },
+            'content': comment.content,
+            'dateCreated': comment.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'naturalCreationTime': naturaltime(comment.created_at),
+            'likesCount': comment.likes.count(),
+            'isLiked': comment.is_liked(self.request.user),
+            'likeToggleUrl': comment.like_toggle_url,
+            'isReply': (True if comment.parent_comment else False),
+        }
+
+        # Generate thumbnail for user, if available
+        if comment.user.profile.avatar:
+            serialized_comment['user']['avatar'] = sorl.thumbnail.get_thumbnail(
+                comment.user.profile.avatar, '128x128', crop='center', quality=80
+            ).url
+
+        # Add replies
+        if not comment.parent_comment:
+            serialized_comment['replies'] = [
+                self.serialize_comment(reply) for reply in comment.replies
+            ]
+
+        return serialized_comment
+
     def render_to_response(self, context, **response_kwargs):
         comments = []
-        for c in context['comments']:
+        for comment in context['comments']:
             # Serialize all objects
-            comment = {
-                'user': {
-                    'username': c.user.username,
-                    'url': c.user.profile.absolute_url,
-                    'avatar': None,
-                },
-                'content': c.content,
-                'dateCreated': c.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                'naturalCreationTime': naturaltime(c.created_at),
-                'likesCount': c.likes.count(),
-                'isLiked': c.is_liked(self.request.user),
-                'likeToggleUrl': c.like_toggle_url,
-            }
-
-            # Generate thumbnail for user, if available
-            if c.user.profile.avatar:
-                comment['user']['avatar'] = sorl.thumbnail.get_thumbnail(
-                    c.user.profile.avatar, '128x128', crop='center', quality=80
-                ).url
-
-            comments.append(comment)
+            comments.append(self.serialize_comment(comment))
         return JsonResponse({'results': comments})
 
 
