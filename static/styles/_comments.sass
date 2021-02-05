@@ -1,6 +1,6 @@
 %reply-timeline
   &:before
-    background-color: var(--background-tertiary)
+    background-color: var(--background-secondary)
     bottom: 0
     content: ''
     display: block
@@ -12,20 +12,38 @@
 
 
 // Contains the first comment and all replies.
-.comment-container
+.comments-container
+  +margin(0)
+  +padding(0)
+  display: flex
+  flex-direction: column
+  list-style-type: none
   position: relative
 
   &.has-replies
-    .comment-item
-      @extend %reply-timeline
+    .comment-item-container
+      position: relative
 
       &:first-child
-        &:before
-          top: $spacer
+        .comment-item
+          &:before
+            top: $spacer * -.333
 
       &:last-child
+
+        .comment-item
+          &:before
+            bottom: calc(100% - 1rem)
+
+      .comment-item:not(.comment-form-container)
+        @extend %reply-timeline
+        +margin(5, left)
+
+        // Seems %placeholders don't support CSS
+        // variables, so add them here manually.
         &:before
-          bottom: calc(100% - 1rem)
+          background-color: var(--background-secondary)
+          width: calc(var(--border-width) * 2)
 
 
 // Each comment item (regular comment or reply)
@@ -33,6 +51,7 @@
   +padding(2, top)
   display: flex
   position: relative
+  z-index: 0
 
   &:hover
     +media-tablet
@@ -134,8 +153,13 @@
 .is-replying
   @extend %reply-timeline
 
+  // Seems %placeholders don't support CSS
+  // variables, so add them here manually.
   &:before
+    background-color: var(--background-secondary)
     bottom: calc(100% - 1rem) !important
+    width: calc(var(--border-width) * 2)
+
 
   .js-reply-cancel
     visibility: visible
