@@ -46,26 +46,27 @@ class ApiCommentsListView(CommentsListView):
         comments = []
         for c in context['comments']:
             # Serialize all objects
+            comment = {
+                'user': {
+                    'username': c.user.username,
+                    'url': c.user.profile.absolute_url,
+                    'avatar': None,
+                },
+                'content': c.content,
+                'dateCreated': c.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                'naturalCreationTime': naturaltime(c.created_at),
+                'likesCount': c.likes.count(),
+                'isLiked': c.is_liked(self.request.user),
+                'likeToggleUrl': c.like_toggle_url,
+            }
 
-            user_avatar_url = None
+            # Generate thumbnail for user, if available
             if c.user.profile.avatar:
-                user_avatar_url = sorl.thumbnail.get_thumbnail(
+                comment['user']['avatar'] = sorl.thumbnail.get_thumbnail(
                     c.user.profile.avatar, '128x128', crop='center', quality=80
                 ).url
 
-            comments.append(
-                {
-                    'user': {
-                        'username': c.user.username,
-                        'url': c.user.profile.absolute_url,
-                        # Generate thumbnail for user
-                        'avatar': user_avatar_url,
-                    },
-                    'content': c.content,
-                    'dateCreated': c.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                    'naturalCreationTime': naturaltime(c.created_at),
-                }
-            )
+            comments.append(comment)
         return JsonResponse({'results': comments})
 
 
