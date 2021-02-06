@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
@@ -56,7 +57,9 @@ class ApiCommentsListView(CommentsListView):
             'naturalCreationTime': naturaltime(comment.created_at),
             'likesCount': comment.likes.count(),
             'isLiked': comment.is_liked(self.request.user),
+            'isOwn': (comment.user.id == self.request.user.id),
             'likeToggleUrl': comment.like_toggle_url,
+            'deleteUrl': reverse('comment_delete', kwargs={'comment_id': comment.id}),
             'parentCommentId': (None if not comment.parent_comment else comment.parent_comment.id),
         }
 
