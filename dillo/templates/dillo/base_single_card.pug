@@ -4,11 +4,10 @@
 //- Usages: Submission forms, error pages.
 
 | {% block content %}
-.container
-	.row
-		div(class="col-lg-{% block card_width %}8{% endblock %}")
-			| {% block content_card %}
-			| {% endblock content_card %}
+.app-single-card
+  .container
+    | {% block content_card %}
+    | {% endblock content_card %}
 | {% endblock content %}
 
 | {% block body_classes %} is-centered{% endblock %}
