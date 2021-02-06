@@ -80,4 +80,4 @@ class CommunityCategory(models.Model):
         unique_together = ['community', 'slug']
 
     def __str__(self):
-        return f"{self.community.slug} - {self.name}"
+        return self.name
