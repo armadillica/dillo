@@ -57,7 +57,7 @@ class ApiCommentsListView(CommentsListView):
             'likesCount': comment.likes.count(),
             'isLiked': comment.is_liked(self.request.user),
             'likeToggleUrl': comment.like_toggle_url,
-            'isReply': (True if comment.parent_comment else False),
+            'parentCommentId': (None if not comment.parent_comment else comment.parent_comment.id),
         }
 
         # Generate thumbnail for user, if available
