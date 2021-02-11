@@ -75,6 +75,14 @@ urlpatterns += [
     ),
 ]
 
+# Generic
+urlpatterns += [
+    path(
+        'api/markdown-preview/',
+        dillo.views.mixins.ApiMarkdownPreview.as_view(),
+        name='markdown-preview',
+    )
+]
 
 # Posts
 urlpatterns += [

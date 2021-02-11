@@ -7,7 +7,10 @@ from django.utils.html import strip_tags
 from django.views.generic import TemplateView, ListView
 from sorl.thumbnail import get_thumbnail
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views import View
+from django.http import JsonResponse
 
 from dillo.models.posts import get_trending_tags, Post
 from dillo.models.events import Event
@@ -103,6 +106,13 @@ class UserListEmbedView(ListView):
 
     template_name = 'dillo/profiles_list_embed.pug'
     paginate_by = 10
+
+
+class ApiMarkdownPreview(View):
+    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        return JsonResponse({'preview': markdown(request.POST['content'])})
 
 
 class OgData:
