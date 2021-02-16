@@ -5,7 +5,7 @@ description = "The core of community"
 authors = ["Francesco Siddi <francesco.siddi@gmail.com>", "Pablo Vazquez <venomgfx@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 django = "^2.2"
 psycopg2 = "^2.8"
 pypugjs = "^5.8"
@@ -28,19 +28,21 @@ micawber = "^0.5.0"
 django-project-version = "^0.10.2"
 django-debug-toolbar = "^2.0"
 sentry-sdk = "^0.14.1"
-mistune = "^0.8.4"
+mistune = "2.0.0a4"
 bleach = "^3.1"
 user-agents = "^2.1"
 django-model-utils = "^4.0.0"
 django-storages = "^1.10.1"
 boto3 = "^1.15.11"
+markupsafe = "^1.1.1"
+shortcodes = "2.5"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}
 
 [tool.black]
 line-length = 100
-target_version = ['py37']
+target_version = ['py38']
 skip_string_normalization = true
 
 [build-system]

@@ -14,7 +14,8 @@ from django.http import JsonResponse
 
 from dillo.models.posts import get_trending_tags, Post
 from dillo.models.events import Event
-from dillo.templatetags.dillo_filters import markdown
+from dillo.shortcodes import render as shortcode_render
+from dillo.markdown import render as markdown_render
 
 
 class PostListView(TemplateView):
@@ -112,7 +113,8 @@ class ApiMarkdownPreview(View):
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        return JsonResponse({'preview': markdown(request.POST['content'])})
+        content = request.POST['content']
+        return JsonResponse({'preview': shortcode_render(markdown_render(content))})
 
 
 class OgData:
@@ -122,7 +124,7 @@ class OgData:
     """
 
     def make_excerpt(self, description):
-        description_parsed = markdown(description)
+        description_parsed = markdown_render(description)
         description_sripped = strip_tags(description_parsed)
         description_truncated = truncatechars(description_sripped, 120)
         return description_truncated

@@ -3,6 +3,7 @@ import logging
 import pathlib
 import typing
 import urllib.parse
+from hashids import Hashids
 
 import django.dispatch
 from django.contrib.auth.models import User
@@ -26,6 +27,7 @@ from dillo.tasks import create_coconut_job
 from .communities import Community, CommunityCategory
 
 log = logging.getLogger(__name__)
+hashids = Hashids(min_length=4)
 
 
 # Custom signal to trigger activity generation based on parsed Tags.
@@ -264,6 +266,17 @@ class PostMedia(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to=limit, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
+    hash_id = models.CharField(max_length=6, unique=True, null=True)
+
+    def _set_hash_id(self, created=False):
+        if not created:
+            return
+        PostMedia.objects.filter(pk=self.pk).update(hash_id=hashids.encode(self.pk))
+
+    def save(self, *args, **kwargs):
+        created = self.pk is None
+        super().save(*args, **kwargs)
+        self._set_hash_id(created)
 
     def __str__(self):
         return f'{self.content_type.name} {self.id}'.capitalize()

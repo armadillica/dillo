@@ -1,0 +1,6 @@
+| {% if link %}
+a(href="{{ link }}")
+  img(src="{{ post_media_image.image.url }}")
+| {% else %}
+img(src="{{ post_media_image.image.url }}")
+| {% endif %}

@@ -28,7 +28,7 @@
 			h1.pt-3 {{ job.title }}
 
 		.card-body
-			.lead {{ job.description | markdown | safe }}
+			.lead {{ job.description | markdown_with_shortcodes | safe }}
 
 			small.text-muted(title="{{ job.created_at }}")
 				| Posted {{ job.created_at | timesince | shorten_timesince }} ago

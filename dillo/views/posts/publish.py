@@ -226,6 +226,7 @@ def post_get_unpublished_uploads(request, hash_id):
                 'size': post_media.content_object.source.size,
                 'url': post_media.content_object.source.url,
                 'post_media_id': post_media.id,
+                'hash_id': post_media.hash_id,
             }
         )
     return JsonResponse({'media': post_media_list})

@@ -5,8 +5,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.html import mark_safe, escape
 from django.template.defaultfilters import stringfilter
-import mistune
 
+from dillo.shortcodes import render as shortcode_render
+from dillo.markdown import render as markdown_render
 import dillo.models.posts
 
 find_hashtags_re = re.compile(r'\B#\w*[a-zA-Z]+\w*')
@@ -115,6 +116,5 @@ def is_bookmarked(value, user: User):
 
 
 @register.filter
-def markdown(value):
-    md = mistune.Markdown()
-    return md(value)
+def markdown_with_shortcodes(value):
+    return shortcode_render(markdown_render(value))
