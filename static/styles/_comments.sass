@@ -8,7 +8,6 @@
     position: absolute
     top: 0
     width: calc(var(--border-width) * 2)
-    z-index: -1
 
 
 // Contains the first comment and all replies.
@@ -49,7 +48,6 @@
   +padding(2, top)
   display: flex
   position: relative
-  z-index: 0
 
   &:hover
     +media-tablet
@@ -60,6 +58,7 @@
 .comment-avatar
   +margin(2, right)
   +margin(2, top)
+  position: relative // To appear in front of the %reply-timeline.
 
 
 // Contains the comment header (author, date), content, and actions (like, reply).
