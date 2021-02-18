@@ -1,4 +1,6 @@
 from django.conf import settings
+import sorl.thumbnail
+
 from dillo.models.feeds import FeedEntry
 from dillo.views.mixins import OgData
 from dillo.models.communities import Community
@@ -42,3 +44,24 @@ def default_og_data(_):
             image_alt='anima.to',
         )
     }
+
+
+def current_user_js(request):
+    current_user = {
+        'isAuthenticated': request.user.is_authenticated,
+        'username': (None if not request.user.is_authenticated else request.user.username),
+        'avatar': None,
+        'url': (None if not request.user.is_authenticated else request.user.profile.absolute_url),
+        'name': (None if not request.user.is_authenticated else request.user.profile.name),
+        'notificationsCount': 0,
+    }
+    if request.user.is_authenticated:
+        if request.user.profile.avatar:
+            current_user['avatar'] = sorl.thumbnail.get_thumbnail(
+                request.user.profile.avatar, '128x128', crop='center', quality=80
+            ).url
+        current_user['notificationsCount'] = FeedEntry.objects.filter(
+            user=request.user, is_read=False, category='notification',
+        ).count()
+
+    return {'current_user_js': current_user}
