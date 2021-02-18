@@ -1,0 +1,120 @@
+.notifications-container
+  background-color: var(--notifications-background)
+  border-radius: var(--border-radius-lg)
+  box-shadow: var(--box-shadow-lg), var(--box-shadow-lg)
+  max-height: 90vh
+  max-width: 680px
+  position: fixed
+  right: $spacer
+  top: 4.5rem
+  width: 50vw
+  z-index: var(--zindex-popover)
+
+  &.active
+    display: block
+
+  &:before
+    background-color: var(--notifications-background)
+    border: var(--border-width) var(--border-color) solid
+    border-radius: var(--border-radius-sm)
+    content: ''
+    display: block
+    height: $spacer
+    position: absolute
+    right: $spacer * 4.333
+    top: ($spacer * -1) / 2
+    transform: rotate(45deg)
+    width: $spacer
+
+
+.notifications-header
+  align-items: center
+  border-bottom: var(--border-width) solid var(--background-primary)
+  display: flex
+  justify-content: space-between
+
+  a, span
+    +padding(3)
+    color: var(--text-secondary)
+
+
+.notifications-content
+  max-height: 75vh
+  overflow-y: auto
+
+  > ul
+    +list-unstyled
+    +padding(3, x)
+    +padding(3, bottom)
+
+  .profile-avatar img,
+  .notifications-preview
+    max-height: 48px
+    max-width: 48px
+
+
+.notification-item
+  +padding(3, y)
+  align-items: center
+  display: flex
+
+  .profile-avatar
+    background-color: var(--background-tertiary)
+    margin: unset
+
+
+.notification-text
+  +padding(3, left)
+  align-self: center
+  color: var(--text-secondary)
+  line-height: 1.3rem
+
+  a
+    +padding(1, right)
+    color: var(--text-primary)
+    font-weight: bold
+
+  span
+    +padding(1, right)
+
+
+.notification-action
+  +padding(3, left)
+  margin-left: auto
+
+
+.notifications-preview
+  border: solid var(--border-width) var(--border-color)
+  border-radius: var(--border-radius-lg)
+
+
+.notifications-toggle
+  position: relative
+
+  // Count label.
+  &:after
+    +media-tablet
+      left: 1.5rem
+      top: 0
+
+    align-items: center
+    background-color: var(--color-danger)
+    border-radius: var(--border-radius)
+    box-shadow: 0 0 0 0.15rem var(--background-tertiary)
+    color: var(--text-tertiary)
+    content: attr(data-notifications-count)
+    display: none
+    font-size: .7rem
+    font-weight: bold
+    justify-content: center
+    left: 2.5rem
+    min-width: 1.25rem
+    padding: 3px 5px 1px
+    position: absolute
+    top: 1rem
+    transition: transform 250ms ease-in-out
+    width: fit-content
+
+  &.has-notifications
+    &:after
+      display: flex
