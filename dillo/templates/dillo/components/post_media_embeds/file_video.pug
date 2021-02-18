@@ -1,6 +1,6 @@
 | {% if is_processing %}
 p Content is processing
 | {% else %}
-video(controls="true")
+video(controls, loop)
   source(src='{{ post_media_video.url_720p }}', type='video/mp4')
 | {% endif %}
