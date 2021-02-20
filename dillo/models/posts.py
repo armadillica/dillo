@@ -81,6 +81,7 @@ class Post(Entity, LikesMixin, MentionsMixin):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, null=True, blank=True)
     title = models.TextField(null=True, blank=True)
     content = models.TextField(null=True, blank=True)
+    is_link = models.BooleanField(default=False, blank=True)
     is_hidden_by_moderator = models.BooleanField(default=False)
     tags = TaggableManager()
     categories = models.ManyToManyField(CommunityCategory, blank=True)
