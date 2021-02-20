@@ -54,6 +54,21 @@
       .btn-toolbar-row
         opacity: 1
 
+  &.isAuthor
+    .comment-author
+      color: hsl(var(--color-info-h), var(--color-info-s), 64%)
+
+  &.isOwn
+    .comment-body
+      border-bottom-left-radius: var(--border-radius-sm)
+      box-shadow: inset var(--border-width) 0 0 var(--color-warning)
+
+    .comment-author
+      color: var(--color-warning)
+
+  &.isActive
+    .comment-body
+      box-shadow: inset 0 0 0 var(--border-width) var(--accent)
 
 .comment-avatar
   +margin(2, right)
@@ -88,6 +103,10 @@
       background-color: transparent
 
 
+.comment-badges
+  +margin(2, left)
+
+
 .comment-author
   @extend %btn-text
   color: var(--text-secondary)
@@ -96,18 +115,21 @@
 
 .comment-date
   @extend %btn-text
-  +padding(3, left)
-  color: var(--text-secondary)
+  +padding(2, left)
+  color: var(--text-tertiary)
+  font-weight: initial
 
 
 // The text of the comment.
 .comment-content
   +content-generic
+  +padding(1, y)
 
 
 .comment-actions
   .btn-toolbar-row
-    +margin(3, top)
+    +margin(2, top)
+
     ul
       margin-left: auto
 
