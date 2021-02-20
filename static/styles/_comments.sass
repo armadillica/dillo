@@ -92,7 +92,7 @@
 .comment-header
   align-items: center
   display: flex
-  font-size: var(--font-size-sm)
+  font-size: var(--font-size-xs)
 
   .btn-toolbar-row
     +media-tablet
@@ -124,6 +124,17 @@
 .comment-content
   +content-generic
   +padding(1, y)
+  font-size: var(--font-size-sm)
+  line-height: 1.4rem
+
+  img, video,
+    display: block
+    +margin(auto, x)
+    +margin(3, y)
+
+  ul
+    li
+      +margin(2, bottom)
 
 
 .comment-actions
@@ -201,7 +212,7 @@
 
   span
     +margin(3, left)
-    font-size: var(--font-size-sm)
+    font-size: var(--font-size-xxs)
 
 
 .comments-list
