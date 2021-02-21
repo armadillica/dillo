@@ -55,20 +55,28 @@
         opacity: 1
 
   &.isAuthor
-    .comment-author
+    > .comment-author
       color: hsl(var(--color-info-h), var(--color-info-s), 64%)
 
   &.isOwn
-    .comment-body
+    > .comment-body
       border-bottom-left-radius: var(--border-radius-sm)
       box-shadow: inset var(--border-width) 0 0 var(--color-warning)
 
-    .comment-author
+    > .comment-author
       color: var(--color-warning)
 
   &.isActive
-    .comment-body
+    > .comment-body
       box-shadow: inset 0 0 0 var(--border-width) var(--accent)
+
+  &.isEditing
+    > .comment-body
+      box-shadow: inset 0 0 0 var(--border-width) var(--color-success)
+      border-bottom-left-radius: var(--border-radius)
+
+    > .comment-header
+      +make-disabled
 
 .comment-avatar
   +margin(2, right)
@@ -86,6 +94,10 @@
   display: flex
   flex: 1
   flex-direction: column
+  transition: box-shadow ease-in-out var(--transition-speed)
+
+  textarea
+    background-color: var(--background-tertiary)
 
 
 // Header contains the author and date.
@@ -128,9 +140,9 @@
   line-height: 1.4rem
 
   img, video,
-    display: block
     +margin(auto, x)
     +margin(3, y)
+    display: block
 
   ul
     li
