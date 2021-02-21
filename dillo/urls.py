@@ -81,7 +81,10 @@ urlpatterns += [
         'api/markdown-preview/',
         dillo.views.mixins.ApiMarkdownPreview.as_view(),
         name='markdown-preview',
-    )
+    ),
+    path(
+        'api/oembed-preview/', dillo.views.mixins.ApiOembedPreview.as_view(), name='oembed-preview',
+    ),
 ]
 
 # Posts

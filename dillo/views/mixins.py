@@ -12,6 +12,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views import View
 from django.http import JsonResponse
 
+from micawber.contrib.mcdjango import providers
+
 from dillo.models.posts import get_trending_tags, Post
 from dillo.models.events import Event
 from dillo.shortcodes import render as shortcode_render
@@ -115,6 +117,19 @@ class ApiMarkdownPreview(View):
     def post(self, request, *args, **kwargs):
         content = request.POST['content']
         return JsonResponse({'preview': shortcode_render(markdown_render(content))})
+
+
+class ApiOembedPreview(View):
+    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        content = request.POST['content']
+        preview = providers.request(content)
+        preview_default = 'Preview not available for this link.'
+        preview_html = preview_default if 'html' not in preview else preview['html']
+        preview_title = None if 'title' not in preview else preview['title']
+
+        return JsonResponse({'preview': preview_html, 'title': preview_title})
 
 
 class OgData:
