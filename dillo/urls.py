@@ -180,6 +180,7 @@ urlpatterns += [
 urlpatterns += [
     path('c/create/', dillo.views.comments.comment_create, name='comment_create'),
     path('c/<int:comment_id>/delete/', dillo.views.comments.comment_delete, name='comment_delete'),
+    path('c/<int:comment_id>/edit/', dillo.views.comments.comment_edit, name='comment_edit'),
 ]
 
 # Content Reporting

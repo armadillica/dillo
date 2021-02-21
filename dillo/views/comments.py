@@ -11,6 +11,8 @@ from django.views.generic import ListView
 
 from dillo import forms
 from dillo.models.posts import Comment
+from dillo.templatetags.dillo_filters import markdown_with_shortcodes
+from dillo.markdown import sanitize
 
 
 class CommentsListView(ListView):
@@ -61,6 +63,7 @@ class ApiCommentsListView(CommentsListView):
             'isContentAuthor': (comment.user.id == comment.post.user.id),
             'likeToggleUrl': comment.like_toggle_url,
             'deleteUrl': reverse('comment_delete', kwargs={'comment_id': comment.id}),
+            'editUrl': reverse('comment_edit', kwargs={'comment_id': comment.id}),
             'parentCommentId': (None if not comment.parent_comment else comment.parent_comment.id),
         }
 
@@ -120,3 +123,22 @@ def comment_delete(request, comment_id):
     comment.delete()
 
     return JsonResponse({'status': 'success'})
+
+
+@require_POST
+@login_required
+def comment_edit(request, comment_id):
+    """Edit a comment."""
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if request.user != comment.user:
+        return JsonResponse({'error': 'Not allowed to edit this comment.'}, status=422)
+
+    content = request.POST['content']
+
+    if len(content) < 1:
+        return JsonResponse({'error': 'Please type something'}, status=422)
+
+    comment.content = content
+    comment.save()
+
+    return JsonResponse({'content': markdown_with_shortcodes(comment.content)})
