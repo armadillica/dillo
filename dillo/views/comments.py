@@ -60,6 +60,7 @@ class ApiCommentsListView(CommentsListView):
             'likesCount': comment.likes.count(),
             'isLiked': comment.is_liked(self.request.user),
             'isOwn': (comment.user.id == self.request.user.id),
+            'isEdited': comment.is_edited,
             'isContentAuthor': (comment.user.id == comment.post.user.id),
             'likeToggleUrl': comment.like_toggle_url,
             'deleteUrl': reverse('comment_delete', kwargs={'comment_id': comment.id}),

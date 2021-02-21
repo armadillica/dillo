@@ -293,6 +293,12 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
     tags = TaggableManager()
 
     @property
+    def is_edited(self):
+        # Compare creation and edit time in seconds to determine if
+        # the comment was edited
+        return self.created_at.strftime('%s') != self.updated_at.strftime('%s')
+
+    @property
     def replies(self):
         return Comment.objects.filter(parent_comment_id=self.id).order_by('created_at')
 
