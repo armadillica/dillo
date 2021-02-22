@@ -281,6 +281,11 @@ urlpatterns += [
         name='notifications',
     ),
     path(
+        'api/feed/notifications/',
+        dillo.views.users.notifications.ApiFeedNotificationsView.as_view(),
+        name='api-notifications',
+    ),
+    path(
         'feed/notifications/mark-as-read',
         dillo.views.users.notifications.NotificationsMarkAsReadView.as_view(),
         name='notifications-mark-as-read',

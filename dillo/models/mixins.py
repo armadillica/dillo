@@ -3,6 +3,8 @@ import pathlib
 import urllib.parse
 import uuid
 import logging
+from dataclasses import dataclass, field
+
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
@@ -205,3 +207,19 @@ class ChangeAwareness(models.Model):
             return False
 
         return True
+
+
+@dataclass
+class ApiResponseData:
+    """Standard API response content."""
+
+    results: list = field(default_factory=list)
+    count: int = 0
+    next_page_number: int = None
+
+    def serialize(self) -> dict:
+        return {
+            'results': self.results,
+            'count': self.count,
+            'nextPageNumber': self.next_page_number,
+        }
