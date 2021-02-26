@@ -39,6 +39,7 @@ shortcodes = "2.5"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}
+factory_boy = "^3.2.0"
 
 [tool.black]
 line-length = 100
