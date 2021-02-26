@@ -5,77 +5,77 @@
 
 | {% block info %}
 section.post-view-info.col-scrollable
-	| {% include 'dillo/components/_post_header.pug' with post=post show_tags=false %}
-	| {% include 'dillo/components/_post_description.pug' with post=post is_post_details=true %}
-	| {% include 'dillo/components/_post_actions.pug' with post=post is_post_details=True %}
-	| {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=True %}
+  | {% include 'dillo/components/_post_header.pug' with post=post show_tags=false %}
+  | {% include 'dillo/components/_post_description.pug' with post=post is_post_details=true %}
+  | {% include 'dillo/components/_post_actions.pug' with post=post is_post_details=True %}
+  | {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=True %}
 
-	| {% if request.user.is_anonymous %}
-	.btn-toolbar-row
-		| {% url 'account_login' as btn_create_url %}
-		| {% trans 'Log in to comment' as btn_label %}
-		| {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary" %}
-	hr
-	| {% endif %}
+  | {% if request.user.is_anonymous %}
+  .btn-toolbar-row
+    | {% url 'account_login' as btn_create_url %}
+    | {% trans 'Log in to comment' as btn_label %}
+    | {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary" %}
+  hr
+  | {% endif %}
 
-	.comments-container
-		//- Placeholder for when we need to bring the form back here (e.g. on reply cancel).
-		#js-comment-form-placeholder
-			| {% include 'dillo/components/_comment_form.pug' %}
+  .comments-container
+    //- Placeholder for when we need to bring the form back here (e.g. on reply cancel).
+    #js-comment-form-placeholder
+      | {% include 'dillo/components/_comment_form.pug' %}
 
-		//- Comments are loaded via js here, see below.
-		#js-comments(
-			data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
-		)
-			.comments-loading
-				.spinner-border-sm
-				span loading comments...
+    //- Comments are loaded via js here, see below.
+    #js-comments(
+      data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
+    )
+      .comments-loading
+        .spinner-border-sm
+        span loading comments...
 
 | {% endblock info %}
 
 | {% block javascript_history %}
 script.
-	/* When browsing history, if this template is accessed reload the whole page. */
-	window.addEventListener("pageshow", function (event) {
-		let historyTraversal = event.persisted ||
-			(typeof window.performance != "undefined" &&
-				window.performance.navigation.type === 2);
-		if (historyTraversal) {
-			// Handle page restore.
-			window.location.reload();
-		}
-	});
+  /* When browsing history, if this template is accessed reload the whole page. */
+  window.addEventListener("pageshow", function (event) {
+    let historyTraversal = event.persisted ||
+      (typeof window.performance != "undefined" &&
+        window.performance.navigation.type === 2);
+    if (historyTraversal) {
+      // Handle page restore.
+      window.location.reload();
+    }
+  });
 | {% endblock %}
 
 | {% block javascript_comments %}
 script.
-	$(function() {
+  $(function() {
 
-		// Load comments.
-		let $commentsContainer = $("#js-comments");
-		$.get($commentsContainer.data('comments_url'), function (data) {
-			$commentsContainer.html(data);
-		});
+    // Load comments.
+    let $commentsContainer = $("#js-comments");
+    $.get($commentsContainer.data('comments_url'), function (data) {
+      $commentsContainer.html(data);
+    });
 
-		// Resize comment field on typing.
-		let $commentTextField = $('#id_content');
-		if ($commentTextField.length === 0) {return};
-		$commentTextField.autoResize();
+    // Resize comment field on typing.
+    let $commentTextField = $('#id_content');
+    if ($commentTextField.length === 0) {return};
+    $commentTextField.autoResize();
 
-		// Send comment on Ctrl+Enter.
-		$commentTextField.on("keyup", function (e) {
-			if ((e.keyCode == 13 || e.key === 'Enter') && e.ctrlKey) {
-				$(this).submit();
-			}
-		});
+    // Send comment on Ctrl+Enter.
+    $commentTextField.on("keyup", function (e) {
+      if ((e.keyCode == 13 || e.key === 'Enter') && e.ctrlKey) {
+        $(this).submit();
+      }
+    });
 
-	});
+  });
 | {% endblock javascript_comments %}
 
 script.
-	$(function () {
-		initTooltips();
-	});
+  $(function () {
+    initTooltips();
+  });
 
 | {% block javascript_media %}
 | {% endblock javascript_media %}
