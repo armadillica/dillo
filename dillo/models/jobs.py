@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 from dillo.models.mixins import get_upload_to_hashed_path
-from dillo.models.posts import Entity
+from dillo.models.entities import Entity
 
 
 class Job(Entity):
