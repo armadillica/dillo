@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import SuspiciousOperation
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -61,6 +62,15 @@ class PostDetailView(DetailView):
         """Force the creation of CSRF cookie"""
         return super().dispatch(*args, **kwargs)
 
+    def get_related_posts(self, post):
+        return (
+            Post.objects.filter(user=post.user)
+            .exclude(id=post.id)
+            .prefetch_related('likes')
+            .annotate(Count('likes'))
+            .order_by('-likes__count', '-created_at')[:6]
+        )
+
     def populate_og_data(self, post):
         """Prepare the OgData object for the context."""
         title = post.user.username if not post.user.profile.name else post.user.profile.name
@@ -95,6 +105,7 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['form_comment'] = forms.CommentForm({'post_id': self.object.id})
         context['og_data'] = self.populate_og_data(kwargs['object'])
+        context['related_posts'] = self.get_related_posts(self.object)
         return context
 
     def get_template_names(self):

@@ -31,6 +31,12 @@ section.post-view-info.col-scrollable
         .spinner-border-sm
         span loading comments...
 
+  .thumbns
+    | {% for related_post in related_posts %}
+    | {% include 'dillo/components/_post_media_grid.pug' with post=related_post %}
+    | {% endfor %}
+
+
 | {% endblock info %}
 
 | {% block javascript_history %}
