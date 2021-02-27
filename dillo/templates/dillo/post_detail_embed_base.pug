@@ -31,10 +31,13 @@ section.post-view-info.col-scrollable
         .spinner-border-sm
         span loading comments...
 
-  .thumbns
+  | {% if related_posts %}
+  .post-related-posts
+    h3 More by {{ post.user.username }}
     | {% for related_post in related_posts %}
     | {% include 'dillo/components/_post_media_grid.pug' with post=related_post %}
     | {% endfor %}
+  | {% endif %}
 
 
 | {% endblock info %}
