@@ -17,7 +17,7 @@ button.btn(
 a.btn(
 	class="{% if icon_only %}btn-icon {% endif %}{{ class }}",
 	data-toggle="{% if icon_only %}tooltip{% endif %}", data-placement="bottom",
-	href="{% url 'account_signup' %}",
+	href="{% url 'account_login' %}",
 	title="{% trans 'Like' %}")
 	span
 		i.i-heart
