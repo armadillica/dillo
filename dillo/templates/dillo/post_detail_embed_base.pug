@@ -1,4 +1,5 @@
 | {% load i18n %}
+| {% load thumbnail %}
 
 | {% block media %}
 | {% endblock media %}
@@ -32,11 +33,27 @@ section.post-view-info.col-scrollable
         span loading comments...
 
   | {% if related_posts %}
-  .post-related-posts
-    h3 More by {{ post.user.username }}
-    | {% for related_post in related_posts %}
-    | {% include 'dillo/components/_post_media_grid.pug' with post=related_post %}
-    | {% endfor %}
+  .post-related-container
+    h3 More by #[a(href="{% url 'profile_details' post.user.username %}") {{ post.user.username }}]
+
+    .post-related-posts
+      | {% for related_post in related_posts %}
+      a.post-media-item-grid(
+        href="{% url 'post_detail' related_post.hash_id %}")
+
+        | {% thumbnail related_post.thumbnail "640x360" crop="center" as im %}
+        img.media-thumbnail(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ related_post.user }}")
+        | {% endthumbnail %}
+
+        | {% if related_post.postmedia_set.all.count > 1 %}
+        span.post-label-icon
+          i.i-layers
+        | {% endif %}
+      | {% endfor %}
   | {% endif %}
 
 
