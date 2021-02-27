@@ -64,7 +64,7 @@ class PostDetailView(DetailView):
 
     def get_related_posts(self, post):
         return (
-            Post.objects.filter(user=post.user)
+            Post.objects.filter(user=post.user, status='published', visibility='public')
             .exclude(id=post.id)
             .prefetch_related('likes')
             .annotate(Count('likes'))
