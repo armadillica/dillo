@@ -5,17 +5,17 @@ from django.urls import reverse
 
 from dillo.models.posts import Post, Comment
 from dillo.tasks import send_notification_mail
+from dillo.tests.factories.users import UserFactory
+from dillo.tests.factories.posts import PostFactory
 
 
 @override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')
 class EmailNotificationTest(TestCase):
     def setUp(self) -> None:
-        self.user_harry = User.objects.create_user(username='harry', email='harry@hogwarts.ac.uk')
-        self.user_hermione = User.objects.create_user(
-            username='hermione', email='hermione@hogwarts.ac.uk'
-        )
-        self.post = Post.objects.create(
-            user=self.user_harry, title='Velocità con #animato', status='published'
+        self.user_harry = UserFactory(username='harry')
+        self.user_hermione = UserFactory(username='hermione',)
+        self.post = PostFactory(
+            user=self.user_harry, status='published', title='Velocità con #animato'
         )
         self.client = Client()
 
@@ -41,9 +41,13 @@ class EmailNotificationTest(TestCase):
         # print(mail.outbox[0].alternatives[0][0])
 
     def test_new_comment_notification(self):
-        comment_create_url = reverse('comment_create')
         self.client.force_login(self.user_hermione)
-        comment_form_content = {'post_id': self.post.id, 'content': 'Interesting content!'}
+        comment_create_url = reverse('comment_create')
+        comment_form_content = {
+            'entity_object_id': self.post.id,
+            'entity_content_type_id': self.post.content_type_id,
+            'content': 'Interesting content!',
+        }
         self.client.post(comment_create_url, comment_form_content)
 
         # Test that one message has been sent.
@@ -55,7 +59,11 @@ class EmailNotificationTest(TestCase):
 
     def test_new_reply_notification(self):
         comment_create_url = reverse('comment_create')
-        comment_form_content = {'post_id': self.post.id, 'content': 'Interesting content!'}
+        comment_form_content = {
+            'entity_object_id': self.post.id,
+            'entity_content_type_id': self.post.content_type_id,
+            'content': 'Interesting content!',
+        }
         # Login as Hermione.
         self.client.force_login(self.user_hermione)
         # Add comment to existing post.
@@ -63,14 +71,17 @@ class EmailNotificationTest(TestCase):
         # Empty the test outbox.
         mail.outbox = []
         # Ensure only one comment for this posts exists.
-        self.assertEqual(Comment.objects.filter(post=self.post).count(), 1)
+        self.assertEqual(self.post.comments.count(), 1)
 
         # Get the comment.
-        comment = Comment.objects.get(post=self.post)
+        comment = Comment.objects.get(
+            entity_content_type_id=self.post.content_type_id, entity_object_id=self.post.id
+        )
 
         # Build a reply object.
         reply_form_content = {
-            'post_id': self.post.id,
+            'entity_object_id': self.post.id,
+            'entity_content_type_id': self.post.content_type_id,
             'parent_comment_id': comment.id,
             'content': 'Interesting content!',
         }

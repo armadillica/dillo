@@ -11,44 +11,40 @@ import dillo.models.feeds
 from dillo.models.messages import ContentReports
 from dillo.models.posts import Post, Comment
 from dillo.models.profiles import Profile
-from dillo.models.post_rigs import PostRig
+from dillo.tests.factories.users import UserFactory
+from dillo.tests.factories.comments import CommentForPostFactory
+from dillo.tests.factories.posts import PostFactory
 
 
 class TestViewsMixin(TestCase):
     def setUp(self) -> None:
-        self.user_harry = User.objects.create_user(username='harry')
+        self.user_harry: User = UserFactory(username='harry')
         self.client = Client()
 
 
 @override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')
 class PostViewsTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
         self.client = Client()
+        self.user = UserFactory(username='testuser')
+        self.post_title = 'Velocità con #animato'
+        self.post = Post.objects.get(pk=PostFactory(user=self.user, title=self.post_title).pk)
 
     def test_existing_post_view(self):
-        post_title = 'Velocità con #animato'
-        # Create Post and published
-        post = Post.objects.create(
-            user=self.user, title=post_title, status='published', visibility='public'
-        )
+        self.post.status = 'published'
+        self.post.save()
         # Create post URL
-        post_view_url = reverse('post_detail', kwargs={'hash_id': post.hash_id})
+        post_view_url = reverse('post_detail', kwargs={'hash_id': self.post.hash_id})
         # Issue a GET request
         response = self.client.get(post_view_url)
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
         # Check that the title of the Post matches with the original title
-        self.assertEqual(response.context['post'].title, post_title)
+        self.assertEqual(response.context['post'].title, self.post_title)
 
     def test_unpublished_post_view(self):
-        from django.core.exceptions import PermissionDenied
-
-        post_title = 'Velocità con #animato'
-        # Create Post
-        post = Post.objects.create(user=self.user, title=post_title)
         # Create post URL
-        post_view_url = reverse('post_detail', kwargs={'hash_id': post.hash_id})
+        post_view_url = reverse('post_detail', kwargs={'hash_id': self.post.hash_id})
         # Issue a GET request
         response = self.client.get(post_view_url)
         # Check that the response is 400 Not Allowed
@@ -89,26 +85,23 @@ class PostViewsTest(TestCase):
         # TODO(fsiddi): Test submission of invalid form
 
     def test_report_post(self):
-        post_title = 'Velocità con #animato'
-        post = Post.objects.create(user=self.user, title=post_title)
         report_content_url = reverse(
             'report_content',
-            kwargs={'content_type_id': post.content_type_id, 'object_id': post.id,},
+            kwargs={'content_type_id': self.post.content_type_id, 'object_id': self.post.id},
         )
         # Ensure that the view is not available if anonymous
         response = self.client.get(report_content_url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(0, ContentReports.objects.count())
+        random_user = UserFactory()
         # Log in the user
-        self.client.force_login(self.user)
+        self.client.force_login(random_user)
         # Create a Post
         self.client.post(report_content_url, {'reason': 'inappropriate'})
         self.assertEqual(1, ContentReports.objects.count())
 
     def test_post_status(self):
-        post_title = 'Velocità con #animato'
-        post = Post.objects.create(user=self.user, title=post_title)
-        post_status_url = reverse('post_status', kwargs={'hash_id': post.hash_id})
+        post_status_url = reverse('post_status', kwargs={'hash_id': self.post.hash_id})
         response = self.client.get(post_status_url)
         self.assertEqual(302, response.status_code)
         self.client.force_login(self.user)
@@ -189,16 +182,18 @@ class PostViewsTest(TestCase):
 @override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')
 class CommentViewsTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
         self.client = Client()
-        self.post = Post.objects.create(title='A whole new Post.', user=self.user)
-        self.comment = Comment.objects.create(
-            content='First comment!', user=self.user, post=self.post
-        )
+        self.user = UserFactory()
+        self.post = PostFactory(user=self.user)
+        self.comment = CommentForPostFactory(entity=self.post, user=self.user)
 
     def test_comment_create(self):
         comment_create_url = reverse('comment_create')
-        comment_form_content = {'post_id': self.post.id, 'content': 'Comment content.'}
+        comment_form_content = {
+            'entity_object_id': self.post.id,
+            'entity_content_type_id': self.post.content_type_id,
+            'content': 'Interesting content!',
+        }
         # Non-authenticated creation of comments is not allowed
         response = self.client.post(comment_create_url, comment_form_content)
         self.assertEqual(response.status_code, 302)
@@ -214,7 +209,7 @@ class CommentViewsTest(TestCase):
     def test_comment_delete(self):
         comment_delete_url = reverse('comment_delete', kwargs={'comment_id': self.comment.id})
         # Create another user
-        other_user = User.objects.create_user(username='otheruser', password='12345')
+        other_user = UserFactory()
         self.client.force_login(other_user)
         response = self.client.post(comment_delete_url)
         # Deleting the post is not allowed, because the post belongs to another user
@@ -226,10 +221,12 @@ class CommentViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_comment_delete_non_existent(self):
-        comment_id = 2
+        non_existing_comment_id = 2
         with self.assertRaises(Comment.DoesNotExist):
-            Comment.objects.get(pk=comment_id)
-        comment_delete_url = reverse('comment_delete', kwargs={'comment_id': comment_id})
+            Comment.objects.get(pk=non_existing_comment_id)
+        comment_delete_url = reverse(
+            'comment_delete', kwargs={'comment_id': non_existing_comment_id}
+        )
         # Log in the default user
         self.client.force_login(self.user)
         response = self.client.post(comment_delete_url)
@@ -240,12 +237,10 @@ class CommentViewsTest(TestCase):
 @override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')
 class AccountViewsTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
         self.client = Client()
-        self.post = Post.objects.create(title='A whole new Post.', user=self.user)
-        self.comment = Comment.objects.create(
-            content='First comment!', user=self.user, post=self.post
-        )
+        self.user = UserFactory()
+        self.comment = CommentForPostFactory(user=self.user)
+        self.post = PostFactory(user=self.user)
 
     def test_account_delete(self):
         account_delete_url = reverse('account_delete')
@@ -559,39 +554,3 @@ class SignUpViewTest(TestCase):
         self.assertEqual('albusdumbledore', user.username)
         # Ensure that user name is saved
         self.assertEqual(user_name, user.profile.name)
-
-
-@override_settings(STATICFILES_STORAGE='pipeline.storage.PipelineStorage')
-class RigViewsTest(TestViewsMixin):
-    def setUp(self) -> None:
-        self.user_harry = User.objects.create_user(username='harry')
-        self.client = Client()
-
-    def test_create_rig_view(self):
-        """Test create view permissions."""
-        # Create post URL
-        rig_create_url = reverse('rig-create')
-        # Issue a GET request
-        response = self.client.get(rig_create_url)
-        # Unauthenticated users can't create rigs
-        self.assertEqual(302, response.status_code)
-        self.client.force_login(self.user_harry)
-        # Issue a GET request
-        response = self.client.get(rig_create_url)
-        # Authenticated users can create rigs
-        self.assertEqual(200, response.status_code)
-
-    def test_create_rig_submit(self):
-        """Test create view permissions."""
-        # Create post URL
-        rig_create_url = reverse('rig-create')
-        self.client.force_login(self.user_harry)
-        # Issue a POST request
-        response = self.client.post(
-            rig_create_url,
-            {'name': 'Rain Rig', 'description': 'A good rig', 'url': 'https://cloud.blender.org/'},
-        )
-        # Successful submission redirects to detail view
-        self.assertEqual(302, response.status_code)
-        # Rig was created in database
-        self.assertEqual(True, PostRig.objects.filter(name='Rain Rig').exists())

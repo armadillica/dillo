@@ -1,5 +1,6 @@
 import sorl.thumbnail
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db.models import Count
 from django.http import JsonResponse
@@ -98,10 +99,13 @@ def comment_create(request):
     if not form.is_valid():
         return JsonResponse({'error': form.errors.as_json()}, status=422)
 
+    entity_type = ContentType.objects.get_for_id(form.cleaned_data['entity_content_type_id'])
+    entity = entity_type.get_object_for_this_type(id=form.cleaned_data['entity_object_id'])
+
     comment = Comment.objects.create(
         user=request.user,
         content=form.cleaned_data['content'],
-        post_id=form.cleaned_data['post_id'],
+        entity=entity,
         parent_comment_id=form.cleaned_data['parent_comment_id'],
     )
 

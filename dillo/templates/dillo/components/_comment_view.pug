@@ -14,7 +14,7 @@
 				title="{{ comment.user.username }}")
 				| {{ comment.user.username }}
 			a.comment-date(
-				href="{% url 'post_detail' comment.post.hash_id %}#comment-{{ comment.id }}",
+				href="{{ comment.absolute_url }}",
 				title="{{ comment.created_at | date:'DATETIME_FORMAT' }}")
 				| {{ comment.created_at | timesince | compact_timesince }}
 

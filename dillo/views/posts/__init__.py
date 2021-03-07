@@ -103,7 +103,12 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form_comment'] = forms.CommentForm({'post_id': self.object.id})
+        context['form_comment'] = forms.CommentForm(
+            {
+                'entity_object_id': self.object.id,
+                'entity_content_type_id': self.object.content_type_id,
+            }
+        )
         context['og_data'] = self.populate_og_data(kwargs['object'])
         context['related_posts'] = self.get_related_posts(self.object)
         return context

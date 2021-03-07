@@ -12,13 +12,17 @@ import dillo.models.events
 import dillo.models.mixins
 import dillo.models.posts
 import dillo.models.profiles
+from dillo.models.posts import Comment, Post
+from dillo.tests.factories.users import UserFactory
+from dillo.tests.factories.posts import PostFactory
+from dillo.tests.factories.comments import CommentForPostFactory
 
 
 class ProfileModelTest(TestCase):
     def setUp(self) -> None:
         from django.contrib.auth.models import User
 
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user: User = UserFactory(username='testuser')
 
     def test_profile_created_after_user(self):
         from dillo.models.profiles import Profile
@@ -99,14 +103,11 @@ class ProfileModelTest(TestCase):
 
 class PostModelTest(TestCase):
     def setUp(self):
-        from django.contrib.auth.models import User
-        from dillo.models.posts import Post
 
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.post = Post.objects.create(user=self.user, title='Velocità con #animato')
+        self.user = UserFactory(username='testuser')
+        self.post = PostFactory(user=self.user, title='Looking for #animato')
 
     def test_post_creation(self):
-        from dillo.models.posts import Post
 
         # Create Post with a hasthag
         saved_post = Post.objects.get(id=self.post.id)
@@ -114,7 +115,6 @@ class PostModelTest(TestCase):
         self.assertIn('animato', saved_post.tags.names())
 
     def test_post_publish_set_published_at(self):
-        from dillo.models.posts import Post
 
         # Create Post with a hasthag
         saved_post = Post.objects.get(id=self.post.id)
@@ -125,7 +125,6 @@ class PostModelTest(TestCase):
         self.assertIsNotNone(saved_post.published_at)
 
     def test_multiple_tags(self):
-        from dillo.models.posts import Post
 
         # Create Post with two hasthags
         post = Post.objects.create(user=self.user, title='Velocità #con #animato')
@@ -135,7 +134,6 @@ class PostModelTest(TestCase):
         self.assertIn('con', saved_post.tags.names())
 
     def test_post_no_tags(self):
-        from dillo.models.posts import Post
 
         # Create Post without a title
         post = Post.objects.create(user=self.user)
@@ -144,13 +142,9 @@ class PostModelTest(TestCase):
         self.assertIsNone(saved_post.title)
 
     def test_post_delete(self):
-        from dillo.models.posts import Comment
-        from dillo.models.posts import Post
 
         # Add Comment to Post
-        comment = Comment.objects.create(
-            user=self.user, post=self.post, content='My comment #Гарри'
-        )
+        comment = CommentForPostFactory(entity=self.post)
         # TODO(fsiddi) Add image
         self.post.delete()
         # Ensure that Post and Comment are deleted
@@ -235,18 +229,12 @@ class PostModelTest(TestCase):
 
 class CommentModelTest(TestCase):
     def setUp(self):
-        from django.contrib.auth.models import User
-        from dillo.models.posts import Post
 
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.post = Post.objects.create(user=self.user, title='My post')
+        self.post: Post = PostFactory()
+        self.user: User = self.post.user
 
     def test_comment_creation(self):
-        from dillo.models.posts import Comment
-
-        comment = Comment.objects.create(
-            user=self.user, post=self.post, content='My comment #b3d #Гарри'
-        )
+        comment = CommentForPostFactory(content='My comment #b3d #Гарри')
         # Fetch saved comment
         saved_comment = Comment.objects.get(id=comment.id)
         # Ensure the content of the comment is correct
@@ -256,27 +244,23 @@ class CommentModelTest(TestCase):
 
     def test_comment_reply_creation(self):
         """Ensure that one level replies only are possible."""
-        from dillo.models.posts import Comment
         from django.core.exceptions import FieldError
 
-        comment = Comment.objects.create(user=self.user, post=self.post, content='My comment #b3d')
-        reply = Comment.objects.create(
-            user=self.user, post=self.post, parent_comment=comment, content='My reply'
-        )
+        comment = CommentForPostFactory(entity=self.post, content='My comment #b3d')
+        reply = CommentForPostFactory(entity=self.post, parent_comment=comment, content='My reply')
 
         # Ensure that replies to replies are not allowed
         with self.assertRaises(FieldError):
-            Comment.objects.create(
-                user=self.user, post=self.post, parent_comment=reply, content='My reply to reply'
+            CommentForPostFactory(
+                entity=self.post, parent_comment=reply, content='My reply to reply'
             )
 
     def test_comment_deletion(self):
         """Test comment and tag association deletion."""
         from django.contrib.contenttypes.models import ContentType
         from taggit.models import TaggedItem
-        from dillo.models.posts import Comment
 
-        comment = Comment.objects.create(user=self.user, post=self.post, content='My comment #b3d')
+        comment = CommentForPostFactory()
         comment_id = comment.id
         comment_content_type = ContentType.objects.get(app_label='dillo', model='comment')
         comment.delete()
@@ -288,13 +272,12 @@ class CommentModelTest(TestCase):
             TaggedItem.objects.get(object_id=comment_id, content_type=comment_content_type)
 
     def test_comments_count(self):
-        from dillo.models.posts import Comment
 
         # Ensure the comment count for the post is correct
-        self.assertEquals(self.post.comments_count, 0)
-        Comment.objects.create(user=self.user, post=self.post, content='My comment #Гарри')
+        self.assertEquals(self.post.comments.count(), 0)
+        CommentForPostFactory(entity=self.post)
         # Ensure the comment count for the post is correct
-        self.assertEquals(self.post.comments_count, 1)
+        self.assertEquals(self.post.comments.count(), 1)
 
 
 class ActivitiesTest(TestCase):
@@ -302,8 +285,6 @@ class ActivitiesTest(TestCase):
 
     def setUp(self):
         """Create two users and let one user create a post."""
-        from django.contrib.auth.models import User
-        from dillo.models.posts import Post
 
         self.user_ron = User.objects.create_user(username='ron', password='12345')
         self.user_harry = User.objects.create_user(username='harry', password='12345')
@@ -383,7 +364,6 @@ class TagsExtractionTest(TestCase):
         self.user = User.objects.create_user(username='testuser')
 
     def test_tags_punctuation(self):
-        from dillo.models.posts import Post
 
         post = Post.objects.create(user=self.user, title='Velocità con #animato!')
         self.assertEqual(post.tags.names()[0], 'animato')
@@ -406,13 +386,11 @@ class MentionsExtractionTest(TestCase):
         self.user_mentioned = User.objects.create_user(username='venomgfx')
 
     def test_mention_detection(self):
-        from dillo.models.posts import Post
 
         post = Post.objects.create(user=self.user, title='Velocità con @venomgfx!')
         self.assertIn(self.user_mentioned, post.mentioned_users)
 
     def test_mention_non_existing_user(self):
-        from dillo.models.posts import Post
 
         post = Post.objects.create(user=self.user, title='Velocità con @none!')
         self.assertFalse(post.mentioned_users)
@@ -434,17 +412,10 @@ class UserModelTest(TestCase):
 
 class FeedElementModelTest(TestCase):
     def setUp(self):
-        from django.contrib.auth.models import User
 
-        self.user1 = User.objects.create_user(
-            username='testuser1', email='testuser1@example.com', password='12345'
-        )
-        self.user2 = User.objects.create_user(
-            username='testuser2', email='testuser2@example.com', password='12345'
-        )
-        self.post = dillo.models.posts.Post.objects.create(
-            user=self.user1, title='Velocità con #animato'
-        )
+        self.user1 = UserFactory(username='testuser1')
+        self.user2 = UserFactory(username='testuser2')
+        self.post = PostFactory(user=self.user1, title='Velocità con #animato')
 
     def test_user_follows_own_post(self):
         self.assertIn(self.user1, models_actstream.followers(self.post))
@@ -467,9 +438,7 @@ class FeedElementModelTest(TestCase):
     def test_user_commented_on_your_post_notification(self):
         # Create comment
         comment_content = 'Nice idea! #idea'
-        comment = dillo.models.posts.Comment.objects.create(
-            user=self.user2, content=comment_content, post=self.post,
-        )
+        comment = CommentForPostFactory(user=self.user2, content=comment_content, entity=self.post)
         notification = self.user1.feed_entries.first()
         self.assertEqual('notification', notification.category)
         self.assertEqual('commented', notification.action.verb)
@@ -477,9 +446,8 @@ class FeedElementModelTest(TestCase):
 
         # Own comments do not generate notifications
         comment_content = 'My own comment'
-        dillo.models.posts.Comment.objects.create(
-            user=self.user1, content=comment_content, post=self.post,
-        )
+        CommentForPostFactory(user=self.user1, content=comment_content, entity=self.post)
+
         notifications_count = self.user1.feed_entries.count()
         # We still have one notification, from the previous activity
         self.assertEqual(1, notifications_count)
@@ -487,9 +455,8 @@ class FeedElementModelTest(TestCase):
         # If user does not follow post, do not generate notifications
         unfollow(self.user1, self.post)
         comment_content = 'A second comment!'
-        dillo.models.posts.Comment.objects.create(
-            user=self.user2, content=comment_content, post=self.post,
-        )
+        CommentForPostFactory(user=self.user1, content=comment_content, entity=self.post)
+
         notifications_count = self.user1.feed_entries.count()
         # We still have one notification, from the previous activity
         self.assertEqual(1, notifications_count)
@@ -497,9 +464,8 @@ class FeedElementModelTest(TestCase):
     def test_user_liked_your_comment_notification(self):
         # Create comment
         comment_content = 'Nice idea! #idea'
-        comment = dillo.models.posts.Comment.objects.create(
-            user=self.user1, content=comment_content, post=self.post,
-        )
+        comment = CommentForPostFactory(user=self.user1, content=comment_content, entity=self.post)
+
         comment.like_toggle(self.user2)
         notification = self.user1.feed_entries.first()
         # Verify that notification exists
@@ -512,21 +478,21 @@ class FeedElementModelTest(TestCase):
         self.post.publish()
         # Create comment
         comment_content = 'Nice idea! #idea'
-        comment = dillo.models.posts.Comment.objects.create(
-            user=self.user1, content=comment_content, post=self.post,
-        )
+        comment = CommentForPostFactory(user=self.user1, content=comment_content, entity=self.post)
+
         reply_content = 'I concur.'
         # Add reply from the same user
-        dillo.models.posts.Comment.objects.create(
-            user=self.user1, content=reply_content, post=self.post, parent_comment=comment,
+        CommentForPostFactory(
+            user=self.user1, content=reply_content, entity=self.post, parent_comment=comment
         )
+
         # This generates no notifications
         notifications_count = self.user1.feed_entries.filter(category='notification').count()
         self.assertEqual(0, notifications_count)
 
         # Add reply from another user
-        reply = dillo.models.posts.Comment.objects.create(
-            user=self.user2, content=reply_content, post=self.post, parent_comment=comment,
+        reply = CommentForPostFactory(
+            user=self.user2, content=reply_content, entity=self.post, parent_comment=comment
         )
         notification = self.user1.feed_entries.first()
         # Verify that notification exists
@@ -660,10 +626,10 @@ class UploadPathTest(SimpleTestCase):
 
 class JobsModelTest(TestCase):
     def setUp(self):
-        from dillo.models.posts import PostJob
+        from dillo.models.jobs import Job
 
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.job = PostJob.objects.create(
+        self.user = UserFactory()
+        self.job = Job.objects.create(
             user=self.user,
             company='Minstry of Magic',
             city='London',

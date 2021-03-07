@@ -4,6 +4,7 @@ import urllib.parse
 import uuid
 import logging
 from dataclasses import dataclass, field
+from hashids import Hashids
 
 
 from django.contrib.auth.models import User
@@ -14,6 +15,7 @@ from django.db import models
 from django.urls import reverse
 
 log = logging.getLogger(__name__)
+hashids = Hashids(min_length=4)
 
 
 def get_social_from_url(url):
@@ -223,3 +225,13 @@ class ApiResponseData:
             'count': self.count,
             'nextPageNumber': self.next_page_number,
         }
+
+
+class HashIdGenerationMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    def _set_hash_id(self, created=False):
+        if not created:
+            return
+        self.__class__.objects.filter(pk=self.pk).update(hash_id=hashids.encode(self.pk))

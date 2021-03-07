@@ -34,8 +34,8 @@ li.post-container(
         | {% endif %}
 
         //- Comments.
-        | {% if activity.action_object.comments_count %}
-        span  #[i.i-comment] {{ activity.action_object.comments_count }}
+        | {% if activity.action_object.comments.count %}
+        span  #[i.i-comment] {{ activity.action_object.comments.count }}
         | {% endif %}
 
         //- Likes.

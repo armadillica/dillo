@@ -1,10 +1,14 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-from dillo.models.mixins import CreatedUpdatedMixin
+from dillo.models.mixins import CreatedUpdatedMixin, HashIdGenerationMixin
 
 
-class Entity(CreatedUpdatedMixin, models.Model):
+class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
+    class Meta:
+        abstract = True
+
     VISIBILITIES = (
         ('public', 'Public'),
         ('unlisted', 'Unlisted'),
@@ -22,5 +26,11 @@ class Entity(CreatedUpdatedMixin, models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, default='draft')
     visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='public')
 
-    class Meta:
-        abstract = True
+    def save(self, *args, **kwargs):
+        created = self.pk is None
+        super().save(*args, **kwargs)
+        self._set_hash_id(created)
+
+    @property
+    def content_type_id(self):
+        return ContentType.objects.get_for_model(self).id

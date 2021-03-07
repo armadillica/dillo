@@ -1,26 +1,27 @@
 | {% load i18n %}
 
 #comment-form-container.comment-item.comment-form-container
-	| {% if request.user.is_authenticated %}
-	.comment-avatar
-		| {% include 'dillo/components/_profile_avatar.pug' with user=request.user size='small' %}
+  | {% if request.user.is_authenticated %}
+  .comment-avatar
+    | {% include 'dillo/components/_profile_avatar.pug' with user=request.user size='small' %}
 
-	.comment-body
-		form.comment-form(action="{% url 'comment_create' %}", method='post', id='js-comment-form')
-			| {{ form_comment.content }}
-			| {{ form_comment.post_id }}
-			| {{ form_comment.parent_comment_id }}
+  .comment-body
+    form.comment-form(action="{% url 'comment_create' %}", method='post', id='js-comment-form')
+      | {{ form_comment.content }}
+      | {{ form_comment.entity_content_type_id }}
+      | {{ form_comment.entity_object_id }}
+      | {{ form_comment.parent_comment_id }}
 
-			.btn-toolbar-row
-				button.btn.btn-link(
-					data-toggle="tooltip",
-					title="{% trans 'Cancel' %}",
-					type='button',
-					class="js-reply-cancel")
-					span
-						i.i-cancel
-				button.btn.btn-primary(
-					title="{% trans 'Send Comment' %}",
-					type='submit')
-					span {% trans "Comment" %}
-	| {% endif %}
+      .btn-toolbar-row
+        button.btn.btn-link(
+          data-toggle="tooltip",
+          title="{% trans 'Cancel' %}",
+          type='button',
+          class="js-reply-cancel")
+          span
+            i.i-cancel
+        button.btn.btn-primary(
+          title="{% trans 'Send Comment' %}",
+          type='submit')
+          span {% trans "Comment" %}
+  | {% endif %}

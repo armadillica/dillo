@@ -45,7 +45,8 @@ class CommentForm(forms.Form):
         ),
         localize=True,
     )
-    post_id = forms.IntegerField(widget=forms.HiddenInput())
+    entity_content_type_id = forms.IntegerField(widget=forms.HiddenInput())
+    entity_object_id = forms.IntegerField(widget=forms.HiddenInput())
     parent_comment_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
 

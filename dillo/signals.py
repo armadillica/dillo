@@ -147,7 +147,7 @@ def on_created_comment(sender, instance: dillo.models.posts.Comment, created, **
     verb = 'commented'
     if instance.parent_comment:
         verb = 'replied'
-    action.send(instance.user, verb=verb, action_object=instance, target=instance.post)
+    action.send(instance.user, verb=verb, action_object=instance, target=instance.entity)
     log.debug('Set user %s as follower of own comment %i' % (instance.user, instance.id))
     follow(instance.user, instance, actor_only=False)
 

@@ -273,7 +273,7 @@ def feeds_fanout_liked(action):
 
 def feeds_fanout_commented(action):
     # Fan out notification to Post followers
-    for follower in models_actstream.followers(action.action_object.post):
+    for follower in models_actstream.followers(action.action_object.entity):
         if action.actor == follower:
             log.debug('Skipping notification generation post owner')
             continue
@@ -283,7 +283,7 @@ def feeds_fanout_commented(action):
         )
         follower.feed_entries.create(action=action)
         # Email notification
-        content_name = truncatechars(action.action_object.post.title, 15)
+        content_name = truncatechars(action.action_object.entity.title, 15)
         content_text = truncatechars(action.action_object.content, 25)
         comment_context = dillo.views.emails.CommentOrReplyContext(
             subject='Your post has a new comment!',
@@ -292,8 +292,7 @@ def feeds_fanout_commented(action):
             action_author_name=action.actor.profile.first_name_guess or action.actor.username,
             action_author_absolute_url=action.actor.profile.absolute_url,
             content_name=content_name,
-            content_absolute_url=f'{action.action_object.post.absolute_url}#comments-'
-            f'{action.action_object.id}',
+            content_absolute_url=action.action_object.absolute_url,
             content_text=content_text,
         ).as_dict
 
@@ -319,7 +318,7 @@ def feeds_fanout_replied(action):
         )
         follower.feed_entries.create(action=action)
         # Email notification
-        content_name = truncatechars(action.action_object.post.title, 15)
+        content_name = truncatechars(action.action_object.entity.title, 15)
         content_text = truncatechars(action.action_object.content, 25)
         reply_context = dillo.views.emails.CommentOrReplyContext(
             subject='Your comment has a new reply!',
@@ -328,8 +327,7 @@ def feeds_fanout_replied(action):
             action_author_name=action.actor.profile.first_name_guess or action.actor.username,
             action_author_absolute_url=action.actor.profile.absolute_url,
             content_name=content_name,
-            content_absolute_url=f'{action.action_object.post.absolute_url}#comments-'
-            f'{action.action_object.id}',
+            content_absolute_url=action.action_object.absolute_url,
             content_text=content_text,
         ).as_dict
         send_notification_mail(

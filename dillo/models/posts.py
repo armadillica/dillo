@@ -3,11 +3,10 @@ import logging
 import pathlib
 import typing
 import urllib.parse
-from hashids import Hashids
 
 import django.dispatch
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import JSONField
 from django.contrib.sites.models import Site
@@ -22,13 +21,13 @@ from dillo.models.mixins import (
     LikesMixin,
     MentionsMixin,
     get_upload_to_hashed_path,
+    HashIdGenerationMixin,
 )
 from dillo.tasks import create_coconut_job
 from .communities import Community, CommunityCategory
 from .entities import Entity
 
 log = logging.getLogger(__name__)
-hashids = Hashids(min_length=4)
 
 
 # Custom signal to trigger activity generation based on parsed Tags.
@@ -64,6 +63,12 @@ class Post(Entity, LikesMixin, MentionsMixin):
     is_hidden_by_moderator = models.BooleanField(default=False)
     tags = TaggableManager()
     categories = models.ManyToManyField(CommunityCategory, blank=True)
+    comments = GenericRelation(
+        'dillo.Comment',
+        object_id_field='entity_object_id',
+        content_type_field='entity_content_type',
+        related_query_name='post',
+    )
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'hash_id': str(self.hash_id)})
@@ -71,10 +76,6 @@ class Post(Entity, LikesMixin, MentionsMixin):
     @property
     def absolute_url(self) -> str:
         return 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url())
-
-    @property
-    def comments_count(self) -> int:
-        return Comment.objects.filter(post=self).count()
 
     @property
     def videos(self) -> typing.List['PostMediaVideo']:
@@ -237,7 +238,7 @@ class PostMediaVideo(models.Model):
         return self.source_filename
 
 
-class PostMedia(models.Model):
+class PostMedia(HashIdGenerationMixin, models.Model):
     limit = models.Q(app_label='dillo', model='PostMediaImage') | models.Q(
         app_label='dillo', model='PostMediaVideo'
     )
@@ -247,11 +248,6 @@ class PostMedia(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
     hash_id = models.CharField(max_length=6, unique=True, null=True)
-
-    def _set_hash_id(self, created=False):
-        if not created:
-            return
-        PostMedia.objects.filter(pk=self.pk).update(hash_id=hashids.encode(self.pk))
 
     def save(self, *args, **kwargs):
         created = self.pk is None
@@ -266,7 +262,10 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
     """A comment to Post or a reply to a Comment."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    entity_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    entity_object_id = models.PositiveIntegerField()
+    # Content object should be a subclass of Entity
+    entity = GenericForeignKey('entity_content_type', 'entity_object_id')
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField(max_length=1024)
     tags = TaggableManager()
@@ -282,8 +281,8 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
         return Comment.objects.filter(parent_comment_id=self.id).order_by('created_at')
 
     def get_absolute_url(self):
-        post_url = reverse('post_detail', kwargs={'hash_id': str(self.post.hash_id)})
-        return f'{post_url}#comment-{self.id}'
+        entity_url = self.entity.get_absolute_url()
+        return f'{entity_url}#comment-{self.id}'
 
     @property
     def absolute_url(self) -> str:
@@ -293,7 +292,7 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
         if self.parent_comment and self.parent_comment.parent_comment:
             # The parent comment is actually a reply. This is not
             # allowed, since we only offer one-level deep conversations.
-            log.error('Attemped to save a nested reply to comment %i' % self.parent_comment_id)
+            log.error('Attempted to save a nested reply to comment %i' % self.parent_comment_id)
             raise FieldError('Nested replies to replies are not allowed')
         super().save(*args, **kwargs)
 
@@ -304,4 +303,4 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
         comment_type = 'comment'
         if self.parent_comment:
             comment_type = 'reply'
-        return f'a {comment_type} on "{self.post}"'
+        return f'a {comment_type} on "{self.entity}"'

@@ -6,9 +6,9 @@
 		li.post-meta-link(title="{{ post.published_at | date:'DATETIME_FORMAT' }}")
 			| {{ post.published_at | timesince | shorten_timesince }} {% trans 'ago' %}
 
-		| {% if post.comments_count %}
+		| {% if post.comments.count %}
 		li.post-meta-link
-			| {% blocktrans count post.comments_count as amount %}
+			| {% blocktrans count post.comments.count as amount %}
 			| 1 comment
 			| {% plural %}
 			| {{ amount }} comments

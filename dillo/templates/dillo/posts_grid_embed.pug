@@ -31,8 +31,8 @@ li.post-container(
 				| {% endif %}
 
 				//- Comments.
-				| {% if post.comments_count %}
-				span  #[i.i-comment] {{ post.comments_count }}
+				| {% if post.comments.count %}
+				span  #[i.i-comment] {{ post.comments.count }}
 				| {% endif %}
 
 				//- Likes.
