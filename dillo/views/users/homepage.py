@@ -1,30 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views import View
 
-from dillo.models.posts import Post
-from dillo.views.mixins import PostListView, PostListEmbedView
+from dillo.views.mixins import PostListEmbedView
 
 
-class HomepageView(PostListView):
-    """Homepage. Display the user feed."""
-
-    template_name = 'dillo/posts_base.pug'
-
+class HomepageRouter(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_anonymous:
-            return HttpResponseRedirect(reverse('explore'))
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['query_url'] = reverse('embed_stream')
-        processing_posts = Post.objects.filter(
-            status='processing', user=self.request.user, visibility='public'
-        )
-        context['processing_posts'] = {'posts': [str(post.hash_id) for post in processing_posts]}
-        return context
+            explore_url = reverse('explore') + '?layout=grid'
+            return HttpResponseRedirect(explore_url)
+        else:
+            explore_feed_url = reverse('explore-feed') + '?layout=list'
+            return HttpResponseRedirect(explore_feed_url)
 
 
 class PostsStreamUserListEmbedView(LoginRequiredMixin, PostListEmbedView):

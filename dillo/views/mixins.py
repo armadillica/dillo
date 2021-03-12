@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.urls import reverse
 from django.template.defaultfilters import truncatechars
 from django.utils import timezone
@@ -94,6 +94,20 @@ class PostListEmbedView(ListView):
             return 3
         elif next_layout == 'grid':
             return 15
+
+
+class FeaturedPostListEmbedView(PostListEmbedView):
+    template_name = 'dillo/posts_grid_embed.pug'
+
+    def get_queryset(self):
+        return (
+            Post.objects.filter(
+                is_hidden_by_moderator=False, status='published', visibility='public',
+            )
+            .prefetch_related('likes')
+            .annotate(Count('likes'))
+            .order_by('-likes__count', '-created_at')
+        )
 
 
 class UserListEmbedView(ListView):

@@ -26,9 +26,10 @@ import dillo.views.explore
 
 # User Pages
 urlpatterns = [
-    # path('', dillo.views.users.homepage.HomepageView.as_view(), name='homepage'),
+    path('', dillo.views.users.homepage.HomepageRouter.as_view(), name='homepage'),
     # Embedded Activities Feed
-    path('', dillo.views.explore.ExploreFeedView.as_view(), name='homepage',),
+    # path('explore/', dillo.views.explore.ExplorePostsView.as_view(), name='explore')
+    path('feed/', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
     path(
         'e/feed-explore',
         dillo.views.explore.ExploreFeedEmbedView.as_view(),
@@ -92,7 +93,12 @@ urlpatterns += [
     # Explore list view
     path('explore/', dillo.views.mixins.PostListView.as_view(), name='explore'),
     # Embedded list view
-    path('e/explore/', dillo.views.mixins.PostListEmbedView.as_view(), name='embed_posts_list'),
+    # path('e/explore/', dillo.views.mixins.PostListEmbedView.as_view(), name='embed_posts_list'),
+    path(
+        'e/explore/',
+        dillo.views.mixins.FeaturedPostListEmbedView.as_view(),
+        name='embed_posts_list',
+    ),
     # Explore tags view
     path(
         'explore/tags/<str:tag_name>',
