@@ -9,7 +9,8 @@ import dillo.models.events
 import dillo.models.feeds
 
 from dillo.models.messages import ContentReports
-from dillo.models.posts import Post, Comment
+from dillo.models.posts import Post
+from dillo.models.comments import Comment
 from dillo.models.profiles import Profile
 from dillo.tests.factories.users import UserFactory
 from dillo.tests.factories.comments import CommentForPostFactory

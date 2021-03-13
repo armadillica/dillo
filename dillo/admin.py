@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from tinymce.widgets import TinyMCE
 
+import dillo.models.comments
 import dillo.models.events
 import dillo.models.posts
 import dillo.models.profiles
@@ -277,7 +278,7 @@ class UserAdmin(BaseUserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(dillo.models.posts.Comment)
+admin.site.register(dillo.models.comments.Comment)
 
 
 class TinyMCEFlatPageAdmin(FlatPageAdmin):

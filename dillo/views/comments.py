@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from dillo import forms
-from dillo.models.posts import Comment
+from dillo.models.comments import Comment
 from dillo.templatetags.dillo_filters import markdown_with_shortcodes
 from dillo.markdown import sanitize
 
@@ -62,7 +62,7 @@ class ApiCommentsListView(CommentsListView):
             'isLiked': comment.is_liked(self.request.user),
             'isOwn': (comment.user.id == self.request.user.id),
             'isEdited': comment.is_edited,
-            'isContentAuthor': (comment.user.id == comment.post.user.id),
+            'isContentAuthor': (comment.user.id == comment.entity.user.id),
             'likeToggleUrl': comment.like_toggle_url,
             'deleteUrl': reverse('comment_delete', kwargs={'comment_id': comment.id}),
             'editUrl': reverse('comment_edit', kwargs={'comment_id': comment.id}),

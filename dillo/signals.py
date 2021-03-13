@@ -18,6 +18,7 @@ from django.dispatch import receiver
 from django.core.files.storage import default_storage
 from allauth.account.signals import email_confirmed, email_changed
 
+import dillo.models.comments
 import dillo.models.mixins
 import dillo.models.posts
 import dillo.models.profiles
@@ -127,8 +128,8 @@ def on_post_published(sender, instance: dillo.models.posts.Post, **kwargs):
     action.send(instance.user, verb='posted', action_object=instance)
 
 
-@receiver(post_save, sender=dillo.models.posts.Comment)
-def on_created_comment(sender, instance: dillo.models.posts.Comment, created, **kwargs):
+@receiver(post_save, sender=dillo.models.comments.Comment)
+def on_created_comment(sender, instance: dillo.models.comments.Comment, created, **kwargs):
     """Assign tags to a comment by parsing the content."""
     if not created:
         return
@@ -187,7 +188,7 @@ def on_created_like(sender, instance: dillo.models.mixins.Likes, created, **kwar
     """Actions to perform once a Like is created."""
 
     # Make the liked_object explicit
-    if isinstance(instance.content_object, dillo.models.posts.Comment):
+    if isinstance(instance.content_object, dillo.models.comments.Comment):
         liked_object = 'comment'
     elif isinstance(instance.content_object, dillo.models.posts.Post):
         liked_object = 'post'

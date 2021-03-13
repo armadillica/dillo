@@ -2,7 +2,8 @@ from actstream.models import Follow
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db import connection
-from dillo.models.posts import Post, Comment
+from dillo.models.posts import Post
+from dillo.models.comments import Comment
 
 
 class Command(BaseCommand):

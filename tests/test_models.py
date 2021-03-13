@@ -12,7 +12,8 @@ import dillo.models.events
 import dillo.models.mixins
 import dillo.models.posts
 import dillo.models.profiles
-from dillo.models.posts import Comment, Post
+from dillo.models.posts import Post
+from dillo.models.comments import Comment
 from dillo.tests.factories.users import UserFactory
 from dillo.tests.factories.posts import PostFactory
 from dillo.tests.factories.comments import CommentForPostFactory

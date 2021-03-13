@@ -1,7 +1,7 @@
 import factory
 from django.contrib.contenttypes.models import ContentType
 
-from dillo.models.posts import Comment
+from dillo.models.comments import Comment
 from dillo.tests.factories.users import UserFactory
 from dillo.tests.factories.posts import PostFactory
 
