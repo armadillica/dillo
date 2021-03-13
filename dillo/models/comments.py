@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
-    """A comment to Post or a reply to a Comment."""
+    """A comment to an Entity or a reply to a Comment."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     entity_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
