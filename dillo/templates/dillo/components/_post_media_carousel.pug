@@ -2,74 +2,77 @@
 | {% load i18n %}
 
 .post-media-container(
-	class="js-post-media-container{% if post_detail_media_prefix %} js-with-post-detail-media-prefix{% endif %}{% if post.postmedia_set.all.count > 1 %} is-multiple-media{% endif %}",
-	data-post_layout="list",
-	data-post_hash_id="{{ post.hash_id }}",
-	id="post-media-{{ post.hash_id }}")
+  class="js-post-media-container{% if post_detail_media_prefix %} js-with-post-detail-media-prefix{% endif %}{% if post.postmedia_set.all.count > 1 %} is-multiple-media{% endif %}",
+  data-post_layout="list",
+  data-post_hash_id="{{ post.hash_id }}",
+  id="post-media-{{ post.hash_id }}")
 
-	| {% if is_post_details %}
-	//- Hot zone under the post media, used to dismiss the modal.
-	.post-backdrop(
-		class="js-hide-modal",
-		data-dismiss-modal="#modal-post-detail")
-	| {% endif %}
+  | {% if is_post_details %}
+  //- Hot zone under the post media, used to dismiss the modal.
+  .post-backdrop(
+    class="js-hide-modal",
+    data-dismiss-modal="#modal-post-detail")
+  | {% endif %}
 
-	//- For each one of these, slickjs will create a slide.
-	| {% for post_media in post.postmedia_set.all %}
+  //- For each one of these, slickjs will create a slide.
+  | {% for post_media in post.media.all %}
 
-	| {% if post_media.content_type.name == 'post media video' %}
-	| {% include 'dillo/components/_post_media_video.pug' with video=post_media.content_object is_post_details=is_post_details post_detail_media_prefix=post_detail_media_prefix %}
-	| {% endif %}
+  | {% if post_media.source_type == 'video' %}
+  | {% include 'dillo/components/_post_media_video.pug' with video=post_media.video is_post_details=is_post_details post_detail_media_prefix=post_detail_media_prefix %}
+  | {% else %}
 
-	| {% thumbnail post_media.content_object.image "1280x1280" upscale=false as im %}
-	| {% thumbnail post_media.content_object.image "4096x4096" upscale=false as im_full %}
-	.post-media-item(
-		id="media-{{ forloop.counter0 }}",
-		class="{{ post_media.content_type.name | slugify }}")
 
-		| {% if is_post_details %}
-		img(
-			src="{{ im.url }}",
-			data-lazy="{{ im.url }}",
-			data-media-url='{{ im_full.url }}',
-			width="{{ im.width }}",
-			height="{{ im.height }}",
-			alt="{{ post.user }}")
-		| {% else %}
-		a(class="js-show-modal",
-			data-content_url="{% url 'post_detail' post.hash_id %}",
-			data-toggle='modal',
-			data-target='#modal-post-detail',
-			data-post_id="{{ post.hash_id }}",
-			href="{% url 'post_detail' post.hash_id %}{% if forloop.counter0 > 0 %}&num;media-{{ forloop.counter0 }}{% endif %}")
-			img(
-				src="{{ im.url }}",
-				data-lazy="{{ im.url }}",
-				data-media-url='{{ im_full.url }}',
-				width="{{ im.width }}",
-				height="{{ im.height }}",
-				alt="{{ post.user }}")
-		| {% endif %}
 
-		| {% if is_post_details %}
-		.post-media-item-actions.btn-toolbar-row.btn-sm
-			a.btn.btn-link(
-				class="js-media-download",
-				data-toggle="tooltip",
-				href="{{ im_full.url }}",
-				title="{% trans 'Download' %}",
-				download="{{ post.user }}-{{ post.hash_id }}")
-				span
-					i.i-download
+  | {% thumbnail post_media.thumbnail "1280x1280" upscale=false as im %}
+  | {% thumbnail post_media.thumbnail "4096x4096" upscale=false as im_full %}
+  .post-media-item(
+    id="media-{{ forloop.counter0 }}",
+    class="{{ post_media.source_filename | slugify }}")
 
-			button.btn.btn-link(
-				class="js-media-expand",
-				data-toggle="tooltip",
-				title="{% trans 'Fullscreen' %}",
-				data-media-url='{{ im_full.url }}')
-				span
-					i.i-maximize
-		| {% endif %}
-	| {% endthumbnail %}
-	| {% endthumbnail %}
-	| {% endfor %}
+    | {% if is_post_details %}
+    img(
+      src="{{ im.url }}",
+      data-lazy="{{ im.url }}",
+      data-media-url='{{ im_full.url }}',
+      width="{{ im.width }}",
+      height="{{ im.height }}",
+      alt="{{ post.user }}")
+    | {% else %}
+    a(class="js-show-modal",
+      data-content_url="{% url 'post_detail' post.hash_id %}",
+      data-toggle='modal',
+      data-target='#modal-post-detail',
+      data-post_id="{{ post.hash_id }}",
+      href="{% url 'post_detail' post.hash_id %}{% if forloop.counter0 > 0 %}&num;media-{{ forloop.counter0 }}{% endif %}")
+      img(
+        src="{{ im.url }}",
+        data-lazy="{{ im.url }}",
+        data-media-url='{{ im_full.url }}',
+        width="{{ im.width }}",
+        height="{{ im.height }}",
+        alt="{{ post.user }}")
+    | {% endif %}
+
+    | {% if is_post_details %}
+    .post-media-item-actions.btn-toolbar-row.btn-sm
+      a.btn.btn-link(
+        class="js-media-download",
+        data-toggle="tooltip",
+        href="{{ im_full.url }}",
+        title="{% trans 'Download' %}",
+        download="{{ post.user }}-{{ post.hash_id }}")
+        span
+          i.i-download
+
+      button.btn.btn-link(
+        class="js-media-expand",
+        data-toggle="tooltip",
+        title="{% trans 'Fullscreen' %}",
+        data-media-url='{{ im_full.url }}')
+        span
+          i.i-maximize
+    | {% endif %}
+  | {% endthumbnail %}
+  | {% endthumbnail %}
+  | {% endif %}
+  | {% endfor %}

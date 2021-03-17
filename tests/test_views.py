@@ -109,16 +109,15 @@ class PostViewsTest(TestCase):
         response = self.client.get(post_status_url)
         self.assertJSONEqual(response.content, {'status': 'draft'})
 
-    @override_settings(MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='animato_test').name)
+    @override_settings(
+        MEDIA_ROOT=tempfile.TemporaryDirectory(prefix='animato_test').name,
+        DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage',
+    )
     def test_post_upload_video_local(self):
         import os
 
-        post_title = 'Velocità con #animato'
-        # Create Post
-        post = Post.objects.create(user=self.user, title=post_title)
-
         # Create post URL
-        post_file_upload_url = reverse('post_file_upload', kwargs={'hash_id': post.hash_id})
+        post_file_upload_url = reverse('post_file_upload', kwargs={'hash_id': self.post.hash_id})
 
         # Build file path
         this_dir = os.path.dirname(os.path.abspath(__file__))
@@ -136,9 +135,9 @@ class PostViewsTest(TestCase):
             self.assertEqual(response.status_code, 200)
 
         # Ensure that a video has been attached to the post
-        self.assertEqual(1, len(post.videos))
+        self.assertEqual(1, len(self.post.videos))
         # Ensure that the framerate of the video has been added in the database
-        self.assertEqual(24, post.videos[0].framerate)
+        self.assertEqual(24, self.post.videos[0].framerate)
 
         # Modify settings to prevent videos lasting more than 5 sec to be uploaded
         settings.MEDIA_UPLOADS_VIDEO_MAX_DURATION_SECONDS = 5
@@ -173,10 +172,10 @@ class PostViewsTest(TestCase):
         media_video = post.videos[0]
         self.assertEqual(
             '8f/8f8f0ef2516ca5d7699fc1cf27531c35/8f8f0ef2516ca5d7699fc1cf27531c35.MOV',
-            media_video.source,
+            media_video.static_asset.source,
         )
         self.assertEqual(
-            'IMG_2372.MOV', media_video.source_filename,
+            'IMG_2372.MOV', media_video.static_asset.source_filename,
         )
 
 

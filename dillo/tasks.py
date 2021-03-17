@@ -28,9 +28,10 @@ import dillo.coconut.job
 import dillo.models
 import dillo.models.feeds
 import dillo.models.messages
+import dillo.models.mixins
 import dillo.models.posts
 import dillo.models.profiles
-import dillo.models.mixins
+import dillo.models.static_assets
 import dillo.views.emails
 
 log = logging.getLogger(__name__)
@@ -91,8 +92,8 @@ def create_coconut_job(post_hash_id: str, video_id: int):
     # Outputs
     outputs = {}
 
-    video = dillo.models.posts.PostMediaVideo.objects.get(id=video_id)
-    source_path = pathlib.PurePath(video.source.name)
+    video = dillo.models.static_assets.Video.objects.get(id=video_id)
+    source_path = pathlib.PurePath(video.static_asset.source.name)
 
     # The jpg:1280x thumbnail
     outputs['jpg:1280x'] = f"{storage_base_dst}{source_path.with_suffix('.thumbnail.jpg')}"
@@ -608,7 +609,7 @@ def move_blob_from_upload_to_storage(key):
     """Move a blob from the upload bucket to the permanent location."""
     try:
         log.info(
-            'Copying %s%s to %s'
+            'Copying %s/%s to %s'
             % (settings.AWS_UPLOADS_BUCKET_NAME, key, settings.AWS_STORAGE_BUCKET_NAME)
         )
         s3_client.copy_object(

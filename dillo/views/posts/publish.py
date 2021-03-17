@@ -19,6 +19,7 @@ from django.views.generic import FormView
 
 from dillo import forms
 from dillo.models.posts import Post, PostMediaImage, PostMediaVideo, PostMedia
+from dillo.models.static_assets import StaticAsset, Video, Image
 from dillo.models.mixins import generate_hash_from_filename
 from dillo.tasks import move_blob_from_upload_to_storage
 from dillo.coconut import events
@@ -135,9 +136,9 @@ def process_video_data(filepath):
 @require_POST
 @login_required
 def post_file_upload(request, hash_id):
-    """"Uploads a file and returns PostMedia id.
+    """"Uploads a file and returns Attachment id.
 
-    The PostMedia id is used in Dropzone to allow the deletion of the upload.
+    The Attachment id is used in Dropzone to allow the deletion of the upload.
     """
 
     # TODO(fsiddi) Refactor as class-based view
@@ -146,6 +147,7 @@ def post_file_upload(request, hash_id):
         mime = magic.from_buffer(in_memory_file.read(), mime=True)
         return mime
 
+    Post.objects.get(hash_id=hash_id)
     # Ensure that only post owner can upload files for this post
     post = get_object_or_404(Post, hash_id=hash_id)
     if request.user != post.user:
@@ -164,20 +166,24 @@ def post_file_upload(request, hash_id):
         log.info('MIME type %s not accepted for upload' % mime_type)
         return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
-    if mime_type.startswith('image'):
-        image = PostMediaImage.objects.create(
-            image=in_memory_file, source_filename=in_memory_file.name[:128]
-        )
-        log.debug('Attaching image to unpublished post %s' % post.hash_id)
-        post_media = post.postmedia_set.create(content_object=image)
-    elif mime_type.startswith('video'):
-        video = PostMediaVideo.objects.create(
-            source=in_memory_file, source_filename=in_memory_file.name[:128]
-        )
+    static_asset = StaticAsset.objects.create(
+        source=in_memory_file, source_filename=in_memory_file.name[:128],
+    )
 
-        log.debug('Processing video %s', video.source.path)
+    if mime_type.startswith('image'):
+        static_asset.source_type = 'image'
+        static_asset.save()
+        Image.objects.create(static_asset=static_asset)
+        log.debug('Attaching image to unpublished post %s' % post.hash_id)
+        post.media.add(static_asset)
+    elif mime_type.startswith('video'):
+        static_asset.source_type = 'video'
+        static_asset.save()
+        video = Video.objects.create(static_asset=static_asset)
+
+        log.debug('Processing video %s', video.static_asset.source.path)
         try:
-            video_data = process_video_data(video.source.path)
+            video_data = process_video_data(video.static_asset.source.path)
         except RuntimeError as e:
             log.debug(e)
             return JsonResponse({'error': 'We could not process the video file.'}, status=500)
@@ -200,12 +206,12 @@ def post_file_upload(request, hash_id):
         video.aspect = video_data['aspect']
         video.save()
         log.debug('Attaching video to unpublished post %s' % post.hash_id)
-        post_media = post.postmedia_set.create(content_object=video)
+        post.media.add(static_asset)
     else:
         log.error('Unknown upload type %s' % mime_type)
         return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
-    return JsonResponse({'status': 'success', 'post_media_id': post_media.id})
+    return JsonResponse({'status': 'success', 'post_media_id': static_asset.id})
 
 
 @require_POST
@@ -217,14 +223,12 @@ def post_get_unpublished_uploads(request, hash_id):
         return JsonResponse({'error': 'Not allowed work on this post.'}, status=422)
 
     post_media_list = []
-    for post_media in post.postmedia_set.all():
-        if isinstance(post_media.content_object, PostMediaImage):
-            post_media.content_object.source = post_media.content_object.image
+    for post_media in post.media.all():
         post_media_list.append(
             {
-                'name': str(post_media.content_object),
-                'size': post_media.content_object.source.size,
-                'url': post_media.content_object.source.url,
+                'name': post_media.source_filename,
+                'size': post_media.source.size,
+                'url': post_media.source.url,
                 'post_media_id': post_media.id,
                 'hash_id': post_media.hash_id,
             }
@@ -260,8 +264,8 @@ def delete_unpublished_upload(request, hash_id):
 
     # Try to fetch PostMedia based on id and current post
     try:
-        post_media = PostMedia.objects.get(pk=post_media_id, post=post)
-    except PostMedia.DoesNotExist:
+        post_media = post.media.get(id=post_media_id)
+    except StaticAsset.DoesNotExist:
         return JsonResponse({'error': 'Media not found.'}, status=400)
 
     log.info('Deleting unpublished PostMedia %i' % post_media_id)
@@ -277,7 +281,7 @@ def coconut_webhook(request, hash_id, video_id):
         raise SuspiciousOperation('Coconut webhook endpoint was sent non-JSON data')
     job = json.loads(request.body)
     post = get_object_or_404(Post, hash_id=hash_id)
-    video = get_object_or_404(PostMediaVideo, id=video_id)
+    video = get_object_or_404(Video, id=video_id)
     if video.encoding_job_id != job['id']:
         # If the job id changed, we likely restarted the job (manually)
         video.encoding_job_status = None
@@ -387,18 +391,23 @@ class AttachS3UploadUploadToPost(LoginRequiredMixin, FormView):
         move_blob_from_upload_to_storage(key)
 
         if mime_type.startswith('image'):
-            image = PostMediaImage.objects.create(image=key, source_filename=name,)
+            static_asset = StaticAsset.objects.create(
+                source=key, source_filename=name, source_type='image',
+            )
             log.debug('Attaching image to unpublished post %s' % post.hash_id)
-            post_media = post.postmedia_set.create(content_object=image)
+            post.media.add(static_asset)
+
         elif mime_type.startswith('video'):
-            video = PostMediaVideo.objects.create(source=key, source_filename=name)
+            static_asset = StaticAsset.objects.create(
+                source=key, source_filename=name, source_type='video',
+            )
             log.debug('Attaching video to unpublished post %s' % post.hash_id)
-            post_media = post.postmedia_set.create(content_object=video)
+            post.media.add(static_asset)
         else:
             log.error('Unknown upload type %s' % mime_type)
             return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
-        return JsonResponse({'status': 'ok', 'post_media_id': post_media.id})
+        return JsonResponse({'status': 'ok', 'post_media_id': static_asset.id})
 
     def form_valid(self, form):
         post = get_object_or_404(Post, id=form.cleaned_data['post_id'])

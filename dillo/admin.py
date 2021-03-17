@@ -21,6 +21,7 @@ import dillo.models.profiles
 import dillo.models.newsletter
 import dillo.models.communities
 import dillo.models.software
+import dillo.models.static_assets
 
 log = logging.getLogger(__name__)
 
@@ -92,6 +93,7 @@ class PostMediaInline(admin.TabularInline):
 @admin.register(dillo.models.posts.Post)
 class PostAdmin(admin.ModelAdmin):
     actions = ['process_videos']
+    autocomplete_fields = ['media']
     list_display = ('__str__', 'show_link', 'hash_id', 'status', 'created_at', 'updated_at')
     list_display_links = ('__str__',)
     readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
@@ -295,3 +297,38 @@ class TinyMCEFlatPageAdmin(FlatPageAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
+
+
+class StaticAssetVideoInline(admin.TabularInline):
+    """Inline form for Video."""
+
+    model = dillo.models.static_assets.Video
+
+
+@admin.register(dillo.models.static_assets.StaticAsset)
+class StaticAssetAdmin(admin.ModelAdmin):
+    inlines = [StaticAssetVideoInline]
+    list_display = [
+        '__str__',
+    ]
+    fieldsets = (
+        (None, {'fields': ['id', 'source', 'source_filename', 'source_type', 'thumbnail',],},),
+        (
+            'If you are uploading an image or a video',
+            {
+                'fields': (),
+                'description': 'The fields below depend on the source type of the uploaded '
+                'asset. Add an <strong>Image</strong> if you are uploading an '
+                'image, or a <strong>Video</strong> for video uploads.',
+            },
+        ),
+    )
+    list_filter = [
+        'source_type',
+    ]
+    search_fields = [
+        'source',
+        'source_filename',
+        'source_type',
+    ]
+    readonly_fields = ['source_filename', 'id']

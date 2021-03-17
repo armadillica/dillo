@@ -16,8 +16,8 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
     """A comment to an Entity or a reply to a Comment."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    entity_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    entity_object_id = models.PositiveIntegerField()
+    entity_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
+    entity_object_id = models.PositiveIntegerField(null=True)
     # Content object should be a subclass of Entity
     entity = GenericForeignKey('entity_content_type', 'entity_object_id')
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)

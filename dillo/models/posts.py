@@ -24,6 +24,7 @@ from dillo.models.mixins import (
 from dillo.tasks import create_coconut_job
 from .communities import Community, CommunityCategory
 from .entities import Entity
+from dillo.models.static_assets import StaticAsset, Image, Video
 
 log = logging.getLogger(__name__)
 
@@ -67,6 +68,7 @@ class Post(Entity, LikesMixin, MentionsMixin):
         content_type_field='entity_content_type',
         related_query_name='post',
     )
+    media = models.ManyToManyField(StaticAsset, related_name='post', blank=True)
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'hash_id': str(self.hash_id)})
@@ -76,13 +78,9 @@ class Post(Entity, LikesMixin, MentionsMixin):
         return 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url())
 
     @property
-    def videos(self) -> typing.List['PostMediaVideo']:
-        """Returns a list of PostMediaVideo objects."""
-        media_video_type = ContentType.objects.get(app_label='dillo', model='postmediavideo')
-        media_videos = []
-        for video in self.postmedia_set.filter(content_type=media_video_type):
-            media_videos.append(video.content_object)
-        return media_videos
+    def videos(self) -> typing.List['Video']:
+        """Returns a list of Video objects."""
+        return [static_asset.video for static_asset in self.media.filter(source_type='video')]
 
     @property
     def thumbnail(self):
@@ -91,19 +89,11 @@ class Post(Entity, LikesMixin, MentionsMixin):
         If the first media is an image, return the image.
         If the first media is a video, return the thumbnail.
         """
-        first_media = self.postmedia_set.first()
-
+        first_media = self.media.filter(source_type__in=['video', 'image']).first()
         if not first_media:
             log.error('No thumbnail available for post %i' % self.id)
             return None
-
-        if first_media.content_type.name == 'post media image':
-            return first_media.content_object.image
-        elif first_media.content_type.name == 'post media video':
-            return first_media.content_object.thumbnail
-        else:
-            log.error('No thumbnail available for post %i' % self.id)
-            return None
+        return first_media.thumbnail
 
     @property
     def may_i_publish(self):
@@ -117,11 +107,12 @@ class Post(Entity, LikesMixin, MentionsMixin):
         is_processing_videos = False
         for video in self.videos:
             log.debug('Checking processing status of encoded videos')
+            print(f'video {video.static_asset.id} status is {video.encoding_job_status}')
             if video.encoding_job_status != 'job.completed':
                 is_processing_videos = True
                 break
-        log.debug('Found a processing video')
         if is_processing_videos:
+            log.debug('Found a processing video')
             return False
         log.debug('All videos are encoded')
         self.status = 'draft'
@@ -141,7 +132,7 @@ class Post(Entity, LikesMixin, MentionsMixin):
             videos_processing_count += 1
         return videos_processing_count
 
-    def process_video(self, video: 'PostMediaVideo'):
+    def process_video(self, video: Video):
         """Set Post as 'processing' and start video encoding."""
         # Set status as processing, without triggering Post save signals
         Post.objects.filter(pk=self.id).update(status='processing')
@@ -254,5 +245,3 @@ class PostMedia(HashIdGenerationMixin, models.Model):
 
     def __str__(self):
         return f'{self.content_type.name} {self.id}'.capitalize()
-
-

@@ -7,10 +7,10 @@
 	video.video-js(
 		class="vjs-fluid",
 		id="{{ post_detail_media_prefix }}video-{{ video.id }}",
-		data-video_id="{{ video.id }}",
+		data-video_id="{{ video.static_asset.id }}",
 		data-framerate="{{ video.framerate }}",
 		data-views_count="{{ video.views_count|compact_number }}",
-		poster='{% thumbnail video.thumbnail "1280x720" as im %}{{ im.url }}{% endthumbnail %}',
+		poster='{% thumbnail video.static_asset.thumbnail "1280x720" as im %}{{ im.url }}{% endthumbnail %}',
 		playsinline,
 		controls,
 		muted)

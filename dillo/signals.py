@@ -22,6 +22,7 @@ import dillo.models.comments
 import dillo.models.mixins
 import dillo.models.posts
 import dillo.models.profiles
+import dillo.models.static_assets
 from dillo import tasks
 
 log = logging.getLogger(__name__)
@@ -153,34 +154,29 @@ def on_created_comment(sender, instance: dillo.models.comments.Comment, created,
     follow(instance.user, instance, actor_only=False)
 
 
-@receiver(post_delete, sender=dillo.models.posts.PostMedia)
-def on_deleted_post_media_delete_content_object(sender, instance, using, **kwargs):
-    """Delete referenced PostMediaImage or PostMediaVideo."""
-    instance.content_object.delete()
-    log.debug('Deleted media element for PostMedia %i' % instance.id)
+@receiver(pre_delete, sender=dillo.models.posts.Post)
+def on_pre_delete_post_delete_all_media(sender, instance: dillo.models.posts.Post, using, **kwargs):
+    log.debug('Removing %i static assets for post %s' % (instance.media.count(), instance.hash_id))
+    for static_asset in instance.media.all():
+        static_asset.delete()
 
 
-@receiver(post_delete, sender=dillo.models.posts.PostMediaImage)
-def on_deleted_post_media_image_remove_file(sender, instance, **kwargs):
-    """Delete image file after PostMediaImage instance is deleted."""
-    if not instance.image:
-        return
-    instance.image.delete(False)
-    log.debug('Removed image for PostMedia %s' % instance.image)
-
-
-@receiver(post_delete, sender=dillo.models.posts.PostMediaVideo)
-def on_deleted_post_media_video_remove_files(sender, instance, **kwargs):
-    """Delete video and variations after PostMediaImage instance is deleted."""
-    if not instance.source:
-        return
-    # We do not use instance.source.path as it's not supported by the S3 backend
-    source_path = pathlib.Path(str(instance.source))
-    default_storage.delete(str(source_path.with_suffix('.preview.gif')))
-    default_storage.delete(str(source_path.with_suffix('.720p.mp4')))
+@receiver(post_delete, sender=dillo.models.static_assets.StaticAsset)
+def on_deleted_static_asset_delete_all_files(
+    sender, instance: dillo.models.static_assets.StaticAsset, using, **kwargs
+):
+    log.debug('Removing files for StaticAsset %s' % instance.id)
+    if instance.thumbnail:
+        instance.thumbnail.delete(False)
+    if instance.source_type == 'video':
+        # We do not use instance.source.path as it's not supported by the S3 backend
+        if not instance.source:
+            return
+        source_path = pathlib.Path(str(instance.source))
+        default_storage.delete(str(source_path.with_suffix('.preview.gif')))
+        default_storage.delete(str(source_path.with_suffix('.720p.mp4')))
+        log.debug('Removed video and variations from storage')
     instance.source.delete(False)
-    instance.thumbnail.delete(False)
-    log.debug('Removed video and variations from storage')
 
 
 @receiver(post_save, sender=dillo.models.mixins.Likes)
