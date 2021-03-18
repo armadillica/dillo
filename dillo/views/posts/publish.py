@@ -18,7 +18,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import FormView
 
 from dillo import forms
-from dillo.models.posts import Post, PostMediaImage, PostMediaVideo, PostMedia
+from dillo.models.posts import Post
 from dillo.models.static_assets import StaticAsset, Video, Image
 from dillo.models.mixins import generate_hash_from_filename
 from dillo.tasks import move_blob_from_upload_to_storage

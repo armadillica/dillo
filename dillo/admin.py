@@ -70,26 +70,6 @@ class CommunityAdmin(admin.ModelAdmin):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
 
 
-@admin.register(dillo.models.posts.PostMedia)
-class PostMediaAdmin(admin.ModelAdmin):
-    pass
-
-
-class PostMediaInline(admin.TabularInline):
-    model = dillo.models.posts.PostMedia
-
-    def post_media_edit_link(selfs, obj):
-        url = reverse(
-            'admin:%s_%s_change'
-            % (obj.content_object._meta.app_label, obj.content_object._meta.model_name),
-            args=[obj.content_object.id],
-        )
-        return mark_safe(f'<a href="{url}">{obj.content_object}</a>')
-
-    readonly_fields = ['post_media_edit_link']
-    fields = ['order', 'post_media_edit_link']
-
-
 @admin.register(dillo.models.posts.Post)
 class PostAdmin(admin.ModelAdmin):
     actions = ['process_videos']
@@ -97,8 +77,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'show_link', 'hash_id', 'status', 'created_at', 'updated_at')
     list_display_links = ('__str__',)
     readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
-
-    inlines = [PostMediaInline]
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
@@ -118,16 +96,6 @@ class PostAdmin(admin.ModelAdmin):
         self.message_user(request, "%s processing." % message_bit)
 
     process_videos.short_description = "Process videos for selected posts"
-
-
-@admin.register(dillo.models.posts.PostMediaVideo)
-class PostMediaVideoAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(dillo.models.posts.PostMediaImage)
-class PostMediaImageAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(dillo.models.events.Event)
