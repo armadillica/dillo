@@ -31,6 +31,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUSES, default='draft')
     visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='public')
+    is_pinned_by_moderator = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         created = self.pk is None
