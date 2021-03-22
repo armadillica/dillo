@@ -140,16 +140,7 @@ class Post(Entity, LikesMixin, MentionsMixin):
         create_coconut_job(str(self.hash_id), video.id)
 
     def publish(self):
-        """If the Post is in 'draft', kick-off the publishing pipeline."""
-        if self.status != 'draft':
-            log.info('Attempting to publish a %s Post, no action taken' % self.status)
-            return
-
-        # Set the Post as 'published'
-        self.status = 'published'
-        self.published_at = timezone.now()
-        self.save()
-        log.info('Post %i has been published' % self.id)
+        super(Post, self).publish()
 
         # Send signal to generate Tags activity
         post_published.send(sender=self.__class__, instance=self)
