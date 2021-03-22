@@ -119,10 +119,6 @@ PIPELINE = {
             ),
             'output_filename': 'js/vendors.js',
         },
-        'vendor_dropzone': {
-            'source_filenames': ('js/vendor/dropzone-*.js',),
-            'output_filename': 'js/dropzone.js',
-        },
         'vendor_jquery_formset': {
             'source_filenames': ('js/vendor/jquery-formset-*.js',),
             'output_filename': 'js/jquery_formset.js',

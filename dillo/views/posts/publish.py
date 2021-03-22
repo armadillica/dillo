@@ -138,7 +138,7 @@ def process_video_data(filepath):
 def post_file_upload(request, hash_id):
     """"Uploads a file and returns Attachment id.
 
-    The Attachment id is used in Dropzone to allow the deletion of the upload.
+    The Attachment id is used in the upload area to allow the deletion of the upload.
     """
 
     # TODO(fsiddi) Refactor as class-based view
