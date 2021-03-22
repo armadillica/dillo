@@ -1,7 +1,7 @@
 <textarea name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
 {% if widget.value %}{{ widget.value }}{% endif %}</textarea>
 
-<div id="uppy-drop-area"></div>
+<div id="uppy-drop-area" class="entity-drop-area"></div>
 
 {% verbatim %}
 <label v-if="media.length">Post Media:</label>
