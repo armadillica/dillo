@@ -150,7 +150,7 @@ class PostViewsTest(TestCase):
         """Test the endpoint called after a file is uploade on s3"""
         post_title = 'Velocità con #animato'
         # Create Post
-        post = Post.objects.create(user=self.user, title=post_title)
+        entity = Post.objects.create(user=self.user, title=post_title)
 
         # Create post URL
         attach_url = reverse('attach_s3_upload_to_post')
@@ -161,7 +161,8 @@ class PostViewsTest(TestCase):
         self.assertEqual(r.status_code, 405)
 
         payload = {
-            'post_id': post.id,
+            'entity_id': entity.id,
+            'content_type_id': entity.content_type_id,
             'key': '8f/8f8f0ef2516ca5d7699fc1cf27531c35/8f8f0ef2516ca5d7699fc1cf27531c35.MOV',
             'size_bytes': 31534525,
             'name': 'IMG_2372.MOV',
@@ -169,7 +170,7 @@ class PostViewsTest(TestCase):
         }
         self.client.post(attach_url, payload)
         # Ensure that a video file is attached to the post
-        media_video = post.videos[0]
+        media_video = entity.videos[0]
         self.assertEqual(
             '8f/8f8f0ef2516ca5d7699fc1cf27531c35/8f8f0ef2516ca5d7699fc1cf27531c35.MOV',
             media_video.static_asset.source,

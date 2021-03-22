@@ -10,6 +10,7 @@ from botocore.exceptions import ClientError
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import SuspiciousOperation
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -20,7 +21,7 @@ from django.views.generic import FormView
 from dillo import forms
 from dillo.models.posts import Post
 from dillo.models.static_assets import StaticAsset, Video, Image
-from dillo.models.mixins import generate_hash_from_filename
+from dillo.models.mixins import get_upload_to_hashed_path
 from dillo.tasks import move_blob_from_upload_to_storage
 from dillo.coconut import events
 
@@ -154,7 +155,7 @@ def post_file_upload(request, hash_id):
         return JsonResponse({'error': 'Not allowed to upload on this post.'}, status=422)
 
     # Ensure that request.FILES contains only one file. We allow only
-    # one file upload per request in order to return the PostMedia id
+    # one file upload per request in order to return the Media id
     # that was created in the response.
     if len(request.FILES) > 1:
         return JsonResponse({'error': 'Only one file per request is allowed.'}, status=422)
@@ -211,64 +212,66 @@ def post_file_upload(request, hash_id):
         log.error('Unknown upload type %s' % mime_type)
         return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
-    return JsonResponse({'status': 'success', 'post_media_id': static_asset.id})
+    return JsonResponse({'status': 'success', 'entity_media_id': static_asset.id})
 
 
 @require_POST
 @login_required
-def post_get_unpublished_uploads(request, hash_id):
+def api_get_unpublished_uploads(request, content_type_id, hash_id):
     """Return list of uploaded files for a pending post."""
-    post = get_object_or_404(Post, hash_id=hash_id)
-    if request.user != post.user:
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    entity = get_object_or_404(content_type.model_class(), hash_id=hash_id)
+    if request.user != entity.user:
         return JsonResponse({'error': 'Not allowed work on this post.'}, status=422)
 
-    post_media_list = []
-    for post_media in post.media.all():
-        post_media_list.append(
+    media_list = []
+    for entity_media in entity.media.all():
+        media_list.append(
             {
-                'name': post_media.source_filename,
-                'size': post_media.source.size,
-                'url': post_media.source.url,
-                'post_media_id': post_media.id,
-                'hash_id': post_media.hash_id,
+                'name': entity_media.source_filename,
+                'size': entity_media.source.size,
+                'url': entity_media.source.url,
+                'entity_media_id': entity_media.id,
+                'hash_id': entity_media.hash_id,
             }
         )
-    return JsonResponse({'media': post_media_list})
+    return JsonResponse({'media': media_list})
 
 
 @require_POST
 @login_required
-def delete_unpublished_upload(request, hash_id):
+def api_delete_unpublished_upload(request, content_type_id, hash_id):
     """Delete a media object, if the post is not published."""
-    post = get_object_or_404(Post, hash_id=hash_id)
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    entity = get_object_or_404(content_type.model_class(), hash_id=hash_id)
 
     # Ensure User owns the Post
-    if request.user != post.user:
+    if request.user != entity.user:
         return JsonResponse({'error': 'Not allowed to remove this item.'}, status=422)
 
     # Ensure Post is in 'draft' status
-    if post.status != 'draft':
+    if entity.status != 'draft':
         return JsonResponse({'error': 'Post media can be removed only from drafts.'}, status=422)
 
-    # Ensure post_media_id is provided
-    if 'post_media_id' not in request.POST:
+    # Ensure entity_media_id is provided
+    if 'entity_media_id' not in request.POST:
         log.error('filepath not provided in order to delete unpublished upload')
         return JsonResponse({'error': 'Filepath not provided.'}, status=400)
 
-    # Ensure post_media_id is an integer
+    # Ensure entity_media_id is an integer
     try:
-        post_media_id = int(request.POST['post_media_id'])
+        entity_media_id = int(request.POST['entity_media_id'])
     except ValueError:
-        log.error('Attempting to convert %s to int' % request.POST['post_media_id'])
-        return JsonResponse({'error': 'PostMedia id is not valid.'}, status=400)
+        log.error('Attempting to convert %s to int' % request.POST['entity_media_id'])
+        return JsonResponse({'error': 'Media id is not valid.'}, status=400)
 
-    # Try to fetch PostMedia based on id and current post
+    # Try to fetch Media based on id and current post
     try:
-        post_media = post.media.get(id=post_media_id)
+        post_media = entity.media.get(id=entity_media_id)
     except StaticAsset.DoesNotExist:
         return JsonResponse({'error': 'Media not found.'}, status=400)
 
-    log.info('Deleting unpublished PostMedia %i' % post_media_id)
+    log.info('Deleting unpublished Media %i' % entity_media_id)
     post_media.delete()
     return JsonResponse({'status': 'OK'})
 
@@ -342,7 +345,7 @@ def post_status(request, hash_id):
 @csrf_exempt
 @login_required
 def get_aws_s3_signed_url(request) -> JsonResponse:
-    """Generate a presigned S3 POST URL."""
+    """Generate a pre-signed S3 POST URL."""
 
     body = json.loads(request.body)
 
@@ -353,17 +356,8 @@ def get_aws_s3_signed_url(request) -> JsonResponse:
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
     )
+    path = get_upload_to_hashed_path(None, body['filename'])
     try:
-        # Create a path that looks like this
-        # a4/a4955e4f68e22a095422e1286d95a5a7/a4955e4f68e22a095422e1286d95a5a7.jpg
-        file_path = pathlib.Path(body['filename'])
-        hashed_path = generate_hash_from_filename(file_path.name)
-        path = (
-            pathlib.Path(hashed_path[:2])
-            .joinpath(hashed_path)
-            .joinpath(hashed_path)
-            .with_suffix(file_path.suffix)
-        )
         response = s3_client.generate_presigned_post(
             settings.AWS_UPLOADS_BUCKET_NAME,
             str(path),
@@ -378,11 +372,11 @@ def get_aws_s3_signed_url(request) -> JsonResponse:
     return JsonResponse({'method': 'POST', 'url': response['url'], 'fields': response['fields']})
 
 
-class AttachS3UploadUploadToPost(LoginRequiredMixin, FormView):
+class AttachS3MediaToEntity(LoginRequiredMixin, FormView):
     http_method_names = ['post']
-    form_class = forms.AttachS3UploadToPostForm
+    form_class = forms.AttachS3MediaToEntityForm
 
-    def process_file_type(self, post, mime_type, key, name, size_bytes):
+    def process_file_type(self, entity, mime_type, key, name, size_bytes):
         if mime_type not in settings.MEDIA_UPLOADS_ACCEPTED_MIMES:
             log.info('MIME type %s not accepted for upload' % mime_type)
             return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
@@ -394,27 +388,28 @@ class AttachS3UploadUploadToPost(LoginRequiredMixin, FormView):
             static_asset = StaticAsset.objects.create(
                 source=key, source_filename=name, source_type='image',
             )
-            log.debug('Attaching image to unpublished post %s' % post.hash_id)
-            post.media.add(static_asset)
+            log.debug('Attaching image to unpublished entity %s' % entity.hash_id)
+            entity.media.add(static_asset)
 
         elif mime_type.startswith('video'):
             static_asset = StaticAsset.objects.create(
                 source=key, source_filename=name, source_type='video',
             )
-            log.debug('Attaching video to unpublished post %s' % post.hash_id)
-            post.media.add(static_asset)
+            log.debug('Attaching video to unpublished entity %s' % entity.hash_id)
+            entity.media.add(static_asset)
         else:
             log.error('Unknown upload type %s' % mime_type)
             return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
-        return JsonResponse({'status': 'ok', 'post_media_id': static_asset.id})
+        return JsonResponse({'status': 'ok', 'entity_media_id': static_asset.id})
 
     def form_valid(self, form):
-        post = get_object_or_404(Post, id=form.cleaned_data['post_id'])
-        if self.request.user != post.user:
+        content_type = ContentType.objects.get_for_id(form.cleaned_data['content_type_id'])
+        entity = get_object_or_404(content_type.model_class(), id=form.cleaned_data['entity_id'])
+        if self.request.user != entity.user:
             return JsonResponse({'error': 'Not allowed to upload on this post.'}, status=422)
         return self.process_file_type(
-            post,
+            entity,
             form.cleaned_data['mime_type'],
             form.cleaned_data['key'],
             form.cleaned_data['name'],

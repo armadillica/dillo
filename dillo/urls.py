@@ -123,19 +123,19 @@ urlpatterns += [
     ),
     path('s3-sign', dillo.views.posts.publish.get_aws_s3_signed_url, name='post_s3_signed_url',),
     path(
-        'attach-upload-to-post',
-        dillo.views.posts.publish.AttachS3UploadUploadToPost.as_view(),
+        'attach-media-to-entity',
+        dillo.views.posts.publish.AttachS3MediaToEntity.as_view(),
         name='attach_s3_upload_to_post',
     ),
     path(
-        'p/<slug:hash_id>/unpublished-uploads',
-        dillo.views.posts.publish.post_get_unpublished_uploads,
-        name='post_unpublished_uploads',
+        'api/unpublished-uploads/<int:content_type_id>/<slug:hash_id>/',
+        dillo.views.posts.publish.api_get_unpublished_uploads,
+        name='api-get-unpublished-uploads',
     ),
     path(
-        'p/<slug:hash_id>/delete-unpublished-upload',
-        dillo.views.posts.publish.delete_unpublished_upload,
-        name='delete_unpublished_upload',
+        'api/delete-unpublished-upload/<int:content_type_id>/<slug:hash_id>',
+        dillo.views.posts.publish.api_delete_unpublished_upload,
+        name='api-delete-unpublished-upload',
     ),
     path(
         'p/<slug:hash_id>/comments/',

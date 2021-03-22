@@ -516,12 +516,12 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
             pull_action_from_user_feed(user, action)
 
 
-def download_image_from_web(url, model_instance, attribute):
+def download_image_from_web(url, attribute):
     # Build request (streaming)
     r = requests.get(url, stream=True)
     # Get the path component from the url
     path_comp = urlparse(url)[2]
-    hashed_path = dillo.models.mixins.get_upload_to_hashed_path(model_instance, path_comp)
+    hashed_path = dillo.models.mixins.get_upload_to_hashed_path(None, path_comp)
 
     # Download the file
     with tempfile.TemporaryFile() as fp:
@@ -541,7 +541,7 @@ def update_profile_reel_thumbnail(user_id):
         return
     url = oembed_data['thumbnail_url']
     log.debug("Update profile for user %i" % user_id)
-    download_image_from_web(url, dillo.models.posts.PostMediaImage(), profile.reel_thumbnail_16_9)
+    download_image_from_web(url, profile.reel_thumbnail_16_9)
 
 
 @background()
@@ -633,7 +633,7 @@ def move_blob_from_upload_to_storage(key):
 def async_move_blob_from_upload_to_storage(key):
     """Call the actual move function.
 
-    This is done because in AttachS3UploadUploadToPost we have to call
+    This is done because in AttachS3MediaToEntity we have to call
     move_blob_from_upload_to_storage synchronously. Since we have a
     BACKGROUND_TASKS_AS_FOREGROUND setting, this would be a problem.
     """

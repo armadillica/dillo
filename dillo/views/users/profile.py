@@ -234,7 +234,7 @@ class ProfileSetupAvatar(ProfileSetupUpdateViewMixin):
         gravatar_url += urlencode({'d': default, 's': str(size)})
 
         log.debug("Update profile avatar for user %i" % user.id)
-        dillo.tasks.download_image_from_web(gravatar_url, Profile(), user.profile.avatar)
+        dillo.tasks.download_image_from_web(gravatar_url, user.profile.avatar)
 
     def dispatch(self, request, *args, **kwargs):
         # If user does not have an avatar, try to fetch it from Gravatar

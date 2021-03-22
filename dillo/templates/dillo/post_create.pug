@@ -16,8 +16,9 @@
 
   #uppy-drop-area(
     data-post_id="{{ post.id }}",
-    data-unpublished_uploads_url="{% url 'post_unpublished_uploads' post.hash_id %}",
-    data-delete_unpublished_upload_url="{% url 'delete_unpublished_upload' post.hash_id %}",
+    data-content_type_id="{{ post.content_type_id }}",
+    data-api-get-unpublished-uploads-url="{% url 'api-get-unpublished-uploads' post.content_type_id post.hash_id %}",
+    data-api-delete-unpublished-upload-url="{% url 'api-delete-unpublished-upload' post.content_type_id post.hash_id %}",
   )
 
   form(action="{% url 'post_create' %}", method="post", enctype="multipart/form-data")
@@ -58,7 +59,6 @@ script.
   uppy.use(Uppy.AwsS3, {
     limit: 4,
     // companionUrl: 'https://uppy.anima.to/',
-    // companionUrl: 'http://localhost:3020',
     getUploadParameters(file) {
       // Send a request to our signing endpoint.
       return fetch('/s3-sign', {
@@ -87,7 +87,7 @@ script.
     }
   })
   $.ajax({
-    url: $uppy_drop_area.data('unpublished_uploads_url'),
+    url: $uppy_drop_area.data('apiGetUnpublishedUploadsUrl'),
     type: 'post',
     dataType: 'json',
     success: function (response) {
@@ -97,7 +97,7 @@ script.
           name: value.name,
           size: value.size,
           dataURL: value.url,
-          postMediaId: value.post_media_id
+          entityMediaId: value.entity_media_id
         };
 
         fetch(value.url)
@@ -113,7 +113,7 @@ script.
             progress: {uploadComplete: true, uploadStarted: true}
           });
           uppy.setFileMeta(fileId, {
-            postMediaId: mockFile.postMediaId,
+            entityMediaId: mockFile.entityMediaId,
           });
         })
       });
@@ -123,17 +123,18 @@ script.
 
   uppy.on('upload-success', (file, data) => {
     let payload = {
-      post_id: parseInt($uppy_drop_area.data('post_id')),
+      entity_id: parseInt($uppy_drop_area.data('post_id')),
+      content_type_id: parseInt($uppy_drop_area.data('content_type_id')),
       name: file.meta['name'],
       mime_type: file.type,
       key: file.meta['key'],
       size_bytes: file.size,
     };
     $.post(
-      '/attach-upload-to-post', payload
+      '/attach-media-to-entity', payload
     ).done(function(data) {
       uppy.setFileMeta(file.id, {
-        postMediaId: data.post_media_id,
+        entityMediaId: data.entity_media_id,
       });
     });
   })
@@ -142,8 +143,8 @@ script.
     if (reason === 'removed-by-user') {
       $.ajax({
         type: 'post',
-        url: $uppy_drop_area.data('delete_unpublished_upload_url'),
-        data: {'post_media_id': file.meta.postMediaId},
+        url: $uppy_drop_area.data('apiDeleteUnpublishedUploadUrl'),
+        data: {'entity_media_id': file.meta.entityMediaId},
         dataType: 'json'
       });
     }
@@ -165,4 +166,6 @@ script.
         .addClass('disabled');
     }
   });
+
+
 | {% endblock javascript_extra %}

@@ -604,25 +604,13 @@ class FeedElementModelTest(TestCase):
 
 
 class UploadPathTest(SimpleTestCase):
-    def test_get_upload_to_hashed_path_video(self):
-        f = dillo.models.mixins.get_upload_to_hashed_path(
-            dillo.models.posts.PostMediaVideo(), 'video.mp4'
-        )
+    def test_get_upload_to_hashed_path(self):
+        f = dillo.models.mixins.get_upload_to_hashed_path(None, 'video.mp4')
         file_path = pathlib.Path(f)
         file_name = file_path.name
         self.assertEqual(file_path.parts[0], file_name[:2])
         self.assertEqual(file_path.parts[1], file_name[2:4])
         self.assertEqual(file_path.parts[2], file_path.stem)
-
-    def test_get_upload_to_hashed_path_image(self):
-        f = dillo.models.mixins.get_upload_to_hashed_path(
-            dillo.models.posts.PostMediaImage(), 'image.mp4'
-        )
-        file_path = pathlib.Path(f)
-        file_name = file_path.name
-        self.assertEqual(file_path.parts[0], file_name[:2])
-        self.assertEqual(file_path.parts[1], file_name[2:4])
-        self.assertEqual(file_path.parts[2], file_name)
 
 
 class JobsModelTest(TestCase):

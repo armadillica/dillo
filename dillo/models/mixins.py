@@ -49,15 +49,16 @@ def generate_hash_from_filename(filename):
 
 
 def get_upload_to_hashed_path(instance, filename):
-    # File will be uploaded to MEDIA_ROOT/<bd>/<bd2b5b1cd81333ed2d8db03971f91200>
-    extension = pathlib.Path(filename).suffix
-    hashed = generate_hash_from_filename(filename)
-
-    path = pathlib.Path(hashed[:2], hashed[2:4])
-    if instance._meta.model_name == 'postmediavideo':
-        path = path.joinpath(hashed, hashed).with_suffix(extension)
-    else:
-        path = path.joinpath(hashed).with_suffix(extension)
+    # Create a path that looks like this
+    # a4/a4955e4f68e22a095422e1286d95a5a7/a4955e4f68e22a095422e1286d95a5a7.jpg
+    file_path = pathlib.Path(filename)
+    hashed_path = generate_hash_from_filename(file_path.name)
+    path = (
+        pathlib.Path(hashed_path[:2])
+        .joinpath(hashed_path)
+        .joinpath(hashed_path)
+        .with_suffix(file_path.suffix)
+    )
     return path
 
 

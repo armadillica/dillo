@@ -176,10 +176,11 @@ class ProfileSetupTagsForm(forms.Form):
     tags = forms.CharField(widget=forms.HiddenInput(), required=False)
 
 
-class AttachS3UploadToPostForm(forms.Form):
+class AttachS3MediaToEntityForm(forms.Form):
     """Form called from AJAX request."""
 
-    post_id = forms.IntegerField()
+    content_type_id = forms.IntegerField()
+    entity_id = forms.IntegerField()
     key = forms.CharField()
     name = forms.CharField()
     mime_type = forms.CharField()
