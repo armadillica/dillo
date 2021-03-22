@@ -49,7 +49,7 @@ section.post-view-info.col-scrollable
           alt="{{ related_post.user }}")
         | {% endthumbnail %}
 
-        | {% if related_post.postmedia_set.all.count > 1 %}
+        | {% if related_post.media.count > 1 %}
         span.post-label-icon
           i.i-layers
         | {% endif %}

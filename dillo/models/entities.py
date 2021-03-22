@@ -55,3 +55,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     @property
     def content_type_id(self):
         return ContentType.objects.get_for_model(self).id
+
+    @property
+    def content_type_name(self):
+        return ContentType.objects.get_for_model(self).name

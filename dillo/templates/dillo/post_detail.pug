@@ -15,10 +15,10 @@ script.
 
 //- TODO: Use og_data workflow.
 | {% block head_extra %}
-|{% if post.postmedia_set and post.postmedia_set.first.content_type.name == 'post media video' %}
-meta(property="og:video", content="{{ post.postmedia_set.first.content_object.url_720p }}")
-meta(property="og:video:url", content="{{ post.postmedia_set.first.content_object.url_720p }}")
-meta(property="og:video:secure_url", content="{{ post.postmedia_set.first.content_object.url_720p }}")
+|{% if post.media and post.media.first.video %}
+meta(property="og:video", content="{{ post.media.first.video.url_720p }}")
+meta(property="og:video:url", content="{{ post.media.first.video.url_720p }}")
+meta(property="og:video:secure_url", content="{{ post.media.first.video.url_720p }}")
 meta(property="og:video:type", content="video/mp4")
 meta(property="og:video:width", content="1280")
 meta(property="og:video:height", content="720")

@@ -2,5 +2,5 @@
 p Content is processing
 | {% else %}
 video(controls, loop)
-  source(src='{{ post_media_video.url_720p }}', type='video/mp4')
+  source(src='{{ media.video.url_720p }}', type='video/mp4')
 | {% endif %}

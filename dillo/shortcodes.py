@@ -25,7 +25,7 @@ import urllib.parse
 import shortcodes
 from django.template.loader import render_to_string
 
-from dillo.models.posts import PostMediaImage, PostMediaVideo, PostMedia
+from dillo.models.static_assets import StaticAsset
 
 _parser: shortcodes.Parser = None
 _commented_parser: shortcodes.Parser = None
@@ -156,53 +156,45 @@ class Media:
             return '{attachment No slug given}'
 
         try:
-            attachment = PostMedia.objects.get(hash_id=slug)
-        except PostMedia.DoesNotExist:
+            attachment = StaticAsset.objects.get(hash_id=slug)
+        except StaticAsset.DoesNotExist:
             return html_module.escape('{attachment %r does not exist}' % slug)
 
         return self.render(attachment, pargs, kwargs)
 
     def render(
-        self, post_media: PostMedia, pargs: typing.List[str], kwargs: typing.Dict[str, str],
+        self, media: StaticAsset, pargs: typing.List[str], kwargs: typing.Dict[str, str],
     ) -> str:
         """Render attachment."""
         file_renderers = {
-            'post media image': self.render_image,
-            'post media video': self.render_video,
+            'image': self.render_image,
+            'video': self.render_video,
         }
-        return file_renderers[post_media.content_type.name](
-            post_media.content_object, pargs, kwargs
-        )
+        return file_renderers[media.source_type](media, pargs, kwargs)
 
     def render_image(
-        self,
-        post_media_image: PostMediaImage,
-        pargs: typing.List[str],
-        kwargs: typing.Dict[str, str],
+        self, media: StaticAsset, pargs: typing.List[str], kwargs: typing.Dict[str, str],
     ):
         """Render an image file."""
         if 'link' in pargs:
             kwargs['link'] = 'self'
         link = None if 'link' not in kwargs else kwargs['link']
         return render_to_string(
-            'dillo/components/post_media_embeds/file_image.pug',
-            {'post_media_image': post_media_image, 'link': link, 'class': kwargs.get('class')},
+            'dillo/components/media_embeds/file_image.pug',
+            {'media': media, 'link': link, 'class': kwargs.get('class')},
         )
 
     def render_video(
-        self,
-        post_media_video: PostMediaVideo,
-        pargs: typing.List[str],
-        kwargs: typing.Dict[str, str],
+        self, media: StaticAsset, pargs: typing.List[str], kwargs: typing.Dict[str, str],
     ):
         """Render a video file."""
         # TODO(fsiddi) Handle processing video
-        is_processing = post_media_video.encoding_job_status != 'job.completed'
+        is_processing = media.video.encoding_job_status != 'job.completed'
         # TODO(fsiddi) Support looping and other options
 
         return render_to_string(
-            'dillo/components/post_media_embeds/file_video.pug',
-            {'post_media_video': post_media_video, 'is_processing': is_processing},
+            'dillo/components/media_embeds/file_video.pug',
+            {'media': media, 'is_processing': is_processing},
         )
 
 

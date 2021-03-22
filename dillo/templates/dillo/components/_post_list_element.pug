@@ -12,7 +12,7 @@ li.post-container(
   | {% include 'dillo/components/_post_header.pug' with post=post show_tags=true %}
 
   .post-media
-    | {% if post.postmedia_set.all.count > 1 %}
+    | {% if post.media.count > 1 %}
     span.post-label-icon
       i.i-layers
     | {% endif %}

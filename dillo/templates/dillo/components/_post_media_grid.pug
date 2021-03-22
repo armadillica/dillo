@@ -14,7 +14,7 @@
 		data-target='#modal-post-detail',
 		data-post_id="{{ post.hash_id }}",
 		href="{% url 'post_detail' post.hash_id %}",
-		data-preview="{{ post.postmedia_set.first.content_object.url_preview }}")
+		data-preview="{% if post.media.first.video %}{{ post.media.first.video.url_preview }}{% endif %}")
 
 		| {% thumbnail post.thumbnail "640x360" crop="center" as im %}
 		img.media-thumbnail(
@@ -24,7 +24,7 @@
 			alt="{{ post.user }}")
 		| {% endthumbnail %}
 
-		| {% if post.postmedia_set.all.count > 1 %}
+		| {% if post.media.count > 1 %}
 		span.post-label-icon
 			i.i-layers
 		| {% endif %}

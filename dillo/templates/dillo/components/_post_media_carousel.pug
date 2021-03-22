@@ -2,7 +2,7 @@
 | {% load i18n %}
 
 .post-media-container(
-  class="js-post-media-container{% if post_detail_media_prefix %} js-with-post-detail-media-prefix{% endif %}{% if post.postmedia_set.all.count > 1 %} is-multiple-media{% endif %}",
+  class="js-post-media-container{% if post_detail_media_prefix %} js-with-post-detail-media-prefix{% endif %}{% if post.media.count > 1 %} is-multiple-media{% endif %}",
   data-post_layout="list",
   data-post_hash_id="{{ post.hash_id }}",
   id="post-media-{{ post.hash_id }}")

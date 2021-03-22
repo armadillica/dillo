@@ -2,7 +2,7 @@
 | {% load dillo_filters %}
 
 | {% for post in posts %}
-| {% if post.postmedia_set.all %}
+| {% if post.media.all %}
 li.post-container(
 	data-post_id="{{ post.hash_id }}",
 )
@@ -25,9 +25,9 @@ li.post-container(
 				href="{% url 'post_detail' post.hash_id %}")
 
 				//- Views.
-				| {% if post.postmedia_set.first.content_object.views_count %}
+				| {% if post.media.first.video %}
 				span
-					| #[i.i-eye] {{ post.postmedia_set.first.content_object.views_count|compact_number }}
+					| #[i.i-eye] {{ post.media.first.video.views_count|compact_number }}
 				| {% endif %}
 
 				//- Comments.

@@ -5,7 +5,7 @@
 | {% for activity in object_list %}
 
 | {% if activity.action_object_content_type.name == 'post' %}
-| {% if activity.action_object.postmedia_set.all %}
+| {% if activity.action_object.media.all %}
 li.post-container(
   data-post_id="{{ activity.action_object.hash_id }}",
 )
@@ -28,9 +28,9 @@ li.post-container(
         href="{% url 'post_detail' activity.action_object.hash_id %}")
 
         //- Views.
-        | {% if activity.action_object.postmedia_set.first.content_object.views_count %}
+        | {% if activity.action_object.media.first.video %}
         span
-          | #[i.i-eye] {{ activity.action_object.postmedia_set.first.content_object.views_count|compact_number }}
+          | #[i.i-eye] {{ activity.action_object.media.first.video.views_count|compact_number }}
         | {% endif %}
 
         //- Comments.
