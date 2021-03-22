@@ -102,7 +102,7 @@ def create_coconut_job(post_hash_id: str, video_id: int):
     outputs['gif:240x'] = f"{storage_base_dst}{source_path.with_suffix('.preview.gif')}"
 
     # The mp4:720p version of the path (relative to MEDIA_ROOT)
-    outputs['mp4:0x720'] = f"{storage_base_dst}{source_path.with_suffix('.720p.mp4')}"
+    outputs['mp4:0x720_3000k'] = f"{storage_base_dst}{source_path.with_suffix('.720p.mp4')}"
 
     # The httpstream packaging configuration
     httpstream_packaging = 'dash+hlsfmp4=/stream'
