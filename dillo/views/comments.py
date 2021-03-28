@@ -25,7 +25,9 @@ class CommentsListView(ListView):
     def get_queryset(self):
         return (
             Comment.objects.filter(
-                post__hash_id=self.kwargs['hash_id'], parent_comment_id__isnull=True
+                entity_content_type_id=self.kwargs['entity_content_type_id'],
+                entity_object_id=self.kwargs['entity_object_id'],
+                parent_comment_id__isnull=True,
             )
             .prefetch_related('likes')
             .annotate(Count('likes'))
@@ -35,11 +37,6 @@ class CommentsListView(ListView):
     def get_paginate_by(self, queryset):
         """Return 3 comments by default."""
         return self.request.GET.get('page_size', 3)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hash_id'] = self.kwargs['hash_id']
-        return context
 
 
 class ApiCommentsListView(CommentsListView):

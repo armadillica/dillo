@@ -143,7 +143,7 @@ urlpatterns += [
         name='comments_list',
     ),
     path(
-        'api/p/<slug:hash_id>/comments/',
+        'api/comments/<int:entity_content_type_id>/<int:entity_object_id>/',
         dillo.views.comments.ApiCommentsListView.as_view(),
         name='api-comments-list',
     ),
