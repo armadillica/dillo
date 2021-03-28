@@ -419,3 +419,51 @@ class AttachS3MediaToEntity(LoginRequiredMixin, FormView):
     def form_invalid(self, form):
         # TODO(fsiddi) Improve error messages
         return JsonResponse({'status': 'error', 'message': 'Invalid form.'}, status=400)
+
+
+class AddS3DownloadableToEntity(LoginRequiredMixin, FormView):
+    http_method_names = ['post']
+    form_class = forms.AttachS3MediaToEntityForm
+
+    def process_file_type(self, entity, mime_type, key, name, size_bytes):
+        # Move file from upload to storage bucket, synchronously
+        move_blob_from_upload_to_storage(key)
+
+        if mime_type.startswith('image'):
+            static_asset = StaticAsset.objects.create(
+                source=key, source_filename=name, source_type='image', size_bytes=size_bytes
+            )
+            log.debug('Attaching image to unpublished entity %s' % entity.hash_id)
+
+        elif mime_type.startswith('video'):
+            static_asset = StaticAsset.objects.create(
+                source=key, source_filename=name, source_type='video', size_bytes=size_bytes
+            )
+            log.debug('Attaching video to unpublished entity %s' % entity.hash_id)
+        else:
+            static_asset = StaticAsset.objects.create(
+                source=key, source_filename=name, size_bytes=size_bytes
+            )
+            log.debug('Attaching file to unpublished entity %s' % entity.hash_id)
+
+        entity.downloadable = static_asset
+        entity.save()
+
+        return JsonResponse({'status': 'ok', 'static_asset_id': static_asset.id})
+
+    def form_valid(self, form):
+        content_type = ContentType.objects.get_for_id(form.cleaned_data['content_type_id'])
+        entity = get_object_or_404(content_type.model_class(), id=form.cleaned_data['entity_id'])
+        if self.request.user != entity.user:
+            return JsonResponse({'error': 'Not allowed to upload on this entity.'}, status=422)
+        return self.process_file_type(
+            entity,
+            form.cleaned_data['mime_type'],
+            form.cleaned_data['key'],
+            form.cleaned_data['name'],
+            form.cleaned_data['size_bytes'],
+        )
+
+    def form_invalid(self, form):
+        # TODO(fsiddi) Improve error messages
+        return JsonResponse({'status': 'error', 'message': 'Invalid form.'}, status=400)

@@ -128,6 +128,11 @@ urlpatterns += [
         name='attach_s3_upload_to_post',
     ),
     path(
+        'add-downloadable-to-entity',
+        dillo.views.posts.publish.AddS3DownloadableToEntity.as_view(),
+        name='add-downloadable-to-entity',
+    ),
+    path(
         'api/unpublished-uploads/<int:content_type_id>/<slug:hash_id>/',
         dillo.views.posts.publish.api_get_unpublished_uploads,
         name='api-get-unpublished-uploads',
