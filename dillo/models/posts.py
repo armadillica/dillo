@@ -107,7 +107,6 @@ class Post(Entity, LikesMixin, MentionsMixin):
         is_processing_videos = False
         for video in self.videos:
             log.debug('Checking processing status of encoded videos')
-            print(f'video {video.static_asset.id} status is {video.encoding_job_status}')
             if video.encoding_job_status != 'job.completed':
                 is_processing_videos = True
                 break
