@@ -1,7 +1,6 @@
 import sorl.thumbnail
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -13,6 +12,7 @@ from django.views.generic import ListView
 from dillo import forms
 from dillo.models.comments import Comment
 from dillo.templatetags.dillo_filters import markdown_with_shortcodes
+from dillo.templatetags.dillo_filters import compact_naturaltime
 from dillo.markdown import sanitize
 
 
@@ -54,7 +54,7 @@ class ApiCommentsListView(CommentsListView):
             },
             'content': comment.content,
             'dateCreated': comment.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
-            'naturalCreationTime': naturaltime(comment.created_at),
+            'naturalCreationTime': compact_naturaltime(comment.created_at),
             'likesCount': comment.likes.count(),
             'isLiked': comment.is_liked(self.request.user),
             'isOwn': (comment.user.id == self.request.user.id),

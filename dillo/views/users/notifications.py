@@ -6,10 +6,10 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.generic import ListView
 from django.shortcuts import reverse
-from django.utils.timesince import timesince
 
 from dillo.models.feeds import FeedEntry
 from dillo.models.mixins import ApiResponseData
+from dillo.templatetags.dillo_filters import compact_naturaltime
 
 log = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class ApiFeedNotificationsView(View):
                 'verb': notification.action.verb,
                 'actionObjectUrl': notification.action.action_object.get_absolute_url(),
                 'actionObject': str(notification.action.action_object),
-                'timeSince': timesince(notification.action.timestamp),
+                'timeSince': compact_naturaltime(notification.action.timestamp),
             }
             r.results.append(n)
         return JsonResponse(r.serialize())
