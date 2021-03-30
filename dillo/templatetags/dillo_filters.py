@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.html import mark_safe, escape
 from django.template.defaultfilters import stringfilter
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from dillo.shortcodes import render as shortcode_render
 from dillo.markdown import render as markdown_render
@@ -67,6 +68,16 @@ def compact_timesince(timesince):
     # Take only the first, usually interesting part. (2d, 3h -> 2d)
     timesince = timesince.split(',', 1)[0]
     return timesince
+
+
+@register.filter
+def compact_naturaltime(time):
+    """Make naturaltime super compact."""
+
+    # e.g. 15 days, 3 hours -> 15d, 3h
+    time = naturaltime(time)
+    time = compact_timesince(time)
+    return time
 
 
 @register.filter
