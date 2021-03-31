@@ -1,6 +1,6 @@
 | {% if link %}
 a(href="{{ link }}")
-  img(src="{{ media.source.url }}")
+  img(src="{{ media.source.url }}", alt="{{ media.source_filename }}")
 | {% else %}
-img(src="{{ media.source.url }}")
+img(src="{{ media.source.url }}", alt="{{ media.source_filename }}")
 | {% endif %}
