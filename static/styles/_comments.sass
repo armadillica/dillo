@@ -1,6 +1,6 @@
 %reply-timeline
   &:before
-    background-color: var(--background-secondary)
+    background-color: var(--background-tertiary)
     bottom: 0
     content: ''
     display: block
@@ -39,7 +39,7 @@
         // Seems %placeholders don't support CSS
         // variables, so add them here manually.
         &:before
-          background-color: var(--background-secondary)
+          background-color: var(--background-tertiary)
           width: calc(var(--border-width) * 2)
 
 
@@ -89,7 +89,7 @@
 .comment-body
   +padding(3, x)
   +padding(2, y)
-  background-color: var(--background-secondary)
+  background-color: var(--background-tertiary)
   border-radius: var(--border-radius-lg)
   border-top-left-radius: var(--border-radius-sm)
   display: flex
@@ -209,7 +209,7 @@
   // Seems %placeholders don't support CSS
   // variables, so add them here manually.
   &:before
-    background-color: var(--background-secondary)
+    background-color: var(--background-tertiary)
     bottom: calc(100% - 1rem) !important
     width: calc(var(--border-width) * 2)
 
@@ -238,3 +238,25 @@
   +padding(0)
   +margin(0)
   list-style-type: none
+
+.comments-list-container
+  position: relative
+  +padding(3)
+  +margin(3, x)
+  margin-top: -2rem
+  padding-top: 2rem
+
+  &:before
+    background-color: var(--background-secondary)
+    border-bottom-left-radius: var(--border-radius-lg)
+    border-bottom-right-radius: var(--border-radius-lg)
+    position: absolute
+    z-index: -1
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    content: ''
+
+  .comments-container+.comments-container
+    +margin(3, top)
