@@ -1,5 +1,6 @@
 .notifications-container
   background-color: var(--notifications-background)
+  border: var(--border-width) solid var(--background-tertiary)
   border-radius: var(--border-radius-lg)
   box-shadow: var(--box-shadow-lg), var(--box-shadow-lg)
   max-height: 90vh
@@ -7,7 +8,7 @@
   position: fixed
   right: $spacer
   top: 4.5rem
-  width: 50vw
+  width: 45vw
   z-index: var(--zindex-popover)
 
   &.active
@@ -76,6 +77,10 @@
 
   span
     +padding(1, right)
+
+  .time-since
+    +padding(1, left)
+    color: var(--text-tertiary)
 
 
 .notification-action

@@ -87,7 +87,7 @@
 
 // Contains the comment header (author, date), content, and actions (like, reply).
 .comment-body
-  +padding(3)
+  +padding(3, x)
   +padding(2, y)
   background-color: var(--background-secondary)
   border-radius: var(--border-radius-lg)
@@ -103,6 +103,7 @@
 
 // Header contains the author and date.
 .comment-header
+  +padding(2, left)
   align-items: center
   display: flex
   font-size: var(--font-size-xs)
@@ -136,6 +137,7 @@
 // The text of the comment.
 .comment-content
   +content-generic
+  +padding(2, left)
   +padding(1, y)
   font-size: var(--font-size-sm)
   line-height: 1.4rem
@@ -163,6 +165,9 @@
 
   .btn-toolbar-row
     @extend %btn-sm
+
+    [class^="btn"]
+      min-height: 32px
 
   .btn-like,
   .btn-reply
