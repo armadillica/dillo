@@ -79,6 +79,7 @@
       .comment-header
         +make-disabled
 
+
 .comment-avatar
   +margin(2, right)
   +margin(2, top)
@@ -178,6 +179,7 @@
   .btn-reply
     margin-left: auto !important
 
+
 .comment-form-container
   padding-top: 0
 
@@ -203,6 +205,7 @@
 .comment-form-login
   +margin(2, y)
 
+
 .is-replying
   @extend %reply-timeline
 
@@ -212,7 +215,6 @@
     background-color: var(--background-tertiary)
     bottom: calc(100% - 1rem) !important
     width: calc(var(--border-width) * 2)
-
 
   .js-reply-cancel
     visibility: visible
@@ -239,24 +241,26 @@
   +margin(0)
   list-style-type: none
 
+
 .comments-list-container
-  position: relative
-  +padding(3)
   +margin(3, x)
+  +margin(3, bottom)
+  +padding(3)
   margin-top: -2rem
   padding-top: 2rem
+  position: relative
 
   &:before
     background-color: var(--background-secondary)
     border-bottom-left-radius: var(--border-radius-lg)
     border-bottom-right-radius: var(--border-radius-lg)
-    position: absolute
-    z-index: -1
-    top: 0
     bottom: 0
-    left: 0
-    right: 0
     content: ''
+    left: 0
+    position: absolute
+    right: 0
+    top: 0
+    z-index: -1
 
   .comments-container+.comments-container
     +margin(3, top)
