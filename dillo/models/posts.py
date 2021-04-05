@@ -25,6 +25,7 @@ from dillo.tasks import create_coconut_job
 from .communities import Community, CommunityCategory
 from .entities import Entity
 from dillo.models.static_assets import StaticAsset, Image, Video
+from dillo.templatetags.dillo_filters import website_hostname
 
 log = logging.getLogger(__name__)
 
@@ -82,6 +83,12 @@ class Post(Entity, LikesMixin, MentionsMixin):
         if self.is_link:
             domain = urllib.parse.urlparse(self.content).netloc
             return f"https://www.google.com/s2/favicons?domain={domain}"
+
+    @property
+    def link_hostname(self):
+        if self.is_link:
+            hostname = website_hostname(self.content)
+            return hostname
 
     @property
     def videos(self) -> typing.List['Video']:
