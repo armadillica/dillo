@@ -52,7 +52,7 @@ class ApiCommentsListView(CommentsListView):
                 'url': comment.user.profile.absolute_url,
                 'avatar': None,
             },
-            'content': comment.content,
+            'content': markdown_with_shortcodes(comment.content),
             'dateCreated': comment.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
             'naturalCreationTime': compact_naturaltime(comment.created_at),
             'likesCount': comment.likes.count(),
