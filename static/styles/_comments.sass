@@ -141,7 +141,7 @@
   +padding(2, left)
   +padding(1, y)
   font-size: var(--font-size-sm)
-  line-height: 1.4rem
+  line-height: 21px
 
   img, video,
     +margin(auto, x)
@@ -193,13 +193,33 @@
 
 
 .comment-form
+  position: relative
+
   .btn-toolbar-row
-    +margin(2, top)
+    position: absolute
+    top: .5rem
+    right: .5rem
     justify-content: flex-end
 
   textarea
+    background-color: var(--background-page)
     border-top-left-radius: var(--border-radius-sm)
+    min-height: 3.5rem
     min-width: 100%
+    padding-right: 8rem // make room for the 'Comment' button.
+    resize: vertical
+
+    &:focus
+      border-color: var(--community-theme-color, --accent)
+
+    // If there is text in the field, highlight the Comment button.
+    &:not(:placeholder-shown)
+      &+.btn-toolbar-row
+        .btn-comment
+          @extend %btn-theme
+
+  .btn-comment
+    @extend %btn-secondary
 
 // Shows the "Login to comment" button.
 .comment-form-login
@@ -264,3 +284,8 @@
 
   .comments-container+.comments-container
     +margin(3, top)
+
+.comments-list-header
+  +padding(3, y)
+  font-size: var(--font-size-sm)
+  color: var(--text-secondary)
