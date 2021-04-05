@@ -78,6 +78,12 @@ class Post(Entity, LikesMixin, MentionsMixin):
         return 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url())
 
     @property
+    def favicon_url(self):
+        if self.is_link:
+            domain = urllib.parse.urlparse(self.content).netloc
+            return f"https://www.google.com/s2/favicons?domain={domain}"
+
+    @property
     def videos(self) -> typing.List['Video']:
         """Returns a list of Video objects."""
         return [static_asset.video for static_asset in self.media.filter(source_type='video')]
