@@ -14,7 +14,10 @@ def forwards_func(apps, schema_editor):
 
     Comment = apps.get_model('dillo', 'Comment')
     db_alias = schema_editor.connection.alias
-    post_type = ContentType.objects.get(app_label='dillo', model='post')
+    try:
+        post_type = ContentType.objects.get(app_label='dillo', model='post')
+    except ContentType.DoesNotExist:
+        return
     for comment in Comment.objects.using(db_alias):
         comment.entity_object_id = comment.post.id
         comment.entity_content_type_id = post_type.id

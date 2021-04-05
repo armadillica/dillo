@@ -194,6 +194,10 @@ def send_notification_mail(subject: str, recipient: User, template, context: dic
     Features simple text (not even HTML message yet).
     """
 
+    if not settings.ANYMAIL['MAILGUN_API_KEY']:
+        log.info("Skipping email notification, mail not configured")
+        return
+
     # Ensure use of a valid template
     if template not in dillo.views.emails.email_templates:
         log.error("Email template '%s' not found" % template)

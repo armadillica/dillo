@@ -1,14 +1,16 @@
 import pathlib
 import urllib.parse
+from django.contrib.auth.models import User
 from django.db import models
 
 from dillo.models.mixins import (
     get_upload_to_hashed_path,
     HashIdGenerationMixin,
+    CreatedUpdatedMixin,
 )
 
 
-class StaticAsset(HashIdGenerationMixin, models.Model):
+class StaticAsset(CreatedUpdatedMixin, HashIdGenerationMixin, models.Model):
     STATIC_ASSET_TYPES = (
         ('file', 'File'),
         ('image', 'Image'),
@@ -17,7 +19,7 @@ class StaticAsset(HashIdGenerationMixin, models.Model):
     order = models.PositiveIntegerField(default=0)
     source = models.FileField(upload_to=get_upload_to_hashed_path, blank=True,)
     source_type = models.CharField(choices=STATIC_ASSET_TYPES, default='file', max_length=5)
-    source_filename = models.CharField(max_length=128, editable=False, blank=True)
+    source_filename = models.CharField(max_length=256, editable=False, blank=True)
     size_bytes = models.BigIntegerField(editable=False, null=True)
     hash_id = models.CharField(max_length=6, unique=True, null=True)
     thumbnail = models.ImageField(
@@ -25,13 +27,15 @@ class StaticAsset(HashIdGenerationMixin, models.Model):
     )
     thumbnail_height = models.PositiveIntegerField(null=True, blank=True)
     thumbnail_width = models.PositiveIntegerField(null=True, blank=True)
+    slug = models.SlugField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         created = self.pk is None
         super().save(*args, **kwargs)
+        self._set_hash_id(created)
         if not created:
             return
-        self._set_hash_id(created)
         if self.source_type == 'video':
             Video.objects.create(static_asset=self)
         elif self.source_type == 'image':

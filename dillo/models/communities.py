@@ -50,6 +50,8 @@ class Community(models.Model):
 
     theme_color = models.CharField(max_length=16, blank=True)
 
+    dillo_uuid = models.SlugField(blank=True)
+
     def get_absolute_url(self):
         return reverse('community-detail', kwargs={'slug': self.slug})
 

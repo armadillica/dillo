@@ -22,6 +22,7 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
     entity = GenericForeignKey('entity_content_type', 'entity_object_id')
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField(max_length=1024)
+    slug = models.SlugField(blank=True)
     tags = TaggableManager()
 
     @property
@@ -47,7 +48,8 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
             # The parent comment is actually a reply. This is not
             # allowed, since we only offer one-level deep conversations.
             log.error('Attempted to save a nested reply to comment %i' % self.parent_comment_id)
-            raise FieldError('Nested replies to replies are not allowed')
+            self.parent_comment = self.parent_comment.parent_comment
+            # raise FieldError('Nested replies to replies are not allowed')
         super().save(*args, **kwargs)
 
     class Meta:

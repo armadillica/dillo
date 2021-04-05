@@ -13,8 +13,11 @@ def forwards_func(apps, schema_editor):
     # Detect if tests are running
     if 'test' in sys.argv:
         return
-    post_media_image_type = ContentType.objects.get(app_label='dillo', model='postmediaimage')
-    post_media_video_type = ContentType.objects.get(app_label='dillo', model='postmediavideo')
+    try:
+        post_media_image_type = ContentType.objects.get(app_label='dillo', model='postmediaimage')
+        post_media_video_type = ContentType.objects.get(app_label='dillo', model='postmediavideo')
+    except ContentType.DoesNotExist:
+        return
 
     StaticAsset = apps.get_model('dillo', 'StaticAsset')
     Image = apps.get_model('dillo', 'Image')
