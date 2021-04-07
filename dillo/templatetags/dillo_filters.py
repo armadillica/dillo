@@ -61,6 +61,7 @@ def compact_timesince(timesince):
     timesince = timesince.replace('days', 'd').replace('day', 'd')
     timesince = timesince.replace('months', 'mo').replace('month', 'mo')
     timesince = timesince.replace('weeks', 'w').replace('week', 'w')
+    timesince = timesince.replace('years', 'w').replace('year', 'y')
 
     # Remove space between digit and unit. (2 d, 3h -> 2d, 3h)
     timesince = timesince.replace('\xa0', '')
