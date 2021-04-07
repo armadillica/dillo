@@ -446,6 +446,10 @@ class AddS3DownloadableToEntity(LoginRequiredMixin, FormView):
             )
             log.debug('Attaching file to unpublished entity %s' % entity.hash_id)
 
+        # Remove existing downloadable item, if it exists
+        if entity.downloadable:
+            entity.downloadable.delete()
+
         entity.downloadable = static_asset
         entity.save()
 
