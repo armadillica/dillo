@@ -183,15 +183,10 @@ def on_deleted_static_asset_delete_all_files(
 def on_created_like(sender, instance: dillo.models.mixins.Likes, created, **kwargs):
     """Actions to perform once a Like is created."""
 
-    # Make the liked_object explicit
-    if isinstance(instance.content_object, dillo.models.comments.Comment):
-        liked_object = 'comment'
-    elif isinstance(instance.content_object, dillo.models.posts.Post):
-        liked_object = 'post'
-    else:
-        return
-
-    if liked_object == 'comment' and instance.content_object.parent_comment:
+    if (
+        isinstance(instance.content_object, dillo.models.comments.Comment)
+        and instance.content_object.parent_comment
+    ):
         target = instance.content_object.parent_comment
     else:
         target = None
@@ -201,8 +196,8 @@ def on_created_like(sender, instance: dillo.models.mixins.Likes, created, **kwar
     # If the user likes a post or comment after having unliked it, do not generate activity.
     action.send(instance.user, verb='liked', action_object=instance.content_object, target=target)
 
-    # Increase likes_count for profile of post owner when a Post is liked.
-    if not created or liked_object != 'post':
+    # Increase likes_count for profile of content owner their content is liked.
+    if not created:
         return
     target_user = instance.content_object.user
     dillo.models.profiles.Profile.objects.filter(user=target_user).update(
@@ -228,9 +223,7 @@ def profile_likes_count_decrease(target_user: User):
 
 @receiver(post_delete, sender=dillo.models.mixins.Likes)
 def on_deleted_like(sender, instance: dillo.models.mixins.Likes, **kwargs):
-    """Decrease likes_count for profile of post owner when a Post is unliked."""
-    if not isinstance(instance.content_object, dillo.models.posts.Post):
-        return
+    """Decrease likes_count for profile when Entity or Comment is unliked."""
     target_user = instance.content_object.user
     profile_likes_count_decrease(target_user)
     log.debug('Decreased like count for user %s' % target_user)
