@@ -309,11 +309,13 @@ class StaticAssetAdmin(admin.ModelAdmin):
 
 @admin.register(dillo.models.profiles.Badge)
 class BadgeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'icon_image')
-    exclude = ('icon_height', 'icon_width')
+    list_display = ('name', 'image_preview')
+    exclude = ('image_height', 'image_width')
     prepopulated_fields = {'slug': ('name',)}
 
-    def icon_image(self, obj):
+    def image_preview(self, obj):
+        if not obj.image:
+            return
         return format_html(
-            '<img src="{0}" style="width: 20px; height:20px;" />'.format(obj.icon.url)
+            '<img src="{0}" style="width: 20px; height:20px;" />'.format(obj.image.url)
         )
