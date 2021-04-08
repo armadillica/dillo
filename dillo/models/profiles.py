@@ -14,7 +14,7 @@ from dillo.models.mixins import (
     CreatedUpdatedMixin,
     get_upload_to_hashed_path,
     ChangeAwareness,
-    get_social_from_url,
+    SocialLink,
 )
 from dillo.validators import validate_reel_url
 
@@ -171,14 +171,8 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         return self.name or self.user.username
 
 
-class ProfileLinks(models.Model):
+class ProfileLinks(SocialLink):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='links')
-    url = models.URLField(help_text='YouTube, Instagram, Twitter...', verbose_name="URL")
-    social = models.CharField(max_length=50, blank=True)
-
-    def save(self, *args, **kwargs):
-        self.social = get_social_from_url(self.url)
-        super().save(*args, **kwargs)
 
 
 class EmailNotificationsSettings(ChangeAwareness, models.Model):

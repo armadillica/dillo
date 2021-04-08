@@ -212,6 +212,20 @@ class ChangeAwareness(models.Model):
         return True
 
 
+class SocialLink(models.Model):
+    """Base class to handle social links."""
+
+    class Meta:
+        abstract = True
+
+    url = models.URLField(help_text='YouTube, Instagram, Twitter...', verbose_name="URL")
+    social = models.CharField(max_length=50, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.social = get_social_from_url(self.url)
+        super().save(*args, **kwargs)
+
+
 @dataclass
 class ApiResponseData:
     """Standard API response content."""

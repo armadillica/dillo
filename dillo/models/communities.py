@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from dillo.models.mixins import get_social_from_url, get_upload_to_hashed_path
+from dillo.models.mixins import get_upload_to_hashed_path, SocialLink
 
 
 class Community(models.Model):
@@ -62,14 +62,8 @@ class Community(models.Model):
         verbose_name_plural = 'communities'
 
 
-class CommunityLink(models.Model):
+class CommunityLink(SocialLink):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name='links')
-    url = models.URLField(help_text='YouTube, Instagram, Twitter...', verbose_name="URL")
-    social = models.CharField(max_length=50, blank=True)
-
-    def save(self, *args, **kwargs):
-        self.social = get_social_from_url(self.url)
-        super().save(*args, **kwargs)
 
 
 class CommunityCategory(models.Model):
