@@ -75,6 +75,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
                 'url': self.user.profile.absolute_url,
                 'avatar': None,
                 'likes_count': self.user.profile.likes_count,
+                'badges': self.user.profile.serialized_badges,
             },
             'thumbnailUrl': None,
             'hashId': self.hash_id,

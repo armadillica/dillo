@@ -11,6 +11,7 @@ from django.http import HttpResponseServerError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from tinymce.widgets import TinyMCE
 
@@ -163,13 +164,17 @@ class EmailIsVerifiedListFilter(admin.SimpleListFilter):
             return queryset.filter(emailaddress__verified=False)
 
 
-class ProfileLinksInLine(admin.TabularInline):
+class ProfileLinksInline(admin.TabularInline):
     """Inline form for Profile Links.
 
     This gets included in ProfileAdmin.
     """
 
     model = dillo.models.profiles.ProfileLinks
+
+
+class ProfileBadgesInline(admin.TabularInline):
+    model = dillo.models.profiles.Badge
 
 
 class ProfileInline(admin.StackedInline):
@@ -184,7 +189,7 @@ class ProfileInline(admin.StackedInline):
         'reel_thumbnail_16_9_height',
         'reel_thumbnail_16_9_width',
     )
-    inlines = [ProfileLinksInLine]
+    inlines = [ProfileLinksInline, ProfileBadgesInline]
 
 
 # Define a new User admin
@@ -300,3 +305,15 @@ class StaticAssetAdmin(admin.ModelAdmin):
         'source_type',
     ]
     readonly_fields = ['source_filename', 'id']
+
+
+@admin.register(dillo.models.profiles.Badge)
+class BadgeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'icon_image')
+    exclude = ('icon_height', 'icon_width')
+    prepopulated_fields = {'slug': ('name',)}
+
+    def icon_image(self, obj):
+        return format_html(
+            '<img src="{0}" style="width: 20px; height:20px;" />'.format(obj.icon.url)
+        )

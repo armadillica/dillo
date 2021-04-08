@@ -89,6 +89,9 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
     # Posts that have been added by the user to the "Bookmarks" list
     bookmarks = models.ManyToManyField('Post', related_name='bookmarks')
 
+    # Badges assigned through signals and other activities
+    badges = models.ManyToManyField('Badge', related_name='badges', blank=True)
+
     @property
     def followers_count(self):
         return len(followers(self.user))
@@ -146,6 +149,13 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         if not self.name:
             return None
         return self.name.split(' ')[0]
+
+    @property
+    def serialized_badges(self):
+        badges = []
+        for badge in self.badges.all():
+            badges.append({'name': badge.name, 'slug': badge.slug, 'urlIcon': badge.icon.url})
+        return badges
 
     def save(self, *args, **kwargs):
         """Extend save() with reel thumbnail fetching.
@@ -228,3 +238,20 @@ class EmailNotificationsSettings(ChangeAwareness, models.Model):
         if self.data_changed(['is_enabled_for_newsletter']):
             log.debug("Updating mailing list subscription settings")
             tasks.update_mailing_list_subscription(self.user.email, self.is_enabled_for_newsletter)
+
+
+class Badge(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    slug = models.SlugField(max_length=128, unique=True)
+    description = models.TextField()
+    icon = models.ImageField(
+        upload_to=get_upload_to_hashed_path,
+        blank=True,
+        height_field='icon_height',
+        width_field='icon_width',
+    )
+    icon_height = models.PositiveIntegerField(null=True)
+    icon_width = models.PositiveIntegerField(null=True)
+
+    def __str__(self):
+        return self.name

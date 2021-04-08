@@ -51,6 +51,7 @@ class ApiCommentsListView(CommentsListView):
                 'username': comment.user.username,
                 'url': comment.user.profile.absolute_url,
                 'avatar': None,
+                'badges': comment.user.profile.serialized_badges,
             },
             'content': markdown_with_shortcodes(comment.content),
             'dateCreated': comment.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
