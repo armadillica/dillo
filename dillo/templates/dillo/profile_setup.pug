@@ -1,7 +1,12 @@
 | {% extends "dillo/base_single_card.pug" %}
 | {% load i18n crispy_forms_tags %}
+| {% load pipeline %}
 
-| {% block head_title %}{% trans "Setup" %}{% endblock %}
+| {% block page_title %}Setup Your Profile{% endblock %}
+
+| {% block head_extra %}
+| {% stylesheet 'edit' %}
+| {% endblock head_extra %}
 
 | {% block content_card %}
 .card.account.setup
@@ -32,3 +37,29 @@
 						i.i-chevron-right
 
 | {% endblock %}
+
+| {% block javascript_extra %}
+script.
+	//- Show a preview of the avatar when a file is picked.
+	function previewImage(input) {
+		if (input.files && input.files[0]) {
+			let reader = new FileReader();
+			let avatarPreview = document.getElementById('js-avatar-preview');
+
+			reader.onload = function(e) {
+				avatarPreview.setAttribute('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	let fileInput = document.getElementById('id_avatar');
+
+	if (fileInput){
+		fileInput.onchange = function(){
+			previewImage(this);
+		};
+	}
+
+| {% endblock javascript_extra %}
