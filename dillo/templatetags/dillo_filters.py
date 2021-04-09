@@ -63,11 +63,11 @@ def compact_timesince(timesince):
     timesince = timesince.replace('weeks', 'w').replace('week', 'w')
     timesince = timesince.replace('years', 'w').replace('year', 'y')
 
+    # Remove 'an, ago'.
+    timesince = timesince.replace('ago', '').replace('an', '')
+
     # Remove space between digit and unit. (2 d, 3h -> 2d, 3h)
     timesince = timesince.replace('\xa0', '')
-
-    # Remove 'ago'.
-    timesince = timesince.replace('ago', '')
 
     # Take only the first, usually interesting part. (2d, 3h -> 2d)
     timesince = timesince.split(',', 1)[0]
