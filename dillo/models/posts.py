@@ -79,14 +79,14 @@ class Post(Entity, LikesMixin, MentionsMixin):
         return 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url())
 
     @property
-    def favicon_url(self):
-        if self.is_link:
+    def link_favicon(self):
+        if self.is_link and self.content:
             domain = urllib.parse.urlparse(self.content).netloc
             return f"https://www.google.com/s2/favicons?domain={domain}"
 
     @property
     def link_hostname(self):
-        if self.is_link:
+        if self.is_link and self.content:
             hostname = website_hostname(self.content)
             return hostname
 
