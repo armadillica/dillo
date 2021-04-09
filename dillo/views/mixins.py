@@ -13,6 +13,7 @@ from django.views import View
 from django.http import JsonResponse
 
 from micawber.contrib.mcdjango import providers
+from micawber.exceptions import ProviderNotFoundException
 
 from dillo.models.posts import get_trending_tags, Post
 from dillo.models.events import Event
@@ -138,7 +139,10 @@ class ApiOembedPreview(View):
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         content = request.POST['content']
-        preview = providers.request(content)
+        try:
+            preview = providers.request(content)
+        except ProviderNotFoundException:
+            preview = {}
         preview_default = 'Preview not available for this link.'
         preview_html = preview_default if 'html' not in preview else preview['html']
         preview_title = None if 'title' not in preview else preview['title']
