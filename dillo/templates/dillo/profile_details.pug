@@ -40,7 +40,7 @@ style.
 .sidebar-block
   | {% url 'admin:auth_user_change' user.id as edit_url %}
   | {% trans 'Edit User' as edit_label %}
-  | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="is-admin" %}
+  | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin" %}
 | {% endif %}
 | {% endblock sidebar %}
 

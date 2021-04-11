@@ -99,7 +99,7 @@ hr
 .sidebar-block
 	| {% url 'admin:dillo_event_change' event.id as edit_url %}
 	| {% trans 'Edit Event' as edit_label %}
-	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="is-admin" %}
+	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin" %}
 | {% endif %}
 
 //- TODO(Pablo): Show more/related events.
