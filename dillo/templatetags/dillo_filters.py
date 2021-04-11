@@ -56,6 +56,7 @@ def compact_timesince(timesince):
     """Make timesince filter super compact."""
 
     # Replace long words with letters. (2 days, 3 hours -> 2 d, 3 h)
+    timesince = timesince.replace('seconds', 's').replace('second', 's')
     timesince = timesince.replace('minutes', 'm').replace('minute', 'm')
     timesince = timesince.replace('hours', 'h').replace('hour', 'h')
     timesince = timesince.replace('days', 'd').replace('day', 'd')
