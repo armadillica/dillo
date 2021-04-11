@@ -8,7 +8,11 @@ from django.db import models
 from django.utils import timezone
 from django.shortcuts import reverse
 
-from dillo.models.mixins import CreatedUpdatedMixin, HashIdGenerationMixin
+from dillo.models.mixins import (
+    CreatedUpdatedMixin,
+    HashIdGenerationMixin,
+    get_upload_to_hashed_path,
+)
 
 
 log = logging.getLogger(__name__)
@@ -36,6 +40,9 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='public')
     is_pinned_by_moderator = models.BooleanField(default=False)
     dillo_uuid = models.SlugField(blank=True, default='')
+    image = models.ImageField(
+        upload_to=get_upload_to_hashed_path, blank=True, help_text='A preview image for the entity',
+    )
 
     def save(self, *args, **kwargs):
         created = self.pk is None

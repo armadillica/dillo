@@ -97,11 +97,14 @@ class Post(Entity, LikesMixin, MentionsMixin):
 
     @property
     def thumbnail(self):
-        """An image preview for the Post, generated from the first media item.
+        """An image preview for the Post.
 
+        If the post as an image, use it.
         If the first media is an image, return the image.
         If the first media is a video, return the thumbnail.
         """
+        if self.image:
+            return self.image
         first_media = self.media.filter(source_type__in=['video', 'image']).first()
         if not first_media:
             log.error('No thumbnail available for post %i' % self.id)
