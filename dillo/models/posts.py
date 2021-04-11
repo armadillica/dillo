@@ -5,6 +5,7 @@ import typing
 import urllib.parse
 
 import django.dispatch
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
@@ -72,6 +73,12 @@ class Post(Entity, LikesMixin, MentionsMixin):
     media = models.ManyToManyField(StaticAsset, related_name='post', blank=True)
 
     def get_absolute_url(self):
+        if self.community and 'communities.apps.CommunitiesConfig' in settings.INSTALLED_APPS:
+            # Build a link using a url registered inside the 'communities' app (outside Dillo)
+            return reverse(
+                'community-detail-with-active-post',
+                kwargs={'slug': self.community.slug, 'active_post_hash_id': str(self.hash_id)},
+            )
         return reverse('post_detail', kwargs={'hash_id': str(self.hash_id)})
 
     @property
