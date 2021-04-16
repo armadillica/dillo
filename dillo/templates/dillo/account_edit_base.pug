@@ -1,5 +1,12 @@
 | {% extends "dillo/base.pug" %}
+| {% load pipeline %}
 | {% load i18n %}
+
+| {% block body_classes %}settings{% endblock %}
+
+| {% block head_extra %}
+| {% stylesheet 'edit' %}
+| {% endblock head_extra %}
 
 | {% block content %}
 .container
