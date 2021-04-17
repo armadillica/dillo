@@ -1,4 +1,6 @@
+from actstream.models import Follow
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 import sorl.thumbnail
 
 from dillo.models.feeds import FeedEntry
@@ -29,6 +31,17 @@ def media_uploads_accepted_mimes(_):
 
 def communities_featured(_):
     return {'communities_featured': Community.objects.filter(is_featured=True)}
+
+
+def communities_navigation(request):
+    if request.user.is_anonymous:
+        return communities_featured(request)
+    followed_communities = Follow.objects.filter(
+        content_type=ContentType.objects.get_for_model(Community), user=request.user
+    )
+    if not followed_communities:
+        return communities_featured(request)
+    return {'communities_navigation': [c.follow_object for c in followed_communities]}
 
 
 def default_og_data(_):
