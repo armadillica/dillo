@@ -21,7 +21,7 @@ import dillo.views.users.notifications
 import dillo.views.users.profile
 import dillo.views.reels
 import dillo.views.jobs
-import dillo.views.emails
+import dillo.views.actstream
 import dillo.views.explore
 
 # User Pages
@@ -85,6 +85,11 @@ urlpatterns += [
     ),
     path(
         'api/oembed-preview/', dillo.views.mixins.ApiOembedPreview.as_view(), name='oembed-preview',
+    ),
+    path(
+        'api/follow-toggle/<int:content_type_id>/<int:object_id>/',
+        dillo.views.actstream.FollowToggleView.as_view(),
+        name='follow-toggle',
     ),
 ]
 

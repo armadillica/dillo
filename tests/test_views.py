@@ -1,6 +1,7 @@
 import tempfile
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 
@@ -552,3 +553,29 @@ class SignUpViewTest(TestCase):
         self.assertEqual('albusdumbledore', user.username)
         # Ensure that user name is saved
         self.assertEqual(user_name, user.profile.name)
+
+
+class FollowToggleTest(TestViewsMixin):
+    def test_follow_toggle(self):
+        post = PostFactory(user=self.user1)
+
+        community_attrs = {
+            'content_type_id': ContentType.objects.get_for_model(Post).id,
+            'object_id': post.id,
+        }
+        url_follow_toggle = reverse('follow-toggle', kwargs=community_attrs)
+
+        # Try to follow as unauthenticated
+        response = self.client.get(url_follow_toggle)
+        self.assertEqual(response.status_code, 302)
+
+        # Try again as authenticated
+        self.client.force_login(self.user2)
+        response = self.client.get(url_follow_toggle)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'status': 'ok', 'action': 'Started Following'})
+
+        # Now unfollow
+        response = self.client.get(url_follow_toggle)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'status': 'ok', 'action': 'Unfollowed'})
