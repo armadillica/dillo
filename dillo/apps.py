@@ -13,5 +13,6 @@ class DilloConfig(AppConfig):
         registry.register(self.get_model('Post'))
         registry.register(self.get_model('Comment'))
         registry.register(self.get_model('Profile'))
+        registry.register(self.get_model('Community'))
         registry.register(Tag)
         registry.register(User)
