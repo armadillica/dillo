@@ -65,7 +65,7 @@ class CommunityAdmin(admin.ModelAdmin):
     ]
     inlines = [CommunityCategoryInline, CommunityLinkInline]
 
-    list_display = ('name', 'show_link')
+    list_display = ('name', 'is_featured', 'show_link')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
