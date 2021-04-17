@@ -81,6 +81,10 @@ class LikesMixin(models.Model):
     likes = GenericRelation('dillo.Likes')
 
     @property
+    def is_hot(self):
+        return self.likes.count() > 10
+
+    @property
     def content_type_id(self):
         return ContentType.objects.get_for_model(self).id
 
