@@ -137,7 +137,7 @@ def preview_email_detail(request, email_template):
 
 @login_required
 def preview_email_send(request, email_template):
-    from dillo.tasks import send_notification_mail
+    from dillo.tasks.emails import send_notification_mail
 
     log.debug("Sending '%s' mail message to %s" % (email_template, request.user.email))
     send_notification_mail(
