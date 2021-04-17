@@ -23,7 +23,8 @@ import dillo.models.mixins
 import dillo.models.posts
 import dillo.models.profiles
 import dillo.models.static_assets
-from dillo import tasks
+import dillo.tasks.feeds
+import dillo.tasks.profile
 
 log = logging.getLogger(__name__)
 
@@ -264,18 +265,19 @@ def on_created_action(sender, instance: models_actstream.Action, created, **kwar
         == ContentType.objects.get_for_model(dillo.models.profiles.Profile)
         and instance.verb == 'updated their reel'
     ):
-        tasks.establish_time_proximity(instance)
+        dillo.tasks.feeds.establish_time_proximity(instance)
 
     log.debug('Creating background fanout operation for action %i' % instance.id)
-    tasks.activity_fanout_to_feeds(instance.id)
+    dillo.tasks.feeds.activity_fanout_to_feeds(instance.id)
 
 
 @receiver(post_save, sender=models_actstream.Follow)
 def on_created_follow(sender, instance: models_actstream.Follow, created, **kwargs):
     if not created:
         return
-    content_type = ContentType.objects.get_for_id(instance.content_type_id)
-    tasks.repopulate_timeline_content(content_type, instance.object_id, instance.user_id, 'follow')
+    dillo.tasks.feeds.repopulate_timeline_content(
+        instance.content_type_id, instance.object_id, instance.user_id, 'follow'
+    )
 
 
 @receiver(post_delete, sender=models_actstream.Follow)
@@ -283,22 +285,22 @@ def on_deleted_follow(sender, instance: models_actstream.Follow, **kwargs):
     """User stops following something."""
     content_type = ContentType.objects.get_for_id(instance.content_type_id)
     log.debug("Unfollowing %s %s" % (content_type.name, instance.object_id))
-    tasks.repopulate_timeline_content(
-        content_type, instance.object_id, instance.user_id, 'unfollow'
+    dillo.tasks.feeds.repopulate_timeline_content(
+        instance.content_type_id, instance.object_id, instance.user_id, 'unfollow'
     )
 
 
 @receiver(email_confirmed)
 def on_email_confirmed(request, email_address, **kwargs):
     """If confirmed, subscribe to newsletter."""
-    tasks.update_mailing_list_subscription(email_address, True)
+    dillo.tasks.profile.update_mailing_list_subscription(email_address, True)
 
 
 @receiver(email_changed)
 def on_email_email_changed(request, user, from_email_address, to_email_address, **kwargs):
     """Unsubscribe previous email, wait for new one to be confirmed."""
     if from_email_address:
-        tasks.update_mailing_list_subscription(from_email_address, False)
+        dillo.tasks.profile.update_mailing_list_subscription(from_email_address, False)
 
 
 @receiver(pre_delete, sender=User)

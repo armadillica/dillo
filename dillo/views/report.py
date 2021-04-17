@@ -7,6 +7,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.views.generic import FormView
 
+import dillo.tasks.emails
 from dillo import forms, tasks
 from dillo.models.messages import ContentReports
 
@@ -45,7 +46,7 @@ class ReportContentView(LoginRequiredMixin, FormView):
             reason=form.cleaned_data['reason'],
             notes=form.cleaned_data['notes'],
         )
-        tasks.send_mail_report_content(report.id)
+        dillo.tasks.emails.send_mail_report_content(report.id)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):

@@ -1,236 +1,21 @@
 import datetime
 import logging
-import pathlib
-import requests
-import tempfile
-import typing
-from urllib.parse import urlparse
-
-from allauth.account.models import EmailAddress
 from actstream import models as models_actstream
 from background_task import background
-import boto3
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.core.files.images import ImageFile
-from django.core.mail import send_mass_mail, send_mail, EmailMessage
-from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import truncatechars
-from django.template.loader import render_to_string
-from django.urls import reverse
 from django.utils import timezone
-from micawber.contrib.mcdjango import providers
 from taggit import models as models_taggit
 
-
-import dillo.coconut.job
 import dillo.models
 import dillo.models.feeds
-import dillo.models.messages
-import dillo.models.mixins
 import dillo.models.posts
-import dillo.models.profiles
-import dillo.models.static_assets
-import dillo.views.emails
+import dillo.views
+from dillo.tasks.emails import send_notification_mail
 
 log = logging.getLogger(__name__)
-
-
-s3_client = boto3.client(
-    's3',
-    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-)
-
-
-def get_storage_paths() -> (str, str):
-    """Get storage paths depending on DEFAULT_FILE_STORAGE."""
-    storage_backend = settings.DEFAULT_FILE_STORAGE
-
-    if storage_backend == 'django.core.files.storage.FileSystemStorage':
-        # The base SFTP path, with credentials
-        storage_base_src = settings.COCONUT_SFTP_STORAGE
-        storage_base_dst = storage_base_src
-
-        # Override settings if debug mode
-        if settings.DEBUG:
-            storage_base_src = f'{settings.COCONUT_DECLARED_HOSTNAME}/media/'
-            storage_base_dst = f'{settings.COCONUT_DECLARED_HOSTNAME}/debug-video-transfer/'
-
-        return storage_base_src, storage_base_dst
-    elif storage_backend == 'storages.backends.s3boto3.S3Boto3Storage':
-        return (
-            f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/",
-            f"s3://{settings.AWS_ACCESS_KEY_ID}:{settings.AWS_SECRET_ACCESS_KEY}@"
-            f"{settings.AWS_UPLOADS_BUCKET_NAME}/",
-        )
-    else:
-        raise ValueError('Unsupported storage_backend: %s' % storage_backend)
-
-
-@background()
-def create_coconut_job(post_hash_id: str, video_id: int):
-    """Create a video encoding job.
-
-    Because of the @background decorator, we only accept hashable
-    arguments.
-
-    The video versions produced are the following:
-    - a regular 720p, h264 with mp4 container
-    - an httpstream using fragmented mp4, compatible with DASH and HLS
-      with two variants (these are WIP and should be tweaked):
-      - mp4:480p_1500k
-      - mp4:720p
-    """
-    if not settings.COCONUT_API_KEY:
-        log.info('Missing COCONUT_API_KEY: no video encoding will be performed')
-        return
-
-    storage_base_src, storage_base_dst = get_storage_paths()
-
-    # Outputs
-    outputs = {}
-
-    video = dillo.models.static_assets.Video.objects.get(id=video_id)
-    source_path = pathlib.PurePath(video.static_asset.source.name)
-
-    # The jpg:1280x thumbnail
-    outputs['jpg:1280x'] = f"{storage_base_dst}{source_path.with_suffix('.thumbnail.jpg')}"
-
-    # The gif:240x preview
-    outputs['gif:240x'] = f"{storage_base_dst}{source_path.with_suffix('.preview.gif')}"
-
-    # The mp4:720p version of the path (relative to MEDIA_ROOT)
-    outputs['mp4:0x720_3000k'] = f"{storage_base_dst}{source_path.with_suffix('.720p.mp4')}"
-
-    # The httpstream packaging configuration
-    httpstream_packaging = 'dash+hlsfmp4=/stream'
-
-    # The httpstream variants
-    httpstream_variants = 'variants=mp4:480p_1500k,mp4:720p'
-
-    # TODO(fsiddi) enable support for httpstream
-    # outputs['httpstream'] = f'{job_storage_base_out}{source_path.parent}, ' \
-    #     f'{httpstream_packaging}, {httpstream_variants}'
-
-    # Webhook for encoding updates
-    job_webhook = reverse('coconut-webhook', kwargs={'hash_id': post_hash_id, 'video_id': video_id})
-
-    j = dillo.coconut.job.create(
-        api_key=settings.COCONUT_API_KEY,
-        source=f'{storage_base_src}{source_path}',
-        webhook=f'{settings.COCONUT_DECLARED_HOSTNAME}{job_webhook}, events=true, metadata=true',
-        outputs=outputs,
-    )
-
-    if j['status'] == 'processing':
-        log.info('Started processing job %i' % j['id'])
-    else:
-        log.error('Error processing job %i' % (j['id']))
-
-
-@background()
-def send_mail_report_content(report_id: int):
-    """Given a report_id, send an email to all superusers."""
-    log.info("Sending email notification for report %i" % report_id)
-    superusers_emails = User.objects.filter(is_superuser=True).values_list('email')
-    report = dillo.models.messages.ContentReports.objects.get(pk=report_id)
-
-    # Display report info. The "Content" line has content if the content is a
-    # Post or a Comment with a .content or .title attribute.
-
-    if isinstance(report.content_object, dillo.models.posts.Post):
-        content = report.content_object.title
-    else:
-        content = report.content_object.content
-
-    content_body = (
-        f"User: {report.user} \n"
-        f"Content URL: {report.content_object.absolute_url} \n"
-        f"Content: {content} \n"
-        f"Reason: {report.reason} \n"
-    )
-
-    if report.notes:
-        content_body += f"\n Notes: {report.notes}"
-
-    messages = (
-        ('Report for content', content_body, settings.DEFAULT_FROM_EMAIL, email)
-        for email in superusers_emails
-    )
-    send_mass_mail(messages)
-
-
-@background()
-def send_mail_message_contact(message_id: int):
-    """Given a message_id, send an email to all superusers."""
-    log.info("Sending email notification for message %i" % message_id)
-    superusers = User.objects.filter(is_superuser=True).all()
-    message = dillo.models.messages.MessageContact.objects.get(pk=message_id)
-
-    subject = f"Message from {message.user}"
-    body = message.message
-
-    email = EmailMessage(
-        subject,
-        body,
-        from_email=message.user.email,
-        to=[superuser.email for superuser in superusers],
-        reply_to=[message.user.email],
-    )
-    email.send()
-
-
-def send_notification_mail(subject: str, recipient: User, template, context: dict):
-    """Generic email notification function.
-
-    Args:
-        subject (str): The mail subject
-        recipient (User): The recipient
-        template (str): The template to be used
-        context (dict): Template variables, differ depending on the template used
-
-    Features simple text (not even HTML message yet).
-    """
-
-    if not settings.ANYMAIL['MAILGUN_API_KEY']:
-        log.info("Skipping email notification, mail not configured")
-        return
-
-    # Ensure use of a valid template
-    if template not in dillo.views.emails.email_templates:
-        log.error("Email template '%s' not found" % template)
-        return
-    # Send mail only if recipient allowed it in the settings
-    if not recipient.email_notifications_settings.is_enabled:
-        log.debug('Skipping email notification for user %i' % recipient.id)
-        return
-
-    message_type_specific_setting = f'is_enabled_for_{template}'
-    if not getattr(recipient.email_notifications_settings, message_type_specific_setting):
-        log.debug('Skipping %s email notification for user %i' % (template, recipient.id))
-        return
-
-    # Ensure that the context dict contains all the expected values
-    for k, _ in dillo.views.emails.email_templates[template].items():
-        if k not in context:
-            log.error("Missing context variable %s" % k)
-
-    log.debug('Sending email notification to user %i' % recipient.id)
-
-    # plaintext_context = Context(autoescape=False)  # HTML escaping not appropriate in plaintext
-    text_body = render_to_string(f'dillo/emails/{template}.txt', context)
-    html_body = render_to_string(f'dillo/emails/{template}.pug', context)
-
-    send_mail(
-        subject,
-        text_body,
-        settings.DEFAULT_FROM_EMAIL,
-        [recipient.email],
-        fail_silently=False,
-        html_message=html_body,
-    )
 
 
 def feeds_fanout_liked(action):
@@ -444,7 +229,7 @@ def activity_fanout_to_feeds(actstream_action_id):
 
 
 @background()
-def repopulate_timeline_content(content_type: ContentType, object_id, user_id, action):
+def repopulate_timeline_content(content_type_id, object_id, user_id, action_verb):
     """Based on the follow/unfollow action.
 
     Only repopulates if a User object is being followed or unfollowed.
@@ -470,6 +255,7 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
         except dillo.models.feeds.FeedEntry.DoesNotExist:
             pass
 
+    content_type = ContentType.objects.get_for_id(content_type_id)
     content_type_class = content_type.model_class()
     try:
         target = content_type.get_object_for_this_type(pk=object_id)
@@ -477,7 +263,7 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
         log.debug("Skipping timeline repopulation, content was deleted")
         return
     # If follow User
-    if action == 'follow' and isinstance(target, User):
+    if action_verb == 'follow' and isinstance(target, User):
         # If following user, get 10 posts and check if their creation activity is already in the
         # users timeline feed. If not, add push to the timeline
         actions = models_actstream.Action.objects.filter(verb='posted', actor_object_id=target.pk)[
@@ -486,7 +272,7 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
         user = User.objects.get(pk=user_id)
         for action in actions:
             push_action_in_user_feed(user, action)
-    elif action == 'follow' and isinstance(target, models_taggit.Tag):
+    elif action_verb == 'follow' and isinstance(target, models_taggit.Tag):
         # Get 10 posts with that tag
         posts = dillo.models.posts.Post.objects.filter(tags__name__in=[target.name])[:10]
         for post in posts:
@@ -497,7 +283,7 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
             ).first()
             push_action_in_user_feed(User.objects.get(pk=user_id), action)
     # If unfollow User
-    elif action == 'unfollow' and isinstance(target, User):
+    elif action_verb == 'unfollow' and isinstance(target, User):
         # Fetch all actions from the unfollowed users
         actions = models_actstream.Action.objects.filter(
             verb='posted', actor_object_id=target.pk
@@ -506,7 +292,7 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
         user = User.objects.get(pk=user_id)
         for action in actions:
             pull_action_from_user_feed(user, action)
-    elif action == 'unfollow' and isinstance(target, models_taggit.Tag):
+    elif action_verb == 'unfollow' and isinstance(target, models_taggit.Tag):
         # Get the latest 10 posts with that tag
         posts = dillo.models.posts.Post.objects.filter(tags__name__in=[target.name]).order_by(
             '-created_at'
@@ -518,130 +304,6 @@ def repopulate_timeline_content(content_type: ContentType, object_id, user_id, a
             )
             user = User.objects.get(pk=user_id)
             pull_action_from_user_feed(user, action)
-
-
-def download_image_from_web(url, attribute):
-    # Build request (streaming)
-    r = requests.get(url, stream=True)
-    # Get the path component from the url
-    path_comp = urlparse(url)[2]
-    hashed_path = dillo.models.mixins.get_upload_to_hashed_path(None, path_comp)
-
-    # Download the file
-    with tempfile.TemporaryFile() as fp:
-        log.debug("Downloading file %s to %s" % (url, fp.name))
-        for chunk in r.iter_content(chunk_size=128):
-            fp.write(chunk)
-        log.debug("Assigning file to model instance")
-        attribute.save(str(hashed_path), ImageFile(fp))
-
-
-@background()
-def update_profile_reel_thumbnail(user_id):
-
-    profile = dillo.models.profiles.Profile.objects.get(user_id=user_id)
-    oembed_data = providers.request(profile.reel)
-    if 'thumbnail_url' not in oembed_data:
-        return
-    url = oembed_data['thumbnail_url']
-    log.debug("Update profile for user %i" % user_id)
-    download_image_from_web(url, profile.reel_thumbnail_16_9)
-
-
-@background()
-def update_mailing_list_subscription(user_email: str, is_subscribed: typing.Optional[bool] = None):
-    """Subscribe or unsubscribe from newsletter.
-
-    TODO(fsiddi) in the future we can accept an additional argument
-    called `newsletter` to specify by name which newsletter to
-    unsubscribe from.
-    """
-
-    if not hasattr(settings, 'ANYMAIL'):
-        log.info("Mailgun not configured, skipping mailing list subscription update")
-        return
-
-    if not EmailAddress.objects.filter(verified=True, email=user_email).exists():
-        log.info("No verified email address found, skipping mailing list update")
-        return
-
-    user = EmailAddress.objects.get(verified=True, email=user_email).user
-    if not is_subscribed:
-        is_subscribed = user.email_notifications_settings.is_enabled_for_newsletter
-
-    api_url_base = f"https://api.mailgun.net/v3"
-    api_url_newsletter = f"{api_url_base}/lists/{settings.MAILING_LIST_NEWSLETTER_EMAIL}"
-    # Look for member in the mailing list.
-    r_update = requests.put(
-        f"{api_url_newsletter}/members/{user_email}",
-        auth=('api', settings.ANYMAIL['MAILGUN_API_KEY']),
-        data={
-            'subscribed': str(is_subscribed).lower(),
-            'name': user.profile.name,
-            'vars': '{"first_name_guess": "' + user.profile.first_name_guess + '"}',
-        },
-    )
-    # If a member was found, we are done.
-    if r_update.status_code == 200:
-        subscription_status = 'subscribed' if is_subscribed else 'unsubscribed'
-        log.info(
-            "Updated newsletter subscription status to '%s' for user %s"
-            % (subscription_status, user_email)
-        )
-        return
-    # If a member was not found and we want it subscribed.
-    elif r_update.status_code == 404 and is_subscribed:
-        r_create = requests.post(
-            f"{api_url_newsletter}/members",
-            auth=('api', settings.ANYMAIL['MAILGUN_API_KEY']),
-            data={
-                'address': user_email,
-                'subscribed': str(is_subscribed).lower(),
-                'name': user.profile.name,
-                'vars': '{"first_name_guess": "' + user.profile.first_name_guess + '"}',
-            },
-        )
-        if r_create.status_code != 200:
-            log.error("Failed creating newsletter user for user %s" % user_email)
-        else:
-            log.info("Created newsletter user for %s" % user_email)
-    elif r_update.status_code not in {200, 404}:
-        log.error("Newsletter API returned status code %i" % r_update.status_code)
-
-
-def move_blob_from_upload_to_storage(key):
-    """Move a blob from the upload bucket to the permanent location."""
-    try:
-        log.info(
-            'Copying %s/%s to %s'
-            % (settings.AWS_UPLOADS_BUCKET_NAME, key, settings.AWS_STORAGE_BUCKET_NAME)
-        )
-        s3_client.copy_object(
-            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-            Key=key,
-            CopySource={'Bucket': settings.AWS_UPLOADS_BUCKET_NAME, 'Key': key},
-            MetadataDirective="REPLACE",
-        )
-    except Exception as e:
-        log.error('Generic exception on %s' % key)
-        log.error(str(e))
-        return
-
-    log.debug('Deleting %s from upload bucket' % key)
-    s3_client.delete_object(
-        Bucket=settings.AWS_UPLOADS_BUCKET_NAME, Key=key,
-    )
-
-
-@background()
-def async_move_blob_from_upload_to_storage(key):
-    """Call the actual move function.
-
-    This is done because in AttachS3MediaToEntity we have to call
-    move_blob_from_upload_to_storage synchronously. Since we have a
-    BACKGROUND_TASKS_AS_FOREGROUND setting, this would be a problem.
-    """
-    move_blob_from_upload_to_storage(key)
 
 
 def establish_time_proximity(action: models_actstream.Action):
@@ -688,10 +350,4 @@ if settings.BACKGROUND_TASKS_AS_FOREGROUND:
     # Will execute activity_fanout_to_feeds immediately
     log.debug('Executing background tasks synchronously')
     activity_fanout_to_feeds = activity_fanout_to_feeds.task_function
-    send_mail_report_content = send_mail_report_content.task_function
     repopulate_timeline_content = repopulate_timeline_content.task_function
-    send_mail_message_contact = send_mail_message_contact.task_function
-    update_profile_reel_thumbnail = update_profile_reel_thumbnail.task_function
-    update_mailing_list_subscription = update_mailing_list_subscription.task_function
-    async_move_blob_from_upload_to_storage = async_move_blob_from_upload_to_storage.task_function
-    create_coconut_job = create_coconut_job.task_function

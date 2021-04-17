@@ -1,11 +1,9 @@
 from django.core import mail
 from django.test import Client, TestCase, override_settings
-from django.contrib.auth.models import User
 from django.urls import reverse
 
-from dillo.models.posts import Post
 from dillo.models.comments import Comment
-from dillo.tasks import send_notification_mail
+from dillo.tasks.emails import send_notification_mail
 from dillo.tests.factories.users import UserFactory
 from dillo.tests.factories.posts import PostFactory
 
@@ -14,7 +12,7 @@ from dillo.tests.factories.posts import PostFactory
 class EmailNotificationTest(TestCase):
     def setUp(self) -> None:
         self.user_harry = UserFactory(username='harry')
-        self.user_hermione = UserFactory(username='hermione',)
+        self.user_hermione = UserFactory(username='hermione')
         self.post = PostFactory(
             user=self.user_harry, status='published', title='Velocità con #animato'
         )

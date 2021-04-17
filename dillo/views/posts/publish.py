@@ -22,7 +22,7 @@ from dillo import forms
 from dillo.models.posts import Post
 from dillo.models.static_assets import StaticAsset, Video, Image
 from dillo.models.mixins import get_upload_to_hashed_path
-from dillo.tasks import move_blob_from_upload_to_storage
+from dillo.tasks.files import move_blob_from_upload_to_storage
 from dillo.coconut import events
 
 log = logging.getLogger(__name__)

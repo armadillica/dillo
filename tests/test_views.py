@@ -19,7 +19,8 @@ from dillo.tests.factories.posts import PostFactory
 
 class TestViewsMixin(TestCase):
     def setUp(self) -> None:
-        self.user_harry: User = UserFactory(username='harry')
+        self.user1: User = UserFactory(username='user1')
+        self.user2: User = UserFactory(username='user2')
         self.client = Client()
 
 
@@ -281,15 +282,11 @@ class AccountViewsTest(TestCase):
         self.assertEqual(User.objects.get(pk=self.user.id).username, 'harry')
 
 
-class NotificationViewsTest(TestCase):
+class NotificationViewsTest(TestViewsMixin):
     def setUp(self):
-
-        self.user1 = User.objects.create_user(username='testuser1', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
-        self.post = dillo.models.posts.Post.objects.create(
-            user=self.user1, title='Velocità con #animato'
-        )
-        self.client = Client()
+        super().setUp()
+        self.post = PostFactory(user=self.user1, title='Velocità con #animato')
+        self.post.refresh_from_db()
 
     def test_notification_feed_view(self):
         # Ensure that anonymous access is not allowed
@@ -435,7 +432,7 @@ class TheaterReelsViewTest(TestViewsMixin):
 
     def test_profile_no_reel(self):
         """Return 404 if profile has no reel."""
-        response = self.client.get(reverse('reel-detail', args=[self.user_harry.id]))
+        response = self.client.get(reverse('reel-detail', args=[self.user1.id]))
         # Ensure that anonymous users can't bookmark
         self.assertEqual(response.status_code, 404)
 

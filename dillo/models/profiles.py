@@ -9,7 +9,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
-from dillo import tasks
+import dillo.tasks.profile
 from dillo.models.mixins import (
     CreatedUpdatedMixin,
     get_upload_to_hashed_path,
@@ -169,13 +169,13 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
             return
         if self.data_changed(['reel']):
             log.debug('Updating reel thumbnail for user %i' % self.user_id)
-            tasks.update_profile_reel_thumbnail(self.user_id)
+            dillo.tasks.profile.update_profile_reel_thumbnail(self.user_id)
             # Create activity for reel update
             action.send(self.user, verb='updated their reel', action_object=self)
 
         if self.data_changed(['name']):
             log.debug('Updating newsletter information for user')
-            tasks.update_mailing_list_subscription(self.user.email)
+            dillo.tasks.profile.update_mailing_list_subscription(self.user.email)
 
     def __str__(self):
         return self.name or self.user.username
@@ -237,7 +237,9 @@ class EmailNotificationsSettings(ChangeAwareness, models.Model):
         # Update mailing list subscription status.
         if self.data_changed(['is_enabled_for_newsletter']):
             log.debug("Updating mailing list subscription settings")
-            tasks.update_mailing_list_subscription(self.user.email, self.is_enabled_for_newsletter)
+            dillo.tasks.profile.update_mailing_list_subscription(
+                self.user.email, self.is_enabled_for_newsletter
+            )
 
 
 class Badge(models.Model):

@@ -1,4 +1,5 @@
 import datetime
+import os
 import pathlib
 import tempfile
 from actstream import models as models_actstream
@@ -606,11 +607,12 @@ class FeedElementModelTest(TestCase):
 class UploadPathTest(SimpleTestCase):
     def test_get_upload_to_hashed_path(self):
         f = dillo.models.mixins.get_upload_to_hashed_path(None, 'video.mp4')
+        # a4/a4955e4f68e22a095422e1286d95a5a7/a4955e4f68e22a095422e1286d95a5a7.jpg
         file_path = pathlib.Path(f)
         file_name = file_path.name
         self.assertEqual(file_path.parts[0], file_name[:2])
-        self.assertEqual(file_path.parts[1], file_name[2:4])
-        self.assertEqual(file_path.parts[2], file_path.stem)
+        self.assertEqual(file_path.parts[1], os.path.splitext(file_name)[0])
+        self.assertEqual(file_path.parts[2], file_name)
 
 
 class JobsModelTest(TestCase):

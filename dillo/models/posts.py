@@ -22,7 +22,7 @@ from dillo.models.mixins import (
     get_upload_to_hashed_path,
     HashIdGenerationMixin,
 )
-from dillo.tasks import create_coconut_job
+from dillo.tasks.video_processing import create_coconut_job
 from .communities import Community, CommunityCategory
 from .entities import Entity
 from dillo.models.static_assets import StaticAsset, Image, Video

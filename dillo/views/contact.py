@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import FormView
 
+import dillo.tasks.emails
 from dillo import forms, tasks
 from dillo.models.messages import MessageContact
 
@@ -25,7 +26,7 @@ class ContactView(LoginRequiredMixin, FormView):
         message = MessageContact.objects.create(
             user=self.request.user, message=form.cleaned_data['message'],
         )
-        tasks.send_mail_message_contact(message.id)
+        dillo.tasks.emails.send_mail_message_contact(message.id)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):

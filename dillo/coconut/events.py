@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http.response import JsonResponse
 from dillo.models.posts import Post
 from dillo.models.static_assets import Video
-from dillo.tasks import move_blob_from_upload_to_storage
+from dillo.tasks.files import move_blob_from_upload_to_storage
 
 log = logging.getLogger(__name__)
 

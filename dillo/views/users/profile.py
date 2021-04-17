@@ -21,6 +21,7 @@ from taggit.models import Tag
 
 import dillo.models.mixins
 import dillo.tasks
+import dillo.tasks.storage
 from dillo import forms
 from dillo.models.posts import get_trending_tags, Post
 from dillo.models.profiles import Profile
@@ -234,7 +235,7 @@ class ProfileSetupAvatar(ProfileSetupUpdateViewMixin):
         gravatar_url += urlencode({'d': default, 's': str(size)})
 
         log.debug("Update profile avatar for user %i" % user.id)
-        dillo.tasks.download_image_from_web(gravatar_url, user.profile.avatar)
+        dillo.tasks.storage.download_image_from_web(gravatar_url, user.profile.avatar)
 
     def dispatch(self, request, *args, **kwargs):
         # If user does not have an avatar, try to fetch it from Gravatar
