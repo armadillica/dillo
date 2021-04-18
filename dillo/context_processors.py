@@ -29,19 +29,30 @@ def media_uploads_accepted_mimes(_):
     return {'MEDIA_UPLOADS_ACCEPTED_MIMES': list(settings.MEDIA_UPLOADS_ACCEPTED_MIMES)}
 
 
-def communities_featured(_):
-    return {'communities_featured': Community.objects.filter(is_featured=True)}
-
-
 def communities_navigation(request):
-    if request.user.is_anonymous:
-        return communities_featured(request)
-    followed_communities = Follow.objects.filter(
-        content_type=ContentType.objects.get_for_model(Community), user=request.user
-    )
-    if not followed_communities:
-        return communities_featured(request)
-    return {'communities_navigation': [c.follow_object for c in followed_communities]}
+    """Populate the communities navigation.
+
+    By default all communities_features are displayed.
+    If the user follows a community, we show the community in a dedicated
+    list, and remove it from the featured list. Performance can still be
+    optimized by using a direct User-Community m2m table.
+    """
+    communities_featured = Community.objects.filter(is_featured=True)
+    communities_followed = None
+    if request.user.is_authenticated:
+        communities_follows = Follow.objects.filter(
+            content_type=ContentType.objects.get_for_model(Community), user=request.user
+        )
+        if communities_follows:
+            communities_followed = [c.follow_object for c in communities_follows]
+            communities_featured = [
+                c for c in communities_featured if c not in communities_followed
+            ]
+
+    return {
+        'communities_followed': communities_followed,
+        'communities_featured': communities_featured,
+    }
 
 
 def default_og_data(_):
