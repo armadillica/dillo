@@ -38,16 +38,10 @@ def communities_navigation(request):
     optimized by using a direct User-Community m2m table.
     """
     communities_featured = Community.objects.filter(is_featured=True)
-    communities_followed = None
+    communities_followed = []
     if request.user.is_authenticated:
-        communities_follows = Follow.objects.filter(
-            content_type=ContentType.objects.get_for_model(Community), user=request.user
-        )
-        if communities_follows:
-            communities_followed = [c.follow_object for c in communities_follows]
-            communities_featured = [
-                c for c in communities_featured if c not in communities_followed
-            ]
+        communities_followed = request.user.profile.followed_communities
+        communities_featured = [c for c in communities_featured if c not in communities_followed]
 
     return {
         'communities_followed': communities_followed,

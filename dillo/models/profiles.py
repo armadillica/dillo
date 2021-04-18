@@ -1,15 +1,17 @@
 import logging
 import urllib.parse
 
-from actstream.models import followers, following
+from actstream.models import followers, following, Follow
 from actstream import action
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
 import dillo.tasks.profile
+from dillo.models.communities import Community
 from dillo.models.mixins import (
     CreatedUpdatedMixin,
     get_upload_to_hashed_path,
@@ -149,6 +151,13 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         if not self.name:
             return None
         return self.name.split(' ')[0]
+
+    @property
+    def followed_communities(self):
+        follows = Follow.objects.filter(
+            content_type=ContentType.objects.get_for_model(Community), user=self.user
+        )
+        return [c.follow_object for c in follows]
 
     @property
     def serialized_badges(self):
