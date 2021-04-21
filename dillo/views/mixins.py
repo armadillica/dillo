@@ -5,15 +5,15 @@ from django.template.defaultfilters import truncatechars
 from django.utils import timezone
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView, ListView
-from sorl.thumbnail import get_thumbnail
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views import View
 from django.http import JsonResponse
-
 from micawber.contrib.mcdjango import providers
 from micawber.exceptions import ProviderNotFoundException
+from sorl.thumbnail import get_thumbnail
+from webpreview import web_preview
 
 from dillo.models.posts import get_trending_tags, Post
 from dillo.models.events import Event
@@ -134,20 +134,30 @@ class ApiMarkdownPreview(View):
         return JsonResponse({'preview': shortcode_render(markdown_render(content))})
 
 
-class ApiOembedPreview(View):
+class ApiLinkPreview(View):
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         content = request.POST['content']
         try:
-            preview = providers.request(content)
+            oembed_preview = providers.request(content)
         except ProviderNotFoundException:
-            preview = {}
-        preview_default = 'Preview not available for this link.'
-        preview_html = preview_default if 'html' not in preview else preview['html']
-        preview_title = None if 'title' not in preview else preview['title']
+            oembed_preview = {}
 
-        return JsonResponse({'preview': preview_html, 'title': preview_title})
+        # Always generate web_preview as fallback for oembed_preview
+        title, description, image = web_preview(content)
+
+        if 'html' in oembed_preview:
+            preview_html = oembed_preview['html']
+        elif image:
+            preview_html = f'<img src="{image}" alt="Website Preview" />'
+        else:
+            preview_html = 'Preview not available for this link.'
+
+        if 'title' in oembed_preview:
+            title = oembed_preview['title']
+
+        return JsonResponse({'preview': preview_html, 'title': title})
 
 
 class OgData:

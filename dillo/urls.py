@@ -83,9 +83,7 @@ urlpatterns += [
         dillo.views.mixins.ApiMarkdownPreview.as_view(),
         name='markdown-preview',
     ),
-    path(
-        'api/oembed-preview/', dillo.views.mixins.ApiOembedPreview.as_view(), name='oembed-preview',
-    ),
+    path('api/link-preview/', dillo.views.mixins.ApiLinkPreview.as_view(), name='link-preview',),
     path(
         'api/follow-toggle/<int:content_type_id>/<int:object_id>/',
         dillo.views.actstream.FollowToggleView.as_view(),
