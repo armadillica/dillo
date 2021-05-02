@@ -34,7 +34,9 @@
 
       .comment-item:not(.comment-form-container)
         @extend %reply-timeline
-        +margin(5, left)
+
+        +media-tablet
+          +margin(5, left)
 
         // Seems %placeholders don't support CSS
         // variables, so add them here manually.
@@ -53,6 +55,15 @@
     +media-tablet
       .btn-toolbar-row
         opacity: 1
+
+  &.has-replies
+    @extend %reply-timeline
+
+    &:before
+      top: var(--avatar-size)
+
+      +media-tablet
+        display: none
 
   &.isAuthor
     > .comment-body
@@ -90,8 +101,7 @@
 
 // Contains the comment header (author, date), content, and actions (like, reply).
 .comment-body
-  +padding(3, x)
-  +padding(2, y)
+  +padding(2)
   background-color: var(--background-tertiary)
   border-radius: var(--border-radius-lg)
   border-top-left-radius: var(--border-radius-sm)
@@ -99,6 +109,9 @@
   flex: 1
   flex-direction: column
   transition: box-shadow ease-in-out var(--transition-speed)
+
+  +media-tablet
+    +padding(3, x)
 
   textarea
     background-color: var(--background-tertiary)
@@ -262,17 +275,19 @@
 
 
 .comments-list-container
-  +margin(4, x)
-  +margin(3, bottom)
-  +padding(4)
+  +padding(3)
   margin-top: -1rem
   padding-top: 2rem
   position: relative
 
+  +media-tablet
+    +margin(3, bottom)
+    +margin(4, x)
+    +padding(4)
+
+  // Background 'card' for the comments container.
   &:before
     background-color: var(--background-secondary)
-    border-bottom-left-radius: var(--border-radius-lg)
-    border-bottom-right-radius: var(--border-radius-lg)
     bottom: 0
     content: ''
     left: 0
@@ -280,6 +295,10 @@
     right: 0
     top: 0
     z-index: -1
+
+    +media-tablet
+      border-bottom-left-radius: var(--border-radius-lg)
+      border-bottom-right-radius: var(--border-radius-lg)
 
   .comments-container+.comments-container
     +margin(3, top)

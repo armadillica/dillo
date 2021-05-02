@@ -1,32 +1,37 @@
 .notifications-container
   background-color: var(--notifications-background)
-  border: var(--border-width) solid var(--background-tertiary)
-  border-radius: var(--border-radius-lg)
-  box-shadow: var(--box-shadow-lg), var(--box-shadow-lg)
-  max-height: 90vh
-  max-width: 680px
+  height: calc(100vh - var(--header-height) - var(--footer-height))
   position: fixed
-  right: $spacer
-  top: 4.5rem
-  width: 45vw
+  right: 0
+  top: calc(-100vh + calc(var(--header-height) + var(--footer-height)))
+  width: 100vw
   z-index: var(--zindex-popover)
+
+  +media-tablet
+    border: var(--border-width) solid var(--background-tertiary)
+    border-radius: var(--border-radius-lg)
+    box-shadow: var(--box-shadow-lg), var(--box-shadow-lg)
+    max-height: 90vh
+    max-width: 680px
+    right: $spacer
+    top: 4.5rem
+    width: 45vw
+
+    &:before
+      background-color: var(--notifications-background)
+      border: var(--border-width) var(--border-color) solid
+      border-radius: var(--border-radius-sm)
+      content: ''
+      display: block
+      height: $spacer
+      position: absolute
+      right: $spacer * 4.333
+      top: ($spacer * -1) / 2
+      transform: rotate(45deg)
+      width: $spacer
 
   &.active
     display: block
-
-  &:before
-    background-color: var(--notifications-background)
-    border: var(--border-width) var(--border-color) solid
-    border-radius: var(--border-radius-sm)
-    content: ''
-    display: block
-    height: $spacer
-    position: absolute
-    right: $spacer * 4.333
-    top: ($spacer * -1) / 2
-    transform: rotate(45deg)
-    width: $spacer
-
 
 .notifications-header
   align-items: center
