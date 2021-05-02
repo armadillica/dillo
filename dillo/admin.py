@@ -74,13 +74,23 @@ class CommunityAdmin(admin.ModelAdmin):
 @admin.register(dillo.models.posts.Post)
 class PostAdmin(admin.ModelAdmin):
     actions = ['process_videos']
-    autocomplete_fields = ['media']
-    list_display = ('__str__', 'show_link', 'hash_id', 'status', 'created_at', 'updated_at')
+    list_per_page = 50
+    list_display = (
+        '__str__',
+        'user',
+        'community',
+        'show_link',
+        'status',
+        'created_at',
+        'updated_at',
+    )
+    list_filter = ('community', 'is_link', 'status')
     list_display_links = ('__str__',)
+    autocomplete_fields = ['media']
     readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
 
     def show_link(self, obj):
-        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
+        return mark_safe(f'<a href="{obj.get_absolute_url()}" target="_blank">{obj.hash_id}</a>')
 
     def process_videos(self, request, queryset):
         videos_processing = 0
