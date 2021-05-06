@@ -385,21 +385,18 @@ class AttachS3MediaToEntity(LoginRequiredMixin, FormView):
         move_blob_from_upload_to_storage(key)
 
         if mime_type.startswith('image'):
-            static_asset = StaticAsset.objects.create(
-                source=key, source_filename=name, source_type='image',
-            )
-            log.debug('Attaching image to unpublished entity %s' % entity.hash_id)
-            entity.media.add(static_asset)
-
+            source_type = 'image' if 'gif' not in mime_type else 'video'
         elif mime_type.startswith('video'):
-            static_asset = StaticAsset.objects.create(
-                source=key, source_filename=name, source_type='video',
-            )
-            log.debug('Attaching video to unpublished entity %s' % entity.hash_id)
-            entity.media.add(static_asset)
+            source_type = 'video'
         else:
             log.error('Unknown upload type %s' % mime_type)
             return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
+
+        static_asset = StaticAsset.objects.create(
+            source=key, source_filename=name, source_type=source_type,
+        )
+        log.debug('Attaching %s to unpublished entity %s' % (source_type, entity.hash_id))
+        entity.media.add(static_asset)
 
         return JsonResponse({'status': 'ok', 'entity_media_id': static_asset.id})
 
