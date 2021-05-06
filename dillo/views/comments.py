@@ -25,9 +25,7 @@ class CommentsListView(ListView):
     def get_queryset(self):
         return (
             Comment.objects.filter(
-                entity_content_type_id=self.kwargs['entity_content_type_id'],
-                entity_object_id=self.kwargs['entity_object_id'],
-                parent_comment_id__isnull=True,
+                post__hash_id=self.kwargs['hash_id'], parent_comment_id__isnull=True,
             )
             .prefetch_related('likes')
             .annotate(Count('likes'))
@@ -40,6 +38,18 @@ class CommentsListView(ListView):
 
 
 class ApiCommentsListView(CommentsListView):
+    def get_queryset(self):
+        return (
+            Comment.objects.filter(
+                entity_content_type_id=self.kwargs['entity_content_type_id'],
+                entity_object_id=self.kwargs['entity_object_id'],
+                parent_comment_id__isnull=True,
+            )
+            .prefetch_related('likes')
+            .annotate(Count('likes'))
+            .order_by('-likes__count', '-created_at')
+        )
+
     def get_paginate_by(self, queryset):
         return '10'
 
