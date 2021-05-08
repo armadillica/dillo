@@ -79,6 +79,9 @@ def compact_timesince(timesince):
 def compact_naturaltime(time):
     """Make naturaltime super compact."""
 
+    if not time:
+        return
+
     # e.g. 15 days, 3 hours -> 15d, 3h
     time = naturaltime(time)
     time = compact_timesince(time)
