@@ -96,7 +96,21 @@ class ApiCommentsListView(CommentsListView):
         for comment in context['comments']:
             # Serialize all objects
             comments.append(self.serialize_comment(comment))
-        return JsonResponse({'results': comments})
+
+        page_obj = context['page_obj']
+
+        url_next_page = None
+        if page_obj.has_next():
+            url_next_page = reverse(
+                'api-comments-list',
+                kwargs={
+                    'entity_content_type_id': self.kwargs['entity_content_type_id'],
+                    'entity_object_id': self.kwargs['entity_object_id'],
+                },
+            )
+            url_next_page += f"?page={page_obj.next_page_number()}"
+
+        return JsonResponse({'results': comments, 'urlApiCommentListViewNextPage': url_next_page})
 
 
 @require_POST
