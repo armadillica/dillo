@@ -12,7 +12,7 @@
   //- Username or Name.
   a.profile-name(
     class="{{ is_link_disabled }}",
-    href="{% url 'profile_details' user.username %}")
+    href="{% url 'profile-detail' user.username %}")
     span {% firstof user.profile.name user.username %}
     | {% if user.profile.name %}
     .username @{{ user.username }}

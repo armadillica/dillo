@@ -362,10 +362,6 @@ if settings.DEBUG:
 urlpatterns += [
     # Profile setup
     path('profile/setup/', dillo.views.users.profile.ProfileSetup.as_view(), name='profile_setup'),
-    # Profile URL
-    path(
-        '<username>/', dillo.views.users.profile.ProfileDetailView.as_view(), name='profile_details'
-    ),
     # User followers
     path(
         'e/followers/<int:user_id>',

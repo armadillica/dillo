@@ -10,7 +10,7 @@
 	.comment-body
 		.comment-header
 			a.comment-author(
-				href="{% url 'profile_details' comment.user.username %}",
+				href="{% url 'profile-detail' comment.user.username %}",
 				title="{{ comment.user.username }}")
 				| {{ comment.user.username }}
 			a.comment-date(

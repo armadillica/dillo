@@ -126,7 +126,7 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         return hostname
 
     def get_absolute_url(self):
-        return reverse('profile_details', kwargs={'username': self.user.username})
+        return reverse('profile-detail', kwargs={'username': self.user.username})
 
     @property
     def absolute_url(self) -> str:

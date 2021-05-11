@@ -26,7 +26,7 @@ li.post-container.post-is-feed.post-feed-transparent
     | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor %}
 
     a.post-author(
-      href="{% url 'profile_details' activity.actor.username %}",
+      href="{% url 'profile-detail' activity.actor.username %}",
       title="{{ activity.actor }}")
       span {{ activity.actor }}
 
@@ -69,7 +69,7 @@ li.post-container.post-is-feed.post-feed-transparent
     | {% include 'dillo/components/_profile_avatar.pug' with user=activity.actor %}
 
     a.post-author(
-      href="{% url 'profile_details' activity.actor.username %}",
+      href="{% url 'profile-detail' activity.actor.username %}",
       title="{{ activity.actor }}")
       span {{ activity.actor }}
 

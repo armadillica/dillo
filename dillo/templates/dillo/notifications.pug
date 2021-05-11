@@ -11,7 +11,7 @@ li.notification-item
 
 	.notification-text
 		//- Who
-		a(href="{% url 'profile_details' notification.action.actor.username %}")
+		a(href="{% url 'profile-detail' notification.action.actor.username %}")
 			| {{ notification.action.actor.username }}
 
 		//- What (liked, replied, started following)

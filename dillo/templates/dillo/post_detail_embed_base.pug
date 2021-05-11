@@ -34,7 +34,7 @@ section.post-view-info.col-scrollable
 
   | {% if related_posts %}
   .post-related-container
-    h3 More by #[a(href="{% url 'profile_details' post.user.username %}") {{ post.user.username }}]
+    h3 More by #[a(href="{% url 'profile-detail' post.user.username %}") {{ post.user.username }}]
 
     .post-related-posts
       | {% for related_post in related_posts %}

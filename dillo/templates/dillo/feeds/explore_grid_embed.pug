@@ -102,7 +102,7 @@ li.post-container
       | {% include 'dillo/components/_profile_avatar.pug' with user=activity.action_object.user size='small' %}
 
     .post-grid-info
-      a.post-author(href="{% url 'profile_details' activity.action_object.user.username %}")
+      a.post-author(href="{% url 'profile-detail' activity.action_object.user.username %}")
         span {{ activity.action_object.name }}
 
       .post-grid-meta

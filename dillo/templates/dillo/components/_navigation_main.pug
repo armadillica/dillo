@@ -131,7 +131,7 @@ nav.nav-primary-mobile
 		class="js-notifications-toggle notifications-toggle {% if notifications_count %}has-notifications{% endif %}")
 		i.i-bell
 	a.btn.btn-icon(
-		href="{% url 'profile_details' request.user.username %}",
+		href="{% url 'profile-detail' request.user.username %}",
 		class="{% if request.user.username in request.path_info %}active{% endif %}")
 		i.i-user
 	| {% else %}

@@ -15,7 +15,7 @@ a.dropdown-item.is-admin(href="/admin/dillo/event/", title='Events')
   | Events
 .dropdown-divider
 | {% endif %}
-a.dropdown-item(href="{% url 'profile_details' user.username %}", title='{% trans "Profile" %}')
+a.dropdown-item(href="{% url 'profile-detail' user.username %}", title='{% trans "Profile" %}')
   i.i-user
   | {% trans "Profile" %}
 a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')

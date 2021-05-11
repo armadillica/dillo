@@ -4,7 +4,7 @@
 	| {% include 'dillo/components/_profile_avatar.pug' with user=post.user %}
 
 	a.post-author(
-		href="{% url 'profile_details' post.user.username %}",
+		href="{% url 'profile-detail' post.user.username %}",
 		title="{{ post.user }}")
 		span {{ post.user }}
 

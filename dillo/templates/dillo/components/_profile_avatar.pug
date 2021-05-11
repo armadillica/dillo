@@ -4,7 +4,7 @@ a.profile-avatar-container(
 	class="{{ is_link_disabled }}",
 	data-placement="{% if tooltip %}{{ tooltip }}{% endif %}",
 	data-toggle="{% if tooltip %}tooltip{% endif %}",
-	href="{% url 'profile_details' user.username %}",
+	href="{% url 'profile-detail' user.username %}",
 	title="{{ user.username }}")
 	.profile-avatar(
 		class="{% if size %}avatar-size-{{ size }}{% endif %}")

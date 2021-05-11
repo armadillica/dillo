@@ -1,10 +1,10 @@
 .profile-list-item
   | {% include 'dillo/components/_profile_avatar.pug' with user=user_obj %}
 
-  a.profile-list-info(href="{% url 'profile_details' user_obj.username %}")
+  a.profile-list-info(href="{% url 'profile-detail' user_obj.username %}")
     .profile-list-title
       span {{ user_obj.profile.name }}
-    .profile-list-subtitle(href="{% url 'profile_details' user_obj.username %}")
+    .profile-list-subtitle(href="{% url 'profile-detail' user_obj.username %}")
       span @{{ user_obj.username }}
 
   .profile-list-action

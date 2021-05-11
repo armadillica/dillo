@@ -29,7 +29,7 @@ def mention_match_to_url(mention):
     mention = mention.group(0)
     if not User.objects.filter(username=mention[1:]).exists():
         return mention
-    mention_url = reverse('profile_details', kwargs={'username': mention[1:]})
+    mention_url = reverse('profile-detail', kwargs={'username': mention[1:]})
     return f'<a href="{mention_url}">{mention}</a>'
 
 

@@ -39,7 +39,7 @@ class ApiFeedNotificationsView(View):
                 'actor': {
                     'username': notification.action.actor.username,
                     'profileUrl': reverse(
-                        'profile_details', kwargs={'username': notification.action.actor.username}
+                        'profile-detail', kwargs={'username': notification.action.actor.username}
                     ),
                 },
                 'verb': notification.action.verb,
