@@ -237,12 +237,14 @@ class ApiResponseData:
     results: list = field(default_factory=list)
     count: int = 0
     next_page_number: int = None
+    url_next_page: str = None
 
     def serialize(self) -> dict:
         return {
             'results': self.results,
             'count': self.count,
             'nextPageNumber': self.next_page_number,
+            'urlNextPage': self.url_next_page,
         }
 
 
