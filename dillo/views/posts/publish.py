@@ -395,10 +395,13 @@ class AttachS3MediaToEntity(LoginRequiredMixin, FormView):
         static_asset = StaticAsset.objects.create(
             source=key, source_filename=name, source_type=source_type,
         )
+        static_asset.refresh_from_db()
         log.debug('Attaching %s to unpublished entity %s' % (source_type, entity.hash_id))
         entity.media.add(static_asset)
 
-        return JsonResponse({'status': 'ok', 'entity_media_id': static_asset.id})
+        return JsonResponse(
+            {'status': 'ok', 'entity_media_id': static_asset.id, 'hashId': static_asset.hash_id}
+        )
 
     def form_valid(self, form):
         content_type = ContentType.objects.get_for_id(form.cleaned_data['content_type_id'])
