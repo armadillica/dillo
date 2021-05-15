@@ -181,6 +181,11 @@ urlpatterns += [
         dillo.views.likes.LikesListEmbed.as_view(),
         name='embed_likes_list',
     ),
+    path(
+        'api/likes/<int:content_type_id>/<int:object_id>',
+        dillo.views.likes.ApiUserListLiked.as_view(),
+        name='api-user-list-liked',
+    ),
     # Video stats
     path(
         'v/<int:video_id>',
