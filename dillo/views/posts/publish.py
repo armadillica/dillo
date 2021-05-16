@@ -24,6 +24,7 @@ from dillo.models.static_assets import StaticAsset, Video, Image
 from dillo.models.mixins import get_upload_to_hashed_path
 from dillo.tasks.files import move_blob_from_upload_to_storage
 from dillo.coconut import events
+from dillo.templatetags.dillo_filters import compact_number
 
 log = logging.getLogger(__name__)
 
@@ -230,6 +231,7 @@ def api_get_unpublished_uploads(request, content_type_id, hash_id):
             {
                 'name': entity_media.source_filename,
                 'size': entity_media.source.size,
+                'size_label': compact_number(entity_media.source.size),
                 'url': entity_media.source.url,
                 'entity_media_id': entity_media.id,
                 'hash_id': entity_media.hash_id,

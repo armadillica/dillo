@@ -3,6 +3,7 @@
 
 <div id="uppy-drop-area" class="entity-drop-area"></div>
 <div id="uppy-drop-area-progress"></div>
+
 {% verbatim %}
 <div class="entity-media-list" v-if="media.length">
   <label>Post Media:</label>
@@ -12,7 +13,7 @@
             class="media-list-item-label"
             @click="copyToClipboardAndAppend('id_content', '{media ' + static_asset.hash_id + '}')"
             title="Append embed code to the post">
-            <span>{{ static_asset.hash_id }}</span> {{ static_asset.name }}
+            <span>{{ static_asset.hash_id }}</span> {{ static_asset.name }} ~{{ static_asset.size_label }}
         </div>
         <div class="btn-toolbar-row">
           <div class="btn btn-sm"
@@ -31,4 +32,3 @@
   </ul>
 </div>
 {% endverbatim %}
-
