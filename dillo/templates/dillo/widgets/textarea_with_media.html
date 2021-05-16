@@ -12,7 +12,7 @@
             class="media-list-item-label"
             @click="copyToClipboardAndAppend('id_content', '{media ' + static_asset.hash_id + '}')"
             title="Append embed code to the post">
-            {media {{ static_asset.hash_id }}} <span>{{ static_asset.name }}</span>
+            <span>{{ static_asset.hash_id }}</span> {{ static_asset.name }}
         </div>
         <div class="btn-toolbar-row">
           <div class="btn btn-sm"
