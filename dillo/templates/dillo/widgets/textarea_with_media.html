@@ -4,18 +4,28 @@
 <div id="uppy-drop-area" class="entity-drop-area"></div>
 <div id="uppy-drop-area-progress"></div>
 {% verbatim %}
-<div class="entity-media-list">
-  <label v-if="media.length">Post Media:</label>
+<div class="entity-media-list" v-if="media.length">
+  <label>Post Media:</label>
   <ul>
     <li v-for="static_asset in media">
-        <div class="btn btn-info btn-sm"
-             v-if="static_asset.hash_id"
-             @click="copyToClipboard('{media ' + static_asset.hash_id + '}')">
-            <span><i class="i-copy"></i> <span>Copy Embed Code</span></span>
-        </div> [{{ static_asset.hash_id }}] {{ static_asset.name }}
-        <div class="btn btn-danger btn-sm"
-             @click="removeMedia(static_asset.entity_media_id)">
-          <span>Delete</span>
+        <div
+            class="media-list-item-label"
+            @click="copyToClipboardAndAppend('id_content', '{media ' + static_asset.hash_id + '}')"
+            title="Append embed code to the post">
+            {media {{ static_asset.hash_id }}} <span>{{ static_asset.name }}</span>
+        </div>
+        <div class="btn-toolbar-row">
+          <div class="btn btn-sm"
+              v-if="static_asset.hash_id"
+              @click="copyToClipboardAndAppend('id_content', '{media ' + static_asset.hash_id + '}')"
+              title="Append embed code to the post">
+              <span><i class="i-copy"></i></span>
+          </div>
+          <div class="btn btn-danger btn-sm"
+              @click="removeMedia(static_asset.entity_media_id, static_asset.name)"
+              title="Delete Media">
+            <span><i class="i-trash"></i></span>
+          </div>
         </div>
     </li>
   </ul>
