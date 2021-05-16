@@ -174,6 +174,7 @@ DATABASES = {
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
 MEDIA_UPLOADS_ACCEPTED_MIMES = {
+    'image/gif',
     'image/png',
     'image/jpeg',
     'video/mp4',
