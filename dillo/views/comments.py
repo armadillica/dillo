@@ -11,7 +11,7 @@ from django.views.generic import ListView
 
 from dillo import forms
 from dillo.models.comments import Comment
-from dillo.templatetags.dillo_filters import markdown_with_shortcodes
+from dillo.templatetags.dillo_filters import markdown_with_parsed_tags_and_shortcodes
 from dillo.templatetags.dillo_filters import compact_naturaltime
 from dillo.markdown import sanitize
 
@@ -63,7 +63,7 @@ class ApiCommentsListView(CommentsListView):
                 'avatar': None,
                 'badges': comment.user.profile.serialized_badges,
             },
-            'content': markdown_with_shortcodes(comment.content),
+            'content': markdown_with_parsed_tags_and_shortcodes(comment.content),
             'dateCreated': comment.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
             'naturalCreationTime': compact_naturaltime(comment.created_at),
             'likesCount': comment.likes.count(),
@@ -168,4 +168,4 @@ def comment_edit(request, comment_id):
     comment.content = content
     comment.save()
 
-    return JsonResponse({'content': markdown_with_shortcodes(comment.content)})
+    return JsonResponse({'content': markdown_with_parsed_tags_and_shortcodes(comment.content)})
