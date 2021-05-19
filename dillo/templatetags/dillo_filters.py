@@ -7,6 +7,9 @@ from django.utils.html import mark_safe, escape
 from django.template.defaultfilters import stringfilter
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
+from bleach import linkify
+from bs4 import BeautifulSoup
+
 from dillo.shortcodes import render as shortcode_render
 from dillo.markdown import render as markdown_render
 import dillo.models.posts
@@ -135,5 +138,39 @@ def is_bookmarked(value, user: User):
 
 
 @register.filter
+def add_nofollow(markup):
+    """Add rel="nofollow" to <a> tags"""
+    return linkify(markup)
+
+
+def add_class_to_tag(markup, tag_type, classes):
+    """Add classes to specific tags"""
+    soup = BeautifulSoup(markup, "html.parser")
+    elements = soup.find_all(tag_type)
+
+    for el in elements:
+        el['class'] = el.get('class', []) + [classes]
+
+    return soup.prettify(soup.original_encoding)
+
+
+@register.filter
+def make_images_expandable(markup):
+    """Mark <img> tags as expandable"""
+    classes = 'media-embed-image expand js-media-expand'
+    return add_class_to_tag(markup, 'img', classes)
+
+
+@register.filter
 def markdown_with_shortcodes(value):
     return shortcode_render(markdown_render(value))
+
+
+@register.filter
+def markdown_with_parsed_tags_and_shortcodes(value):
+    """Same as markdown_with_shortcodes with special parsing"""
+    markup = shortcode_render(markdown_render(value))
+    markup = add_nofollow(markup)
+    markup = make_images_expandable(markup)
+
+    return markup
