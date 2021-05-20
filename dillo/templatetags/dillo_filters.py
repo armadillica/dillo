@@ -7,7 +7,8 @@ from django.utils.html import mark_safe, escape
 from django.template.defaultfilters import stringfilter
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from bleach import linkify
+from bleach import linkifier
+from bleach.linkifier import build_url_re
 from bs4 import BeautifulSoup
 
 from dillo.shortcodes import render as shortcode_render
@@ -137,10 +138,26 @@ def is_bookmarked(value, user: User):
     return value.is_bookmarked(user)
 
 
-@register.filter
-def add_nofollow(markup):
-    """Add rel="nofollow" to <a> tags"""
-    return linkify(markup)
+def add_missing_tld(markup):
+    """Add missing top-level domains to linkfify.
+
+    Workaround from https://github.com/mozilla/bleach/issues/519"""
+
+    tlds = linkifier.TLDS
+    tlds.append(u'chat')
+    tlds.append(u'cloud')
+    tlds.append(u'community')
+    tlds.append(u'fund')
+    tlds.append(u'today')
+
+    improved_url_re = build_url_re(tlds=tlds)
+    linker = linkifier.Linker(url_re=improved_url_re)
+    return linker.linkify(markup)
+
+
+def parse_links(markup):
+    """Parse to add rel='nofollow' and include missing TLDs to linkify"""
+    return add_missing_tld(markup)
 
 
 def add_class_to_tag(markup, tag_type, classes):
@@ -170,7 +187,7 @@ def markdown_with_shortcodes(value):
 def markdown_with_parsed_tags_and_shortcodes(value):
     """Same as markdown_with_shortcodes with special parsing"""
     markup = shortcode_render(markdown_render(value))
-    markup = add_nofollow(markup)
+    markup = parse_links(markup)
     markup = make_images_expandable(markup)
 
     return markup
