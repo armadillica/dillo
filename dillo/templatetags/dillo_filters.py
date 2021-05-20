@@ -138,11 +138,11 @@ def is_bookmarked(value, user: User):
     return value.is_bookmarked(user)
 
 
-def add_missing_tld(markup):
-    """Add missing top-level domains to linkfify.
+def parse_links(markup):
+    """Parse to add target, nofollow, and include missing TLDs"""
 
-    Workaround from https://github.com/mozilla/bleach/issues/519"""
-
+    # Add missing top-level domains to linkfify.
+    # Workaround from https://github.com/mozilla/bleach/issues/519
     tlds = linkifier.TLDS
     tlds.append(u'chat')
     tlds.append(u'cloud')
@@ -151,13 +151,18 @@ def add_missing_tld(markup):
     tlds.append(u'today')
 
     improved_url_re = build_url_re(tlds=tlds)
-    linker = linkifier.Linker(url_re=improved_url_re)
+
+    def set_target(attrs, new=False):
+        p = urllib.parse.urlparse(attrs[(None, 'href')])
+        # TODO: get URL from request to figure out if it's an internal link.
+        if p.netloc not in ['blender.community']:
+            attrs[(None, 'target')] = '_blank'
+            attrs[(None, 'rel')] = 'nofollow'
+            attrs[(None, 'class')] = 'external'
+        return attrs
+
+    linker = linkifier.Linker(url_re=improved_url_re, callbacks=[set_target])
     return linker.linkify(markup)
-
-
-def parse_links(markup):
-    """Parse to add rel='nofollow' and include missing TLDs to linkify"""
-    return add_missing_tld(markup)
 
 
 def add_class_to_tag(markup, tag_type, classes):
