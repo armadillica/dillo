@@ -7,7 +7,7 @@
 | {% for brand in provider.get_brands %}
 
 li
-  a(title="{{ brand.name }}",
+  a.btn(title="{{ brand.name }}",
     class="social-provider {{provider.id}} {{brand.id}}",
     href="{% provider_login_url provider.id openid=brand.openid_url process=process %}")
     span
@@ -16,9 +16,10 @@ li
 | {% endfor %}
 | {% endif %}
 li
-  a(title="{{ provider.name }}",
+  a.btn-secondary(title="{{ provider.name }}",
     class="social-provider {{ provider.id }} btn btn-social-{{ provider.id }} btn-block",
     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}")
     span
       i(class="i-{{ provider.id }}")
+      span {{ provider.name }}
 | {% endfor %}

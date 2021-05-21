@@ -46,6 +46,14 @@
 						span Notifications
 
 				a.btn(
+					href="{% url 'socialaccount_connections' %}",
+					class="{% if request.path == '/accounts/social/connections/'%}active{% endif %}",
+				)
+					span
+						i.i-link
+						span Connections
+
+				a.btn(
 					href="{% url 'account_settings' %}",
 					class="{% if request.path == '/accounts/settings/'%}active{% endif %}",
 				)
