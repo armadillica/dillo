@@ -34,6 +34,12 @@ class ApiFeedNotificationsView(View):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         r.next_page_number = None if not page_obj.has_next() else page_obj.next_page_number()
+        # If one more page is available, build a url to query it
+        r.url_next_page = (
+            None
+            if not page_obj.has_next()
+            else f"{reverse('api-notifications')}?page={page_obj.next_page_number()}"
+        )
         for notification in page_obj.object_list:
             n = {
                 'actor': {
