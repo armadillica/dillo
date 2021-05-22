@@ -158,7 +158,7 @@ def parse_links(markup):
         if p.netloc not in ['blender.community']:
             attrs[(None, 'target')] = '_blank'
             attrs[(None, 'rel')] = 'nofollow'
-            attrs[(None, 'class')] = 'external'
+            attrs[(None, 'class')] = 'is-external'
         return attrs
 
     linker = linkifier.Linker(url_re=improved_url_re, callbacks=[set_target])
