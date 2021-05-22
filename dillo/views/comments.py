@@ -159,7 +159,7 @@ def comment_delete(request, comment_id):
 def comment_edit(request, comment_id):
     """Edit a comment."""
     comment = get_object_or_404(Comment, pk=comment_id)
-    if request.user != comment.user:
+    if request.user != comment.user and not request.user.is_staff:
         return JsonResponse({'error': 'Not allowed to edit this comment.'}, status=422)
 
     content = request.POST['content']
