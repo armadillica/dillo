@@ -64,6 +64,7 @@ class ApiCommentsListView(CommentsListView):
                 'badges': comment.user.profile.serialized_badges,
             },
             'content': markdown_with_parsed_tags_and_shortcodes(comment.content),
+            'contentRaw': comment.content,
             'dateCreated': comment.created_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
             'naturalCreationTime': compact_naturaltime(comment.created_at),
             'likesCount': comment.likes.count(),
