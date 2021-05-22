@@ -160,8 +160,14 @@
   ul, ol
     margin-bottom: var(--spacer)
 
+    li
+      +margin(1, bottom)
+
   img
     +margin(3, y)
+
+  blockquote
+    box-shadow: inset 5px 0 0 0 var(--background-primary)
 
 .comment-actions
   .btn-toolbar-row
