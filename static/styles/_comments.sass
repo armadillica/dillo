@@ -56,6 +56,10 @@
       .btn-toolbar-row
         opacity: 1
 
+  .comment-item
+    .btn-comment-cancel
+      display: initial
+
   &.has-replies
     @extend %reply-timeline
 
@@ -202,7 +206,10 @@
   padding-top: 0
 
   .comment-avatar
-    +margin(3, top)
+    +margin(2, top)
+
+  .profile-avatar
+    background-color: var(--background-primary)
 
   .comment-body
     background-color: initial
@@ -238,6 +245,11 @@
 
   .btn-comment
     @extend %btn-secondary
+
+  .btn-comment-cancel
+    @extend %btn-link
+    display: none // only show when inside
+
 
 // Shows the "Login to comment" button.
 .comment-form-login
