@@ -305,7 +305,7 @@ class NotificationViewsTest(TestViewsMixin):
         self.assertEqual(len(response.context['notifications']), 1)
 
     def test_mark_as_read(self):
-        mark_as_read_url = reverse('notifications-mark-as-read')
+        mark_as_read_url = reverse('api-notifications-mark-all-as-read')
         # Ensure that anonymous access is not allowed
         response = self.client.post(mark_as_read_url)
         self.assertEqual(response.status_code, 302)

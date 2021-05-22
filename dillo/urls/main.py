@@ -305,9 +305,9 @@ urlpatterns += [
         name='api-notifications',
     ),
     path(
-        'feed/notifications/mark-as-read',
+        'api/feed/notifications/mark-all-as-read',
         dillo.views.users.notifications.NotificationsMarkAsReadView.as_view(),
-        name='notifications-mark-as-read',
+        name='api-notifications-mark-all-as-read',
     ),
     path(
         'accounts/notifications',
