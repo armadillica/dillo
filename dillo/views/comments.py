@@ -75,6 +75,7 @@ class ApiCommentsListView(CommentsListView):
             'likeToggleUrl': comment.like_toggle_url,
             'deleteUrl': reverse('comment_delete', kwargs={'comment_id': comment.id}),
             'editUrl': reverse('comment_edit', kwargs={'comment_id': comment.id}),
+            'editAdminUrl': reverse('admin:dillo_comment_change', args=[comment.id]),
             'parentCommentId': (None if not comment.parent_comment else comment.parent_comment.id),
         }
 
