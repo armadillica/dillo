@@ -95,7 +95,8 @@
         +make-disabled
 
     .comment-form textarea
-      padding-right: 12rem
+      +padding(2, left)
+      padding-right: 13rem
 
 .comment-avatar
   +margin(2, right)
@@ -158,7 +159,7 @@
   +content-generic
   +padding(2, left)
   +padding(1, y)
-  font-size: var(--font-size-sm)
+  font-size: var(--comment-content-font-size)
   line-height: 21px
 
   ul, ol
@@ -229,6 +230,7 @@
   textarea
     background-color: var(--background-page)
     border-top-left-radius: var(--border-radius-sm)
+    font-size: var(--comment-content-font-size)
     min-height: 3.5rem
     min-width: 100%
     padding-right: 8rem // make room for the 'Comment' button.
