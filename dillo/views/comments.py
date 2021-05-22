@@ -170,4 +170,9 @@ def comment_edit(request, comment_id):
     comment.content = content
     comment.save()
 
-    return JsonResponse({'content': markdown_with_parsed_tags_and_shortcodes(comment.content)})
+    return JsonResponse(
+        {
+            'content': markdown_with_parsed_tags_and_shortcodes(comment.content),
+            'contentRaw': comment.content
+        }
+    )
