@@ -1,6 +1,5 @@
 .notifications-container
   background-color: var(--notifications-background)
-  min-height: 300px
   max-height: calc(100vh - var(--header-height) - var(--footer-height))
   position: fixed
   right: 0
@@ -9,10 +8,8 @@
   z-index: var(--zindex-popover)
 
   +media-tablet
-    border: var(--border-width) solid var(--background-tertiary)
     border-radius: var(--border-radius-lg)
     box-shadow: var(--box-shadow-lg), var(--box-shadow-lg)
-    min-height: 350px
     max-height: 60vh
     max-width: 680px
     right: $spacer
@@ -21,7 +18,7 @@
 
     &:before
       background-color: var(--notifications-background)
-      border: var(--border-width) var(--border-color) solid
+      border: var(--border-width) var(--notifications-background) solid
       border-radius: var(--border-radius-sm)
       content: ''
       display: block
@@ -47,7 +44,7 @@
 
 
 .notifications-content
-  max-height: 75vh
+  max-height: 47vh
   overflow-y: auto
 
   > ul
