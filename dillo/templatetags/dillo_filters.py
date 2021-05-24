@@ -254,7 +254,7 @@ def parse_links(markup):
     skip_tags = ['code', 'pre']
     linker = linkifier.Linker(url_re=improved_url_re, callbacks=[set_target], skip_tags=skip_tags)
     markup = linker.linkify(markup)
-    markup = parse_phabricator_tasks(markup)
+    # markup = parse_phabricator_tasks(markup)
     markup = clean_url_path(markup)
 
     return markup
