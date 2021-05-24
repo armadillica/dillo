@@ -25,7 +25,7 @@ class Job(Entity):
     software = models.CharField(max_length=256, blank=True)
     level = models.CharField(max_length=128, blank=True)
     starts_at = models.DateField('starts at', blank=True, null=True)
-    notes = models.TextField(null=True)
+    notes = models.TextField(null=True, blank=True)
     image = models.ImageField(
         upload_to=get_upload_to_hashed_path,
         blank=True,
