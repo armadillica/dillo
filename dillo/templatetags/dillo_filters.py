@@ -120,6 +120,27 @@ def website_hostname(url):
     return hostname
 
 
+def clean_url_path(markup):
+    """Look for <a> tags and replace the inner text with the URL path without scheme.
+    For example: https://blender.org/download -> blender.org/download
+    """
+
+    soup = BeautifulSoup(markup, "html.parser")
+    elements = soup.find_all('a')
+
+    for url in elements:
+        url_href = url.get('href')
+        if url.string:
+            url_string = url.string.replace('\n', '').replace(' ', '')
+
+            # Only clean links where the URL matches the string, without custom text inside.
+            if url_string == url_href:
+                url_parse = urllib.parse.urlparse(url_href)
+                path = '{0}{1}'.format(url_parse.netloc.replace("www.", ""), url_parse.path)
+                url.string.replace_with(path)
+    return soup.prettify(soup.original_encoding)
+
+
 @register.filter
 def is_liked(value, user: User):
     """Check if an item was liked by the current user."""
@@ -234,6 +255,7 @@ def parse_links(markup):
     linker = linkifier.Linker(url_re=improved_url_re, callbacks=[set_target], skip_tags=skip_tags)
     markup = linker.linkify(markup)
     markup = parse_phabricator_tasks(markup)
+    markup = clean_url_path(markup)
 
     return markup
 
