@@ -77,6 +77,10 @@ class ApiCommentsListView(CommentsListView):
             'editUrl': reverse('comment_edit', kwargs={'comment_id': comment.id}),
             'editAdminUrl': reverse('admin:dillo_comment_change', args=[comment.id]),
             'parentCommentId': (None if not comment.parent_comment else comment.parent_comment.id),
+            'urlReport': reverse(
+                'report_content',
+                kwargs={'content_type_id': comment.content_type_id, 'object_id': comment.id},
+            ),
         }
 
         # Generate thumbnail for user, if available
@@ -173,6 +177,6 @@ def comment_edit(request, comment_id):
     return JsonResponse(
         {
             'content': markdown_with_parsed_tags_and_shortcodes(comment.content),
-            'contentRaw': comment.content
+            'contentRaw': comment.content,
         }
     )
