@@ -23,6 +23,7 @@ import dillo.models.newsletter
 import dillo.models.communities
 import dillo.models.software
 import dillo.models.static_assets
+import dillo.models.jobs
 
 log = logging.getLogger(__name__)
 
@@ -114,6 +115,16 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'visibility', 'show_link')
     exclude = ('image_height', 'image_width', 'attendees')
     prepopulated_fields = {'slug': ('name',)}
+
+    def show_link(self, obj):
+        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
+
+
+@admin.register(dillo.models.jobs.Job)
+class JobAdmin(admin.ModelAdmin):
+    list_display = ('title', 'visibility', 'show_link')
+    autocomplete_fields = ['user']
+    exclude = ('image_height', 'image_width')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
