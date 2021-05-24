@@ -1,6 +1,8 @@
 import re
+import requests
 import urllib.parse
 from django import template
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.html import mark_safe, escape
@@ -138,6 +140,73 @@ def is_bookmarked(value, user: User):
     return value.is_bookmarked(user)
 
 
+def add_class_to_tag(markup, tag_type, classes):
+    """Find specific tags in the markup and add classes to them."""
+    soup = BeautifulSoup(markup, "html.parser")
+    elements = soup.find_all(tag_type)
+
+    for el in elements:
+        el['class'] = el.get('class', []) + [classes]
+
+    return soup.prettify(soup.original_encoding)
+
+
+def parse_phabricator_tasks(markup):
+    """Look for phabricator tasks/diffs and retrieve their name and status."""
+    soup = BeautifulSoup(markup, "html.parser")
+    dbo = soup.find_all('a', {'href': re.compile(r'\/developer.blender.org\/[T+D]+([0-9]{1,6})*')})
+
+    for url in dbo:
+        parse_url = urllib.parse.urlparse(url.get('href'))
+        path = parse_url.path
+        ob_id = str(path[2:])
+
+        # Parse tasks.
+        if path.startswith('/T'):
+            query_url = 'https://developer.blender.org/api/maniphest.info'
+            data = {
+            'api.token': settings.PHABRICATOR_API_TOKEN,
+            'task_id': ob_id
+            }
+
+            try:
+                response = requests.post(query_url, data=data)
+                r = response.json()
+                r = r['result']
+
+                if r:
+                    title = '{0}: {1} [{2}]'.format(r['objectName'], r['title'], r['statusName'])
+                    url.string = title
+                    status = 'is-status-closed' if r['isClosed'] else 'is-status-{0}'.format(r['status'])
+                    url['class'] = url.get('class', []) + ['is-blender-developer is-external-special', status]
+            except requests.exceptions.RequestException:
+                continue
+
+        # Parse diffs.
+        if path.startswith('/D'):
+            query_url = 'https://developer.blender.org/api/differential.query'
+            data = {
+            'api.token': settings.PHABRICATOR_API_TOKEN,
+            'ids[0]': ob_id
+            }
+
+            try:
+                response = requests.post(query_url, data=data)
+                r = response.json()
+                r = r['result']
+
+                if r and r[0]:
+                    r = r[0]
+                    title = 'D{0}: {1} [{2}]'.format(r['id'], r['title'], r['statusName'])
+                    url.string = title
+                    status = 'is-status-{0}'.format(r['status'])
+                    url['class'] = url.get('class', []) + ['is-blender-developer is-external-special', status]
+            except requests.exceptions.RequestException:
+                continue
+
+    return soup.prettify(soup.original_encoding)
+
+
 def parse_links(markup):
     """Parse to add target, nofollow, and include missing TLDs"""
 
@@ -161,19 +230,12 @@ def parse_links(markup):
             attrs[(None, 'class')] = 'is-external'
         return attrs
 
-    linker = linkifier.Linker(url_re=improved_url_re, callbacks=[set_target])
-    return linker.linkify(markup)
+    skip_tags = ['code', 'pre']
+    linker = linkifier.Linker(url_re=improved_url_re, callbacks=[set_target], skip_tags=skip_tags)
+    markup = linker.linkify(markup)
+    markup = parse_phabricator_tasks(markup)
 
-
-def add_class_to_tag(markup, tag_type, classes):
-    """Add classes to specific tags"""
-    soup = BeautifulSoup(markup, "html.parser")
-    elements = soup.find_all(tag_type)
-
-    for el in elements:
-        el['class'] = el.get('class', []) + [classes]
-
-    return soup.prettify(soup.original_encoding)
+    return markup
 
 
 @register.filter
