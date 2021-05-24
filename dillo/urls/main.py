@@ -26,7 +26,6 @@ import dillo.views.explore
 
 # User Pages
 urlpatterns = [
-    path('', dillo.views.users.homepage.HomepageRouter.as_view(), name='homepage'),
     # Embedded Activities Feed
     # path('explore/', dillo.views.explore.ExplorePostsView.as_view(), name='explore')
     path('feed/', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
