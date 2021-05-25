@@ -36,6 +36,7 @@ class JobCreateView(LoginRequiredMixin, CreateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['starts_at'].widget = forms.TextInput(attrs={'type': 'date'})
+        form.fields['title'].widget = forms.TextInput()
         return form
 
     def form_valid(self, form):
@@ -64,6 +65,12 @@ class JobUpdateView(LoginRequiredMixin, UpdateView):
         'studio_website',
         'starts_at',
     ]
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['starts_at'].widget = forms.TextInput(attrs={'type': 'date'})
+        form.fields['title'].widget = forms.TextInput()
+        return form
 
     def dispatch(self, request, *args, **kwargs):
         """Ensure that only owners can update the short."""
