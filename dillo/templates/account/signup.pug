@@ -31,8 +31,8 @@
 			input(type='hidden', name='{{ redirect_field_name }}', value='{{ redirect_field_value }}')
 			|   {% endif %}
 
-			small.
-				By pressing the Sign Up button, I accept the #[a(href="{% url 'terms' %}") terms and conditions].
+			.form-tip
+				small By pressing the Sign Up button, I accept the #[a(href="{% url 'terms' %}") terms and conditions].
 
 			.card-cta
 				button.btn.btn-primary.btn-block(type='submit')
