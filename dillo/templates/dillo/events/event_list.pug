@@ -59,14 +59,11 @@
 
 .sidebar-block
 	| {% if request.user.is_authenticated %}
-
-	| {% url 'contact' as content_url %}
-	| {% trans 'Suggest Event' as btn_modal_label %}
-	| {% include 'dillo/components/_button_modal_open.pug' with url=content_url label=btn_modal_label class='btn-primary' %}
-
+	a.btn.btn-primary.btn-sidebar(href="{% url 'event-create' %}")
+		span {% trans "Submit Event" %}
 	| {% else %}
 	a.btn.btn-primary.btn-sidebar(href="{% url 'account_login' %}")
-		span {% trans "Suggest Event" %}
+		span {% trans "Submit Event" %}
 	| {% endif %}
 
 //- TODO: Filters for events.
