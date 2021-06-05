@@ -56,10 +56,10 @@ def default_og_data(_):
     """
     return {
         'og_data_default': OgData(
-            title='anima.to',
-            description='Connecting animators frame by frame.',
+            title=settings.SITE_TITLE,
+            description=settings.SITE_DESCRIPTION,
             image_field=None,
-            image_alt='anima.to',
+            image_alt=settings.SITE_TITLE,
         )
     }
 

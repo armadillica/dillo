@@ -174,7 +174,7 @@ class OgData:
 
     def make_thumbnail_url(self, image_field):
         if not image_field:
-            return f"{settings.STATIC_URL}images/animato.png"
+            return f"{settings.STATIC_URL}images/social.png"
         thumbnail = get_thumbnail(image_field, '1280x720', crop='center', quality=80)
         return thumbnail.url
 
