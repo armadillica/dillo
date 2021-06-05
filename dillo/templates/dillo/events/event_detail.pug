@@ -26,19 +26,27 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 
 | {% block stream %}
 .event-container.card
-	.event-header(class="{% if event.image %}with-cover{% endif %}")
-
+	.event-header
 		| {% thumbnail event.image "1280" crop="center" as im %}
+		| {% if event.website %}
+		a.event-cover(href="{{ event.website }}")
+			img(
+				src="{{ im.url }}",
+				width="{{ im.width }}",
+				height="{{ im.height }}",
+				alt="{{ event.name }}")
+		| {% else %}
 		.event-cover
 			img(
 				src="{{ im.url }}",
 				width="{{ im.width }}",
 				height="{{ im.height }}",
 				alt="{{ event.name }}")
+		| {% endif %}
 		| {% endthumbnail %}
 
 	.card-body
-		.lead {{ event.description | markdown_with_shortcodes | safe  }}
+		| {{ event.description | markdown_with_shortcodes | safe  }}
 | {% endblock stream %}
 
 

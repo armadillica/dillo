@@ -9,7 +9,7 @@
 | {% block content_card %}
 form.card(method="post", enctype="multipart/form-data")
   .card-header
-    h1 {% trans 'Post an Event' %}
+    h1 {% trans 'Create an Event' %}
   .card-body
     | {% csrf_token %}
     | {{ form | crispy }}
