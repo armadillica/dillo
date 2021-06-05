@@ -2,6 +2,7 @@ import logging
 import datetime
 
 from django import forms
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import SuspiciousOperation
 from django.http import JsonResponse
@@ -64,7 +65,7 @@ class EventListView(ListView):
 
     def get_queryset(self):
         # Show only events that happened yesterday, today or in the future
-        yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+        yesterday = timezone.now() - datetime.timedelta(days=1)
         return Event.objects.filter(starts_at__gte=yesterday, visibility='public').order_by(
             'starts_at'
         )
