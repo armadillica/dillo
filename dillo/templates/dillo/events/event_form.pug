@@ -1,0 +1,20 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+| {% block page_title %}
+| {% trans 'Submit an Event' %} {% trans 'on' %}
+| {% endblock page_title %}
+
+| {% block content_card %}
+form.card(method="post", enctype="multipart/form-data")
+  .card-header
+    h1 {% trans 'Post an Event' %}
+  .card-body
+    | {% csrf_token %}
+    | {{ form | crispy }}
+
+  .card-cta
+    button.btn.btn-primary(type="submit")
+      span {% trans 'Submit' %}
+| {% endblock content_card %}

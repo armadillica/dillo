@@ -6,13 +6,13 @@ import logging
 from dataclasses import dataclass, field
 from hashids import Hashids
 
-
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import SuspiciousOperation
 from django.db import models
 from django.urls import reverse
+
 
 log = logging.getLogger(__name__)
 hashids = Hashids(min_length=4)

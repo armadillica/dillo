@@ -2,10 +2,10 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
-from dillo.models.mixins import get_upload_to_hashed_path
+from dillo.models.entities import Entity
 
 
-class Event(models.Model):
+class Event(Entity):
     """A community event, which can be attended by users.
 
     Events can be only created by admin users.
@@ -21,15 +21,6 @@ class Event(models.Model):
     is_online = models.BooleanField(default=False)
     location = models.CharField(max_length=255, blank=True)
     website = models.URLField(max_length=120)
-    visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='public')
-    image = models.ImageField(
-        upload_to=get_upload_to_hashed_path,
-        blank=True,
-        height_field='image_height',
-        width_field='image_width',
-    )
-    image_height = models.PositiveIntegerField(null=True)
-    image_width = models.PositiveIntegerField(null=True)
     starts_at = models.DateTimeField('starts at')
     ends_at = models.DateTimeField('ends at')
     # Use to allow users to mark themselves as "attending" an event

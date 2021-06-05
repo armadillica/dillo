@@ -113,7 +113,7 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(dillo.models.events.Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'visibility', 'show_link')
-    exclude = ('image_height', 'image_width', 'attendees')
+    exclude = ('attendees',)
     prepopulated_fields = {'slug': ('name',)}
 
     def show_link(self, obj):

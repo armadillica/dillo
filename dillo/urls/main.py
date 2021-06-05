@@ -243,7 +243,8 @@ urlpatterns += [
 
 # Events
 urlpatterns += [
-    path('events', dillo.views.events.EventListView.as_view(), name='event_list'),
+    path('events/', dillo.views.events.EventListView.as_view(), name='event_list'),
+    path('events/submit/', dillo.views.events.EventCreateView.as_view(), name='event-create'),
     path('events/<slug:slug>/', dillo.views.events.EventDetailView.as_view(), name='event_detail'),
     path(
         'events/<slug:slug>/<str:toggle_action>',

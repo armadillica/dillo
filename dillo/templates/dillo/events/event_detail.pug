@@ -38,7 +38,7 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 		| {% endthumbnail %}
 
 	.card-body
-		.lead {{ event.description | markdown_with_shortcodes | safe | urlize }}
+		.lead {{ event.description | markdown_with_shortcodes | safe  }}
 | {% endblock stream %}
 
 
