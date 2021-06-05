@@ -1,4 +1,4 @@
-| {% extends "dillo/base.pug" %}
+| {% extends "dillo/base_columns.pug" %}
 | {% load i18n %}
 | {% load crispy_forms_tags %}
 
@@ -6,18 +6,21 @@
 | {% block opengraph %}
 | {% endblock opengraph %}
 
-| {% block content %}
+| {% block stream %}
 
-.container
-  .row.py-4
-    .col-md-8.mx-auto
-      h1 Update Job
+.job-detail
+  h3 Edit Job
 
-      form(method="post", enctype="multipart/form-data")
-        | {% csrf_token %}
-        | {{ form | crispy }}
+  hr
 
-        button.btn.btn-primary(type="submit")
-         span Update
+  form.form-container(method="post", enctype="multipart/form-data")
+    | {% csrf_token %}
+    | {{ form | crispy }}
 
-| {% endblock content %}
+    .form-cta
+      a.btn-secondary(href="{% url 'job-detail' pk=job.id %}")
+        span Cancel
+      button.btn.btn-primary(type="submit")
+        span Save Changes
+
+| {% endblock stream %}
