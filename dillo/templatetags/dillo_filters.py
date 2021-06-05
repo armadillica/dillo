@@ -116,8 +116,11 @@ def website_hostname(url):
     """
 
     url = urllib.parse.urlparse(url)
-    hostname = url.hostname.replace("www.", "")
-    return hostname
+
+    if not url.hostname:
+        return url.path
+
+    return url.hostname.replace("www.", "")
 
 
 def clean_url_path(markup):
