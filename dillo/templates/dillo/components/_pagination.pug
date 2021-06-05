@@ -37,13 +37,10 @@
 		//- Previous button.
 		| {% if page_obj.has_previous %}
 		a.btn.btn-prev(href="?{{ sort }}&page={{ page_obj.previous_page_number }}", tabindex='-1')
-			i.i-chevron-left
-			span {% trans 'Previous' %}
+			span #[i.i-chevron-left]
 		| {% else %}
 		a.btn.disabled(href="#")
-			span
-				i.i-chevron-left
-				span {% trans 'Previous' %}
+			span #[i.i-chevron-left]
 		| {% endif %}
 
 		//- Page number.
@@ -60,13 +57,9 @@
 		//- Next button.
 		| {% if page_obj.has_next %}
 		a.btn.btn-next(href="?{{ sort }}&page={{ page_obj.next_page_number }}")
-			span
-				span {% trans 'Next' %}
-				i.i-chevron-right
+			span #[i.i-chevron-right]
 		| {% else %}
 		a.btn.disabled(href="#")
-			span
-				span {% trans 'Next' %}
-				i.i-chevron-right
+			span #[i.i-chevron-right]
 		| {% endif %}
 	| {% endif %}
