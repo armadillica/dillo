@@ -10,12 +10,13 @@ form(
 	.form-group
 		| {{ form | crispy }}
 
-	.btn-toolbar-row
-		button.btn.btn-primary(
-			type="submit",
-			value="{{ submit_label }}",
-			class="{{ submit_class }}")
-			span {{ submit_label }}
+	.form-cta
+		.btn-toolbar-row.right
+			button.btn-theme-primary(
+				type="submit",
+				value="{{ submit_label }}",
+				class="{{ submit_class }}")
+				span {{ submit_label }}
 
 script.
 	$("#generic_form").on("submit", function (event) {

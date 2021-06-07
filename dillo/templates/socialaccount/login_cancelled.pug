@@ -16,5 +16,6 @@
 			| {% endblocktrans %}
 
 	.card-cta
-		a.btn.btn-primary(href="{{ login_url }}") {% trans "Sign In" %}
+		a.btn.btn-primary(href="{{ login_url }}")
+			span {% trans "Sign In" %}
 | {% endblock content_card %}
