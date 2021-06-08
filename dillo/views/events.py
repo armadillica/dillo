@@ -48,9 +48,11 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
-        # Set user as owner of the short
+        # Set user as owner of the event
         form.instance.user = self.request.user
-        form.instance.visibility = 'unlisted'
+        form.instance.visibility = 'public'
+        form.instance.status = 'published'
+        form.instance.published_at = timezone.now()
         form.instance.slug = self.get_unique_slug(form.instance)
         return super().form_valid(form)
 
