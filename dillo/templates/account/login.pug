@@ -12,6 +12,8 @@
 	.card-header
 		h1.card-title {% trans "Hello" %}
 	.card-body
+		.alert.alert-info Only Blender ID login is possible at the moment.
+
 		| {% get_providers as socialaccount_providers %}
 		| {% if socialaccount_providers %}
 		.social
