@@ -226,7 +226,8 @@ class SocialLink(models.Model):
     social = models.CharField(max_length=50, blank=True)
 
     def save(self, *args, **kwargs):
-        self.social = get_social_from_url(self.url)
+        if not self.social:
+            self.social = get_social_from_url(self.url)
         super().save(*args, **kwargs)
 
 
