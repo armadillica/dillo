@@ -72,6 +72,12 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     def content_type_name(self):
         return ContentType.objects.get_for_model(self).name
 
+    @property
+    def is_edited(self):
+        # Compare published and edit time in seconds to determine if
+        # the entity was edited
+        return self.published_at.strftime('%s') != self.updated_at.strftime('%s')
+
     def serialized(self, request):
         """Return a serialized version of the core properties."""
 
@@ -89,6 +95,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             'objectId': self.id,
             'contentTypeId': self.content_type_id,
             'isEditable': (self.user == request.user),
+            'isEdited': self.is_edited,
             'datePublished': (
                 None if not self.published_at else self.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')
             ),
