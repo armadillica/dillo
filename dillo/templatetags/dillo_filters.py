@@ -188,10 +188,7 @@ def parse_phabricator_tasks(markup):
         # Parse tasks.
         if path.startswith('/T'):
             query_url = 'https://developer.blender.org/api/maniphest.info'
-            data = {
-            'api.token': settings.PHABRICATOR_API_TOKEN,
-            'task_id': ob_id
-            }
+            data = {'api.token': settings.PHABRICATOR_API_TOKEN, 'task_id': ob_id}
 
             try:
                 response = requests.post(query_url, data=data)
@@ -201,18 +198,20 @@ def parse_phabricator_tasks(markup):
                 if r:
                     title = '{0}: {1} [{2}]'.format(r['objectName'], r['title'], r['statusName'])
                     url.string = title
-                    status = 'is-status-closed' if r['isClosed'] else 'is-status-{0}'.format(r['status'])
-                    url['class'] = url.get('class', []) + ['is-blender-developer is-external-special', status]
+                    status = (
+                        'is-status-closed' if r['isClosed'] else 'is-status-{0}'.format(r['status'])
+                    )
+                    url['class'] = url.get('class', []) + [
+                        'is-blender-developer is-external-special',
+                        status,
+                    ]
             except requests.exceptions.RequestException:
                 continue
 
         # Parse diffs.
         if path.startswith('/D'):
             query_url = 'https://developer.blender.org/api/differential.query'
-            data = {
-            'api.token': settings.PHABRICATOR_API_TOKEN,
-            'ids[0]': ob_id
-            }
+            data = {'api.token': settings.PHABRICATOR_API_TOKEN, 'ids[0]': ob_id}
 
             try:
                 response = requests.post(query_url, data=data)
@@ -224,7 +223,10 @@ def parse_phabricator_tasks(markup):
                     title = 'D{0}: {1} [{2}]'.format(r['id'], r['title'], r['statusName'])
                     url.string = title
                     status = 'is-status-{0}'.format(r['status'])
-                    url['class'] = url.get('class', []) + ['is-blender-developer is-external-special', status]
+                    url['class'] = url.get('class', []) + [
+                        'is-blender-developer is-external-special',
+                        status,
+                    ]
             except requests.exceptions.RequestException:
                 continue
 
