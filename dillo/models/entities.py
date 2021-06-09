@@ -74,9 +74,11 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
 
     @property
     def is_edited(self):
-        # Compare published and edit time in seconds to determine if
-        # the entity was edited
-        return self.published_at.strftime('%s') != self.updated_at.strftime('%s')
+        # Compare published and edit time in seconds to determine if the entity was edited
+        value = (
+            None if not self.published_at else self.published_at.strftime('%s') != self.updated_at.strftime('%s')
+        )
+        return value
 
     def serialized(self, request):
         """Return a serialized version of the core properties."""
