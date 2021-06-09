@@ -72,6 +72,9 @@ def shorten_timesince(timesince):
 def compact_timesince(timesince):
     """Make timesince filter super compact."""
 
+    # Replace 'an hour', 'ago'.
+    timesince = timesince.replace('an hour', '1h').replace('ago', '')
+
     # Replace long words with letters. (2 days, 3 hours -> 2 d, 3 h)
     timesince = timesince.replace('seconds', 's').replace('second', 's')
     timesince = timesince.replace('minutes', 'm').replace('minute', 'm')
@@ -80,9 +83,6 @@ def compact_timesince(timesince):
     timesince = timesince.replace('months', 'mo').replace('month', 'mo')
     timesince = timesince.replace('weeks', 'w').replace('week', 'w')
     timesince = timesince.replace('years', 'w').replace('year', 'y')
-
-    # Remove 'an, ago'.
-    timesince = timesince.replace('ago', '').replace('an', '')
 
     # Remove space between digit and unit. (2 d, 3h -> 2d, 3h)
     timesince = timesince.replace('\xa0', '')
