@@ -215,3 +215,6 @@ PHABRICATOR_API_TOKEN = 'api-token'
 
 SITE_TITLE = ''
 SITE_DESCRIPTION = ''
+
+# Supported profile setup stages
+PROFILE_SETUP_STAGES = ['avatar', 'bio', 'links', 'tags']

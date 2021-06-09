@@ -182,7 +182,7 @@ class ProfileSetupTemplateViewMixin(LoginRequiredMixin, View):
 
     @property
     def next_setup_stage_name(self):
-        stages = ['avatar', 'bio', 'links', 'tags']
+        stages = settings.PROFILE_SETUP_STAGES
         current_stage = self.request.user.profile.setup_stage
         next_stage_index = stages.index(current_stage) + 1
         if next_stage_index >= len(stages):
