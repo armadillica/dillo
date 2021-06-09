@@ -50,6 +50,17 @@ def linkify_tags_and_mentions(value):
 
 
 @register.filter
+def has_group(user, group_name):
+    """Check if a user belongs to a group"""
+    return user.groups.filter(name=group_name).exists()
+
+
+@register.filter
+def is_moderator(user):
+    return has_group(user, 'moderator')
+
+
+@register.filter
 def shorten_timesince(timesince):
     """Shorten the timesince filter by taking only the first part."""
 
