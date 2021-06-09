@@ -13,6 +13,7 @@ from dillo import forms
 from dillo.models.comments import Comment
 from dillo.templatetags.dillo_filters import markdown_with_parsed_tags_and_shortcodes
 from dillo.templatetags.dillo_filters import compact_naturaltime
+from dillo.templatetags.dillo_filters import is_moderator
 from dillo.markdown import sanitize
 
 
@@ -73,6 +74,8 @@ class ApiCommentsListView(CommentsListView):
             'isOwn': (comment.user.id == self.request.user.id),
             'isEdited': comment.is_edited,
             'isContentAuthor': (comment.user.id == comment.entity.user.id),
+            'isAuthorModerator': is_moderator(comment.user),
+            'isAuthorAdmin': comment.user.is_staff,
             'likeToggleUrl': comment.like_toggle_url,
             'deleteUrl': reverse('comment_delete', kwargs={'comment_id': comment.id}),
             'editUrl': reverse('comment_edit', kwargs={'comment_id': comment.id}),
