@@ -179,7 +179,7 @@ class ProfileSetupTemplateViewMixin(LoginRequiredMixin, View):
     """
 
     template_name = 'dillo/profile_setup.pug'
-    title = 'Setup Your Profile'
+    title = "Let's Set You Up"
     message = ''
 
     @property
@@ -219,7 +219,7 @@ class ProfileSetupUpdateViewMixin(ProfileSetupTemplateViewMixin, UpdateView):
 
 
 class ProfileSetupAvatar(ProfileSetupUpdateViewMixin):
-    message = 'Choose an avatar that represents you! \n Click on the image to change it.'
+    message = 'Choose an avatar that represents you!\nClick on the image to change it.'
     fields = ['avatar']
 
     def download_and_assign_gravatar(self, user: User):
