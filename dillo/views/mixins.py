@@ -152,7 +152,7 @@ class ApiLinkPreview(View):
         elif image:
             preview_html = f'<img src="{image}" alt="Website Preview" />'
         else:
-            preview_html = 'Preview not available for this link.'
+            preview_html = '<div class="unavailable">Preview not available for this URL</div>'
 
         if 'title' in oembed_preview:
             title = oembed_preview['title']
