@@ -76,7 +76,9 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     def is_edited(self):
         # Compare published and edit time in seconds to determine if the entity was edited
         value = (
-            None if not self.published_at else self.published_at.strftime('%s') != self.updated_at.strftime('%s')
+            None
+            if not self.published_at
+            else self.published_at.strftime('%s') != self.updated_at.strftime('%s')
         )
         return value
 
@@ -99,7 +101,9 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             'isEditable': (self.user == request.user),
             'isEdited': self.is_edited,
             'datePublished': (
-                None if not self.published_at else self.published_at.strftime('%a %d %b, %Y - %H:%M')
+                None
+                if not self.published_at
+                else self.published_at.strftime('%a %d %b, %Y - %H:%M')
             ),
             'dateUpdated': (
                 None if not self.updated_at else self.updated_at.strftime('%a %d %b, %Y - %H:%M')
