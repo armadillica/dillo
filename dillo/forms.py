@@ -81,6 +81,7 @@ class ReportContentForm(forms.Form):
     """Form to report Posts or Comments."""
 
     REASONS = (
+        ('spam', 'Spam'),
         ('inappropriate', 'Inappropriate'),
         ('copyright', 'Copyright Infringement'),
         ('other', 'Other'),
