@@ -15,8 +15,6 @@ from django.db.models import F
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, UpdateView, FormView, View
-from django.template.defaultfilters import truncatechars
-from sorl.thumbnail import get_thumbnail
 from taggit.models import Tag
 
 import dillo.models.mixins
