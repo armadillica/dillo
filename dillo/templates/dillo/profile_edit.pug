@@ -2,10 +2,10 @@
 | {% load i18n %}
 | {% load pipeline %}
 | {% load crispy_forms_tags %}
+| {% load account %}
 
 | {% block page_title %}{% trans "Edit Profile" %} – {% endblock page_title %}
 
-| {% load account %}
 
 | {% block content_account_edit_form %}
 form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="multipart/form-data")
