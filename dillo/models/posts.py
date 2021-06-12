@@ -114,7 +114,7 @@ class Post(Entity, LikesMixin, MentionsMixin):
             return self.image
         first_media = self.media.filter(source_type__in=['video', 'image']).first()
         if not first_media:
-            log.error('No thumbnail available for post %i' % self.id)
+            log.debug('No thumbnail available for post %i' % self.id)
             return None
         return first_media.thumbnail
 
