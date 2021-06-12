@@ -1,6 +1,6 @@
 {% if widget.is_initial %}
 <div class="profile-avatar-preview">
-	<img id="js-avatar-preview" src="{{ widget.value.url }}", title="Change Picture">
+	<img id="js-avatar-preview" src="{{ widget.value.url }}" title="Change Picture">
 </div>
 {% endif %}
 <input class="d-none" type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
