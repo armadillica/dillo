@@ -225,6 +225,8 @@ def profile_likes_count_decrease(target_user: User):
 @receiver(post_delete, sender=dillo.models.mixins.Likes)
 def on_deleted_like(sender, instance: dillo.models.mixins.Likes, **kwargs):
     """Decrease likes_count for profile when Entity or Comment is unliked."""
+    if not instance.content_object:
+        return
     target_user = instance.content_object.user
     profile_likes_count_decrease(target_user)
     log.debug('Decreased like count for user %s' % target_user)
