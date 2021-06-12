@@ -23,6 +23,7 @@
 | {% endblock content_account_edit_form %}
 
 | {% block javascript_extra %}
+| {{ block.super }}
 script.
   let notificationFieldActions = ['like', 'follow', 'comment', 'reply']
   $('#id_is_enabled').on('change', function (event) {

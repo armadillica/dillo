@@ -23,6 +23,7 @@ form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="mul
 | {% endblock content_account_edit_form %}
 
 | {% block javascript_extra %}
+| {{ block.super }}
 | {% javascript 'vendor_jquery_formset' %}
 script.
 	$('.js-formset-row').formset({
