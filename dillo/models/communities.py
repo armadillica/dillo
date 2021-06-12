@@ -13,7 +13,7 @@ class Community(models.Model):
     )
     created_at = models.DateTimeField('Date created', auto_now_add=True)
     name = models.CharField(max_length=256, null=False)
-    slug = models.SlugField()
+    slug = models.SlugField(allow_unicode=True)
     tagline = models.TextField(help_text='A short tagline.')
     description = models.TextField(help_text='Markdown describing the community.')
     visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='unlisted')
@@ -69,7 +69,7 @@ class CommunityLink(SocialLink):
 class CommunityCategory(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name='categories')
     name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, allow_unicode=True)
 
     class Meta:
         verbose_name_plural = "Categories"
