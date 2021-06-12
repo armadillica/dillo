@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.flatpages.views import flatpage
 from django.urls import path, include
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 import dillo.views.comments
 import dillo.views.contact
@@ -43,6 +43,12 @@ urlpatterns = [
         dillo.views.users.homepage.PostsStreamUserListEmbedView.as_view(),
         name='embed_stream',
     ),
+]
+
+# Favicon
+
+urlpatterns += [
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon/favicon.ico')),
 ]
 
 # User Account
