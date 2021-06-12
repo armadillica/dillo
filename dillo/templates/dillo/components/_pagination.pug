@@ -2,8 +2,9 @@
 
 .pagination
 	//- Only show stats if there is label and we are in list view.
-	| {% if label and not is_detail %}
-	.pagination-stat {{ page_obj.paginator.count }} {{ label }}{{ page_obj.paginator.count | pluralize }}
+	| {% if not is_detail %}
+	.pagination-stat.
+		{{ page_obj.paginator.count }} {% if label %}{{ label }}{{ page_obj.paginator.count | pluralize }}{% endif %}
 	| {% endif %}
 
 	//- In detail view, only show previous and next buttons, no page number.
