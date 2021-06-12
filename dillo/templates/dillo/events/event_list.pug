@@ -6,75 +6,78 @@
 | {% trans 'Events' %} {% trans 'on' %}
 | {% endblock page_title %}
 
-| {% block stream %}
+| {% block content-header-entity-create-buttons %}
+.header-create-buttons
+  | {% if request.user.is_authenticated %}
+  a.btn-theme-primary(href="{% url 'event-create' %}", title="{% trans 'Submit Event' %}")
+    span {% trans 'Submit Event' %}
+  | {% else %}
+  a.btn-theme-primary(href="{% url 'account_login' %}", title="{% trans 'Submit Event' %}")
+    span {% trans 'Submit Event' %}
+  | {% endif %}
+| {% endblock content-header-entity-create-buttons %}
 
+| {% block stream %}
 | {% if events %}
 .row.cards-row-2
-	| {% for event in events %}
-	.col
-		.card.e-event-large
-			| {% thumbnail event.image "1280" crop="center" as im %}
-			a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
-				img(
-					src="{{ im.url }}",
-					width="{{ im.width }}",
-					height="{{ im.height }}",
-					alt="{{ event.name }}")
-			| {% endthumbnail %}
+  | {% for event in events %}
+  .col
+    .card.e-event-large
+      | {% thumbnail event.image "1280" crop="center" as im %}
+      a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
+        img(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ event.name }}")
+      | {% endthumbnail %}
 
-			.card-body
-				.e-event
-					a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
-						.month {{ event.starts_at | date:"M" | upper }}
-						span.day {{ event.starts_at | date:"d" }}
+      .card-body
+        .e-event
+          a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
+            .month {{ event.starts_at | date:"M" | upper }}
+            span.day {{ event.starts_at | date:"d" }}
 
-					.e-event-info
-						a.e-event-title(href="{% url 'event_detail' slug=event.slug %}")
-							| {{ event.name }}
+          .e-event-info
+            a.e-event-title(href="{% url 'event_detail' slug=event.slug %}")
+              | {{ event.name }}
 
-						.location
-							| {% if event.is_online %}
-							| {% include 'dillo/components/_badge_online.pug' %}
-							| {% else %}
-							i.i-map-pin
-							| {{ event.location }}
-							| {% endif %}
+            .location
+              | {% if event.is_online %}
+              | {% include 'dillo/components/_badge_online.pug' %}
+              | {% else %}
+              i.i-map-pin
+              | {{ event.location }}
+              | {% endif %}
 
-						| {% if event.attendees.all %}
-						.going
-							| {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
-							| {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
-							| {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
-						| {% endif %}
-	| {% endfor %}
+            | {% if event.attendees.all %}
+            .going
+              | {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
+              | {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
+              | {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
+            | {% endif %}
+  | {% endfor %}
 
 | {% else %}
 .post-list-empty
-	p No events for now.
+  p No events for now.
 | {% endif %}
 
 | {% endblock stream %}
 
 | {% block sidebar %}
 
-.sidebar-block
-	| {% if request.user.is_authenticated %}
-	a.btn.btn-theme-primary.btn-sidebar(href="{% url 'event-create' %}")
-		span {% trans "Submit Event" %}
-	| {% else %}
-	a.btn.btn-theme-primary.btn-sidebar(href="{% url 'account_login' %}")
-		span {% trans "Submit Event" %}
-	| {% endif %}
+
 
 //- TODO: Filters for events.
 
 | {% if trending_tags %}
 .sidebar-block.feed-trending
-	| {% include 'dillo/components/_feed_trending.pug' %}
+  | {% include 'dillo/components/_feed_trending.pug' %}
 | {% endif %}
 
 .sidebar-block
-	| {% include 'dillo/components/_footer.pug' %}
+  | {% include 'dillo/components/_footer.pug' %}
 | {% endblock sidebar %}
 
 | {% block site_footer %}{% endblock %}
