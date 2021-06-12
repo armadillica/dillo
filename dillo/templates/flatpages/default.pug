@@ -4,14 +4,15 @@
 | {% block page_title %}{{ flatpage.title }}{% endblock page_title %}
 
 | {% block content %}
-.container.my-auto
-	| {% if request.user.is_superuser %}
-	.d-flex
-		| {% url 'admin:flatpages_flatpage_change' flatpage.id as edit_url %}
-		| {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Page" class="d-inline-block ml-auto" %}
-	| {% endif %}
-	.row
-		.col-md-8.mx-auto.py-5
-			| {{ flatpage.content }}
+.container
+  .row
+    .col-md-8
+      | {{ flatpage.content }}
+
+    | {% if request.user.is_superuser %}
+    div
+      | {% url 'admin:flatpages_flatpage_change' flatpage.id as edit_url %}
+      | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Page" %}
+    | {% endif %}
 
 | {% endblock content %}
