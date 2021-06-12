@@ -30,7 +30,7 @@ class ApiFeedNotificationsView(View):
 
         notifications = FeedEntry.objects.filter(user=self.request.user, category='notification')
         r.count = notifications.count()
-        paginator = Paginator(notifications, 5)
+        paginator = Paginator(notifications, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         r.next_page_number = None if not page_obj.has_next() else page_obj.next_page_number()
