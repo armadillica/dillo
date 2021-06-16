@@ -3,10 +3,10 @@
 
   background-color: var(--notifications-background)
   max-height: calc(100vh - var(--header-height) - var(--footer-height))
-  min-height: var(--notifications-min-height)
+  min-height: calc(100vh - var(--header-height) - var(--footer-height))
   position: fixed
   right: 0
-  top: calc(-100vh + calc(var(--header-height) + var(--footer-height)))
+  top: var(--header-height)
   width: 100vw
   z-index: var(--zindex-popover)
 
@@ -14,6 +14,7 @@
     border-radius: var(--border-radius-lg)
     box-shadow: var(--box-shadow-lg), var(--box-shadow-lg)
     max-width: 680px
+    min-height: var(--notifications-min-height)
     position: absolute
     right: 2.5rem
     top: 4.5rem
@@ -47,10 +48,13 @@
 
 
 .notifications-content
-  max-height: 47vh
+  max-height: calc(100vh - var(--header-height) - var(--footer-height))
   min-height: calc(var(--notifications-min-height) - 120px)
   overflow-y: auto
   -webkit-overflow-scrolling: touch
+
+  +media-tablet
+    max-height: 47vh
 
   > ul
     +list-unstyled
