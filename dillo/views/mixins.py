@@ -1,3 +1,5 @@
+import requests.exceptions
+import webpreview.excepts
 from django.conf import settings
 from django.db.models import Q, Count
 from django.urls import reverse
@@ -145,7 +147,12 @@ class ApiLinkPreview(View):
             oembed_preview = {}
 
         # Always generate web_preview as fallback for oembed_preview
-        title, description, image = web_preview(content)
+        try:
+            title, description, image = web_preview(content, parser='html.parser')
+        except requests.exceptions.InvalidURL:
+            return JsonResponse({'preview': None, 'title': None})
+        except webpreview.excepts.EmptyURL:
+            return JsonResponse({'preview': None, 'title': None})
 
         if 'html' in oembed_preview:
             preview_html = oembed_preview['html']
