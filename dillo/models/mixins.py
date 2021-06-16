@@ -21,11 +21,17 @@ hashids = Hashids(min_length=4)
 def get_social_from_url(url):
     """Used when parsing links in ProfileLink and CommunityLink"""
     supported_domains = {
+        'anima.to',
         'artstation.com',
+        'blender.community',
+        'discord.gg',
         'facebook.com',
+        'github.com',
+        'gitlab.com',
         'instagram.com',
         'linkedin.com',
         'patreon.com',
+        'tiktok.com',
         'twitch.tv',
         'twitter.com',
         'vimeo.com',
