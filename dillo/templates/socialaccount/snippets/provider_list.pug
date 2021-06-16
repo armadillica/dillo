@@ -17,7 +17,7 @@ li
 | {% endif %}
 li
   a.btn-secondary(title="{{ provider.name }}",
-    class="social-provider {{ provider.id }} btn btn-social-{{ provider.id }} btn-block",
+    class="social-provider {{ provider.id }} btn btn-social-{{ provider.id }} btn-wide",
     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}")
     span
       i(class="i-{{ provider.id }}")

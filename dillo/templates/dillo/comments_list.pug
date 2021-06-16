@@ -15,7 +15,7 @@
 
 //- Pagination.
 | {% if page_obj.has_next %}
-.btn.btn-link-text.btn-block.my-3(
+.btn.btn-link-text.btn-wide(
 	class="js-load-more-comments",
 	data-next_url="{% url 'comments_list' hash_id=hash_id %}?page={{ page_obj.next_page_number }}")
 	| {% trans 'Load more comments...' %}
