@@ -274,7 +274,11 @@ class UserAdmin(BaseUserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(dillo.models.comments.Comment)
+
+@admin.register(dillo.models.comments.Comment)
+class CommentAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['user']
+    readonly_fields = ('entity_content_type', 'parent_comment', 'tags')
 
 
 class TinyMCEFlatPageAdmin(FlatPageAdmin):
