@@ -312,6 +312,11 @@ def user_pre_delete(sender, instance: User, **kwargs):
     if not hasattr(settings, 'ANYMAIL'):
         log.info("Mailgun not configured, skipping mailing list subscription update")
         return
+
+    if not hasattr(settings, 'MAILING_LIST_NEWSLETTER_EMAIL'):
+        log.debug("Newsletter not configured, skipping mailing list subscription update")
+        return
+
     api_url_base = f"https://api.mailgun.net/v3"
     api_url_newsletter = f"{api_url_base}/lists/{settings.MAILING_LIST_NEWSLETTER_EMAIL}"
     requests.delete(
