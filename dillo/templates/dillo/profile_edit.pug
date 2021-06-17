@@ -6,15 +6,16 @@
 
 | {% block page_title %}{% trans "Edit Profile" %} – {% endblock page_title %}
 
-
 | {% block content_account_edit_form %}
 form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="multipart/form-data")
 	.card
 		.card-body
+			p To change your username go to #[a(href="{% url 'account_settings' %}") account settings].
+			hr
+			br
 			| {% csrf_token %}
-			.form-group
-				| {{ form | crispy }}
-				| {% include 'dillo/components/_formset_link_list.pug' %}
+			| {{ form | crispy }}
+			| {% include 'dillo/components/_formset_link_list.pug' %}
 
 			.card-cta
 				button.btn.btn-primary(type="submit")
