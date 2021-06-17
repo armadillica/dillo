@@ -34,19 +34,19 @@ def plugin_shortcode_with_link(md):
     md.inline.rules.append('shortcode_link')
     md.renderer.register('shortcode_link', keep_shortcode_link)
 
+
 # Regex to look for <kbd> tags, such as [[ctrl+X]]
-KBD_TAG_PATTERN = (
-    r'\[\['        # [[
-    r'([\s\S]+?)'  # Text
-    r'\]\](?!\])'  # ]]
-)
+KBD_TAG_PATTERN = r'\[\[' r'([\s\S]+?)' r'\]\](?!\])'  # [[  # Text  # ]]
+
 
 def parse_html_kbd(inline, m, state):
     text = m.group(1)
     return 'kbd', text
 
+
 def render_html_kbd(keyt):
     return f'<kbd>{keyt}</kbd>'
+
 
 def plugin_html_kbd(md):
     """Define a plugin that converts [[key]] to <kbd>key</kbd>."""
@@ -61,12 +61,14 @@ def render(text: str) -> Markup:
 
     if _markdown is None:
         _markdown = mistune.create_markdown(
-            escape=True, plugins=[
+            escape=True,
+            plugins=[
                 plugin_shortcode_with_link,
                 mistune.plugins.extra.plugin_url,
                 plugin_html_kbd,
                 'strikethrough',
-                'table']
+                'table',
+            ],
         )
 
     return Markup(_markdown(text))
