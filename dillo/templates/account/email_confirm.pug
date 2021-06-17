@@ -19,12 +19,13 @@
 
 						| {% blocktrans with confirmation.email_address.email as email %}
 						p.
-							Please confirm that #[a(href="mailto:{{ email }}") {{ email }}] is an e-mail address for user {{ user_display }}.
+							Please confirm if you want #[strong {{ email }}] to be an e-mail address for #[strong {{ user_display }}].
 						| {% endblocktrans %}
 
 						form(method='post', action="{% url 'account_confirm_email' confirmation.key %}")
 							| {% csrf_token %}
-							button(type="submit", class="btn btn-success") {% trans 'Confirm' %}
+							button(type="submit", class="btn btn-success")
+								span {% trans 'Confirm' %}
 						| {% else %}
 						| {% url 'account_email' as email_url %}
 
