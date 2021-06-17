@@ -252,7 +252,7 @@ class EmailNotificationsSettings(ChangeAwareness, models.Model):
 
 
 class Badge(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     slug = models.SlugField(max_length=128, unique=True)
     description = models.TextField()
     image = models.ImageField(
