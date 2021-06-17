@@ -12,7 +12,7 @@
 .card-body
 	| {% if user.emailaddress_set.all %}
 	p {% trans 'The following addresses are associated with your account:' %}
-	form.email_list(action="{% url 'account_email' %}", method='post')
+	form.profile-edit-email(action="{% url 'account_email' %}", method='post')
 		| {% csrf_token %}
 		fieldset
 			| {% for emailaddress in user.emailaddress_set.all %}
@@ -26,23 +26,24 @@
 				label.custom-control-label(
 					for="email_radio_{{forloop.counter}}",
 					class="{% if emailaddress.primary %}primary_email{%endif%}")
-					span.mr-2 {{ emailaddress.email }}
+					span {{ emailaddress.email }}
 
-					| {% if emailaddress.primary %}
-					span.badge.badge-light {% trans "Primary" %}
-					| {% endif %}
+					.badges-row-inline
+						| {% if emailaddress.primary %}
+						span.badge-pill.badge-info {% trans "Primary" %}
+						| {% endif %}
 
-					| {% if emailaddress.verified %}
-					span.badge.badge-success {% trans "Verified" %}
-					| {% else %}
-					span.badge.badge-warning {% trans "Unverified" %}
-					| {% endif %}
+						| {% if emailaddress.verified %}
+						span.badge-pill.badge-success {% trans "Verified" %}
+						| {% else %}
+						span.badge-pill.badge-warning {% trans "Unverified" %}
+						| {% endif %}
 
 			| {% endfor %}
 
-			.btn-toolbar-row.btn-sm
+			.btn-toolbar-row
 				button.btn.btn-primary(type='submit', name='action_primary')
-					span {% trans 'Make Primary' %}
+					span {% trans 'Make Primary E-mail' %}
 
 				button.btn.btn-secondary(type='submit', name='action_send')
 					span {% trans 'Re-send Verification' %}
@@ -50,9 +51,11 @@
 				button.btn.btn-danger(type='submit', name='action_remove')
 					span {% trans 'Remove' %}
 	| {% else %}
-	p
-		strong {% trans 'Warning:'%}
-		|  {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}
+	| {% blocktrans %}
+	.alert.alert-warning
+		span Warning: You currently do not have any e-mail address set up.
+	p You should really add an e-mail address so you can reset your password, receive notifications, etc.
+	| {% endblocktrans %}
 	| {% endif %}
 
 	hr

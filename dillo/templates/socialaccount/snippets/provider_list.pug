@@ -5,21 +5,18 @@
 | {% for provider in socialaccount_providers %}
 | {% if provider.id == "openid" %}
 | {% for brand in provider.get_brands %}
-
-li
-  a.btn(title="{{ brand.name }}",
-    class="social-provider {{provider.id}} {{brand.id}}",
-    href="{% provider_login_url provider.id openid=brand.openid_url process=process %}")
-    span
-      i(class="i-{{ brand.id }}")
-      span {{ brand.name }}
+a.btn(title="{{ brand.name }}",
+  class="social-provider {{provider.id}} {{brand.id}}",
+  href="{% provider_login_url provider.id openid=brand.openid_url process=process %}")
+  span
+    i(class="i-{{ brand.id }}")
+    span {{ brand.name }}
 | {% endfor %}
 | {% endif %}
-li
-  a.btn-secondary(title="{{ provider.name }}",
-    class="social-provider {{ provider.id }} btn btn-social-{{ provider.id }} btn-wide",
-    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}")
-    span
-      i(class="i-{{ provider.id }}")
-      span {{ provider.name }}
+a.btn(title="{{ provider.name }}",
+  class="social-provider {{ provider.id }} btn-social-{{ provider.id }} btn-wide",
+  href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}")
+  span
+    i(class="i-{{ provider.id }}")
+    span {{ provider.name }}
 | {% endfor %}

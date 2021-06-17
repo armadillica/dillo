@@ -42,8 +42,7 @@
 
   h2 {% trans 'Connect a 3rd Party Account' %}
 
-  .socialaccount-providers
-    ul
-      | {% include "socialaccount/snippets/provider_list.pug" with process="connect" %}
+  .btn-toolbar-row
+    | {% include "socialaccount/snippets/provider_list.pug" with process="connect" %}
   | {% include "socialaccount/snippets/login_extra.html" %}
 | {% endblock %}
