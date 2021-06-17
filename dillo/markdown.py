@@ -64,7 +64,9 @@ def render(text: str) -> Markup:
             escape=True, plugins=[
                 plugin_shortcode_with_link,
                 mistune.plugins.extra.plugin_url,
-                plugin_html_kbd],
+                plugin_html_kbd,
+                'strikethrough',
+                'table']
         )
 
     return Markup(_markdown(text))
