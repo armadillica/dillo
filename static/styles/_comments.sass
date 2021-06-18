@@ -177,7 +177,23 @@
   blockquote
     box-shadow: inset 5px 0 0 0 var(--background-primary)
 
+  a
+    color: var(--community-theme-color, --accent)
+
+    &:hover
+      color: var(--text-highlight)
+      text-decoration: underline
+
+      &:before
+        color: var(--text-highlight)
+
   a.is-external
+    &:hover
+      &:before
+        color: var(--text-highlight)
+    &:before
+      color: var(--community-theme-color, --accent)
+
     &[href*="discord"]
       padding-left: 22px
 
