@@ -1,7 +1,7 @@
 | {% extends "dillo/base.pug" %}
 
 | {% block content %}
-.container(class="base-columns {% block base_classes %}{% endblock base_classes %}")
+.app-main-content.container(class="base-columns {% block base_classes %}{% endblock base_classes %}")
 	| {% block stream_nav %}{% endblock stream_nav %}
 	.row
 		| {% block stream_wrapper %}
