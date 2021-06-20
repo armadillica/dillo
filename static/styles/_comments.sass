@@ -283,7 +283,26 @@
 
 .comment-preview
   +margin(3, top)
+  position: relative
 
+  &:empty
+    display: none
+
+  // Loading indicator.
+  &::after
+    color: var(--text-secondary)
+    content: '\e86b' // spinner icon
+    font-family: var(--font-family-icon)
+    left: -1.75rem
+    opacity: 0
+    position: absolute
+    top: .25rem
+    transition: opacity var(--transition-speed) ease-in-out
+
+  &.is-loading
+    &::after
+      animation: spinner linear infinite 3s
+      opacity: 1
 
 // Shows the "Login to comment" button.
 .comment-form-login
