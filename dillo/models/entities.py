@@ -109,7 +109,6 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
                 None if not self.updated_at else self.updated_at.strftime('%a %d %b, %Y - %H:%M')
             ),
             'naturalPublicationTime': naturaltime(self.published_at),
-            'naturalPublicationTime': naturaltime(self.published_at),
             'urlApiCommentListView': reverse(
                 'api-comments-list',
                 kwargs={
