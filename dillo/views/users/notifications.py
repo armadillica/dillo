@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.generic import ListView
 from django.shortcuts import reverse
+from django.utils.text import slugify
 
 from dillo.models.feeds import FeedEntry
 from dillo.models.mixins import ApiResponseData
@@ -49,6 +50,7 @@ class ApiFeedNotificationsView(View):
                     ),
                 },
                 'verb': notification.action.verb,
+                'verbSlug': slugify(notification.action.verb),
                 'actionObjectUrl': notification.action.action_object.get_absolute_url(),
                 'actionObject': str(notification.action.action_object),
                 'timeSince': compact_naturaltime(notification.action.timestamp),
