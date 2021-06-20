@@ -4,7 +4,7 @@ from django.db import migrations, models
 
 
 def set_hotness(apps, schema_editor):
-    """Set hotness for ideas."""
+    """Set hotness for posts."""
 
     from dillo.models.posts import Post
 
