@@ -1,5 +1,6 @@
 import hashlib
 import pathlib
+import typing
 import urllib.parse
 import uuid
 import logging
@@ -100,6 +101,9 @@ class LikesMixin(models.Model):
             'like_toggle', kwargs={'content_type_id': self.content_type_id, 'object_id': self.id}
         )
 
+    def update_hotness(self) -> typing.Optional[float]:
+        return None
+
     def is_liked(self, user: User):
         if user.is_anonymous:
             return False
@@ -140,6 +144,10 @@ class LikesMixin(models.Model):
         if likes_count != 1:
             likes_word = 'LIKES'
 
+        # Always try to update hotness. If the class using this mixing does
+        # not override the update_hotness method, nothing will happen.
+        if self.update_hotness():
+            log.debug('Updated hotness for item')
         log.info('User %i %s %i %i' % (user.id, action, content_type_id, self.id))
         return action, action_label, likes_count, likes_word
 

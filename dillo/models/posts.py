@@ -142,6 +142,9 @@ class Post(Entity, LikesMixin, MentionsMixin):
         log.info('Post %i has status %s and is ready for publishing' % (self.id, self.status))
         return True
 
+    def update_hotness(self) -> typing.Optional[float]:
+        return self._update_hotness(self.likes.count(), 0)
+
     def process_videos(self) -> int:
         """Look at attached media, and if videos are present, start processing.
 

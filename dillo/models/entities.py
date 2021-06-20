@@ -14,6 +14,8 @@ from dillo.models.mixins import (
     get_upload_to_hashed_path,
 )
 
+from dillo.models.sorting import compute_hotness
+
 
 log = logging.getLogger(__name__)
 
@@ -39,6 +41,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, default='draft')
     visibility = models.CharField(max_length=20, choices=VISIBILITIES, default='public')
     is_pinned_by_moderator = models.BooleanField(default=False)
+    hotness = models.FloatField(default=0)
     dillo_uuid = models.SlugField(blank=True, default='')
     image = models.ImageField(
         upload_to=get_upload_to_hashed_path, blank=True, help_text='A preview image for the entity',
@@ -48,6 +51,16 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
         created = self.pk is None
         super().save(*args, **kwargs)
         self._set_hash_id(created)
+
+    def _update_hotness(self, ups: int, downs: int):
+        """Based on votes, likes or any other property, update the hotness
+        of an Entity.
+        """
+        if not self.published_at:
+            return
+        self.hotness = compute_hotness(ups, downs, self.published_at)
+        self.save()
+        return self.hotness
 
     def publish(self):
         """If the Entity is in 'draft', kick-off the publishing pipeline."""
