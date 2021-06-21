@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 from dillo.shortcodes import render as shortcode_render
 from dillo.markdown import render as markdown_render
-import dillo.models.posts
+
 
 find_hashtags_re = re.compile(r'\B#\w*[a-zA-Z]+\w*')
 find_mentions_re = re.compile(r'\B@\w*[a-zA-Z]+\w*')
@@ -170,8 +170,6 @@ def is_attended(value, user: User):
 @register.filter
 def is_bookmarked(value, user: User):
     """Check if a Post was bookmarked by the current user."""
-    if not isinstance(value, dillo.models.posts.Post):
-        raise TypeError('Value should be Post')
     return value.is_bookmarked(user)
 
 

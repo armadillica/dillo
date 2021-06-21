@@ -3,7 +3,6 @@ import sorl.thumbnail
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db import models
 from django.utils import timezone
 from django.shortcuts import reverse
@@ -13,6 +12,8 @@ from dillo.models.mixins import (
     HashIdGenerationMixin,
     get_upload_to_hashed_path,
 )
+
+from dillo.templatetags.dillo_filters import compact_naturaltime
 
 from dillo.models.sorting import compute_hotness
 
@@ -122,7 +123,11 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             'dateUpdated': (
                 None if not self.updated_at else self.updated_at.strftime('%a %d %b, %Y - %H:%M')
             ),
-            'naturalPublicationTime': naturaltime(self.published_at),
+            'naturalPublicationTime': (
+                compact_naturaltime(self.updated_at)
+                if not self.published_at
+                else compact_naturaltime(self.published_at)
+            ),
             'urlApiCommentListView': reverse(
                 'api-comments-list',
                 kwargs={
