@@ -74,6 +74,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
         # Set the Post as 'published'
         self.status = 'published'
         self.published_at = timezone.now()
+        self._update_hotness(0, 0)
         self.save()
         log.info('Entity %s %i has been published' % (self.content_type_name, self.id))
 
