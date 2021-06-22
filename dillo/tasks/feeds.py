@@ -54,7 +54,7 @@ def feeds_fanout_liked(action):
     ).as_dict
 
     send_notification_mail(
-        f'Your {content_type.name} has a new like!',
+        f'They like your {content_type.name} ""{content_name}"!',
         recipient,
         template='like',
         context=like_context,
@@ -87,7 +87,7 @@ def feeds_fanout_commented(action):
         ).as_dict
 
         send_notification_mail(
-            f'Your post "{content_name}" has a new comment',
+            f'New comment on "{content_name}"',
             follower,
             template='comment',
             context=comment_context,
@@ -121,7 +121,7 @@ def feeds_fanout_replied(action):
             content_text=content_text,
         ).as_dict
         send_notification_mail(
-            f'Your comment has a new reply!', follower, template='reply', context=reply_context,
+            f'New reply to "{content_name}"', follower, template='reply', context=reply_context,
         )
 
 
