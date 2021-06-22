@@ -54,7 +54,7 @@ def feeds_fanout_liked(action):
     ).as_dict
 
     send_notification_mail(
-        f'They like your {content_type.name} ""{content_name}"!',
+        f'They like your {content_type.name} "{content_name}"!',
         recipient,
         template='like',
         context=like_context,
