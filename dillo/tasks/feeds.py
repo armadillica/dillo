@@ -42,7 +42,7 @@ def feeds_fanout_liked(action):
         content_name = action.action_object.content
 
     # Prepare attributes
-    content_name = truncatechars(content_name, 15)
+    content_name = truncatechars(content_name, 20)
     like_context = dillo.views.emails.LikeContext(
         subject=f'They love your {content_type.name}!',
         content_type=content_type.name,
@@ -73,8 +73,8 @@ def feeds_fanout_commented(action):
         )
         follower.feed_entries.create(action=action)
         # Email notification
-        content_name = truncatechars(action.action_object.entity.title, 15)
-        content_text = truncatechars(action.action_object.content, 25)
+        content_name = truncatechars(action.action_object.entity.title, 20)
+        content_text = truncatechars(action.action_object.content, 30)
         comment_context = dillo.views.emails.CommentOrReplyContext(
             subject='Your post has a new comment!',
             own_name=follower.profile.first_name_guess or follower.username,
@@ -108,8 +108,8 @@ def feeds_fanout_replied(action):
         )
         follower.feed_entries.create(action=action)
         # Email notification
-        content_name = truncatechars(action.action_object.entity.title, 15)
-        content_text = truncatechars(action.action_object.content, 25)
+        content_name = truncatechars(action.action_object.entity.title, 20)
+        content_text = truncatechars(action.action_object.content, 30)
         reply_context = dillo.views.emails.CommentOrReplyContext(
             subject='Your comment has a new reply!',
             own_name=follower.profile.first_name_guess or follower.username,
