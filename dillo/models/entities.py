@@ -97,6 +97,9 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
         )
         return value
 
+    def can_edit(self, user: User, group_name='moderators'):
+        return self.user == user or user.is_superuser or user.groups.filter(name=group_name).exists()
+
     def serialized(self, request):
         """Return a serialized version of the core properties."""
 
@@ -113,7 +116,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             'hashId': self.hash_id,
             'objectId': self.id,
             'contentTypeId': self.content_type_id,
-            'isEditable': (self.user == request.user),
+            'isEditable': self.can_edit(request.user),
             'isEdited': self.is_edited,
             'datePublished': (
                 None

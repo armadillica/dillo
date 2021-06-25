@@ -57,7 +57,7 @@ def has_group(user, group_name):
 
 @register.filter
 def is_moderator(user):
-    return has_group(user, 'moderator')
+    return has_group(user, 'moderators')
 
 
 @register.filter

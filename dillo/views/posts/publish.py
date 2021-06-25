@@ -152,9 +152,8 @@ def post_file_upload(request, hash_id):
     Post.objects.get(hash_id=hash_id)
     # Ensure that only post owner can upload files for this post
     post = get_object_or_404(Post, hash_id=hash_id)
-    if request.user != post.user:
+    if not post.can_edit(request.user):
         return JsonResponse({'error': 'Not allowed to upload on this post.'}, status=422)
-
     # Ensure that request.FILES contains only one file. We allow only
     # one file upload per request in order to return the Media id
     # that was created in the response.
@@ -222,7 +221,7 @@ def api_get_unpublished_uploads(request, content_type_id, hash_id):
     """Return list of uploaded files for a pending post."""
     content_type = ContentType.objects.get_for_id(content_type_id)
     entity = get_object_or_404(content_type.model_class(), hash_id=hash_id)
-    if request.user != entity.user:
+    if not entity.can_edit(request.user):
         return JsonResponse({'error': 'Not allowed work on this post.'}, status=422)
 
     media_list = []
@@ -247,8 +246,8 @@ def api_delete_unpublished_upload(request, content_type_id, hash_id):
     content_type = ContentType.objects.get_for_id(content_type_id)
     entity = get_object_or_404(content_type.model_class(), hash_id=hash_id)
 
-    # Ensure User owns the Post
-    if request.user != entity.user:
+    # Ensure User can edit the Entity
+    if not entity.can_edit(request.user):
         return JsonResponse({'error': 'Not allowed to remove this item.'}, status=422)
 
     # Ensure Post is in 'draft' status
@@ -408,7 +407,7 @@ class AttachS3MediaToEntity(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         content_type = ContentType.objects.get_for_id(form.cleaned_data['content_type_id'])
         entity = get_object_or_404(content_type.model_class(), id=form.cleaned_data['entity_id'])
-        if self.request.user != entity.user:
+        if not entity.can_edit(self.request.user):
             return JsonResponse({'error': 'Not allowed to upload on this post.'}, status=422)
         return self.process_file_type(
             entity,
@@ -460,7 +459,7 @@ class AddS3DownloadableToEntity(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         content_type = ContentType.objects.get_for_id(form.cleaned_data['content_type_id'])
         entity = get_object_or_404(content_type.model_class(), id=form.cleaned_data['entity_id'])
-        if self.request.user != entity.user:
+        if not entity.can_edit(self.request.user):
             return JsonResponse({'error': 'Not allowed to upload on this entity.'}, status=422)
         return self.process_file_type(
             entity,
