@@ -118,6 +118,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             'contentTypeId': self.content_type_id,
             'isEditable': self.can_edit(request.user),
             'isEdited': self.is_edited,
+            'isOwn': self.user == request.user,
             'datePublished': (
                 None
                 if not self.published_at
