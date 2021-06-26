@@ -58,7 +58,11 @@
 
   .comment-item
     .btn-comment-cancel
-      display: initial
+      display: flex
+
+    // Textarea inside a reply.
+    .form-control
+      padding-right: 11rem
 
   &.has-replies
     @extend %reply-timeline
