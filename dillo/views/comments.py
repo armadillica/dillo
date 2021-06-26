@@ -63,6 +63,7 @@ class ApiCommentsListView(CommentsListView):
                 'url': comment.user.profile.absolute_url,
                 'avatar': None,
                 'badges': comment.user.profile.serialized_badges,
+                'urlRemoveSpam': None,
             },
             'content': markdown_with_parsed_tags_and_shortcodes(comment.content),
             'contentRaw': comment.content,
@@ -98,6 +99,15 @@ class ApiCommentsListView(CommentsListView):
             serialized_comment['replies'] = [
                 self.serialize_comment(reply) for reply in comment.replies
             ]
+
+        # Link to remove spam user (only if admin or moderator)
+        if (
+            self.request.user.groups.filter(name='moderators').exists()
+            or self.request.user.is_superuser
+        ):
+            serialized_comment['user']['urlRemoveSpam'] = reverse(
+                'remove-spam-user-embed', kwargs={'pk': comment.user.id}
+            )
 
         return serialized_comment
 

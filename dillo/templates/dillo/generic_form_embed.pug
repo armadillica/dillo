@@ -1,23 +1,9 @@
+| {% extends "dillo/form_generic_embed_base.pug" %}
 | {% load i18n %}
 | {% load crispy_forms_tags %}
 
-form(
-	action="{{ action_url }}",
-	method="post"
-	id="generic_form")
-	| {% csrf_token %}
 
-	.form-group
-		| {{ form | crispy }}
-
-	.form-cta
-		.btn-toolbar-row.right
-			button.btn-theme-primary(
-				type="submit",
-				value="{{ submit_label }}",
-				class="{{ submit_class }}")
-				span {{ submit_label }}
-
+| {% block javascript %}
 script.
 	$("#generic_form").on("submit", function (event) {
 		event.preventDefault();
@@ -33,3 +19,4 @@ script.
 			console.log(xhrErrorResponseMessage(jqxhr));
 		});
 	});
+| {% endblock javascript %}

@@ -1,0 +1,24 @@
+| {% extends "dillo/form_generic_embed_base.pug" %}
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+
+| {% block head %}
+
+p User {{ user.username }} will be deleted along with the following data:
+
+ul
+  | {% for key, values in summary.items %}
+  li {{ key }}: {{ values }}
+  | {% endfor %}
+
+| {% if last_comments %}
+h2 Recent Comments
+ul
+  | {% for comment in last_comments %}
+  li {{ comment.content }}
+  | {% endfor %}
+| {% endif %}
+
+
+| {% endblock head %}

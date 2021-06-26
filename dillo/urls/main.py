@@ -23,6 +23,7 @@ import dillo.views.reels
 import dillo.views.jobs
 import dillo.views.actstream
 import dillo.views.explore
+import dillo.views.moderation
 
 # User Pages
 urlpatterns = [
@@ -46,7 +47,6 @@ urlpatterns = [
 ]
 
 # Favicon
-
 urlpatterns += [
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon/favicon.ico')),
 ]
@@ -207,7 +207,7 @@ urlpatterns += [
     path('c/<int:comment_id>/edit/', dillo.views.comments.comment_edit, name='comment_edit'),
 ]
 
-# Content Reporting
+# Content Reporting and Moderation
 urlpatterns += [
     path(
         'e/report/<int:content_type_id>/<int:object_id>',
@@ -218,6 +218,16 @@ urlpatterns += [
         'e/report/confirm',
         TemplateView.as_view(template_name='dillo/report_content_success_embed.pug'),
         name='report_content_success_embed',
+    ),
+    path(
+        'e/remove-spam-user/<int:pk>',
+        dillo.views.moderation.RemoveSpamUserView.as_view(),
+        name='remove-spam-user-embed',
+    ),
+    path(
+        'e/remove-spam-user/confirm',
+        TemplateView.as_view(template_name='dillo/remove_spam_user_success_embed.pug'),
+        name='remove-spam-user-success-embed',
     ),
 ]
 

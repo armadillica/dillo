@@ -1,0 +1,29 @@
+| {% load i18n %}
+| {% load crispy_forms_tags %}
+
+| {% block head %}
+| {% endblock head %}
+
+| {% block body %}
+
+form(
+	action="{{ action_url }}",
+	method="post"
+	id="generic_form")
+	| {% csrf_token %}
+
+	.form-group
+		| {{ form | crispy }}
+
+	.form-cta
+		.btn-toolbar-row.right
+			button.btn-theme-primary(
+				type="submit",
+				value="{{ submit_label }}",
+				class="{{ submit_class }}")
+				span {{ submit_label }}
+
+| {% endblock body %}
+
+| {% block javascript %}
+| {% endblock javascript %}

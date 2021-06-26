@@ -111,6 +111,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
                 'avatar': None,
                 'likes_count': self.user.profile.likes_count,
                 'badges': self.user.profile.serialized_badges,
+                'urlRemoveSpam': None,
             },
             'thumbnailUrl': None,
             'hashId': self.hash_id,
@@ -146,5 +147,11 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             serialized_entity['user']['avatar'] = sorl.thumbnail.get_thumbnail(
                 self.user.profile.avatar, '128x128', crop='center', quality=80
             ).url
+
+        # Link to remove spam user (only if admin or moderator)
+        if request.user.groups.filter(name='moderators').exists() or request.user.is_superuser:
+            serialized_entity['user']['urlRemoveSpam'] = reverse(
+                'remove-spam-user-embed', kwargs={'pk': self.user.id}
+            )
 
         return serialized_entity
