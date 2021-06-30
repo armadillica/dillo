@@ -36,6 +36,7 @@
   &.active
     display: block
 
+
 .notifications-header
   align-items: center
   border-bottom: var(--border-width) solid var(--background-primary)
@@ -48,6 +49,9 @@
 
 
 .notifications-content
+  --modal-action-container-height: 68px // Section with the "Load More" button.
+
+  height: calc(100vh - var(--modal-action-container-height) - var(--header-height) - var(--feed-toolbar-height) - var(--footer-height))
   max-height: calc(100vh - var(--header-height) - var(--footer-height))
   min-height: calc(var(--notifications-min-height) - 120px)
   overflow-y: auto
