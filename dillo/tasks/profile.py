@@ -38,6 +38,10 @@ def update_mailing_list_subscription(user_email: str, is_subscribed: typing.Opti
         log.info("Mailgun not configured, skipping mailing list subscription update")
         return
 
+    if not hasattr(settings, 'MAILING_LIST_NEWSLETTER_EMAIL'):
+        log.debug("Newsletter not configured, skipping mailing list subscription update")
+        return
+
     if not EmailAddress.objects.filter(verified=True, email=user_email).exists():
         log.info("No verified email address found, skipping mailing list update")
         return
