@@ -37,6 +37,12 @@ class CommentsListView(ListView):
         """Return 3 comments by default."""
         return self.request.GET.get('page_size', 3)
 
+    def get_context_data(self, **kwargs):
+        """Insert hash_id into the context dict."""
+        context = super().get_context_data(**kwargs)
+        context['hash_id'] = self.kwargs['hash_id']
+        return context
+
 
 class ApiCommentsListView(CommentsListView):
     def get_queryset(self):
