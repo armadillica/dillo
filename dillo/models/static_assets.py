@@ -9,6 +9,8 @@ from dillo.models.mixins import (
     CreatedUpdatedMixin,
 )
 
+from dillo.storage import S3Boto3CustomStorage
+
 
 class StaticAsset(CreatedUpdatedMixin, HashIdGenerationMixin, models.Model):
     STATIC_ASSET_TYPES = (
@@ -17,7 +19,9 @@ class StaticAsset(CreatedUpdatedMixin, HashIdGenerationMixin, models.Model):
         ('video', 'Video'),
     )
     order = models.PositiveIntegerField(default=0)
-    source = models.FileField(upload_to=get_upload_to_hashed_path, blank=True,)
+    source = models.FileField(
+        upload_to=get_upload_to_hashed_path, blank=True, storage=S3Boto3CustomStorage(),
+    )
     source_type = models.CharField(choices=STATIC_ASSET_TYPES, default='file', max_length=5)
     source_filename = models.CharField(max_length=256, editable=False, blank=True)
     size_bytes = models.BigIntegerField(editable=False, null=True)
