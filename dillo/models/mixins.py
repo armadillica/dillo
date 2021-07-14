@@ -11,8 +11,10 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import SuspiciousOperation
+from django.core.signing import Signer, BadSignature
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 
 log = logging.getLogger(__name__)
@@ -271,3 +273,55 @@ class HashIdGenerationMixin(models.Model):
         if not created:
             return
         self.__class__.objects.filter(pk=self.pk).update(hash_id=hashids.encode(self.pk))
+
+
+class Downloadable(models.Model):
+    class Meta:
+        abstract = True
+
+    downloadable = models.ForeignKey(
+        'dillo.StaticAsset', on_delete=models.CASCADE, related_name='+', blank=True, null=True,
+    )
+
+    def check_downloadable_signed_url(self, url) -> bool:
+        """
+        :param url: signed url (absolute path)
+        returns True
+        get signed url, expected to be in the format
+        /path/?signature=<signature>&expires=<expires>
+        check signature and expires timestamp
+        return True if ok
+        """
+        parsed_url = urllib.parse.urlparse(url)
+        query_dict = urllib.parse.parse_qs(parsed_url.query)
+
+        try:
+            signature = query_dict['signature'][0]
+            expires = int(query_dict['expires'][0])
+        except (KeyError, ValueError):
+            return False
+
+        signer = Signer()
+        full_value = '{}-{}'.format(parsed_url.path, expires)
+        try:
+            signer.unsign('{}{}{}'.format(full_value, signer.sep, signature))
+        except BadSignature:
+            return False
+        return expires > timezone.now().timestamp()
+
+    def get_downloadable_url(self):
+        # Override this
+        return
+
+    def get_downloadable_signed_url(self, hours=1):
+        if not self.downloadable or not self.downloadable.source:
+            return None
+        url = self.get_downloadable_url()
+        expires = int(timezone.now().timestamp() + hours * 3600)
+        signer = Signer()
+        full_value = '{}-{}'.format(url, expires)
+        full_signature = signer.sign(full_value)
+        signature = full_signature.split(signer.sep)[-1]  # just the signature part
+        return '{}?{}'.format(
+            url, urllib.parse.urlencode({'signature': signature, 'expires': expires})
+        )
