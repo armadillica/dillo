@@ -40,7 +40,7 @@ class CommentsListView(ListView):
     def get_context_data(self, **kwargs):
         """Insert hash_id into the context dict."""
         context = super().get_context_data(**kwargs)
-        context['hash_id'] = self.kwargs['hash_id']
+        context['hash_id'] = self.kwargs.get('hash_id')
         return context
 
 
