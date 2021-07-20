@@ -7,7 +7,7 @@ authors = ["Francesco Siddi <francesco.siddi@gmail.com>", "Pablo Vazquez <venomg
 [tool.poetry.dependencies]
 python = "^3.7"
 django = "^2.2"
-psycopg2 = "^2.8"
+psycopg2 = "~2.8"
 pypugjs = "^5.8"
 jsmin = "^2.2"
 django-pipeline = "^1.6"
