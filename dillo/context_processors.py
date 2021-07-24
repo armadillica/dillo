@@ -68,8 +68,7 @@ def current_user_js(request):
     current_user = {
         'isAuthenticated': request.user.is_authenticated,
         'isStaff': request.user.is_staff,
-        'isModerator': request.user.groups.filter(name='moderators').exists()
-        or request.user.is_superuser,
+        'isModerator': request.user.groups.filter(name='moderators').exists(),
         'username': (None if not request.user.is_authenticated else request.user.username),
         'avatar': None,
         'url': (None if not request.user.is_authenticated else request.user.profile.absolute_url),
