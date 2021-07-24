@@ -130,10 +130,15 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             'dateUpdated': (
                 None if not self.updated_at else self.updated_at.strftime('%a %d %b, %Y - %H:%M')
             ),
-            'naturalPublicationTime': (
-                compact_naturaltime(self.updated_at)
+            'naturalDatePublished': (
+                None
                 if not self.published_at
                 else compact_naturaltime(self.published_at)
+            ),
+            'naturalDateUpdated': (
+                None
+                if not self.updated_at
+                else compact_naturaltime(self.updated_at)
             ),
             'urlApiCommentListView': reverse(
                 'api-comments-list',
