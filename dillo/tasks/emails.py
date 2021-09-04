@@ -64,6 +64,14 @@ def send_mail_message_contact(message_id: int):
     email.send()
 
 
+@background()
+def send_mail_superusers(subject, body):
+    """Generic email utility."""
+    superusers = User.objects.filter(is_superuser=True).all()
+    email = EmailMessage(subject, body, to=[superuser.email for superuser in superusers],)
+    email.send()
+
+
 def send_notification_mail(subject: str, recipient: User, template, context: dict):
     """Generic email notification function.
 
@@ -117,7 +125,7 @@ def send_notification_mail(subject: str, recipient: User, template, context: dic
 
 
 if settings.BACKGROUND_TASKS_AS_FOREGROUND:
-    # Will execute activity_fanout_to_feeds immediately
     log.debug('Executing background tasks synchronously')
     send_mail_report_content = send_mail_report_content.task_function
     send_mail_message_contact = send_mail_message_contact.task_function
+    send_mail_superusers = send_mail_superusers.task_function
