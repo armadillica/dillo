@@ -2,13 +2,17 @@ import logging
 
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
+from django.shortcuts import reverse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from dillo.views.mixins import OgData
 from dillo.models.jobs import Job
+from dillo.tasks.emails import send_mail_superusers
 
 log = logging.getLogger(__name__)
 
@@ -40,10 +44,16 @@ class JobCreateView(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
-        # Set user as owner of the short
+        # Set user as owner of the job
         form.instance.user = self.request.user
         form.instance.visibility = 'unlisted'
-        return super().form_valid(form)
+        self.object: Job = form.save()
+        # Generate email notification
+        job_edit_url = reverse('admin:dillo_job_change', args=[self.object.id])
+        job_edit_url_absolute = f'http://{Site.objects.get_current().domain}{job_edit_url}'
+        mail_body = f'New job submission at {job_edit_url_absolute}'
+        send_mail_superusers('New Job Submission', mail_body)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class JobUpdateView(LoginRequiredMixin, UpdateView):
