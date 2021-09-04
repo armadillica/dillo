@@ -1,4 +1,5 @@
 import bleach
+from django.contrib.sites.models import Site
 from django.db import models
 from django.urls import reverse
 
@@ -37,6 +38,10 @@ class Job(Entity):
 
     def get_absolute_url(self):
         return reverse('job-detail', kwargs={'pk': self.pk})
+
+    @property
+    def absolute_url(self) -> str:
+        return 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url())
 
     def save(self, *args, **kwargs):
         """Override save in order to bleach the description."""
