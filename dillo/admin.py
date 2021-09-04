@@ -278,7 +278,16 @@ admin.site.register(User, UserAdmin)
 @admin.register(dillo.models.comments.Comment)
 class CommentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
+    list_display = ['id', 'get_content', 'user', 'created_at', 'show_link']
     readonly_fields = ('entity_content_type', 'parent_comment', 'tags')
+
+    def show_link(self, obj):
+        return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
+
+    def get_content(self, obj):
+        return obj.content[:100]
+
+    get_content.short_description = "description"
 
 
 class TinyMCEFlatPageAdmin(FlatPageAdmin):
