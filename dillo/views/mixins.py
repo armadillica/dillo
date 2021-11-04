@@ -105,7 +105,9 @@ class FeaturedPostListEmbedView(PostListEmbedView):
     def get_queryset(self):
         return (
             Post.objects.filter(
-                is_hidden_by_moderator=False, status='published', visibility='public',
+                is_hidden_by_moderator=False,
+                status='published',
+                visibility='public',
             )
             .prefetch_related('likes')
             .annotate(Count('likes'))
