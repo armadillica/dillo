@@ -8,12 +8,10 @@ from dillo.views.mixins import PostListEmbedView
 
 class HomepageRouter(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_anonymous:
-            explore_url = reverse('explore') + '?layout=grid'
-            return HttpResponseRedirect(explore_url)
-        else:
-            explore_feed_url = reverse('explore-feed') + '?layout=list'
-            return HttpResponseRedirect(explore_feed_url)
+        explore_url = reverse('explore') + '?layout=grid'
+        return HttpResponseRedirect(explore_url)
+        # explore_feed_url = reverse('explore-feed') + '?layout=list'
+        # return HttpResponseRedirect(explore_feed_url)
 
 
 class PostsStreamUserListEmbedView(LoginRequiredMixin, PostListEmbedView):
