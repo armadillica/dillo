@@ -41,7 +41,11 @@ class PostForm(forms.Form):
 class CommentForm(forms.Form):
     content = forms.CharField(
         widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': _('Write a comment...'), 'rows': 2,}
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Write a comment...'),
+                'rows': 2,
+            }
         ),
         localize=True,
     )
@@ -101,7 +105,8 @@ class ContactForm(forms.Form):
 def validate_is_delete(value: str):
     if value != "DELETE":
         raise ValidationError(
-            _('"%(value)s" is not "DELETE"'), params={'value': value},
+            _('"%(value)s" is not "DELETE"'),
+            params={'value': value},
         )
 
 
@@ -141,7 +146,10 @@ class AccountUpdateUsernameForm(forms.Form):
 
 
 class CustomSignupMixin(BaseSignupForm):
-    name = forms.CharField(label="Your Name", empty_value="Your Name",)
+    name = forms.CharField(
+        label="Your Name",
+        empty_value="Your Name",
+    )
     field_order = ['name', 'email', 'password1']
 
     def save(self, request):
