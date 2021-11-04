@@ -111,7 +111,7 @@ class FeaturedPostListEmbedView(PostListEmbedView):
             )
             .prefetch_related('likes')
             .annotate(Count('likes'))
-            .order_by('-is_pinned_by_moderator', '-likes__count', '-created_at')
+            .order_by('-created_at', '-is_pinned_by_moderator', '-likes__count')
         )
 
 
