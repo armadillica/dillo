@@ -308,6 +308,17 @@ git = ["gitpython (>=3.0.2)"]
 rest = ["djangorestframework (>=3.10.3)"]
 
 [[package]]
+name = "django-recaptcha"
+version = "2.0.6"
+description = "Django recaptcha form field/widget app."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+django = ">1.11,<4.0"
+
+[[package]]
 name = "django-storages"
 version = "1.11.1"
 description = "Support for many storage backends in Django"
@@ -811,7 +822,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "32425ea489d8102bf1d17dbc9154a5bffd835ae1d9eaaada9f73169bea2ce0c9"
+content-hash = "09beb312bb559a7a2b26a372a111c227d5560f124e6a95e4af1a71c1956e5fd3"
 
 [metadata.files]
 appdirs = [
@@ -914,6 +925,9 @@ django-pipeline = [
 django-project-version = [
     {file = "django-project-version-0.10.12.zip", hash = "sha256:9b110875fb5275fdc542bfa30cf1db55e1ca219ee1d335dc719ce3ed877e2ccb"},
     {file = "django_project_version-0.10.12-py3-none-any.whl", hash = "sha256:ff9773b9cd921066b3d3fcdfbe065f27d0fcf9c00b12a15359d8ba2901a1aa34"},
+]
+django-recaptcha = [
+    {file = "django_recaptcha-2.0.6-py2.py3-none-any.whl", hash = "sha256:567784963fd5400feaf92e8951d8dbbbdb4b4c48a76e225d4baa63a2c9d2cd8c"},
 ]
 django-storages = [
     {file = "django-storages-1.11.1.tar.gz", hash = "sha256:c823dbf56c9e35b0999a13d7e05062b837bae36c518a40255d522fbe3750fbb4"},

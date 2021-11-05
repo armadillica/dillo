@@ -37,6 +37,7 @@ boto3 = "^1.15.11"
 markupsafe = "^1.1.1"
 shortcodes = "2.5"
 webpreview = "^1.6.0"
+django-recaptcha = "^2.0.6"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}

@@ -1,10 +1,13 @@
 import logging
+from captcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core import validators
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.conf import settings
+
 
 import dillo.models
 import dillo.models.profiles
@@ -175,6 +178,16 @@ class CustomSignupMixin(BaseSignupForm):
 
 class CustomSignupForm(CustomSignupMixin, SignupForm):
     """Signup Form requiring to accept terms."""
+
+    # Only setup recaptcha if RECAPTCHA_PUBLIC_KEY is set
+    if settings.RECAPTCHA_PUBLIC_KEY:
+        captcha = ReCaptchaField(
+            widget=ReCaptchaV2Checkbox(
+                attrs={
+                    'data-theme': 'dark',
+                }
+            )
+        )
 
 
 class CustomSocialSignupForm(CustomSignupMixin, SocialSignupForm):
