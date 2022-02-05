@@ -1,0 +1,8 @@
+| {% extends "dillo/post_detail_embed_base.pug" %}
+| {% load i18n %}
+| {% load micawber_tags %}
+| {% block media %}
+| {{ post.content | oembed }}
+| {% endblock media %}
+
+| {% block site_footer %}{% endblock site_footer %}
