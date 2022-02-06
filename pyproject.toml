@@ -5,8 +5,8 @@ description = "The core of community"
 authors = ["Francesco Siddi <francesco.siddi@gmail.com>", "Pablo Vazquez <venomgfx@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-django = "^2.2"
+python = "^3.8"
+django = "^2.2.26"
 psycopg2 = "~2.8"
 pypugjs = "^5.8"
 jsmin = "^3.0"
@@ -45,7 +45,7 @@ factory_boy = "^3.2.0"
 
 [tool.black]
 line-length = 100
-target_version = ['py37']
+target_version = ['py38']
 skip_string_normalization = true
 
 [build-system]
