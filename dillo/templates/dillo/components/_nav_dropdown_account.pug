@@ -3,6 +3,9 @@
 a.dropdown-item.is-admin(href="{% url 'admin:index' %}", title='Whoosh')
   i.i-coffee
   | Whoosh
+a.dropdown-item.is-admin(href="{% url 'admin-create-post-from-url' %}", title='Create Post from URL')
+  i.i-link
+  | Post from URL
 a.dropdown-item.is-admin(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
   i.i-users
   | Users
