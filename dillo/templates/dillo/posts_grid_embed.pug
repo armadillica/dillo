@@ -25,7 +25,7 @@ li.post-container(
 				href="{% url 'post_detail' post.hash_id %}")
 
 				//- Views.
-				| {% if post.media.first.video %}
+				| {% if post.media.first.video and post.media.first.video.views_count %}
 				span
 					| #[i.i-eye] {{ post.media.first.video.views_count|compact_number }}
 				| {% endif %}
