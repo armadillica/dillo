@@ -19,9 +19,12 @@ def forwards_func(apps, schema_editor):
     except ContentType.DoesNotExist:
         return
     for comment in Comment.objects.using(db_alias):
-        comment.entity_object_id = comment.post.id
-        comment.entity_content_type_id = post_type.id
-        comment.save()
+        try:
+            comment.entity_object_id = comment.post.id
+            comment.entity_content_type_id = post_type.id
+            comment.save()
+        except Exception as e:
+            pass
 
 
 class Migration(migrations.Migration):
@@ -49,5 +52,8 @@ class Migration(migrations.Migration):
             preserve_default=False,
         ),
         migrations.RunPython(forwards_func, migrations.RunPython.noop),
-        migrations.RemoveField(model_name='comment', name='post',),
+        migrations.RemoveField(
+            model_name='comment',
+            name='post',
+        ),
     ]
