@@ -9,8 +9,10 @@
 | {% block javascript_extra %}
 script.
 	$.get("{% url 'post_detail' post.hash_id %}?from_post_detail=true", function (data) {
-				$('main').html(data);
-		});
+		$('main').html(data);
+		initEmbedListMedia();
+		initComments();
+	});
 | {% endblock javascript_extra %}
 
 //- TODO: Use og_data workflow.

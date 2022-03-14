@@ -21,7 +21,7 @@ section.post-view-media.col-scrollable
 
 | {% block javascript_media %}
 script.
-	$(function () {
+	function initEmbedListMedia() {
 
 		//- Find only the media that was loaded in the post
 		let $postMediaContainer = $('.post-media-container.js-with-post-detail-media-prefix');
@@ -52,8 +52,8 @@ script.
 				$('post-view-media').scrollTop($('#media-' + initialMedia).offset().top);
 			}
 		}
+	};
 
-	});
 | {% endblock javascript_media %}
 
 | {% block site_footer %}{% endblock site_footer %}
