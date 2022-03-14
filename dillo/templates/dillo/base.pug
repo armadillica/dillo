@@ -63,7 +63,7 @@ html(lang="en")
 		script.
 			var hop = document.getElementById("hop"); hop.onclick = function(e){ window.scrollTo(0, 0);}
 			window.addEventListener("scroll", function() {
-				if (window.pageYOffset > 250){ hop.className = 'active'; } else {	hop.className = ''; }});
+				if (window.scrollY > 250){ hop.className = 'active'; } else {	hop.className = ''; }});
 
 		script.
 			twemoji.parse(document.body);
