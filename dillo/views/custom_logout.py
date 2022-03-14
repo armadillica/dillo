@@ -7,9 +7,9 @@ from django.views.decorators.cache import never_cache
 class CustomLogoutView(LogoutView):
     """Custom logout view.
 
-    Allows returning back to super user if we used loginas, and does
-    not require the /admin/ endpoint, which is required by the default
-    implementation of loginas.
+    Allows returning to superuser if we used loginas, and does not require
+    the /admin/ endpoint, which is required by the default implementation
+    of loginas.
     """
 
     @method_decorator(never_cache)
