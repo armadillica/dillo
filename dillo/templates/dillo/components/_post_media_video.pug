@@ -10,7 +10,6 @@
 		data-video_id="{{ video.static_asset.id }}",
 		data-framerate="{{ video.framerate }}",
 		data-views_count="{{ video.views_count|compact_number }}",
-		poster='{% thumbnail video.static_asset.thumbnail "1280x720" as im %}{{ im.url }}{% endthumbnail %}',
 		playsinline,
 		controls,
 		muted)
