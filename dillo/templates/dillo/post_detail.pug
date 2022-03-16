@@ -12,6 +12,8 @@ script.
 		$('main').html(data);
 		initEmbedListMedia();
 		initComments();
+		$('.js-post-nav-prev').remove();
+		$('.js-post-nav-next').remove();
 	});
 | {% endblock javascript_extra %}
 
