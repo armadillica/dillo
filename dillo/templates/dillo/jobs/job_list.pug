@@ -108,7 +108,7 @@
 .sidebar-block
 	| {% url 'job-create' as btn_post_create_url %}
 	| {% trans 'Post a Job' as btn_label %}
-	| {% include 'dillo/components/_button_generic.pug' with url=btn_post_create_url label=btn_label class="btn-primary" %}
+	| {% include 'dillo/components/_button_generic.pug' with url=btn_post_create_url label=btn_label class="btn-primary btn-wide" %}
 
 //- TODO: Filters for jobs.
 
