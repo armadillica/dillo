@@ -14,23 +14,26 @@
 
 | {% block stream %}
 //- Notice for users without a reel.
-| {% if request.user.is_authenticated %}
-| {% if not user.profile.reel %}
+| {% if not user.profile.reel or not request.user.is_authenticated %}
 .card.theater-header
   .card-body
     .row
       .col-md-9
-        | {% url 'profile_edit' as profile_edit_url %}
-        | {% blocktrans with profile_edit_url=profile_edit_url %}
         | #[strong #[i.i-star] Your reel could be here!]
+        | {% if not request.user.is_authenticated %}
+        | {% url 'account_signup' as signup_url %}
+        | {% url 'account_signup' as btn_reels_cta %}
+        | #[a(href="{{ signup_url }}") Create a free account] to add your animation reel.
+        | {% trans 'Create Your Profile' as btn_profile_label %}
+        | {% else %}
+        | {% url 'profile_edit' as profile_edit_url %}
+        | {% url 'profile_edit' as btn_reels_cta %}
         | Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
-        | {% endblocktrans %}
+        | {% trans 'Add Reel to Profile' as btn_profile_label %}
+        | {% endif %}
 
       .col-md-3
-        | {% url 'profile_edit' as btn_profile_url %}
-        | {% trans 'Add Reel to Profile' as btn_profile_label %}
-        | {% include 'dillo/components/_button_generic.pug' with url=btn_profile_url label=btn_profile_label class="btn-primary btn-wide" %}
-| {% endif %}
+        | {% include 'dillo/components/_button_generic.pug' with url=btn_reels_cta label=btn_profile_label class="btn-primary btn-wide" %}
 | {% endif %}
 
 | {% if object_list %}
