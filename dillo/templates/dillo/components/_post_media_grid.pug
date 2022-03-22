@@ -14,7 +14,7 @@
 		data-target='#modal-post-detail',
 		data-post_id="{{ post.hash_id }}",
 		href="{% url 'post_detail' post.hash_id %}",
-		data-preview="{% if post.media.first.video %}{{ post.media.first.video.url_preview }}{% endif %}")
+		data-preview="{{ post.media.all.0.video.url_preview }}")
 
 		| {% thumbnail post.thumbnail "640x360" crop="center" as im %}
 		img.media-thumbnail(
