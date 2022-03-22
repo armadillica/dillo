@@ -109,7 +109,8 @@ class FeaturedPostListEmbedView(PostListEmbedView):
                 status='published',
                 visibility='public',
             )
-            .prefetch_related('likes')
+            .exclude(media=False)
+            .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
             .annotate(Count('likes'))
             .order_by('-created_at', '-is_pinned_by_moderator', '-likes__count')
         )
