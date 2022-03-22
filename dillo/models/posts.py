@@ -186,7 +186,10 @@ class PostMediaImage(models.Model):
     """An image file, attached to a Post via PostMedia."""
 
     image = models.ImageField(
-        upload_to=get_upload_to_hashed_path, blank=True, height_field='height', width_field='width',
+        upload_to=get_upload_to_hashed_path,
+        blank=True,
+        height_field='height',
+        width_field='width',
     )
     height = models.PositiveIntegerField()
     width = models.PositiveIntegerField()
@@ -199,7 +202,10 @@ class PostMediaImage(models.Model):
 class PostMediaVideo(models.Model):
     """Videos will be available as video_mp4_720p and video_stream."""
 
-    source = models.FileField(upload_to=get_upload_to_hashed_path, blank=True,)
+    source = models.FileField(
+        upload_to=get_upload_to_hashed_path,
+        blank=True,
+    )
     # video = models.FilePathField(
     #     blank=True,
     # )
