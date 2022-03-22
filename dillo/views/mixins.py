@@ -96,7 +96,7 @@ class PostListEmbedView(ListView):
         if next_layout == 'list':
             return 3
         elif next_layout == 'grid':
-            return 30
+            return 40
 
 
 class FeaturedPostListEmbedView(PostListEmbedView):
