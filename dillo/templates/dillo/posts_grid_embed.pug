@@ -39,13 +39,13 @@ li.post-container(
 				span  #[i.i-heart] {{ post.likes.count }}
 				| {% endif %}
 
+	| {% if forloop.counter == 10 %}
+	| {% if page_obj.has_next %}
+	.js-load-more(data-next_url="{{ url_next }}?page={{ page_obj.next_page_number }}")
+	| {% endif %}
+	| {% endif %}
+
 
 | {% empty %}
 | {% include 'dillo/components/_post_list_empty.pug' %}
 | {% endfor %}
-
-| {% if page_obj.has_next %}
-li
-	.d-flex.mx-auto.py-3.justify-content-center
-		| {% include 'dillo/components/_button_load_more.pug' with js_class='js-load-more' page_obj=page_obj %}
-| {% endif %}
