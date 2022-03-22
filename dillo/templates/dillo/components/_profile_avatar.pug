@@ -8,12 +8,11 @@ a.profile-avatar-container(
 	title="{{ user.username }}")
 	.profile-avatar(
 		class="{% if size %}avatar-size-{{ size }}{% endif %}")
-		| {% thumbnail user.profile.avatar "128x128" crop="center" as im %}
+		| {% if  user.profile.avatar %}
 		img(
-			src="{{ im.url }}",
-			width="{{ im.width }}",
-			height="{{ im.height }}",
-			alt="{{ user.username }}")
-		| {% empty %}
+			src="{{ user.profile.avatar.url }}",
+			alt="{{ user.username }}"
+		)
+		| {% else %}
 		i.i-user
-		| {% endthumbnail %}
+		| {% endif %}
