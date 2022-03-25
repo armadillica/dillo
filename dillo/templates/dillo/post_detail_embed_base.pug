@@ -38,21 +38,23 @@ section.post-view-info.col-scrollable
 
     .post-related-posts
       | {% for related_post in related_posts %}
+      | {% thumbnail related_post.thumbnail "640x360" crop="center" as im %}
+      | {% if im %}
       a.post-media-item-grid(
         href="{% url 'post_detail' related_post.hash_id %}")
 
-        | {% thumbnail related_post.thumbnail "640x360" crop="center" as im %}
         img.media-thumbnail(
           src="{{ im.url }}",
           width="{{ im.width }}",
           height="{{ im.height }}",
           alt="{{ related_post.user }}")
-        | {% endthumbnail %}
 
         | {% if related_post.media.count > 1 %}
         span.post-label-icon
           i.i-layers
         | {% endif %}
+      | {% endif %}
+      | {% endthumbnail %}
       | {% endfor %}
   | {% endif %}
 
