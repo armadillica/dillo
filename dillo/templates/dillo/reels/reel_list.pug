@@ -34,26 +34,25 @@
   | {% endif %}
 
   | {% if object_list %}
-  .row.cards-row
+  .cards-grid
     | {% for profile in object_list %}
-    .col
-      .card-borderless
-        | {% thumbnail profile.reel_thumbnail_16_9 "640x360" crop="center" as im %}
-        a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}", title="{{ profile.name }}")
-          img.img-fluid(
-            src="{{ im.url }}",
-            width="{{ im.width }}",
-            height="{{ im.height }}",
-            alt="{{ profile.name }}")
-        | {% endthumbnail %}
-        .card-header
-          .card-header-image
-            | {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
-          a.card-header-text(href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}")
-            .card-title {{ profile.name }}
-            | {% if profile.location %}
-            .card-subtitle {{ profile.location }}
-            | {% endif %}
+    .card-borderless
+      | {% thumbnail profile.reel_thumbnail_16_9 "640x360" crop="center" as im %}
+      a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}", title="{{ profile.name }}")
+        img.img-fluid(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ profile.name }}")
+      | {% endthumbnail %}
+      .card-header
+        .card-header-image
+          | {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
+        a.card-header-text(href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}")
+          .card-title {{ profile.name }}
+          | {% if profile.location %}
+          .card-subtitle {{ profile.location }}
+          | {% endif %}
     | {% endfor %}
 
   | {% else %}
