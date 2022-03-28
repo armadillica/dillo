@@ -13,7 +13,9 @@
 		class="js-follow-toggle{% if request.user|is_following:post.user %} is-follower{% endif %}",
 		data-follow_toggle_label="{% if request.user|is_following:post.user %}Follow{% else %}Unfollow{% endif %}"
 		href="{% follow_url post.user %}")
-		span {% if request.user|is_following:post.user %}Unfollow{% else %}Follow{% endif %}
+		span
+			i.i-user-plus
+			span {% if request.user|is_following:post.user %}Unfollow{% else %}Follow{% endif %}
 	| {% endif %}
 
 	| {% if show_tags %}
