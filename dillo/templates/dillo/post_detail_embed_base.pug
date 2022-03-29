@@ -41,7 +41,9 @@ section.post-view-info.col-scrollable
       | {% thumbnail related_post.thumbnail "640x360" crop="center" as im %}
       | {% if im %}
       a.post-media-item-grid(
-        href="{% url 'post_detail' related_post.hash_id %}")
+        class="js-post-media",
+        href="{% url 'post_detail' related_post.hash_id %}",
+        data-preview="{{ related_post.media.all.0.video.url_preview }}")
 
         img.media-thumbnail(
           src="{{ im.url }}",
@@ -102,6 +104,7 @@ script.
 script.
   $(function () {
     initTooltips();
+    loadSinglePostGrid($('.post-related-container'));
   });
 
 | {% block javascript_media %}

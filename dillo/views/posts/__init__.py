@@ -66,7 +66,7 @@ class PostDetailView(DetailView):
         return (
             Post.objects.filter(user=post.user, status='published', visibility='public')
             .exclude(id=post.id)
-            .prefetch_related('likes')
+            .prefetch_related('likes', 'media__video')
             .annotate(Count('likes'))
             .order_by('-likes__count', '-created_at')[:6]
         )
