@@ -48,10 +48,6 @@
         href="{% url 'explore' %}?layout=grid",
         class="{% if '/explore/' in request.get_full_path %}active{% endif %}")
         span {% trans 'Explore' %}
-      a.btn(
-        href="{% url 'explore-feed' %}?layout=list",
-        class="{% ifequal '/feed/?layout=list' request.get_full_path %}active{% endifequal %}")
-        span {% trans 'Activity' %}
 
 
   | {% endif %}
