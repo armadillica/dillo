@@ -8,20 +8,6 @@
 
 | {% block content %}
 .container-fluid
-  | {% if '/explore/' in request.path_info %}
-
-  | {% if trending_tags %}
-  .post-stream-tags
-    ul
-      | {% for tag in trending_tags %}
-      li
-        a.btn-tag(href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
-          span &#35;{{ tag | truncatechars:35 }}
-      | {% endfor %}
-  | {% endif %}
-
-  | {% endif %}
-
   //- If we are exploring a tag, show it,
   //- otherwise show the list of trending tags.
   | {% if tag_name %}
@@ -49,6 +35,17 @@
         class="{% if '/explore/' in request.get_full_path %}active{% endif %}")
         span {% trans 'Explore' %}
 
+    | {% if '/explore/' in request.path_info %}
+    | {% if trending_tags %}
+    .post-stream-tags
+      ul
+        | {% for tag in trending_tags %}
+        li
+          a.btn-tag(href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
+            span &#35;{{ tag | truncatechars:35 }}
+        | {% endfor %}
+    | {% endif %}
+    | {% endif %}
 
   | {% endif %}
 
