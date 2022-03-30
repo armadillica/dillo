@@ -117,8 +117,6 @@ class PostDetailView(DetailView):
         ua_string = self.request.headers.get('user-agent', '')
         user_agent = parse(ua_string)
         if self.request.is_ajax():
-            if self.object.is_link:
-                return f'dillo/post_detail_embed_link.pug'
             # Embedded post detail (desktop version)
             template = 'list_media'
             if user_agent.is_mobile and self.request.GET.get('from_post_detail'):

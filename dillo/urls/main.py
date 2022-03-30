@@ -24,12 +24,17 @@ import dillo.views.jobs
 import dillo.views.actstream
 import dillo.views.explore
 import dillo.views.moderation
+import dillo.views.user_from_oembed_link
 
 # User Pages
 urlpatterns = [
     # Embedded Activities Feed
     # path('explore/', dillo.views.explore.ExplorePostsView.as_view(), name='explore')
-    path('feed/', dillo.views.explore.ExploreFeedView.as_view(), name='explore-feed',),
+    path(
+        'feed/',
+        dillo.views.explore.ExploreFeedView.as_view(),
+        name='explore-feed',
+    ),
     path(
         'e/feed-explore',
         dillo.views.explore.ExploreFeedEmbedView.as_view(),
@@ -88,7 +93,11 @@ urlpatterns += [
         dillo.views.mixins.ApiMarkdownPreview.as_view(),
         name='markdown-preview',
     ),
-    path('api/link-preview/', dillo.views.mixins.ApiLinkPreview.as_view(), name='link-preview',),
+    path(
+        'api/link-preview/',
+        dillo.views.mixins.ApiLinkPreview.as_view(),
+        name='link-preview',
+    ),
     path(
         'api/follow-toggle/<int:content_type_id>/<int:object_id>/',
         dillo.views.actstream.FollowToggleView.as_view(),
@@ -129,7 +138,11 @@ urlpatterns += [
         dillo.views.posts.publish.post_file_upload,
         name='post_file_upload',
     ),
-    path('s3-sign', dillo.views.posts.publish.get_aws_s3_signed_url, name='post_s3_signed_url',),
+    path(
+        's3-sign',
+        dillo.views.posts.publish.get_aws_s3_signed_url,
+        name='post_s3_signed_url',
+    ),
     path(
         'attach-media-to-entity',
         dillo.views.posts.publish.AttachS3MediaToEntity.as_view(),
@@ -284,7 +297,11 @@ urlpatterns += [
 # Reels
 urlpatterns += [
     path('reels/', dillo.views.reels.ReelListView.as_view(), name='reel-list'),
-    path('reels/<int:profile_id>', dillo.views.reels.ReelDetailView.as_view(), name='reel-detail',),
+    path(
+        'reels/<int:profile_id>',
+        dillo.views.reels.ReelDetailView.as_view(),
+        name='reel-detail',
+    ),
 ]
 
 # Jobs
@@ -401,4 +418,12 @@ urlpatterns += [
         dillo.views.users.profile.PostsByUserListView.as_view(),
         name='posts_by_user_list',
     ),
+]
+
+urlpatterns += [
+    path(
+        'api/user-from-oembed-link',
+        dillo.views.user_from_oembed_link.user_from_oembed_link,
+        name='api-user-from-oembed-link',
+    )
 ]

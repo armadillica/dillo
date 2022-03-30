@@ -7,6 +7,9 @@
 | {% block info %}
 section.post-view-info.col-scrollable
   | {% include 'dillo/components/_post_header.pug' with post=post show_tags=false %}
+  | {% if post.is_link %}
+  | {% include 'dillo/components/_post_author_info_from_link.pug' with post=post %}
+  | {% endif %}
   | {% include 'dillo/components/_post_description.pug' with post=post is_post_details=true %}
   | {% include 'dillo/components/_post_actions.pug' with post=post is_post_details=True %}
   | {% include 'dillo/components/_post_meta.pug' with post=post is_post_details=True %}

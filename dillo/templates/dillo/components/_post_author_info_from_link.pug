@@ -1,0 +1,20 @@
+#post-author-card-container(data-url="{{ post.content }}")
+  a#post-author-fullname(href="#")
+  #post-author-username
+  #post-content-link
+
+script.
+  let postContentUrl = $('#post-author-card-container').data('url');
+  let url = '/api/user-from-oembed-link';
+
+  $.get(url, {postContentUrl: postContentUrl}, function (data) {
+    }).done(function (data) {
+      let $postAuthorFullname = $('#post-author-fullname');
+      $postAuthorFullname.text(data['fullname'] + ' on ' + data['extractor_key'] + ' or ' + data['extractor']);
+      $postAuthorFullname.attr('href', data['url_profile']);
+      $('#post-author-username').text('@' + data['username']);
+      $('#post-content-link').text(data['url_content']);
+
+    }).fail(function (jqxhr) {
+      console.log(xhrErrorResponseMessage(jqxhr));
+    });
