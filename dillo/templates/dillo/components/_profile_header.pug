@@ -3,111 +3,123 @@
 | {% load micawber_tags %}
 | {% load dillo_filters %}
 
-.profile-info
+.profile-header
+  .profile-info
+    //- Avatar.
+    .profile-info-avatar
+      | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
 
-  //- Avatar.
-  .profile-info-avatar
-    | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
+    //- Username or Name.
+    a.profile-name(
+      class="{{ is_link_disabled }}",
+      href="{% url 'profile-detail' user.username %}")
+      span {% firstof user.profile.name user.username %}
+      | {% if user.profile.name %}
+      .username @{{ user.username }}
+      | {% endif %}
 
-  //- Username or Name.
-  a.profile-name(
-    class="{{ is_link_disabled }}",
-    href="{% url 'profile-detail' user.username %}")
-    span {% firstof user.profile.name user.username %}
-    | {% if user.profile.name %}
-    .username @{{ user.username }}
+    //- Location
+    | {% if user.profile.location %}
+    .profile-location
+      a(
+        href="https://www.google.com/maps/place/{{ user.profile.location | slugify }}",
+        target="_blank")
+        i.i-map-pin
+        | {{ user.profile.location }}
     | {% endif %}
 
-  //- Location
-  | {% if user.profile.location %}
-  .profile-location
+    //- Website.
+    | {% if user.profile.website %}
     a(
-      href="https://www.google.com/maps/place/{{ user.profile.location | slugify }}",
+      href="{{ user.profile.website }}",
       target="_blank")
-      i.i-map-pin
-      | {{ user.profile.location }}
-  | {% endif %}
-
-  //- Website.
-  | {% if user.profile.website %}
-  a(
-    href="{{ user.profile.website }}",
-    target="_blank")
-    | {{ user.profile.website_hostname }}
-  | {% endif %}
-
-  //- Social Links.
-  .profile-social
-    | {% for profile_link in user.profile.links.all %}
-    | {% firstof profile_link.social 'Website' as social_site %}
-    a.btn.btn-icon(
-      data-toggle="tooltip",
-      href="{{ profile_link.url }}",
-      target="_blank",
-      title="{{ social_site | title }}")
-      span
-        i(class="i-{% firstof profile_link.social 'link' %}")
-    | {% endfor %}
-
-  //- Bio.
-  | {% if show_bio %}
-  | {% if user.profile.bio %}
-  .profile-bio {{ user.profile.bio }}
-  | {% endif %}
-  | {% endif %}
-
-  //- Statistics.
-  .profile-stats
-    | {% if user.profile.followers_count > 0 %}
-    span.stat(
-      class="js-show-modal {% if user.profile.followers_count %}stat-modal{% endif %}",
-      data-content_url="{% url 'embed_user_followers_list' user_id=user.id %}",
-      data-modal_category='list',
-      data-modal_title='{% trans "Followers" %}',
-      data-target='#modal',
-      data-toggle='modal',
-      id="user-followers-{{ user.id }}",
-      title='{% trans "Followers" %}')
-      span {{ user.profile.followers_count }}
-      span follower{{ user.profile.followers_count|pluralize }}
+      | {{ user.profile.website_hostname }}
     | {% endif %}
 
-    | {% if user.profile.following_count > 0 %}
-    span.stat(
-      class="js-show-modal {% if user.profile.following_count %}stat-modal{% endif %}",
-      data-content_url="{% url 'embed_user_following_list' user_id=user.id %}",
-      data-modal_category='list',
-      data-modal_title='{% trans "Following" %}',
-      data-target='#modal',
-      data-toggle='modal',
-      id="user-following-{{ user.id }}",
-      title='{% trans "Following" %}')
-      span {{ user.profile.following_count }}
-      span following
+    //- Social Links.
+    .profile-social
+      | {% for profile_link in user.profile.links.all %}
+      | {% firstof profile_link.social 'Website' as social_site %}
+      a.btn.btn-icon(
+        data-toggle="tooltip",
+        href="{{ profile_link.url }}",
+        target="_blank",
+        title="{{ social_site | title }}")
+        span
+          i(class="i-{% firstof profile_link.social 'link' %}")
+      | {% endfor %}
+
+    //- Bio.
+    | {% if show_bio %}
+    | {% if user.profile.bio %}
+    .profile-bio {{ user.profile.bio }}
+    | {% endif %}
     | {% endif %}
 
-    | {% if user.profile.likes_count > 0 %}
-    span.stat
-      span {{ user.profile.likes_count }}
-      span like{{ user.profile.likes_count|pluralize }}
+    //- Statistics.
+    .profile-stats
+      | {% if user.profile.followers_count > 0 %}
+      span.stat(
+        class="js-show-modal {% if user.profile.followers_count %}stat-modal{% endif %}",
+        data-content_url="{% url 'embed_user_followers_list' user_id=user.id %}",
+        data-modal_category='list',
+        data-modal_title='{% trans "Followers" %}',
+        data-target='#modal',
+        data-toggle='modal',
+        id="user-followers-{{ user.id }}",
+        title='{% trans "Followers" %}')
+        span {{ user.profile.followers_count }}
+        span follower{{ user.profile.followers_count|pluralize }}
+      | {% endif %}
+
+      | {% if user.profile.following_count > 0 %}
+      span.stat(
+        class="js-show-modal {% if user.profile.following_count %}stat-modal{% endif %}",
+        data-content_url="{% url 'embed_user_following_list' user_id=user.id %}",
+        data-modal_category='list',
+        data-modal_title='{% trans "Following" %}',
+        data-target='#modal',
+        data-toggle='modal',
+        id="user-following-{{ user.id }}",
+        title='{% trans "Following" %}')
+        span {{ user.profile.following_count }}
+        span following
+      | {% endif %}
+
+      | {% if user.profile.likes_count > 0 %}
+      span.stat
+        span {{ user.profile.likes_count }}
+        span like{{ user.profile.likes_count|pluralize }}
+      | {% endif %}
+
+      | {% if user.profile.views_count > 0 %}
+      span.stat
+        span {{ user.profile.views_count|compact_number }}
+        span views
+      | {% endif %}
+
+    hr
+
+    .btn-toolbar-row
+      //- Show Edit Profile button for the current user.
+      | {% if request.user == user %}
+      | {% url 'profile_edit' as edit_url %}
+      | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Profile" class="btn-sidebar" %}
+      | {% else %}
+      //- Show Follow button for everyone else.
+      | {% include 'dillo/components/_button_follow.pug' with target_object=user class="btn-profile-follow" %}
+      | {% endif %}
+
+      | {% include 'dillo/components/_button_share.pug' with shared_object_label='profile' %}
+
+    | {% if request.user.is_superuser %}
+    hr
+    | {% url 'admin:auth_user_change' user.id as edit_url %}
+    | {% trans 'Edit User' as edit_label %}
+    | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin" %}
     | {% endif %}
 
-    | {% if user.profile.views_count > 0 %}
-    span.stat
-      span {{ user.profile.views_count|compact_number }}
-      span views
-    | {% endif %}
-
-  hr
-
-  //- Show Edit Profile button for the current user.
-  | {% if request.user == user %}
-  .sidebar-block
-    | {% url 'profile_edit' as edit_url %}
-    | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Profile" class="btn-sidebar" %}
-
-  | {% else %}
-
-  //- Show Follow button for everyone else.
-  | {% include 'dillo/components/_button_follow.pug' with target_object=user class="btn-profile-follow" %}
+  | {% if user.profile.reel %}
+  .profile-reel
+    | {{ user.profile.reel | oembed }}
   | {% endif %}

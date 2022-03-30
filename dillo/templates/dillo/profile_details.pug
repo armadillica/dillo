@@ -8,7 +8,7 @@
 | {% include 'dillo/components/_profile_page_title.pug' with user=user %}
 | {% endblock page_title %}
 
-| {% block stream %}
+| {% block page_header %}
 style.
   .stream, .sidebar {
     --accent-profile-h: {{ user.id }};
@@ -16,33 +16,15 @@ style.
     --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
   }
 
-| {% if user.profile.reel %}
-.profile-reel
-  | {{ user.profile.reel | oembed }}
-| {% endif %}
-
-| {{ block.super }}
-| {% endblock stream %}
-
-| {% block sidebar %}
-.sidebar-block
-  | {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
+| {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
 
 | {% if user.profile.next_events_attending %}
-.sidebar-block
+.profile-events
   | {% include 'dillo/components/_feed_events.pug' with events=user.profile.next_events_attending events_title='Going To' %}
 | {% endif %}
 
-.sidebar-block
-  | {% include 'dillo/components/_button_share.pug' with shared_object_label='profile' %}
-
-| {% if request.user.is_superuser %}
-.sidebar-block
-  | {% url 'admin:auth_user_change' user.id as edit_url %}
-  | {% trans 'Edit User' as edit_label %}
-  | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin" %}
-| {% endif %}
-| {% endblock sidebar %}
+| {{ block.super }}
+| {% endblock page_header %}
 
 | {% block body_classes %}profile-details{% endblock %}
 

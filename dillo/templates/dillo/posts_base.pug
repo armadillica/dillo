@@ -7,6 +7,9 @@
 | {% block sidebar_classes %}hide-xs{% endblock sidebar_classes %}
 
 | {% block content %}
+| {% block page_header %}
+| {% endblock page_header %}
+
 .container-fluid
   | {% if processing_posts.posts %}
   .posts-processing
