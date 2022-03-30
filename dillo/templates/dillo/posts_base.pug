@@ -8,21 +8,6 @@
 
 | {% block content %}
 .container-fluid
-  //- If we are exploring a tag, show it,
-  //- otherwise show the list of trending tags.
-  | {% if tag_name %}
-  .post-stream-header
-    .post-stream-tag-container
-      h1
-        #[small #[i.i-hash]]{{ tag_name }}
-      | {% if tag_followers_count %}
-      .post-stream-tag-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
-      | {% endif %}
-    // TODO: Posts count.
-    .post-stream-tag-action
-      | {% include 'dillo/components/_button_follow.pug' with target_object=tag %}
-  | {% else %}
-
   | {% if processing_posts.posts %}
   .posts-processing
     | #[span #[i.spinner-grow]] Your posts are being processed, hold tight...
@@ -41,12 +26,27 @@
       ul
         | {% for tag in trending_tags %}
         li
-          a.btn-tag(href="{% url 'posts_list_tag' tag %}", title="{{ tag }}")
+          a.btn-tag(
+            class="{% if tag_name and tag_name == tag|stringformat:'s' %}active{% endif %}",
+            href="{% url 'posts_list_tag' tag %}",
+            title="{{ tag }}")
             span &#35;{{ tag | truncatechars:35 }}
         | {% endfor %}
     | {% endif %}
     | {% endif %}
 
+  //- If we are exploring a tag, show it,
+  //- otherwise show the list of trending tags.
+  | {% if tag_name %}
+  .post-stream-header
+    .post-stream-tag-container
+      h1 #[i.i-hash]{{ tag_name }}
+      | {% include 'dillo/components/_button_follow.pug' with target_object=tag %}
+
+    // TODO: Posts count.
+    | {% if tag_followers_count %}
+    .post-stream-tag-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
+    | {% endif %}
   | {% endif %}
 
   ul#posts-list.post-list(
