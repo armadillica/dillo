@@ -48,7 +48,8 @@
       .card-header
         .card-header-image
           | {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
-        a.card-header-text(href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}")
+        a.card-header-text.card-header-text-column(
+          href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}")
           .card-title {{ profile.name }}
           | {% if profile.location %}
           .card-subtitle {{ profile.location }}
