@@ -14,12 +14,6 @@
   | {% endif %}
 
   .nav-tabbar
-    .nav-tabbar-items
-      a.btn(
-        href="{% url 'explore' %}?layout=grid",
-        class="{% if '/explore/' in request.get_full_path %}active{% endif %}")
-        span {% trans 'Explore' %}
-
     | {% if '/explore/' in request.path_info %}
     | {% if trending_tags %}
     .post-stream-tags
