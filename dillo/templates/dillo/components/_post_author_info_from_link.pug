@@ -1,19 +1,50 @@
-#post-author-card-container(data-url="{{ post.content }}")
-  a#post-author-fullname(href="#")
-  #post-author-username
-  #post-content-link
+.post-author-card-container(
+  class="loading",
+  data-url="{{ post.content }}",
+  id="post-author-card-container")
+
+  .post-author-card-header
+    span
+      span Originally posted on #[a#post-content-source(href="/", target="_blank") Twitter] by
+
+  .post-author-card-info
+    a.post-author-card-icon(
+      class="js-post-author-profile-url",
+      href="/",
+      target="_blank")
+      span
+        i.i-twitter
+    a.post-author-card-fullname(
+      class="js-post-author-profile-url",
+      id="post-author-fullname",
+      href="/",
+      target="_blank")
+      span #[span Animato HQ]
+
+    a.post-author-card-username(
+      class="js-post-author-profile-url",
+      id="post-author-username",
+      href="/",
+      target="_blank")
+      span #[span @animatoHQ]
 
 script.
-  let postContentUrl = $('#post-author-card-container').data('url');
+  let $postAuthorCardContainer = $('#post-author-card-container');
+  let postContentUrl = $postAuthorCardContainer.data('url');
   let url = '/api/user-from-oembed-link';
 
   $.get(url, {postContentUrl: postContentUrl}, function (data) {
     }).done(function (data) {
+      let $postAuthorProfileURL = $('.js-post-author-profile-url');
       let $postAuthorFullname = $('#post-author-fullname');
-      $postAuthorFullname.text(data['fullname'] + ' on ' + data['extractor_key'] + ' or ' + data['extractor']);
-      $postAuthorFullname.attr('href', data['url_profile']);
+      let $postContentSource = $('#post-content-source');
+      $postAuthorFullname.text(data['fullname']);
+      $postContentSource.text(data['extractor_key']);
+      $postContentSource.attr('href', data['url_content']);
       $('#post-author-username').text('@' + data['username']);
-      $('#post-content-link').text(data['url_content']);
+
+      $postAuthorProfileURL.attr('href', data['url_profile']);
+      $postAuthorCardContainer.removeClass('loading');
 
     }).fail(function (jqxhr) {
       console.log(xhrErrorResponseMessage(jqxhr));
