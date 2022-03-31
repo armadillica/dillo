@@ -11,7 +11,7 @@
       .profile-info-avatar
         | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
 
-      div
+      .profile-info-details
         //- Username or Name.
         h1.profile-name
           | {% firstof user.profile.name user.username %}
@@ -27,6 +27,7 @@
         | {% endif %}
 
         //- Social Links.
+        | {% if user.profile.website or user.profile.links.all %}
         .profile-social
           //- Website.
           | {% if user.profile.website %}
@@ -49,6 +50,7 @@
             span
               i(class="i-{% firstof profile_link.social 'link' %}")
           | {% endfor %}
+        | {% endif %}
 
     //- Bio.
     | {% if show_bio %}
