@@ -1,4 +1,4 @@
-| {% extends "dillo/posts_base.pug" %}
+| {% extends "dillo/profile_details.pug" %}
 | {% load i18n %}
 | {% load dillo_filters %}
 | {% load micawber_tags %}
@@ -9,30 +9,22 @@
 | {% endblock page_title %}
 
 
-| {% block stream_nav %}
+| {% block page_header %}
 .nav-tabbar
   | {% block stream_nav_items %}
   | {% include 'dillo/reels/_navigation_reel.pug' %}
   | {% endblock stream_nav_items %}
   | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_profile_url next_obj_url=next_profile_url label="Reel" %}
-| {% endblock stream_nav %}
 
-| {% block stream %}
 style.
-  .stream, .sidebar {
+  .profile-details {
     --accent-profile-h: {{ user.id }};
     --accent-profile: hsl(var(--accent-profile-h), 100%, 70%);
     --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
   }
 
-//- Profile Reel.
-| {% if user.profile.reel %}
-.profile-reel
-  | {{ user.profile.reel | oembed }}
-| {% endif %}
-
 | {{ block.super }}
-| {% endblock stream %}
+| {% endblock page_header %}
 
 
 | {% block sidebar %}
