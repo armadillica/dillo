@@ -42,12 +42,12 @@ nav.nav-primary.navbar.navbar-expand
 						i.i-discord
 						span {% trans 'Discord' %}
 
+				| {% if request.user.is_authenticated %}
 				li(class="{% if '/bookmarks' in request.path_info %}active{% endif %}")
 					a(href="{% url 'bookmarks' %}", title="{% trans 'Your Saved Bookmarks' %}")
 						i.i-bookmark
 						span {% trans 'Bookmarks' %}
 
-				| {% if request.user.is_authenticated %}
 				li.dropdown
 					//- Mobile Navigation.
 					a#dropdown-user-mobile(
