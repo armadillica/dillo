@@ -10,11 +10,13 @@
 
 | {% block page_header %}
 style.
-  .stream, .sidebar {
+  .profile-info-container {
     --accent-profile-h: {{ user.id }};
     --accent-profile: hsl(var(--accent-profile-h), 100%, 70%);
     --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
   }
+
+| {{ block.super }}
 
 | {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
 

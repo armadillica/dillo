@@ -1,53 +1,54 @@
 | {% load i18n %}
+| {% load static %}
 | {% load thumbnail %}
 | {% load micawber_tags %}
 | {% load dillo_filters %}
 
-.profile-header
-  .profile-info
-    //- Avatar.
-    .profile-info-avatar
-      | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
+.profile-header(style="background-image: url({% static 'images/background_01.png' %})")
+  .profile-info-container
+    .profile-info
+      //- Avatar.
+      .profile-info-avatar
+        | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
 
-    //- Username or Name.
-    a.profile-name(
-      class="{{ is_link_disabled }}",
-      href="{% url 'profile-detail' user.username %}")
-      span {% firstof user.profile.name user.username %}
-      | {% if user.profile.name %}
-      .username @{{ user.username }}
-      | {% endif %}
+      div
+        //- Username or Name.
+        h1.profile-name
+          | {% firstof user.profile.name user.username %}
 
-    //- Location
-    | {% if user.profile.location %}
-    .profile-location
-      a(
-        href="https://www.google.com/maps/place/{{ user.profile.location | slugify }}",
-        target="_blank")
-        i.i-map-pin
-        | {{ user.profile.location }}
-    | {% endif %}
+        //- Location
+        | {% if user.profile.location %}
+        .profile-location
+          a(
+            href="https://www.google.com/maps/place/{{ user.profile.location | slugify }}",
+            target="_blank")
+            i.i-map-pin
+            | {{ user.profile.location }}
+        | {% endif %}
 
-    //- Website.
-    | {% if user.profile.website %}
-    a(
-      href="{{ user.profile.website }}",
-      target="_blank")
-      | {{ user.profile.website_hostname }}
-    | {% endif %}
+        //- Social Links.
+        .profile-social
+          //- Website.
+          | {% if user.profile.website %}
+          a.btn.btn-icon-primary(
+            data-toggle="tooltip",
+            href="{{ user.profile.website }}",
+            target="_blank",
+            title="{{ user.profile.website_hostname }}")
+            span
+              i.i-globe
+          | {% endif %}
 
-    //- Social Links.
-    .profile-social
-      | {% for profile_link in user.profile.links.all %}
-      | {% firstof profile_link.social 'Website' as social_site %}
-      a.btn.btn-icon(
-        data-toggle="tooltip",
-        href="{{ profile_link.url }}",
-        target="_blank",
-        title="{{ social_site | title }}")
-        span
-          i(class="i-{% firstof profile_link.social 'link' %}")
-      | {% endfor %}
+          | {% for profile_link in user.profile.links.all %}
+          | {% firstof profile_link.social 'Website' as social_site %}
+          a.btn.btn-icon-primary(
+            data-toggle="tooltip",
+            href="{{ profile_link.url }}",
+            target="_blank",
+            title="{{ social_site | title }}")
+            span
+              i(class="i-{% firstof profile_link.social 'link' %}")
+          | {% endfor %}
 
     //- Bio.
     | {% if show_bio %}
@@ -121,5 +122,6 @@
 
   | {% if user.profile.reel %}
   .profile-reel
-    | {{ user.profile.reel | oembed }}
+    .reel-container
+      | {{ user.profile.reel | oembed }}
   | {% endif %}

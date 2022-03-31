@@ -16,8 +16,8 @@
     | #[span #[i.spinner-grow]] Your posts are being processed, hold tight...
   | {% endif %}
 
+  | {% if '/explore/' in request.path_info %}
   .nav-tabbar
-    | {% if '/explore/' in request.path_info %}
     | {% if trending_tags %}
     .post-stream-tags
       ul
@@ -30,7 +30,7 @@
             span &#35;{{ tag.name | truncatechars:35 }}
         | {% endfor %}
     | {% endif %}
-    | {% endif %}
+  | {% endif %}
 
   //- If we are exploring a tag, show it,
   //- otherwise show the list of trending tags.
