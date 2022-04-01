@@ -105,8 +105,13 @@ script.
 script.
   $(function () {
     initTooltips();
-    loadSinglePostGrid($('.post-related-container'));
   });
+
+  function initRelatedThumbnails() {
+    loadSinglePostGrid($('.post-related-container'));
+  };
+
+
 
 | {% block javascript_media %}
 | {% endblock javascript_media %}
