@@ -69,6 +69,12 @@
       | {% include 'dillo/components/_button_follow.pug' with target_object=user class="btn-profile-follow" %}
       | {% endif %}
 
+      | {% if request.user.is_superuser %}
+      | {% url 'admin:auth_user_change' user.id as edit_url %}
+      | {% trans 'Whoosh' as edit_label %}
+      | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-coffee' class="btn-admin" %}
+      | {% endif %}
+
       | {% include 'dillo/components/_button_share.pug' with shared_object_label='profile' %}
 
     hr
@@ -114,13 +120,6 @@
         span {{ user.profile.views_count|compact_number }}
         span views
       | {% endif %}
-
-    | {% if request.user.is_superuser %}
-    hr
-    | {% url 'admin:auth_user_change' user.id as edit_url %}
-    | {% trans 'Edit User' as edit_label %}
-    | {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin" %}
-    | {% endif %}
 
   | {% if user.profile.reel %}
   .profile-reel
