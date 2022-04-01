@@ -129,7 +129,7 @@ class YouTube:
 
         src = f'https://www.youtube.com/embed/{youtube_id}?rel=0'
         html = (
-            f'<div class="embed">'
+            f'<div class="video-embed-container">'
             f'<iframe class="shortcode youtube"'
             f' width="{width}" height="{height}" src="{src}"'
             f' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
