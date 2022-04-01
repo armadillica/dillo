@@ -1,3 +1,4 @@
+| {% if post.is_link %}
 .post-author-card-container(
   class="loading",
   data-url="{{ post.content }}",
@@ -27,25 +28,29 @@
       href="/",
       target="_blank")
       span #[span @animatoHQ]
+| {% endif %}
 
 script.
-  let $postAuthorCardContainer = $('#post-author-card-container');
-  let postContentUrl = $postAuthorCardContainer.data('url');
-  let url = '/api/user-from-oembed-link';
+  function initAuthorCard() {
+    let $postAuthorCardContainer = $('#post-author-card-container');
+    if ($postAuthorCardContainer.length === 0) {return};
+    let postContentUrl = $postAuthorCardContainer.data('url');
+    let url = '/api/user-from-oembed-link';
 
-  $.get(url, {postContentUrl: postContentUrl}, function (data) {
-    }).done(function (data) {
-      let $postAuthorProfileURL = $('.js-post-author-profile-url');
-      let $postAuthorFullname = $('#post-author-fullname');
-      let $postContentSource = $('#post-content-source');
-      $postAuthorFullname.text(data['fullname']);
-      $postContentSource.text(data['extractor_key']);
-      $postContentSource.attr('href', data['url_content']);
-      $('#post-author-username').text('@' + data['username']);
+    $.get(url, {postContentUrl: postContentUrl}, function (data) {
+      }).done(function (data) {
+        let $postAuthorProfileURL = $('.js-post-author-profile-url');
+        let $postAuthorFullname = $('#post-author-fullname');
+        let $postContentSource = $('#post-content-source');
+        $postAuthorFullname.text(data['fullname']);
+        $postContentSource.text(data['extractor_key']);
+        $postContentSource.attr('href', data['url_content']);
+        $('#post-author-username').text('@' + data['username']);
 
-      $postAuthorProfileURL.attr('href', data['url_profile']);
-      $postAuthorCardContainer.removeClass('loading');
+        $postAuthorProfileURL.attr('href', data['url_profile']);
+        $postAuthorCardContainer.removeClass('loading');
 
-    }).fail(function (jqxhr) {
-      console.log(xhrErrorResponseMessage(jqxhr));
-    });
+      }).fail(function (jqxhr) {
+        console.log(xhrErrorResponseMessage(jqxhr));
+      });
+  }
