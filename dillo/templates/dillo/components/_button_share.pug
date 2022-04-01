@@ -21,7 +21,9 @@ button.btn(
 	data-target='#modal-share-{{ post.hash_id }}')
 	span
 		i.i-share
+		| {% if show_label %}
 		span {% trans 'Share' %}
+		| {% endif %}
 | {% endif %}
 
 .modal.fade(
