@@ -38,7 +38,7 @@
   .post-stream-header
     .post-stream-tag-container
       h1 #[i.i-hash]{{ tag_name }}
-      | {% include 'dillo/components/_button_follow.pug' with target_object=tag %}
+      | {% include 'dillo/components/_button_follow.pug' with target_object=tag class="btn-primary-alt" %}
 
     // TODO: Posts count.
     | {% if tag_followers_count %}

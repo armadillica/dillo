@@ -2,7 +2,7 @@
 | {% if request.user.is_authenticated %}
 | {% if request.user != target_object %}
 a.btn(
-  class="js-follow-toggle {% if not request.user|is_following:target_object %}btn-primary-alt{% endif %} {{ class }}",
+  class="js-follow-toggle {% if request.user|is_following:target_object %}btn-unfollow{% endif %} {{ class }}",
   data-follow_toggle_label="{% if request.user|is_following:target_object %}Follow{% else %}Unfollow{% endif %}",
   href="{% follow_url target_object %}",
   )
