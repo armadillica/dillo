@@ -10,19 +10,20 @@ li.notification-item
 	| {% include 'dillo/components/_profile_avatar.pug' with user=notification.action.actor %}
 
 	.notification-text
-		//- Who
-		a(href="{% url 'profile-detail' notification.action.actor.username %}")
+		//- Who.
+		a.notif-text-actor(
+			href="{% url 'profile-detail' notification.action.actor.username %}")
 			| {{ notification.action.actor.username }}
 
 		//- What (liked, replied, started following)
-		span {{ notification.action.verb }}
+		span.notif-text-verb {{ notification.action.verb }}
 
 		//- Where (a profile name, a post title)
-		a(href="{{ notification.action.action_object.get_absolute_url }}")
+		a.notif-text-action(href="{{ notification.action.action_object.get_absolute_url }}")
 			| {{ notification.action.action_object }}
 
-		//- When
-		span {{ notification.action.timestamp | timesince | compact_timesince }}
+		//- When.
+		span.notif-text-time {{ notification.action.timestamp | timesince | compact_timesince }}
 
 	| {% if request.user|is_following:notification.action.actor %}
 	| {% if notification.action.action_object.thumbnail %}
@@ -42,7 +43,7 @@ li.notification-item
 | {% endfor %}
 | {% else %}
 p.post-list-empty
-	| {% trans "No notifications yet." %}
+	| {% trans "No notifications (yet!)" %}
 | {% endif %}
 
 | {% if page_obj.has_next %}
