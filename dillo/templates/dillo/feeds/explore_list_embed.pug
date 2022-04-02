@@ -43,7 +43,7 @@ li.post-container.post-is-feed.post-feed-transparent
     | {% endif %}
 
     .post-header-action
-      a(href="{% url 'short-list' %}")
+      a(href="{% url 'short-list' %}?sort=top")
         | {% trans 'See All Shorts' %}
 
   .post-feed-verb-newline
