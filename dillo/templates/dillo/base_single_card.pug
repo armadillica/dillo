@@ -6,8 +6,10 @@
 | {% block content %}
 .app-single-card
   .container
-    | {% block content_card %}
-    | {% endblock content_card %}
+    .row
+      .col-md-8.mx-auto
+        | {% block content_card %}
+        | {% endblock content_card %}
 | {% endblock content %}
 
 | {% block body_classes %} is-centered{% endblock %}
