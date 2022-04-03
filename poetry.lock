@@ -771,10 +771,18 @@ python-versions = "*"
 beautifulsoup4 = ">=4.4.0"
 requests = ">=2.10.0"
 
+[[package]]
+name = "youtube-dl"
+version = "2021.12.17"
+description = "YouTube video downloader"
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "071298b5818f0e494cdf705dd30c9979b90111f618af591ea958f05937930bda"
+content-hash = "90f6bad5cc2a66afcac027c12ef8f11418977c4cc57e88999258b68d3c09eaf7"
 
 [metadata.files]
 appdirs = [
@@ -1208,4 +1216,8 @@ webencodings = [
 ]
 webpreview = [
     {file = "webpreview-1.6.0-py3-none-any.whl", hash = "sha256:b2916980f03f40ef40f6bc2421077f409efec2200336acc8cff788c29aecf434"},
+]
+youtube-dl = [
+    {file = "youtube_dl-2021.12.17-py2.py3-none-any.whl", hash = "sha256:f1336d5de68647e0364a47b3c0712578e59ec76f02048ff5c50ef1c69d79cd55"},
+    {file = "youtube_dl-2021.12.17.tar.gz", hash = "sha256:bc59e86c5d15d887ac590454511f08ce2c47698d5a82c27bfe27b5d814bbaed2"},
 ]
