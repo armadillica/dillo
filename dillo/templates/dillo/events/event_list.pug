@@ -48,7 +48,7 @@
   | {% endfor %}
 
 | {% else %}
-.post-list-empty
+.post-list-empty.with-text
   p No events yet. #[br] Feel free to #[a(href="{% url 'event-create' %}") create a new event]!
 | {% endif %}
 
