@@ -30,7 +30,7 @@ section.post-view-info.col-scrollable
       data-comments_url="{% url 'comments_list' hash_id=post.hash_id %}"
     )
       .comments-loading
-        .spinner-border-sm
+        .bouncing-ball
         span loading comments...
 
   | {% if related_posts %}
