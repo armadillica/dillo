@@ -6,17 +6,6 @@
 | {% trans 'Events' %} {% trans 'on' %}
 | {% endblock page_title %}
 
-| {% block content-header-entity-create-buttons %}
-.header-create-buttons
-  | {% if request.user.is_authenticated %}
-  a.btn-theme-primary(href="{% url 'event-create' %}", title="{% trans 'Submit Event' %}")
-    span {% trans 'Submit Event' %}
-  | {% else %}
-  a.btn-theme-primary(href="{% url 'account_login' %}", title="{% trans 'Submit Event' %}")
-    span {% trans 'Submit Event' %}
-  | {% endif %}
-| {% endblock content-header-entity-create-buttons %}
-
 | {% block stream %}
 | {% if events %}
 .row.cards-row-2
@@ -60,14 +49,17 @@
 
 | {% else %}
 .post-list-empty
-  p No events for now.
+  p No events yet. #[br] Feel free to #[a(href="{% url 'event-create' %}") create a new event]!
 | {% endif %}
 
 | {% endblock stream %}
 
 | {% block sidebar %}
 
-
+.sidebar-block
+  | {% url 'event-create' as btn_create_url %}
+  | {% trans 'Create Event' as btn_label %}
+  | {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary btn-wide" %}
 
 //- TODO: Filters for events.
 
