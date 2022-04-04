@@ -2,8 +2,8 @@
 | {% if request.user.is_authenticated %}
 a(
 	href="{% if event|is_attended:request.user %}{% url 'event_attend_toggle' event.slug 'decline' %}{% else %}{% url 'event_attend_toggle' event.slug 'attend' %}{% endif %}",
-	data-attend_toggle_label="{% if event|is_attended:request.user %}Going{% else %}I'm going! {% endif %}",
-	class="js-attend-toggle btn-attend {% if event|is_attended:request.user %}is-active{% endif %}",
+	data-attend_toggle_label="{% if event|is_attended:request.user %}I'm going!{% else %}I will be going! {% endif %}",
+	class="js-attend-toggle btn-attend {% if not event|is_attended:request.user %}is-not-attending{% endif %}",
 	)
-	span {% if event|is_attended:request.user %}I'm going! {% else %}Going{% endif %}
+	span {% if event|is_attended:request.user %}I'm not going anymore{% else %}I will be going! {% endif %}
 | {% endif %}
