@@ -99,7 +99,7 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 	| {% include 'dillo/components/_button_attend.pug' with event=event %}
 
 .sidebar-block
-	| {% include 'dillo/components/_button_share.pug' with shared_object_label='event' %}
+	| {% include 'dillo/components/_button_share.pug' with shared_object_label='event' show_label=true class="btn-wide" %}
 
 | {% if request.user.is_superuser %}
 hr
@@ -107,7 +107,7 @@ hr
 .sidebar-block
 	| {% url 'admin:dillo_event_change' event.id as edit_url %}
 	| {% trans 'Edit Event' as edit_label %}
-	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin" %}
+	| {% include 'dillo/components/_button_generic.pug' with url=edit_url label=edit_label icon='i-edit' class="btn-admin btn-wide" %}
 | {% endif %}
 
 //- TODO(Pablo): Show more/related events.

@@ -13,7 +13,7 @@ button.post-actions-btn(
 		i.i-share
 | {% else %}
 button.btn(
-	class="js-share",
+	class="js-share {{ class }}",
 	title="{% trans 'Share' %}",
 	data-share-title="{% trans 'Share' %} {{ shared_object_label }} {% trans 'from' %} {{ site_name }}",
 	data-share-text="{% trans 'Share' %} {{ shared_object_label }} {% trans 'from' %} {{ site_name }}",
