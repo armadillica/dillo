@@ -36,7 +36,7 @@ class EmailNotificationTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
 
         # Verify that the subject of the first message is correct.
-        self.assertEqual(mail.outbox[0].subject, 'Your post has a new like!')
+        self.assertEqual('They like your post "Velocità con #anima…"!', mail.outbox[0].subject)
         # print(mail.outbox[0].alternatives[0][0])
 
     def test_new_comment_notification(self):
@@ -53,7 +53,7 @@ class EmailNotificationTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
 
         # Verify that the subject of the first message is correct.
-        self.assertEqual(mail.outbox[0].subject, 'Your post "Velocità con #…" has a new comment')
+        self.assertEqual('New comment on "Velocità con #anima…"', mail.outbox[0].subject)
         # print(mail.outbox[0].alternatives[0][0])
 
     def test_new_reply_notification(self):
@@ -91,7 +91,7 @@ class EmailNotificationTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
 
         # Ensure that the subject is correct.
-        self.assertEqual(mail.outbox[0].subject, 'Your comment has a new reply!')
+        self.assertEqual('New reply to "Velocità con #anima…"', mail.outbox[0].subject)
         # print(mail.outbox[0].alternatives[0][0])
 
     def test_follow_notification(self):

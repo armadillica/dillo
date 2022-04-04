@@ -48,6 +48,7 @@ class ProfileModelTest(TestCase):
         # Create an event in the far future, so we don't have to mock the now()
         # for the next 100 years.
         event1 = dillo.models.events.Event.objects.create(
+            user=self.user,
             name='Event1',
             slug='event1',
             website='http://example.com',
@@ -62,6 +63,7 @@ class ProfileModelTest(TestCase):
 
         # Create new event
         event2 = dillo.models.events.Event.objects.create(
+            user=self.user,
             name='Event2',
             slug='event2',
             website='http://example.com',
@@ -253,8 +255,8 @@ class CommentModelTest(TestCase):
 
         # Ensure that replies to replies are not allowed
         with self.assertRaises(FieldError):
-            CommentForPostFactory(
-                entity=self.post, parent_comment=reply, content='My reply to reply'
+            Comment.objects.create(
+                user=self.user, entity=self.post, parent_comment=reply, content='My reply to reply'
             )
 
     def test_comment_deletion(self):
@@ -403,7 +405,8 @@ class UserModelTest(TestCase):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.user_mentioned = User.objects.create_user(username='venomgfx')
         self.post = dillo.models.posts.Post.objects.create(
-            user=self.user, title='Velocità con #animato',
+            user=self.user,
+            title='Velocità con #animato',
         )
 
     def test_delete_user(self):
@@ -503,7 +506,7 @@ class FeedElementModelTest(TestCase):
         self.assertEqual(reply.content, notification.action.action_object.content)
         # Verify that one email notification was sent
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, 'Your comment has a new reply!')
+        self.assertEqual('New reply to "Velocità con #anima…"', mail.outbox[0].subject)
 
     def test_user_mentioned_you_in_post(self):
         pass

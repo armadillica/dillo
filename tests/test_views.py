@@ -178,7 +178,8 @@ class PostViewsTest(TestCase):
             media_video.static_asset.source,
         )
         self.assertEqual(
-            'IMG_2372.MOV', media_video.static_asset.source_filename,
+            'IMG_2372.MOV',
+            media_video.static_asset.source_filename,
         )
 
 
@@ -319,7 +320,9 @@ class NotificationViewsTest(TestViewsMixin):
 
         # Ensure that we have one unread notification
         notifications_count = dillo.models.feeds.FeedEntry.objects.filter(
-            user=self.user1, category='notification', is_read=False,
+            user=self.user1,
+            category='notification',
+            is_read=False,
         ).count()
         self.assertEqual(notifications_count, 1)
 
@@ -330,7 +333,9 @@ class NotificationViewsTest(TestViewsMixin):
 
         # Check that unread notifications count is 0
         notifications_count = dillo.models.feeds.FeedEntry.objects.filter(
-            user=self.user1, category='notification', is_read=False,
+            user=self.user1,
+            category='notification',
+            is_read=False,
         ).count()
         self.assertEqual(notifications_count, 0)
 
@@ -346,6 +351,7 @@ class EventViewsTest(TestCase):
             user=self.user1, title='Velocità con #animato'
         )
         self.event = dillo.models.events.Event.objects.create(
+            user=self.user1,
             name='Lightbox',
             slug='lightbox',
             website='https://example.com',
@@ -496,7 +502,8 @@ class TheaterReelsViewTest(TestViewsMixin):
         for u in usernames_and_likes_count:
             user = User.objects.create_user(username=u[0])
             Profile.objects.filter(user=user).update(
-                reel='_some_reel_', likes_count=u[1],
+                reel='_some_reel_',
+                likes_count=u[1],
             )
 
         ensure_correct_pagination()

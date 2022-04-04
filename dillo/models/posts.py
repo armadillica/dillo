@@ -9,7 +9,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.postgres.fields import JSONField
 from django.contrib.sites.models import Site
 from django.db import models
 from django.urls import reverse
@@ -209,7 +208,7 @@ class PostMediaVideo(models.Model):
     # video = models.FilePathField(
     #     blank=True,
     # )
-    source_metadata = JSONField(null=True, blank=True)
+    source_metadata = models.JSONField(null=True, blank=True)
     source_filename = models.CharField(max_length=128, null=True)
     framerate = models.FloatField(null=True)
     aspect = models.FloatField(null=True)

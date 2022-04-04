@@ -87,15 +87,13 @@ TEMPLATES = [
             ],
             # PyPugJS:
             'loaders': [
-                (
-                    'pypugjs.ext.django.Loader',
-                    (
-                        'django.template.loaders.filesystem.Loader',
-                        'django.template.loaders.app_directories.Loader',
-                    ),
-                )
+                'pypugjs.ext.django.Loader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
             ],
-            'builtins': ['pypugjs.ext.django.templatetags',],
+            'builtins': [
+                'pypugjs.ext.django.templatetags',
+            ],
         },
     },
 ]
@@ -123,7 +121,10 @@ PIPELINE = {
             'source_filenames': ('js/vendor/jquery-formset-*.js',),
             'output_filename': 'js/jquery_formset.js',
         },
-        'tutti': {'source_filenames': ('js/tutti/*.js',), 'output_filename': 'js/tutti.js',},
+        'tutti': {
+            'source_filenames': ('js/tutti/*.js',),
+            'output_filename': 'js/tutti.js',
+        },
         'tutti_user': {
             'source_filenames': (
                 'js/tutti_user/avatar_preview*.js',
@@ -139,19 +140,23 @@ PIPELINE = {
         'main': {
             'source_filenames': ('styles/main.sass',),
             'output_filename': 'css/main.css',
-            'extra_context': {'media': 'screen,projection',},
+            'extra_context': {
+                'media': 'screen,projection',
+            },
         },
         'edit': {
             'source_filenames': ('styles/edit.sass',),
             'output_filename': 'css/edit.css',
-            'extra_context': {'media': 'screen,projection',},
+            'extra_context': {
+                'media': 'screen,projection',
+            },
         },
     },
     'COMPILERS': ('libsasscompiler.LibSassCompiler',),
     'DISABLE_WRAPPER': True,
 }
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineManifestStorage'
 # STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 STATICFILES_FINDERS = (
@@ -195,8 +200,15 @@ LOGGING = {
             'format': '%(asctime)-15s %(levelname)8s %(name)s %(process)d %(thread)d %(message)s'
         },
     },
-    'handlers': {'console': {'class': 'logging.StreamHandler', 'formatter': 'default',},},
-    'loggers': {'dillo': {'handlers': ['console'], 'level': 'DEBUG'},},
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+    },
+    'loggers': {
+        'dillo': {'handlers': ['console'], 'level': 'DEBUG'},
+    },
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
