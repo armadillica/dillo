@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 
 from dillo.shortcodes import render as shortcode_render
 from dillo.markdown import render as markdown_render
+from dillo.markdown import sanitize
 
 
 find_hashtags_re = re.compile(r'\B#\w*[a-zA-Z]+\w*')
@@ -43,7 +44,7 @@ def mention_match_to_url(mention):
 @stringfilter
 def linkify_tags_and_mentions(value):
     """Parses a text and replaces tags with links."""
-    value = find_hashtags_re.sub(tag_match_to_url, escape(value))
+    value = find_hashtags_re.sub(tag_match_to_url, sanitize(value))
     value = find_mentions_re.sub(mention_match_to_url, value)
     # value = link_tags_parse(value)
     return mark_safe(value)
