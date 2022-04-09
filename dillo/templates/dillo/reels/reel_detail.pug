@@ -10,11 +10,12 @@
 
 
 | {% block page_header %}
-.nav-tabbar
-  | {% block stream_nav_items %}
-  | {% include 'dillo/reels/_navigation_reel.pug' %}
-  | {% endblock stream_nav_items %}
-  | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_profile_url next_obj_url=next_profile_url label="Reel" %}
+.container-fluid
+  .nav-tabbar
+    | {% block stream_nav_items %}
+    | {% include 'dillo/reels/_navigation_reel.pug' %}
+    | {% endblock stream_nav_items %}
+    | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_profile_url next_obj_url=next_profile_url label="Reel" %}
 
 style.
   .profile-details {
