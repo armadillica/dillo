@@ -23,6 +23,16 @@ a.dropdown-item(href="{% url 'bookmarks' %}", title='{% trans "My Saved Bookmark
   i.i-bookmark
   | {% trans "My Bookmarks" %}
 
+a.dropdown-item(href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Shorts" %}')
+  i.i-shorts
+  | {% trans "My Shorts" %}
+
+a.dropdown-item(href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Rigs" %}')
+  i.i-package
+  | {% trans "My Rigs" %}
+
+.dropdown-divider
+
 a.dropdown-item(href="{% url 'profile-detail' user.username %}", title='{% trans "Profile" %}')
   i.i-user
   | {% trans "Profile" %}
