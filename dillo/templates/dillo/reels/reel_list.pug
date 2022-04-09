@@ -38,7 +38,7 @@
     | {% for profile in object_list %}
     .card-borderless
       | {% thumbnail profile.reel_thumbnail_16_9 "640x360" crop="center" as im %}
-      a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}", title="{{ profile.name }}")
+      a.card-thumbnail(href="{% url 'reel-detail' profile.user_id %}?{{ url_params.sort_qs }}", title="{{ profile.name }}")
         img.img-fluid(
           src="{{ im.url }}",
           width="{{ im.width }}",
@@ -49,7 +49,7 @@
         .card-header-image
           | {% include 'dillo/components/_profile_avatar.pug' with user=profile.user size='small' %}
         a.card-header-text.card-header-text-column(
-          href="{% url 'reel-detail' profile.user_id %}{% if sort %}?{{ sort }}{% endif %}")
+          href="{% url 'reel-detail' profile.user_id %}?{{ url_params.sort_qs }}")
           .card-title {{ profile.name }}
           | {% if profile.location %}
           .card-subtitle {{ profile.location }}

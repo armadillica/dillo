@@ -11,7 +11,7 @@
 	| {% if is_detail %}
 	.btn-toolbar-row
 		| {% if prev_obj_url %}
-		a.btn.btn-prev(href="{{ prev_obj_url }}?{{ sort }}{{ url_param_tag }}")
+		a.btn.btn-prev(href="{{ prev_obj_url }}?{{ url_params.sort_qs }}{{ url_params.tag_qs }}{{ url_params.software_qs }}")
 			span
 				i.i-chevron-left
 				span {% trans 'Previous' %}
@@ -22,7 +22,7 @@
 				span {% trans 'Previous' %}
 		| {% endif %}
 		| {% if next_obj_url %}
-		a.btn.btn-next(href="{{ next_obj_url }}?{{ sort }}{{ url_param_tag }}")
+		a.btn.btn-next(href="{{ next_obj_url }}?{{ url_params.sort_qs }}{{ url_params.tag_qs }}{{ url_params.software_qs }}")
 			span
 				span {% trans 'Next' %}
 				i.i-chevron-right
@@ -37,7 +37,7 @@
 	.btn-toolbar-row
 		//- Previous button.
 		| {% if page_obj.has_previous %}
-		a.btn.btn-prev(href="?{{ sort }}{{ url_param_tag }}&page={{ page_obj.previous_page_number }}", tabindex='-1')
+		a.btn.btn-prev(href="?{{ url_params.sort_qs }}{{ url_params.tag_qs }}{{ url_params.software_qs }}&page={{ page_obj.previous_page_number }}", tabindex='-1')
 			span #[i.i-chevron-left]
 		| {% else %}
 		a.btn.disabled(href="#")
@@ -49,7 +49,7 @@
 		.btn-group
 			| {% for page_number in page_obj.paginator.page_range %}
 			a.btn(
-				href="?{{ sort }}{{ url_param_tag }}&page={{ page_number }}",
+				href="?{{ url_params.sort_qs }}{{ url_params.tag_qs }}{{ url_params.software_qs }}&page={{ page_number }}",
 				class="{% if page_number == page_obj.number %}active{% endif %}")
 				span {{ page_number }}
 			| {% endfor %}
@@ -57,7 +57,7 @@
 
 		//- Next button.
 		| {% if page_obj.has_next %}
-		a.btn.btn-next(href="?{{ sort }}{{ url_param_tag }}&page={{ page_obj.next_page_number }}")
+		a.btn.btn-next(href="?{{ url_params.sort_qs }}{{ url_params.tag_qs }}{{ url_params.software_qs }}&page={{ page_obj.next_page_number }}")
 			span #[i.i-chevron-right]
 		| {% else %}
 		a.btn.disabled(href="#")

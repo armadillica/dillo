@@ -1,4 +1,6 @@
 import logging
+from dataclasses import dataclass
+from typing import Optional
 
 from django.contrib.auth.models import User
 from django.http import Http404
@@ -13,17 +15,40 @@ from dillo.views.mixins import OgData
 log = logging.getLogger(__name__)
 
 
+@dataclass
+class UrlParams:
+    sort: Optional[str]
+
+    @property
+    def sort_qs(self):
+        return f'sort={self.sort}'
+
+    @property
+    def sort_label(self):
+        if self.sort == 'top':
+            return 'Top Rated'
+        elif self.sort == 'recent':
+            return 'Most Recent'
+
+
 class ReelListView(ListView):
 
-    # Multiple of 4, so the 4-items-per-row grid is complete.
     paginate_by = 48
     template_name = 'dillo/reels/reel_list.pug'
 
+    url_params: UrlParams = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.url_params = UrlParams(
+            sort=self.request.GET.get('sort', 'top'),
+        )
+
+        return super(ReelListView, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         """Get Profiles, sorted by creation date or most likes."""
-        sort = self.request.GET.get('sort') or None
         qs = Profile.objects.exclude(reel__exact='')
-        if sort == 'recent':
+        if self.url_params.sort == 'recent':
             qs = qs.order_by('-created_at', 'user_id')
         else:
             qs = qs.order_by('-likes_count', 'user_id')
@@ -37,11 +62,7 @@ class ReelListView(ListView):
             image_field=None,
             image_alt=None,
         )
-        sort = self.request.GET.get('sort')
-        # Build 'sort' query argument to use in the _pagination.pug component
-        # This allows to perform correct pagination
-        if sort == 'recent':
-            context['sort'] = 'sort=recent'
+        context['url_params'] = self.url_params
         return context
 
 
@@ -51,12 +72,20 @@ class ReelDetailView(DetailView):
     model = User
     context_object_name = 'user'
 
+    url_params: UrlParams = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.url_params = UrlParams(
+            sort=self.request.GET.get('sort', 'top'),
+        )
+
+        return super(ReelDetailView, self).dispatch(request, *args, **kwargs)
+
     def get_adjacent_profiles_with_reels(self):
         """Given a User id, find the previous and the next reel."""
         profiles = Profile.objects.exclude(reel__exact='')
 
-        sort = self.request.GET.get('sort') or None
-        if sort == 'recent':
+        if self.url_params.sort == 'recent':
             profiles = profiles.order_by('-created_at', 'user_id')
         else:
             profiles = profiles.order_by('-likes_count', 'user_id')
@@ -113,7 +142,10 @@ class ReelDetailView(DetailView):
         image_alt = f"{title} on anima.to"
 
         return OgData(
-            title=title, description=user.profile.bio, image_field=image_field, image_alt=image_alt,
+            title=title,
+            description=user.profile.bio,
+            image_field=image_field,
+            image_alt=image_alt,
         )
 
     def get_context_data(self, **kwargs):
@@ -127,9 +159,5 @@ class ReelDetailView(DetailView):
         )
         context['layout'] = 'grid'
         context['og_data'] = self.populate_og_data()
-        sort = self.request.GET.get('sort')
-        # Build 'sort' query argument to use in the _pagination.pug component
-        # This allows to perform correct pagination
-        if sort == 'recent':
-            context['sort'] = 'sort=recent'
+        context['url_params'] = self.url_params
         return context
