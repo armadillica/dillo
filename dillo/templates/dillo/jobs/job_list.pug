@@ -9,119 +9,162 @@
 
 | {% block stream %}
 
+.nav-tabbar-items
+  | {% if search_facets.software %}
+  .dropdown
+    .btn-dropdown#dropdown-software(data-toggle="dropdown")
+      span {{ url_params.software_label }}
+    .dropdown-menu
+      | {% for s in search_facets.software %}
+      a.dropdown-item(
+        href="{% url 'job-list' %}?software={{ s }}",
+      ) {{ s }}
+      | {% endfor %}
+  | {% endif %}
+  | {% if search_facets.level %}
+  .dropdown
+    .btn-dropdown#dropdown-level(data-toggle="dropdown")
+      span {{ url_params.level_label }}
+    .dropdown-menu
+      | {% for l in search_facets.level %}
+      a.dropdown-item(
+        href="{% url 'job-list' %}?level={{ l }}",
+      ) {{ l }}
+      | {% endfor %}
+  | {% endif %}
+
+  | {% if search_facets.contract_type %}
+  .dropdown
+    .btn-dropdown#dropdown-contract-type(data-toggle="dropdown")
+      span {{ url_params.contract_type_label }}
+    .dropdown-menu
+      | {% for c in search_facets.contract_type %}
+      a.dropdown-item(
+        href="{% url 'job-list' %}?contract_type={{ c }}",
+      ) {{ c }}
+      | {% endfor %}
+  | {% endif %}
+
 .job-list-header
-	h1 {% trans 'Jobs Board' %}
-	p Data sourced from Animation/VFX/Game Industry Job Postings by #[a(href="https://anima.to/chrismayne/") @chrismayne]
+  h1 {% trans 'Jobs Board' %}
+  p Data sourced from Animation/VFX/Game Industry Job Postings by #[a(href="https://anima.to/chrismayne/") @chrismayne]
 
+
+  | {% for s in search_facets.contract_type %}
+  | {{ s }}
+  | {% endfor %}
+  | {% for s in search_facets.level %}
+  | {{ s }}
+  | {% endfor %}
 .job-list
-	| {% if jobs %}
-	| {% for job in jobs %}
-	.job-item
-		//- Disable thumbnails for now, since the Jobs spreadsheet doesn't have.
-			| {% thumbnail job.image "80x80" crop="top" as im %}
-			a.card-header-thumbnail(
-				href="{{ job.url_apply }}",
-				title='{% trans "Apply Now" %}')
-				img.rounded-circle(
-					src="{{ im.url }}",
-					width="{{ im.width }}",
-					height="{{ im.height }}",
-					alt="{{ job.title }}")
-			| {% endthumbnail %}
+  | {% if jobs %}
+  | {% for job in jobs %}
+  .job-item
+    //- Disable thumbnails for now, since the Jobs spreadsheet doesn't have.
+      | {% thumbnail job.image "80x80" crop="top" as im %}
+      a.card-header-thumbnail(
+        href="{{ job.url_apply }}",
+        title='{% trans "Apply Now" %}')
+        img.rounded-circle(
+          src="{{ im.url }}",
+          width="{{ im.width }}",
+          height="{{ im.height }}",
+          alt="{{ job.title }}")
+      | {% endthumbnail %}
 
-		.row
-			.col-12
-				.job-header
-					//- Job date.
-					div(title="{{ job.created_at }}")
-						| {{ job.created_at | timesince | shorten_timesince }} {% trans 'ago' %}
+    .row
+      .col-12
+        .job-header
+          //- Job date.
+          div(title="{{ job.created_at }}")
+            | {{ job.created_at | timesince | shorten_timesince }} {% trans 'ago' %}
 
-					//- Job location.
-					div(title="{% trans 'Location' %}")
-						| {% if job.city %}{{ job.city }}, {% endif %}{{ job.country }}
-		.row
-			.col-12.col-sm-6
-				//- Job title.
-				h2.job-title
-					//- Latino check if it's an email, look for '@' symbol.
-					a(href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
-						target="_blank",
-						title="{% trans 'Apply as' %} {{ job.title }} {% trans 'at' %} {{ job.company }}")
-						| {{ job.title }}
+          //- Job location.
+          div(title="{% trans 'Location' %}")
+            | {% if job.city %}{{ job.city }}, {% endif %}{{ job.country }}
+    .row
+      .col-12.col-sm-6
+        //- Job title.
+        h2.job-title
+          //- Latino check if it's an email, look for '@' symbol.
+          a(href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
+            target="_blank",
+            title="{% trans 'Apply as' %} {{ job.title }} {% trans 'at' %} {{ job.company }}")
+            | {{ job.title }}
 
-				//- Job software.
-				| {% if job.software %}
-				.job-software(title="Software")
-					i.i-package
-					| {{ job.software }}
-				| {% endif %}
+        //- Job software.
+        | {% if job.software %}
+        .job-software(title="Software")
+          i.i-package
+          | {{ job.software }}
+        | {% endif %}
 
-			.col-12.col-sm-6
-				//- Job company.
-				h2.job-company
-					| {{ job.company }}
+      .col-12.col-sm-6
+        //- Job company.
+        h2.job-company
+          | {{ job.company }}
 
-		//- Notes.
-		| {% if job.notes %}
-		.row
-			.col
-				| {{ job.notes | urlizetrunc:30 }}
-		| {% endif %}
+    //- Notes.
+    | {% if job.notes %}
+    .row
+      .col
+        | {{ job.notes | urlizetrunc:30 }}
+    | {% endif %}
 
-		.row
-			.col-12.col-sm-6
-				| {% if job.level %}
-				span.badge
-					i.i-jobs
-					| {{ job.level }}
-				| {% endif %}
+    .row
+      .col-12.col-sm-6
+        | {% if job.level %}
+        span.badge
+          i.i-jobs
+          | {{ job.level }}
+        | {% endif %}
 
-				span.badge
-					i.i-home
-					| {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
+        span.badge
+          i.i-home
+          | {% if job.is_remote_friendly %}{% trans 'Remote Friendly' %}{% else %}{% trans 'On-site' %}{% endif %}
 
-			.col-12.col-sm-6
-				//- Latino check if it's an email, look for '@' symbol.
-				a.job-apply-button(
-					href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
-					target="_blank",
-					title='{% trans "Apply Now" %}')
-					span
-						i.i-check
-						strong {% trans "Apply Now" %}
-	| {% endfor %}
+      .col-12.col-sm-6
+        //- Latino check if it's an email, look for '@' symbol.
+        a.job-apply-button(
+          href="{% if '@' in job.url_apply %}mailto:{% endif %}{{ job.url_apply }}",
+          target="_blank",
+          title='{% trans "Apply Now" %}')
+          span
+            i.i-check
+            strong {% trans "Apply Now" %}
+  | {% endfor %}
 
-	| {% else %}
+  | {% else %}
 
-	| {% url 'job-create' as url_job_create %}
-	| {% blocktrans with url_job_create=url_job_create %}
-	p No job posts yet. Got any to <a href="{{ url_job_create }}">submit</a>?
-	| {% endblocktrans %}
+  | {% url 'job-create' as url_job_create %}
+  | {% blocktrans with url_job_create=url_job_create %}
+  p No job posts yet. Got any to <a href="{{ url_job_create }}">submit</a>?
+  | {% endblocktrans %}
 
-	| {% endif %}
+  | {% endif %}
 | {% endblock stream %}
 
 | {% block sidebar %}
 
 //- TODO: Nice text about job posting.
 .sidebar-block
-	| {% url 'job-create' as btn_post_create_url %}
-	| {% trans 'Post a Job' as btn_label %}
-	| {% include 'dillo/components/_button_generic.pug' with url=btn_post_create_url label=btn_label class="btn-primary btn-wide" %}
+  | {% url 'job-create' as btn_post_create_url %}
+  | {% trans 'Post a Job' as btn_label %}
+  | {% include 'dillo/components/_button_generic.pug' with url=btn_post_create_url label=btn_label class="btn-primary btn-wide" %}
 
 //- TODO: Filters for jobs.
 | {% if upcoming_events %}
 .sidebar-block
-	| {% include 'dillo/components/_feed_events.pug' with events=upcoming_events events_title='Events' %}
+  | {% include 'dillo/components/_feed_events.pug' with events=upcoming_events events_title='Events' %}
 | {% endif %}
 
 | {% if trending_tags %}
 .sidebar-block.feed-trending
-	| {% include 'dillo/components/_feed_trending.pug' %}
+  | {% include 'dillo/components/_feed_trending.pug' %}
 | {% endif %}
 
 .sidebar-block
-	| {% include 'dillo/components/_footer.pug' %}
+  | {% include 'dillo/components/_footer.pug' %}
 
 | {% endblock sidebar %}
 

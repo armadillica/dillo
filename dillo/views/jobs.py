@@ -1,4 +1,8 @@
 import logging
+import re
+
+from dataclasses import dataclass
+from typing import Optional, List
 
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +19,46 @@ from dillo.models.jobs import Job
 from dillo.tasks.emails import send_mail_superusers
 
 log = logging.getLogger(__name__)
+
+
+@dataclass
+class UrlParams:
+    contract_type: Optional[str]
+    is_remote_friendly: Optional[str]
+    software: Optional[str]
+    level: Optional[str]
+
+    @property
+    def software_label(self):
+        return self.software or 'Software'
+
+    @property
+    def level_label(self):
+        return self.level or 'Level'
+
+    @property
+    def contract_type_label(self):
+        return self.contract_type or 'Contract Type'
+
+
+@dataclass
+class SearchFacets:
+    contract_type: Optional[List[str]]
+    software: Optional[List[str]]
+    level: Optional[List[str]]
+
+    # @property
+    # def tag_qs(self):
+    #     return '' if not self.tag else f'&tag={self.tag}'
+    #
+    # @property
+    # def sort_qs(self):
+    #     return f'sort={self.sort}'
+    #
+    # @property
+    # def submitted_by_qs(self):
+    #     return '' if not self.submitted_by else f'&submitted-by={self.submitted_by}'
+    #
 
 
 class JobCreateView(LoginRequiredMixin, CreateView):
@@ -96,9 +140,59 @@ class JobListView(ListView):
     template_name = 'dillo/jobs/job_list.pug'
     context_object_name = 'jobs'
 
+    url_params: UrlParams = None
+
+    @staticmethod
+    def _facet_software():
+        software_set = set()
+        software = Job.objects.all().distinct('software').values_list('software')
+        for s in software:
+            for n in re.split(',|/', s[0]):
+                n = n.strip()
+                software_set.add(n)
+
+        return sorted(software_set)
+
+    @staticmethod
+    def _facet_level():
+        level_set = set()
+        levels = Job.objects.all().distinct('level').values_list('level')
+        for level in levels:
+            for lev in re.split(',|/', level[0]):
+                lev = lev.strip()
+                level_set.add(lev)
+        return sorted(level_set)
+
+    @staticmethod
+    def _facet_contract_type():
+        return [ct[0] for ct in Job.CONTRACT_TYPES]
+
+    def search_facets(self):
+        return SearchFacets(
+            contract_type=self._facet_contract_type(),
+            software=self._facet_software(),
+            level=self._facet_level(),
+        )
+
+    def dispatch(self, request, *args, **kwargs):
+        self.url_params = UrlParams(
+            contract_type=self.request.GET.get('contract-type'),
+            is_remote_friendly=self.request.GET.get('is-remote-friendly'),
+            software=self.request.GET.get('software'),
+            level=self.request.GET.get('level'),
+        )
+
+        return super(JobListView, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
-        jobs = Job.objects.filter(visibility='public').order_by('-created_at', 'title')
-        return jobs
+        qs = Job.objects.filter(visibility='public').order_by('-created_at', 'title')
+        if self.url_params.software:
+            qs = qs.filter(software__icontains=self.url_params.software)
+        if self.url_params.is_remote_friendly:
+            qs = qs.filter(is_remote_friendly=True)
+        if self.url_params.level:
+            qs = qs.filter(level__icontains=self.url_params.level)
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -108,6 +202,8 @@ class JobListView(ListView):
             image_field=None,
             image_alt=None,
         )
+        context['url_params'] = self.url_params
+        context['search_facets'] = self.search_facets()
         return context
 
 
