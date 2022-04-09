@@ -18,6 +18,11 @@ a.dropdown-item.is-admin(href="/admin/dillo/event/", title='Events')
   | Events
 .dropdown-divider
 | {% endif %}
+
+a.dropdown-item(href="{% url 'bookmarks' %}", title='{% trans "My Saved Bookmarks" %}')
+  i.i-bookmark
+  | {% trans "My Bookmarks" %}
+
 a.dropdown-item(href="{% url 'profile-detail' user.username %}", title='{% trans "Profile" %}')
   i.i-user
   | {% trans "Profile" %}
