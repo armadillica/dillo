@@ -8,7 +8,7 @@
     | {% block stream_nav_items %}
     | {% include 'dillo/reels/_navigation_reel.pug' %}
     | {% endblock stream_nav_items %}
-    | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="Reel" %}
+    | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="reel" %}
 
   //- Notice for users without a reel.
   | {% if not user.profile.reel or not request.user.is_authenticated %}
