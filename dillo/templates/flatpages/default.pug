@@ -6,14 +6,12 @@
 | {% block stream %}
 .container
   | {{ flatpage.content }}
-
-  | {% include 'dillo/components/_footer.pug' %}
 | {% endblock stream %}
 
 | {% block sidebar %}
 | {% if request.user.is_superuser %}
 .sidebar-block
   | {% url 'admin:flatpages_flatpage_change' flatpage.id as edit_url %}
-  | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Page" %}
+  | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Page" class="btn-admin" %}
 | {% endif %}
 | {% endblock sidebar %}
