@@ -2,7 +2,8 @@
 
 .nav-tabbar-items
   .dropdown
-    #dropdown-sorting(data-toggle="dropdown") {{ url_params.sort_label }}
+    .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
+      span {{ url_params.sort_label }}
     .dropdown-menu
       a.dropdown-item(
         href="{% url 'reel-list' %}?sort=top{{ url_params.tag_qs }}",
