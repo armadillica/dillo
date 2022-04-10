@@ -1,6 +1,6 @@
 | {% load i18n %}
 
-button.btn.btn-link.btn-wide(
+button.btn.btn-wide.btn-block(
 	class="{{ js_class }}",
 	title="{% trans 'Load More' %}",
 	data-next_url="{{ url_next }}?page={{ page_obj.next_page_number }}")
