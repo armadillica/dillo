@@ -33,12 +33,9 @@ script.
 
 		//- Autoplay first video, if a video is found
 		if (firstPlayerId !== undefined) {
-			videojs(firstPlayerId).ready(function () {
-				let player = this;
-				player.play();
-			});
-		}
-		;
+			let p = videojs.getPlayer(firstPlayerId);
+			p.play();
+		};
 
 		/* Slide. */
 		let initialMedia = 0;
