@@ -1,45 +1,57 @@
 | {% load i18n %}
 | {% if request.user.is_superuser %}
-a.dropdown-item.is-admin(href="{% url 'admin:index' %}", title='Whoosh')
-  i.i-coffee
-  | Whoosh
-a.dropdown-item.is-admin(href="{% url 'admin-create-post-from-url' %}", title='Create Post from URL')
-  i.i-link
-  | Post from URL
-a.dropdown-item.is-admin(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
-  i.i-users
-  | Users
+li
+  a.dropdown-item.is-admin(href="{% url 'admin:index' %}", title='Whoosh')
+    i.i-coffee
+    | Whoosh
+li
+  a.dropdown-item.is-admin(href="{% url 'admin-create-post-from-url' %}", title='Create Post from URL')
+    i.i-link
+    | Post from URL
+li
+  a.dropdown-item.is-admin(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
+    i.i-users
+    | Users
 //- XXX Replace with proper url lookup like 'admin:rigs' or so.
-a.dropdown-item.is-admin(href="/admin/rigs/rig/", title='Rigs List')
-  i.i-package
-  | Rigs
-a.dropdown-item.is-admin(href="/admin/dillo/event/", title='Events')
-  i.i-events
-  | Events
-.dropdown-divider
+li
+  a.dropdown-item.is-admin(href="/admin/rigs/rig/", title='Rigs List')
+    i.i-package
+    | Rigs
+li
+  a.dropdown-item.is-admin(href="/admin/dillo/event/", title='Events')
+    i.i-events
+    | Events
+
+li.dropdown-divider
 | {% endif %}
 
-a.dropdown-item(href="{% url 'bookmarks' %}", title='{% trans "My Saved Bookmarks" %}')
-  i.i-bookmark
-  | {% trans "My Bookmarks" %}
+li
+  a.dropdown-item(href="{% url 'bookmarks' %}", title='{% trans "My Saved Bookmarks" %}')
+    i.i-bookmark
+    | {% trans "My Bookmarks" %}
 
-a.dropdown-item(href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Shorts" %}')
-  i.i-shorts
-  | {% trans "My Shorts" %}
+li
+  a.dropdown-item(href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Shorts" %}')
+    i.i-shorts
+    | {% trans "My Shorts" %}
 
-a.dropdown-item(href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Rigs" %}')
-  i.i-package
-  | {% trans "My Rigs" %}
+li
+  a.dropdown-item(href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Rigs" %}')
+    i.i-package
+    | {% trans "My Rigs" %}
 
-.dropdown-divider
+li.dropdown-divider
 
-a.dropdown-item(href="{% url 'profile-detail' user.username %}", title='{% trans "Profile" %}')
-  i.i-user
-  | {% trans "Profile" %}
-a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')
-  i.i-settings
-  | {% trans "Settings" %}
-.dropdown-divider
-a.dropdown-item(href="{% url 'logout' %}", title='{% trans "Logout" %}')
-  i.i-log-out
-  | {% trans "Logout" %}
+li
+  a.dropdown-item(href="{% url 'profile-detail' user.username %}", title='{% trans "Profile" %}')
+    i.i-user
+    | {% trans "Profile" %}
+li
+  a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')
+    i.i-settings
+    | {% trans "Settings" %}
+li.dropdown-divider
+li
+  a.dropdown-item(href="{% url 'logout' %}", title='{% trans "Logout" %}')
+    i.i-log-out
+    | {% trans "Logout" %}
