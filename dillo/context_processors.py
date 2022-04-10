@@ -1,9 +1,9 @@
-from actstream.models import Follow
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 import sorl.thumbnail
 
 from dillo.models.feeds import FeedEntry
+from dillo.models.events import Event
 from dillo.views.mixins import OgData
 from dillo.models.communities import Community
 
@@ -14,7 +14,9 @@ def notifications_count(request):
         count = 0
     else:
         count = FeedEntry.objects.filter(
-            user=request.user, is_read=False, category='notification',
+            user=request.user,
+            is_read=False,
+            category='notification',
         ).count()
     return {
         'notifications_count': count,
@@ -81,7 +83,18 @@ def current_user_js(request):
                 request.user.profile.avatar, '128x128', crop='center', quality=80
             ).url
         current_user['notificationsCount'] = FeedEntry.objects.filter(
-            user=request.user, is_read=False, category='notification',
+            user=request.user,
+            is_read=False,
+            category='notification',
         ).count()
 
     return {'current_user_js': current_user}
+
+
+def upcoming_events(_):
+    ue = (
+        Event.objects.filter(starts_at__gt=timezone.now(), visibility='public')
+        .order_by('starts_at')
+        .all()
+    )
+    return {'upcoming_events': ue}

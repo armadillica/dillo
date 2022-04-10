@@ -46,11 +46,6 @@ class PostListView(TemplateView):
         context['query_url'] = self.get_query_url()
         context['layout'] = request_layout
         context['layout_switch'] = 'grid' if request_layout == 'list' else 'list'
-        context['upcoming_events'] = (
-            Event.objects.filter(starts_at__gt=timezone.now(), visibility='public')
-            .order_by('starts_at')
-            .all()
-        )
         context['trending_tags'] = get_trending_tags()
         # Display processing posts only if user is authenticated
         if self.request.user.is_authenticated:
