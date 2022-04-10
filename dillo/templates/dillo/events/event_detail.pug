@@ -29,7 +29,9 @@ meta(name="twitter:image:alt", content="{{ event.name }}")
 	.event-header
 		| {% thumbnail event.image "1280" crop="center" as im %}
 		| {% if event.website %}
-		a.event-cover(href="{{ event.website }}")
+		a.event-cover(
+			href="{{ event.website }}",
+			target="_blank")
 			img(
 				src="{{ im.url }}",
 				width="{{ im.width }}",
