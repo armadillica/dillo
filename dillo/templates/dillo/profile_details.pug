@@ -22,7 +22,7 @@ style.
 
 | {% if user.profile.next_events_attending %}
 .profile-events
-  | {% include 'dillo/components/_feed_events.pug' with events=user.profile.next_events_attending events_title='Going To' %}
+  | {% include 'animato/components/_feed_events.pug' with events=user.profile.next_events_attending events_title='Going To' %}
 | {% endif %}
 
 | {{ block.super }}
