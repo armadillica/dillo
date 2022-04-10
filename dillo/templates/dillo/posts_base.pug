@@ -63,12 +63,6 @@
 | {% endblock content %}
 
 | {% block sidebar %}
-
-| {% if upcoming_events %}
-.sidebar-block
-  | {% include 'dillo/components/_feed_events.pug' with events=upcoming_events events_title='Events' %}
-| {% endif %}
-
 .sidebar-block
   | {% include 'dillo/components/_footer.pug' %}
 
