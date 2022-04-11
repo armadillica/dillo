@@ -6,40 +6,37 @@
 | {% block page_title %}{{ event.name }} &mdash; {% trans 'Animation Event on' %}{% endblock page_title %}
 
 | {% block stream %}
-.event-container.card
-	.event-header
-		| {% thumbnail event.image "1280" crop="center" as im %}
-		| {% if event.website %}
-		a.event-cover(
-			href="{{ event.website }}",
-			target="_blank")
-			img(
-				src="{{ im.url }}",
-				width="{{ im.width }}",
-				height="{{ im.height }}",
-				alt="{{ event.name }}")
-		| {% else %}
-		.event-cover
-			img(
-				src="{{ im.url }}",
-				width="{{ im.width }}",
-				height="{{ im.height }}",
-				alt="{{ event.name }}")
-		| {% endif %}
-		| {% endthumbnail %}
-
-	.card-body
+.item-detail-container
+	.item-detail-header
+		h1 {{ event.name }}
+	.item-detail-body
 		| {{ event.description | markdown_with_shortcodes | safe  }}
 | {% endblock stream %}
 
-
 | {% block sidebar %}
-
 .sidebar-block
-	h3 {{ event.name }}
+	| {% thumbnail event.image "512" crop="center" as im %}
+	| {% if event.website %}
+	a.sidebar-header-image(
+		href="{{ event.website }}",
+		target="_blank")
+		img(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+			alt="{{ event.name }}")
+	| {% else %}
+	.sidebar-header-image
+		img(
+			src="{{ im.url }}",
+			width="{{ im.width }}",
+			height="{{ im.height }}",
+			alt="{{ event.name }}")
+	| {% endif %}
+	| {% endthumbnail %}
 
 	ul.sidebar-list
-		li(title="{% trans 'Date' %}")
+		li(title="{% trans 'Event Date' %}")
 			i.i-events
 			| {{ event.starts_at|date }}
 			| {% if event.starts_at|date != event.ends_at|date %}
