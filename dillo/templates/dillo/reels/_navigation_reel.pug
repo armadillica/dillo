@@ -8,8 +8,8 @@
       a.dropdown-item(
         href="{% url 'reel-list' %}?sort=top{{ url_params.tag_qs }}",
         class="{% if url_params.sort == 'top' %}active{% endif %}"
-        ) Top Rated
+        ) #[i.i-trending]{% trans 'Top Rated' %}
       a.dropdown-item(
         href="{% url 'reel-list' %}?sort=recent{{ url_params.tag_qs }}",
         class="{% if url_params.sort == 'recent' %}active{% endif %}"
-        ) Most Recent
+        ) #[i.i-events]{% trans 'Most Recent' %}
