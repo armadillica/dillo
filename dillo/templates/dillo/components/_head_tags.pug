@@ -3,12 +3,7 @@ meta(charset='utf-8')
 meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
 meta(name="theme-color", content="#0047fa")
 
-- var site_name = 'anima.to';
-- var site_keywords = 'animation,animate,2d,3d,2danimation,cg,motiongraphics,blender,greasepencil,toonboom,tvpaint,flash';
-- var fb_app_id = '384707122164385';
 meta(name='description', content="{{ og_data.description | default:og_data_default.description}}")
-meta(name='keywords', content=site_keywords)
-title {% block page_title %}{% endblock page_title %}#[=site_name]
 
 link(rel="apple-touch-icon", sizes="180x180", href="{% static 'favicon/apple-touch-icon.png' %}")
 link(rel="icon", type="image/png", sizes="32x32", href="{% static 'favicon/favicon-32x32.png' %}")

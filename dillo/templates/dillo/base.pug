@@ -3,7 +3,14 @@ html(lang="en")
 	head
 		| {% load i18n %}
 		| {% load static %}
-		| {% include 'dillo/components/_head_tags.pug'%}
+		- var site_name = 'anima.to';
+		- var site_keywords = 'animation,community,animate,2d,3d,2danimation,cg,motiongraphics,blender,greasepencil,toonboom,tvpaint,flash';
+		- var fb_app_id = '384707122164385';
+		meta(name='keywords', content=site_keywords)
+
+		title {% block page_title %}{% endblock page_title %}#[=site_name]
+
+		| {% include 'dillo/components/_head_tags.pug' %}
 
 		| {% load pipeline %}
 
