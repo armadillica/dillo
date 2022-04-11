@@ -3,26 +3,7 @@
 | {% load dillo_filters %}
 | {% load thumbnail %}
 
-| {% block page_title %}{{ event.name }} &mdash; {% trans 'Event on' %}{% endblock page_title %}
-
-//- TODO: Fill OpenGraph data
-| {% block opengraph %}
-meta(property="og:type", content="article")
-
-meta(name="twitter:title", content="{{ event.name }} {% trans 'on' %} {{ site_name }}")
-meta(property="og:title", content="{{ event.name }} {% trans 'on' %} {{ site_name }}")
-
-meta(name="twitter:description", content="{{ event.description | urlizetrunc:20 }}")
-meta(property="og:description", content="{{ event.description | urlizetrunc:20 }}")
-
-//- TODO: Use first media image, if any.
-| {% thumbnail event.image "1280x720" crop="center" as im %}
-meta(name="twitter:image", content="{{ im.url }}")
-meta(property="og:image", content="{{ im.url }}")
-meta(name="twitter:image:alt", content="{{ event.name }}")
-//- TODO: Use fallback image ({% empty %})
-| {% endthumbnail %}
-| {% endblock opengraph %}
+| {% block page_title %}{{ event.name }} &mdash; {% trans 'Animation Event on' %}{% endblock page_title %}
 
 | {% block stream %}
 .event-container.card
