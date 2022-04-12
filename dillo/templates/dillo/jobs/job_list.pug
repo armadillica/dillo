@@ -10,6 +10,7 @@
 | {% block stream %}
 
 .nav-tabbar-items
+  | {# Software facet #}
   | {% if search_facets.software %}
   .dropdown
     .btn-dropdown#dropdown-software(data-toggle="dropdown")
@@ -19,10 +20,13 @@
         | {% for s in search_facets.software %}
         li
           a.dropdown-item(
-            href="{% url 'job-list' %}?software={{ s }}",
+            href="{% url 'job-list' %}?software={{ s }}{{ url_params.level_qs }}{{ url_params.contract_type_qs }}",
+            class="{% if url_params.software == s %}active{% endif %}"
           ) {{ s }}
         | {% endfor %}
   | {% endif %}
+
+  | {# Level facet #}
   | {% if search_facets.level %}
   .dropdown
     .btn-dropdown#dropdown-level(data-toggle="dropdown")
@@ -32,11 +36,13 @@
         | {% for l in search_facets.level %}
         li
           a.dropdown-item(
-            href="{% url 'job-list' %}?level={{ l }}",
+            href="{% url 'job-list' %}?level={{ l }}{{ url_params.software_qs }}{{ url_params.contract_type_qs }}",
+            class="{% if url_params.level == l %}active{% endif %}"
           ) {{ l }}
         | {% endfor %}
   | {% endif %}
 
+  | {# Contract Type facet #}
   | {% if search_facets.contract_type %}
   .dropdown
     .btn-dropdown#dropdown-contract-type(data-toggle="dropdown")
@@ -46,7 +52,8 @@
         | {% for c in search_facets.contract_type %}
         li
           a.dropdown-item(
-            href="{% url 'job-list' %}?contract_type={{ c }}",
+            href="{% url 'job-list' %}?contract-type={{ c }}{{ url_params.level_qs }}{{ url_params.software_qs }}",
+            class="{% if url_params.contract_type == c %}active{% endif %}"
           ) {{ c }}
         | {% endfor %}
   | {% endif %}
@@ -56,12 +63,6 @@
   p Data sourced from Animation/VFX/Game Industry Job Postings by #[a(href="https://anima.to/chrismayne/") @chrismayne]
 
 
-  | {% for s in search_facets.contract_type %}
-  | {{ s }}
-  | {% endfor %}
-  | {% for s in search_facets.level %}
-  | {{ s }}
-  | {% endfor %}
 .job-list
   | {% if jobs %}
   | {% for job in jobs %}

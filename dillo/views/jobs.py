@@ -33,16 +33,24 @@ class UrlParams:
         return self.software or 'Software'
 
     @property
+    def software_qs(self):
+        return '' if not self.software else f'&software={self.software}'
+
+    @property
     def level_label(self):
         return self.level or 'Level'
 
     @property
     def level_qs(self):
-        return '' if not self.level else f'&submitted-by={self.submitted_by}'
+        return '' if not self.level else f'&level={self.level}'
 
     @property
     def contract_type_label(self):
         return self.contract_type or 'Contract Type'
+
+    @property
+    def contract_type_qs(self):
+        return '' if not self.contract_type else f'&contract-type={self.contract_type}'
 
 
 @dataclass
@@ -50,19 +58,6 @@ class SearchFacets:
     contract_type: Optional[List[str]]
     software: Optional[List[str]]
     level: Optional[List[str]]
-
-    # @property
-    # def tag_qs(self):
-    #     return '' if not self.tag else f'&tag={self.tag}'
-    #
-    # @property
-    # def sort_qs(self):
-    #     return f'sort={self.sort}'
-    #
-    # @property
-    # def submitted_by_qs(self):
-    #     return '' if not self.submitted_by else f'&submitted-by={self.submitted_by}'
-    #
 
 
 class JobCreateView(LoginRequiredMixin, CreateView):
@@ -148,7 +143,7 @@ class JobListView(ListView):
 
     def _facet_software(self):
         software_set = set()
-        software = Job.objects.all()
+        software = Job.objects.filter(status='published')
         if self.url_params.contract_type:
             software = software.filter(contract_type=self.url_params.contract_type)
         if self.url_params.level:
@@ -158,25 +153,33 @@ class JobListView(ListView):
             for n in re.split(',|/', s[0]):
                 n = n.strip()
                 software_set.add(n)
-
         return sorted(software_set)
 
     def _facet_level(self):
         level_set = set()
-        levels = Job.objects.all().distinct('level').values_list('level')
+        levels = Job.objects.filter(status='published')
         if self.url_params.contract_type:
             levels = levels.filter(contract_type=self.url_params.contract_type)
         if self.url_params.software:
             levels = levels.filter(software=self.url_params.software)
+        levels = levels.distinct('level').values_list('level')
         for level in levels:
             for lev in re.split(',|/', level[0]):
                 lev = lev.strip()
                 level_set.add(lev)
         return sorted(level_set)
 
-    @staticmethod
-    def _facet_contract_type():
-        return [ct[0] for ct in Job.CONTRACT_TYPES]
+    def _facet_contract_type(self):
+        contract_type_set = set()
+        contract_types = Job.objects.filter(status='published')
+        if self.url_params.level:
+            contract_types = contract_types.filter(level=self.url_params.level)
+        if self.url_params.software:
+            contract_types = contract_types.filter(software=self.url_params.software)
+        contract_types = contract_types.distinct('contract_type').values_list('contract_type')
+        for contract_type in contract_types:
+            contract_type_set.add(contract_type[0])
+        return sorted(contract_type_set)
 
     def search_facets(self):
         return SearchFacets(
@@ -203,6 +206,8 @@ class JobListView(ListView):
             qs = qs.filter(is_remote_friendly=True)
         if self.url_params.level:
             qs = qs.filter(level__icontains=self.url_params.level)
+        if self.url_params.contract_type:
+            qs = qs.filter(contract_type=self.url_params.contract_type)
         return qs
 
     def get_context_data(self, **kwargs):
