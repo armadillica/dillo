@@ -37,6 +37,10 @@ class UrlParams:
         return self.level or 'Level'
 
     @property
+    def level_qs(self):
+        return '' if not self.level else f'&submitted-by={self.submitted_by}'
+
+    @property
     def contract_type_label(self):
         return self.contract_type or 'Contract Type'
 
@@ -142,10 +146,14 @@ class JobListView(ListView):
 
     url_params: UrlParams = None
 
-    @staticmethod
-    def _facet_software():
+    def _facet_software(self):
         software_set = set()
-        software = Job.objects.all().distinct('software').values_list('software')
+        software = Job.objects.all()
+        if self.url_params.contract_type:
+            software = software.filter(contract_type=self.url_params.contract_type)
+        if self.url_params.level:
+            software = software.filter(level=self.url_params.level)
+        software = software.distinct('software').values_list('software')
         for s in software:
             for n in re.split(',|/', s[0]):
                 n = n.strip()
@@ -153,10 +161,13 @@ class JobListView(ListView):
 
         return sorted(software_set)
 
-    @staticmethod
-    def _facet_level():
+    def _facet_level(self):
         level_set = set()
         levels = Job.objects.all().distinct('level').values_list('level')
+        if self.url_params.contract_type:
+            levels = levels.filter(contract_type=self.url_params.contract_type)
+        if self.url_params.software:
+            levels = levels.filter(software=self.url_params.software)
         for level in levels:
             for lev in re.split(',|/', level[0]):
                 lev = lev.strip()
