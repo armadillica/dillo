@@ -150,8 +150,10 @@ class JobListView(ListView):
             software = software.filter(level=self.url_params.level)
         software = software.distinct('software').values_list('software')
         for s in software:
-            for n in re.split(',|/', s[0]):
+            for n in re.split(',|/|or', s[0]):
                 n = n.strip()
+                if not n:
+                    continue
                 software_set.add(n)
         return sorted(software_set)
 

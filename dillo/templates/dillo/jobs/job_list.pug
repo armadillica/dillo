@@ -17,6 +17,13 @@
       span {{ url_params.software_label }}
     .dropdown-menu
       ul
+        | {% if url_params.software %}
+        li
+          a.dropdown-item(
+            href="{% url 'job-list' %}?{{ url_params.level_qs }}{{ url_params.contract_type_qs }}",
+          ) Clear Filter
+        .dropdown-divider
+        | {% endif %}
         | {% for s in search_facets.software %}
         li
           a.dropdown-item(
@@ -33,6 +40,13 @@
       span {{ url_params.level_label }}
     .dropdown-menu
       ul
+        | {% if url_params.level %}
+        li
+          a.dropdown-item(
+            href="{% url 'job-list' %}?{{ url_params.software_qs }}{{ url_params.contract_type_qs }}",
+          ) Clear Filter
+        .dropdown-divider
+        | {% endif %}
         | {% for l in search_facets.level %}
         li
           a.dropdown-item(
@@ -49,6 +63,13 @@
       span {{ url_params.contract_type_label }}
     .dropdown-menu
       ul
+        | {% if url_params.contract_type %}
+        li
+          a.dropdown-item(
+            href="{% url 'job-list' %}?{{ url_params.software_qs }}{{ url_params.software_qs }}",
+          ) Clear Filter
+        .dropdown-divider
+        | {% endif %}
         | {% for c in search_facets.contract_type %}
         li
           a.dropdown-item(
