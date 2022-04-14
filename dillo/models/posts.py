@@ -42,13 +42,20 @@ def get_trending_tags():
     """
     time_delta_in_days = 15
     time_limit = timezone.now() - datetime.timedelta(days=time_delta_in_days)
-    tags = Post.tags.most_common(
+    recent_tags = Post.tags.most_common(
         extra_filters={'post__created_at__gte': time_limit, 'post__visibility': 'public'}
     )[:10]
-    if not tags:
-        log.debug("No recent common tags found, querying all tags")
-        tags = Post.tags.most_common()[:10]
-    return tags
+
+    missing_tags_count = 10 - len(recent_tags)
+
+    if missing_tags_count:
+        log.debug("Not enough common tags found, querying all tags")
+        popular_tags = (
+            Post.tags.exclude(id__in=recent_tags)
+            .annotate(num_times=models.Count(Post.tags.through.tag_relname()))
+            .order_by("-num_times")[:missing_tags_count]
+        )
+    return recent_tags.union(popular_tags)
 
 
 def extract_hash_tags(s):
