@@ -58,6 +58,9 @@
         | {% endfor %}
   | {% endif %}
 
+  .nav-tabbar
+  | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="Job" %}
+
 .job-list-header
   h1 {% trans 'Jobs Board' %}
   p Data sourced from Animation/VFX/Game Industry Job Postings by #[a(href="https://anima.to/chrismayne/") @chrismayne]
