@@ -43,17 +43,20 @@
 			#[span · ] {{ event.ends_at|date }}
 			| {% endif %}
 
+		| {% if event.location or event.is_online %}
 		li
 			| {% if event.is_online %}
 			span
 				i.i-tv
 				| Online Event
-			| {% else %}
+			| {% endif %}
+			| {% if event.location %}
 			a(title="{% trans 'Location' %}",
 				href="https://www.google.com/maps/place/{{ event.location | slugify }}", target="_blank")
 				i.i-map-pin
 				| {{ event.location }}
 			| {% endif %}
+		| {% endif %}
 
 		| {% if event.website %}
 		li
