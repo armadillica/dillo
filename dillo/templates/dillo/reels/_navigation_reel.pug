@@ -4,7 +4,7 @@
   .nav-tabbar-items
     | {% if is_detail %}
     .btn-toolbar-row.nav-tabbar-back
-      a.btn.btn-prev(href="{% url 'reel-list' %}")
+      a.btn.btn-prev(href="{% url 'reel-list' %}?{{ url_params.sort_qs }}")
         span
           i.i-chevron-left
           span {% trans 'See All Reels' %}
@@ -14,11 +14,11 @@
         span {{ url_params.sort_label }}
       .dropdown-menu
         a.dropdown-item(
-          href="{% url 'reel-list' %}?sort=top{{ url_params.tag_qs }}",
+          href="{% url 'reel-list' %}?sort=top",
           class="{% if url_params.sort == 'top' %}active{% endif %}"
           ) #[i.i-trending]{% trans 'Top Rated' %}
         a.dropdown-item(
-          href="{% url 'reel-list' %}?sort=recent{{ url_params.tag_qs }}",
+          href="{% url 'reel-list' %}?sort=recent",
           class="{% if url_params.sort == 'recent' %}active{% endif %}"
           ) #[i.i-events]{% trans 'Most Recent' %}
     | {% endif %}
