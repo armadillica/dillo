@@ -8,14 +8,11 @@
 | {% include 'dillo/components/_profile_page_title.pug' with user=user %}
 | {% endblock page_title %}
 
-
 | {% block page_header %}
 .container-fluid
-  .nav-tabbar
-    | {% block stream_nav_items %}
-    | {% include 'dillo/reels/_navigation_reel.pug' %}
-    | {% endblock stream_nav_items %}
-    | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_profile_url next_obj_url=next_profile_url label="Reel" %}
+  | {% block stream_nav_items %}
+  | {% include 'dillo/reels/_navigation_reel.pug' with is_detail=True %}
+  | {% endblock stream_nav_items %}
 
 style.
   .profile-details {

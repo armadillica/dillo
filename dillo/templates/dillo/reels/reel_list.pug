@@ -6,28 +6,9 @@
 
 | {% block content %}
 .container-fluid
-  .nav-tabbar
-    | {% block stream_nav_items %}
-    | {% include 'dillo/reels/_navigation_reel.pug' %}
-    | {% endblock stream_nav_items %}
-
-    //- Notice for users without a reel.
-    | {% if not user.profile.reel or not request.user.is_authenticated %}
-    .theater-header
-      | {% url 'profile_edit' as btn_reels_cta %}
-      | {% include 'dillo/components/_button_generic.pug' with url=btn_reels_cta label="Add Animation Reel" class="btn-primary-strong" %}
-
-      span #[strong #[i.i-star] Your reel could be here!]
-
-      | {% if not request.user.is_authenticated %}
-      span Create a free account to add your animation reel.
-      | {% else %}
-      | {% url 'profile_edit' as profile_edit_url %}
-      span Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
-      | {% endif %}
-    | {% endif %}
-
-    | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="reel" %}
+  | {% block stream_nav_items %}
+  | {% include 'dillo/reels/_navigation_reel.pug' %}
+  | {% endblock stream_nav_items %}
 
   | {% if object_list %}
   .cards-grid

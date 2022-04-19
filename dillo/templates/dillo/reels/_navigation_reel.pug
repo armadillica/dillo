@@ -1,15 +1,46 @@
 | {% load i18n %}
 
-.nav-tabbar-items
-  .dropdown
-    .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
-      span {{ url_params.sort_label }}
-    .dropdown-menu
-      a.dropdown-item(
-        href="{% url 'reel-list' %}?sort=top{{ url_params.tag_qs }}",
-        class="{% if url_params.sort == 'top' %}active{% endif %}"
-        ) #[i.i-trending]{% trans 'Top Rated' %}
-      a.dropdown-item(
-        href="{% url 'reel-list' %}?sort=recent{{ url_params.tag_qs }}",
-        class="{% if url_params.sort == 'recent' %}active{% endif %}"
-        ) #[i.i-events]{% trans 'Most Recent' %}
+.nav-tabbar
+  .nav-tabbar-items
+    | {% if is_detail %}
+    .btn-toolbar-row.nav-tabbar-back
+      a.btn.btn-prev(href="{% url 'reel-list' %}")
+        span
+          i.i-chevron-left
+          span {% trans 'See All Reels' %}
+    | {% else %}
+    .dropdown
+      .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
+        span {{ url_params.sort_label }}
+      .dropdown-menu
+        a.dropdown-item(
+          href="{% url 'reel-list' %}?sort=top{{ url_params.tag_qs }}",
+          class="{% if url_params.sort == 'top' %}active{% endif %}"
+          ) #[i.i-trending]{% trans 'Top Rated' %}
+        a.dropdown-item(
+          href="{% url 'reel-list' %}?sort=recent{{ url_params.tag_qs }}",
+          class="{% if url_params.sort == 'recent' %}active{% endif %}"
+          ) #[i.i-events]{% trans 'Most Recent' %}
+    | {% endif %}
+
+    //- Notice for users without a reel.
+    | {% if not user.profile.reel or not request.user.is_authenticated %}
+    .theater-header
+      | {% url 'profile_edit' as btn_reels_cta %}
+      | {% include 'dillo/components/_button_generic.pug' with url=btn_reels_cta label="Add Animation Reel" class="btn-primary-strong" %}
+
+      span #[strong #[i.i-star] Your reel could be here!]
+
+      | {% if not request.user.is_authenticated %}
+      span Create a free account to add your animation reel.
+      | {% else %}
+      | {% url 'profile_edit' as profile_edit_url %}
+      span Fill in the #[a(href="{{ profile_edit_url }}") reel section] on your profile.
+      | {% endif %}
+    | {% endif %}
+
+    | {% if is_detail %}
+    | {% include 'dillo/components/_pagination.pug' with page=page_obj is_detail=True prev_obj_url=prev_profile_url next_obj_url=next_profile_url label="Reel" %}
+    | {% else %}
+    | {% include 'dillo/components/_pagination.pug' with page_obj=page_obj label="reel" %}
+    | {% endif %}
