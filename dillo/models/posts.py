@@ -55,7 +55,8 @@ def get_trending_tags():
             .annotate(num_times=models.Count(Post.tags.through.tag_relname()))
             .order_by("-num_times")[:missing_tags_count]
         )
-    return recent_tags.union(popular_tags)
+        recent_tags = recent_tags.union(popular_tags)
+    return recent_tags
 
 
 def extract_hash_tags(s):
