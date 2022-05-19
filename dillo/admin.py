@@ -87,6 +87,7 @@ class PostAdmin(admin.ModelAdmin):
     )
     list_filter = ('community', 'is_link', 'status')
     list_display_links = ('__str__',)
+    search_fields = ('content', 'title', 'user__username')
     autocomplete_fields = ['media']
     readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
 
@@ -302,6 +303,7 @@ class CommentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
     list_display = ['id', 'get_content', 'user', 'created_at', 'show_link']
     readonly_fields = ('entity_content_type', 'parent_comment', 'tags')
+    search_fields = ('content', 'user__username')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
