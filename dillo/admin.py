@@ -218,17 +218,37 @@ class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline,)
 
     fieldsets = (
-        (None, {'fields': ('email', 'password',)}),
+        (
+            None,
+            {
+                'fields': (
+                    'email',
+                    'password',
+                )
+            },
+        ),
         (
             _('Permissions'),
             {
-                'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+                'fields': (
+                    'is_active',
+                    'is_staff',
+                    'is_superuser',
+                    'groups',
+                    'user_permissions',
+                ),
                 'classes': ('collapse',),
             },
         ),
         (
             _('Important dates'),
-            {'fields': ('date_joined', 'last_login'), 'classes': ('collapse',),},
+            {
+                'fields': (
+                    'date_joined',
+                    'last_login',
+                ),
+                'classes': ('collapse',),
+            },
         ),
     )
 
@@ -247,7 +267,9 @@ class UserAdmin(BaseUserAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset = queryset.annotate(_posts_count=Count("post", distinct=True),)
+        queryset = queryset.annotate(
+            _posts_count=Count("post", distinct=True),
+        )
         return queryset
 
     def get_name(self, instance: User):
@@ -319,7 +341,18 @@ class StaticAssetAdmin(admin.ModelAdmin):
         '__str__',
     ]
     fieldsets = (
-        (None, {'fields': ['id', 'source', 'source_filename', 'source_type', 'thumbnail',],},),
+        (
+            None,
+            {
+                'fields': [
+                    'id',
+                    'source',
+                    'source_filename',
+                    'source_type',
+                    'thumbnail',
+                ],
+            },
+        ),
         (
             'If you are uploading an image or a video',
             {
