@@ -17,6 +17,7 @@ from django.db import IntegrityError, transaction
 from django.dispatch import receiver
 from django.core.files.storage import default_storage
 from allauth.account.signals import email_confirmed, email_changed
+from allauth.account.models import EmailAddress
 
 import dillo.models.comments
 import dillo.models.mixins
@@ -295,16 +296,18 @@ def on_deleted_follow(sender, instance: models_actstream.Follow, **kwargs):
 
 
 @receiver(email_confirmed)
-def on_email_confirmed(request, email_address, **kwargs):
+def on_email_confirmed(request, email_address: EmailAddress, **kwargs):
     """If confirmed, subscribe to newsletter."""
-    dillo.tasks.profile.update_mailing_list_subscription(email_address, True)
+    dillo.tasks.profile.update_mailing_list_subscription(email_address.email, True)
 
 
 @receiver(email_changed)
-def on_email_email_changed(request, user, from_email_address, to_email_address, **kwargs):
+def on_email_email_changed(
+    request, user, from_email_address: EmailAddress, to_email_address, **kwargs
+):
     """Unsubscribe previous email, wait for new one to be confirmed."""
     if from_email_address:
-        dillo.tasks.profile.update_mailing_list_subscription(from_email_address, False)
+        dillo.tasks.profile.update_mailing_list_subscription(from_email_address.email, False)
 
 
 @receiver(pre_delete, sender=User)
