@@ -113,7 +113,8 @@ def on_saved_post(sender, instance, created, **kwargs):
     for mentioned_user in mentions:
         log.debug('Mentioning user %s in Post %i' % (mentioned_user, instance.id))
         dillo.models.mixins.Mentions.objects.create(
-            user=mentioned_user, content_object=instance,
+            user=mentioned_user,
+            content_object=instance,
         )
 
 
@@ -141,7 +142,8 @@ def on_created_comment(sender, instance: dillo.models.comments.Comment, created,
     for mentioned_user in mentions:
         log.debug('Mentioning user %s in Comment %i' % (mentioned_user, instance.id))
         dillo.models.mixins.Mentions.objects.create(
-            user=mentioned_user, content_object=instance,
+            user=mentioned_user,
+            content_object=instance,
         )
         # TODO(fsiddi) Generate activity about mention
 
