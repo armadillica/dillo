@@ -92,6 +92,10 @@ class ApiCommentsListView(CommentsListView):
                 'report_content',
                 kwargs={'content_type_id': comment.content_type_id, 'object_id': comment.id},
             ),
+            'urlUserListLiked': reverse(
+                'api-user-list-liked',
+                kwargs={'content_type_id': comment.content_type_id, 'object_id': comment.id},
+            ),
         }
 
         # Generate thumbnail for user, if available
