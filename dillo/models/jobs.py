@@ -51,3 +51,6 @@ class Job(Entity):
     class Meta:
         verbose_name = 'job'
         verbose_name_plural = 'jobs'
+
+    def __str__(self):
+        return f'{self.title} at {self.company}'

@@ -126,6 +126,7 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ('title', 'visibility', 'show_link')
     autocomplete_fields = ['user']
     exclude = ('image_height', 'image_width')
+    readonly_fields = ('created_at', 'updated_at')
 
     def show_link(self, obj):
         return mark_safe('<a href="%s" target="_blank">View</a>' % obj.get_absolute_url())
