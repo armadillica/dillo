@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 @background()
-def create_coconut_job(post_hash_id: str, video_id: int):
+def create_coconut_job(content_type_id: str, object_id: str, video_id: int):
     """Create a video encoding job.
 
     Because of the @background decorator, we only accept hashable
@@ -58,7 +58,10 @@ def create_coconut_job(post_hash_id: str, video_id: int):
     #     f'{httpstream_packaging}, {httpstream_variants}'
 
     # Webhook for encoding updates
-    job_webhook = reverse('coconut-webhook', kwargs={'hash_id': post_hash_id, 'video_id': video_id})
+    job_webhook = reverse(
+        'coconut-webhook',
+        kwargs={'content_type_id': content_type_id, 'object_id': object_id, 'video_id': video_id},
+    )
 
     j = dillo.coconut.job.create(
         api_key=settings.COCONUT_API_KEY,

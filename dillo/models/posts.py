@@ -169,7 +169,7 @@ class Post(Entity, LikesMixin, MentionsMixin):
         # Set status as processing, without triggering Post save signals
         Post.objects.filter(pk=self.id).update(status='processing')
         # Create a background job, using only hashable arguments
-        create_coconut_job(str(self.hash_id), video.id)
+        create_coconut_job(str(self.content_type_id), str(self.id), video.id)
 
     def publish(self):
         super(Post, self).publish()

@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 
 from django.conf import settings
 from django.http.response import JsonResponse
-from dillo.models.posts import Post
+from dillo.models.entities import Entity
 from dillo.models.static_assets import Video
 from dillo.tasks.files import move_blob_from_upload_to_storage
 
@@ -51,10 +51,12 @@ def output_processed_video(job: dict, video: Video):
         move_blob_from_upload_to_storage(source_path)
 
 
-def job_completed(job: dict, video: Video, post: Post):
+def job_completed(job: dict, video: Video, entity):
+    if not isinstance(entity, Entity):
+        return
     video.encoding_job_status = job['event']  # job.completed
     video.save()
-    if not post.may_i_publish:
+    if not entity.may_i_publish:
         return
     log.debug('Video has been processed, attempting to publish')
-    post.publish()
+    entity.publish()

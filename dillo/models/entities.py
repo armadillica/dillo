@@ -45,7 +45,9 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
     hotness = models.FloatField(default=0)
     dillo_uuid = models.SlugField(blank=True, default='')
     image = models.ImageField(
-        upload_to=get_upload_to_hashed_path, blank=True, help_text='A preview image for the entity',
+        upload_to=get_upload_to_hashed_path,
+        blank=True,
+        help_text='A preview image for the entity',
     )
 
     def save(self, *args, **kwargs):
@@ -131,14 +133,10 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
                 None if not self.updated_at else self.updated_at.strftime('%a %d %b, %Y - %H:%M')
             ),
             'naturalDatePublished': (
-                None
-                if not self.published_at
-                else compact_naturaltime(self.published_at)
+                None if not self.published_at else compact_naturaltime(self.published_at)
             ),
             'naturalDateUpdated': (
-                None
-                if not self.updated_at
-                else compact_naturaltime(self.updated_at)
+                None if not self.updated_at else compact_naturaltime(self.updated_at)
             ),
             'urlApiCommentListView': reverse(
                 'api-comments-list',
@@ -162,3 +160,7 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
             )
 
         return serialized_entity
+
+    @property
+    def may_i_publish(self):
+        return True

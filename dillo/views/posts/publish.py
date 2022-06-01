@@ -138,7 +138,7 @@ def process_video_data(filepath):
 @require_POST
 @login_required
 def post_file_upload(request, hash_id):
-    """"Uploads a file and returns Attachment id.
+    """ "Uploads a file and returns Attachment id.
 
     The Attachment id is used in the upload area to allow the deletion of the upload.
     """
@@ -168,7 +168,8 @@ def post_file_upload(request, hash_id):
         return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
     static_asset = StaticAsset.objects.create(
-        source=in_memory_file, source_filename=in_memory_file.name[:128],
+        source=in_memory_file,
+        source_filename=in_memory_file.name[:128],
     )
 
     if mime_type.startswith('image'):
@@ -279,12 +280,13 @@ def api_delete_unpublished_upload(request, content_type_id, hash_id):
 
 @require_POST
 @csrf_exempt
-def coconut_webhook(request, hash_id, video_id):
+def coconut_webhook(request, content_type_id, object_id, video_id):
     """Endpoint used by Coconut to update us on video processing."""
     if request.content_type != 'application/json':
         raise SuspiciousOperation('Coconut webhook endpoint was sent non-JSON data')
     job = json.loads(request.body)
-    post = get_object_or_404(Post, hash_id=hash_id)
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    entity = get_object_or_404(content_type.model_class(), pk=object_id)
     video = get_object_or_404(Video, id=video_id)
     if video.encoding_job_id != job['id']:
         # If the job id changed, we likely restarted the job (manually)
@@ -306,7 +308,7 @@ def coconut_webhook(request, hash_id, video_id):
         events.output_processed_video(job, video)
     # On job.completed (unused for now)
     elif job['event'] == 'job.completed':
-        events.job_completed(job, video, post)
+        events.job_completed(job, video, entity)
     return JsonResponse({'status': 'ok'})
 
 
@@ -394,7 +396,9 @@ class AttachS3MediaToEntity(LoginRequiredMixin, FormView):
             return JsonResponse({'error': 'This file type is not accepted.'}, status=422)
 
         static_asset = StaticAsset.objects.create(
-            source=key, source_filename=name, source_type=source_type,
+            source=key,
+            source_filename=name,
+            source_type=source_type,
         )
         static_asset.refresh_from_db()
         log.debug('Attaching %s to unpublished entity %s' % (source_type, entity.hash_id))

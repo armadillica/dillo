@@ -186,7 +186,7 @@ urlpatterns += [
     ),
     # Video Processing webhook
     path(
-        'p/<slug:hash_id>/video/<int:video_id>',
+        'api/video/<int:content_type_id>/<int:object_id>/<int:video_id>',
         dillo.views.posts.publish.coconut_webhook,
         name='coconut-webhook',
     ),
