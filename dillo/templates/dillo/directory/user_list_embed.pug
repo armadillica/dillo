@@ -1,10 +1,21 @@
 | {% for profile in object_list %}
-li.user-list-item
-  h3 {{ profile.name }}
-  p {{ profile.bio }}
-  | {% for badge in profile.badges.all %}
-  img(alt="{{ badge.name }}" src="{{ badge.image.url }}" width="20" height="20")
-  | {% endfor %}
-| {% empty %}
-li No user matches this query. Try something else!
+li
+  a.dir-user-item(href="{% url 'profile-detail' profile.user.username %}")
+    .dir-user-item-header
+      h3 {% firstof profile.name profile.user.username %}
+
+      .badges-row
+        | {% for badge in profile.badges.all %}
+        .badge.is-user(title="{{ badge.name }}")
+          img(
+            alt="{{ badge.name }}",
+            src="{{ badge.image.url }}")
+        | {% endfor %}
+
+    | {% if profile.bio %}
+    .dir-user-item-bio {{ profile.bio }}
+    | {% endif %}
+
+  | {% empty %}
+  p No user matches this query. Try something else!
 | {% endfor %}

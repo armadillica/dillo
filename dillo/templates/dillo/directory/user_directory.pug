@@ -13,29 +13,44 @@ script(src='//unpkg.com/globe.gl')
 
 | {% block content %}
 
-.search-fields
-  .form-field-container
-    label(for="tag") Tags
-    select#tag.js-choice(name="tag", multiple)
-      | {% for tag in search_facets.tags %}
-      option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
-      | {% endfor %}
-  .form-field-container
-    label(for="badge") Badges
-    select#badge.js-choice(name="badge", multiple)
-      | {% for badge in search_facets.badges %}
-      option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
-      | {% endfor %}
-  .btn(onclick="toggleGlobeVisibility()") Toggle Globe
+.row.dir-container
+  .col.dir-users
+    .dir-users-header
+      .form-field-container
+        label(for="tag") Tags
+        select#tag.js-choice(name="tag", multiple)
+          | {% for tag in search_facets.tags %}
+          option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
+          | {% endfor %}
 
+      .form-field-container
+        label(for="badge") Badges
+        select#badge.js-choice(name="badge", multiple)
+          | {% for badge in search_facets.badges %}
+          option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
+          | {% endfor %}
 
-#globe-container
-  #globe
-  h2#selected-city Click on a city to display users
-  #clear-city(style="display:none" onclick="clearCityFilter()") X Clear City Filter
+      div
+        .btn(
+          onclick="toggleGlobeVisibility()",
+          title="Toggle Globe")
+          span
+            i.i-globe
 
-ul#user-list
-| {% endblock content %}
+      h2#selected-city Click on a city to filter
+
+      .btn#clear-city(
+        style="display:none",
+        onclick="clearCityFilter()")
+        span Clear Filter
+
+    ul.dir-users-list#user-list
+
+  .col.dir-globe#globe-container
+    .globe-container
+    .globe#globe
+
+  | {% endblock content %}
 
 | {% block javascript_extra %}
 | {{ locations|json_script:'locations' }}
@@ -68,7 +83,7 @@ script.
       .then(data => {
         document.getElementById('user-list').innerHTML = data;
         document.getElementById('selected-city').innerText = cityName;
-        document.getElementById('clear-city').style.display = "block";
+        document.getElementById('clear-city').style.display = "flex";
     });
   }
 
@@ -90,14 +105,14 @@ script.
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
       .showAtmosphere(false) // globe has no atmosphere
       .width(elem.offsetWidth)
-      .height(500)
+      .height(elem.offsetHeight)
       // .pointsData(locations)
-      .pointColor(() => '#FFFFFF')
+      .pointColor(() => '#33CCB5')
       .pointLabel('cityName')
       .pointAltitude(d => d.count / 100)
       .onPointClick(d => fetchUsersByCity(d.cityId, d.cityName))
       (elem);
-    globe.pointOfView({lat: 45, lng: 5, altitude: 0.5});
+    globe.pointOfView({lat: 45, lng: 5, altitude: 3});
     return globe;
   }
 
@@ -117,8 +132,14 @@ script.
   let choices = [];
 
   const choiceElements = document.getElementsByClassName('js-choice');
+
   for (let choiceElement of choiceElements) {
-    let choice = new Choices(choiceElement);
+    let choice = new Choices(choiceElement, {
+      placeholder: true,
+      placeholderValue: 'test',
+      searchPlaceholderValue: 'test search'
+    });
+
     choices.push(choice);
     choiceElement.addEventListener(
       'change',
@@ -142,6 +163,5 @@ script.
     document.getElementById('selected-city').innerText = "Click on a city to display users";
 
   }
-
 
 | {% endblock javascript_extra %}
