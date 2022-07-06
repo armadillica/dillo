@@ -420,6 +420,40 @@ urlpatterns += [
     ),
 ]
 
+# Globe
+urlpatterns += [
+    path(
+        'globe',
+        dillo.views.users.directory.globe_view,
+        name='user-globe',
+    ),
+    path(
+        'directory',
+        dillo.views.users.directory.UserListView.as_view(),
+        name='user-directory',
+    ),
+    path(
+        'api/users/by-city/<int:city_id>',
+        dillo.views.users.directory.api_users_by_city,
+        name='api-user-list-by-city',
+    ),
+    path(
+        'api/users/',
+        dillo.views.users.directory.ApiUserListView.as_view(),
+        name='api-user-list',
+    ),
+    path(
+        'api/users-globe',
+        dillo.views.users.directory.ApiUserGlobeView.as_view(),
+        name='api-user-globe',
+    ),
+    path(
+        'api/cities-in-country/<slug:country_code>',
+        dillo.views.users.directory.api_city_in_country,
+        name='api-cities-in-country',
+    ),
+]
+
 urlpatterns += [
     path(
         'api/user-from-oembed-link',

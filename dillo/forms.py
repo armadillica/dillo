@@ -60,9 +60,19 @@ class CommentForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = dillo.models.profiles.Profile
-        fields = ('name', 'bio', 'location', 'avatar', 'website', 'reel')
+        fields = (
+            'name',
+            'bio',
+            'tags',
+            'country',
+            'city',
+            'avatar',
+            'website',
+            'reel',
+        )
         widgets = {
             'avatar': ImageWidget,
+            'city': forms.Select(),
         }
 
 

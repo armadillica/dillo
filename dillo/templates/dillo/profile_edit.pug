@@ -26,6 +26,7 @@ form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="mul
 | {% block javascript_extra %}
 | {{ block.super }}
 | {% javascript 'vendor_jquery_formset' %}
+| {% javascript 'choices' %}
 script.
 	$('.js-formset-row').formset({
 		addText: 'Add Social Account',
@@ -35,4 +36,24 @@ script.
 		formCssClass: 'profile-edit-links-row',
 		prefix: 'links'
 	});
+
+	let choiceCityElement = document.getElementById('id_city');
+	let choiceCity = new Choices(choiceCityElement, {maxItemCount: 1});
+	choiceCountryElement = document.getElementById('id_country');
+	new Choices(choiceCountryElement);
+	choiceCountryElement.addEventListener(
+		'change',
+		(event) => {
+			let countryCode = event.detail.value;
+			fetch(`/api/cities-in-country/${countryCode}`)
+				.then(response => response.json())
+				.then(data => {
+					console.log(data.cities);
+					choiceCity.setChoices(data.cities, 'value', 'label', true);
+					choiceCity.removeActiveItems();
+				});
+		},
+		false,
+	);
+
 | {% endblock javascript_extra %}

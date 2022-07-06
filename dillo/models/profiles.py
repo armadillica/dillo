@@ -10,6 +10,9 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from taggit.managers import TaggableManager
+from django_countries.fields import CountryField
+
 import dillo.tasks.profile
 from dillo.models.communities import Community
 from dillo.models.mixins import (
@@ -21,6 +24,22 @@ from dillo.models.mixins import (
 from dillo.validators import validate_reel_url
 
 log = logging.getLogger(__name__)
+
+
+class City(models.Model):
+    """Cities of the world.
+
+    Populated in migration 0006.
+    """
+
+    name = models.CharField(max_length=256)
+    name_ascii = models.CharField(max_length=256)
+    lat = models.FloatField(verbose_name='latitude')
+    lng = models.FloatField(verbose_name='longitude')
+    country = models.CharField(max_length=2)
+
+    def __str__(self):
+        return self.name
 
 
 class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
@@ -36,13 +55,22 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         ('tags', 'Tags'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     name = models.CharField(max_length=125)
     bio = models.TextField(max_length=512, blank=True)
     website = models.URLField(blank=True, help_text='Your main website.')
     location = models.CharField(
         max_length=255, blank=True, help_text='Your place in the world. Usually "City, Country"'
     )
+    city = models.CharField(max_length=256, blank=True, null=True)
+    city_ref = models.ForeignKey(
+        City, on_delete=models.CASCADE, related_name='profiles', null=True, blank=True
+    )
+    country = CountryField(null=True, blank=True)
     reel = models.URLField(
         blank=True,
         validators=[validate_reel_url],
@@ -93,6 +121,8 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
 
     # Badges assigned through signals and other activities
     badges = models.ManyToManyField('Badge', related_name='badges', blank=True)
+
+    tags = TaggableManager(blank=True)
 
     @property
     def followers_count(self):
@@ -171,6 +201,9 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
 
         If reel is set, fetch thumbnail_url via micawber and set it as reel_thumbnail.
         """
+        # Look up city in the City table and try to associate it
+        self.city_ref = City.objects.filter(name__iexact=self.city).first()
+
         super().save(*args, **kwargs)
 
         if self.reel == '':

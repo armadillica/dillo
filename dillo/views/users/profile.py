@@ -22,7 +22,7 @@ import dillo.tasks
 import dillo.tasks.storage
 from dillo import forms
 from dillo.models.posts import get_trending_tags, Post
-from dillo.models.profiles import Profile
+from dillo.models.profiles import Profile, City
 from dillo.views.mixins import PostListEmbedView, OgData, UserListEmbedView
 
 log = logging.getLogger(__name__)
@@ -62,7 +62,10 @@ class ProfileDetailView(DetailView):
         image_alt = f"{title} on anima.to"
 
         return OgData(
-            title=title, description=user.profile.bio, image_field=image_field, image_alt=image_alt,
+            title=title,
+            description=user.profile.bio,
+            image_field=image_field,
+            image_alt=image_alt,
         )
 
     def dispatch(self, request, *args, **kwargs):
@@ -110,6 +113,10 @@ class ProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.get_object().country:
+            cities = City.objects.filter(country=self.get_object().country)
+            context['form'].fields['city'].widget.choices = [(c.name, c.name) for c in cities]
+
         if self.request.POST:
             context['links'] = forms.ProfileLinksFormSet(self.request.POST, instance=self.object)
         else:
@@ -149,7 +156,8 @@ class UserFollowersListEmbed(UserListEmbedView):
 
     def get_queryset(self):
         return Follow.objects.filter(
-            content_type=ContentType.objects.get(model='user'), object_id=self.kwargs['user_id'],
+            content_type=ContentType.objects.get(model='user'),
+            object_id=self.kwargs['user_id'],
         ).order_by('started')
 
     def get_users_list(self):
@@ -161,7 +169,8 @@ class UserFollowingListEmbed(UserListEmbedView):
 
     def get_queryset(self):
         return Follow.objects.filter(
-            content_type=ContentType.objects.get(model='user'), user_id=self.kwargs['user_id'],
+            content_type=ContentType.objects.get(model='user'),
+            user_id=self.kwargs['user_id'],
         ).order_by('started')
 
     def get_users_list(self):

@@ -202,7 +202,7 @@ class ProfileBadgesInline(admin.TabularInline):
 
 class ProfileInline(admin.StackedInline):
     model = dillo.models.profiles.Profile
-    readonly_fields = ('created_at', 'updated_at', 'user', 'bookmarks')
+    readonly_fields = ('created_at', 'updated_at', 'user', 'bookmarks', 'city_ref')
     can_delete = False
     exclude = (
         'header_height',
@@ -212,6 +212,10 @@ class ProfileInline(admin.StackedInline):
         'reel_thumbnail_16_9_height',
         'reel_thumbnail_16_9_width',
     )
+    # autocomplete_fields = [
+    #     'city_ref',
+    # ]
+
     inlines = [ProfileLinksInline, ProfileBadgesInline]
 
 

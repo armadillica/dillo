@@ -39,6 +39,7 @@ shortcodes = "2.5"
 webpreview = "^1.6.0"
 django-recaptcha = "^2.0.6"
 youtube_dl = "^2021.12.17"
+django-countries = "^7.3.2"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}

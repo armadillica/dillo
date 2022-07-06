@@ -1,0 +1,10 @@
+| {% for profile in object_list %}
+li.user-list-item
+  h3 {{ profile.name }}
+  p {{ profile.bio }}
+  | {% for badge in profile.badges.all %}
+  img(alt="{{ badge.name }}" src="{{ badge.image.url }}" width="20" height="20")
+  | {% endfor %}
+| {% empty %}
+li No user matches this query. Try something else!
+| {% endfor %}

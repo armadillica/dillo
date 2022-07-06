@@ -1,0 +1,147 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load pipeline %}
+
+| {% block head_extra %}
+title Users World Map
+script(src='//unpkg.com/d3-array')
+script(src='//unpkg.com/d3-scale')
+script(src='//unpkg.com/globe.gl')
+| {% stylesheet 'edit' %}
+| {% javascript 'choices' %}
+
+| {% endblock head_extra %}
+
+| {% block content %}
+
+.search-fields
+  .form-field-container
+    label(for="tag") Tags
+    select#tag.js-choice(name="tag", multiple)
+      | {% for tag in search_facets.tags %}
+      option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
+      | {% endfor %}
+  .form-field-container
+    label(for="badge") Badges
+    select#badge.js-choice(name="badge", multiple)
+      | {% for badge in search_facets.badges %}
+      option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
+      | {% endfor %}
+  .btn(onclick="toggleGlobeVisibility()") Toggle Globe
+
+
+#globe-container
+  #globe
+  h2#selected-city Click on a city to display users
+  #clear-city(style="display:none" onclick="clearCityFilter()") X Clear City Filter
+
+ul#user-list
+| {% endblock content %}
+
+| {% block javascript_extra %}
+| {{ locations|json_script:'locations' }}
+script.
+
+  function fetchUsers(url) {
+    url.pathname = '/api/users/'
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('user-list').innerHTML = data;
+        const historyUrl = new URL(window.location);
+        historyUrl.search = url.search;
+        window.history.pushState({}, '', historyUrl);
+      });
+  }
+
+  function fetchUsersGlobe(url, globe) {
+    url.pathname = '/api/users-globe'
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        globe.pointsData(data.locations);
+      });
+  }
+
+  function fetchUsersByCity(cityId, cityName) {
+    fetch(`/api/users/by-city/${cityId}`)
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('user-list').innerHTML = data;
+        document.getElementById('selected-city').innerText = cityName;
+        document.getElementById('clear-city').style.display = "block";
+    });
+  }
+
+  function updateUrlParams(choices, urlParams) {
+    for (let choice of choices) {
+      let key = choice.passedElement.element.id;
+      urlParams.delete(key);
+      for (let v of choice.getValue(true)) {
+        urlParams.append(key, v);
+      }
+    }
+  }
+
+  function setupGlobe() {
+    const elem = document.getElementById('globe');
+    const globe = Globe()
+      .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+      .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+      .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      .showAtmosphere(false) // globe has no atmosphere
+      .width(elem.offsetWidth)
+      .height(500)
+      // .pointsData(locations)
+      .pointColor(() => '#FFFFFF')
+      .pointLabel('cityName')
+      .pointAltitude(d => d.count / 100)
+      .onPointClick(d => fetchUsersByCity(d.cityId, d.cityName))
+      (elem);
+    globe.pointOfView({lat: 45, lng: 5, altitude: 0.5});
+    return globe;
+  }
+
+  let globe = setupGlobe();
+
+  function toggleGlobeVisibility() {
+    let x = document.getElementById("globe-container");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+  let url = new URL(window.location);
+  const urlParams = new URLSearchParams();
+  let choices = [];
+
+  const choiceElements = document.getElementsByClassName('js-choice');
+  for (let choiceElement of choiceElements) {
+    let choice = new Choices(choiceElement);
+    choices.push(choice);
+    choiceElement.addEventListener(
+      'change',
+      function (event) {
+        updateUrlParams(choices, urlParams);
+        url.search = urlParams.toString();
+        fetchUsers(url);
+        fetchUsersGlobe(url, globe)
+      },
+      false,
+    );
+  }
+
+  // On page load fetch all users
+  fetchUsers(url);
+  fetchUsersGlobe(url, globe);
+
+  function clearCityFilter() {
+    fetchUsers(url);
+    document.getElementById('clear-city').style.display = "none";
+    document.getElementById('selected-city').innerText = "Click on a city to display users";
+
+  }
+
+
+| {% endblock javascript_extra %}
