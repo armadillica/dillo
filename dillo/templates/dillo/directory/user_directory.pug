@@ -135,9 +135,8 @@ script.
 
   for (let choiceElement of choiceElements) {
     let choice = new Choices(choiceElement, {
-      placeholder: true,
-      placeholderValue: 'test',
-      searchPlaceholderValue: 'test search'
+      placeholderValue: `Select ${choiceElement.name}`,
+      removeItemButton: true
     });
 
     choices.push(choice);
