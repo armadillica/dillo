@@ -40,7 +40,7 @@ class UrlParams:
 
     def __post_init__(self):
         self.values_to_ints('badges')
-        if self.sort not in {'-likes_count', '-posts_count'}:
+        if self.sort not in {'-likes_count', '-posts_count', '-views_count'}:
             self.sort = '-likes_count'
 
 
