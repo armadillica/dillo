@@ -112,6 +112,9 @@ script.
       .onPointClick(d => fetchUsersByCity(d.cityId, d.cityName))
       (elem);
     globe.pointOfView({lat: 45, lng: 5, altitude: 3});
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.15;
+
     return globe;
   }
 
