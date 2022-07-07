@@ -1,3 +1,6 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+
 | {% for profile in object_list %}
 li
   a.dir-user-item(href="{% url 'profile-detail' profile.user.username %}")
@@ -11,6 +14,15 @@ li
             alt="{{ badge.name }}",
             src="{{ badge.image.url }}")
         | {% endfor %}
+
+      .dir-user-item-stats
+        | {% if profile.views_count > 0 %}
+        span.stat #[i.i-eye] {{ profile.views_count | compact_number }}
+        | {% endif %}
+
+        | {% if profile.likes_count > 0 %}
+        span.stat #[i.i-heart]{{ profile.likes_count }}
+        | {% endif %}
 
     | {% if profile.bio %}
     .dir-user-item-bio {{ profile.bio }}
