@@ -28,6 +28,21 @@ class UrlParams:
     badges: Optional[List]
     tags: Optional[List]
 
+    def values_to_ints(self, prop_name):
+        int_ids = []
+        for f in getattr(self, prop_name):
+            try:
+                f = int(f)
+            except ValueError:
+                continue
+            int_ids.append(f)
+        setattr(self, prop_name, int_ids)
+
+    def __post_init__(self):
+        self.values_to_ints('badges')
+        if self.sort not in {'-likes_count', '-posts_count'}:
+            self.sort = '-likes_count'
+
 
 @dataclass
 class SearchFacets:
@@ -80,16 +95,16 @@ class FilterMixin(TemplateView):
         self.url_params = UrlParams(
             tags=get_qs_list('tag'),
             badges=get_qs_list('badge'),
-            sort=self.request.GET.get('sort', 'likes'),
+            sort=self.request.GET.get('sort', '-likes_count'),
         )
 
         return super().dispatch(request, *args, **kwargs)
 
     def _facet_badges(self):
         badges = []
-        for f in Badge.objects.all():
-            s = SelectItem(value=f.id, label=f.name)
-            if f.id in self.url_params.badges:
+        for badge in Badge.objects.all():
+            s = SelectItem(value=badge.id, label=badge.name)
+            if badge.id in self.url_params.badges:
                 s.is_selected = True
             badges.append(s)
         return badges
@@ -113,6 +128,7 @@ class FilterMixin(TemplateView):
         context = super().get_context_data(**kwargs)
         context['url_params'] = self.url_params
         context['search_facets'] = self.search_facets()
+        context['sort'] = self.url_params.sort
         return context
 
 
@@ -124,7 +140,12 @@ class ApiUserListView(FilterMixin):
     template_name = 'dillo/directory/user_list_embed.pug'
 
     def get_queryset(self):
-        qs = Profile.objects.order_by('-likes_count').prefetch_related('badges')
+        qs = (
+            Profile.objects.prefetch_related('badges')
+            .prefetch_related('user__post_set')
+            .annotate(posts_count=Count('user__post'))
+            .order_by(self.url_params.sort)
+        )
         if self.url_params.tags:
             qs = qs.filter(tags__name__in=self.url_params.tags).distinct()
         if self.url_params.badges:
