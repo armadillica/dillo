@@ -16,28 +16,27 @@ script(src='//unpkg.com/globe.gl')
 .row.dir-container
   .col.dir-users
     .dir-users-header
-      .form-field-container
-        label(for="tag") Tags
-        select#tag.js-choice(name="tag", multiple)
-          | {% for tag in search_facets.tags %}
-          option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
-          | {% endfor %}
+      .dir-users-header-filters
+        .form-field-container
+          select#tag.js-choice(name="tag", multiple)
+            | {% for tag in search_facets.tags %}
+            option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
+            | {% endfor %}
 
-      .form-field-container
-        label(for="badge") Badges
-        select#badge.js-choice(name="badge", multiple)
-          | {% for badge in search_facets.badges %}
-          option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
-          | {% endfor %}
+        .form-field-container
+          select#badge.js-choice(name="badge", multiple)
+            | {% for badge in search_facets.badges %}
+            option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
+            | {% endfor %}
 
-      div
-        .btn(
-          onclick="toggleGlobeVisibility()",
-          title="Toggle Globe")
-          span
-            i.i-globe
+        div
+          .btn(
+            onclick="toggleGlobeVisibility()",
+            title="Toggle Globe")
+            span
+              i.i-globe
 
-      h2#selected-city Click on a city to filter
+      h2#selected-city
 
       .btn#clear-city(
         style="display:none",
