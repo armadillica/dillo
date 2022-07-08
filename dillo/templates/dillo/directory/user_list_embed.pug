@@ -17,11 +17,15 @@ li
 
       .dir-user-item-stats
         | {% if profile.views_count > 0 %}
-        span.stat #[i.i-eye] {{ profile.views_count | compact_number }}
+        span #[i.i-eye] {{ profile.views_count | compact_number }}
         | {% endif %}
 
         | {% if profile.likes_count > 0 %}
-        span.stat #[i.i-heart]{{ profile.likes_count }}
+        span #[i.i-heart]{{ profile.likes_count }}
+        | {% endif %}
+
+        | {% if profile.posts_count > 0 %}
+        span #[i.i-post]{{ profile.posts_count }}
         | {% endif %}
 
     | {% if profile.bio %}

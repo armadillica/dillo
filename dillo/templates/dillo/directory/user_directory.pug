@@ -13,41 +13,42 @@ script(src='//unpkg.com/globe.gl')
 
 | {% block content %}
 
+.dir-users-header
+  .dir-users-header-filters
+    .form-field-container
+      select#badge.js-choice.js-choice-multi(name="badge", multiple)
+        | {% for badge in search_facets.badges %}
+        option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
+        | {% endfor %}
+
+    .form-field-container
+      select#tag.js-choice.js-choice-multi(name="tag", multiple)
+        | {% for tag in search_facets.tags %}
+        option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
+        | {% endfor %}
+
+    .form-field-container.sort-by
+      select#sort(name="sort")
+        option(selected=(sort == '-likes_count') value="-likes_count") Likes Count
+        option(selected=(sort == '-posts_count') value="-posts_count") Posts Count
+        option(selected=(sort == '-views_count') value="-views_count") Views Count
+
+    div
+      .btn(
+        title="Toggle Globe"
+        onclick="toggleGlobeVisibility()")
+        span
+          i.i-globe
+
+  .dir-city-title
+    h2#selected-city
+
+    .btn#clear-city(
+      style="display:none",
+      onclick="clearCityFilter()")
+      span Clear Filter
 .row.dir-container
   .col.dir-users
-    .dir-users-header
-      .dir-users-header-filters
-        .form-field-container
-          select#tag.js-choice.js-choice-multi(name="tag", multiple)
-            | {% for tag in search_facets.tags %}
-            option(selected=tag.is_selected value="{{ tag.value }}") {{ tag.label }}
-            | {% endfor %}
-
-        .form-field-container
-          select#badge.js-choice.js-choice-multi(name="badge", multiple)
-            | {% for badge in search_facets.badges %}
-            option(selected=badge.is_selected value="{{ badge.value }}") {{ badge.label }}
-            | {% endfor %}
-
-        .form-field-container
-          select#sort(name="sort")
-            option(selected=(sort == '-likes_count') value="-likes_count") Likes Count
-            option(selected=(sort == '-posts_count') value="-posts_count") Posts Count
-            option(selected=(sort == '-views_count') value="-views_count") Views Count
-
-        div
-          .btn(
-            title="Toggle Globe"
-            onclick="toggleGlobeVisibility()")
-            span
-              i.i-globe
-
-      h2#selected-city
-
-      .btn#clear-city(
-        style="display:none",
-        onclick="clearCityFilter()")
-        span Clear Filter
 
     ul.dir-users-list#user-list
 
