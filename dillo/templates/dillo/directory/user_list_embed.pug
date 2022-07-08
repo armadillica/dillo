@@ -5,15 +5,16 @@
 li
   a.dir-user-item(href="{% url 'profile-detail' profile.user.username %}")
     .dir-user-item-header
-      h3 {% firstof profile.name profile.user.username %}
+      .dir-user-title
+        h3 {% firstof profile.name profile.user.username %}
+        .badges-row
+          | {% for badge in profile.badges.all %}
+          .badge.is-user(title="{{ badge.name }}")
+            img(
+              alt="{{ badge.name }}",
+              src="{{ badge.image.url }}")
+          | {% endfor %}
 
-      .badges-row
-        | {% for badge in profile.badges.all %}
-        .badge.is-user(title="{{ badge.name }}")
-          img(
-            alt="{{ badge.name }}",
-            src="{{ badge.image.url }}")
-        | {% endfor %}
 
       .dir-user-item-stats
         | {% if profile.views_count > 0 %}
@@ -27,6 +28,8 @@ li
         | {% if profile.posts_count > 0 %}
         span #[i.i-post]{{ profile.posts_count }}
         | {% endif %}
+
+    .dir-user-subtitle {% firstof profile.location profile.country %}
 
     | {% if profile.bio %}
     .dir-user-item-bio {{ profile.bio }}
