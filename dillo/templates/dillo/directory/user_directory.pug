@@ -59,7 +59,6 @@ script(src='//unpkg.com/globe.gl')
   | {% endblock content %}
 
 | {% block javascript_extra %}
-| {{ locations|json_script:'locations' }}
 script.
 
   function fetchUsers(url) {
