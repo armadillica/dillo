@@ -59,6 +59,19 @@ script(src='//unpkg.com/globe.gl')
   | {% endblock content %}
 
 | {% block javascript_extra %}
+
+| {% block js_data %}
+| {{ block.super }}
+| {% endblock js_data %}
+
+| {% block vue_components %}
+| {{ block.super }}
+| {% endblock vue_components %}
+
+| {% block vue_script %}
+| {% javascript 'vue_generic' %}
+| {% endblock vue_script %}
+
 script.
 
   function fetchUsers(url) {
