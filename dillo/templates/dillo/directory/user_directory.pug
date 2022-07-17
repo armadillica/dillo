@@ -41,10 +41,10 @@ script(src='//unpkg.com/globe.gl')
           i.i-globe
 
   .dir-city-title
-    h2#selected-city
+    h2#selected-city {% if search_facets.cities %} {{ search_facets.cities.0 }} {% endif %}
 
     .btn#clear-city(
-      style="display:none",
+      style="{% if not search_facets.cities %}display:none{% endif %}",
       onclick="clearCityFilter()")
       span Clear Filter
 .row.dir-container
@@ -95,14 +95,13 @@ script.
       });
   }
 
-  function fetchUsersByCity(cityId, cityName) {
-    fetch(`/api/users/by-city/${cityId}`)
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('user-list').innerHTML = data;
-        document.getElementById('selected-city').innerText = cityName;
-        document.getElementById('clear-city').style.display = "flex";
-    });
+  function fetchUsersByCity(cityId, cityName, urlParams) {
+    urlParams.delete('city');
+    urlParams.append('city', cityId);
+    url.search = urlParams.toString();
+    fetchUsers(url);
+    document.getElementById('selected-city').innerText = cityName;
+    document.getElementById('clear-city').style.display = "flex";
   }
 
   function updateUrlParams(choices, urlParams) {
@@ -115,11 +114,15 @@ script.
         }
       } else {
         // Passing the whole value of the select, if single select.
-        // Otherwise each char is iterated over
+        // Otherwise, each char is iterated over
         urlParams.append(key, choice.getValue(true));
       }
     }
   }
+
+  let url = new URL(window.location);
+  const urlParams = new URLSearchParams();
+  let choices = [];
 
   function setupGlobe() {
     const elem = document.getElementById('globe');
@@ -134,11 +137,11 @@ script.
       .pointColor(() => '#33CCB5')
       .pointLabel('cityName')
       .pointAltitude(d => d.count / 100)
-      .onPointClick(d => fetchUsersByCity(d.cityId, d.cityName))
+      .onPointClick(d => fetchUsersByCity(d.cityId, d.cityName, urlParams))
       (elem);
     globe.pointOfView({lat: 45, lng: 5, altitude: 3});
     globe.controls().autoRotate = true;
-    globe.controls().autoRotateSpeed = 0.15;
+    globe.controls().autoRotateSpeed = 0.1;
 
     return globe;
   }
@@ -154,9 +157,6 @@ script.
     }
   }
 
-  let url = new URL(window.location);
-  const urlParams = new URLSearchParams();
-  let choices = [];
 
   const choiceElements = document.getElementsByClassName('js-choice-multi');
 
@@ -203,6 +203,9 @@ script.
     fetchUsers(url);
     document.getElementById('clear-city').style.display = "none";
     document.getElementById('selected-city').innerText = "Click on a city to display users";
+    urlParams.delete('city');
+    url.search = urlParams.toString();
+    fetchUsers(url);
 
   }
 

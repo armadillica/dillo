@@ -27,6 +27,7 @@ class UrlParams:
     sort: str
     badges: Optional[List]
     tags: Optional[List]
+    cities: Optional[List]
 
     def values_to_ints(self, prop_name):
         int_ids = []
@@ -40,6 +41,7 @@ class UrlParams:
 
     def __post_init__(self):
         self.values_to_ints('badges')
+        self.values_to_ints('cities')
         if self.sort not in {'-likes_count', '-posts_count', '-views_count'}:
             self.sort = '-likes_count'
 
@@ -48,6 +50,7 @@ class UrlParams:
 class SearchFacets:
     badges: Optional[List[SelectItem]]
     tags: Optional[List[SelectItem]]
+    cities: Optional[str]
 
 
 def globe_view(request):
@@ -72,11 +75,6 @@ def globe_view(request):
     return render(request, 'dillo/directory/user_globe.pug', {'locations': locations})
 
 
-def api_users_by_city(request, city_id):
-    profiles = Profile.objects.filter(city_ref_id=city_id).prefetch_related('badges')
-    return render(request, 'dillo/directory/user_list_embed.pug', {'object_list': profiles})
-
-
 def api_city_in_country(request, country_code):
     cities = City.objects.filter(country=country_code.upper())
     return JsonResponse({'cities': [{'value': city.name, 'label': city.name} for city in cities]})
@@ -95,6 +93,7 @@ class FilterMixin(TemplateView):
         self.url_params = UrlParams(
             tags=get_qs_list('tag'),
             badges=get_qs_list('badge'),
+            cities=get_qs_list('city'),
             sort=self.request.GET.get('sort', '-likes_count'),
         )
 
@@ -118,10 +117,14 @@ class FilterMixin(TemplateView):
             tags_list.append(s)
         return tags_list
 
+    def _facet_cities(self):
+        return City.objects.filter(id__in=self.url_params.cities)
+
     def search_facets(self):
         return SearchFacets(
             badges=self._facet_badges(),
             tags=self._facet_tags(),
+            cities=self._facet_cities(),
         )
 
     def get_context_data(self, **kwargs):
@@ -150,6 +153,8 @@ class ApiUserListView(FilterMixin):
             qs = qs.filter(tags__name__in=self.url_params.tags).distinct()
         if self.url_params.badges:
             qs = qs.filter(badges__in=self.url_params.badges).distinct()
+        if self.url_params.cities:
+            qs = qs.filter(city_ref_id__in=self.url_params.cities).distinct()
         return qs
 
     def get_context_data(self, **kwargs):

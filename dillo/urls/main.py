@@ -433,11 +433,6 @@ urlpatterns += [
         name='user-directory',
     ),
     path(
-        'api/users/by-city/<int:city_id>',
-        dillo.views.users.directory.api_users_by_city,
-        name='api-user-list-by-city',
-    ),
-    path(
         'api/users/',
         dillo.views.users.directory.ApiUserListView.as_view(),
         name='api-user-list',
