@@ -39,6 +39,7 @@
 | {% endblock %}
 
 | {% block javascript_extra %}
+| {% javascript 'choices' %}
 script.
 	//- Show a preview of the avatar when a file is picked.
 	function previewImage(input) {
@@ -60,6 +61,34 @@ script.
 		fileInput.onchange = function(){
 			previewImage(this);
 		};
+	}
+
+	choiceTagElement = document.getElementById('id_tags');
+	if (choiceTagElement) {
+		new Choices(choiceTagElement);
+	}
+
+	let choiceCityElement = document.getElementById('id_city');
+	let choiceCity = null;
+	if (choiceCityElement) {
+		choiceCity = new Choices(choiceCityElement, {maxItemCount: 1});
+	}
+	choiceCountryElement = document.getElementById('id_country');
+	if (choiceCityElement) {
+		new Choices(choiceCountryElement);
+		choiceCountryElement.addEventListener(
+			'change',
+			(event) => {
+				let countryCode = event.detail.value;
+				fetch(`/api/cities-in-country/${countryCode}`)
+								.then(response => response.json())
+								.then(data => {
+									choiceCity.setChoices(data.cities, 'value', 'label', true);
+									choiceCity.removeActiveItems();
+								});
+			},
+			false,
+		);
 	}
 
 | {% endblock javascript_extra %}
