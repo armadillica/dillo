@@ -29,7 +29,7 @@ li
         span #[i.i-post]{{ profile.posts_count }}
         | {% endif %}
 
-    .dir-user-subtitle {% firstof profile.location profile.country %}
+    .dir-user-subtitle {{ profile.location_label }}
 
     | {% if profile.bio %}
     .dir-user-item-bio {{ profile.bio }}

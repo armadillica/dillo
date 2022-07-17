@@ -196,6 +196,15 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
             badges.append({'name': badge.name, 'slug': badge.slug, 'urlImage': badge.image.url})
         return badges
 
+    @property
+    def location_label(self):
+        if self.city and self.country:
+            return f"{self.city}, {self.country}"
+        elif self.country:
+            return self.country.name
+        else:
+            return ''
+
     def save(self, *args, **kwargs):
         """Extend save() with reel thumbnail fetching.
 
