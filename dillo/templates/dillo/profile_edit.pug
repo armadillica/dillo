@@ -37,6 +37,11 @@ script.
 		prefix: 'links'
 	});
 
+	choiceTagElement = document.getElementById('id_tags');
+	if (choiceTagElement) {
+		new Choices(choiceTagElement);
+	}
+
 	let choiceCityElement = document.getElementById('id_city');
 	let choiceCity = new Choices(choiceCityElement, {maxItemCount: 1});
 	choiceCountryElement = document.getElementById('id_country');
