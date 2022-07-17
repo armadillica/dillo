@@ -48,7 +48,6 @@ script.
 			fetch(`/api/cities-in-country/${countryCode}`)
 				.then(response => response.json())
 				.then(data => {
-					console.log(data.cities);
 					choiceCity.setChoices(data.cities, 'value', 'label', true);
 					choiceCity.removeActiveItems();
 				});
