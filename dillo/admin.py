@@ -264,6 +264,7 @@ class UserAdmin(BaseUserAdmin):
         'email',
         'get_is_verified',
         'last_login',
+        'date_joined',
         'get_likes_count',
         'get_posts_count',
     )
