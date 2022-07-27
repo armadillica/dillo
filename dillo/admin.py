@@ -263,14 +263,16 @@ class UserAdmin(BaseUserAdmin):
         'get_name',
         'email',
         'get_is_verified',
-        'last_login',
-        'date_joined',
+        'get_bio',
+        'get_website',
         'get_likes_count',
         'get_posts_count',
+        'date_joined',
+        'last_login',
     )
     readonly_fields = ('first_name', 'last_name')
     list_filter = ('is_superuser', 'is_active', EmailIsVerifiedListFilter)
-    ordering = ('-last_login',)
+    ordering = ('-date_joined',)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -291,12 +293,20 @@ class UserAdmin(BaseUserAdmin):
     def get_posts_count(self, instance: User):
         return instance.post_set.all().count()
 
+    def get_website(self, instance: User):
+        return mark_safe('<a href="{0}" target="_blank">{0}</a>'.format(instance.profile.website))
+
+    def get_bio(self, instance: User):
+        return instance.profile.bio[:80]
+
     get_name.short_description = 'Name'
-    get_is_verified.short_description = 'Is Verified'
+    get_website.short_description = 'Website'
+    get_bio.short_description = 'Bio'
+    get_is_verified.short_description = 'Verified'
     get_is_verified.boolean = True
-    get_likes_count.short_description = 'Likes Count'
+    get_likes_count.short_description = 'Likes'
     get_likes_count.admin_order_field = 'profile__likes_count'
-    get_posts_count.short_description = 'Posts Count'
+    get_posts_count.short_description = 'Posts'
     get_posts_count.admin_order_field = '_posts_count'
 
 
