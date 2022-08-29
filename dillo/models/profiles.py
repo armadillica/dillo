@@ -274,7 +274,7 @@ class EmailNotificationsSettings(ChangeAwareness, models.Model):
         'comments.',
     )
     is_enabled_for_newsletter = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name='Receive hand-crafted newsletter.',
         help_text='Enable if you want to receive updates about the platform and the community. '
         'Follow the journey with us!',
