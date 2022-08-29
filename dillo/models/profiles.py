@@ -277,7 +277,7 @@ class EmailNotificationsSettings(ChangeAwareness, models.Model):
         default=True,
         verbose_name='Receive hand-crafted newsletter.',
         help_text='Enable if you want to receive updates about the platform and the community. '
-        'Follow the Animato journey with us!',
+        'Follow the journey with us!',
     )
 
     def __str__(self):
