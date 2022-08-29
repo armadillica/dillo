@@ -230,3 +230,5 @@ SITE_DESCRIPTION = ''
 
 # Supported profile setup stages
 PROFILE_SETUP_STAGES = ['avatar', 'bio', 'links', 'tags']
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
