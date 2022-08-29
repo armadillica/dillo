@@ -47,7 +47,12 @@ def update_mailing_list_subscription(user_email: str, is_subscribed: typing.Opti
         return
 
     user = EmailAddress.objects.get(verified=True, email=user_email).user
-    if not is_subscribed:
+    if (
+        is_subscribed is False
+        and user.email_notifications_settings.is_enabled_for_newsletter is False
+    ):
+        return
+    elif not is_subscribed:
         is_subscribed = user.email_notifications_settings.is_enabled_for_newsletter
 
     api_url_base = f"https://api.mailgun.net/v3"
