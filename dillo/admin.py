@@ -24,6 +24,7 @@ import dillo.models.communities
 import dillo.models.software
 import dillo.models.static_assets
 import dillo.models.jobs
+from dillo.moderation import deactivate_user_and_remove_content
 
 log = logging.getLogger(__name__)
 
@@ -262,6 +263,7 @@ class UserAdmin(BaseUserAdmin):
         'username',
         'get_name',
         'email',
+        'is_active',
         'get_is_verified',
         'get_bio',
         'get_website',
@@ -273,6 +275,24 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('first_name', 'last_name')
     list_filter = ('is_superuser', 'is_active', EmailIsVerifiedListFilter)
     ordering = ('-date_joined',)
+    actions = ['deactivate_users_and_remove_content']
+
+    def deactivate_users_and_remove_content(self, request, queryset):
+        deactivated_users = 0
+        # For each post, process all videos attached if available
+        for u in queryset:
+            deactivate_user_and_remove_content(u)
+            deactivated_users += 1
+        rows_updated = deactivated_users
+        if deactivated_users == 0:
+            message_bit = "No user was"
+        elif deactivated_users == 1:
+            message_bit = "1 user was"
+        else:
+            message_bit = "%s user were" % rows_updated
+        self.message_user(request, "%s deactivated." % message_bit)
+
+    deactivate_users_and_remove_content.short_description = "Deactivate and remove content"
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
