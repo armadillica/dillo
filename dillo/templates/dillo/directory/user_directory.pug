@@ -137,6 +137,7 @@ script.
       .pointColor(() => '#33CCB5')
       .pointLabel('cityName')
       .pointAltitude(d => d.count / 100)
+      .onPointHover((point, prevPoint) => {globe.controls().autoRotate = !point;})
       .onPointClick(d => fetchUsersByCity(d.cityId, d.cityName, urlParams))
       (elem);
     globe.pointOfView({lat: 45, lng: 5, altitude: 3});
