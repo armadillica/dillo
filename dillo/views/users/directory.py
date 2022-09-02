@@ -143,7 +143,8 @@ class ApiUserListView(FilterMixin):
 
     def get_queryset(self):
         qs = (
-            Profile.objects.prefetch_related('badges')
+            Profile.objects.filter(user__is_active=True)
+            .prefetch_related('badges')
             .prefetch_related('user__post_set')
             .annotate(posts_count=Count('user__post'))
             .order_by(self.url_params.sort)
@@ -168,7 +169,8 @@ class ApiUserGlobeView(FilterMixin):
     def get(self, request, *args, **kwargs):
         locations = []
         qs = (
-            Profile.objects.filter(city_ref__isnull=False)
+            Profile.objects.filter(user__is_active=True)
+            .filter(city_ref__isnull=False)
             .order_by('-likes_count')
             .prefetch_related('city_ref')
             .values('city_ref_id', 'city_ref__lat', 'city_ref__lng', 'city_ref__name')
