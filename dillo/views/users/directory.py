@@ -2,12 +2,11 @@ import logging
 from dataclasses import dataclass
 from typing import Optional, List
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
 
 
 from dillo.models.profiles import City, Profile, Badge
