@@ -18,6 +18,7 @@ def deactivate_user_and_remove_content(user: User):
     state, to prevent new sign-ups."""
 
     user_copy = copy.deepcopy(user)
+    profile_copy = copy.deepcopy(user.profile)
     account_email_copy = list(EmailAddress.objects.filter(user=user))
     account_social_copy = list(SocialAccount.objects.filter(user=user))
     user.delete()
@@ -29,6 +30,8 @@ def deactivate_user_and_remove_content(user: User):
         date_joined=user_copy.date_joined,
         is_active=False,
     )
+    restored_user.profile.ip_address = profile_copy.ip_address
+    restored_user.profile.save()
 
     for e in account_email_copy:
         EmailAddress.objects.create(user=restored_user, email=e.email)

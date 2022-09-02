@@ -16,6 +16,8 @@ class ProfileModelTest(TestCase):
 
         self.username = 'testuser'
         self.user: User = UserFactory(username=self.username)
+        self.user.profile.ip_address = '127.0.0.1'
+        self.user.profile.save()
 
     def test_moderation_delete_user(self):
         deleted_user_id = self.user.id
@@ -24,6 +26,7 @@ class ProfileModelTest(TestCase):
 
         self.assertFalse(inactive_user.id == deleted_user_id)
         self.assertFalse(inactive_user.is_active)
+        self.assertEqual(inactive_user.profile.ip_address, '127.0.0.1')
 
     # TODO: test for more data:
     #   - Posts, comments, likes
