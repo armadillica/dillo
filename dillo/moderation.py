@@ -4,6 +4,7 @@ import logging
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.models import User
+from django.http.response import Http404
 
 log = logging.getLogger(__name__)
 
@@ -43,3 +44,13 @@ def deactivate_user_and_remove_content(user: User):
         )
 
     log.debug('Restored user in inactive state')
+
+
+def check_should_content_be_visible(item, requesting_user: User):
+    """Check if the current Item should be visible for the requesting_user."""
+    if requesting_user.is_superuser:
+        return
+    if requesting_user.groups.filter(name='moderators').exists():
+        return
+    if item.status != 'published' and item.user != requesting_user:
+        raise Http404
