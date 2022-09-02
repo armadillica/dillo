@@ -269,6 +269,7 @@ class UserAdmin(BaseUserAdmin):
         'get_website',
         'get_likes_count',
         'get_posts_count',
+        'get_ip_address',
         'date_joined',
         'last_login',
     )
@@ -319,9 +320,18 @@ class UserAdmin(BaseUserAdmin):
     def get_bio(self, instance: User):
         return instance.profile.bio[:80]
 
+    def get_ip_address(self, instance: User):
+        ip_address = instance.profile.ip_address
+        if ip_address:
+            url = 'https://iplocation.io/ip/'
+            return mark_safe(f'<a href="{url}{ip_address}" target="_blank">{ip_address}</a>')
+        else:
+            return '-'
+
     get_name.short_description = 'Name'
     get_website.short_description = 'Website'
     get_bio.short_description = 'Bio'
+    get_ip_address.short_description = 'IP Address'
     get_is_verified.short_description = 'Verified'
     get_is_verified.boolean = True
     get_likes_count.short_description = 'Likes'

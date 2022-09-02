@@ -9,6 +9,7 @@ from actstream.actions import follow
 from allauth.socialaccount.models import SocialAccount
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.auth.signals import user_logged_in
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_save, post_delete, pre_delete
@@ -329,3 +330,14 @@ def user_pre_delete(sender, instance: User, **kwargs):
         auth=('api', settings.ANYMAIL['MAILGUN_API_KEY']),
     )
     log.info("Deleted user %i from mailing list" % instance.id)
+
+
+@receiver(user_logged_in)
+def on_logged_in_save_ip(sender, request, user: User, **kwargs):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    user.profile.ip_address = ip
+    user.profile.save()

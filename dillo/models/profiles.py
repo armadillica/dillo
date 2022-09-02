@@ -116,6 +116,8 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
     # is atomically incremented based on the ITEM_HITS_FACTOR
     views_count = models.PositiveIntegerField(default=0)
 
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+
     # Posts that have been added by the user to the "Bookmarks" list
     bookmarks = models.ManyToManyField('Post', related_name='bookmarks')
 
