@@ -3,16 +3,15 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
-from django.core.exceptions import FieldError
 from django.db import models
 from taggit.managers import TaggableManager
 
-from dillo.models.mixins import CreatedUpdatedMixin, LikesMixin, MentionsMixin
+from dillo.models.mixins import CreatedUpdatedMixin, LikesMixin, MentionsMixin, SpamDetectMixin
 
 log = logging.getLogger(__name__)
 
 
-class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
+class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, SpamDetectMixin, models.Model):
     """A comment to an Entity or a reply to a Comment."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -24,6 +23,8 @@ class Comment(CreatedUpdatedMixin, LikesMixin, MentionsMixin, models.Model):
     content = models.TextField(max_length=1024)
     slug = models.SlugField(blank=True)
     tags = TaggableManager()
+
+    spam_detect_field_names = ['content']
 
     @property
     def is_edited(self):

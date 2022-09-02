@@ -26,7 +26,8 @@ class CommentsListView(ListView):
     def get_queryset(self):
         return (
             Comment.objects.filter(
-                post__hash_id=self.kwargs['hash_id'], parent_comment_id__isnull=True,
+                post__hash_id=self.kwargs['hash_id'],
+                parent_comment_id__isnull=True,
             )
             .prefetch_related('likes')
             .annotate(Count('likes'))
@@ -160,6 +161,10 @@ def comment_create(request):
         entity=entity,
         parent_comment_id=form.cleaned_data['parent_comment_id'],
     )
+
+    if comment.has_spam:
+        comment.delete()
+        return JsonResponse({'error': 'Comment is not allowed.'}, status=422)
 
     return JsonResponse(
         {

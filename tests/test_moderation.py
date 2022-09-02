@@ -1,8 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from dillo.tests.factories.users import UserFactory
+
+import dillo.models.posts
+from dillo.models.moderation import SpamWord
+from dillo.models.posts import Post
 
 from dillo.moderation import deactivate_user_and_remove_content
+from dillo.tests.factories.users import UserFactory
+from dillo.tests.factories.posts import PostFactory
 
 
 class ProfileModelTest(TestCase):
@@ -23,3 +28,23 @@ class ProfileModelTest(TestCase):
     # TODO: test for more data:
     #   - Posts, comments, likes
     #   - SocialAccount
+
+
+class DetectSpamWords(TestCase):
+    def test_spam_words(self) -> None:
+        for bw in {'bad', 'very bad', 'bad word'}:
+            SpamWord.objects.create(word=bw)
+        p: Post = PostFactory(title='Looking for #animato')
+        self.assertFalse(p.has_spam)
+
+        p: Post = PostFactory(title='Looking for bad')
+        self.assertTrue(p.has_spam)
+
+        p: Post = PostFactory(title='Looking for badthings')
+        self.assertTrue(p.has_spam)
+
+        p: Post = PostFactory(title='Looking for very badthings')
+        self.assertTrue(p.has_spam)
+
+        p: Post = PostFactory(title='Looking for BAD')
+        self.assertTrue(p.has_spam)

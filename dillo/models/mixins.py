@@ -16,6 +16,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from dillo.models.moderation import SpamWord
+
 
 log = logging.getLogger(__name__)
 hashids = Hashids(min_length=4)
@@ -280,7 +282,11 @@ class Downloadable(models.Model):
         abstract = True
 
     downloadable = models.ForeignKey(
-        'dillo.StaticAsset', on_delete=models.CASCADE, related_name='+', blank=True, null=True,
+        'dillo.StaticAsset',
+        on_delete=models.CASCADE,
+        related_name='+',
+        blank=True,
+        null=True,
     )
 
     def check_downloadable_signed_url(self, url) -> bool:
@@ -325,3 +331,23 @@ class Downloadable(models.Model):
         return '{}?{}'.format(
             url, urllib.parse.urlencode({'signature': signature, 'expires': expires})
         )
+
+
+class SpamDetectMixin:
+    spam_detect_field_names = ['title', 'content']
+
+    def field_has_spam(self, field_name):
+        f = getattr(self, field_name)
+        for w in SpamWord.objects.all():
+            if not f:
+                continue
+            if w.word.lower() in f.lower():
+                return True
+        return False
+
+    @property
+    def has_spam(self):
+        for f in self.spam_detect_field_names:
+            if self.field_has_spam(f):
+                return True
+        return False

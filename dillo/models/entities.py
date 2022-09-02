@@ -11,6 +11,7 @@ from dillo.models.mixins import (
     CreatedUpdatedMixin,
     HashIdGenerationMixin,
     get_upload_to_hashed_path,
+    SpamDetectMixin,
 )
 
 from dillo.templatetags.dillo_filters import compact_naturaltime
@@ -21,7 +22,7 @@ from dillo.models.sorting import compute_hotness
 log = logging.getLogger(__name__)
 
 
-class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
+class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, SpamDetectMixin, models.Model):
     class Meta:
         abstract = True
 
@@ -34,8 +35,8 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
         ('draft', 'Draft'),
         ('processing', 'Processing'),
         ('published', 'Published'),
+        ('review', 'Review'),
     )
-
     hash_id = models.CharField(max_length=20, blank=True)
     published_at = models.DateTimeField('date published', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -65,9 +66,13 @@ class Entity(HashIdGenerationMixin, CreatedUpdatedMixin, models.Model):
         self.save()
         return self.hotness
 
+    def request_review(self):
+        self.status = 'review'
+        self.save()
+
     def publish(self):
-        """If the Entity is in 'draft', kick-off the publishing pipeline."""
-        if self.status != 'draft':
+        """If the Entity is in 'draft' or 'review', kick-off the publishing pipeline."""
+        if self.status not in {'draft', 'review'}:
             log.info(
                 'Attempting to publish a %s %s, no action taken'
                 % (self.status, self.content_type_name)

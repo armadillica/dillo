@@ -122,7 +122,7 @@ def on_saved_post(sender, instance, created, **kwargs):
 
 @receiver(dillo.models.posts.post_published, sender=dillo.models.posts.Post)
 def on_post_published(sender, instance: dillo.models.posts.Post, **kwargs):
-    """Create activity for publised Post."""
+    """Create activity for published Post."""
     # If activity was already created (the post was already published),
     # skip this signal to prevent the activity from appearing twice in the feeds.
     if models_actstream.Action.objects.filter(

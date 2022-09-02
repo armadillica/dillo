@@ -24,6 +24,8 @@ import dillo.models.communities
 import dillo.models.software
 import dillo.models.static_assets
 import dillo.models.jobs
+import dillo.models.moderation
+
 from dillo.moderation import deactivate_user_and_remove_content
 
 log = logging.getLogger(__name__)
@@ -75,7 +77,7 @@ class CommunityAdmin(admin.ModelAdmin):
 
 @admin.register(dillo.models.posts.Post)
 class PostAdmin(admin.ModelAdmin):
-    actions = ['process_videos']
+    actions = ['process_videos', 'approve_posts']
     list_per_page = 50
     list_display = (
         '__str__',
@@ -110,6 +112,35 @@ class PostAdmin(admin.ModelAdmin):
         self.message_user(request, "%s processing." % message_bit)
 
     process_videos.short_description = "Process videos for selected posts"
+
+    def approve_posts(self, request, queryset):
+        """Publish posts with a 'review' status"""
+        published_posts = 0
+        processing_posts = 0
+        for p in queryset:
+            if p.status != 'review':
+                continue
+            p.process_videos()
+            if p.may_i_publish:
+                p.publish()
+                published_posts += 1
+            else:
+                processing_posts += 1
+
+        message = ''
+        if published_posts:
+            message += f"{published_posts} post(s) published"
+        if published_posts and processing_posts:
+            message += " and "
+        if processing_posts:
+            message += f"{processing_posts} post(s) processing."
+
+        if message == '':
+            message = 'No post needed review.'
+
+        self.message_user(request, message)
+
+    approve_posts.short_description = "Approve selected posts"
 
 
 @admin.register(dillo.models.events.Event)
@@ -434,3 +465,8 @@ class BadgeAdmin(admin.ModelAdmin):
         return format_html(
             '<img src="{0}" style="width: 20px; height:20px;" />'.format(obj.image.url)
         )
+
+
+@admin.register(dillo.models.moderation.SpamWord)
+class SpamWordAdmin(admin.ModelAdmin):
+    pass

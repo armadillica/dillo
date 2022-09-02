@@ -55,6 +55,9 @@ class PostCreateView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         self.post_instance.title = form.cleaned_data['title']
+        if self.post_instance.has_spam:
+            self.post_instance.request_review()
+            return super().form_valid(form)
         self.post_instance.save()
         self.post_instance.process_videos()
         if self.post_instance.may_i_publish:
