@@ -483,7 +483,7 @@ class UserAdmin(BaseUserAdmin):
     get_posts_count.short_description = 'Posts'
     get_posts_count.admin_order_field = '_posts_count'
 
-    @admin.display(ordering='user__profile__trust_level', description='Trust level')
+    @admin.display(ordering='profile__trust_level', description='Trust level')
     def get_trust_level(self, obj):
         return obj.profile.trust_level
 
