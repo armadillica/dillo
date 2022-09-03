@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import logging
 from captcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 from django import forms
@@ -158,6 +159,18 @@ class AccountUpdateUsernameForm(forms.Form):
             )
 
 
+@dataclass
+class UserNameWithCounter:
+    username: str
+    index: int = 0
+
+    @property
+    def as_str(self):
+        if self.index == 0:
+            return self.username
+        return f"{self.username}{self.index}"
+
+
 class CustomSignupMixin(BaseSignupForm):
     name = forms.CharField(
         label="Your Name",
@@ -175,12 +188,10 @@ class CustomSignupMixin(BaseSignupForm):
 
         # Generate a user profile starting from the profile.name
         username_space_strip = user.profile.name.replace(" ", "")
-        username = slugify(username_space_strip)
-        counter = 1
-        while User.objects.filter(username=username):
-            username = username + str(counter)
-            counter += 1
-        user.username = username
+        username = UserNameWithCounter(slugify(username_space_strip))
+        while User.objects.filter(username=username.as_str):
+            username.index += 1
+        user.username = username.as_str
         user.save()
         log.debug("Updated username to %s" % user.username)
         return user

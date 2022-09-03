@@ -7,6 +7,7 @@ from actstream.actions import unfollow, follow
 from django.core import mail
 from django.test import TestCase, SimpleTestCase, override_settings
 from django.urls import reverse
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 
 import dillo.models.events
@@ -18,6 +19,7 @@ from dillo.models.comments import Comment
 from dillo.tests.factories.users import UserFactory
 from dillo.tests.factories.posts import PostFactory
 from dillo.tests.factories.comments import CommentForPostFactory
+from dillo.forms import UserNameWithCounter
 
 
 class ProfileModelTest(TestCase):
@@ -413,6 +415,13 @@ class UserModelTest(TestCase):
         self.user.delete()
         with self.assertRaises(dillo.models.posts.Post.DoesNotExist):
             dillo.models.posts.Post.objects.get(pk=self.post.id)
+
+    def test_duplicate_username(self):
+        User.objects.create_user(username='testuser1')
+        username = UserNameWithCounter(self.user.username)
+        while User.objects.filter(username=username.as_str):
+            username.index += 1
+        self.assertEqual('testuser2', username.as_str)
 
 
 class FeedElementModelTest(TestCase):
