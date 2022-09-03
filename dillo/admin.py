@@ -398,8 +398,8 @@ class UserAdmin(BaseUserAdmin):
         'get_name',
         'email',
         'is_active',
-        'get_is_verified',
         'get_bio',
+        'get_trust_level',
         'get_website',
         'get_likes_count',
         'get_posts_count',
@@ -410,7 +410,7 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('first_name', 'last_name')
     list_filter = ('is_superuser', IsActiveFilter, EmailIsVerifiedListFilter)
     ordering = ('-date_joined',)
-    actions = ['deactivate_users_and_remove_content']
+    actions = ['deactivate_users_and_remove_content', 'make_member']
     search_fields = [
         'id',
         'username',
@@ -437,6 +437,13 @@ class UserAdmin(BaseUserAdmin):
 
     deactivate_users_and_remove_content.short_description = "Deactivate and remove content"
 
+    @admin.action(description='Make member')
+    def make_member(self, request, queryset):
+        for u in queryset:
+            u.profile.trust_level = dillo.models.profiles.TrustLevel.MEMBER
+            u.profile.save()
+        self.message_user(request, "Set 'member' status.")
+
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         queryset = queryset.annotate(
@@ -446,9 +453,6 @@ class UserAdmin(BaseUserAdmin):
 
     def get_name(self, instance: User):
         return instance.profile.name
-
-    def get_is_verified(self, instance: User):
-        return instance.profile.is_verified
 
     def get_likes_count(self, instance: User):
         return instance.profile.likes_count
@@ -474,12 +478,14 @@ class UserAdmin(BaseUserAdmin):
     get_website.short_description = 'Website'
     get_bio.short_description = 'Bio'
     get_ip_address.short_description = 'IP Address'
-    get_is_verified.short_description = 'Verified'
-    get_is_verified.boolean = True
     get_likes_count.short_description = 'Likes'
     get_likes_count.admin_order_field = 'profile__likes_count'
     get_posts_count.short_description = 'Posts'
     get_posts_count.admin_order_field = '_posts_count'
+
+    @admin.display(ordering='user__profile__trust_level', description='Trust level')
+    def get_trust_level(self, obj):
+        return obj.profile.trust_level
 
 
 admin.site.unregister(User)

@@ -42,6 +42,16 @@ class City(models.Model):
         return self.name
 
 
+class TrustLevel(models.IntegerChoices):
+    """Currently only used to trigger spam detection or not."""
+
+    NEW = 0, 'New User'
+    BASIC = 1, 'Basic User'
+    MEMBER = 2, 'Member'
+    REGULAR = 3, 'Regular'
+    LEADER = 4, 'Leader'
+
+
 class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
     """Public profile of a User.
 
@@ -123,6 +133,9 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
 
     # Badges assigned through signals and other activities
     badges = models.ManyToManyField('Badge', related_name='badges', blank=True)
+
+    # Trust levels are used for content moderation
+    trust_level = models.IntegerField(choices=TrustLevel.choices, default=TrustLevel.NEW)
 
     tags = TaggableManager(blank=True)
 

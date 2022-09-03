@@ -380,6 +380,11 @@ class SpamDetectMixin:
 
     @property
     def has_spam(self):
+        # Do not check for spam when user is trusted
+        user: User = getattr(self, 'user')
+        if user.profile.trust_level > 1:
+            return False
+        # Check for spam in the specified fields
         for f in self.spam_detect_field_names:
             if self._field_has_spam(f):
                 return True
