@@ -35,7 +35,7 @@ class RemoveSpamUserView(LoginRequiredMixin, DeleteView):
 
         context['action_url'] = reverse(
             'remove-spam-user-embed',
-            kwargs={'pk': self.get_object().id},
+            kwargs={'pk': user.id},
         )
         context['submit_label'] = "Remove Spam User"
         return context
