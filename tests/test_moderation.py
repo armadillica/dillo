@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-import dillo.models.posts
-from dillo.models.moderation import SpamWord
+from dillo.models.moderation import SpamWord, AllowedDomain
 from dillo.models.posts import Post
 
 from dillo.moderation import deactivate_user_and_remove_content
@@ -50,4 +49,30 @@ class DetectSpamWords(TestCase):
         self.assertTrue(p.has_spam)
 
         p: Post = PostFactory(title='Looking for BAD')
+        self.assertTrue(p.has_spam)
+
+    def test_spam_links(self):
+
+        p = PostFactory(title='Looking for blender.org')
+        self.assertFalse(p.has_spam)
+
+        for url in {'blender.org', 'github.com', 'blender.community'}:
+            AllowedDomain.objects.create(url=url)
+
+        p = PostFactory(title='Looking for blender.org')
+        self.assertFalse(p.has_spam)
+
+        p = PostFactory(title='Looking for blender.community')
+        self.assertFalse(p.has_spam)
+
+        p = PostFactory(title='Looking for blender.com')
+        self.assertTrue(p.has_spam)
+
+        p = PostFactory(title='Looking for blender.test')
+        self.assertFalse(p.has_spam)
+
+        p = PostFactory(title='Looking for https://blender.test')
+        self.assertFalse(p.has_spam)
+
+        p = PostFactory(title='Looking for https://blender.com')
         self.assertTrue(p.has_spam)

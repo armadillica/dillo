@@ -4,6 +4,7 @@ import typing
 import urllib.parse
 import uuid
 import logging
+import re
 from dataclasses import dataclass, field
 from hashids import Hashids
 
@@ -15,8 +16,9 @@ from django.core.signing import Signer, BadSignature
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from urlextract import URLExtract
 
-from dillo.models.moderation import SpamWord
+from dillo.models.moderation import SpamWord, AllowedDomain
 
 
 log = logging.getLogger(__name__)
@@ -335,19 +337,50 @@ class Downloadable(models.Model):
 
 class SpamDetectMixin:
     spam_detect_field_names = ['title', 'content']
+    extractor = URLExtract()
 
-    def field_has_spam(self, field_name):
-        f = getattr(self, field_name)
+    @staticmethod
+    def _has_spam_words_in_field(field_content):
+        if not field_content:
+            return False
         for w in SpamWord.objects.all():
-            if not f:
-                continue
-            if w.word.lower() in f.lower():
+            if w.word.lower() in field_content.lower():
                 return True
+        return False
+
+    def _has_disallowed_links_in_field(self, field_content):
+        if not field_content:
+            return False
+        # Find all the URL in the text
+        found_urls = self.extractor.find_urls(field_content)
+        if not found_urls:
+            return False
+        allowed_domains = AllowedDomain.objects.all()
+        if not allowed_domains:
+            return False
+        # For every URL, check if it contains any of the allowed domains.
+        # At the first URL that does not contain an allowed domain, stop and return False.
+        for url in found_urls:
+            allowed_domain_found = False
+            for allowed_domain in allowed_domains:
+                if allowed_domain.url in url:
+                    allowed_domain_found = True
+            if not allowed_domain_found:
+                return True
+        # If we made it here, all links found are valid.
+        return False
+
+    def _field_has_spam(self, field_name):
+        f = getattr(self, field_name)
+        if self._has_spam_words_in_field(f):
+            return True
+        if self._has_disallowed_links_in_field(f):
+            return True
         return False
 
     @property
     def has_spam(self):
         for f in self.spam_detect_field_names:
-            if self.field_has_spam(f):
+            if self._field_has_spam(f):
                 return True
         return False
