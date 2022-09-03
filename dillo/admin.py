@@ -411,6 +411,14 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ('is_superuser', IsActiveFilter, EmailIsVerifiedListFilter)
     ordering = ('-date_joined',)
     actions = ['deactivate_users_and_remove_content']
+    search_fields = [
+        'id',
+        'username',
+        'email',
+        'profile__name',
+        'profile__bio',
+        'profile__website',
+    ]
 
     def deactivate_users_and_remove_content(self, request, queryset):
         deactivated_users = 0
