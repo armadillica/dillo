@@ -581,3 +581,8 @@ class BadgeAdmin(admin.ModelAdmin):
 @admin.register(dillo.models.moderation.SpamWord)
 class SpamWordAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(dillo.models.moderation.AllowedDomain)
+class AllowedDomainAdmin(admin.ModelAdmin):
+    pass
