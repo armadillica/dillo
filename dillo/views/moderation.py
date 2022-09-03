@@ -45,6 +45,7 @@ class RemoveSpamUserView(LoginRequiredMixin, DeleteView):
         Call the `deactivate_user_and_remove_content()` method on the fetched object
         and then redirect to the success URL.
         """
-        deactivate_user_and_remove_content(self.get_object())
+        self.object = self.get_object()
         success_url = self.get_success_url()
+        deactivate_user_and_remove_content(self.object)
         return HttpResponseRedirect(success_url)
