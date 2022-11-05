@@ -59,12 +59,15 @@
   .post-stream-header
     .post-stream-tag-container
       h1 #[i.i-hash]{{ tag_name }}
-      | {% include 'dillo/components/_button_follow.pug' with target_object=tag class="btn-primary-alt" %}
 
-    // TODO: Posts count.
-    | {% if tag_followers_count %}
-    .post-stream-tag-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
-    | {% endif %}
+    .post-stream-follow-count
+      div
+        | {% include 'dillo/components/_button_follow.pug' with target_object=tag class="btn-primary-alt" %}
+
+      //- TODO: Add posts count.
+      | {% if tag_followers_count %}
+      .post-stream-count {{ tag_followers_count }} follower{{ tag_followers_count|pluralize }}
+      | {% endif %}
   | {% endif %}
 
   ul#posts-list.post-list(
