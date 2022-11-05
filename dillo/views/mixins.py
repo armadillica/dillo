@@ -43,8 +43,15 @@ class PostListView(TemplateView):
         if session_layout != request_layout:
             self.request.session['layout'] = request_layout
 
+        session_sort = self.request.session.get('sort', 'top')
+        request_sort = self.request.GET.get('sort', session_sort)  # 'top' or 'latest'
+        if session_sort != request_sort:
+            self.request.session['sort'] = request_sort
+
         context['query_url'] = self.get_query_url()
         context['layout'] = request_layout
+        context['sort_value'] = request_sort
+        context['sort_label'] = 'Top Rated' if request_sort == 'top' else 'Most Recent'
         context['layout_switch'] = 'grid' if request_layout == 'list' else 'list'
         context['trending_tags'] = get_trending_tags()
         # Display processing posts only if user is authenticated
@@ -64,16 +71,45 @@ class PostListEmbedView(ListView):
     context_object_name = 'posts'
     model = Post
 
-    def get_queryset(self):
+    def get_latest(self):
         # By default, show only non-hidden posts
         is_hidden = Q(is_hidden_by_moderator=False)
         # If authenticated, show hidden posts only to the post owner
         if self.request.user.is_authenticated:
             is_hidden = is_hidden | Q(is_hidden_by_moderator=True, user=self.request.user)
         # Retrieve only Posts (no Rigs or Jobs)
-        return Post.objects.filter(is_hidden, status='published', visibility='public').order_by(
-            '-published_at'
+        return (
+            Post.objects.filter(
+                is_hidden,
+                status='published',
+                visibility='public',
+            )
+            .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
+            .order_by('-published_at')
         )
+
+    def get_top(self):
+        return (
+            Post.objects.filter(
+                is_hidden_by_moderator=False,
+                status='published',
+                visibility='public',
+            )
+            .exclude(media=False)
+            .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
+            .annotate(Count('likes'))
+            .order_by('-is_pinned_by_moderator', '-created_at', '-likes__count')
+        )
+
+    def get_queryset(self):
+        session_sort = self.request.session.get('sort', 'top')
+        request_sort = self.request.GET.get('sort', session_sort)  # 'top' or 'latest'
+        if session_sort != request_sort:
+            self.request.session['sort'] = request_sort
+        if request_sort == 'top':
+            return self.get_top()
+        else:
+            return self.get_latest()
 
     def get_template_names(self):
         current_layout = self.request.session.get('layout', 'list')
@@ -107,7 +143,7 @@ class FeaturedPostListEmbedView(PostListEmbedView):
             .exclude(media=False)
             .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
             .annotate(Count('likes'))
-            .order_by('-created_at', '-is_pinned_by_moderator', '-likes__count')
+            .order_by('-is_pinned_by_moderator', '-created_at', '-likes__count')
         )
 
 

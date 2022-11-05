@@ -110,12 +110,12 @@ urlpatterns += [
     # Explore list view
     path('explore/', dillo.views.mixins.PostListView.as_view(), name='explore'),
     # Embedded list view
-    # path('e/explore/', dillo.views.mixins.PostListEmbedView.as_view(), name='embed_posts_list'),
-    path(
-        'e/explore/',
-        dillo.views.mixins.FeaturedPostListEmbedView.as_view(),
-        name='embed_posts_list',
-    ),
+    path('e/explore/', dillo.views.mixins.PostListEmbedView.as_view(), name='embed_posts_list'),
+    # path(
+    #     'e/explore/',
+    #     dillo.views.mixins.FeaturedPostListEmbedView.as_view(),
+    #     name='embed_posts_list',
+    # ),
     # Explore tags view
     path(
         'explore/tags/<str:tag_name>',
