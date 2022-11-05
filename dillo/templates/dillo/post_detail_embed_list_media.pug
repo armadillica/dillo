@@ -19,38 +19,5 @@ section.post-view-media.col-scrollable
 			i.i-chevron-right
 | {% endblock media %}
 
-| {% block javascript_media %}
-script.
-	function initEmbedListMedia() {
-
-		//- Find only the media that was loaded in the post
-		let $postMediaContainer = $('.post-media-container.js-with-post-detail-media-prefix');
-
-		//- Initialize video players.
-		let $videos = $postMediaContainer.find('video');
-		let firstPlayerId = $videos.first().attr('id');
-		videoPlayersInit($videos);
-
-		//- Autoplay first video, if a video is found
-		if (firstPlayerId !== undefined) {
-			let p = videojs.getPlayer(firstPlayerId);
-			p.play();
-		};
-
-		/* Slide. */
-		let initialMedia = 0;
-
-		// If there is a hash #media-N, use that number as initialMedia and scroll there.
-		if (window.location.hash) {
-			let hash = window.location.hash;
-
-			if (hash.startsWith("#media-")) {
-				initialMedia = parseInt(hash.split("-")[1]);
-				$('post-view-media').scrollTop($('#media-' + initialMedia).offset().top);
-			}
-		}
-	};
-
-| {% endblock javascript_media %}
 
 | {% block site_footer %}{% endblock site_footer %}

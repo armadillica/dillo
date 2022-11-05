@@ -10,6 +10,7 @@
 | {% endblock media %}
 
 | {% block javascript_media %}
+| {{ block.super }}
 script.
 	$(function () {
 		let $postMediaContainer = $('.post-media-container.js-with-post-detail-media-prefix');
