@@ -18,6 +18,19 @@
 
   | {% if '/explore/' in request.path_info %}
   .nav-tabbar
+    .btn-group
+      a.btn.btn-link-bg(
+        title="{% trans 'List View' %}",
+        href="?layout=list",
+        class="{% if layout == 'list' %}is-active{% endif %}")
+        span
+          i.i-list
+      a.btn.btn-link-bg(
+        title="{% trans 'Grid View' %}",
+        href="?layout=grid",
+        class="{% if layout == 'grid' %}is-active{% endif %}")
+        span
+          i.i-grid
     .dropdown
       .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
         span {{ sort_label }}
