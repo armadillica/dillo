@@ -122,9 +122,11 @@ class PostDetailView(DetailView):
             if user_agent.is_mobile and self.request.GET.get('from_post_detail'):
                 # Embedded post detail (mobile, with media)
                 template = 'slick_media'
-            elif user_agent.is_mobile:
-                # Embedded post detail from post list (mobile, no media - comments only)
-                template = 'base'
+
+            # Comment out for now. Use the same template as in desktop.
+            # elif user_agent.is_mobile:
+            #     # Embedded post detail from post list (mobile, no media - comments only)
+            #     template = 'base'
             return f'dillo/post_detail_embed_{template}.pug'
         else:
             return 'dillo/post_detail.pug'
