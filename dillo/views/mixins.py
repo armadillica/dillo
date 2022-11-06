@@ -98,7 +98,7 @@ class PostListEmbedView(ListView):
             .exclude(media=False)
             .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
             .annotate(Count('likes'))
-            .order_by('-is_pinned_by_moderator', '-created_at', '-likes__count')
+            .order_by('-is_pinned_by_moderator', '-likes__count', '-created_at')
         )
 
     def get_queryset(self):
