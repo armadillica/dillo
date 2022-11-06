@@ -114,16 +114,18 @@ class PostDetailView(DetailView):
         return context
 
     def get_template_names(self):
-        ua_string = self.request.headers.get('user-agent', '')
-        user_agent = parse(ua_string)
         if self.request.is_ajax():
+            # ua_string = self.request.headers.get('user-agent', '')
+            # user_agent = parse(ua_string)
+
             # Embedded post detail (desktop version)
             template = 'list_media'
-            if user_agent.is_mobile and self.request.GET.get('from_post_detail'):
-                # Embedded post detail (mobile, with media)
-                template = 'slick_media'
 
             # Comment out for now. Use the same template as in desktop.
+            # if user_agent.is_mobile and self.request.GET.get('from_post_detail'):
+            #     # Embedded post detail (mobile, with media)
+            #     template = 'slick_media'
+
             # elif user_agent.is_mobile:
             #     # Embedded post detail from post list (mobile, no media - comments only)
             #     template = 'base'
