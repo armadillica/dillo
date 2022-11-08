@@ -15,7 +15,8 @@
 			| {% endblocktrans %}
 		| {% endif %}
 
-		| {% if post.likes.count %}
+		| {% if request.user.is_authenticated %}
+		| {% if post.likes.count and request.user == post.user %}
 		li.post-meta-link.post-meta-link-persistent(
 			class="js-show-modal",
 			id="likes-count-{{ post.content_type_id }}-{{ post.id }}",
@@ -30,6 +31,7 @@
 			| {% plural %}
 			| #[span.js-likes-count {{ amount }}] #[span.js-likes-word likes]
 			| {% endblocktrans %}
+		| {% endif %}
 		| {% endif %}
 
 		| {% if is_post_details == false %}

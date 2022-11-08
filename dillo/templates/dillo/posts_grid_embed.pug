@@ -24,9 +24,11 @@ li.post-container(
 				href="{% url 'post_detail' post.hash_id %}")
 
 				//- Views.
-				| {% if post.media.all.0.video and post.media.all.0.views_count %}
+				| {% if request.user.is_authenticated %}
+				| {% if post.media.all.0.video and post.media.all.0.views_count and request.user == post.user  %}
 				span
 					| #[i.i-eye] {{ post.media.all.0.views_count|compact_number }}
+				| {% endif %}
 				| {% endif %}
 
 				//- Comments.
@@ -35,8 +37,10 @@ li.post-container(
 				| {% endif %}
 
 				//- Likes.
-				| {% if post.likes.count %}
+				| {% if request.user.is_authenticated %}
+				| {% if post.likes.count and request.user == post.user %}
 				span  #[i.i-heart] {{ post.likes.count }}
+				| {% endif %}
 				| {% endif %}
 
 	| {% if forloop.counter == 10 %}
