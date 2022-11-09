@@ -18,7 +18,7 @@
 
   | {% if '/explore/' in request.path_info %}
   .nav-tabbar
-    .btn-group
+    .btn-toolbar-row
       | {% if layout == 'grid' %}
       a.btn.btn-link-bg(
         data-toggle="tooltip",
@@ -37,18 +37,19 @@
           i.i-grid
       | {% endif %}
 
-    .dropdown
-      .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
-        span {{ sort_label }}
-      .dropdown-menu
-        a.dropdown-item(
-          href="{% url 'explore' %}?sort=top",
-          class="{% if sort_value == 'top' %}active{% endif %}"
-        ) #[i.i-trending]{% trans 'Top Rated' %}
-        a.dropdown-item(
-          href="{% url 'explore' %}?sort=latest",
-          class="{% if sort_value == 'latest' %}active{% endif %}"
-        ) #[i.i-events]{% trans 'Most Recent' %}
+      .dropdown
+        .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
+          span {{ sort_label }}
+        .dropdown-menu
+          a.dropdown-item(
+            href="{% url 'explore' %}?sort=top",
+            class="{% if sort_value == 'top' %}active{% endif %}"
+          ) #[i.i-trending]{% trans 'Top Rated' %}
+          a.dropdown-item(
+            href="{% url 'explore' %}?sort=latest",
+            class="{% if sort_value == 'latest' %}active{% endif %}"
+          ) #[i.i-events]{% trans 'Most Recent' %}
+
     | {% if request.user.is_authenticated %}
     a.btn-tag(
       class="{% if '/bookmarks' in request.path_info %}active{% endif %}",
