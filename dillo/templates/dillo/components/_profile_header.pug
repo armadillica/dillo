@@ -109,6 +109,7 @@
         span following
       | {% endif %}
 
+      | {% if request.user.is_authenticated and request.user == user %}
       | {% if user.profile.likes_count > 0 %}
       span.stat
         span {{ user.profile.likes_count }}
@@ -119,6 +120,7 @@
       span.stat
         span {{ user.profile.views_count|compact_number }}
         span views
+      | {% endif %}
       | {% endif %}
 
   | {% if user.profile.reel %}
