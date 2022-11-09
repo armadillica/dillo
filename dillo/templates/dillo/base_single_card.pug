@@ -7,7 +7,7 @@
 .app-single-card
   .container
     .row
-      .col-md-12.mx-auto
+      .mx-auto(class="{% block columns_width %}col-md-8{% endblock %}")
         | {% block content_card %}
         | {% endblock content_card %}
 | {% endblock content %}
