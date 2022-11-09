@@ -16,5 +16,7 @@ form.card(method="post", enctype="multipart/form-data")
 
   .card-cta
     button.btn.btn-primary(type="submit")
-      span {% trans 'Submit' %}
+      span
+        i.i-check
+        span {% trans 'Submit Event' %}
 | {% endblock content_card %}
