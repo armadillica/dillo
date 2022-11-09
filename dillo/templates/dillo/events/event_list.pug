@@ -49,7 +49,7 @@
 
 | {% else %}
 .post-list-empty.with-text
-  p No events yet. #[br] Feel free to #[a(href="{% url 'event-create' %}") create a new event]!
+  p There are no events in the near future. #[br] Feel free to #[a(href="{% url 'event-create' %}") create a new event]!
 | {% endif %}
 
 | {% endblock stream %}
@@ -60,6 +60,13 @@
   | {% url 'event-create' as btn_create_url %}
   | {% trans 'Create Event' as btn_label %}
   | {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary btn-wide" %}
+
+| {% if request.user.is_staff %}
+.sidebar-block
+  a.btn.btn-admin.btn-wide(href="/admin/dillo/event/", title='Events')
+    i.i-coffee
+    span Events
+| {% endif %}
 
 //- TODO: Filters for events.
 
