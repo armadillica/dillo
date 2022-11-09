@@ -19,18 +19,24 @@
   | {% if '/explore/' in request.path_info %}
   .nav-tabbar
     .btn-group
+      | {% if layout == 'grid' %}
       a.btn.btn-link-bg(
+        data-toggle="tooltip",
+        data-placement="bottom",
         title="{% trans 'List View' %}",
-        href="?layout=list",
-        class="{% if layout == 'list' %}is-active{% endif %}")
+        href="?layout=list")
         span
           i.i-list
+      | {% else %}
       a.btn.btn-link-bg(
+        data-toggle="tooltip",
+        data-placement="bottom",
         title="{% trans 'Grid View' %}",
-        href="?layout=grid",
-        class="{% if layout == 'grid' %}is-active{% endif %}")
+        href="?layout=grid")
         span
           i.i-grid
+      | {% endif %}
+
     .dropdown
       .btn-dropdown#dropdown-sorting(data-toggle="dropdown")
         span {{ sort_label }}
