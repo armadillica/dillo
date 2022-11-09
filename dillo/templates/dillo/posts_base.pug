@@ -69,16 +69,17 @@
             class="{% if sort_value == 'latest' %}active{% endif %}"
           ) #[i.i-events]{% trans 'Most Recent' %}
 
-    | {% if request.user.is_authenticated %}
-    a.btn-tag(
-      class="{% if '/bookmarks' in request.path_info %}active{% endif %}",
-      href="{% url 'bookmarks' %}",
-      title="{% trans 'Your Saved Bookmarks' %}")
-      span
-        i.i-bookmark
-        span {% trans 'My Bookmarks' %}
-    | {% endif %}
-    | {% if trending_tags %}
+      | {% if request.user.is_authenticated %}
+      a.btn(
+        class="{% if '/bookmarks' in request.path_info %}active{% endif %}",
+        href="{% url 'bookmarks' %}",
+        title="{% trans 'Your Saved Bookmarks' %}")
+        span
+          i.i-bookmark
+          span {% trans 'My Bookmarks' %}
+      | {% endif %}
+
+    | {% if request.user.is_authenticated or trending_tags %}
     .post-stream-tags
       ul
         | {% for tag in trending_tags %}
