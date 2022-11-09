@@ -16,6 +16,25 @@
     | #[span #[i.spinner-grow]] Your posts are being processed, hold tight...
   | {% endif %}
 
+  .relative
+    form.navbar-search.posts-navbar-search(
+      id='search-navbar-form',
+      action="{% url 'posts_search' %}"
+    )
+      input.input-form-with-icon.form-control(
+        id="search-text",
+        type='text',
+        placeholder='{% trans "Search..." %}',
+        aria-label="Search...",
+        aria-describedby='search-submit')
+      button#search-navbar-form-submit.btn.btn-link.btn-input-embed(
+        data-placement="bottom",
+        data-toggle="tooltip",
+        type='button',
+        title='{% trans "Search" %}')
+        span
+          i.i-search
+
   | {% if '/explore/' in request.path_info %}
   .nav-tabbar
     .btn-toolbar-row
@@ -72,6 +91,7 @@
         | {% endfor %}
     | {% endif %}
   | {% endif %}
+
 
   //- If we are exploring a tag, show it,
   //- otherwise show the list of trending tags.
