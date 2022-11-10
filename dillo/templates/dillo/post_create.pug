@@ -29,6 +29,7 @@
     .form-group
       .btn-toolbar-row
         button.post-create-btn.disabled.btn-lg(
+          disabled,
           type='submit',
           class="js-post-create-btn")
           span {% trans "Create Post" %}
@@ -161,10 +162,12 @@ script.
     let totalFilesCount = uppy.getFiles().length;
     if ($.trim($postDescription.val()) && totalFilesCount > 0) {
       $('.js-post-create-btn')
-        .removeClass('disabled');
+        .removeClass('disabled')
+        .prop('disabled', false);
     } else {
       $('.js-post-create-btn')
-        .addClass('disabled');
+        .addClass('disabled')
+        .prop('disabled', true);
     }
   });
 
