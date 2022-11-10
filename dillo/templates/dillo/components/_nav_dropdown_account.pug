@@ -17,6 +17,11 @@ li.dropdown-divider
 | {% endif %}
 
 li
+  a.dropdown-item(href="{% url 'profile-detail' request.user.username %}", title='{% trans "My Profile" %}')
+    i.i-user
+    | {% trans "Profile" %}
+
+li
   a.dropdown-item(href="{% url 'bookmarks' %}", title='{% trans "My Saved Bookmarks" %}')
     i.i-bookmark
     | {% trans "My Bookmarks" %}
@@ -33,10 +38,6 @@ li
 
 li.dropdown-divider
 
-li
-  a.dropdown-item(href="{% url 'profile-detail' user.username %}", title='{% trans "Profile" %}')
-    i.i-user
-    | {% trans "Profile" %}
 li
   a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')
     i.i-settings
