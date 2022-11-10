@@ -12,15 +12,6 @@ li
   a.dropdown-item.is-admin(href="{% url 'admin:auth_user_changelist' %}", title='Users List')
     i.i-users
     | Users
-//- XXX Replace with proper url lookup like 'admin:rigs' or so.
-li
-  a.dropdown-item.is-admin(href="/admin/rigs/rig/", title='Rigs List')
-    i.i-package
-    | Rigs
-li
-  a.dropdown-item.is-admin(href="/admin/dillo/event/", title='Events')
-    i.i-events
-    | Events
 
 li.dropdown-divider
 | {% endif %}
