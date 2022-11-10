@@ -20,7 +20,8 @@
     .form-cta
       a.btn-secondary(href="{% url 'job-detail' pk=job.id %}")
         span Cancel
-      button.btn.btn-primary(type="submit")
+
+      button.btn.btn-accent(type="submit")
         span Save Changes
 
 | {% endblock stream %}

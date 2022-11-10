@@ -27,7 +27,7 @@
     | {% if not user.profile.reel or not request.user.is_authenticated %}
     .theater-header
       | {% url 'profile_edit' as btn_reels_cta %}
-      | {% include 'dillo/components/_button_generic.pug' with url=btn_reels_cta label="Add Animation Reel" class="btn-primary-strong" %}
+      | {% include 'dillo/components/_button_generic.pug' with url=btn_reels_cta label="Add Animation Reel" class="btn-accent" %}
 
       span #[strong #[i.i-star] Your reel could be here!]
 

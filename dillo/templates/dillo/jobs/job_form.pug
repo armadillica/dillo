@@ -15,6 +15,7 @@ form.card(method="post", enctype="multipart/form-data")
     | {{ form | crispy }}
 
   .card-cta
-    button.btn.btn-primary(type="submit")
-      span {% trans 'Submit' %}
+    button.btn.btn-accent(type="submit")
+      i.i-check
+      span {% trans 'Submit Job' %}
 | {% endblock content_card %}
