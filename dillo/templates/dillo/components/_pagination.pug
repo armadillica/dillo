@@ -24,12 +24,12 @@
 		| {% if next_obj_url %}
 		a.btn.btn-next(href="{{ next_obj_url }}?{{ url_params.sort_qs }}{{ url_params.tag_qs }}{{ url_params.software_qs }}")
 			span
-				span {% trans 'Next' %}
+				span {% trans 'Next' %} {% if label %}{{ label | title }}{% endif %}
 				i.i-chevron-right
 		| {% else %}
 		a.btn.disabled(href="#")
 			span
-				span {% trans 'Next' %}
+				span {% trans 'Next' %} {% if label %}{{ label | title }}{% endif %}
 				i.i-chevron-right
 		| {% endif %}
 
