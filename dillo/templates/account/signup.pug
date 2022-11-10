@@ -4,12 +4,12 @@
 | {% load crispy_forms_tags %}
 
 | {% block head_title %}{% trans "Signup" %}{% endblock %}
-| {% block card_width %}6{% endblock %}
+| {% block columns_width %}col-md-5{% endblock %}
 
 | {% block content_card %}
 .card.account.login
 	.card-header
-		h1.card-title {% trans "Welcome" %}
+		h1.card-title {% trans "Welcome aboard!" %}
 
 	.card-body
 		| {% get_providers as socialaccount_providers %}
@@ -35,10 +35,10 @@
 				small By pressing the Sign Up button, I accept the #[a(href="{% url 'terms' %}") terms and conditions].
 
 			.card-cta
-				button.btn.btn-primary.btn-wide(type='submit')
+				button.btn.btn-accent.btn-wide(type='submit')
 					span {% trans "Sign Up" %}
 
 	.card-footer
-		a.btn.btn-text(href='{{ login_url }}')
+		a.btn.btn-link(href='{{ login_url }}')
 			span {% blocktrans %}Already have an account?{% endblocktrans %}
 | {% endblock content_card %}

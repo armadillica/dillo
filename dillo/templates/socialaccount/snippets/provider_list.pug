@@ -10,7 +10,7 @@ a.btn(title="{{ brand.name }}",
   href="{% provider_login_url provider.id openid=brand.openid_url process=process %}")
   span
     i(class="i-{{ brand.id }}")
-    span {{ brand.name }}
+    span {{ process | title }} with {{ brand.name }}
 | {% endfor %}
 | {% endif %}
 a.btn(title="{{ provider.name }}",
@@ -18,5 +18,5 @@ a.btn(title="{{ provider.name }}",
   href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}")
   span
     i(class="i-{{ provider.id }}")
-    span {{ provider.name }}
+    span {{ process | title }} with {{ provider.name }}
 | {% endfor %}

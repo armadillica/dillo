@@ -5,12 +5,13 @@
 
 | {% block page_title %}{% trans "Sign In" %} &mdash; {% endblock %}
 
-| {% block card_width %}6{% endblock %}
+| {% block columns_width %}col-md-5{% endblock %}
 
 | {% block content_card %}
 .card.account.login
 	.card-header
-		h1.card-title {% trans "Hello" %}
+		h1.card-title {% trans "Welcome back!" %}
+
 	.card-body
 		| {% get_providers as socialaccount_providers %}
 		| {% if socialaccount_providers %}
@@ -33,15 +34,15 @@
 
 
 			.card-cta
-				button.btn-primary(type='submit')
+				button.btn-accent.btn-wide(type='submit')
 					span {% trans "Sign In" %}
 
 	.card-footer
 		.btn-toolbar-row
-			a.btn.btn-text(href='{{ signup_url }}')
+			a.btn.btn-primary(href='{{ signup_url }}')
 				span {% trans "Create a New Account" %}
 
-			a.btn.btn-text(href="{% url 'account_reset_password' %}")
-				span {% trans "Forgot Password" %}
+			a.btn.btn-link(href="{% url 'account_reset_password' %}")
+				span {% trans "Forgotten Password?" %}
 
 | {% endblock content_card %}
