@@ -1,11 +1,7 @@
 | {% load i18n %}
 
 li.posts-nofun
-	.sad
-		i.i-coffee
-	span.text-muted {% trans 'This looks empty.' %}
-	span.d-block.h4.mt-3
-		| {% url 'explore' as explore_url %}
-		| {% blocktrans with explore_url=explore_url %}
-		| Go #[a(href="{{ explore_url }}") Explore!]
-		| {% endblocktrans %}
+	| {% url 'post_create' as url %}
+	a.explore(href="{{ url }}")
+
+		p {% trans 'No posts to show here.' %}
