@@ -6,17 +6,9 @@
 
 | {% block stream %}
 | {% if events %}
-.cards-grid.e-events-large
+.e-events-large
   | {% for event in events %}
   .card-borderless
-    | {% thumbnail event.image "1280x720" crop="center" as im %}
-    a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
-      img(
-        src="{{ im.url }}",
-        width="{{ im.width }}",
-        height="{{ im.height }}",
-        alt="{{ event.name }}")
-    | {% endthumbnail %}
 
     .card-body
       .e-event
@@ -24,6 +16,15 @@
           figure
             span.month {{ event.starts_at | date:"M" | upper }}
             span.day {{ event.starts_at | date:"d" }}
+
+        | {% thumbnail event.image "1280x720" crop="center" as im %}
+        a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
+          img(
+            src="{{ im.url }}",
+            width="{{ im.width }}",
+            height="{{ im.height }}",
+            alt="{{ event.name }}")
+        | {% endthumbnail %}
 
         .e-event-info
           a.e-event-title(href="{% url 'event_detail' slug=event.slug %}")
@@ -41,6 +42,7 @@
 
           | {% if event.attendees.all %}
           .going
+            i.i-users
             | {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
             | {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
             | {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
@@ -58,7 +60,7 @@
 
 .sidebar-block
   | {% url 'event-create' as btn_create_url %}
-  | {% trans 'Create Event' as btn_label %}
+  | {% trans 'Add an Event' as btn_label %}
   | {% include 'dillo/components/_button_generic.pug' with url=btn_create_url label=btn_label class="btn-primary btn-wide" %}
 
 | {% if request.user.is_staff %}
