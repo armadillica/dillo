@@ -314,6 +314,7 @@ urlpatterns += [
 
 # Flat Pages
 urlpatterns += [
+    path('faq/', flatpage, {'url': '/faq/'}, name='faq'),
     path('about/', flatpage, {'url': '/about/'}, name='about'),
     path('blog/', flatpage, {'url': '/blog/'}, name='blog'),
     path('terms/', flatpage, {'url': '/terms/'}, name='terms'),
