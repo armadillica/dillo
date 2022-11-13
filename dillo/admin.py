@@ -184,7 +184,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ('__str__',)
     search_fields = ('content', 'title', 'user__username')
     autocomplete_fields = ['media']
-    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user')
+    readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user', 'get_likes_count')
 
     def show_link(self, obj):
         return mark_safe(f'<a href="{obj.get_absolute_url()}" target="_blank">{obj.hash_id}</a>')
