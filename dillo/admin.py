@@ -176,6 +176,7 @@ class PostAdmin(admin.ModelAdmin):
         'community',
         'show_link',
         'status',
+        'get_likes_count',
         'created_at',
         'updated_at',
     )
@@ -187,6 +188,11 @@ class PostAdmin(admin.ModelAdmin):
 
     def show_link(self, obj):
         return mark_safe(f'<a href="{obj.get_absolute_url()}" target="_blank">{obj.hash_id}</a>')
+
+    def get_likes_count(self, instance: dillo.models.posts.Post):
+        return instance.likes.count()
+
+    get_likes_count.short_description = 'Likes'
 
     def process_videos(self, request, queryset):
         videos_processing = 0
