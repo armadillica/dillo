@@ -178,14 +178,15 @@ class PostAdmin(admin.ModelAdmin):
         'show_link',
         'status',
         'get_likes_count',
+        'published_at',
         'created_at',
-        'updated_at',
     )
     list_filter = ('community', 'is_pinned_by_moderator', 'is_link', 'status', 'visibility')
     list_display_links = ('__str__',)
     search_fields = ('content', 'title', 'user__username')
     autocomplete_fields = ['media']
     readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user', 'get_likes_count')
+    ordering = (F('published_at').desc(nulls_last=True), F('created_at').desc())
 
     def show_link(self, obj):
         return mark_safe(f'<a href="{obj.get_absolute_url()}" target="_blank">{obj.hash_id}</a>')
