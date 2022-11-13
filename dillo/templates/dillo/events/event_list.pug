@@ -8,45 +8,44 @@
 | {% if events %}
 .e-events-large
   | {% for event in events %}
-  .card-borderless
+  .e-event
+    | {% thumbnail event.image "1280x720" crop="center" as im %}
+    a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
+      img(
+        src="{{ im.url }}",
+        width="{{ im.width }}",
+        height="{{ im.height }}",
+        alt="{{ event.name }}")
+    | {% endthumbnail %}
 
-    .card-body
-      .e-event
-        a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
-          figure
-            span.month {{ event.starts_at | date:"M" | upper }}
-            span.day {{ event.starts_at | date:"d" }}
 
-        | {% thumbnail event.image "1280x720" crop="center" as im %}
-        a.card-thumbnail(href="{% url 'event_detail' slug=event.slug %}", title="{{ event.name }}")
-          img(
-            src="{{ im.url }}",
-            width="{{ im.width }}",
-            height="{{ im.height }}",
-            alt="{{ event.name }}")
-        | {% endthumbnail %}
+    .e-event-info
+      a.e-event-date(href="{% url 'event_detail' slug=event.slug %}")
+        figure
+          span.month {{ event.starts_at | date:"M" | upper }}
+          span.day {{ event.starts_at | date:"d" }}
 
-        .e-event-info
-          a.e-event-title(href="{% url 'event_detail' slug=event.slug %}")
-            | {{ event.name }}
+      div
+        a.e-event-title(href="{% url 'event_detail' slug=event.slug %}")
+          | {{ event.name }}
 
-          | {% if event.location or event.is_online %}
-          .location
-            | {% if event.is_online %}
-            | {% include 'dillo/components/_badge_online.pug' %}
-            | {% elif event.location %}
-            i.i-map-pin
-            | {{ event.location }}
-            | {% endif %}
+        | {% if event.location or event.is_online %}
+        .location
+          | {% if event.is_online %}
+          | {% include 'dillo/components/_badge_online.pug' %}
+          | {% elif event.location %}
+          i.i-map-pin
+          | {{ event.location }}
           | {% endif %}
+        | {% endif %}
 
-          | {% if event.attendees.all %}
-          .going
-            i.i-users
-            | {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
-            | {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
-            | {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
-          | {% endif %}
+        | {% if event.attendees.all %}
+        .going
+          i.i-users
+          | {% if event.attendees.all.count == 1 %}{{ event.attendees.all | first }} is going{% endif %}
+          | {% if event.attendees.all.count == 2 %}{{ event.attendees.all | join:" and " }} are going{% endif %}
+          | {% if event.attendees.all.count > 2 and event.attendees.all.count < 8 %}{{ event.attendees.all | join:", " }} are going{% endif %}
+        | {% endif %}
   | {% endfor %}
 
 | {% else %}
