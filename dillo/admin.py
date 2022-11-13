@@ -179,7 +179,7 @@ class PostAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
     )
-    list_filter = ('community', 'is_pinned_by_moderator', 'is_link', 'status')
+    list_filter = ('community', 'is_pinned_by_moderator', 'is_link', 'status', 'visibility')
     list_display_links = ('__str__',)
     search_fields = ('content', 'title', 'user__username')
     autocomplete_fields = ['media']
