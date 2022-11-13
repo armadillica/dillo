@@ -70,6 +70,20 @@ class PostListEmbedView(ListView):
 
     context_object_name = 'posts'
     model = Post
+    request_sort = None
+    request_layout = None
+
+    def dispatch(self, request, *args, **kwargs):
+        session_sort = request.session.get('sort', 'top')
+        self.request_sort = request.GET.get('sort', session_sort)  # 'top' or 'latest'
+        if session_sort != self.request_sort:
+            self.request.session['sort'] = self.request_sort
+
+        session_layout = request.session.get('layout', 'list')
+        self.request_layout = request.GET.get('layout', session_layout)  # 'list' or 'grid'
+        if session_layout != self.request_layout:
+            self.request.session['layout'] = self.request_layout
+        return super().dispatch(request, *args, **kwargs)
 
     def get_latest(self):
         # By default, show only non-hidden posts
@@ -102,32 +116,35 @@ class PostListEmbedView(ListView):
         )
 
     def get_queryset(self):
-        session_sort = self.request.session.get('sort', 'top')
-        request_sort = self.request.GET.get('sort', session_sort)  # 'top' or 'latest'
-        if session_sort != request_sort:
-            self.request.session['sort'] = request_sort
-        if request_sort == 'top':
+        if self.request_sort == 'top':
             return self.get_top()
         else:
             return self.get_latest()
 
     def get_template_names(self):
-        current_layout = self.request.session.get('layout', 'list')
-        next_layout = self.request.GET.get('layout', current_layout)  # 'list' or 'grid'
-        if current_layout != next_layout:
-            self.request.session['layout'] = next_layout
-        if next_layout == 'list':
+        if self.request_layout == 'list':
             return ['dillo/posts_list_embed.pug']
-        elif next_layout == 'grid':
+        else:
             return ['dillo/posts_grid_embed.pug']
 
     def get_paginate_by(self, queryset):
-        current_layout = self.request.session.get('layout', 'list')
-        next_layout = self.request.GET.get('layout', current_layout)
-        if next_layout == 'list':
+        if self.request_layout == 'list':
             return 3
-        elif next_layout == 'grid':
+        elif self.request_layout == 'grid':
             return 40
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request_sort == 'top':
+            context['posts'] = list(context['posts'])
+            featured_posts = sorted(
+                [p for p in context['posts'] if p.is_pinned_by_moderator],
+                key=lambda p: p.published_at,
+                reverse=True,
+            )
+            top_posts = [p for p in context['posts'] if not p.is_pinned_by_moderator]
+            context['posts'] = featured_posts + top_posts
+        return context
 
 
 class FeaturedPostListEmbedView(PostListEmbedView):
