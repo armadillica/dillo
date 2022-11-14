@@ -148,7 +148,7 @@ class PostsByUserListView(PostListEmbedView):
         return ['dillo/posts_grid_embed.pug']
 
     def get_paginate_by(self, queryset):
-        return 6
+        return 40
 
 
 class UserFollowersListEmbed(UserListEmbedView):
