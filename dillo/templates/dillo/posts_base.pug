@@ -175,7 +175,7 @@ script.
         let url = embedUrl + ob.data('next_url');
 
         //- Remove this element to prevent future triggers.
-        ob.parents('li').remove();
+        ob.remove();
 
         $.get(url, function (data) {
           $(postsList).append(data);
