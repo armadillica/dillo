@@ -1,6 +1,11 @@
 | {% load i18n %}
 | {% load dillo_filters %}
 
+| {% if page_obj.has_next %}
+.js-load-more(data-next_url="{{ url_next }}?page={{ page_obj.next_page_number }}")
+| {% endif %}
+
+
 | {% for post in posts %}
 li.post-container(
 	data-post_id="{{ post.hash_id }}",
@@ -43,11 +48,6 @@ li.post-container(
 				| {% endif %}
 				| {% endif %}
 
-	| {% if forloop.counter == 10 %}
-	| {% if page_obj.has_next %}
-	.js-load-more(data-next_url="{{ url_next }}?page={{ page_obj.next_page_number }}")
-	| {% endif %}
-	| {% endif %}
 
 | {% empty %}
 | {% include 'dillo/components/_post_list_empty.pug' %}
