@@ -166,6 +166,12 @@ script.
           $(postsList).html(data);
           loadPosts(data);
           twemoji.parse(postsList);
+          //- Look for .js-load-more in viewport and immediately load more posts
+          $('.js-load-more').each(function () {
+            if ($(this).is(':in-viewport()')) {
+              triggerLoadPosts($(this));
+            }
+          });
         });
 
       //- If it's an object (Load More button), remove it and load next page.
@@ -178,6 +184,7 @@ script.
         ob.remove();
 
         $.get(url, function (data) {
+          $('.js-loading-posts-indicator').remove();
           $(postsList).append(data);
           loadPosts(data);
           twemoji.parse(postsList);

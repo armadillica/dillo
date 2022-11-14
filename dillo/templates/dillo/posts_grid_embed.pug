@@ -53,3 +53,8 @@ li.post-container(
 | {% include 'dillo/components/_post_list_empty.pug' %}
 
 | {% endfor %}
+
+| {% if page_obj.has_next %}
+li.js-loading-posts-indicator
+	p Loading more posts...
+| {% endif %}
