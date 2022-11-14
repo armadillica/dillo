@@ -16,8 +16,6 @@ style.
     --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
   }
 
-| {{ block.super }}
-
 | {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
 
 | {% if user.profile.next_events_attending %}
@@ -25,7 +23,6 @@ style.
   | {% include 'animato/components/_feed_events.pug' with events=user.profile.next_events_attending title='Going to the following events' %}
 | {% endif %}
 
-| {{ block.super }}
 | {% endblock page_header %}
 
 | {% block body_classes %}profile-details{% endblock %}
