@@ -1,17 +1,16 @@
 import requests.exceptions
 import webpreview.excepts
 from django.conf import settings
-from django.db.models import Q, Count
-from django.urls import reverse
-from django.template.defaultfilters import truncatechars
-from django.utils import timezone
-from django.utils.html import strip_tags
-from django.views.generic import TemplateView, ListView
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views import View
+from django.db.models import Q, Count
 from django.http import JsonResponse
+from django.template.defaultfilters import truncatechars
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.html import strip_tags
+from django.views import View
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.generic import TemplateView, ListView
 from micawber.contrib.mcdjango import providers
 from micawber.exceptions import ProviderNotFoundException
 from sorl.thumbnail import get_thumbnail
