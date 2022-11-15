@@ -17,13 +17,13 @@
           | {% firstof user.profile.name user.username %}
 
         //- Location
-        | {% if user.profile.location %}
+        | {% if user.profile.location_label %}
         .profile-location
           a(
-            href="https://www.google.com/maps/place/{{ user.profile.location | slugify }}",
+            href="https://www.google.com/maps/@{{ user.profile.city_ref.lat }},{{ user.profile.city_ref.lng }},10z",
             target="_blank")
             i.i-map-pin
-            | {{ user.profile.location }}
+            | {{ user.profile.location_label }}
         | {% endif %}
 
         //- Social Links.
