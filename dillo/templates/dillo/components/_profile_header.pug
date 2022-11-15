@@ -4,27 +4,36 @@
 | {% load micawber_tags %}
 | {% load dillo_filters %}
 
-.profile-header(style="background-image: url({% static 'images/background_01.png' %})")
+.profile-header(
+  style="background-image: url({% static 'images/background_01.png' %})")
   .profile-info-container
     .profile-info
       //- Avatar.
       .profile-info-avatar
-        | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' %}
+        | {% include 'dillo/components/_profile_avatar.pug' with user=user size='large' is_details=true %}
 
       .profile-info-details
         //- Username or Name.
         h1.profile-name
           | {% firstof user.profile.name user.username %}
 
-        //- Location
-        | {% if user.profile.location_label %}
-        .profile-location
-          a(
-            href="https://www.google.com/maps/@{{ user.profile.city_ref.lat }},{{ user.profile.city_ref.lng }},10z",
-            target="_blank")
-            i.i-map-pin
-            | {{ user.profile.location_label }}
-        | {% endif %}
+        .btn-toolbar-row
+          //- Looking for work.
+          | {% if user.profile.is_looking_for_work %}
+          .badge.badge-is-looking-for-work
+            i.i-jobs
+            span Looking for Work
+          | {% endif %}
+
+          //- Location.
+          | {% if user.profile.location_label %}
+          .profile-location
+            a(
+              href="https://www.google.com/maps/@{{ user.profile.city_ref.lat }},{{ user.profile.city_ref.lng }},10z",
+              target="_blank")
+              i.i-map-pin
+              | {{ user.profile.location_label }}
+          | {% endif %}
 
         //- Social Links.
         | {% if user.profile.website or user.profile.links.all %}

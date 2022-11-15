@@ -16,7 +16,7 @@ style.
     --accent-profile-light: hsl(var(--accent-profile-h), 100%, 80%);
   }
 
-| {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' %}
+| {% include 'dillo/components/_profile_header.pug' with show_bio=True is_link_disabled='is-link-disabled' is_detail=True %}
 
 | {% if user.profile.next_events_attending %}
 .profile-events
