@@ -31,8 +31,8 @@ li
 
     .dir-user-subtitle {{ profile.location_label }}
 
-    | {% if profile.bio %}
-    .dir-user-item-bio {{ profile.bio }}
+    | {% if profile.tagline %}
+    .dir-user-item-bio {{ profile.tagline }}
     | {% endif %}
 
   | {% empty %}

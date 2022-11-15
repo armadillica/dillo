@@ -71,7 +71,10 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         primary_key=True,
     )
     name = models.CharField(max_length=125)
-    bio = models.TextField(max_length=512, blank=True)
+    tagline = models.TextField(
+        max_length=80, blank=True, help_text='Tell us about you. In 80 characters.'
+    )
+    bio = models.TextField(max_length=512, blank=True, help_text='Your life story.')
     website = models.URLField(blank=True, help_text='Your main website.')
     location = models.CharField(
         max_length=255, blank=True, help_text='Your place in the world. Usually "City, Country"'
