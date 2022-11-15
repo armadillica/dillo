@@ -42,7 +42,24 @@ li
   a.dropdown-item(href="{% url 'profile_edit' %}", title='{% trans "Settings" %}')
     i.i-settings
     | {% trans "Settings" %}
+
 li.dropdown-divider
+
+li
+  a.dropdown-item(
+    href="#",
+    class="js-show-modal",
+    data-modal_category='form',
+    data-modal_title='{% trans "Send Feedback" %}',
+    data-content_url="{% url 'contact' %}",
+    data-toggle='modal',
+    data-target='#modal',
+    title="Thanks for sharing your thoughts on how to improve Animato")
+    i.i-send
+    | {% trans "Send Feedback" %}
+
+li.dropdown-divider
+
 li
   a.dropdown-item(href="{% url 'logout' %}", title='{% trans "Logout" %}')
     i.i-log-out
