@@ -64,6 +64,7 @@ class ProfileForm(forms.ModelForm):
         fields = (
             'name',
             'bio',
+            'is_looking_for_work',
             'tags',
             'country',
             'city',

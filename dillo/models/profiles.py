@@ -128,6 +128,8 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
 
     ip_address = models.GenericIPAddressField(blank=True, null=True)
 
+    is_looking_for_work = models.BooleanField(default=False, verbose_name='Looking for work')
+
     # Posts that have been added by the user to the "Bookmarks" list
     bookmarks = models.ManyToManyField('Post', related_name='bookmarks')
 
