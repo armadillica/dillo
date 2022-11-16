@@ -36,7 +36,8 @@
 
   .form-tip
     span {% trans "Tip: Use #hashtags to increase discoverability." %}
-    div Trying to upload your reel? #[a(href="{% url 'profile_edit' %}") Add your reel to your profile].
+    div Trying to upload your demo reel? #[a(href="{% url 'profile_edit' %}") Add it to your profile].
+    div Got a short film to share? #[a(href="{% url 'short-create' %}") Add a Short Film].
 
 
 | {% endblock content_card %}
