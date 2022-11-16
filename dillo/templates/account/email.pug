@@ -30,13 +30,13 @@
 
 					.badges-row-inline
 						| {% if emailaddress.primary %}
-						span.badge-pill.badge-info {% trans "Primary" %}
+						span.badge.badge-info {% trans "Primary" %}
 						| {% endif %}
 
 						| {% if emailaddress.verified %}
-						span.badge-pill.badge-success {% trans "Verified" %}
+						span.badge.badge-success {% trans "Verified" %}
 						| {% else %}
-						span.badge-pill.badge-warning {% trans "Unverified" %}
+						span.badge.badge-warning {% trans "Unverified" %}
 						| {% endif %}
 
 			| {% endfor %}
@@ -45,11 +45,13 @@
 				button.btn.btn-primary(type='submit', name='action_primary')
 					span {% trans 'Make Primary E-mail' %}
 
-				button.btn.btn-secondary(type='submit', name='action_send')
+				button.btn.btn-primary(type='submit', name='action_send')
 					span {% trans 'Re-send Verification' %}
 
 				button.btn.btn-danger(type='submit', name='action_remove')
-					span {% trans 'Remove' %}
+					span
+						i.i-trash
+						span {% trans 'Remove' %}
 	| {% else %}
 	| {% blocktrans %}
 	.alert.alert-warning
