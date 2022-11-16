@@ -62,10 +62,13 @@
         | {% endif %}
 
     //- Bio.
-    | {% if show_bio %}
-    | {% if user.profile.bio %}
-    .profile-bio {{ user.profile.bio }}
-    | {% endif %}
+    | {% if show_bio and user.profile.bio or user.profile.tagline %}
+    .profile-bio
+      | {% if user.profile.bio %}
+      | {{ user.profile.bio }}
+      | {% elif user.profile.tagline %}
+      | {{ user.profile.tagline }}
+      | {% endif %}
     | {% endif %}
 
     .btn-toolbar-row
