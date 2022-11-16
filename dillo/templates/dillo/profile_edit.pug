@@ -10,9 +10,16 @@
 form.profile-edit(action="{% url 'profile_edit' %}", method="post", enctype="multipart/form-data")
 	.card
 		.card-body
-			p To change your username go to #[a(href="{% url 'account_settings' %}") account settings].
+			.profile-edit-header
+				p To change your username go to #[a(href="{% url 'account_settings' %}") account settings].
+
+				a.btn.btn-secondary(href="{% url 'profile-detail' request.user.username %}")
+					span
+						i.i-eye
+						span View Profile
+
 			hr
-			br
+
 			| {% csrf_token %}
 			| {{ form | crispy }}
 			| {% include 'dillo/components/_formset_link_list.pug' %}

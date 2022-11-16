@@ -34,9 +34,9 @@
 						| {% endif %}
 
 						| {% if emailaddress.verified %}
-						span.badge.badge-success {% trans "Verified" %}
+						span.badge.badge-success #[i.i-check] {% trans "Verified" %}
 						| {% else %}
-						span.badge.badge-warning {% trans "Unverified" %}
+						span.badge.badge-warning #[i.i-alert-triangle] {% trans "Unverified" %}
 						| {% endif %}
 
 			| {% endfor %}
@@ -68,7 +68,7 @@
 		| {% csrf_token %}
 		| {{ form | crispy }}
 
-		.card-cta
+		.card-cta.right
 			button.btn.btn-primary(name='action_add', type='submit')
 				span {% trans "Add E-mail" %}
 | {% endblock %}
