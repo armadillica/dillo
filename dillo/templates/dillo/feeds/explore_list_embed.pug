@@ -80,7 +80,9 @@ li.post-container.post-is-feed.post-feed-transparent
       class="js-follow-toggle{% if request.user|is_following:activity.actor %} is-follower{% endif %}",
       data-follow_toggle_label="{% if request.user|is_following:activity.actor %}Follow{% else %}Unfollow{% endif %}"
       href="{% follow_url activity.actor %}")
-      span {% if request.user|is_following:activity.actor %}Unfollow{% else %}Follow{% endif %}
+      span
+        i.i-user-plus
+        span {% if request.user|is_following:activity.actor %}Unfollow{% else %}Follow{% endif %}
     | {% endif %}
 
     .post-header-action
