@@ -11,21 +11,23 @@
 
 | {% block stream %}
 .container
+	.d-flex.mb-3
+		.d-inline-block
+			a.btn(href="{% url 'job-list' %}", title="{% trans 'All Jobs' %}")
+				span
+					i.i-chevron-left
+					span {% trans 'See All Jobs' %}
+
+		.ml-auto
+			| {% if job.user == request.user %}
+			| {% url 'job-update' job.pk as edit_url %}
+			| {% trans 'Edit Job' as edit_label %}
+			| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label %}
+			| {% endif %}
+
 	.card
 		.card-header
-			.d-flex
-				.d-inline-block
-					a.btn.btn-link(href="{% url 'job-list' %}", title="{% trans 'All Jobs' %}")
-						i.i-chevron-left
-						| {% trans 'See All Jobs' %}
-				.ml-auto
-					| {% if job.user == request.user %}
-					| {% url 'job-update' job.pk as edit_url %}
-					| {% trans 'Edit Job' as edit_label %}
-					| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label %}
-					| {% endif %}
-
-			h1.pt-3 {{ job.title }}
+			h1 {{ job.title }}
 
 		.card-body
 			.lead {{ job.description | markdown_with_shortcodes | safe }}
@@ -79,22 +81,23 @@
 			| Starting {{ job.starts_at }}
 		| {% endif %}
 
-	a.btn.btn-primary.btn-sidebar(
+	a.btn.btn-accent.btn-sidebar(
 		href="{{ job.url_apply }}",
 		title='{% trans "Apply Now" %}')
-		i.i-check
-		strong {% trans "Apply Now" %}
+		span
+			i.i-check
+			span {% trans "Apply Now" %}
 
-.sidebar-block
-	| {% include 'dillo/components/_button_share.pug' with shared_object_label='job' %}
+	hr
 
-| {% if request.user.is_superuser %}
+	| {% include 'dillo/components/_button_share.pug' with shared_object_label='job' show_label=True class="btn-wide" %}
+
+| {% if request.user.is_staff %}
 .sidebar-block
+	hr
 	| {% url 'admin:dillo_job_change' job.id as edit_url %}
 	| {% trans 'Whoosh Job' as edit_label %}
 	| {% include 'dillo/components/_button_edit.pug' with url=edit_url label=edit_label class="btn-admin" %}
 | {% endif %}
 
-.sidebar-block
-	| {% include 'dillo/components/_footer.pug' %}
 | {% endblock sidebar %}
