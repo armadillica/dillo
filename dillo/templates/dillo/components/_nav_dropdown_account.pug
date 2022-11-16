@@ -26,16 +26,6 @@ li
     i.i-bookmark
     | {% trans "My Bookmarks" %}
 
-li
-  a.dropdown-item(href="{% url 'short-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Shorts" %}')
-    i.i-shorts
-    | {% trans "My Shorts" %}
-
-li
-  a.dropdown-item(href="{% url 'rig-list' %}?submitted-by={{ request.user.pk }}", title='{% trans "My Rigs" %}')
-    i.i-package
-    | {% trans "My Rigs" %}
-
 li.dropdown-divider
 
 li
