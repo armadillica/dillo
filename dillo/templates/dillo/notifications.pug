@@ -38,7 +38,7 @@ li.notification-item
 	| {% endif %}
 	| {% else %}
 	.notification-action
-		| {% include 'dillo/components/_button_follow.pug' with target_object=notification.action.actor class="btn-primary" %}
+		| {% include 'dillo/components/_button_follow.pug' with target_object=notification.action.actor class="btn-primary" icon_only=True %}
 	| {% endif %}
 | {% endfor %}
 | {% else %}
