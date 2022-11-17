@@ -5,6 +5,7 @@
 | {% load dillo_filters %}
 
 .profile-header(
+  class="{{ user.profile.reel|yesno:'has-reel,' }}"
   style="background-image: url({% static 'images/background_01.png' %})")
   .profile-info-container
     .profile-info
