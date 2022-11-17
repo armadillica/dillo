@@ -210,4 +210,14 @@ script.
 
   }
 
+  // Load more profiles (async)
+  $(document).on('click', '.js-load-more', function (event) {
+    let $userListContainer = $('#user-list');
+    let $loadMoreButton = $(this);
+    $.get($(this).data('next_url'), function (data) {
+      $userListContainer.append(data);
+      $loadMoreButton.remove();
+    });
+  });
+
 | {% endblock javascript_extra %}

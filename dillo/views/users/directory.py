@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 
 from dillo.models.profiles import City, Profile, Badge
@@ -24,6 +24,7 @@ class SelectItem:
 @dataclass
 class UrlParams:
     sort: str
+    page: int
     badges: Optional[List]
     tags: Optional[List]
     cities: Optional[List]
@@ -89,11 +90,19 @@ class FilterMixin(TemplateView):
                 qs = []
             return qs
 
+        def get_page() -> int:
+            try:
+                page = int(self.request.GET.get('page', 1))
+            except ValueError:
+                page = 1
+            return page
+
         self.url_params = UrlParams(
             tags=get_qs_list('tag'),
             badges=get_qs_list('badge'),
             cities=get_qs_list('city'),
             sort=self.request.GET.get('sort', '-likes_count'),
+            page=get_page(),
         )
 
         return super().dispatch(request, *args, **kwargs)
@@ -160,8 +169,7 @@ class ApiUserListView(FilterMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         paginator = Paginator(self.get_queryset(), 25)
-        page_obj = paginator.get_page(1)
-        context['object_list'] = page_obj
+        context['page_obj'] = paginator.get_page(self.url_params.page)
         return context
 
 

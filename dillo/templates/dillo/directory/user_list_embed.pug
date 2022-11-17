@@ -1,7 +1,7 @@
 | {% load i18n %}
 | {% load dillo_filters %}
 
-| {% for profile in object_list %}
+| {% for profile in page_obj %}
 li
   a.dir-user-item(href="{% url 'profile-detail' profile.user.username %}")
     .dir-user-item-header
@@ -38,3 +38,11 @@ li
   | {% empty %}
   p No user matches this query. Try something else!
 | {% endfor %}
+
+//- Pagination.
+| {% if page_obj.has_next %}
+.btn.btn-link-text.btn-wide(
+  class="js-load-more",
+  data-next_url="{% url 'api-user-list' %}?page={{ page_obj.next_page_number }}")
+  | {% trans 'Load more profiles...' %}
+| {% endif %}
