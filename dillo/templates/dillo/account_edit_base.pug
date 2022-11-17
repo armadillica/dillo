@@ -27,7 +27,7 @@
 				)
 					span
 						i.i-shield
-						span Change Password
+						span Password
 
 				a.btn(
 					href="{% url 'account_email' %}",
@@ -71,10 +71,9 @@
 		.col-9
 			#nav-tabContent.tab-content
 				.tab-pane.fade.show.active
-					.d-flex.flex-column
-						.card
-							| {% block content_account_edit_form %}
-							| {% endblock content_account_edit_form %}
+					.card
+						| {% block content_account_edit_form %}
+						| {% endblock content_account_edit_form %}
 
 | {% endblock content %}
 
