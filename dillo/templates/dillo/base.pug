@@ -22,15 +22,16 @@ html(lang="en")
 		| {% block body %}
 
 		| {% if messages %}
-		| {% for message in messages %}
-		.alert.alert-dismissible.show(
-			role='alert',
-			class="{% if message.tags %}alert-{{ message.tags }}{% endif %}")
-			| {{ message }}
-			button.close(type='button', data-dismiss='alert', aria-label='Close')
-				span
-					i.i-cancel(aria-hidden='true')
-		| {% endfor %}
+		.container
+			| {% for message in messages %}
+			.alert.alert-dismissible.show(
+				role='alert',
+				class="{% if message.tags %}alert-{{ message.tags }}{% endif %}")
+				| {{ message }}
+				button.btn-link.close(type='button', data-dismiss='alert', aria-label='Close')
+					span
+						i.i-cancel(aria-hidden='true')
+			| {% endfor %}
 		| {% endif %}
 
 		| {% block navbar %}
