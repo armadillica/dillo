@@ -1,11 +1,11 @@
 | {% load thumbnail %}
 
 a.profile-avatar-container(
-	class="{{ user.profile.is_looking_for_work|yesno:'is-looking-for-work ,' }}{{ is_link_disabled }}",
+	class="{{ user.profile.is_looking_for_work|yesno:'is-looking-for-work,' }} {{ is_link_disabled }}",
 	data-placement="{% if tooltip %}{{ tooltip }}{% endif %}",
 	data-toggle="{% if tooltip %}tooltip{% endif %}",
 	href="{% url 'profile-detail' user.username %}",
-	title="{{ user.username }}")
+	title="{{ user.username }}{% if user.profile.is_looking_for_work %} | Looking for work{% endif %}")
 	.profile-avatar(
 		class="{% if size %}avatar-size-{{ size }}{% endif %}")
 		| {% thumbnail user.profile.avatar "128x128" crop="center" as im %}
