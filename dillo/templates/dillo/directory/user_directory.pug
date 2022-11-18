@@ -32,6 +32,12 @@ script(src='//unpkg.com/globe.gl')
         option(selected=(sort == '-likes_count') value="-likes_count") Likes Count
         option(selected=(sort == '-posts_count') value="-posts_count") Posts Count
         option(selected=(sort == '-views_count') value="-views_count") Views Count
+    .form-field-container
+      .btn-checkbox#js-is-looking-for-work(
+        class="{% if url_params.is_free == 'true' %}active{% endif %}")
+        span
+          i.i-checkbox
+          span Is Looking for Work
 
     div
       .btn(
@@ -74,6 +80,11 @@ script(src='//unpkg.com/globe.gl')
 
 script.
 
+  let url = new URL(window.location);
+  const urlParams = new URLSearchParams();
+  let choices = [];
+  let filterIsLookingForWork = false;
+
   function fetchUsers(url) {
     url.pathname = '/api/users/'
     fetch(url)
@@ -104,7 +115,7 @@ script.
     document.getElementById('clear-city').style.display = "flex";
   }
 
-  function updateUrlParams(choices, urlParams) {
+  function updateUrlParams() {
     for (let choice of choices) {
       let key = choice.passedElement.element.id;
       urlParams.delete(key);
@@ -119,10 +130,6 @@ script.
       }
     }
   }
-
-  let url = new URL(window.location);
-  const urlParams = new URLSearchParams();
-  let choices = [];
 
   function setupGlobe() {
     const elem = document.getElementById('globe');
@@ -158,7 +165,6 @@ script.
     }
   }
 
-
   const choiceElements = document.getElementsByClassName('js-choice-multi');
 
   for (let choiceElement of choiceElements) {
@@ -171,7 +177,7 @@ script.
     choiceElement.addEventListener(
       'change',
       function (event) {
-        updateUrlParams(choices, urlParams);
+        updateUrlParams();
         url.search = urlParams.toString();
         fetchUsers(url);
         fetchUsersGlobe(url, globe)
@@ -188,13 +194,24 @@ script.
   choiceSingleElement.addEventListener(
     'change',
     function (event) {
-      updateUrlParams(choices, urlParams);
+      updateUrlParams();
       url.search = urlParams.toString();
       fetchUsers(url);
       fetchUsersGlobe(url, globe)
     },
     false,
   );
+
+  let isLookingForWorkElement = document.getElementById('js-is-looking-for-work');
+  isLookingForWorkElement.addEventListener('click', (e) => {
+    // TODO: replace with an actual checkbox
+    e.currentTarget.classList.toggle('active');
+    filterIsLookingForWork = !filterIsLookingForWork;
+    urlParams.set('is-looking-for-work', filterIsLookingForWork);
+    url.search = urlParams.toString();
+    fetchUsers(url);
+    fetchUsersGlobe(url, globe)
+  })
 
   // On page load fetch all users
   fetchUsers(url);

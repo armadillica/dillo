@@ -25,6 +25,7 @@ class SelectItem:
 class UrlParams:
     sort: str
     page: int
+    is_looking_for_work: bool
     badges: Optional[List]
     tags: Optional[List]
     cities: Optional[List]
@@ -97,12 +98,21 @@ class FilterMixin(TemplateView):
                 page = 1
             return page
 
+        def get_is_looking_for_work() -> bool:
+            v = self.request.GET.get('is-looking-for-work', False)
+            if v == 'true':
+                v = True
+            else:
+                v = False
+            return v
+
         self.url_params = UrlParams(
             tags=get_qs_list('tag'),
             badges=get_qs_list('badge'),
             cities=get_qs_list('city'),
             sort=self.request.GET.get('sort', '-likes_count'),
             page=get_page(),
+            is_looking_for_work=get_is_looking_for_work(),
         )
 
         return super().dispatch(request, *args, **kwargs)
@@ -152,7 +162,11 @@ class ApiUserListView(FilterMixin):
 
     def get_queryset(self):
         qs = (
-            Profile.objects.filter(user__is_active=True)
+            Profile.objects.filter(
+                user__is_active=True,
+                is_looking_for_work=self.url_params.is_looking_for_work,
+                # trust_level__gt=0,
+            )
             .prefetch_related('badges')
             .prefetch_related('user__post_set')
             .annotate(posts_count=Count('user__post'))
@@ -177,7 +191,11 @@ class ApiUserGlobeView(FilterMixin):
     def get(self, request, *args, **kwargs):
         locations = []
         qs = (
-            Profile.objects.filter(user__is_active=True)
+            Profile.objects.filter(
+                user__is_active=True,
+                is_looking_for_work=self.url_params.is_looking_for_work,
+                # trust_level__gt=0,
+            )
             .filter(city_ref__isnull=False)
             .order_by('-likes_count')
             .prefetch_related('city_ref')
