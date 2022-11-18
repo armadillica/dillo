@@ -270,7 +270,15 @@ class ProfileSetupAvatar(ProfileSetupUpdateViewMixin):
 
 class ProfileSetupBio(ProfileSetupUpdateViewMixin):
     message = 'Tell us a bit more about you.'
-    fields = ['bio', 'tags', 'country', 'city', 'reel']
+    fields = [
+        'tagline',
+        'bio',
+        'tags',
+        'country',
+        'city',
+        'reel',
+        'is_looking_for_work',
+    ]
 
     def get_form(self, form_class=None):
         from django.forms import widgets
