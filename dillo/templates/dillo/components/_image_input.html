@@ -2,5 +2,12 @@
 <div class="profile-avatar-preview">
 	<img id="js-avatar-preview" src="{{ widget.value.url }}" title="Change Picture">
 </div>
+{% else %}
+  <span class="btn btn-secondary" id="js-avatar-preview">
+    <span>
+      <i class="i-upload"></i>
+      <span>Upload Picture</span>
+    </span>
+  </span>
 {% endif %}
 <input style="display: none" type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
