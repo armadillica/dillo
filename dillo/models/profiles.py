@@ -223,7 +223,7 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
     @property
     def location_label(self):
         if self.city and self.country:
-            return f"{self.city}, {self.country}"
+            return f"{self.city}, {self.country.name}"
         elif self.country:
             return self.country.name
         else:
