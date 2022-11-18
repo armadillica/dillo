@@ -71,7 +71,7 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
         primary_key=True,
     )
     name = models.CharField(max_length=125)
-    tagline = models.TextField(
+    tagline = models.CharField(
         max_length=80, blank=True, help_text='Tell us about you. In 80 characters.'
     )
     bio = models.TextField(max_length=512, blank=True, help_text='Your life story.')
@@ -131,7 +131,11 @@ class Profile(ChangeAwareness, CreatedUpdatedMixin, models.Model):
 
     ip_address = models.GenericIPAddressField(blank=True, null=True)
 
-    is_looking_for_work = models.BooleanField(default=False, verbose_name='Looking for work')
+    is_looking_for_work = models.BooleanField(
+        default=False,
+        verbose_name='Looking for work',
+        help_text='Your profile will show that you are open to work opporunities.',
+    )
 
     # Posts that have been added by the user to the "Bookmarks" list
     bookmarks = models.ManyToManyField('Post', related_name='bookmarks')
