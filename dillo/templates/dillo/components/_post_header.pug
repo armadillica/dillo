@@ -1,101 +1,113 @@
 | {% load i18n %}
 | {% load activity_tags %}
 .post-header
-	| {% include 'dillo/components/_profile_avatar.pug' with user=post.user %}
+  | {% include 'dillo/components/_profile_avatar.pug' with user=post.user %}
 
-	a.post-author(
-		href="{% url 'profile-detail' post.user.username %}",
-		title="{{ post.user }}")
-		span {{ post.user }}
+  a.post-author(
+    href="{% url 'profile-detail' post.user.username %}",
+    title="{{ post.user }}")
+    span {{ post.user }}
 
-	| {% if request.user.is_authenticated and request.user.id != post.user.id and not request.user|is_following:post.user %}
-	a.post-follow(
-		class="js-follow-toggle{% if request.user|is_following:post.user %} is-follower{% endif %}",
-		data-follow_toggle_label="{% if request.user|is_following:post.user %}Follow{% else %}Unfollow{% endif %}"
-		href="{% follow_url post.user %}")
-		span
-			i.i-user-plus
-			span {% if request.user|is_following:post.user %}Unfollow{% else %}Follow{% endif %}
-	| {% endif %}
+  | {% if request.user.is_authenticated and request.user.id != post.user.id and not request.user|is_following:post.user %}
+  a.post-follow(
+    class="js-follow-toggle{% if request.user|is_following:post.user %} is-follower{% endif %}",
+    data-follow_toggle_label="{% if request.user|is_following:post.user %}Follow{% else %}Unfollow{% endif %}"
+    href="{% follow_url post.user %}")
+    span
+      i.i-user-plus
+      span {% if request.user|is_following:post.user %}Unfollow{% else %}Follow{% endif %}
+  | {% endif %}
 
-	| {% if show_tags %}
-	| {% if post.tags.names %}
-	| {% for tag in post.tags.names %}
-	a.btn-link(href="{% url 'posts_list_tag' tag %}") &#35;{{ tag }}
-	| {% endfor %}
-	| {% endif %}
-	| {% endif %}
+  | {% if show_tags %}
+  | {% if post.tags.names %}
+  | {% for tag in post.tags.names %}
+  a.btn-link(href="{% url 'posts_list_tag' tag %}") &#35;{{ tag }}
+  | {% endfor %}
+  | {% endif %}
+  | {% endif %}
 
-	| {% if request.user.is_authenticated %}
-	.post-header-action
-		nav.navbar.navbar-expand
-			ul.navbar-nav
-				li.dropdown
-					a.btn(
-						id="dropdown-post-{{ post.id }}"
-						href='#',
-						data-toggle='dropdown',
-						aria-haspopup='true',
-						aria-expanded='false')
-						span
-							i.i-more-vertical
+  | {% if request.user.is_authenticated %}
+  .post-header-action
+    nav.navbar.navbar-expand
+      ul.navbar-nav
+        li.dropdown
+          a.btn(
+            id="dropdown-post-{{ post.id }}"
+            href='#',
+            data-toggle='dropdown',
+            aria-haspopup='true',
+            aria-expanded='false')
+            span
+              i.i-more-vertical
 
-					.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-post-{{ post.id }}')
-						a.dropdown-item(
-							href="{% follow_url post %}",
-							class="js-follow-toggle",
-							data-follow_toggle_label="Turn {% if request.user|is_following:post.user %}On{% else %}Off{% endif %} Post Notifications"
-							title='{% trans "Toggle Post Notifications" %}')
-							i.i-bell-off
-							| {% trans "Turn" %} {% if request.user|is_following:post %}Off{% else %}On{% endif %} {% trans "Post Notifications" %}
+          .dropdown-menu.dropdown-menu-right(aria-labelledby='dropdown-post-{{ post.id }}')
+            a.dropdown-item(
+              href="{% follow_url post %}",
+              class="js-follow-toggle",
+              data-follow_toggle_label="Turn {% if request.user|is_following:post.user %}On{% else %}Off{% endif %} Post Notifications"
+              title='{% trans "Toggle Post Notifications" %}')
+              i.i-bell-off
+              | {% trans "Turn" %} {% if request.user|is_following:post %}Off{% else %}On{% endif %} {% trans "Post Notifications" %}
 
-						.dropdown-divider
+            .dropdown-divider
 
-						| {% if request.user.id == post.user.id %}
-						a.dropdown-item(
-							href="#",
-							class="js-show-modal",
-							data-modal_category='form',
-							data-modal_title='{% trans "Edit" %}',
-							data-content_url="{% url 'embed_post_update' hash_id=post.hash_id %}",
-							data-toggle='modal',
-							data-target='#modal')
-							i.i-edit
-							| {% trans "Edit" %}
+            | {% if request.user.id == post.user.id %}
+            a.dropdown-item(
+              href="#",
+              class="js-show-modal",
+              data-modal_category='form',
+              data-modal_title='{% trans "Edit" %}',
+              data-content_url="{% url 'embed_post_update' hash_id=post.hash_id %}",
+              data-toggle='modal',
+              data-target='#modal')
+              i.i-edit
+              | {% trans "Edit" %}
 
-						// TODO: Add confirmation prompt.
-						a.dropdown-item.danger(
-							href="#",
-							class="js-delete-post",
-							data-post_delete_url="{% url 'post_delete' hash_id=post.hash_id %}",
-							title='{% trans "Delete Post" %}')
-							i.i-trash
-							| {% trans "Delete Post" %}
+            // TODO: Add confirmation prompt.
+            a.dropdown-item.danger(
+              href="#",
+              class="js-delete-post",
+              data-post_delete_url="{% url 'post_delete' hash_id=post.hash_id %}",
+              title='{% trans "Delete Post" %}')
+              i.i-trash
+              | {% trans "Delete Post" %}
 
-						| {% else %}
-						a.dropdown-item(
-							href="#",
-							class="js-show-modal",
-							data-modal_category='form',
-							data-modal_title='{% trans "Report" %}',
-							data-content_url="{% url 'report_content' content_type_id=post.content_type_id object_id=post.id %}",
-							data-toggle='modal',
-							data-target='#modal')
-							i.i-flag
-							| {% trans "Report" %}...
-						| {% endif %}
+            | {% else %}
+            a.dropdown-item(
+              href="#",
+              class="js-show-modal",
+              data-modal_category='form',
+              data-modal_title='{% trans "Report" %}',
+              data-content_url="{% url 'report_content' content_type_id=post.content_type_id object_id=post.id %}",
+              data-toggle='modal',
+              data-target='#modal')
+              i.i-flag
+              | {% trans "Report" %}...
+            | {% endif %}
 
-						| {% if request.user.is_superuser %}
-						.dropdown-divider
-						a.dropdown-item.is-admin(
-							href="{% url 'admin:dillo_post_change' post.id %}",
-							title='{% trans "See Post in Whoosh" %}')
-							i.i-coffee
-							| {% trans "Post" %}
-						a.dropdown-item.is-admin(
-							href="{% url 'admin:auth_user_change' post.user.id %}",
-							title='{% trans "See User" %}')
-							i.i-coffee
-							| {% trans "User" %}
-						| {% endif %}
-	| {% endif %}
+            | {% if request.user.is_superuser %}
+            .dropdown-divider
+            a.dropdown-item.is-admin(
+              href="{% url 'admin:dillo_post_change' post.id %}",
+              title='{% trans "See Post in Whoosh" %}')
+              i.i-coffee
+              | {% trans "Post" %}
+            a.dropdown-item.is-admin(
+              href="{% url 'admin:auth_user_change' post.user.id %}",
+              title='{% trans "See User" %}')
+              i.i-coffee
+              | {% trans "User" %}
+            a.dropdown-item.is-admin(
+              href="{{ url_toggle_pinned }}",
+              class="js-toggle-pinned",
+              title='{% trans "Pin" %}')
+              i.i-coffee
+              span.label {% if post.is_pinned_by_moderator %}Unpin{% else %}Pin{% endif %}
+            a.dropdown-item.is-admin(
+              href="{{ url_toggle_hidden }}",
+              class="js-toggle-hidden",
+              title='{% trans "Hide" %}')
+              i.i-coffee
+              span.label {% if post.is_hidden_by_moderator %}Show{% else %}Hide{% endif %}
+            | {% endif %}
+  | {% endif %}

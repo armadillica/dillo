@@ -132,6 +132,16 @@ urlpatterns += [
     path('p/create/', dillo.views.posts.publish.PostCreateView.as_view(), name='post_create'),
     path('p/<slug:hash_id>', dillo.views.posts.PostDetailView.as_view(), name='post_detail'),
     path('p/<slug:hash_id>/delete', dillo.views.posts.post_delete, name='post_delete'),
+    path(
+        'p/<slug:hash_id>/toggle-hidden',
+        dillo.views.posts.post_toggle_is_hidden_by_moderator,
+        name='post_toggle_hidden',
+    ),
+    path(
+        'p/<slug:hash_id>/toggle-pinned',
+        dillo.views.posts.entity_toggle_is_pinned_by_moderator,
+        name='post_toggle_pinned',
+    ),
     path('p/<slug:hash_id>/status', dillo.views.posts.publish.post_status, name='post_status'),
     path(
         'p/<slug:hash_id>/upload',
