@@ -161,8 +161,6 @@ def post_toggle_is_hidden_by_moderator(request, hash_id):
     if not request.user.is_superuser:
         raise SuspiciousOperation('User %i tried to hide post %s' % (request.user.id, hash_id))
     post = get_object_or_404(Post, hash_id=hash_id)
-    if request.user != post.user:
-        raise SuspiciousOperation('User %i tried to hide post %s' % (request.user.id, hash_id))
     post.is_hidden_by_moderator = not post.is_hidden_by_moderator
     post.save()
     label = 'Show' if post.is_hidden_by_moderator else 'Hide'
@@ -176,8 +174,6 @@ def entity_toggle_is_pinned_by_moderator(request, hash_id):
     if not request.user.is_superuser:
         raise SuspiciousOperation('User %i tried to pin post %s' % (request.user.id, hash_id))
     post = get_object_or_404(Post, hash_id=hash_id)
-    if request.user != post.user:
-        raise SuspiciousOperation('User %i tried to pin post %s' % (request.user.id, hash_id))
     post.is_pinned_by_moderator = not post.is_pinned_by_moderator
     post.save()
     label = 'Unpin' if post.is_pinned_by_moderator else 'Pin'
