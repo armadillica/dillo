@@ -63,7 +63,6 @@
               i.i-edit
               | {% trans "Edit" %}
 
-            // TODO: Add confirmation prompt.
             a.dropdown-item.danger(
               href="#",
               class="js-delete-post",
@@ -85,29 +84,35 @@
               | {% trans "Report" %}...
             | {% endif %}
 
-            | {% if request.user.is_superuser %}
+            | {% if request.user.is_staff %}
             .dropdown-divider
-            a.dropdown-item.is-admin(
-              href="{% url 'admin:dillo_post_change' post.id %}",
-              title='{% trans "See Post in Whoosh" %}')
-              i.i-coffee
-              | {% trans "Post" %}
-            a.dropdown-item.is-admin(
-              href="{% url 'admin:auth_user_change' post.user.id %}",
-              title='{% trans "See User" %}')
-              i.i-coffee
-              | {% trans "User" %}
+
             a.dropdown-item.is-admin(
               href="{{ url_toggle_pinned }}",
               class="js-toggle-pinned",
               title='{% trans "Pin" %}')
-              i.i-coffee
+              i.i-pin
               span.label {% if post.is_pinned_by_moderator %}Unpin{% else %}Pin{% endif %}
+
             a.dropdown-item.is-admin(
               href="{{ url_toggle_hidden }}",
               class="js-toggle-hidden",
               title='{% trans "Hide" %}')
-              i.i-coffee
+              i.i-eye
               span.label {% if post.is_hidden_by_moderator %}Show{% else %}Hide{% endif %}
+
+            .dropdown-divider
+
+            a.dropdown-item.is-admin(
+              href="{% url 'admin:auth_user_change' post.user.id %}",
+              title='{% trans "See User" %}')
+              i.i-user
+              | {% trans "User" %}
+
+            a.dropdown-item.is-admin(
+              href="{% url 'admin:dillo_post_change' post.id %}",
+              title='{% trans "See Post in Whoosh" %}')
+              i.i-coffee
+              | {% trans "Admin" %}
             | {% endif %}
   | {% endif %}
