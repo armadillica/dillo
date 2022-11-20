@@ -1,0 +1,52 @@
+| {% extends "dillo/base_columns.pug" %}
+| {% load i18n %}
+| {% load pipeline %}
+| {% load crispy_forms_tags %}
+
+| {% block opengraph %}
+| {% endblock opengraph %}
+
+| {% block stream %}
+
+.studio-detail
+  h3 Edit Studio
+
+  hr
+
+  form.form-container(method="post", enctype="multipart/form-data")
+    | {% csrf_token %}
+    | {{ form | crispy }}
+
+    .form-cta
+      a.btn-secondary(href="{% url 'organization-update' pk=object.id %}")
+        span Cancel
+
+      button.btn.btn-accent(type="submit")
+        span Save Changes
+
+| {% endblock stream %}
+
+| {% block javascript_extra %}
+| {{ block.super }}
+| {% javascript 'choices' %}
+script.
+  let choiceCategoriesElement = document.getElementById('id_categories');
+  new Choices(choiceCategoriesElement);
+  let choiceCityElement = document.getElementById('id_city');
+  let choiceCity = new Choices(choiceCityElement, {maxItemCount: 1});
+  let choiceCountryElement = document.getElementById('id_country');
+  new Choices(choiceCountryElement);
+  choiceCountryElement.addEventListener(
+    'change',
+    (event) => {
+      let countryCode = event.detail.value;
+      fetch(`/api/cities-in-country/${countryCode}`)
+        .then(response => response.json())
+        .then(data => {
+          choiceCity.setChoices(data.cities, 'value', 'label', true);
+          choiceCity.removeActiveItems();
+        });
+    },
+    false,
+  );
+| {% endblock javascript_extra %}

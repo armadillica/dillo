@@ -5,11 +5,11 @@ from typing import Optional, List
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
 
-
-from dillo.models.profiles import City, Profile, Badge
+from dillo.models.profiles import Profile, Badge
+from dillo.models.cities import City
+from dillo.views.globe import get_globe_locations
 
 log = logging.getLogger(__name__)
 
@@ -52,33 +52,6 @@ class SearchFacets:
     badges: Optional[List[SelectItem]]
     tags: Optional[List[SelectItem]]
     cities: Optional[str]
-
-
-def globe_view(request):
-    locations = []
-    users = (
-        Profile.objects.filter(city_ref__isnull=False)
-        .prefetch_related('city_ref')
-        .values('city_ref_id', 'city_ref__lat', 'city_ref__lng', 'city_ref__name')
-        .annotate(count=Count('city_ref_id'))
-    )
-    for u in users:
-        locations.append(
-            {
-                'lat': u['city_ref__lat'],
-                'lng': u['city_ref__lng'],
-                'label': '',
-                'cityId': u['city_ref_id'],
-                'cityName': u['city_ref__name'],
-                'count': u['count'],
-            }
-        )
-    return render(request, 'dillo/directory/user_globe.pug', {'locations': locations})
-
-
-def api_city_in_country(request, country_code):
-    cities = City.objects.filter(country=country_code.upper())
-    return JsonResponse({'cities': [{'value': city.name, 'label': city.name} for city in cities]})
 
 
 class FilterMixin(TemplateView):
@@ -189,7 +162,6 @@ class ApiUserListView(FilterMixin):
 
 class ApiUserGlobeView(FilterMixin):
     def get(self, request, *args, **kwargs):
-        locations = []
         qs = (
             Profile.objects.filter(
                 user__is_active=True,
@@ -207,15 +179,6 @@ class ApiUserGlobeView(FilterMixin):
         if self.url_params.badges:
             qs = qs.filter(badges__in=self.url_params.badges).distinct()
 
-        for profile in qs:
-            locations.append(
-                {
-                    'lat': profile['city_ref__lat'],
-                    'lng': profile['city_ref__lng'],
-                    'label': '',
-                    'cityId': profile['city_ref_id'],
-                    'cityName': profile['city_ref__name'],
-                    'count': profile['count'],
-                }
-            )
+        locations = get_globe_locations(qs)
+
         return JsonResponse({'locations': locations})

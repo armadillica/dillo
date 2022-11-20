@@ -9,7 +9,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import UpdateView, DetailView
-from user_agents import parse
 
 from dillo import forms
 from dillo.models.posts import Post

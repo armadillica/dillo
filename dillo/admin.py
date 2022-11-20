@@ -1,4 +1,5 @@
 import logging
+import modulefinder
 from typing import List, Tuple, Any
 
 from django import forms
@@ -34,6 +35,7 @@ import dillo.models.software
 import dillo.models.static_assets
 import dillo.models.jobs
 import dillo.models.moderation
+import dillo.models.organizations
 
 from dillo.moderation import deactivate_user_and_remove_content
 
@@ -600,3 +602,27 @@ class SpamWordAdmin(admin.ModelAdmin):
 @admin.register(dillo.models.moderation.AllowedDomain)
 class AllowedDomainAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(dillo.models.organizations.OrganizationCategory)
+class OrganizationCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(dillo.models.organizations.Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'city_ref',
+        'logo_height',
+        'logo_width',
+    )
+
+    autocomplete_fields = ('user',)
+    # inlines = [OrganizationCategoryAdmin]
+    filter_horizontal = ('categories',)
+    list_display = (
+        'name',
+        'visibility',
+        'user',
+    )

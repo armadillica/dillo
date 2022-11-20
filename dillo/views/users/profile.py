@@ -22,7 +22,8 @@ import dillo.tasks
 import dillo.tasks.storage
 from dillo import forms
 from dillo.models.posts import get_trending_tags, Post
-from dillo.models.profiles import Profile, City
+from dillo.models.profiles import Profile
+from dillo.models.cities import City
 from dillo.views.mixins import PostListEmbedView, OgData, UserListEmbedView
 
 log = logging.getLogger(__name__)

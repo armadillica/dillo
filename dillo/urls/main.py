@@ -3,6 +3,7 @@ from django.contrib.flatpages.views import flatpage
 from django.urls import path, include
 from django.views.generic import TemplateView, RedirectView
 
+import dillo.views.globe
 import dillo.views.comments
 import dillo.views.contact
 import dillo.views.custom_logout
@@ -25,6 +26,7 @@ import dillo.views.actstream
 import dillo.views.explore
 import dillo.views.moderation
 import dillo.views.user_from_oembed_link
+import dillo.views.organizations
 
 # User Pages
 urlpatterns = [
@@ -322,6 +324,31 @@ urlpatterns += [
     path('jobs/<int:pk>/update', dillo.views.jobs.JobUpdateView.as_view(), name='job-update'),
 ]
 
+# Organizations (Studios/Teams/Companies)
+urlpatterns += [
+    path('o/', dillo.views.organizations.OrganizationListView.as_view(), name='organization-list'),
+    path(
+        'api/o/',
+        dillo.views.organizations.ApiOrganizationListView.as_view(),
+        name='api-organization-list',
+    ),
+    path(
+        'api/o-globe',
+        dillo.views.organizations.ApiOrganizationGlobeView.as_view(),
+        name='api-organization-globe',
+    ),
+    path(
+        'o/create',
+        dillo.views.organizations.OrganizationCreateView.as_view(),
+        name='organization-create',
+    ),
+    path(
+        'o/<int:pk>/update',
+        dillo.views.organizations.OrganizationUpdateView.as_view(),
+        name='organization-update',
+    ),
+]
+
 # Flat Pages
 urlpatterns += [
     path('faq/', flatpage, {'url': '/faq/'}, name='faq'),
@@ -431,13 +458,8 @@ urlpatterns += [
     ),
 ]
 
-# Globe
+# Directory
 urlpatterns += [
-    path(
-        'globe',
-        dillo.views.users.directory.globe_view,
-        name='user-globe',
-    ),
     path(
         'directory',
         dillo.views.users.directory.UserListView.as_view(),
@@ -455,7 +477,7 @@ urlpatterns += [
     ),
     path(
         'api/cities-in-country/<slug:country_code>',
-        dillo.views.users.directory.api_city_in_country,
+        dillo.views.globe.api_city_in_country,
         name='api-cities-in-country',
     ),
 ]

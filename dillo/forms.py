@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 class ImageWidget(forms.ClearableFileInput):
     """Overrides the ClearableFileInput template_name.
 
-    This way we can display an preview of the image, if available.
+    This way we can display a preview of the image, if available.
     """
 
     template_name = 'dillo/components/_image_input.html'
@@ -77,11 +77,6 @@ class ProfileForm(forms.ModelForm):
             'avatar': ImageWidget,
             'city': forms.Select(),
         }
-
-    # Override form widgets
-    def __init__(self, *args, **kwargs):
-        super(ProfileForm, self).__init__(*args, **kwargs)
-        self.fields['tagline'].widget.attrs['rows'] = 2
 
 
 class ProfileLinksForm(forms.ModelForm):

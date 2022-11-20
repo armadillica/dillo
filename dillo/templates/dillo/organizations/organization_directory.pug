@@ -1,0 +1,195 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load pipeline %}
+
+| {% block head_extra %}
+title Users World Map
+script(src='//unpkg.com/d3-array')
+script(src='//unpkg.com/d3-scale')
+script(src='//unpkg.com/globe.gl')
+| {% stylesheet 'edit' %}
+| {% javascript 'choices' %}
+
+| {% endblock head_extra %}
+
+| {% block content %}
+
+.dir-organizations-header
+  .dir-organizations-header-filters
+    .form-field-container
+      select#category.js-choice.js-choice-multi(name="category", multiple)
+        | {% for category in search_facets.categories %}
+        option(selected=category.is_selected value="{{ category.value }}") {{ category.label }}
+        | {% endfor %}
+
+    div
+      .btn(
+        title="Toggle Globe"
+        onclick="toggleGlobeVisibility()")
+        span
+          i.i-globe
+
+  .dir-city-title
+    h2#selected-city {% if search_facets.cities %} {{ search_facets.cities.0 }} {% endif %}
+
+    .btn#clear-city(
+      style="{% if not search_facets.cities %}display:none{% endif %}",
+      onclick="clearCityFilter()")
+      span Clear Filter
+.row.dir-container
+  .col.dir-organizations
+
+    ul.dir-organizations-list#organization-list
+
+  .col.dir-globe#globe-container
+    .globe-container
+    .globe#globe
+
+| {% endblock content %}
+
+| {% block javascript_extra %}
+
+| {% block js_data %}
+| {{ block.super }}
+| {% endblock js_data %}
+
+| {% block vue_components %}
+| {{ block.super }}
+| {% endblock vue_components %}
+
+| {% block vue_script %}
+| {% javascript 'vue_generic' %}
+| {% endblock vue_script %}
+
+script.
+
+  let url = new URL(window.location);
+  const urlParams = new URLSearchParams();
+  let choices = [];
+
+  function fetchItems(url) {
+    url.pathname = '/api/o/'
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('organization-list').innerHTML = data;
+        const historyUrl = new URL(window.location);
+        historyUrl.search = url.search;
+        window.history.pushState({}, '', historyUrl);
+      });
+  }
+
+  function fetchItemsGlobe(url, globe) {
+    url.pathname = '/api/o-globe'
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        globe.pointsData(data.locations);
+      });
+  }
+
+  function fetchItemsByCity(cityId, cityName, urlParams) {
+    urlParams.delete('city');
+    urlParams.append('city', cityId);
+    url.search = urlParams.toString();
+    fetchItems(url);
+    document.getElementById('selected-city').innerText = cityName;
+    document.getElementById('clear-city').style.display = "flex";
+  }
+
+  function updateUrlParams() {
+    for (let choice of choices) {
+      let key = choice.passedElement.element.id;
+      urlParams.delete(key);
+      if (choice._isSelectMultipleElement) {
+        for (let v of choice.getValue(true)) {
+          urlParams.append(key, v);
+        }
+      } else {
+        // Passing the whole value of the select, if single select.
+        // Otherwise, each char is iterated over
+        urlParams.append(key, choice.getValue(true));
+      }
+    }
+  }
+
+  function setupGlobe() {
+    const elem = document.getElementById('globe');
+    const globe = Globe()
+      .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+      .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+      .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      .showAtmosphere(false) // globe has no atmosphere
+      .width(elem.offsetWidth)
+      .height(elem.offsetHeight)
+      // .pointsData(locations)
+      .pointColor(() => '#33CCB5')
+      .pointLabel('cityName')
+      .pointAltitude(d => d.count / 100)
+      .onPointHover((point, prevPoint) => {globe.controls().autoRotate = !point;})
+      .onPointClick(d => fetchItemsByCity(d.cityId, d.cityName, urlParams))
+      (elem);
+    globe.pointOfView({lat: 45, lng: 5, altitude: 3});
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.1;
+
+    return globe;
+  }
+
+  let globe = setupGlobe();
+
+  function toggleGlobeVisibility() {
+    let x = document.getElementById("globe-container");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+  const choiceElements = document.getElementsByClassName('js-choice-multi');
+
+  for (let choiceElement of choiceElements) {
+    let choice = new Choices(choiceElement, {
+      placeholderValue: `Select ${choiceElement.name}`,
+      removeItemButton: true
+    });
+
+    choices.push(choice);
+    choiceElement.addEventListener(
+      'change',
+      function (event) {
+        updateUrlParams();
+        url.search = urlParams.toString();
+        fetchItems(url);
+        fetchItemsGlobe(url, globe)
+      },
+      false,
+    );
+  }
+
+
+  // On page load fetch all organizations
+  fetchItems(url);
+  fetchItemsGlobe(url, globe);
+
+  function clearCityFilter() {
+    fetchItems(url);
+    document.getElementById('clear-city').style.display = "none";
+    document.getElementById('selected-city').innerText = "Click on a city to display organizations";
+    urlParams.delete('city');
+    url.search = urlParams.toString();
+    fetchItems(url);
+
+  }
+
+  // Load more profiles (async)
+  $(document).on('click', '.js-load-more', function (event) {
+    let $organizationListContainer = $('#organization-list');
+    let $loadMoreButton = $(this);
+    $.get($(this).data('next_url'), function (data) {
+      $organizationListContainer.append(data);
+      $loadMoreButton.remove();
+    });
+  });
+
+| {% endblock javascript_extra %}

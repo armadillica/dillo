@@ -14,6 +14,7 @@ from taggit.managers import TaggableManager
 from django_countries.fields import CountryField
 
 import dillo.tasks.profile
+from dillo.models.cities import City
 from dillo.models.communities import Community
 from dillo.models.mixins import (
     CreatedUpdatedMixin,
@@ -24,22 +25,6 @@ from dillo.models.mixins import (
 from dillo.validators import validate_reel_url
 
 log = logging.getLogger(__name__)
-
-
-class City(models.Model):
-    """Cities of the world.
-
-    Populated in migration 0006.
-    """
-
-    name = models.CharField(max_length=256)
-    name_ascii = models.CharField(max_length=256)
-    lat = models.FloatField(verbose_name='latitude')
-    lng = models.FloatField(verbose_name='longitude')
-    country = models.CharField(max_length=2)
-
-    def __str__(self):
-        return self.name
 
 
 class TrustLevel(models.IntegerChoices):

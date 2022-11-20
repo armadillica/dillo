@@ -1,0 +1,47 @@
+| {% extends "dillo/base_single_card.pug" %}
+| {% load i18n %}
+| {% load pipeline %}
+| {% load crispy_forms_tags %}
+
+| {% block page_title %}
+| {% trans 'Submit a Studio' %} {% trans 'on' %}
+| {% endblock page_title %}
+
+| {% block content_card %}
+form.card(method="post", enctype="multipart/form-data")
+  .card-header
+    h1 {% trans 'Add a Studio' %}
+  .card-body
+    | {% csrf_token %}
+    | {{ form | crispy }}
+
+  .card-cta
+    button.btn.btn-accent(type="submit")
+      i.i-check
+      span {% trans 'Submit Studio' %}
+| {% endblock content_card %}
+
+| {% block javascript_extra %}
+| {{ block.super }}
+| {% javascript 'choices' %}
+script.
+  let choiceCategoriesElement = document.getElementById('id_categories');
+  new Choices(choiceCategoriesElement);
+  let choiceCityElement = document.getElementById('id_city');
+  let choiceCity = new Choices(choiceCityElement, {maxItemCount: 1});
+  let choiceCountryElement = document.getElementById('id_country');
+  new Choices(choiceCountryElement);
+  choiceCountryElement.addEventListener(
+    'change',
+    (event) => {
+      let countryCode = event.detail.value;
+      fetch(`/api/cities-in-country/${countryCode}`)
+        .then(response => response.json())
+        .then(data => {
+          choiceCity.setChoices(data.cities, 'value', 'label', true);
+          choiceCity.removeActiveItems();
+        });
+    },
+    false,
+  );
+| {% endblock javascript_extra %}

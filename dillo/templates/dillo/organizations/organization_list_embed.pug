@@ -1,0 +1,31 @@
+| {% load i18n %}
+| {% load dillo_filters %}
+
+| {% for object in page_obj %}
+li
+  a.dir-user-item(href="{{ object.website }}")
+    .dir-user-item-header
+      .dir-user-title
+        h3 {{ object.name }}
+        .categories-row
+          | {% for category in object.categories.all %}
+          span {{ category }}
+          | {% endfor %}
+
+    .dir-user-subtitle {{ object.location_label }}
+
+    | {% if object.description %}
+    .dir-user-item-bio {{ object.description }}
+    | {% endif %}
+
+  | {% empty %}
+  p No studio matches this query. Try something else!
+| {% endfor %}
+
+//- Pagination.
+| {% if page_obj.has_next %}
+.btn.btn-link-text.btn-wide(
+  class="js-load-more",
+  data-next_url="{% url 'api-organization-list' %}?page={{ page_obj.next_page_number }}")
+  | {% trans 'Load more studios...' %}
+| {% endif %}
