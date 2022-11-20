@@ -13,8 +13,8 @@ script(src='//unpkg.com/globe.gl')
 
 | {% block content %}
 
-.dir-organizations-header
-  .dir-organizations-header-filters
+.dir-users-header
+  .dir-users-header-filters
     .form-field-container
       select#category.js-choice.js-choice-multi(name="category", multiple)
         | {% for category in search_facets.categories %}
@@ -28,19 +28,20 @@ script(src='//unpkg.com/globe.gl')
         span
           i.i-globe
 
-  .dir-city-title
+  .dir-city-title.pl-3
     h2#selected-city {% if search_facets.cities %} {{ search_facets.cities.0 }} {% endif %}
 
     .btn#clear-city(
       style="{% if not search_facets.cities %}display:none{% endif %}",
       onclick="clearCityFilter()")
       span Clear Filter
+
 .row.dir-container
-  .col.dir-organizations
+  .col-md-4
 
-    ul.dir-organizations-list#organization-list
+    ul.dir-items-list#organization-list
 
-  .col.dir-globe#globe-container
+  .col-md-8.dir-globe#globe-container
     .globe-container
     .globe#globe
 
@@ -115,14 +116,16 @@ script.
   function setupGlobe() {
     const elem = document.getElementById('globe');
     const globe = Globe()
-      .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
-      .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-      .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
-      .showAtmosphere(false) // globe has no atmosphere
+      .showGlobe(false)
+      .showAtmosphere(true) // globe has no atmosphere
+      .atmosphereColor('hsl(223, 100%, 9%)')
+      .backgroundColor('hsl(220, 13%, 9%)')
       .width(elem.offsetWidth)
       .height(elem.offsetHeight)
-      // .pointsData(locations)
-      .pointColor(() => '#33CCB5')
+      .polygonCapColor(feat => 'hsl(223, 60%, 5%)')
+      .polygonSideColor(() => 'hsla(223, 100%, 12%, .33)')
+      .polygonStrokeColor(() => 'hsl(223, 100%, 59%)')
+      .pointColor(() => 'hsla(0, 0%, 100%, 0.8)')
       .pointLabel('cityName')
       .pointAltitude(d => d.count / 100)
       .onPointHover((point, prevPoint) => {globe.controls().autoRotate = !point;})
@@ -131,6 +134,10 @@ script.
     globe.pointOfView({lat: 45, lng: 5, altitude: 3});
     globe.controls().autoRotate = true;
     globe.controls().autoRotateSpeed = 0.1;
+
+    fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
+      globe.polygonsData(countries.features);
+    });
 
     return globe;
   }
@@ -175,7 +182,7 @@ script.
   function clearCityFilter() {
     fetchItems(url);
     document.getElementById('clear-city').style.display = "none";
-    document.getElementById('selected-city').innerText = "Click on a city to display organizations";
+    document.getElementById('selected-city').innerText = "Click on a city to see organizations";
     urlParams.delete('city');
     url.search = urlParams.toString();
     fetchItems(url);

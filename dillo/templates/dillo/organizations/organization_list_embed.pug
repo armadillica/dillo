@@ -3,10 +3,15 @@
 
 | {% for object in page_obj %}
 li
-  a.dir-user-item(href="{{ object.website }}")
+  .dir-user-item
     .dir-user-item-header
       .dir-user-title
+        | {% if object.website %}
+        a(href="{{ object.website }}")
+          h3 {{ object.name }}
+        | {% else %}
         h3 {{ object.name }}
+        | {% endif %}
         .categories-row
           | {% for category in object.categories.all %}
           span {{ category }}
