@@ -13,35 +13,25 @@ script(src='//unpkg.com/globe.gl')
 
 | {% block content %}
 
-.dir-users-header
-  .dir-users-header-filters
+.row.dir-container
+  .col-md-5
     .form-field-container
       select#category.js-choice.js-choice-multi(name="category", multiple)
         | {% for category in search_facets.categories %}
         option(selected=category.is_selected value="{{ category.value }}") {{ category.label }}
         | {% endfor %}
 
-    div
-      .btn(
-        title="Toggle Globe"
-        onclick="toggleGlobeVisibility()")
-        span
-          i.i-globe
+    .dir-city-title.pb-3
+      h2#selected-city {% if search_facets.cities %} {{ search_facets.cities.0 }} {% endif %}
 
-  .dir-city-title.pl-3
-    h2#selected-city {% if search_facets.cities %} {{ search_facets.cities.0 }} {% endif %}
-
-    .btn#clear-city(
-      style="{% if not search_facets.cities %}display:none{% endif %}",
-      onclick="clearCityFilter()")
-      span Clear Filter
-
-.row.dir-container
-  .col-md-4
+      .ml-auto.btn#clear-city(
+        style="{% if not search_facets.cities %}display:none{% endif %}",
+        onclick="clearCityFilter()")
+        span Clear Filter
 
     ul.dir-items-list#organization-list
 
-  .col-md-8.dir-globe#globe-container
+  .col-md-7.dir-globe#globe-container
     .globe-container
     .globe#globe
 
@@ -116,42 +106,37 @@ script.
   function setupGlobe() {
     const elem = document.getElementById('globe');
     const globe = Globe()
-      .showGlobe(false)
+      .showGlobe(true)
+      .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
       .showAtmosphere(true) // globe has no atmosphere
       .atmosphereColor('hsl(223, 100%, 9%)')
       .backgroundColor('hsl(220, 13%, 9%)')
-      .width(elem.offsetWidth)
       .height(elem.offsetHeight)
+      .width(elem.offsetWidth)
       .polygonCapColor(feat => 'hsl(223, 60%, 5%)')
-      .polygonSideColor(() => 'hsla(223, 100%, 12%, .33)')
+      .polygonSideColor(() => 'hsla(223, 100%, 12%, 0)')
       .polygonStrokeColor(() => 'hsl(223, 100%, 59%)')
       .pointColor(() => 'hsla(0, 0%, 100%, 0.8)')
       .pointLabel('cityName')
       .pointAltitude(d => d.count / 100)
-      .onPointHover((point, prevPoint) => {globe.controls().autoRotate = !point;})
       .onPointClick(d => fetchItemsByCity(d.cityId, d.cityName, urlParams))
       (elem);
     globe.pointOfView({lat: 45, lng: 5, altitude: 3});
-    globe.controls().autoRotate = true;
-    globe.controls().autoRotateSpeed = 0.1;
+
+    const globeMaterial = globe.globeMaterial();
+    globeMaterial.shininess = 0;
 
     fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
-      globe.polygonsData(countries.features);
+      globe.hexPolygonsData(countries.features);
+      globe.hexPolygonResolution(3);
+      globe.hexPolygonMargin(0.3);
+      globe.hexPolygonColor(() => `#${Math.round(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, '0')}`);
     });
 
     return globe;
   }
 
   let globe = setupGlobe();
-
-  function toggleGlobeVisibility() {
-    let x = document.getElementById("globe-container");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  }
 
   const choiceElements = document.getElementsByClassName('js-choice-multi');
 
@@ -174,7 +159,6 @@ script.
     );
   }
 
-
   // On page load fetch all organizations
   fetchItems(url);
   fetchItemsGlobe(url, globe);
@@ -182,7 +166,7 @@ script.
   function clearCityFilter() {
     fetchItems(url);
     document.getElementById('clear-city').style.display = "none";
-    document.getElementById('selected-city').innerText = "Click on a city to see organizations";
+    document.getElementById('selected-city').innerText = "Select a City in the Map";
     urlParams.delete('city');
     url.search = urlParams.toString();
     fetchItems(url);
