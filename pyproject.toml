@@ -16,7 +16,7 @@ django-allauth = "^0.50"
 django-taggit = "^1.1"
 django-activity-stream = "^1.4"
 django-hashid-field = "^3.1"
-Pillow = "^9.0"
+Pillow = "^9.3"
 sorl-thumbnail = "^12.5"
 python-magic = "^0.4.15"
 django-anymail = { version = "^7.0",  extras = [ "mailgun" ] }
