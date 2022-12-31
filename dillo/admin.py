@@ -171,7 +171,7 @@ class CommunityAdmin(admin.ModelAdmin):
 
 @admin.register(dillo.models.posts.Post)
 class PostAdmin(admin.ModelAdmin):
-    actions = ['process_videos', 'approve_posts']
+    actions = ['process_videos', 'approve_posts', 'remove_content_and_deactivate_user']
     list_per_page = 50
     list_display = (
         '__str__',
@@ -184,7 +184,7 @@ class PostAdmin(admin.ModelAdmin):
         'created_at',
     )
     list_filter = ('community', 'is_pinned_by_moderator', 'is_link', 'status', 'visibility')
-    list_display_links = ('__str__',)
+    list_display_links = ('__str__', 'user')
     search_fields = ('content', 'title', 'user__username')
     autocomplete_fields = ['media']
     readonly_fields = ('hash_id', 'tags', 'created_at', 'updated_at', 'user', 'get_likes_count')
@@ -242,6 +242,24 @@ class PostAdmin(admin.ModelAdmin):
         self.message_user(request, message)
 
     approve_posts.short_description = "Approve selected posts"
+
+    def remove_content_and_deactivate_user(self, request, queryset):
+        deactivated_users = 0
+        # For each post, process all videos attached if available
+        for u in queryset.order_by('user').values_list('user', flat=True).distinct('user'):
+            user = User.objects.get(id=u)
+            deactivate_user_and_remove_content(user)
+            deactivated_users += 1
+        rows_updated = deactivated_users
+        if deactivated_users == 0:
+            message_bit = "No user was"
+        elif deactivated_users == 1:
+            message_bit = "1 user was"
+        else:
+            message_bit = "%s user were" % rows_updated
+        self.message_user(request, "%s deactivated." % message_bit)
+
+    remove_content_and_deactivate_user.short_description = "Remove content and deactivate user"
 
 
 @admin.register(dillo.models.events.Event)
