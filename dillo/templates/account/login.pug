@@ -5,7 +5,7 @@
 
 | {% block page_title %}{% trans "Sign In" %} &mdash; {% endblock %}
 
-| {% block columns_width %}col-md-5{% endblock %}
+| {% block columns_width %}col{% endblock %}
 
 | {% block content_card %}
 .card.account.login
@@ -39,8 +39,10 @@
 
 	.card-footer
 		.btn-toolbar-row
+			| {% if settings_account_allow_signups %}
 			a.btn.btn-primary(href='{{ signup_url }}')
 				span {% trans "Create a New Account" %}
+			| {% endif %}
 
 			a.btn.btn-link(href="{% url 'account_reset_password' %}")
 				span {% trans "Forgotten Password?" %}
