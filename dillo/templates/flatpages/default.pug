@@ -3,16 +3,18 @@
 
 | {% block page_title %}{{ flatpage.title }}{% endblock page_title %}
 
-| {% block stream %}
-.container
-  .item-detail-body
-    | {{ flatpage.content }}
-| {% endblock stream %}
+| {% block content %}
+.app-main-content.container
+  .row
+    .col-lg-9
+      .item-detail-body
+        | {{ flatpage.content }}
 
-| {% block sidebar %}
-| {% if request.user.is_superuser %}
-.sidebar-block
-  | {% url 'admin:flatpages_flatpage_change' flatpage.id as edit_url %}
-  | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Page" class="btn-admin" %}
-| {% endif %}
-| {% endblock sidebar %}
+    .col-lg-3
+      | {% if request.user.is_superuser %}
+      .sidebar-block
+        | {% url 'admin:flatpages_flatpage_change' flatpage.id as edit_url %}
+        | {% include 'dillo/components/_button_edit.pug' with url=edit_url label="Edit Page" class="btn-admin" %}
+      | {% endif %}
+
+| {% endblock content %}
