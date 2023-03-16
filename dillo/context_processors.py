@@ -98,3 +98,7 @@ def upcoming_events(_):
         .all()
     )
     return {'upcoming_events': ue}
+
+
+def settings_account_allow_signups(_):
+    return {'settings_account_allow_signups': settings.ACCOUNT_ALLOW_SIGNUPS}
