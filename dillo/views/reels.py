@@ -84,7 +84,7 @@ class ReelDetailView(DetailView):
 
     def get_adjacent_profiles_with_reels(self):
         """Given a User id, find the previous and the next reel."""
-        profiles = Profile.objects.exclude(reel__exact='')
+        profiles = Profile.objects.exclude(Q(reel__exact='') | Q(reel_thumbnail_16_9__exact=''))
 
         if self.url_params.sort == 'recent':
             profiles = profiles.order_by('-created_at', 'user_id')
