@@ -3,11 +3,12 @@ from dataclasses import dataclass
 from typing import Optional
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from dillo.models.profiles import Profile
 from dillo.views.mixins import OgData
@@ -47,7 +48,7 @@ class ReelListView(ListView):
 
     def get_queryset(self):
         """Get Profiles, sorted by creation date or most likes."""
-        qs = Profile.objects.exclude(reel__exact='', reel_thumbnail_16_9__exact='')
+        qs = Profile.objects.exclude(Q(reel__exact='') | Q(reel_thumbnail_16_9__exact=''))
         if self.url_params.sort == 'recent':
             qs = qs.order_by('-created_at', 'user_id')
         else:
