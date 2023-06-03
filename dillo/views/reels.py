@@ -47,7 +47,7 @@ class ReelListView(ListView):
 
     def get_queryset(self):
         """Get Profiles, sorted by creation date or most likes."""
-        qs = Profile.objects.exclude(reel__exact='')
+        qs = Profile.objects.exclude(reel__exact='', reel_thumbnail_16_9__exact='')
         if self.url_params.sort == 'recent':
             qs = qs.order_by('-created_at', 'user_id')
         else:
