@@ -27,6 +27,7 @@ class UrlParams:
     is_remote_friendly: Optional[str]
     software: Optional[str]
     level: Optional[str]
+    country: Optional[str]
 
     @property
     def software_label(self):
@@ -52,12 +53,21 @@ class UrlParams:
     def contract_type_qs(self):
         return '' if not self.contract_type else f'&contract-type={self.contract_type}'
 
+    @property
+    def country_label(self):
+        return self.country or 'Country'
+
+    @property
+    def country_qs(self):
+        return '' if not self.country else f'&country={self.country}'
+
 
 @dataclass
 class SearchFacets:
     contract_type: Optional[List[str]]
     software: Optional[List[str]]
     level: Optional[List[str]]
+    country: Optional[List[str]]
 
 
 class JobCreateView(LoginRequiredMixin, CreateView):
@@ -141,15 +151,23 @@ class JobListView(ListView):
 
     url_params: UrlParams = None
 
+    def get_facet_values(self, facet_name):
+        qs = Job.objects.filter(status='published')
+        if self.url_params.contract_type and facet_name != 'contract_type':
+            qs = qs.filter(contract_type=self.url_params.contract_type)
+        if self.url_params.level and facet_name != 'level':
+            qs = qs.filter(level=self.url_params.level)
+        if self.url_params.software and facet_name != 'software':
+            qs = qs.filter(software=self.url_params.software)
+        if self.url_params.country and facet_name != 'country':
+            qs = qs.filter(country=self.url_params.country)
+        qs = qs.distinct(facet_name).values_list(facet_name)
+        return qs
+
     def _facet_software(self):
         software_set = set()
-        software = Job.objects.filter(status='published')
-        if self.url_params.contract_type:
-            software = software.filter(contract_type=self.url_params.contract_type)
-        if self.url_params.level:
-            software = software.filter(level=self.url_params.level)
-        software = software.distinct('software').values_list('software')
-        for s in software:
+        qs = self.get_facet_values('software')
+        for s in qs:
             for n in re.split(',|/|or', s[0]):
                 n = n.strip()
                 if not n:
@@ -159,35 +177,33 @@ class JobListView(ListView):
 
     def _facet_level(self):
         level_set = set()
-        levels = Job.objects.filter(status='published')
-        if self.url_params.contract_type:
-            levels = levels.filter(contract_type=self.url_params.contract_type)
-        if self.url_params.software:
-            levels = levels.filter(software=self.url_params.software)
-        levels = levels.distinct('level').values_list('level')
-        for level in levels:
+        qs = self.get_facet_values('level')
+        for level in qs:
             for lev in re.split(',|/', level[0]):
                 lev = lev.strip()
                 level_set.add(lev)
         return sorted(level_set)
 
     def _facet_contract_type(self):
+        qs = self.get_facet_values('contract_type')
         contract_type_set = set()
-        contract_types = Job.objects.filter(status='published')
-        if self.url_params.level:
-            contract_types = contract_types.filter(level=self.url_params.level)
-        if self.url_params.software:
-            contract_types = contract_types.filter(software=self.url_params.software)
-        contract_types = contract_types.distinct('contract_type').values_list('contract_type')
-        for contract_type in contract_types:
+        for contract_type in qs:
             contract_type_set.add(contract_type[0])
         return sorted(contract_type_set)
+
+    def _facet_country(self):
+        qs = self.get_facet_values('country')
+        country_set = set()
+        for country in qs:
+            country_set.add(country[0])
+        return sorted(country_set)
 
     def search_facets(self):
         return SearchFacets(
             contract_type=self._facet_contract_type(),
             software=self._facet_software(),
             level=self._facet_level(),
+            country=self._facet_country(),
         )
 
     def dispatch(self, request, *args, **kwargs):
@@ -196,6 +212,7 @@ class JobListView(ListView):
             is_remote_friendly=self.request.GET.get('is-remote-friendly'),
             software=self.request.GET.get('software'),
             level=self.request.GET.get('level'),
+            country=self.request.GET.get('country'),
         )
 
         return super(JobListView, self).dispatch(request, *args, **kwargs)
@@ -210,6 +227,8 @@ class JobListView(ListView):
             qs = qs.filter(level__icontains=self.url_params.level)
         if self.url_params.contract_type:
             qs = qs.filter(contract_type=self.url_params.contract_type)
+        if self.url_params.country:
+            qs = qs.filter(country=self.url_params.country)
         return qs
 
     def get_context_data(self, **kwargs):
