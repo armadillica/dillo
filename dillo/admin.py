@@ -1,5 +1,4 @@
 import logging
-import modulefinder
 from typing import List, Tuple, Any
 
 from django import forms
@@ -10,20 +9,16 @@ from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ChangeList
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from django.contrib.flatpages.admin import FlatPageAdmin
-from django.contrib.flatpages.models import FlatPage
 from django.core.exceptions import ValidationError
 from django.db.models import Count
 from django.db.models import F
 from django.db.models.query import QuerySet
 from django.http import HttpResponseServerError
 from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from tinymce.widgets import TinyMCE
 
 import dillo.models.comments
 import dillo.models.events
@@ -534,22 +529,6 @@ class CommentAdmin(admin.ModelAdmin):
         return obj.content[:100]
 
     get_content.short_description = "description"
-
-
-class TinyMCEFlatPageAdmin(FlatPageAdmin):
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        if db_field.name == 'content':
-            return db_field.formfield(
-                widget=TinyMCE(
-                    attrs={'cols': 80, 'rows': 30},
-                    mce_attrs={'external_link_list_url': reverse('tinymce-linklist')},
-                )
-            )
-        return super(TinyMCEFlatPageAdmin, self).formfield_for_dbfield(db_field, **kwargs)
-
-
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
 
 
 class StaticAssetVideoInline(admin.TabularInline):
