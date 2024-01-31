@@ -8,6 +8,8 @@ def parse_text_query(text: str, filters: dict):
     for t in text.split():
         if t.startswith('user='):
             filters['user__username'] = t.split('=')[1]
+        elif t.startswith('commented-by='):
+            filters['comments__user__username'] = t.split('=')[1]
         else:
             text_filter = f"{text_filter} {t}"
     if text_filter:
