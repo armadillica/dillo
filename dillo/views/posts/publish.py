@@ -64,6 +64,11 @@ class PostCreateView(LoginRequiredMixin, FormView):
             self.post_instance.publish()
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context['post'] = self.post_instance
+        return self.render_to_response(context)
+
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -74,6 +79,8 @@ class PostCreateView(LoginRequiredMixin, FormView):
                     'User %i tried to edit a Post from User %i' % (request.user.id, p.user.id)
                 )
             self.post_instance = p
+            if not p.media.all():
+                return self.form_invalid(form)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
