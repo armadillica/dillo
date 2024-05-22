@@ -142,7 +142,10 @@ class PostsByUserListView(PostListEmbedView):
     def get_queryset(self):
         """Filter posts by tag, return 404 if no post is found."""
         return Post.objects.filter(
-            user_id=self.kwargs['user_id'], status='published', visibility='public'
+            user_id=self.kwargs['user_id'],
+            status='published',
+            visibility='public',
+            media__isnull=False,
         )
 
     def get_template_names(self):

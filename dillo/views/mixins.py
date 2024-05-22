@@ -98,6 +98,7 @@ class PostListEmbedView(ListView):
                 visibility='public',
             )
             .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
+            .exclude(media__isnull=True)
             .order_by('-published_at')
         )
 
@@ -108,7 +109,7 @@ class PostListEmbedView(ListView):
                 status='published',
                 visibility='public',
             )
-            .exclude(media=False)
+            .exclude(media__isnull=True)
             .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
             .annotate(Count('likes'))
             .order_by('-is_pinned_by_moderator', '-likes__count', '-created_at')
@@ -156,7 +157,7 @@ class FeaturedPostListEmbedView(PostListEmbedView):
                 status='published',
                 visibility='public',
             )
-            .exclude(media=False)
+            .exclude(media__isnull=True)
             .prefetch_related('likes', 'comments', 'user', 'user__profile', 'media', 'media__video')
             .annotate(Count('likes'))
             .order_by('-is_pinned_by_moderator', '-created_at', '-likes__count')
