@@ -55,6 +55,15 @@
 								i.i-flag
 								| {% trans "Report" %}...
 							| {% endif %}
+							| {% if request.user.is_staff %}
+							.dropdown-divider
+							a.dropdown-item.is-admin(
+								href="{% url 'admin:auth_user_delete' comment.user.id %}",
+								target="_blank",
+								title='{% trans "Delete User" %}')
+								i.i-trash
+								| {% trans "Delete User" %}
+							| {% endif %}
 				| {% endif %}
 
 

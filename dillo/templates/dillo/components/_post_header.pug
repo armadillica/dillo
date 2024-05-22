@@ -101,6 +101,13 @@
               i.i-eye
               span.label {% if post.is_hidden_by_moderator %}Show{% else %}Hide{% endif %}
 
+            a.dropdown-item.is-admin(
+              href="{% url 'admin:auth_user_delete' post.user.id %}",
+              target="_blank",
+              title='{% trans "Delete User" %}')
+              i.i-trash
+              | {% trans "Delete User" %}
+
             .dropdown-divider
 
             a.dropdown-item.is-admin(
