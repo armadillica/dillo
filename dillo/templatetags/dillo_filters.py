@@ -135,6 +135,29 @@ def website_hostname(url):
     return url.hostname.replace("www.", "")
 
 
+@register.filter
+def get_twitter_handle(url):
+    """Given a twitter url, return the handle only.
+    """
+
+    try:
+        # Regular expressions for x.com and twitter.com URLs
+        x_pattern = r"https://x\.com/([^/]+)/status/\d+"
+        twitter_pattern = r"https://twitter\.com/([^/]+)/status/\d+"
+
+        # Check for match and extract handle
+        x_match = re.match(x_pattern, url)
+        twitter_match = re.match(twitter_pattern, url)
+
+        if x_match:
+            return x_match.group(1)
+        elif twitter_match:
+            return twitter_match.group(1)
+    except Exception as e:
+        return ''
+    return ''
+
+
 def clean_url_path(markup):
     """Look for <a> tags and replace the inner text with the URL path without scheme.
     For example: https://blender.org/download -> blender.org/download

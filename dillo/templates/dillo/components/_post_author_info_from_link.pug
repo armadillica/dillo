@@ -1,56 +1,10 @@
+{% load dillo_filters %}
+
 | {% if post.is_link %}
-.post-author-card-container(
+blockquote.post-author-card-container(
   class="loading",
   data-url="{{ post.content }}",
   id="post-author-card-container")
 
-  .post-author-card-header
-    span
-      span Originally posted on #[a#post-content-source(href="/", target="_blank") Twitter] by
-
-  .post-author-card-info
-    a.post-author-card-icon(
-      class="js-post-author-profile-url",
-      href="/",
-      target="_blank")
-      span
-        i.i-twitter
-    a.post-author-card-fullname(
-      class="js-post-author-profile-url",
-      id="post-author-fullname",
-      href="/",
-      target="_blank")
-      span #[span Animato HQ]
-
-    a.post-author-card-username(
-      class="js-post-author-profile-url",
-      id="post-author-username",
-      href="/",
-      target="_blank")
-      span #[span @animatoHQ]
+  span #[i.i-twitter] Originally posted by #[a(href="{{ post.content }}", target="_blank") {{ post.content|get_twitter_handle }}]
 | {% endif %}
-
-script.
-  function initAuthorCard() {
-    let $postAuthorCardContainer = $('#post-author-card-container');
-    if ($postAuthorCardContainer.length === 0) {return};
-    let postContentUrl = $postAuthorCardContainer.data('url');
-    let url = '/api/user-from-oembed-link';
-
-    $.get(url, {postContentUrl: postContentUrl}, function (data) {
-      }).done(function (data) {
-        let $postAuthorProfileURL = $('.js-post-author-profile-url');
-        let $postAuthorFullname = $('#post-author-fullname');
-        let $postContentSource = $('#post-content-source');
-        $postAuthorFullname.text(data['fullname']);
-        $postContentSource.text(data['extractor_key']);
-        $postContentSource.attr('href', data['url_content']);
-        $('#post-author-username').text('@' + data['username']);
-
-        $postAuthorProfileURL.attr('href', data['url_profile']);
-        $postAuthorCardContainer.removeClass('loading');
-
-      }).fail(function (jqxhr) {
-        console.log(xhrErrorResponseMessage(jqxhr));
-      });
-  }
